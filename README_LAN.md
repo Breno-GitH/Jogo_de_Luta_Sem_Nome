@@ -144,7 +144,9 @@ Testado nesta migração:
 - Polling e upgrade WebSocket pelo Apache nas duas rotas.
 - Samurai, Dio e Goku: normais, especiais e cinematografias nos dois clientes, comparando hashes de ticks com o servidor. Inclui Mil Cortes, facas, Muda Muda, Parada do Tempo, Road Roller, Ki, Kamehameha, Teletransporte e Fúria Saiyajin, com retorno da câmera.
 - Atualização de página/recuperação da mesma partida, dois KOs/rounds, resultado, revanche preservando personagens, desconexão definitiva, reutilização do lobby e reinício do backend.
+- Parada e reinício reais do processo Apache durante uma partida, perda detectada pelos dois navegadores e recuperação com hashes iguais ao servidor. Esse teste usou uma janela de recuperação de 30 segundos para permitir a operação manual; o serviço normal mantém 15 segundos. Não foi um clique automatizado no painel XAMPP.
 - Todas as nove combinações de personagens com replay determinístico dos inputs autoritativos em testes de unidade.
+- `npm test`: **502 testes de lógica + 123 testes de arte** aprovados. O agendamento foi limitado a um worker para evitar que o teste longo de self-play da IA exceda seu timeout por concorrência; as regras e asserções da IA não foram alteradas.
 
 Os testes de cinematografias configuram posição/energia **diretamente no servidor de teste**, para exercitar cada habilidade rapidamente. O cliente usa teclado, conexão e renderizador reais; o dano/colisões continuam no motor. Esse auxílio não existe como endpoint no serviço publicado. Os registros e capturas dos dois clientes estão em `deployment/audit/lan/`. `deployment/audit/preserved-game.json` registra os 3.979 arquivos de combate/dados/sprites preservados.
 

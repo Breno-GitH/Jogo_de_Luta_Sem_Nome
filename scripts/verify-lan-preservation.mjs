@@ -19,4 +19,5 @@ writeFileSync(
   "deployment/audit/preservation-result.json",
   JSON.stringify(report, null, 2),
 );
-console.log(JSON.stringify(report, null, 2
+console.log(JSON.stringify(report, null, 2));
+if (changed.length) process.exitCode = 1;

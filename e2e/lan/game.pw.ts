@@ -597,4 +597,10 @@ test("Apache outage pauses and resumes both real browser clients", async () => {
         code,
         resumed: true,
         authoritativeHashesEqual: true,
-        actualSecondCompu
+        actualSecondComputer: false,
+      },
+      null,
+      2,
+    ),
+  );
+});
