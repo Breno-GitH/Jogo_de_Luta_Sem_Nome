@@ -1,0 +1,537 @@
+{
+  "method": "whole-pose",
+  "canvas": [
+    384,
+    256
+  ],
+  "pivot": {
+    "x": 192,
+    "y": 224
+  },
+  "config": {
+    "source": "art/goku/combat/air_light-source.png",
+    "kind": "normal",
+    "grounded": false,
+    "cells": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "durations": [
+      2,
+      1,
+      2,
+      2,
+      3,
+      3
+    ],
+    "startup": 3,
+    "active": 4,
+    "strike": "punch",
+    "combat": {
+      "damage": 36,
+      "stun": 25,
+      "blockstun": 10,
+      "push": 0.6,
+      "launch": -5,
+      "hitstop": 5,
+      "level": "high",
+      "rank": 1,
+      "cancels": [
+        "medium",
+        "heavy"
+      ],
+      "cancelWindow": {
+        "fromTick": 4,
+        "toTick": 14
+      },
+      "cancelMoves": [
+        "air_medium",
+        "air_heavy"
+      ],
+      "airHold": -3
+    },
+    "label": "air_light",
+    "registration": {
+      "2": {
+        "offsetDelta": [
+          16,
+          0
+        ]
+      },
+      "3": {
+        "offsetDelta": [
+          16,
+          0
+        ]
+      }
+    }
+  },
+  "frames": [
+    {
+      "source": "art/goku/combat/air_light-source.png",
+      "sourceRect": [
+        522,
+        23,
+        721,
+        381
+      ],
+      "cellRect": [
+        418,
+        0,
+        836,
+        418
+      ],
+      "scale": 0.34574468085106386,
+      "offset": [
+        158,
+        94
+      ],
+      "metrics": {
+        "bbox": [
+          158,
+          94,
+          227,
+          218
+        ],
+        "opaquePixels": 4923,
+        "largestComponent": 1.0,
+        "components": [
+          4923
+        ]
+      },
+      "pose": {
+        "ticks": 2,
+        "phase": "startup",
+        "hitboxes": [],
+        "hurtboxes": [
+          {
+            "x": -25,
+            "y": -130,
+            "w": 60,
+            "h": 32
+          },
+          {
+            "x": -34,
+            "y": -98,
+            "w": 69,
+            "h": 29
+          },
+          {
+            "x": -30,
+            "y": -69,
+            "w": 63,
+            "h": 26
+          },
+          {
+            "x": -30,
+            "y": -43,
+            "w": 57,
+            "h": 23
+          },
+          {
+            "x": -14,
+            "y": -20,
+            "w": 13,
+            "h": 14
+          }
+        ]
+      },
+      "strikePoint": null,
+      "discardedSpeckles": []
+    },
+    {
+      "source": "art/goku/combat/air_light-source.png",
+      "sourceRect": [
+        894,
+        53,
+        1144,
+        381
+      ],
+      "cellRect": [
+        836,
+        0,
+        1254,
+        418
+      ],
+      "scale": 0.34574468085106386,
+      "offset": [
+        149,
+        94
+      ],
+      "metrics": {
+        "bbox": [
+          149,
+          94,
+          235,
+          207
+        ],
+        "opaquePixels": 5111,
+        "largestComponent": 1.0,
+        "components": [
+          5111
+        ]
+      },
+      "pose": {
+        "ticks": 1,
+        "phase": "startup",
+        "hitboxes": [],
+        "hurtboxes": [
+          {
+            "x": -41,
+            "y": -130,
+            "w": 77,
+            "h": 32
+          },
+          {
+            "x": -43,
+            "y": -98,
+            "w": 85,
+            "h": 29
+          },
+          {
+            "x": -30,
+            "y": -69,
+            "w": 73,
+            "h": 26
+          },
+          {
+            "x": -24,
+            "y": -43,
+            "w": 67,
+            "h": 23
+          },
+          {
+            "x": -9,
+            "y": -20,
+            "w": 23,
+            "h": 3
+          }
+        ]
+      },
+      "strikePoint": null,
+      "discardedSpeckles": []
+    },
+    {
+      "source": "art/goku/combat/air_light-source.png",
+      "sourceRect": [
+        65,
+        453,
+        402,
+        792
+      ],
+      "cellRect": [
+        0,
+        418,
+        418,
+        836
+      ],
+      "scale": 0.34574468085106386,
+      "offset": [
+        150,
+        94
+      ],
+      "metrics": {
+        "bbox": [
+          150,
+          94,
+          267,
+          211
+        ],
+        "opaquePixels": 5796,
+        "largestComponent": 1.0,
+        "components": [
+          5796
+        ]
+      },
+      "pose": {
+        "ticks": 2,
+        "phase": "active",
+        "hitboxes": [
+          {
+            "a": {
+              "x": 55,
+              "y": -94
+            },
+            "b": {
+              "x": 69,
+              "y": -94
+            },
+            "r": 7
+          }
+        ],
+        "hurtboxes": [
+          {
+            "x": -33,
+            "y": -130,
+            "w": 106,
+            "h": 32
+          },
+          {
+            "x": -42,
+            "y": -98,
+            "w": 117,
+            "h": 29
+          },
+          {
+            "x": -41,
+            "y": -69,
+            "w": 82,
+            "h": 26
+          },
+          {
+            "x": -40,
+            "y": -43,
+            "w": 78,
+            "h": 23
+          },
+          {
+            "x": 0,
+            "y": -20,
+            "w": 10,
+            "h": 7
+          }
+        ]
+      },
+      "strikePoint": [
+        261,
+        130
+      ],
+      "discardedSpeckles": []
+    },
+    {
+      "source": "art/goku/combat/air_light-source.png",
+      "sourceRect": [
+        445,
+        450,
+        847,
+        810
+      ],
+      "cellRect": [
+        418,
+        418,
+        836,
+        836
+      ],
+      "scale": 0.34574468085106386,
+      "offset": [
+        138,
+        94
+      ],
+      "metrics": {
+        "bbox": [
+          138,
+          94,
+          277,
+          218
+        ],
+        "opaquePixels": 6425,
+        "largestComponent": 1.0,
+        "components": [
+          6425
+        ]
+      },
+      "pose": {
+        "ticks": 2,
+        "phase": "active",
+        "hitboxes": [
+          {
+            "a": {
+              "x": 64,
+              "y": -92
+            },
+            "b": {
+              "x": 78,
+              "y": -92
+            },
+            "r": 7
+          }
+        ],
+        "hurtboxes": [
+          {
+            "x": -30,
+            "y": -130,
+            "w": 79,
+            "h": 32
+          },
+          {
+            "x": -40,
+            "y": -98,
+            "w": 125,
+            "h": 29
+          },
+          {
+            "x": -42,
+            "y": -69,
+            "w": 85,
+            "h": 26
+          },
+          {
+            "x": -50,
+            "y": -43,
+            "w": 89,
+            "h": 23
+          },
+          {
+            "x": -54,
+            "y": -20,
+            "w": 18,
+            "h": 14
+          }
+        ]
+      },
+      "strikePoint": [
+        270,
+        132
+      ],
+      "discardedSpeckles": []
+    },
+    {
+      "source": "art/goku/combat/air_light-source.png",
+      "sourceRect": [
+        929,
+        453,
+        1164,
+        805
+      ],
+      "cellRect": [
+        836,
+        418,
+        1254,
+        836
+      ],
+      "scale": 0.34574468085106386,
+      "offset": [
+        152,
+        94
+      ],
+      "metrics": {
+        "bbox": [
+          152,
+          94,
+          233,
+          216
+        ],
+        "opaquePixels": 5484,
+        "largestComponent": 1.0,
+        "components": [
+          5484
+        ]
+      },
+      "pose": {
+        "ticks": 3,
+        "phase": "recovery",
+        "hitboxes": [],
+        "hurtboxes": [
+          {
+            "x": -31,
+            "y": -130,
+            "w": 70,
+            "h": 32
+          },
+          {
+            "x": -37,
+            "y": -98,
+            "w": 75,
+            "h": 29
+          },
+          {
+            "x": -40,
+            "y": -69,
+            "w": 81,
+            "h": 26
+          },
+          {
+            "x": -21,
+            "y": -43,
+            "w": 58,
+            "h": 23
+          },
+          {
+            "x": -17,
+            "y": -20,
+            "w": 14,
+            "h": 12
+          }
+        ]
+      },
+      "strikePoint": null,
+      "discardedSpeckles": []
+    },
+    {
+      "source": "art/goku/combat/air_light-source.png",
+      "sourceRect": [
+        96,
+        844,
+        306,
+        1191
+      ],
+      "cellRect": [
+        0,
+        836,
+        418,
+        1254
+      ],
+      "scale": 0.34574468085106386,
+      "offset": [
+        156,
+        94
+      ],
+      "metrics": {
+        "bbox": [
+          156,
+          94,
+          229,
+          214
+        ],
+        "opaquePixels": 5264,
+        "largestComponent": 1.0,
+        "components": [
+          5264
+        ]
+      },
+      "pose": {
+        "ticks": 3,
+        "phase": "recovery",
+        "hitboxes": [],
+        "hurtboxes": [
+          {
+            "x": -24,
+            "y": -130,
+            "w": 59,
+            "h": 32
+          },
+          {
+            "x": -36,
+            "y": -98,
+            "w": 73,
+            "h": 29
+          },
+          {
+            "x": -33,
+            "y": -69,
+            "w": 69,
+            "h": 26
+          },
+          {
+            "x": -33,
+            "y": -43,
+            "w": 66,
+            "h": 23
+          },
+          {
+            "x": -18,
+            "y": -20,
+            "w": 28,
+            "h": 10
+          }
+        ]
+      },
+      "strikePoint": null,
+      "discardedSpeckles": []
+    }
+  ]
+}

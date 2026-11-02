@@ -1,0 +1,15 @@
+{
+  "origin": "http://127.0.0.1:3001",
+  "version": "7bdaf1fcf51c545fdf2dac9c",
+  "mainTraining": true,
+  "walkBothDirections": true,
+  "mirroring": true,
+  "crouch": true,
+  "jump": true,
+  "allExportedSheetsInspectable": true,
+  "unimplementedAttacksHonest": true,
+  "receivesBotAttacks": true,
+  "pause": true,
+  "exactServedAssets": true,
+  "errors": []
+}

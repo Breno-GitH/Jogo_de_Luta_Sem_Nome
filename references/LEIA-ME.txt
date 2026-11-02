@@ -1,0 +1,11 @@
+REFERÊNCIAS VISUAIS DO SAMURAI
+
+Coloque nesta pasta as imagens de referência de pixel art mencionadas no pedido.
+Você também pode anexar as imagens diretamente na conversa.
+
+Podem ser sprites, spritesheets ou capturas que mostrem o estilo desejado.
+Elas serão usadas para analisar contorno, proporções, paleta e sombreamento.
+O Samurai será original: as referências não serão copiadas diretamente.
+
+Uma captura da pasta do projeto ajuda a localizar os arquivos, mas não substitui
+as referências visuais de personagens.

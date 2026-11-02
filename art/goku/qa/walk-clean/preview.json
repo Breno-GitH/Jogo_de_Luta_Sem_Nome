@@ -1,0 +1,12 @@
+{
+  "revision": 4,
+  "source": "actual keyboard-driven Match/Renderer Canvas",
+  "samples": 96,
+  "sampleFPS": 20,
+  "simulationFPS": 60,
+  "durationMs": 4800.0,
+  "losslessAPNGVerified": true,
+  "wholeDrawings": 16,
+  "interpolatedDrawings": 0,
+  "morphing": false
+}

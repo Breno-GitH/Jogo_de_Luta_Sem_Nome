@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Samurai · Laboratório de animações</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        font-family: system-ui, sans-serif;
+        background: #0d121c;
+        color: #ece7dc;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        max-width: 1200px;
+        margin: 32px auto;
+        padding: 0 24px;
+      }
+      a {
+        color: #e7ae77;
+      }
+      h1 {
+        margin: 8px 0;
+        font-size: 36px;
+      }
+      p {
+        color: #a7b2c3;
+        line-height: 1.6;
+      }
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .overline {
+        font: 11px monospace;
+        letter-spacing: 3px;
+        color: #e7ae77;
+      }
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 18px;
+        align-items: center;
+        padding: 18px;
+        background: #172030;
+        border: 1px solid #344354;
+        margin: 20px 0;
+      }
+      button,
+      select,
+      input {
+        font: inherit;
+      }
+      button,
+      select {
+        background: #243147;
+        color: #f8e9d7;
+        border: 1px solid #52627a;
+        padding: 8px 12px;
+        cursor: pointer;
+      }
+      button:focus-visible,
+      select:focus-visible,
+      input:focus-visible {
+        outline: 2px solid #efb77b;
+        outline-offset: 3px;
+      }
+      label {
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .viewer {
+        overflow: auto;
+        border: 1px solid #465064;
+        min-height: 300px;
+        background: #252b38;
+      }
+      .viewer.checker {
+        background-color: #29303d;
+        background-image:
+          linear-gradient(45deg, #343e4d 25%, transparent 25%),
+          linear-gradient(-45deg, #343e4d 25%, transparent 25%),
+          linear-gradient(45deg, transparent 75%, #343e4d 75%),
+          linear-gradient(-45deg, transparent 75%, #343e4d 75%);
+        background-size: 24px 24px;
+        background-position:
+          0 0,
+          0 12px,
+          12px -12px,
+          -12px 0px;
+      }
+      canvas {
+        display: block;
+        margin: auto;
+        image-rendering: pixelated;
+        image-rendering: crisp-edges;
+      }
+      #info {
+        font: 12px monospace;
+        margin: 14px 0;
+        color: #9bafc7;
+      }
+      .strip {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 22px 0;
+      }
+      .strip button {
+        padding: 0;
+        border: 2px solid #394559;
+        background: #212936;
+      }
+      .strip button.active {
+        border-color: #efb77b;
+      }
+      .strip canvas {
+        width: 128px;
+        height: 128px;
+      }
+      .palette {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+        margin: 14px 0;
+      }
+      .swatch {
+        width: 23px;
+        height: 23px;
+        border: 1px solid #ffffff40;
+      }
+      .downloads {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+        font-size: 13px;
+        padding: 20px 0;
+        border-top: 1px solid #354359;
+      }
+      #error {
+        color: #ffb2a7;
+      }
+      small {
+        color: #8190a4;
+      }
+      details {
+        margin: 24px 0;
+      }
+      summary {
+        cursor: pointer;
+      }
+    </style>
+    <script type="module" crossorigin src="/assets/samurai-0HJFWMqi.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/dio-motion-DZ2RWhfF.js">
+    <link rel="modulepreload" crossorigin href="/assets/renderer-B9CQadsw.js">
+  </head>
+  <body>
+    <header>
+      <div>
+        <span class="overline">SAMURAI / COMBATE E ANIMAÇÕES</span>
+        <h1>Laboratório de animações</h1>
+      </div>
+      <a href="../">Voltar ao jogo</a>
+    </header>
+    <p>
+      Movimentação, normais, especiais, Mil Cortes e reações. Inspecione as
+      poses, o pivô e o chão, ou reproduza as transições com a física real do
+      jogo.
+    </p>
+    <div class="controls">
+      <label
+        >Animação
+        <select id="animation" aria-label="Animação"></select
+      ></label>
+      <button id="play" type="button">Pausar</button>
+      <button id="previous" type="button" aria-label="Quadro anterior">
+        ← Quadro
+      </button>
+      <button id="next" type="button" aria-label="Próximo quadro">
+        Quadro →
+      </button>
+      <label
+        >Quadro
+        <input id="frame" type="range" min="0" max="5" value="0" /><output
+          id="number"
+          >1 / 6</output
+        ></label
+      >
+      <label
+        >Zoom
+        <select id="zoom">
+          <option value="1">1×</option>
+          <option value="2" selected>2×</option>
+          <option value="3">3×</option>
+          <option value="4">4×</option>
+        </select></label
+      >
+      <label
+        >Velocidade
+        <select id="speed">
+          <option value="0.25">¼×</option>
+          <option value="0.5">½×</option>
+          <option value="1" selected>1×</option>
+        </select></label
+      >
+      <label
+        >Fundo
+        <select id="background">
+          <option value="checker">Quadriculado</option>
+          <option value="#10141e">Escuro</option>
+          <option value="#e7e3d8">Claro</option>
+          <option value="#6a8290">Azul cinza</option>
+        </select></label
+      >
+      <label><input id="boxes" type="checkbox" />Hitboxes / hurtboxes</label>
+      <label
+        ><input id="effects" type="checkbox" checked />Efeitos separados</label
+      >
+      <label><input id="arena" type="checkbox" />Ver testes na arena</label>
+      <label><input id="guides" type="checkbox" checked />Pivô e chão</label>
+      <label><input id="grid" type="checkbox" />Grade de pixels</label>
+      <label><input id="p2" type="checkbox" />Paleta P2</label>
+      <label><input id="mirror" type="checkbox" />Espelhar</label>
+    </div>
+    <div class="controls">
+      <label
+        >Teste de combate
+        <select id="sequence">
+          <option value="draw_light">Saque Relâmpago leve — ↓ ↘ → + J</option>
+          <option value="draw_medium">Saque Relâmpago médio — ↓ ↘ → + K</option>
+          <option value="draw_heavy">Saque Relâmpago forte — ↓ ↘ → + L</option>
+          <option value="crescent_light">
+            Corte Crescente leve — → ↓ ↘ + J
+          </option>
+          <option value="crescent_medium">
+            Corte Crescente médio — → ↓ ↘ + K
+          </option>
+          <option value="crescent_heavy">
+            Corte Crescente forte — → ↓ ↘ + L
+          </option>
+          <option value="counterHit">Contra-ataque ativado — ↓ ↙ ← + J</option>
+          <option value="counterMiss">Contra-ataque sem ativar</option>
+          <option value="counterLow">Contra-ataque contra golpe baixo</option>
+          <option value="counterGrab">Contra-ataque contra agarrão</option>
+          <option value="ultimateHit">
+            Mil Cortes: acerto — R, 100 de energia
+          </option>
+          <option value="ultimateBlock">Mil Cortes: defendido</option>
+          <option value="ultimateMiss">Mil Cortes: erro</option>
+          <option value="grab">Agarrão — U</option>
+          <option value="guardStand">Defesa em pé e impacto</option>
+          <option value="guardCrouch">Defesa agachada e impacto</option>
+          <option value="entrance">Entrada na arena</option>
+          <option value="taunt">Provocação — T</option>
+          <option value="victory">Vitória</option>
+          <option value="defeat">Nocaute e derrota</option>
+        </select></label
+      >
+      <button id="test-sequence" type="button">Executar sequência</button>
+    </div>
+    <div class="controls">
+      <span>Transições no motor:</span
+      ><button id="jump" type="button">Salto completo</button
+      ><button id="crouch" type="button">Agachar e levantar</button
+      ><button id="locomotion" type="button">Sequência de movimentos</button
+      ><span id="scenario" role="status">Inspeção de clip</span>
+    </div>
+    <div id="viewer" class="viewer checker">
+      <canvas
+        id="preview"
+        width="768"
+        height="768"
+        aria-label="Prévia ampliada das animações do Samurai"
+      ></canvas>
+    </div>
+    <div class="controls">
+      <button id="test-attack" type="button">Testar ataque selecionado</button
+      ><button id="ground-combo" type="button">Combo terrestre J → K → L</button
+      ><button id="air-combo" type="button">Launcher → W → J → K → L</button>
+    </div>
+    <p id="combat-info"></p>
+    <p>
+      Depuração: vermelho = lâmina ativa; verde = hurtboxes; azul = pushbox;
+      amarelo = lâmina inativa.
+    </p>
+    <div id="info" aria-live="polite">Carregando spritesheets…</div>
+    <div id="error" role="alert"></div>
+    <div class="strip" id="strip" aria-label="Escolher quadro"></div>
+    <div class="downloads">
+      <a id="download" href="../sprites/samurai/idle.png" download
+        >Spritesheet desta animação</a
+      ><a href="../sprites/samurai/movement.json" download
+        >Metadados de movimentação</a
+      ><a href="../sprites/samurai/movement-overview.png" download
+        >Prancha das novas poses</a
+      ><a href="../sprites/samurai/complete.json" download
+        >Metadados de especiais e reações</a
+      ><a href="../sprites/samurai/complete-preview.png" download
+        >Prévia ampliada de especiais e reações</a
+      ><a href="../downloads/samurai-audited-pngs.zip" download
+        >Todos os PNGs auditados + metadados</a
+      >
+    </div>
+    <small
+      >As sequências usam entradas no motor real e um adversário programado para
+      o teste. A energia de Mil Cortes é preenchida apenas nestes testes. As
+      poses derivam do mesmo rig articulado e dos pixels da base
+      aprovada.</small
+    >
+  </body>
+</html>

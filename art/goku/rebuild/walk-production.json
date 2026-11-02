@@ -1,0 +1,1149 @@
+{
+  "stage": "walk",
+  "method": "whole-pose",
+  "palette": [
+    "#080a10",
+    "#141621",
+    "#202331",
+    "#303547",
+    "#444c62",
+    "#63342b",
+    "#92513c",
+    "#be7853",
+    "#e7a776",
+    "#ffd0a0",
+    "#ffe3b8",
+    "#542119",
+    "#883116",
+    "#ac3c0b",
+    "#d95208",
+    "#f67a14",
+    "#ff9b2b",
+    "#ffbc57",
+    "#071326",
+    "#0c2146",
+    "#173a6b",
+    "#24599a",
+    "#3272b5",
+    "#5a91c8",
+    "#5b2020",
+    "#a43929",
+    "#e35e35",
+    "#49341f",
+    "#ac7940",
+    "#f1d38a",
+    "#fff0d4",
+    "#f1f5f5"
+  ],
+  "alphaThreshold": 180,
+  "clips": {
+    "walkForward": {
+      "kind": "wholeFrames",
+      "production": "art/goku/walk-v4/production.json",
+      "durations": [
+        4,
+        5,
+        4,
+        5,
+        4,
+        5,
+        4,
+        5
+      ],
+      "loop": true,
+      "grounded": true,
+      "label": "walkForward / whole guarded poses",
+      "frames": [
+        {
+          "source": "art/goku/walk-v4/forward-source-00.png",
+          "offset": [
+            45,
+            67
+          ],
+          "rawSource": "art/goku/walk-v4/forward-sheet-source.png",
+          "sourceRect": [
+            77,
+            23,
+            401,
+            424
+          ],
+          "normalization": {
+            "scale": 1.0,
+            "offset": [
+              83,
+              79
+            ],
+            "canvas": [
+              512,
+              512
+            ]
+          },
+          "bbox": [
+            72,
+            93,
+            178,
+            224
+          ],
+          "phase": "contact",
+          "scale": 0.32540675844806005,
+          "hurtboxes": [
+            {
+              "x": -20,
+              "y": -131,
+              "w": 56,
+              "h": 33
+            },
+            {
+              "x": -34,
+              "y": -98,
+              "w": 71,
+              "h": 29
+            },
+            {
+              "x": -31,
+              "y": -69,
+              "w": 62,
+              "h": 25
+            },
+            {
+              "x": -48,
+              "y": -44,
+              "w": 84,
+              "h": 23
+            },
+            {
+              "x": -56,
+              "y": -21,
+              "w": 106,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        },
+        {
+          "source": "art/goku/walk-v4/forward-source-01.png",
+          "offset": [
+            45,
+            67
+          ],
+          "rawSource": "art/goku/walk-v4/forward-sheet-source.png",
+          "sourceRect": [
+            523,
+            23,
+            784,
+            426
+          ],
+          "normalization": {
+            "scale": 1.0,
+            "offset": [
+              110,
+              77
+            ],
+            "canvas": [
+              512,
+              512
+            ]
+          },
+          "bbox": [
+            81,
+            92,
+            166,
+            224
+          ],
+          "phase": "down",
+          "scale": 0.32540675844806005,
+          "hurtboxes": [
+            {
+              "x": -20,
+              "y": -132,
+              "w": 57,
+              "h": 34
+            },
+            {
+              "x": -33,
+              "y": -98,
+              "w": 70,
+              "h": 29
+            },
+            {
+              "x": -25,
+              "y": -69,
+              "w": 56,
+              "h": 25
+            },
+            {
+              "x": -41,
+              "y": -44,
+              "w": 74,
+              "h": 23
+            },
+            {
+              "x": -47,
+              "y": -21,
+              "w": 85,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        },
+        {
+          "source": "art/goku/walk-v4/forward-source-02.png",
+          "offset": [
+            45,
+            67
+          ],
+          "rawSource": "art/goku/rebuild/passing-source.png",
+          "sourceRect": [
+            658,
+            50,
+            882,
+            482
+          ],
+          "normalization": {
+            "scale": 0.9183908045977013,
+            "offset": [
+              165,
+              83
+            ],
+            "canvas": [
+              512,
+              512
+            ]
+          },
+          "bbox": [
+            99,
+            94,
+            166,
+            224
+          ],
+          "phase": "guarded passing",
+          "calibrationCell": 0,
+          "wholeRedraw": true,
+          "scale": 0.32540675844806005,
+          "hurtboxes": [
+            {
+              "x": -16,
+              "y": -130,
+              "w": 54,
+              "h": 32
+            },
+            {
+              "x": -29,
+              "y": -98,
+              "w": 67,
+              "h": 29
+            },
+            {
+              "x": -29,
+              "y": -69,
+              "w": 63,
+              "h": 25
+            },
+            {
+              "x": -28,
+              "y": -44,
+              "w": 49,
+              "h": 23
+            },
+            {
+              "x": -27,
+              "y": -21,
+              "w": 53,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        },
+        {
+          "source": "art/goku/walk-v4/forward-source-03.png",
+          "offset": [
+            45,
+            67
+          ],
+          "rawSource": "art/goku/walk-v4/forward-low-step-source.png",
+          "sourceRect": [
+            274,
+            65,
+            1005,
+            1197
+          ],
+          "normalization": {
+            "scale": 0.35291519434628976,
+            "offset": [
+              144,
+              80
+            ],
+            "canvas": [
+              512,
+              512
+            ]
+          },
+          "bbox": [
+            92,
+            93,
+            176,
+            224
+          ],
+          "phase": "up",
+          "scale": 0.32540675844806005,
+          "hurtboxes": [
+            {
+              "x": -19,
+              "y": -131,
+              "w": 55,
+              "h": 33
+            },
+            {
+              "x": -32,
+              "y": -98,
+              "w": 66,
+              "h": 29
+            },
+            {
+              "x": -27,
+              "y": -69,
+              "w": 52,
+              "h": 25
+            },
+            {
+              "x": -31,
+              "y": -44,
+              "w": 62,
+              "h": 23
+            },
+            {
+              "x": -36,
+              "y": -21,
+              "w": 84,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        },
+        {
+          "source": "art/goku/walk-v4/forward-source-04.png",
+          "offset": [
+            45,
+            67
+          ],
+          "rawSource": "art/goku/walk-v4/forward-sheet-source.png",
+          "sourceRect": [
+            65,
+            451,
+            399,
+            849
+          ],
+          "normalization": {
+            "scale": 1.0,
+            "offset": [
+              77,
+              82
+            ],
+            "canvas": [
+              512,
+              512
+            ]
+          },
+          "bbox": [
+            70,
+            94,
+            179,
+            224
+          ],
+          "phase": "opposite contact",
+          "scale": 0.32540675844806005,
+          "hurtboxes": [
+            {
+              "x": -21,
+              "y": -130,
+              "w": 61,
+              "h": 32
+            },
+            {
+              "x": -37,
+              "y": -98,
+              "w": 78,
+              "h": 29
+            },
+            {
+              "x": -41,
+              "y": -69,
+              "w": 73,
+              "h": 25
+            },
+            {
+              "x": -53,
+              "y": -44,
+              "w": 90,
+              "h": 23
+            },
+            {
+              "x": -58,
+              "y": -21,
+              "w": 109,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        },
+        {
+          "source": "art/goku/walk-v4/forward-source-05.png",
+          "offset": [
+            45,
+            67
+          ],
+          "rawSource": "art/goku/walk-v4/forward-sheet-source.png",
+          "sourceRect": [
+            524,
+            455,
+            790,
+            848
+          ],
+          "normalization": {
+            "scale": 1.0,
+            "offset": [
+              112,
+              87
+            ],
+            "canvas": [
+              512,
+              512
+            ]
+          },
+          "bbox": [
+            82,
+            95,
+            168,
+            224
+          ],
+          "phase": "opposite down",
+          "scale": 0.32540675844806005,
+          "hurtboxes": [
+            {
+              "x": -18,
+              "y": -129,
+              "w": 57,
+              "h": 31
+            },
+            {
+              "x": -36,
+              "y": -98,
+              "w": 75,
+              "h": 29
+            },
+            {
+              "x": -28,
+              "y": -69,
+              "w": 58,
+              "h": 25
+            },
+            {
+              "x": -46,
+              "y": -44,
+              "w": 76,
+              "h": 23
+            },
+            {
+              "x": -46,
+              "y": -21,
+              "w": 86,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        },
+        {
+          "source": "art/goku/walk-v4/forward-source-06.png",
+          "offset": [
+            45,
+            67
+          ],
+          "rawSource": "art/goku/rebuild/passing-source.png",
+          "sourceRect": [
+            1133,
+            53,
+            1378,
+            482
+          ],
+          "normalization": {
+            "scale": 0.9183908045977013,
+            "offset": [
+              144,
+              86
+            ],
+            "canvas": [
+              512,
+              512
+            ]
+          },
+          "bbox": [
+            92,
+            95,
+            165,
+            224
+          ],
+          "phase": "guarded passing",
+          "calibrationCell": 0,
+          "wholeRedraw": true,
+          "scale": 0.32540675844806005,
+          "hurtboxes": [
+            {
+              "x": -16,
+              "y": -129,
+              "w": 53,
+              "h": 31
+            },
+            {
+              "x": -31,
+              "y": -98,
+              "w": 68,
+              "h": 29
+            },
+            {
+              "x": -29,
+              "y": -69,
+              "w": 60,
+              "h": 25
+            },
+            {
+              "x": -36,
+              "y": -44,
+              "w": 52,
+              "h": 23
+            },
+            {
+              "x": -36,
+              "y": -21,
+              "w": 65,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        },
+        {
+          "source": "art/goku/walk-v4/forward-source-07.png",
+          "offset": [
+            45,
+            67
+          ],
+          "rawSource": "art/goku/walk-v4/forward-opposite-low-step-source.png",
+          "sourceRect": [
+            254,
+            67,
+            1016,
+            1197
+          ],
+          "normalization": {
+            "scale": 0.35353982300884956,
+            "offset": [
+              138,
+              80
+            ],
+            "canvas": [
+              512,
+              512
+            ]
+          },
+          "bbox": [
+            90,
+            93,
+            178,
+            224
+          ],
+          "phase": "recovery",
+          "scale": 0.32540675844806005,
+          "hurtboxes": [
+            {
+              "x": -16,
+              "y": -131,
+              "w": 52,
+              "h": 33
+            },
+            {
+              "x": -32,
+              "y": -98,
+              "w": 64,
+              "h": 29
+            },
+            {
+              "x": -24,
+              "y": -69,
+              "w": 49,
+              "h": 25
+            },
+            {
+              "x": -32,
+              "y": -44,
+              "w": 65,
+              "h": 23
+            },
+            {
+              "x": -38,
+              "y": -21,
+              "w": 88,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        }
+      ],
+      "method": "whole-pose",
+      "uniqueDrawings": 8,
+      "ticks": 36
+    },
+    "walkBack": {
+      "kind": "wholeFrames",
+      "production": "art/goku/walk-v4/production.json",
+      "durations": [
+        4,
+        5,
+        4,
+        5,
+        4,
+        5,
+        4,
+        5
+      ],
+      "loop": true,
+      "grounded": true,
+      "label": "walkBack / whole guarded poses",
+      "frames": [
+        {
+          "source": "art/goku/walk-v4/back-source-00.png",
+          "offset": [
+            46,
+            70
+          ],
+          "rawSource": "art/goku/walk-v4/back-sheet-source.png",
+          "sourceRect": [
+            90,
+            24,
+            424,
+            434
+          ],
+          "normalization": {
+            "scale": 1.0,
+            "offset": [
+              66,
+              70
+            ],
+            "canvas": [
+              512,
+              512
+            ]
+          },
+          "bbox": [
+            67,
+            92,
+            174,
+            224
+          ],
+          "phase": "contact",
+          "scale": 0.32019704433497537,
+          "hurtboxes": [
+            {
+              "x": -21,
+              "y": -132,
+              "w": 56,
+              "h": 34
+            },
+            {
+              "x": -33,
+              "y": -98,
+              "w": 68,
+              "h": 29
+            },
+            {
+              "x": -34,
+              "y": -69,
+              "w": 63,
+              "h": 25
+            },
+            {
+              "x": -52,
+              "y": -44,
+              "w": 86,
+              "h": 23
+            },
+            {
+              "x": -61,
+              "y": -21,
+              "w": 107,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        },
+        {
+          "source": "art/goku/walk-v4/back-source-01.png",
+          "offset": [
+            46,
+            70
+          ],
+          "rawSource": "art/goku/walk-v4/back-sheet-source.png",
+          "sourceRect": [
+            552,
+            24,
+            818,
+            433
+          ],
+          "normalization": {
+            "scale": 1.0,
+            "offset": [
+              102,
+              71
+            ],
+            "canvas": [
+              512,
+              512
+            ]
+          },
+          "bbox": [
+            79,
+            93,
+            163,
+            224
+          ],
+          "phase": "down",
+          "scale": 0.32019704433497537,
+          "hurtboxes": [
+            {
+              "x": -20,
+              "y": -131,
+              "w": 55,
+              "h": 33
+            },
+            {
+              "x": -32,
+              "y": -98,
+              "w": 67,
+              "h": 29
+            },
+            {
+              "x": -28,
+              "y": -69,
+              "w": 54,
+              "h": 25
+            },
+            {
+              "x": -42,
+              "y": -44,
+              "w": 68,
+              "h": 23
+            },
+            {
+              "x": -49,
+              "y": -21,
+              "w": 74,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        },
+        {
+          "source": "art/goku/walk-v4/back-source-02.png",
+          "offset": [
+            46,
+            70
+          ],
+          "rawSource": "art/goku/rebuild/passing-source.png",
+          "sourceRect": [
+            155,
+            562,
+            384,
+            983
+          ],
+          "normalization": {
+            "scale": 0.9333333333333333,
+            "offset": [
+              159,
+              87
+            ],
+            "canvas": [
+              512,
+              512
+            ]
+          },
+          "bbox": [
+            97,
+            98,
+            165,
+            224
+          ],
+          "phase": "guarded passing",
+          "calibrationCell": 0,
+          "wholeRedraw": true,
+          "scale": 0.32019704433497537,
+          "hurtboxes": [
+            {
+              "x": -17,
+              "y": -126,
+              "w": 54,
+              "h": 28
+            },
+            {
+              "x": -28,
+              "y": -98,
+              "w": 62,
+              "h": 29
+            },
+            {
+              "x": -28,
+              "y": -69,
+              "w": 57,
+              "h": 25
+            },
+            {
+              "x": -28,
+              "y": -44,
+              "w": 50,
+              "h": 23
+            },
+            {
+              "x": -31,
+              "y": -21,
+              "w": 63,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        },
+        {
+          "source": "art/goku/walk-v4/back-source-03.png",
+          "offset": [
+            46,
+            70
+          ],
+          "rawSource": "art/goku/walk-v4/back-sheet-source.png",
+          "sourceRect": [
+            1409,
+            25,
+            1689,
+            434
+          ],
+          "normalization": {
+            "scale": 1.0,
+            "offset": [
+              86,
+              71
+            ],
+            "canvas": [
+              512,
+              512
+            ]
+          },
+          "bbox": [
+            74,
+            93,
+            163,
+            224
+          ],
+          "phase": "up",
+          "scale": 0.32019704433497537,
+          "hurtboxes": [
+            {
+              "x": -19,
+              "y": -131,
+              "w": 54,
+              "h": 33
+            },
+            {
+              "x": -32,
+              "y": -98,
+              "w": 64,
+              "h": 29
+            },
+            {
+              "x": -37,
+              "y": -69,
+              "w": 60,
+              "h": 25
+            },
+            {
+              "x": -54,
+              "y": -44,
+              "w": 69,
+              "h": 23
+            },
+            {
+              "x": -53,
+              "y": -21,
+              "w": 68,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        },
+        {
+          "source": "art/goku/walk-v4/back-source-04.png",
+          "offset": [
+            46,
+            70
+          ],
+          "rawSource": "art/goku/walk-v4/back-sheet-source.png",
+          "sourceRect": [
+            111,
+            453,
+            434,
+            856
+          ],
+          "normalization": {
+            "scale": 1.0,
+            "offset": [
+              93,
+              77
+            ],
+            "canvas": [
+              512,
+              512
+            ]
+          },
+          "bbox": [
+            76,
+            95,
+            179,
+            224
+          ],
+          "phase": "opposite contact",
+          "scale": 0.32019704433497537,
+          "hurtboxes": [
+            {
+              "x": -18,
+              "y": -129,
+              "w": 54,
+              "h": 31
+            },
+            {
+              "x": -33,
+              "y": -98,
+              "w": 67,
+              "h": 29
+            },
+            {
+              "x": -29,
+              "y": -69,
+              "w": 61,
+              "h": 25
+            },
+            {
+              "x": -45,
+              "y": -44,
+              "w": 81,
+              "h": 23
+            },
+            {
+              "x": -52,
+              "y": -21,
+              "w": 103,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        },
+        {
+          "source": "art/goku/walk-v4/back-source-05.png",
+          "offset": [
+            46,
+            70
+          ],
+          "rawSource": "art/goku/walk-v4/back-sheet-source.png",
+          "sourceRect": [
+            565,
+            453,
+            815,
+            856
+          ],
+          "normalization": {
+            "scale": 1.0,
+            "offset": [
+              122,
+              77
+            ],
+            "canvas": [
+              512,
+              512
+            ]
+          },
+          "bbox": [
+            85,
+            95,
+            165,
+            224
+          ],
+          "phase": "opposite down",
+          "scale": 0.32019704433497537,
+          "hurtboxes": [
+            {
+              "x": -18,
+              "y": -129,
+              "w": 55,
+              "h": 31
+            },
+            {
+              "x": -30,
+              "y": -98,
+              "w": 67,
+              "h": 29
+            },
+            {
+              "x": -27,
+              "y": -69,
+              "w": 56,
+              "h": 25
+            },
+            {
+              "x": -37,
+              "y": -44,
+              "w": 66,
+              "h": 23
+            },
+            {
+              "x": -43,
+              "y": -21,
+              "w": 69,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        },
+        {
+          "source": "art/goku/walk-v4/back-source-06.png",
+          "offset": [
+            46,
+            70
+          ],
+          "rawSource": "art/goku/rebuild/passing-source.png",
+          "sourceRect": [
+            646,
+            560,
+            873,
+            982
+          ],
+          "normalization": {
+            "scale": 0.9333333333333333,
+            "offset": [
+              157,
+              86
+            ],
+            "canvas": [
+              512,
+              512
+            ]
+          },
+          "bbox": [
+            96,
+            98,
+            164,
+            224
+          ],
+          "phase": "guarded passing",
+          "calibrationCell": 0,
+          "wholeRedraw": true,
+          "scale": 0.32019704433497537,
+          "hurtboxes": [
+            {
+              "x": -19,
+              "y": -126,
+              "w": 55,
+              "h": 28
+            },
+            {
+              "x": -27,
+              "y": -98,
+              "w": 60,
+              "h": 29
+            },
+            {
+              "x": -27,
+              "y": -69,
+              "w": 56,
+              "h": 25
+            },
+            {
+              "x": -24,
+              "y": -44,
+              "w": 45,
+              "h": 23
+            },
+            {
+              "x": -32,
+              "y": -21,
+              "w": 67,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        },
+        {
+          "source": "art/goku/walk-v4/back-source-07.png",
+          "offset": [
+            46,
+            70
+          ],
+          "rawSource": "art/goku/walk-v4/back-sheet-source.png",
+          "sourceRect": [
+            1418,
+            455,
+            1699,
+            852
+          ],
+          "normalization": {
+            "scale": 1.0,
+            "offset": [
+              94,
+              83
+            ],
+            "canvas": [
+              512,
+              512
+            ]
+          },
+          "bbox": [
+            76,
+            97,
+            166,
+            224
+          ],
+          "phase": "recovery",
+          "scale": 0.32019704433497537,
+          "hurtboxes": [
+            {
+              "x": -19,
+              "y": -127,
+              "w": 54,
+              "h": 29
+            },
+            {
+              "x": -31,
+              "y": -98,
+              "w": 68,
+              "h": 29
+            },
+            {
+              "x": -30,
+              "y": -69,
+              "w": 61,
+              "h": 25
+            },
+            {
+              "x": -51,
+              "y": -44,
+              "w": 81,
+              "h": 23
+            },
+            {
+              "x": -52,
+              "y": -21,
+              "w": 90,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        }
+      ],
+      "method": "whole-pose",
+      "uniqueDrawings": 8,
+      "ticks": 36
+    }
+  }
+}

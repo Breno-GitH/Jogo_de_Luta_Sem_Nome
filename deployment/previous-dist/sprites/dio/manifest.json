@@ -1,0 +1,33 @@
+{
+  "id": "dio",
+  "visibleHeight": 130,
+  "cell": [
+    256,
+    256
+  ],
+  "pivot": [
+    128,
+    224
+  ],
+  "facing": "right",
+  "baseOnly": false,
+  "drawnFrames": 140,
+  "sourceBounds": [
+    324,
+    13,
+    962,
+    1238
+  ],
+  "exportedBounds": [
+    94,
+    94,
+    162,
+    224
+  ],
+  "paletteSize": 35,
+  "sourceSha256": "f0537becb9dd043f23e5d1fa73c27c512875543e17a08737b30bb79f8f2b4938",
+  "method": "native painted segments, anatomical forward knee planes, eight walk keys with fixed-tick contact inbetweens",
+  "baseDrawnFrames": 1,
+  "animationClips": 19,
+  "locomotionRevision": 2
+}

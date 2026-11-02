@@ -1,0 +1,255 @@
+{
+  "stage": "crouch",
+  "beforeAtlas": true,
+  "method": "whole-pose",
+  "frames": [
+    {
+      "label": "crouchStart/0",
+      "bbox": [
+        81,
+        106,
+        176,
+        224
+      ],
+      "opaquePixels": 5446,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5446
+      ],
+      "colors": 28
+    },
+    {
+      "label": "crouchStart/1",
+      "bbox": [
+        80,
+        119,
+        176,
+        224
+      ],
+      "opaquePixels": 5098,
+      "mainComponentFraction": 0.9996076892899176,
+      "components": [
+        5096,
+        1,
+        1
+      ],
+      "colors": 29
+    },
+    {
+      "label": "crouchStart/2",
+      "bbox": [
+        80,
+        124,
+        181,
+        224
+      ],
+      "opaquePixels": 5323,
+      "mainComponentFraction": 0.9998121360135263,
+      "components": [
+        5322,
+        1
+      ],
+      "colors": 27
+    },
+    {
+      "label": "crouchStart/3",
+      "bbox": [
+        79,
+        131,
+        179,
+        224
+      ],
+      "opaquePixels": 5020,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5020
+      ],
+      "colors": 28
+    },
+    {
+      "label": "crouchStart/4",
+      "bbox": [
+        81,
+        133,
+        179,
+        224
+      ],
+      "opaquePixels": 4864,
+      "mainComponentFraction": 1.0,
+      "components": [
+        4864
+      ],
+      "colors": 28
+    },
+    {
+      "label": "crouchStart/initial-reference",
+      "bbox": [
+        83,
+        97,
+        174,
+        224
+      ],
+      "opaquePixels": 5754,
+      "mainComponentFraction": 0.9991310392770246,
+      "components": [
+        5749,
+        5
+      ],
+      "colors": 29
+    },
+    {
+      "label": "crouchIdle/0",
+      "bbox": [
+        81,
+        133,
+        179,
+        224
+      ],
+      "opaquePixels": 4864,
+      "mainComponentFraction": 1.0,
+      "components": [
+        4864
+      ],
+      "colors": 28
+    },
+    {
+      "label": "crouchIdle/1",
+      "bbox": [
+        80,
+        132,
+        180,
+        224
+      ],
+      "opaquePixels": 4893,
+      "mainComponentFraction": 1.0,
+      "components": [
+        4893
+      ],
+      "colors": 28
+    },
+    {
+      "label": "crouchIdle/2",
+      "bbox": [
+        79,
+        131,
+        179,
+        224
+      ],
+      "opaquePixels": 5020,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5020
+      ],
+      "colors": 28
+    },
+    {
+      "label": "crouchEnd/0",
+      "bbox": [
+        79,
+        131,
+        179,
+        224
+      ],
+      "opaquePixels": 5020,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5020
+      ],
+      "colors": 28
+    },
+    {
+      "label": "crouchEnd/1",
+      "bbox": [
+        80,
+        124,
+        181,
+        224
+      ],
+      "opaquePixels": 5323,
+      "mainComponentFraction": 0.9998121360135263,
+      "components": [
+        5322,
+        1
+      ],
+      "colors": 27
+    },
+    {
+      "label": "crouchEnd/2",
+      "bbox": [
+        80,
+        119,
+        176,
+        224
+      ],
+      "opaquePixels": 5098,
+      "mainComponentFraction": 0.9996076892899176,
+      "components": [
+        5096,
+        1,
+        1
+      ],
+      "colors": 29
+    },
+    {
+      "label": "crouchEnd/3",
+      "bbox": [
+        80,
+        114,
+        177,
+        224
+      ],
+      "opaquePixels": 5302,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5302
+      ],
+      "colors": 28
+    },
+    {
+      "label": "crouchEnd/4",
+      "bbox": [
+        81,
+        106,
+        176,
+        224
+      ],
+      "opaquePixels": 5446,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5446
+      ],
+      "colors": 28
+    },
+    {
+      "label": "crouchEnd/5",
+      "bbox": [
+        80,
+        106,
+        178,
+        224
+      ],
+      "opaquePixels": 5512,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5512
+      ],
+      "colors": 28
+    },
+    {
+      "label": "crouchEnd/reference",
+      "bbox": [
+        83,
+        94,
+        175,
+        224
+      ],
+      "opaquePixels": 5768,
+      "mainComponentFraction": 0.9996532593619972,
+      "components": [
+        5766,
+        2
+      ],
+      "colors": 28
+    }
+  ]
+}

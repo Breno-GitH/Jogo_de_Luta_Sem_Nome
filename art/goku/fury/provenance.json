@@ -1,0 +1,66 @@
+{
+  "tool": "built-in image_gen",
+  "references": [
+    "art/goku/rebuild/canonical-reference.png",
+    "art/goku/fury/ssj-reference.png"
+  ],
+  "bodyMethod": "complete poses; connected-component segmentation of whole source actors excludes neighbouring actors only; one uniform nearest-neighbor scale per source; limited palette and binary alpha; no morphing, mesh warping or limb assembly",
+  "bodyClips": 33,
+  "bodyCelReferences": 138,
+  "uniqueBodyDrawingsIgnoringTranslation": 94,
+  "fxClips": 14,
+  "cell": [
+    384,
+    256
+  ],
+  "pivot": [
+    192,
+    224
+  ],
+  "capture": {
+    "source": "real Match + Renderer Canvas, real directional InputFrames",
+    "simulationHz": 60,
+    "sourceFPS": 20,
+    "previewFPS": 10,
+    "sourceCaptures": 200,
+    "previewSize": [
+      640,
+      360
+    ],
+    "silent": true,
+    "resize": "nearest-neighbor"
+  },
+  "rejectedSources": [
+    "descent-rejected: only eight whole actors, final cell absent",
+    "ending-rejected: insufficient top margin",
+    "blue-rejected: opaque gradient backdrop",
+    "golden-rejected: overlapping row boundaries; replacement uses individually inspected full-effect rectangles"
+  ],
+  "limitations": [
+    "AI-assisted whole drawings retain small contour/face/fabric differences; hand cleanup can improve continuity further.",
+    "Integer 1x/2x cinematic framing uses deliberate shot changes rather than a smooth fractional zoom.",
+    "Initial transformation is deliberately vulnerable: cancelling a normal into the Super does not guarantee its first punch.",
+    "A few attack drawings are deliberately reused across ground/air/teleport phase clips; cels are not invented to fill ticks.",
+    "Goku remains local-only; the existing online roster remains Samurai."
+  ],
+  "sources": {
+    "activation.png": "a57fde14c625635ba0e81105bd7bc1f8b89e6b1d6bc4e7af3496089c42c243a0",
+    "aerial.png": "8bde15183418726f105d1d9a558391a6b3d1a5bd08c37ee61457340f98e4b0a4",
+    "air.png": "f1cea32f0d74a54d42a3609e38d11b4985b4aa9270fb9c57d96c6efba30a47a9",
+    "beam.png": "8c355b150250f17abfd11771c8b81ece64321678ea166d0e808afdf65680ce06",
+    "blue-rejected.png": "a1c5c4dec554894201292ecd07938ecf2f3b076946c8a34124166349f16f8332",
+    "blue.png": "5e0ba15d67fd782aabdda5606af3440b42ff039ffe28ba6d32569322fe8b1611",
+    "charge.png": "f5e62b47fc910429e0352dce3ac1b006b0bdd9c898d1625504b35fbc75a07595",
+    "dash.png": "c564deccaca3aaa89a8ff7e49a857b4ed702c04682d4ffddfb878a899f24f0bf",
+    "descent-rejected.png": "b169dacf94d119e76da3a3c1aadd90b80a6590123c71c10a666d6c281cc01a16",
+    "descent.png": "8e9750502830594a4faf1604df2c2c9207f2e12df8054f2dc3adee192c4b8e80",
+    "ending-rejected.png": "5d08c3c1966b3385f15a5352c47a28ce0e7e42be2227dc83a6a1089c7fcfb600",
+    "ending.png": "fc8e19682df8fbe552170aa96af15c4fb13bffd2cad61e0d7c47bed0c88f4d4f",
+    "golden-rejected.png": "eb898a80d48e79663beea626dff707861990c28aacc22526b3c86fa4f2f441f9",
+    "golden.png": "9f5cbe176ddf8e71dad2f48b918eea3f4829cfdf0a3be70dd0735048ba12272a",
+    "ground.png": "36a0bf0b956335fd4ba4844960139065dfc278b815db7bf8eada5d93b4ee14f0",
+    "teleport.png": "3e3a1a6f827708f97da8973b25a89fa4dae87a10615b032af3f3c97a3349c4cf",
+    "transformation.png": "4648628738db8a9000f5a3233ff8e823b62efe2629fb8aac018ebd355a9dd285",
+    "uppercut.png": "18fafc550d48988eaa1801bc9465c903b355dc0143df58d5e666bbd38be1c1d8"
+  }
+}

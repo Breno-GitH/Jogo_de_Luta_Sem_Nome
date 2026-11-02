@@ -1,0 +1,113 @@
+{
+  "commands": {
+    "motionTicks": 24,
+    "finishTicks": 6,
+    "doubleDownTicks": 20,
+    "minimumDownGapTicks": 1
+  },
+  "projectiles": { "maximumPerOwner": 4, "impactTicks": 8 },
+  "ki": {
+    "light": {
+      "startup": 7,
+      "active": 1,
+      "recovery": 17,
+      "damage": 35,
+      "stun": 18,
+      "blockstun": 13,
+      "speed": 14,
+      "radius": 9,
+      "life": 100,
+      "releases": [7]
+    },
+    "medium": {
+      "startup": 10,
+      "active": 10,
+      "recovery": 21,
+      "damage": 29,
+      "stun": 19,
+      "blockstun": 14,
+      "speed": 13,
+      "radius": 9,
+      "life": 110,
+      "releases": [10, 19]
+    },
+    "heavy": {
+      "startup": 16,
+      "active": 1,
+      "recovery": 29,
+      "damage": 76,
+      "stun": 25,
+      "blockstun": 19,
+      "speed": 10,
+      "radius": 17,
+      "life": 125,
+      "releases": [16]
+    }
+  },
+  "kamehameha": {
+    "light": {
+      "startup": 13,
+      "active": 12,
+      "recovery": 18,
+      "damage": 26,
+      "stun": 16,
+      "blockstun": 10,
+      "range": 600,
+      "radius": 12,
+      "interval": 6,
+      "hits": 2
+    },
+    "medium": {
+      "startup": 19,
+      "active": 25,
+      "recovery": 24,
+      "damage": 27,
+      "stun": 17,
+      "blockstun": 11,
+      "range": 780,
+      "radius": 18,
+      "interval": 7,
+      "hits": 4
+    },
+    "heavy": {
+      "startup": 25,
+      "active": 40,
+      "recovery": 32,
+      "damage": 29,
+      "stun": 18,
+      "blockstun": 12,
+      "range": 1000,
+      "radius": 25,
+      "interval": 7,
+      "hits": 6
+    }
+  },
+  "teleport": {
+    "light": {
+      "startup": 10,
+      "vanishTicks": 6,
+      "recovery": 20,
+      "distance": 155,
+      "lockTicks": 48
+    },
+    "medium": {
+      "startup": 13,
+      "vanishTicks": 7,
+      "recovery": 25,
+      "distance": 80,
+      "targetRange": 520,
+      "fallbackDistance": 100,
+      "lockTicks": 65
+    },
+    "heavy": {
+      "startup": 15,
+      "vanishTicks": 8,
+      "recovery": 25,
+      "distance": 95,
+      "height": 130,
+      "lockTicks": 90
+    },
+    "separation": 56,
+    "minimumAirY": 180
+  }
+}

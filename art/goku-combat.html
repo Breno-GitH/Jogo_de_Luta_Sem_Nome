@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Goku · combate e inspeção</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        font: 15px system-ui;
+        background: #101925;
+        color: #f1e4d1;
+      }
+      body {
+        max-width: 1360px;
+        margin: 24px auto;
+        padding: 0 20px;
+      }
+      h1 {
+        margin: 8px 0;
+      }
+      a {
+        color: #ffb465;
+      }
+      .controls,
+      header {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        flex-wrap: wrap;
+        margin: 14px 0;
+      }
+      header {
+        justify-content: space-between;
+      }
+      button,
+      select {
+        font: inherit;
+        background: #24394d;
+        color: inherit;
+        border: 1px solid #628197;
+        padding: 8px;
+      }
+      button {
+        cursor: pointer;
+      }
+      button:disabled {
+        opacity: 0.4;
+      }
+      label {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+      canvas {
+        display: block;
+        width: 100%;
+        image-rendering: pixelated;
+        border: 1px solid #597284;
+      }
+      p {
+        color: #b8c9d1;
+        line-height: 1.6;
+      }
+      #readout {
+        white-space: pre-wrap;
+        background: #1b2d3f;
+        padding: 12px;
+        font: 12px/1.8 monospace;
+      }
+      #strip {
+        display: flex;
+        gap: 8px;
+        overflow: auto;
+        margin: 10px 0;
+      }
+      #strip button {
+        flex: 0 0 130px;
+        padding: 0;
+      }
+      #strip canvas {
+        width: 130px;
+        image-rendering: pixelated;
+      }
+      #error {
+        color: #ff9d8b;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div>
+        <small>GOKU / NORMAIS, DEFESA E AGARRÃO</small>
+        <h1>Combate e desenhos</h1>
+      </div>
+      <a href="../">Voltar ao jogo</a>
+    </header>
+    <p>
+      Os cenários usam o combate real e comandos comuns. Inspecione
+      separadamente os desenhos, suas caixas e durações. A movimentação aprovada
+      continua no <a href="goku.html?rebuild=5">laboratório de movimentação</a>.
+      Especiais e Super não fazem parte desta etapa.
+    </p>
+    <div class="controls">
+      <label
+        >Modo
+        <select id="mode">
+          <option value="scenario">Cenário de combate</option>
+          <option value="live">Controlar Goku</option>
+          <option value="inspect">Inspecionar desenhos</option>
+        </select></label
+      ><label
+        >Cenário
+        <select id="scenario"></select></label
+      ><label
+        >Adversário
+        <select id="opponent">
+          <option value="samurai">Samurai</option>
+          <option value="dio">Dio + The World</option>
+          <option value="goku">Goku</option>
+        </select></label
+      ><button id="execute">Executar / reiniciar</button
+      ><button id="flip">Inverter lado</button>
+    </div>
+    <div class="controls">
+      <label
+        >Animação
+        <select id="animation"></select></label
+      ><button id="pause">Pausar</button
+      ><button id="step" disabled>Avançar tick</button
+      ><button id="previous">Desenho anterior</button
+      ><button id="next">Próximo desenho</button
+      ><label
+        >Velocidade
+        <select id="speed">
+          <option value="0.25">¼×</option>
+          <option value="0.5">½×</option>
+          <option value="1" selected>1×</option>
+          <option value="2">2×</option>
+        </select></label
+      ><label
+        >Ampliação
+        <select id="zoom">
+          <option>1</option>
+          <option selected>2</option>
+          <option>3</option>
+          <option>4</option>
+        </select></label
+      >
+    </div>
+    <div class="controls">
+      <label
+        ><input id="boxes" type="checkbox" checked />Hitboxes e hurtboxes</label
+      ><label><input id="guides" type="checkbox" checked />Pivô e chão</label
+      ><label><input id="bounds" type="checkbox" />Limites do desenho</label
+      ><label
+        ><input id="repeat" type="checkbox" />Repetir cenário / inspeção</label
+      ><label
+        ><input id="infinite" type="checkbox" checked />Vida infinita no
+        teste</label
+      ><a id="download" download>Baixar folha PNG</a
+      ><a href="../downloads/goku-combat.zip" download
+        >Baixar todos os PNGs e dados</a
+      >
+    </div>
+    <canvas
+      id="arena"
+      width="1280"
+      height="720"
+      tabindex="0"
+      aria-label="Combate real de Goku e inspeção dos golpes"
+    ></canvas>
+    <div id="strip"></div>
+    <pre id="readout" role="status"></pre>
+    <p id="error" role="alert"></p>
+    <p>
+      A/D mover · W pular · S agachar · Shift + direção dash · J/K/L leve, médio
+      e forte · U agarrar. Segure para trás para defender, ou baixo + trás para
+      defesa baixa. Clique na arena para controlar. Os cenários de reação
+      mostram Goku recebendo golpes; o cenário de K.O. começa com 1 de vida.
+    </p>
+    <p>
+      <a href="../previews/goku-combat-gameplay.png"
+        >Prévia real dos golpes e combos</a
+      >
+      ·
+      <a href="../previews/goku-combat-contact.png">Contato das spritesheets</a>
+    </p>
+    <script type="module" src="/src/goku-combat-lab.ts"></script>
+  </body>
+</html>

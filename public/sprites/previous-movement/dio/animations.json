@@ -1,0 +1,245 @@
+{
+  "sheet": "previous-movement/dio/base.png",
+  "frameWidth": 256,
+  "frameHeight": 256,
+  "columns": 1,
+  "pivot": {
+    "x": 128,
+    "y": 224
+  },
+  "scale": 1,
+  "clips": {
+    "idle": {
+      "sheet": "previous-movement/dio/idle.png",
+      "columns": 6,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "ticks": 11,
+      "durations": [
+        11,
+        9,
+        10,
+        11,
+        9,
+        10
+      ],
+      "loop": true
+    },
+    "walkForward": {
+      "sheet": "previous-movement/dio/walkForward.png",
+      "columns": 6,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "ticks": 4,
+      "durations": [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "loop": true
+    },
+    "walkBack": {
+      "sheet": "previous-movement/dio/walkBack.png",
+      "columns": 6,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "ticks": 4,
+      "durations": [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "loop": true
+    },
+    "dashForward": {
+      "sheet": "previous-movement/dio/dashForward.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 2,
+      "durations": [
+        2,
+        2,
+        3,
+        3,
+        3
+      ],
+      "loop": false
+    },
+    "backdash": {
+      "sheet": "previous-movement/dio/backdash.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 2,
+      "durations": [
+        2,
+        2,
+        3,
+        3,
+        3
+      ],
+      "loop": false
+    },
+    "crouchStart": {
+      "sheet": "previous-movement/dio/crouchStart.png",
+      "columns": 2,
+      "frames": [
+        0,
+        1
+      ],
+      "ticks": 3,
+      "durations": [
+        3,
+        3
+      ],
+      "loop": false
+    },
+    "crouchIdle": {
+      "sheet": "previous-movement/dio/crouchIdle.png",
+      "columns": 2,
+      "frames": [
+        0,
+        1
+      ],
+      "ticks": 16,
+      "durations": [
+        16,
+        18
+      ],
+      "loop": true
+    },
+    "crouchEnd": {
+      "sheet": "previous-movement/dio/crouchEnd.png",
+      "columns": 2,
+      "frames": [
+        0,
+        1
+      ],
+      "ticks": 3,
+      "durations": [
+        3,
+        3
+      ],
+      "loop": false
+    },
+    "jumpStart": {
+      "sheet": "previous-movement/dio/jumpStart.png",
+      "columns": 3,
+      "frames": [
+        0,
+        1,
+        2
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        2
+      ],
+      "loop": false
+    },
+    "jumpRise": {
+      "sheet": "previous-movement/dio/jumpRise.png",
+      "columns": 2,
+      "frames": [
+        0,
+        1
+      ],
+      "ticks": 4,
+      "durations": [
+        4,
+        5
+      ],
+      "loop": false
+    },
+    "jumpApex": {
+      "sheet": "previous-movement/dio/jumpApex.png",
+      "columns": 1,
+      "frames": [
+        0
+      ],
+      "ticks": 8,
+      "durations": [
+        8
+      ],
+      "loop": false
+    },
+    "jumpFall": {
+      "sheet": "previous-movement/dio/jumpFall.png",
+      "columns": 2,
+      "frames": [
+        0,
+        1
+      ],
+      "ticks": 4,
+      "durations": [
+        4,
+        5
+      ],
+      "loop": false
+    },
+    "landing": {
+      "sheet": "previous-movement/dio/landing.png",
+      "columns": 3,
+      "frames": [
+        0,
+        1,
+        2
+      ],
+      "ticks": 2,
+      "durations": [
+        2,
+        2,
+        2
+      ],
+      "loop": false
+    },
+    "base": {
+      "sheet": "previous-movement/dio/base.png",
+      "columns": 1,
+      "frames": [
+        0
+      ],
+      "ticks": 60,
+      "durations": [
+        60
+      ],
+      "loop": true
+    }
+  }
+}

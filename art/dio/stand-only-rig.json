@@ -1,0 +1,1185 @@
+{
+  "commandRelaxed": {
+    "label": "Comando neutro",
+    "poses": [
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 0,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ]
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": -0.7,
+        "nearHand": [
+          -1,
+          0
+        ],
+        "farHand": [
+          1,
+          -1
+        ],
+        "nearWrist": 0,
+        "cloth": 1,
+        "hair": 1,
+        "head": [
+          0,
+          0.0
+        ]
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": -1.1,
+        "nearHand": [
+          -0.3,
+          0
+        ],
+        "farHand": [
+          0.3,
+          -0.3
+        ],
+        "nearWrist": 0,
+        "cloth": 0.3,
+        "hair": 0.3,
+        "head": [
+          0,
+          0.0
+        ]
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0.2,
+        "nearHand": [
+          0.7,
+          0
+        ],
+        "farHand": [
+          -0.7,
+          0.7
+        ],
+        "nearWrist": 0,
+        "cloth": -0.7,
+        "hair": -0.7,
+        "head": [
+          0,
+          0.0
+        ]
+      }
+    ],
+    "durations": [
+      4,
+      4,
+      4,
+      5
+    ]
+  },
+  "commandPoint": {
+    "label": "Comando discreto",
+    "poses": [
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          -1
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 0,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 0,
+        "farTarget": [
+          152,
+          141
+        ],
+        "farWrist": 0,
+        "pointing": true
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": -0.5,
+        "nearHand": [
+          0,
+          -1
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": -1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -1,
+        "farTarget": [
+          154,
+          137
+        ],
+        "farWrist": -5,
+        "pointing": true
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": -1,
+        "nearHand": [
+          0,
+          -1
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 1,
+        "farTarget": [
+          160,
+          136
+        ],
+        "farWrist": 0,
+        "pointing": true
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": -0.3,
+        "nearHand": [
+          0,
+          -1
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 2,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 1,
+        "farTarget": [
+          158,
+          138
+        ],
+        "farWrist": 3,
+        "pointing": true
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0.2,
+        "nearHand": [
+          0,
+          -1
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": -1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 0,
+        "farTarget": [
+          153,
+          141
+        ],
+        "farWrist": 0,
+        "pointing": true
+      }
+    ],
+    "durations": [
+      4,
+      4,
+      4,
+      5,
+      5
+    ]
+  },
+  "commandStrong": {
+    "label": "Comando ofensivo",
+    "poses": [
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          -2
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 0,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -1,
+        "farTarget": [
+          152,
+          141
+        ],
+        "farWrist": -5,
+        "pointing": true
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 1,
+        "nearHand": [
+          0,
+          -2
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": -1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -2,
+        "farTarget": [
+          151,
+          134
+        ],
+        "farWrist": -25,
+        "pointing": true
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          -2
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": -2,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -1,
+        "farTarget": [
+          156,
+          130
+        ],
+        "farWrist": -15,
+        "pointing": true
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": -1,
+        "nearHand": [
+          0,
+          -2
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 2,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 2,
+        "farTarget": [
+          162,
+          134
+        ],
+        "farWrist": 0,
+        "pointing": true
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": -0.4,
+        "nearHand": [
+          0,
+          -2
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 1,
+        "farTarget": [
+          159,
+          138
+        ],
+        "farWrist": 3,
+        "pointing": true
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0.3,
+        "nearHand": [
+          0,
+          -2
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": -1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 0,
+        "farTarget": [
+          153,
+          142
+        ],
+        "farWrist": 0,
+        "pointing": true
+      }
+    ],
+    "durations": [
+      4,
+      4,
+      4,
+      6,
+      7,
+      6
+    ]
+  },
+  "commandCrouch": {
+    "label": "Comando agachado",
+    "poses": [
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 31,
+        "x": -5.58,
+        "lean": 6.82,
+        "forwardBoot": true,
+        "nearHand": [
+          2,
+          -8
+        ],
+        "farHand": [
+          2,
+          -11.78
+        ],
+        "nearWrist": -3.1,
+        "farWrist": 0,
+        "cloth": 0,
+        "head": [
+          0,
+          -0.9299999999999999
+        ],
+        "hair": 0.0,
+        "farTarget": [
+          152,
+          171
+        ],
+        "pointing": true
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 30.5,
+        "x": -5.58,
+        "lean": 6.82,
+        "forwardBoot": true,
+        "nearHand": [
+          2,
+          -8
+        ],
+        "farHand": [
+          2,
+          -11.78
+        ],
+        "nearWrist": -3.1,
+        "farWrist": -8,
+        "cloth": -1,
+        "head": [
+          0,
+          -0.9299999999999999
+        ],
+        "hair": 0.0,
+        "farTarget": [
+          156,
+          164
+        ],
+        "pointing": true
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 31.2,
+        "x": -5.58,
+        "lean": 6.82,
+        "forwardBoot": true,
+        "nearHand": [
+          2,
+          -8
+        ],
+        "farHand": [
+          2,
+          -11.78
+        ],
+        "nearWrist": -3.1,
+        "farWrist": 0,
+        "cloth": 1,
+        "head": [
+          0,
+          -0.9299999999999999
+        ],
+        "hair": 0.0,
+        "farTarget": [
+          162,
+          162
+        ],
+        "pointing": true
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 31,
+        "x": -5.58,
+        "lean": 6.82,
+        "forwardBoot": true,
+        "nearHand": [
+          2,
+          -8
+        ],
+        "farHand": [
+          2,
+          -11.78
+        ],
+        "nearWrist": -3.1,
+        "farWrist": 5,
+        "cloth": -0.5,
+        "head": [
+          0,
+          -0.9299999999999999
+        ],
+        "hair": 0.0,
+        "farTarget": [
+          155,
+          168
+        ],
+        "pointing": true
+      }
+    ],
+    "durations": [
+      4,
+      4,
+      5,
+      5
+    ]
+  },
+  "commandAir": {
+    "label": "Comando a\u00e9reo",
+    "poses": [
+      {
+        "nearAnkle": [
+          119,
+          188
+        ],
+        "farAnkle": [
+          144,
+          198
+        ],
+        "support": [],
+        "hip": 1,
+        "lean": 2,
+        "nearHand": [
+          -5,
+          -10
+        ],
+        "farHand": [
+          6,
+          -12
+        ],
+        "nearToe": -10,
+        "farToe": 3,
+        "cloth": 0,
+        "hair": 1,
+        "farTarget": [
+          151,
+          133
+        ],
+        "farWrist": -5,
+        "pointing": true
+      },
+      {
+        "nearAnkle": [
+          119,
+          188
+        ],
+        "farAnkle": [
+          144,
+          198
+        ],
+        "support": [],
+        "hip": 1,
+        "lean": 3,
+        "nearHand": [
+          -5,
+          -10
+        ],
+        "farHand": [
+          6,
+          -12
+        ],
+        "nearToe": -10,
+        "farToe": 3,
+        "cloth": -1,
+        "hair": 1,
+        "farTarget": [
+          157,
+          128
+        ],
+        "farWrist": -8,
+        "pointing": true
+      },
+      {
+        "nearAnkle": [
+          119,
+          188
+        ],
+        "farAnkle": [
+          144,
+          198
+        ],
+        "support": [],
+        "hip": 1,
+        "lean": 4,
+        "nearHand": [
+          -5,
+          -10
+        ],
+        "farHand": [
+          6,
+          -12
+        ],
+        "nearToe": -10,
+        "farToe": 3,
+        "cloth": 2,
+        "hair": 1,
+        "farTarget": [
+          161,
+          132
+        ],
+        "farWrist": 0,
+        "pointing": true
+      },
+      {
+        "nearAnkle": [
+          119,
+          188
+        ],
+        "farAnkle": [
+          144,
+          198
+        ],
+        "support": [],
+        "hip": 1,
+        "lean": 2,
+        "nearHand": [
+          -5,
+          -10
+        ],
+        "farHand": [
+          6,
+          -12
+        ],
+        "nearToe": -10,
+        "farToe": 3,
+        "cloth": 1,
+        "hair": 1,
+        "farTarget": [
+          153,
+          135
+        ],
+        "farWrist": 4,
+        "pointing": true
+      }
+    ],
+    "durations": [
+      4,
+      4,
+      5,
+      5
+    ]
+  },
+  "commandRecovery": {
+    "label": "Recupera\u00e7\u00e3o de comando",
+    "poses": [
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          -1
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 2,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 2,
+        "farTarget": [
+          160,
+          137
+        ],
+        "pointing": true
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          -1
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 1,
+        "farTarget": [
+          157,
+          140
+        ],
+        "pointing": true
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          -1
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": -1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 0,
+        "farTarget": [
+          154,
+          143
+        ],
+        "pointing": true
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          -1
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 0,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -0.5,
+        "farTarget": [
+          152,
+          144
+        ],
+        "pointing": true
+      }
+    ],
+    "durations": [
+      3,
+      3,
+      3,
+      3
+    ]
+  },
+  "commandJumpLink": {
+    "label": "Transi\u00e7\u00e3o de comando para salto",
+    "poses": [
+      {
+        "nearToe": -1.5,
+        "forwardBoot": true,
+        "farToe": 0.44999999999999996,
+        "head": [
+          0.0,
+          -0.7905
+        ],
+        "nearWrist": -2.6350000000000002,
+        "hair": 0.15,
+        "lean": 6.097,
+        "cloth": 0.0,
+        "nearAnkle": [
+          107.95,
+          207.55
+        ],
+        "farTarget": [
+          151.85,
+          165.3
+        ],
+        "pointing": true,
+        "x": -4.743,
+        "farHand": [
+          2.6,
+          -11.812999999999999
+        ],
+        "hip": 26.5,
+        "nearHand": [
+          0.95,
+          -8.3
+        ],
+        "farWrist": -0.75,
+        "farAnkle": [
+          145.7,
+          211.6
+        ],
+        "support": []
+      },
+      {
+        "nearToe": -4.5,
+        "forwardBoot": true,
+        "farToe": 1.35,
+        "head": [
+          0.0,
+          -0.5115
+        ],
+        "nearWrist": -1.705,
+        "hair": 0.45,
+        "lean": 4.651,
+        "cloth": 0.0,
+        "nearAnkle": [
+          111.85,
+          200.65
+        ],
+        "farTarget": [
+          151.55,
+          153.9
+        ],
+        "pointing": true,
+        "x": -3.069,
+        "farHand": [
+          3.8,
+          -11.879
+        ],
+        "hip": 17.5,
+        "nearHand": [
+          -1.15,
+          -8.9
+        ],
+        "farWrist": -2.25,
+        "farAnkle": [
+          145.1,
+          206.8
+        ],
+        "support": []
+      },
+      {
+        "nearToe": -7.5,
+        "forwardBoot": true,
+        "farToe": 2.25,
+        "head": [
+          0.0,
+          -0.23249999999999993
+        ],
+        "nearWrist": -0.7749999999999999,
+        "hair": 0.75,
+        "lean": 3.205,
+        "cloth": 0.0,
+        "nearAnkle": [
+          115.75,
+          193.75
+        ],
+        "farTarget": [
+          151.25,
+          142.5
+        ],
+        "pointing": true,
+        "x": -1.3949999999999996,
+        "farHand": [
+          5.0,
+          -11.945
+        ],
+        "hip": 8.5,
+        "nearHand": [
+          -3.25,
+          -9.5
+        ],
+        "farWrist": -3.75,
+        "farAnkle": [
+          144.5,
+          202.0
+        ],
+        "support": []
+      },
+      {
+        "nearToe": -10.0,
+        "forwardBoot": true,
+        "farToe": 3.0,
+        "head": [
+          0.0,
+          0.0
+        ],
+        "nearWrist": 0.0,
+        "hair": 1.0,
+        "lean": 2.0,
+        "cloth": 0.0,
+        "nearAnkle": [
+          119,
+          188
+        ],
+        "farTarget": [
+          151,
+          133
+        ],
+        "pointing": true,
+        "x": 0.0,
+        "farHand": [
+          6.0,
+          -12.0
+        ],
+        "hip": 1.0,
+        "nearHand": [
+          -5,
+          -10
+        ],
+        "farWrist": -5.0,
+        "farAnkle": [
+          144,
+          198
+        ],
+        "support": []
+      }
+    ],
+    "durations": [
+      1,
+      1,
+      1,
+      1
+    ]
+  }
+}

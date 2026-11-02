@@ -1,0 +1,442 @@
+{
+  "cell": 128,
+  "palette": [
+    "#061731",
+    "#073c80",
+    "#0868c3",
+    "#168cf2",
+    "#2dbbff",
+    "#68ddff",
+    "#aaf4ff",
+    "#e4ffff",
+    "#ffffff",
+    "#89530b",
+    "#bb7a07",
+    "#e9ae0e",
+    "#ffd73a",
+    "#fff17b",
+    "#fff9ce",
+    "#172134",
+    "#35465e",
+    "#667990",
+    "#9eaebd",
+    "#d8e3eb"
+  ],
+  "clips": {
+    "goldenAura": {
+      "sheet": "goku/fury/fx-goldenAura.png",
+      "frames": 6,
+      "bounds": [
+        [
+          14,
+          4,
+          114,
+          124
+        ],
+        [
+          11,
+          4,
+          117,
+          124
+        ],
+        [
+          9,
+          4,
+          119,
+          124
+        ],
+        [
+          10,
+          4,
+          118,
+          124
+        ],
+        [
+          10,
+          4,
+          118,
+          124
+        ],
+        [
+          11,
+          4,
+          117,
+          124
+        ]
+      ]
+    },
+    "transformationFlash": {
+      "sheet": "goku/fury/fx-transformationFlash.png",
+      "frames": 2,
+      "bounds": [
+        [
+          4,
+          11,
+          124,
+          116
+        ],
+        [
+          4,
+          9,
+          124,
+          118
+        ]
+      ]
+    },
+    "energyParticles": {
+      "sheet": "goku/fury/fx-energyParticles.png",
+      "frames": 1,
+      "bounds": [
+        [
+          4,
+          15,
+          124,
+          113
+        ]
+      ]
+    },
+    "auraDisappearance": {
+      "sheet": "goku/fury/fx-auraDisappearance.png",
+      "frames": 6,
+      "bounds": [
+        [
+          11,
+          4,
+          117,
+          124
+        ],
+        [
+          10,
+          4,
+          118,
+          124
+        ],
+        [
+          10,
+          4,
+          118,
+          124
+        ],
+        [
+          9,
+          4,
+          119,
+          124
+        ],
+        [
+          11,
+          4,
+          117,
+          124
+        ],
+        [
+          14,
+          4,
+          114,
+          124
+        ]
+      ]
+    },
+    "kamehamehaCharge": {
+      "sheet": "goku/fury/fx-kamehamehaCharge.png",
+      "frames": 4,
+      "bounds": [
+        [
+          4,
+          4,
+          123,
+          124
+        ],
+        [
+          4,
+          13,
+          124,
+          114
+        ],
+        [
+          4,
+          15,
+          124,
+          112
+        ],
+        [
+          4,
+          14,
+          124,
+          114
+        ]
+      ]
+    },
+    "beamOrigin": {
+      "sheet": "goku/fury/fx-beamOrigin.png",
+      "frames": 4,
+      "bounds": [
+        [
+          4,
+          4,
+          123,
+          124
+        ],
+        [
+          4,
+          13,
+          124,
+          114
+        ],
+        [
+          4,
+          15,
+          124,
+          112
+        ],
+        [
+          4,
+          14,
+          124,
+          114
+        ]
+      ]
+    },
+    "beamBody": {
+      "sheet": "goku/fury/fx-beamBody.png",
+      "frames": 4,
+      "bounds": [
+        [
+          4,
+          24,
+          124,
+          104
+        ],
+        [
+          4,
+          20,
+          124,
+          108
+        ],
+        [
+          4,
+          26,
+          124,
+          102
+        ],
+        [
+          4,
+          17,
+          124,
+          111
+        ]
+      ]
+    },
+    "beamTip": {
+      "sheet": "goku/fury/fx-beamTip.png",
+      "frames": 4,
+      "bounds": [
+        [
+          4,
+          24,
+          124,
+          104
+        ],
+        [
+          4,
+          20,
+          124,
+          89
+        ],
+        [
+          4,
+          26,
+          124,
+          102
+        ],
+        [
+          4,
+          17,
+          124,
+          111
+        ]
+      ]
+    },
+    "groundImpact": {
+      "sheet": "goku/fury/fx-groundImpact.png",
+      "frames": 4,
+      "bounds": [
+        [
+          4,
+          8,
+          124,
+          119
+        ],
+        [
+          4,
+          22,
+          124,
+          106
+        ],
+        [
+          10,
+          18,
+          124,
+          110
+        ],
+        [
+          4,
+          21,
+          119,
+          113
+        ]
+      ]
+    },
+    "energyExplosion": {
+      "sheet": "goku/fury/fx-energyExplosion.png",
+      "frames": 4,
+      "bounds": [
+        [
+          4,
+          8,
+          124,
+          119
+        ],
+        [
+          4,
+          22,
+          124,
+          106
+        ],
+        [
+          10,
+          18,
+          124,
+          110
+        ],
+        [
+          4,
+          21,
+          119,
+          113
+        ]
+      ]
+    },
+    "punchImpact": {
+      "sheet": "goku/fury/fx-punchImpact.png",
+      "frames": 4,
+      "bounds": [
+        [
+          4,
+          8,
+          124,
+          119
+        ],
+        [
+          4,
+          22,
+          124,
+          106
+        ],
+        [
+          10,
+          18,
+          124,
+          110
+        ],
+        [
+          4,
+          21,
+          119,
+          113
+        ]
+      ]
+    },
+    "kickImpact": {
+      "sheet": "goku/fury/fx-kickImpact.png",
+      "frames": 4,
+      "bounds": [
+        [
+          4,
+          8,
+          124,
+          119
+        ],
+        [
+          4,
+          22,
+          124,
+          106
+        ],
+        [
+          10,
+          18,
+          124,
+          110
+        ],
+        [
+          4,
+          21,
+          119,
+          113
+        ]
+      ]
+    },
+    "smoke": {
+      "sheet": "goku/fury/fx-smoke.png",
+      "frames": 4,
+      "bounds": [
+        [
+          4,
+          6,
+          124,
+          122
+        ],
+        [
+          4,
+          24,
+          124,
+          104
+        ],
+        [
+          4,
+          27,
+          124,
+          100
+        ],
+        [
+          4,
+          20,
+          124,
+          107
+        ]
+      ]
+    },
+    "teleport": {
+      "sheet": "goku/fury/fx-teleport.png",
+      "frames": 4,
+      "bounds": [
+        [
+          18,
+          4,
+          78,
+          92
+        ],
+        [
+          21,
+          4,
+          74,
+          92
+        ],
+        [
+          23,
+          4,
+          72,
+          92
+        ],
+        [
+          26,
+          4,
+          70,
+          92
+        ]
+      ],
+      "cell": 96
+    }
+  }
+}

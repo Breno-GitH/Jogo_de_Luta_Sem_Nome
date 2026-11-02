@@ -1,0 +1,2888 @@
+{
+  "activation:1": {
+    "source": "raw/activation.png",
+    "sourceRect": [
+      477,
+      45,
+      795,
+      403
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 48829,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.3581267217630854,
+    "offset": [
+      135,
+      96
+    ],
+    "bbox": [
+      135,
+      96,
+      249,
+      224
+    ],
+    "opaquePixels": 6258,
+    "components": [
+      6256,
+      1,
+      1
+    ],
+    "height": 128
+  },
+  "activation:2": {
+    "source": "raw/activation.png",
+    "sourceRect": [
+      896,
+      86,
+      1186,
+      403
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 45077,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.3581267217630854,
+    "offset": [
+      140,
+      110
+    ],
+    "bbox": [
+      140,
+      110,
+      244,
+      224
+    ],
+    "opaquePixels": 5827,
+    "components": [
+      5825,
+      1,
+      1
+    ],
+    "height": 114
+  },
+  "activation:3": {
+    "source": "raw/activation.png",
+    "sourceRect": [
+      55,
+      500,
+      370,
+      809
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 47313,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.3581267217630854,
+    "offset": [
+      136,
+      113
+    ],
+    "bbox": [
+      136,
+      113,
+      249,
+      224
+    ],
+    "opaquePixels": 6110,
+    "components": [
+      6110
+    ],
+    "height": 111
+  },
+  "activation:4": {
+    "source": "raw/activation.png",
+    "sourceRect": [
+      500,
+      432,
+      783,
+      809
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 49525,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.3581267217630854,
+    "offset": [
+      142,
+      89
+    ],
+    "bbox": [
+      142,
+      89,
+      243,
+      224
+    ],
+    "opaquePixels": 6329,
+    "components": [
+      6329
+    ],
+    "height": 135
+  },
+  "activation:5": {
+    "source": "raw/activation.png",
+    "sourceRect": [
+      901,
+      437,
+      1202,
+      809
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 51525,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.3581267217630854,
+    "offset": [
+      138,
+      91
+    ],
+    "bbox": [
+      138,
+      91,
+      246,
+      224
+    ],
+    "opaquePixels": 6618,
+    "components": [
+      6618
+    ],
+    "height": 133
+  },
+  "activation:6": {
+    "source": "raw/activation.png",
+    "sourceRect": [
+      83,
+      826,
+      386,
+      1215
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 52805,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.3581267217630854,
+    "offset": [
+      138,
+      85
+    ],
+    "bbox": [
+      138,
+      85,
+      247,
+      224
+    ],
+    "opaquePixels": 6779,
+    "components": [
+      6779
+    ],
+    "height": 139
+  },
+  "activation:7": {
+    "source": "raw/activation.png",
+    "sourceRect": [
+      523,
+      821,
+      777,
+      1215
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 48508,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.3581267217630854,
+    "offset": [
+      146,
+      83
+    ],
+    "bbox": [
+      146,
+      83,
+      237,
+      224
+    ],
+    "opaquePixels": 6204,
+    "components": [
+      6204
+    ],
+    "height": 141
+  },
+  "activation:8": {
+    "source": "raw/activation.png",
+    "sourceRect": [
+      932,
+      819,
+      1155,
+      1215
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 46942,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.3581267217630854,
+    "offset": [
+      152,
+      82
+    ],
+    "bbox": [
+      152,
+      82,
+      232,
+      224
+    ],
+    "opaquePixels": 6026,
+    "components": [
+      6026
+    ],
+    "height": 142
+  },
+  "aerial:1": {
+    "source": "raw/aerial.png",
+    "sourceRect": [
+      552,
+      34,
+      786,
+      429
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 46482,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.32019704433497537,
+    "offset": [
+      154,
+      98
+    ],
+    "bbox": [
+      154,
+      98,
+      229,
+      224
+    ],
+    "opaquePixels": 4760,
+    "components": [
+      4760
+    ],
+    "height": 126
+  },
+  "aerial:2": {
+    "source": "raw/aerial.png",
+    "sourceRect": [
+      918,
+      57,
+      1132,
+      442
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 45363,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.32019704433497537,
+    "offset": [
+      158,
+      101
+    ],
+    "bbox": [
+      158,
+      101,
+      227,
+      224
+    ],
+    "opaquePixels": 4666,
+    "components": [
+      4666
+    ],
+    "height": 123
+  },
+  "aerial:3": {
+    "source": "raw/aerial.png",
+    "sourceRect": [
+      130,
+      496,
+      479,
+      801
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 46576,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.32019704433497537,
+    "offset": [
+      136,
+      126
+    ],
+    "bbox": [
+      136,
+      126,
+      248,
+      224
+    ],
+    "opaquePixels": 4804,
+    "components": [
+      4804
+    ],
+    "height": 98
+  },
+  "aerial:4": {
+    "source": "raw/aerial.png",
+    "sourceRect": [
+      582,
+      463,
+      811,
+      781
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 41404,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.32019704433497537,
+    "offset": [
+      156,
+      122
+    ],
+    "bbox": [
+      156,
+      122,
+      229,
+      224
+    ],
+    "opaquePixels": 4231,
+    "components": [
+      4231
+    ],
+    "height": 102
+  },
+  "aerial:5": {
+    "source": "raw/aerial.png",
+    "sourceRect": [
+      656,
+      787,
+      921,
+      1199
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 45906,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.32019704433497537,
+    "offset": [
+      150,
+      92
+    ],
+    "bbox": [
+      150,
+      92,
+      235,
+      224
+    ],
+    "opaquePixels": 4706,
+    "components": [
+      4706
+    ],
+    "height": 132
+  },
+  "aerial:6": {
+    "source": "raw/aerial.png",
+    "sourceRect": [
+      68,
+      843,
+      282,
+      1152
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 39841,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.32019704433497537,
+    "offset": [
+      158,
+      125
+    ],
+    "bbox": [
+      158,
+      125,
+      227,
+      224
+    ],
+    "opaquePixels": 4120,
+    "components": [
+      4120
+    ],
+    "height": 99
+  },
+  "aerial:7": {
+    "source": "raw/aerial.png",
+    "sourceRect": [
+      381,
+      817,
+      615,
+      1192
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 39003,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.32019704433497537,
+    "offset": [
+      154,
+      104
+    ],
+    "bbox": [
+      154,
+      104,
+      229,
+      224
+    ],
+    "opaquePixels": 3990,
+    "components": [
+      3990
+    ],
+    "height": 120
+  },
+  "aerial:8": {
+    "source": "raw/aerial.png",
+    "sourceRect": [
+      1000,
+      815,
+      1236,
+      1192
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 45963,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.32019704433497537,
+    "offset": [
+      154,
+      103
+    ],
+    "bbox": [
+      154,
+      103,
+      230,
+      224
+    ],
+    "opaquePixels": 4757,
+    "components": [
+      4757
+    ],
+    "height": 121
+  },
+  "air:1": {
+    "source": "raw/air.png",
+    "sourceRect": [
+      513,
+      46,
+      722,
+      433
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 45240,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.3282828282828283,
+    "offset": [
+      158,
+      97
+    ],
+    "bbox": [
+      158,
+      97,
+      227,
+      224
+    ],
+    "opaquePixels": 4897,
+    "components": [
+      4897
+    ],
+    "height": 127
+  },
+  "air:2": {
+    "source": "raw/air.png",
+    "sourceRect": [
+      945,
+      48,
+      1187,
+      427
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 45291,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.3282828282828283,
+    "offset": [
+      152,
+      100
+    ],
+    "bbox": [
+      152,
+      100,
+      231,
+      224
+    ],
+    "opaquePixels": 4823,
+    "components": [
+      4823
+    ],
+    "height": 124
+  },
+  "air:3": {
+    "source": "raw/air.png",
+    "sourceRect": [
+      78,
+      465,
+      408,
+      843
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 49297,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.3282828282828283,
+    "offset": [
+      138,
+      100
+    ],
+    "bbox": [
+      138,
+      100,
+      246,
+      224
+    ],
+    "opaquePixels": 5303,
+    "components": [
+      5303
+    ],
+    "height": 124
+  },
+  "air:4": {
+    "source": "raw/air.png",
+    "sourceRect": [
+      495,
+      466,
+      742,
+      834
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 44410,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.3282828282828283,
+    "offset": [
+      152,
+      103
+    ],
+    "bbox": [
+      152,
+      103,
+      233,
+      224
+    ],
+    "opaquePixels": 4787,
+    "components": [
+      4787
+    ],
+    "height": 121
+  },
+  "air:5": {
+    "source": "raw/air.png",
+    "sourceRect": [
+      939,
+      465,
+      1181,
+      832
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 45367,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.3282828282828283,
+    "offset": [
+      152,
+      104
+    ],
+    "bbox": [
+      152,
+      104,
+      231,
+      224
+    ],
+    "opaquePixels": 4837,
+    "components": [
+      4837
+    ],
+    "height": 120
+  },
+  "air:6": {
+    "source": "raw/air.png",
+    "sourceRect": [
+      46,
+      869,
+      431,
+      1210
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 48347,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.3282828282828283,
+    "offset": [
+      129,
+      112
+    ],
+    "bbox": [
+      129,
+      112,
+      255,
+      224
+    ],
+    "opaquePixels": 5193,
+    "components": [
+      5193
+    ],
+    "height": 112
+  },
+  "air:7": {
+    "source": "raw/air.png",
+    "sourceRect": [
+      468,
+      867,
+      872,
+      1185
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 49612,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.3282828282828283,
+    "offset": [
+      126,
+      120
+    ],
+    "bbox": [
+      126,
+      120,
+      259,
+      224
+    ],
+    "opaquePixels": 5347,
+    "components": [
+      5347
+    ],
+    "height": 104
+  },
+  "air:8": {
+    "source": "raw/air.png",
+    "sourceRect": [
+      956,
+      870,
+      1192,
+      1219
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 40002,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.3282828282828283,
+    "offset": [
+      154,
+      109
+    ],
+    "bbox": [
+      154,
+      109,
+      231,
+      224
+    ],
+    "opaquePixels": 4293,
+    "components": [
+      4293
+    ],
+    "height": 115
+  },
+  "beam:1": {
+    "source": "raw/beam.png",
+    "sourceRect": [
+      649,
+      18,
+      867,
+      331
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 33591,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.4166666666666667,
+    "offset": [
+      146,
+      94
+    ],
+    "bbox": [
+      146,
+      94,
+      237,
+      224
+    ],
+    "opaquePixels": 5817,
+    "components": [
+      5817
+    ],
+    "height": 130
+  },
+  "beam:2": {
+    "source": "raw/beam.png",
+    "sourceRect": [
+      1087,
+      23,
+      1315,
+      336
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 32008,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.4166666666666667,
+    "offset": [
+      144,
+      94
+    ],
+    "bbox": [
+      144,
+      94,
+      239,
+      224
+    ],
+    "opaquePixels": 5551,
+    "components": [
+      5551
+    ],
+    "height": 130
+  },
+  "beam:3": {
+    "source": "raw/beam.png",
+    "sourceRect": [
+      207,
+      351,
+      486,
+      670
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 34557,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.4166666666666667,
+    "offset": [
+      134,
+      91
+    ],
+    "bbox": [
+      134,
+      91,
+      250,
+      224
+    ],
+    "opaquePixels": 5995,
+    "components": [
+      5995
+    ],
+    "height": 133
+  },
+  "beam:4": {
+    "source": "raw/beam.png",
+    "sourceRect": [
+      640,
+      346,
+      896,
+      664
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 34453,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.4166666666666667,
+    "offset": [
+      138,
+      92
+    ],
+    "bbox": [
+      138,
+      92,
+      245,
+      224
+    ],
+    "opaquePixels": 5983,
+    "components": [
+      5983
+    ],
+    "height": 132
+  },
+  "beam:5": {
+    "source": "raw/beam.png",
+    "sourceRect": [
+      1065,
+      342,
+      1354,
+      639
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 34035,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.4166666666666667,
+    "offset": [
+      132,
+      100
+    ],
+    "bbox": [
+      132,
+      100,
+      252,
+      224
+    ],
+    "opaquePixels": 5910,
+    "components": [
+      5910
+    ],
+    "height": 124
+  },
+  "beam:6": {
+    "source": "raw/beam.png",
+    "sourceRect": [
+      240,
+      678,
+      470,
+      991
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 34009,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.4166666666666667,
+    "offset": [
+      144,
+      94
+    ],
+    "bbox": [
+      144,
+      94,
+      240,
+      224
+    ],
+    "opaquePixels": 5891,
+    "components": [
+      5891
+    ],
+    "height": 130
+  },
+  "beam:7": {
+    "source": "raw/beam.png",
+    "sourceRect": [
+      652,
+      679,
+      877,
+      997
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 33105,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.4166666666666667,
+    "offset": [
+      145,
+      92
+    ],
+    "bbox": [
+      145,
+      92,
+      239,
+      224
+    ],
+    "opaquePixels": 5731,
+    "components": [
+      5731
+    ],
+    "height": 132
+  },
+  "beam:8": {
+    "source": "raw/beam.png",
+    "sourceRect": [
+      1076,
+      678,
+      1326,
+      997
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 37555,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.4166666666666667,
+    "offset": [
+      140,
+      91
+    ],
+    "bbox": [
+      140,
+      91,
+      244,
+      224
+    ],
+    "opaquePixels": 6519,
+    "components": [
+      6519
+    ],
+    "height": 133
+  },
+  "charge:1": {
+    "source": "raw/charge.png",
+    "sourceRect": [
+      529,
+      15,
+      736,
+      395
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 44476,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.32663316582914576,
+    "offset": [
+      158,
+      100
+    ],
+    "bbox": [
+      158,
+      100,
+      226,
+      224
+    ],
+    "opaquePixels": 4752,
+    "components": [
+      4752
+    ],
+    "height": 124
+  },
+  "charge:2": {
+    "source": "raw/charge.png",
+    "sourceRect": [
+      897,
+      21,
+      1153,
+      399
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 50020,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.32663316582914576,
+    "offset": [
+      150,
+      101
+    ],
+    "bbox": [
+      150,
+      101,
+      234,
+      224
+    ],
+    "opaquePixels": 5324,
+    "components": [
+      5324
+    ],
+    "height": 123
+  },
+  "charge:3": {
+    "source": "raw/charge.png",
+    "sourceRect": [
+      109,
+      432,
+      346,
+      816
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 48521,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.32663316582914576,
+    "offset": [
+      154,
+      99
+    ],
+    "bbox": [
+      154,
+      99,
+      231,
+      224
+    ],
+    "opaquePixels": 5135,
+    "components": [
+      5135
+    ],
+    "height": 125
+  },
+  "charge:4": {
+    "source": "raw/charge.png",
+    "sourceRect": [
+      516,
+      433,
+      752,
+      796
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 49242,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.32663316582914576,
+    "offset": [
+      154,
+      105
+    ],
+    "bbox": [
+      154,
+      106,
+      231,
+      224
+    ],
+    "opaquePixels": 5246,
+    "components": [
+      5246
+    ],
+    "height": 118
+  },
+  "charge:5": {
+    "source": "raw/charge.png",
+    "sourceRect": [
+      880,
+      426,
+      1170,
+      821
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 53707,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.32663316582914576,
+    "offset": [
+      144,
+      95
+    ],
+    "bbox": [
+      144,
+      95,
+      239,
+      224
+    ],
+    "opaquePixels": 5756,
+    "components": [
+      5756
+    ],
+    "height": 129
+  },
+  "charge:6": {
+    "source": "raw/charge.png",
+    "sourceRect": [
+      93,
+      832,
+      351,
+      1224
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 52679,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.32663316582914576,
+    "offset": [
+      150,
+      96
+    ],
+    "bbox": [
+      150,
+      96,
+      234,
+      224
+    ],
+    "opaquePixels": 5588,
+    "components": [
+      5588
+    ],
+    "height": 128
+  },
+  "charge:7": {
+    "source": "raw/charge.png",
+    "sourceRect": [
+      465,
+      830,
+      750,
+      1224
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 49451,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.32663316582914576,
+    "offset": [
+      146,
+      95
+    ],
+    "bbox": [
+      146,
+      95,
+      239,
+      224
+    ],
+    "opaquePixels": 5287,
+    "components": [
+      5287
+    ],
+    "height": 129
+  },
+  "charge:8": {
+    "source": "raw/charge.png",
+    "sourceRect": [
+      838,
+      834,
+      1176,
+      1205
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 51660,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.32663316582914576,
+    "offset": [
+      137,
+      103
+    ],
+    "bbox": [
+      137,
+      103,
+      247,
+      224
+    ],
+    "opaquePixels": 5464,
+    "components": [
+      5464
+    ],
+    "height": 121
+  },
+  "dash:1": {
+    "source": "raw/dash.png",
+    "sourceRect": [
+      435,
+      42,
+      754,
+      451
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 55502,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.31784841075794623,
+    "offset": [
+      142,
+      94
+    ],
+    "bbox": [
+      142,
+      94,
+      243,
+      224
+    ],
+    "opaquePixels": 5575,
+    "components": [
+      5575
+    ],
+    "height": 130
+  },
+  "dash:2": {
+    "source": "raw/dash.png",
+    "sourceRect": [
+      827,
+      109,
+      1205,
+      449
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 55268,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.31784841075794623,
+    "offset": [
+      132,
+      116
+    ],
+    "bbox": [
+      132,
+      116,
+      252,
+      224
+    ],
+    "opaquePixels": 5587,
+    "components": [
+      5587
+    ],
+    "height": 108
+  },
+  "dash:3": {
+    "source": "raw/dash.png",
+    "sourceRect": [
+      41,
+      551,
+      387,
+      820
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 46732,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.31784841075794623,
+    "offset": [
+      137,
+      138
+    ],
+    "bbox": [
+      137,
+      138,
+      247,
+      224
+    ],
+    "opaquePixels": 4744,
+    "components": [
+      4744
+    ],
+    "height": 86
+  },
+  "dash:4": {
+    "source": "raw/dash.png",
+    "sourceRect": [
+      436,
+      496,
+      811,
+      820
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 48350,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.31784841075794623,
+    "offset": [
+      132,
+      121
+    ],
+    "bbox": [
+      132,
+      121,
+      251,
+      224
+    ],
+    "opaquePixels": 4860,
+    "components": [
+      4860
+    ],
+    "height": 103
+  },
+  "dash:5": {
+    "source": "raw/dash.png",
+    "sourceRect": [
+      818,
+      470,
+      1202,
+      812
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 50752,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.31784841075794623,
+    "offset": [
+      131,
+      115
+    ],
+    "bbox": [
+      131,
+      115,
+      253,
+      224
+    ],
+    "opaquePixels": 5151,
+    "components": [
+      5151
+    ],
+    "height": 109
+  },
+  "dash:6": {
+    "source": "raw/dash.png",
+    "sourceRect": [
+      40,
+      866,
+      445,
+      1191
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 53566,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.31784841075794623,
+    "offset": [
+      128,
+      121
+    ],
+    "bbox": [
+      128,
+      121,
+      257,
+      224
+    ],
+    "opaquePixels": 5419,
+    "components": [
+      5419
+    ],
+    "height": 103
+  },
+  "dash:7": {
+    "source": "raw/dash.png",
+    "sourceRect": [
+      451,
+      855,
+      812,
+      1192
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 53151,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.31784841075794623,
+    "offset": [
+      134,
+      117
+    ],
+    "bbox": [
+      134,
+      117,
+      249,
+      224
+    ],
+    "opaquePixels": 5363,
+    "components": [
+      5363
+    ],
+    "height": 107
+  },
+  "dash:8": {
+    "source": "raw/dash.png",
+    "sourceRect": [
+      824,
+      870,
+      1244,
+      1191
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 52157,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.31784841075794623,
+    "offset": [
+      126,
+      122
+    ],
+    "bbox": [
+      126,
+      122,
+      259,
+      224
+    ],
+    "opaquePixels": 5253,
+    "components": [
+      5253
+    ],
+    "height": 102
+  },
+  "descent:1": {
+    "source": "raw/descent.png",
+    "sourceRect": [
+      497,
+      42,
+      736,
+      430
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 39269,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.3532608695652174,
+    "offset": [
+      150,
+      87
+    ],
+    "bbox": [
+      150,
+      87,
+      234,
+      224
+    ],
+    "opaquePixels": 4866,
+    "components": [
+      4866
+    ],
+    "height": 137
+  },
+  "descent:2": {
+    "source": "raw/descent.png",
+    "sourceRect": [
+      849,
+      57,
+      1132,
+      438
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 36318,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.3532608695652174,
+    "offset": [
+      142,
+      89
+    ],
+    "bbox": [
+      142,
+      89,
+      242,
+      224
+    ],
+    "opaquePixels": 4564,
+    "components": [
+      4564
+    ],
+    "height": 135
+  },
+  "descent:3": {
+    "source": "raw/descent.png",
+    "sourceRect": [
+      74,
+      457,
+      366,
+      798
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 38927,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.3532608695652174,
+    "offset": [
+      140,
+      104
+    ],
+    "bbox": [
+      140,
+      104,
+      243,
+      224
+    ],
+    "opaquePixels": 4831,
+    "components": [
+      4831
+    ],
+    "height": 120
+  },
+  "descent:4": {
+    "source": "raw/descent.png",
+    "sourceRect": [
+      482,
+      486,
+      777,
+      796
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 40231,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.3532608695652174,
+    "offset": [
+      140,
+      114
+    ],
+    "bbox": [
+      140,
+      114,
+      244,
+      224
+    ],
+    "opaquePixels": 5034,
+    "components": [
+      5034
+    ],
+    "height": 110
+  },
+  "descent:5": {
+    "source": "raw/descent.png",
+    "sourceRect": [
+      870,
+      518,
+      1196,
+      796
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 41208,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.3532608695652174,
+    "offset": [
+      134,
+      126
+    ],
+    "bbox": [
+      134,
+      126,
+      249,
+      224
+    ],
+    "opaquePixels": 5126,
+    "components": [
+      5126
+    ],
+    "height": 98
+  },
+  "descent:6": {
+    "source": "raw/descent.png",
+    "sourceRect": [
+      122,
+      827,
+      343,
+      1202
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 42944,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.3532608695652174,
+    "offset": [
+      153,
+      92
+    ],
+    "bbox": [
+      153,
+      92,
+      231,
+      224
+    ],
+    "opaquePixels": 5334,
+    "components": [
+      5334
+    ],
+    "height": 132
+  },
+  "descent:7": {
+    "source": "raw/descent.png",
+    "sourceRect": [
+      521,
+      831,
+      744,
+      1202
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 42610,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.3532608695652174,
+    "offset": [
+      152,
+      93
+    ],
+    "bbox": [
+      152,
+      93,
+      231,
+      224
+    ],
+    "opaquePixels": 5335,
+    "components": [
+      5335
+    ],
+    "height": 131
+  },
+  "descent:8": {
+    "source": "raw/descent.png",
+    "sourceRect": [
+      933,
+      848,
+      1130,
+      1202
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 37484,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.3532608695652174,
+    "offset": [
+      157,
+      99
+    ],
+    "bbox": [
+      157,
+      99,
+      227,
+      224
+    ],
+    "opaquePixels": 4703,
+    "components": [
+      4703
+    ],
+    "height": 125
+  },
+  "ending:1": {
+    "source": "raw/ending.png",
+    "sourceRect": [
+      507,
+      71,
+      763,
+      437
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 42293,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.3542234332425068,
+    "offset": [
+      146,
+      94
+    ],
+    "bbox": [
+      146,
+      94,
+      237,
+      224
+    ],
+    "opaquePixels": 5340,
+    "components": [
+      5340
+    ],
+    "height": 130
+  },
+  "ending:2": {
+    "source": "raw/ending.png",
+    "sourceRect": [
+      905,
+      78,
+      1110,
+      437
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 36547,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.3542234332425068,
+    "offset": [
+      156,
+      97
+    ],
+    "bbox": [
+      156,
+      98,
+      229,
+      224
+    ],
+    "opaquePixels": 4607,
+    "components": [
+      4607
+    ],
+    "height": 126
+  },
+  "ending:3": {
+    "source": "raw/ending.png",
+    "sourceRect": [
+      144,
+      475,
+      352,
+      837
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 38046,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.3542234332425068,
+    "offset": [
+      155,
+      96
+    ],
+    "bbox": [
+      155,
+      96,
+      229,
+      224
+    ],
+    "opaquePixels": 4786,
+    "components": [
+      4786
+    ],
+    "height": 128
+  },
+  "ending:4": {
+    "source": "raw/ending.png",
+    "sourceRect": [
+      526,
+      476,
+      748,
+      836
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 39887,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.3542234332425068,
+    "offset": [
+      152,
+      96
+    ],
+    "bbox": [
+      152,
+      97,
+      231,
+      224
+    ],
+    "opaquePixels": 5049,
+    "components": [
+      5049
+    ],
+    "height": 127
+  },
+  "ending:5": {
+    "source": "raw/ending.png",
+    "sourceRect": [
+      899,
+      486,
+      1130,
+      836
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 40644,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.3542234332425068,
+    "offset": [
+      151,
+      100
+    ],
+    "bbox": [
+      151,
+      100,
+      233,
+      224
+    ],
+    "opaquePixels": 5123,
+    "components": [
+      5123
+    ],
+    "height": 124
+  },
+  "ending:6": {
+    "source": "raw/ending.png",
+    "sourceRect": [
+      139,
+      864,
+      374,
+      1200
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 38501,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.3542234332425068,
+    "offset": [
+      150,
+      105
+    ],
+    "bbox": [
+      150,
+      105,
+      233,
+      224
+    ],
+    "opaquePixels": 4839,
+    "components": [
+      4839
+    ],
+    "height": 119
+  },
+  "ending:7": {
+    "source": "raw/ending.png",
+    "sourceRect": [
+      496,
+      853,
+      762,
+      1200
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 40348,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.3542234332425068,
+    "offset": [
+      145,
+      101
+    ],
+    "bbox": [
+      145,
+      101,
+      239,
+      224
+    ],
+    "opaquePixels": 5049,
+    "components": [
+      5049
+    ],
+    "height": 123
+  },
+  "ending:8": {
+    "source": "raw/ending.png",
+    "sourceRect": [
+      878,
+      858,
+      1146,
+      1200
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 41013,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.3542234332425068,
+    "offset": [
+      144,
+      103
+    ],
+    "bbox": [
+      144,
+      103,
+      239,
+      224
+    ],
+    "opaquePixels": 5132,
+    "components": [
+      5132
+    ],
+    "height": 121
+  },
+  "ground:1": {
+    "source": "raw/ground.png",
+    "sourceRect": [
+      476,
+      64,
+      786,
+      409
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 44481,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.34574468085106386,
+    "offset": [
+      138,
+      105
+    ],
+    "bbox": [
+      138,
+      105,
+      245,
+      224
+    ],
+    "opaquePixels": 5307,
+    "components": [
+      5307
+    ],
+    "height": 119
+  },
+  "ground:2": {
+    "source": "raw/ground.png",
+    "sourceRect": [
+      869,
+      64,
+      1187,
+      410
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 44172,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.34574468085106386,
+    "offset": [
+      137,
+      104
+    ],
+    "bbox": [
+      137,
+      104,
+      247,
+      224
+    ],
+    "opaquePixels": 5313,
+    "components": [
+      5313
+    ],
+    "height": 120
+  },
+  "ground:3": {
+    "source": "raw/ground.png",
+    "sourceRect": [
+      53,
+      444,
+      425,
+      804
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 50298,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.34574468085106386,
+    "offset": [
+      128,
+      100
+    ],
+    "bbox": [
+      128,
+      100,
+      257,
+      224
+    ],
+    "opaquePixels": 6003,
+    "components": [
+      6003
+    ],
+    "height": 124
+  },
+  "ground:4": {
+    "source": "raw/ground.png",
+    "sourceRect": [
+      478,
+      442,
+      785,
+      800
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 46644,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.34574468085106386,
+    "offset": [
+      139,
+      100
+    ],
+    "bbox": [
+      139,
+      100,
+      245,
+      224
+    ],
+    "opaquePixels": 5592,
+    "components": [
+      5592
+    ],
+    "height": 124
+  },
+  "ground:5": {
+    "source": "raw/ground.png",
+    "sourceRect": [
+      876,
+      447,
+      1183,
+      799
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 47057,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.34574468085106386,
+    "offset": [
+      139,
+      102
+    ],
+    "bbox": [
+      139,
+      102,
+      245,
+      224
+    ],
+    "opaquePixels": 5633,
+    "components": [
+      5633
+    ],
+    "height": 122
+  },
+  "ground:6": {
+    "source": "raw/ground.png",
+    "sourceRect": [
+      56,
+      830,
+      396,
+      1198
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 50216,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.34574468085106386,
+    "offset": [
+      133,
+      97
+    ],
+    "bbox": [
+      133,
+      97,
+      251,
+      224
+    ],
+    "opaquePixels": 6011,
+    "components": [
+      6011
+    ],
+    "height": 127
+  },
+  "ground:7": {
+    "source": "raw/ground.png",
+    "sourceRect": [
+      447,
+      845,
+      841,
+      1198
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 49442,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.34574468085106386,
+    "offset": [
+      124,
+      102
+    ],
+    "bbox": [
+      124,
+      102,
+      260,
+      224
+    ],
+    "opaquePixels": 5894,
+    "components": [
+      5894
+    ],
+    "height": 122
+  },
+  "ground:8": {
+    "source": "raw/ground.png",
+    "sourceRect": [
+      875,
+      829,
+      1188,
+      1202
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 48837,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.34574468085106386,
+    "offset": [
+      138,
+      95
+    ],
+    "bbox": [
+      138,
+      95,
+      246,
+      224
+    ],
+    "opaquePixels": 5822,
+    "components": [
+      5822
+    ],
+    "height": 129
+  },
+  "teleport:1": {
+    "source": "raw/teleport.png",
+    "sourceRect": [
+      568,
+      24,
+      741,
+      369
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 36380,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.3403141361256545,
+    "offset": [
+      162,
+      107
+    ],
+    "bbox": [
+      162,
+      107,
+      221,
+      224
+    ],
+    "opaquePixels": 4194,
+    "components": [
+      4194
+    ],
+    "height": 117
+  },
+  "teleport:2": {
+    "source": "raw/teleport.png",
+    "sourceRect": [
+      892,
+      29,
+      1139,
+      401
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 47202,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.3403141361256545,
+    "offset": [
+      150,
+      97
+    ],
+    "bbox": [
+      150,
+      97,
+      234,
+      224
+    ],
+    "opaquePixels": 5495,
+    "components": [
+      5495
+    ],
+    "height": 127
+  },
+  "teleport:3": {
+    "source": "raw/teleport.png",
+    "sourceRect": [
+      112,
+      429,
+      367,
+      772
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 44632,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.3403141361256545,
+    "offset": [
+      148,
+      107
+    ],
+    "bbox": [
+      148,
+      107,
+      235,
+      224
+    ],
+    "opaquePixels": 5199,
+    "components": [
+      5199
+    ],
+    "height": 117
+  },
+  "teleport:4": {
+    "source": "raw/teleport.png",
+    "sourceRect": [
+      492,
+      439,
+      770,
+      772
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 45315,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.3403141361256545,
+    "offset": [
+      144,
+      111
+    ],
+    "bbox": [
+      144,
+      111,
+      239,
+      224
+    ],
+    "opaquePixels": 5261,
+    "components": [
+      5261
+    ],
+    "height": 113
+  },
+  "teleport:5": {
+    "source": "raw/teleport.png",
+    "sourceRect": [
+      901,
+      434,
+      1156,
+      782
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 47492,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.3403141361256545,
+    "offset": [
+      148,
+      106
+    ],
+    "bbox": [
+      148,
+      106,
+      235,
+      224
+    ],
+    "opaquePixels": 5488,
+    "components": [
+      5488
+    ],
+    "height": 118
+  },
+  "teleport:6": {
+    "source": "raw/teleport.png",
+    "sourceRect": [
+      99,
+      804,
+      452,
+      1195
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 54742,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.3403141361256545,
+    "offset": [
+      132,
+      91
+    ],
+    "bbox": [
+      133,
+      91,
+      252,
+      224
+    ],
+    "opaquePixels": 6332,
+    "components": [
+      6332
+    ],
+    "height": 133
+  },
+  "teleport:7": {
+    "source": "raw/teleport.png",
+    "sourceRect": [
+      495,
+      798,
+      782,
+      1212
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 52245,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.3403141361256545,
+    "offset": [
+      143,
+      83
+    ],
+    "bbox": [
+      143,
+      83,
+      241,
+      224
+    ],
+    "opaquePixels": 6080,
+    "components": [
+      6080
+    ],
+    "height": 141
+  },
+  "teleport:8": {
+    "source": "raw/teleport.png",
+    "sourceRect": [
+      902,
+      802,
+      1168,
+      1221
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 52674,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.3403141361256545,
+    "offset": [
+      146,
+      81
+    ],
+    "bbox": [
+      146,
+      81,
+      237,
+      224
+    ],
+    "opaquePixels": 6141,
+    "components": [
+      6141
+    ],
+    "height": 143
+  },
+  "transformation:1": {
+    "source": "raw/transformation.png",
+    "sourceRect": [
+      483,
+      74,
+      757,
+      402
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 41646,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.3611111111111111,
+    "offset": [
+      142,
+      106
+    ],
+    "bbox": [
+      142,
+      106,
+      241,
+      224
+    ],
+    "opaquePixels": 5401,
+    "components": [
+      5399,
+      1,
+      1
+    ],
+    "height": 118
+  },
+  "transformation:2": {
+    "source": "raw/transformation.png",
+    "sourceRect": [
+      880,
+      36,
+      1156,
+      402
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 42622,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.3611111111111111,
+    "offset": [
+      142,
+      92
+    ],
+    "bbox": [
+      142,
+      92,
+      242,
+      224
+    ],
+    "opaquePixels": 5572,
+    "components": [
+      5572
+    ],
+    "height": 132
+  },
+  "transformation:3": {
+    "source": "raw/transformation.png",
+    "sourceRect": [
+      92,
+      436,
+      371,
+      816
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 48712,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.3611111111111111,
+    "offset": [
+      142,
+      87
+    ],
+    "bbox": [
+      142,
+      87,
+      243,
+      224
+    ],
+    "opaquePixels": 6358,
+    "components": [
+      6358
+    ],
+    "height": 137
+  },
+  "transformation:4": {
+    "source": "raw/transformation.png",
+    "sourceRect": [
+      483,
+      435,
+      766,
+      814
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 49614,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.3611111111111111,
+    "offset": [
+      141,
+      87
+    ],
+    "bbox": [
+      141,
+      87,
+      243,
+      224
+    ],
+    "opaquePixels": 6459,
+    "components": [
+      6459
+    ],
+    "height": 137
+  },
+  "transformation:5": {
+    "source": "raw/transformation.png",
+    "sourceRect": [
+      878,
+      433,
+      1161,
+      814
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 49443,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.3611111111111111,
+    "offset": [
+      141,
+      86
+    ],
+    "bbox": [
+      141,
+      86,
+      243,
+      224
+    ],
+    "opaquePixels": 6456,
+    "components": [
+      6456
+    ],
+    "height": 138
+  },
+  "transformation:6": {
+    "source": "raw/transformation.png",
+    "sourceRect": [
+      97,
+      833,
+      383,
+      1219
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 48679,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.3611111111111111,
+    "offset": [
+      140,
+      85
+    ],
+    "bbox": [
+      140,
+      85,
+      243,
+      224
+    ],
+    "opaquePixels": 6332,
+    "components": [
+      6332
+    ],
+    "height": 139
+  },
+  "transformation:7": {
+    "source": "raw/transformation.png",
+    "sourceRect": [
+      513,
+      826,
+      794,
+      1219
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 48092,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.3611111111111111,
+    "offset": [
+      142,
+      82
+    ],
+    "bbox": [
+      142,
+      82,
+      243,
+      224
+    ],
+    "opaquePixels": 6250,
+    "components": [
+      6250
+    ],
+    "height": 142
+  },
+  "transformation:8": {
+    "source": "raw/transformation.png",
+    "sourceRect": [
+      875,
+      831,
+      1160,
+      1222
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 49668,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.3611111111111111,
+    "offset": [
+      140,
+      83
+    ],
+    "bbox": [
+      140,
+      83,
+      243,
+      224
+    ],
+    "opaquePixels": 6464,
+    "components": [
+      6464
+    ],
+    "height": 141
+  },
+  "uppercut:1": {
+    "source": "raw/uppercut.png",
+    "sourceRect": [
+      480,
+      115,
+      759,
+      411
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 41055,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.34210526315789475,
+    "offset": [
+      144,
+      123
+    ],
+    "bbox": [
+      144,
+      123,
+      239,
+      224
+    ],
+    "opaquePixels": 4781,
+    "components": [
+      4781
+    ],
+    "height": 101
+  },
+  "uppercut:2": {
+    "source": "raw/uppercut.png",
+    "sourceRect": [
+      885,
+      57,
+      1156,
+      418
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 47342,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.34210526315789475,
+    "offset": [
+      146,
+      100
+    ],
+    "bbox": [
+      146,
+      100,
+      239,
+      224
+    ],
+    "opaquePixels": 5582,
+    "components": [
+      5582
+    ],
+    "height": 124
+  },
+  "uppercut:3": {
+    "source": "raw/uppercut.png",
+    "sourceRect": [
+      106,
+      429,
+      369,
+      844
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 48476,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.34210526315789475,
+    "offset": [
+      147,
+      82
+    ],
+    "bbox": [
+      147,
+      82,
+      237,
+      224
+    ],
+    "opaquePixels": 5661,
+    "components": [
+      5661
+    ],
+    "height": 142
+  },
+  "uppercut:4": {
+    "source": "raw/uppercut.png",
+    "sourceRect": [
+      536,
+      425,
+      740,
+      857
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 45722,
+      "neighborPixelsExcluded": 194
+    },
+    "scale": 0.34210526315789475,
+    "offset": [
+      157,
+      76
+    ],
+    "bbox": [
+      157,
+      76,
+      227,
+      224
+    ],
+    "opaquePixels": 5378,
+    "components": [
+      5378
+    ],
+    "height": 148
+  },
+  "uppercut:5": {
+    "source": "raw/uppercut.png",
+    "sourceRect": [
+      884,
+      504,
+      1171,
+      844
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 46788,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.34210526315789475,
+    "offset": [
+      143,
+      108
+    ],
+    "bbox": [
+      143,
+      108,
+      241,
+      224
+    ],
+    "opaquePixels": 5446,
+    "components": [
+      5446
+    ],
+    "height": 116
+  },
+  "uppercut:6": {
+    "source": "raw/uppercut.png",
+    "sourceRect": [
+      96,
+      944,
+      343,
+      1202
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 34641,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.34210526315789475,
+    "offset": [
+      150,
+      136
+    ],
+    "bbox": [
+      150,
+      136,
+      234,
+      224
+    ],
+    "opaquePixels": 4008,
+    "components": [
+      4008
+    ],
+    "height": 88
+  },
+  "uppercut:7": {
+    "source": "raw/uppercut.png",
+    "sourceRect": [
+      513,
+      847,
+      760,
+      1235
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 42375,
+      "neighborPixelsExcluded": 353
+    },
+    "scale": 0.34210526315789475,
+    "offset": [
+      150,
+      91
+    ],
+    "bbox": [
+      150,
+      91,
+      234,
+      224
+    ],
+    "opaquePixels": 4946,
+    "components": [
+      4946
+    ],
+    "height": 133
+  },
+  "uppercut:8": {
+    "source": "raw/uppercut.png",
+    "sourceRect": [
+      883,
+      853,
+      1202,
+      1207
+    ],
+    "segmentation": {
+      "method": "complete actor segmentation",
+      "sourcePixels": 43332,
+      "neighborPixelsExcluded": 0
+    },
+    "scale": 0.34210526315789475,
+    "offset": [
+      138,
+      103
+    ],
+    "bbox": [
+      138,
+      104,
+      247,
+      224
+    ],
+    "opaquePixels": 5057,
+    "components": [
+      5057
+    ],
+    "height": 120
+  }
+}

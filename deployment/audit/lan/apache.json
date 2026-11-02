@@ -1,0 +1,14 @@
+{
+  "local": "http://localhost/jogo-luta/",
+  "remote": "http://192.168.3.15/2025/Jogo_de_Luta_Sem_Nome/",
+  "hostname": "DESKTOP-J7NIOKG",
+  "actualSecondComputer": false,
+  "errors": [],
+  "bad": [],
+  "health": {
+    "ok": true,
+    "service": "jogo-luta-lan",
+    "protocol": 2,
+    "version": "0fddfdd7dcdce6bf6b28ce84"
+  }
+}

@@ -1,0 +1,5939 @@
+{
+  "ki_light": {
+    "durations": [
+      2,
+      2,
+      3,
+      1,
+      3,
+      4,
+      4,
+      6
+    ],
+    "frames": [
+      {
+        "source": "art/goku/specials/stage3/ki_light-source.png",
+        "sourceRect": [
+          482,
+          33,
+          782,
+          401
+        ],
+        "scale": 0.3394255874673629,
+        "offset": [
+          142,
+          99
+        ],
+        "metrics": {
+          "bbox": [
+            142,
+            99,
+            244,
+            224
+          ],
+          "opaquePixels": 5915,
+          "largestComponent": 1.0,
+          "components": [
+            5915
+          ]
+        },
+        "pose": {
+          "ticks": 2,
+          "phase": "startup",
+          "hurtboxes": [
+            {
+              "x": -20,
+              "y": -125,
+              "w": 58,
+              "h": 27
+            },
+            {
+              "x": -42,
+              "y": -98,
+              "w": 80,
+              "h": 29
+            },
+            {
+              "x": -41,
+              "y": -69,
+              "w": 72,
+              "h": 26
+            },
+            {
+              "x": -40,
+              "y": -43,
+              "w": 81,
+              "h": 23
+            },
+            {
+              "x": -50,
+              "y": -20,
+              "w": 102,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": -21,
+            "y": -59
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/ki_light-source.png",
+        "sourceRect": [
+          875,
+          27,
+          1187,
+          401
+        ],
+        "scale": 0.3394255874673629,
+        "offset": [
+          140,
+          97
+        ],
+        "metrics": {
+          "bbox": [
+            140,
+            97,
+            246,
+            224
+          ],
+          "opaquePixels": 6087,
+          "largestComponent": 1.0,
+          "components": [
+            6087
+          ]
+        },
+        "pose": {
+          "ticks": 2,
+          "phase": "startup",
+          "hurtboxes": [
+            {
+              "x": -39,
+              "y": -127,
+              "w": 79,
+              "h": 29
+            },
+            {
+              "x": -42,
+              "y": -98,
+              "w": 72,
+              "h": 29
+            },
+            {
+              "x": -30,
+              "y": -69,
+              "w": 65,
+              "h": 26
+            },
+            {
+              "x": -42,
+              "y": -43,
+              "w": 84,
+              "h": 23
+            },
+            {
+              "x": -52,
+              "y": -20,
+              "w": 106,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": -26,
+            "y": -77
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/ki_light-source.png",
+        "sourceRect": [
+          59,
+          436,
+          408,
+          810
+        ],
+        "scale": 0.3394255874673629,
+        "offset": [
+          139,
+          97
+        ],
+        "metrics": {
+          "bbox": [
+            139,
+            97,
+            257,
+            224
+          ],
+          "opaquePixels": 6474,
+          "largestComponent": 1.0,
+          "components": [
+            6474
+          ]
+        },
+        "pose": {
+          "ticks": 3,
+          "phase": "startup",
+          "hurtboxes": [
+            {
+              "x": -17,
+              "y": -127,
+              "w": 60,
+              "h": 29
+            },
+            {
+              "x": -39,
+              "y": -98,
+              "w": 104,
+              "h": 29
+            },
+            {
+              "x": -37,
+              "y": -69,
+              "w": 82,
+              "h": 26
+            },
+            {
+              "x": -44,
+              "y": -43,
+              "w": 86,
+              "h": 23
+            },
+            {
+              "x": -53,
+              "y": -20,
+              "w": 107,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": -11,
+            "y": -60
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/ki_light-source.png",
+        "sourceRect": [
+          459,
+          439,
+          852,
+          810
+        ],
+        "scale": 0.3394255874673629,
+        "offset": [
+          138,
+          98
+        ],
+        "metrics": {
+          "bbox": [
+            138,
+            98,
+            271,
+            224
+          ],
+          "opaquePixels": 6427,
+          "largestComponent": 1.0,
+          "components": [
+            6427
+          ]
+        },
+        "pose": {
+          "ticks": 1,
+          "phase": "active",
+          "hurtboxes": [
+            {
+              "x": -13,
+              "y": -126,
+              "w": 87,
+              "h": 28
+            },
+            {
+              "x": -33,
+              "y": -98,
+              "w": 112,
+              "h": 29
+            },
+            {
+              "x": -33,
+              "y": -69,
+              "w": 71,
+              "h": 26
+            },
+            {
+              "x": -42,
+              "y": -43,
+              "w": 86,
+              "h": 23
+            },
+            {
+              "x": -54,
+              "y": -20,
+              "w": 110,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 72,
+            "y": -87
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/ki_light-source.png",
+        "sourceRect": [
+          864,
+          432,
+          1222,
+          810
+        ],
+        "scale": 0.3394255874673629,
+        "offset": [
+          134,
+          96
+        ],
+        "metrics": {
+          "bbox": [
+            134,
+            96,
+            256,
+            224
+          ],
+          "opaquePixels": 6399,
+          "largestComponent": 1.0,
+          "components": [
+            6399
+          ]
+        },
+        "pose": {
+          "ticks": 3,
+          "phase": "recovery",
+          "hurtboxes": [
+            {
+              "x": -27,
+              "y": -128,
+              "w": 86,
+              "h": 30
+            },
+            {
+              "x": -41,
+              "y": -98,
+              "w": 105,
+              "h": 29
+            },
+            {
+              "x": -41,
+              "y": -69,
+              "w": 75,
+              "h": 26
+            },
+            {
+              "x": -45,
+              "y": -43,
+              "w": 88,
+              "h": 23
+            },
+            {
+              "x": -58,
+              "y": -20,
+              "w": 116,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 59,
+            "y": -89
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/ki_light-source.png",
+        "sourceRect": [
+          65,
+          839,
+          379,
+          1217
+        ],
+        "scale": 0.3394255874673629,
+        "offset": [
+          139,
+          96
+        ],
+        "metrics": {
+          "bbox": [
+            139,
+            96,
+            246,
+            224
+          ],
+          "opaquePixels": 6188,
+          "largestComponent": 1.0,
+          "components": [
+            6188
+          ]
+        },
+        "pose": {
+          "ticks": 4,
+          "phase": "recovery",
+          "hurtboxes": [
+            {
+              "x": -27,
+              "y": -128,
+              "w": 66,
+              "h": 30
+            },
+            {
+              "x": -42,
+              "y": -98,
+              "w": 79,
+              "h": 29
+            },
+            {
+              "x": -34,
+              "y": -69,
+              "w": 71,
+              "h": 26
+            },
+            {
+              "x": -43,
+              "y": -43,
+              "w": 85,
+              "h": 23
+            },
+            {
+              "x": -53,
+              "y": -20,
+              "w": 107,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 33,
+            "y": -68
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/ki_light-source.png",
+        "sourceRect": [
+          472,
+          832,
+          780,
+          1217
+        ],
+        "scale": 0.3394255874673629,
+        "offset": [
+          140,
+          93
+        ],
+        "metrics": {
+          "bbox": [
+            140,
+            93,
+            245,
+            224
+          ],
+          "opaquePixels": 6134,
+          "largestComponent": 1.0,
+          "components": [
+            6134
+          ]
+        },
+        "pose": {
+          "ticks": 4,
+          "phase": "recovery",
+          "hurtboxes": [
+            {
+              "x": -18,
+              "y": -131,
+              "w": 58,
+              "h": 33
+            },
+            {
+              "x": -34,
+              "y": -98,
+              "w": 70,
+              "h": 29
+            },
+            {
+              "x": -33,
+              "y": -69,
+              "w": 71,
+              "h": 26
+            },
+            {
+              "x": -41,
+              "y": -43,
+              "w": 83,
+              "h": 23
+            },
+            {
+              "x": -52,
+              "y": -20,
+              "w": 105,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 29,
+            "y": -74
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/ki_light-source.png",
+        "sourceRect": [
+          893,
+          832,
+          1191,
+          1217
+        ],
+        "scale": 0.3394255874673629,
+        "offset": [
+          142,
+          93
+        ],
+        "metrics": {
+          "bbox": [
+            142,
+            93,
+            243,
+            224
+          ],
+          "opaquePixels": 6274,
+          "largestComponent": 1.0,
+          "components": [
+            6274
+          ]
+        },
+        "pose": {
+          "ticks": 6,
+          "phase": "recovery",
+          "hurtboxes": [
+            {
+              "x": -20,
+              "y": -131,
+              "w": 58,
+              "h": 33
+            },
+            {
+              "x": -34,
+              "y": -98,
+              "w": 80,
+              "h": 29
+            },
+            {
+              "x": -34,
+              "y": -69,
+              "w": 74,
+              "h": 26
+            },
+            {
+              "x": -41,
+              "y": -43,
+              "w": 81,
+              "h": 23
+            },
+            {
+              "x": -50,
+              "y": -20,
+              "w": 101,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 42,
+            "y": -84
+          }
+        }
+      }
+    ]
+  },
+  "ki_medium": {
+    "durations": [
+      3,
+      3,
+      4,
+      4,
+      5,
+      1,
+      5,
+      6,
+      10
+    ],
+    "frames": [
+      {
+        "source": "art/goku/specials/stage3/ki_medium-source.png",
+        "sourceRect": [
+          41,
+          10,
+          339,
+          402
+        ],
+        "scale": 0.33163265306122447,
+        "offset": [
+          143,
+          94
+        ],
+        "metrics": {
+          "bbox": [
+            143,
+            94,
+            242,
+            224
+          ],
+          "opaquePixels": 6058,
+          "largestComponent": 1.0,
+          "components": [
+            6058
+          ]
+        },
+        "pose": {
+          "ticks": 3,
+          "phase": "startup",
+          "hurtboxes": [
+            {
+              "x": -17,
+              "y": -130,
+              "w": 55,
+              "h": 32
+            },
+            {
+              "x": -33,
+              "y": -98,
+              "w": 83,
+              "h": 29
+            },
+            {
+              "x": -33,
+              "y": -69,
+              "w": 76,
+              "h": 26
+            },
+            {
+              "x": -41,
+              "y": -43,
+              "w": 81,
+              "h": 23
+            },
+            {
+              "x": -49,
+              "y": -20,
+              "w": 99,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": -22,
+            "y": -71
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/ki_medium-source.png",
+        "sourceRect": [
+          453,
+          10,
+          760,
+          402
+        ],
+        "scale": 0.33163265306122447,
+        "offset": [
+          142,
+          94
+        ],
+        "metrics": {
+          "bbox": [
+            142,
+            94,
+            244,
+            224
+          ],
+          "opaquePixels": 6058,
+          "largestComponent": 1.0,
+          "components": [
+            6058
+          ]
+        },
+        "pose": {
+          "ticks": 3,
+          "phase": "startup",
+          "hurtboxes": [
+            {
+              "x": -17,
+              "y": -130,
+              "w": 55,
+              "h": 32
+            },
+            {
+              "x": -39,
+              "y": -98,
+              "w": 73,
+              "h": 29
+            },
+            {
+              "x": -37,
+              "y": -69,
+              "w": 73,
+              "h": 26
+            },
+            {
+              "x": -41,
+              "y": -43,
+              "w": 83,
+              "h": 23
+            },
+            {
+              "x": -50,
+              "y": -20,
+              "w": 102,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": -21,
+            "y": -65
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/ki_medium-source.png",
+        "sourceRect": [
+          861,
+          10,
+          1218,
+          402
+        ],
+        "scale": 0.33163265306122447,
+        "offset": [
+          134,
+          94
+        ],
+        "metrics": {
+          "bbox": [
+            134,
+            94,
+            252,
+            224
+          ],
+          "opaquePixels": 6354,
+          "largestComponent": 1.0,
+          "components": [
+            6354
+          ]
+        },
+        "pose": {
+          "ticks": 4,
+          "phase": "startup",
+          "hurtboxes": [
+            {
+              "x": -23,
+              "y": -130,
+              "w": 65,
+              "h": 32
+            },
+            {
+              "x": -45,
+              "y": -98,
+              "w": 82,
+              "h": 29
+            },
+            {
+              "x": -30,
+              "y": -69,
+              "w": 73,
+              "h": 26
+            },
+            {
+              "x": -47,
+              "y": -43,
+              "w": 97,
+              "h": 23
+            },
+            {
+              "x": -58,
+              "y": -20,
+              "w": 118,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": -31,
+            "y": -75
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/ki_medium-source.png",
+        "sourceRect": [
+          18,
+          426,
+          412,
+          815
+        ],
+        "scale": 0.33163265306122447,
+        "offset": [
+          136,
+          95
+        ],
+        "metrics": {
+          "bbox": [
+            136,
+            95,
+            267,
+            224
+          ],
+          "opaquePixels": 6732,
+          "largestComponent": 1.0,
+          "components": [
+            6732
+          ]
+        },
+        "pose": {
+          "ticks": 4,
+          "phase": "active",
+          "hurtboxes": [
+            {
+              "x": -27,
+              "y": -129,
+              "w": 102,
+              "h": 31
+            },
+            {
+              "x": -45,
+              "y": -98,
+              "w": 120,
+              "h": 29
+            },
+            {
+              "x": -46,
+              "y": -69,
+              "w": 82,
+              "h": 26
+            },
+            {
+              "x": -47,
+              "y": -43,
+              "w": 91,
+              "h": 23
+            },
+            {
+              "x": -56,
+              "y": -20,
+              "w": 114,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 68,
+            "y": -89
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/ki_medium-source.png",
+        "sourceRect": [
+          453,
+          427,
+          782,
+          815
+        ],
+        "scale": 0.33163265306122447,
+        "offset": [
+          138,
+          95
+        ],
+        "metrics": {
+          "bbox": [
+            138,
+            95,
+            247,
+            224
+          ],
+          "opaquePixels": 6576,
+          "largestComponent": 1.0,
+          "components": [
+            6576
+          ]
+        },
+        "pose": {
+          "ticks": 5,
+          "phase": "active",
+          "hurtboxes": [
+            {
+              "x": -33,
+              "y": -129,
+              "w": 66,
+              "h": 31
+            },
+            {
+              "x": -46,
+              "y": -98,
+              "w": 90,
+              "h": 29
+            },
+            {
+              "x": -34,
+              "y": -69,
+              "w": 73,
+              "h": 26
+            },
+            {
+              "x": -44,
+              "y": -43,
+              "w": 88,
+              "h": 23
+            },
+            {
+              "x": -54,
+              "y": -20,
+              "w": 109,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 39,
+            "y": -79
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/ki_medium-source.png",
+        "sourceRect": [
+          827,
+          426,
+          1237,
+          815
+        ],
+        "scale": 0.33163265306122447,
+        "offset": [
+          131,
+          95
+        ],
+        "metrics": {
+          "bbox": [
+            131,
+            95,
+            267,
+            224
+          ],
+          "opaquePixels": 6760,
+          "largestComponent": 1.0,
+          "components": [
+            6760
+          ]
+        },
+        "pose": {
+          "ticks": 1,
+          "phase": "active",
+          "hurtboxes": [
+            {
+              "x": -21,
+              "y": -129,
+              "w": 96,
+              "h": 31
+            },
+            {
+              "x": -37,
+              "y": -98,
+              "w": 112,
+              "h": 29
+            },
+            {
+              "x": -38,
+              "y": -69,
+              "w": 78,
+              "h": 26
+            },
+            {
+              "x": -51,
+              "y": -43,
+              "w": 98,
+              "h": 23
+            },
+            {
+              "x": -61,
+              "y": -20,
+              "w": 123,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 70,
+            "y": -89
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/ki_medium-source.png",
+        "sourceRect": [
+          27,
+          837,
+          439,
+          1223
+        ],
+        "scale": 0.33163265306122447,
+        "offset": [
+          135,
+          96
+        ],
+        "metrics": {
+          "bbox": [
+            135,
+            96,
+            272,
+            224
+          ],
+          "opaquePixels": 6768,
+          "largestComponent": 1.0,
+          "components": [
+            6768
+          ]
+        },
+        "pose": {
+          "ticks": 5,
+          "phase": "recovery",
+          "hurtboxes": [
+            {
+              "x": -8,
+              "y": -128,
+              "w": 87,
+              "h": 30
+            },
+            {
+              "x": -35,
+              "y": -98,
+              "w": 115,
+              "h": 29
+            },
+            {
+              "x": -35,
+              "y": -69,
+              "w": 86,
+              "h": 26
+            },
+            {
+              "x": -45,
+              "y": -43,
+              "w": 98,
+              "h": 23
+            },
+            {
+              "x": -57,
+              "y": -20,
+              "w": 115,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 74,
+            "y": -90
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/ki_medium-source.png",
+        "sourceRect": [
+          452,
+          840,
+          782,
+          1225
+        ],
+        "scale": 0.33163265306122447,
+        "offset": [
+          138,
+          96
+        ],
+        "metrics": {
+          "bbox": [
+            138,
+            96,
+            247,
+            224
+          ],
+          "opaquePixels": 6199,
+          "largestComponent": 1.0,
+          "components": [
+            6199
+          ]
+        },
+        "pose": {
+          "ticks": 6,
+          "phase": "recovery",
+          "hurtboxes": [
+            {
+              "x": -23,
+              "y": -128,
+              "w": 57,
+              "h": 30
+            },
+            {
+              "x": -41,
+              "y": -98,
+              "w": 76,
+              "h": 29
+            },
+            {
+              "x": -41,
+              "y": -69,
+              "w": 78,
+              "h": 26
+            },
+            {
+              "x": -45,
+              "y": -43,
+              "w": 89,
+              "h": 23
+            },
+            {
+              "x": -54,
+              "y": -20,
+              "w": 109,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 30,
+            "y": -70
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/ki_medium-source.png",
+        "sourceRect": [
+          854,
+          840,
+          1163,
+          1225
+        ],
+        "scale": 0.33163265306122447,
+        "offset": [
+          142,
+          96
+        ],
+        "metrics": {
+          "bbox": [
+            142,
+            96,
+            244,
+            224
+          ],
+          "opaquePixels": 6115,
+          "largestComponent": 1.0,
+          "components": [
+            6115
+          ]
+        },
+        "pose": {
+          "ticks": 10,
+          "phase": "recovery",
+          "hurtboxes": [
+            {
+              "x": -16,
+              "y": -128,
+              "w": 56,
+              "h": 30
+            },
+            {
+              "x": -32,
+              "y": -98,
+              "w": 83,
+              "h": 29
+            },
+            {
+              "x": -32,
+              "y": -69,
+              "w": 78,
+              "h": 26
+            },
+            {
+              "x": -41,
+              "y": -43,
+              "w": 83,
+              "h": 23
+            },
+            {
+              "x": -50,
+              "y": -20,
+              "w": 102,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 45,
+            "y": -79
+          }
+        }
+      }
+    ]
+  },
+  "ki_heavy": {
+    "durations": [
+      5,
+      5,
+      6,
+      1,
+      3,
+      4,
+      4,
+      18
+    ],
+    "frames": [
+      {
+        "source": "art/goku/specials/stage3/ki_heavy-source.png",
+        "sourceRect": [
+          478,
+          53,
+          770,
+          421
+        ],
+        "scale": 0.33678756476683935,
+        "offset": [
+          144,
+          100
+        ],
+        "metrics": {
+          "bbox": [
+            144,
+            100,
+            242,
+            224
+          ],
+          "opaquePixels": 5479,
+          "largestComponent": 1.0,
+          "components": [
+            5479
+          ]
+        },
+        "pose": {
+          "ticks": 5,
+          "phase": "startup",
+          "hurtboxes": [
+            {
+              "x": -15,
+              "y": -124,
+              "w": 54,
+              "h": 26
+            },
+            {
+              "x": -26,
+              "y": -98,
+              "w": 66,
+              "h": 29
+            },
+            {
+              "x": -30,
+              "y": -69,
+              "w": 66,
+              "h": 26
+            },
+            {
+              "x": -40,
+              "y": -43,
+              "w": 84,
+              "h": 23
+            },
+            {
+              "x": -48,
+              "y": -20,
+              "w": 98,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": -14,
+            "y": -59
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/ki_heavy-source.png",
+        "sourceRect": [
+          883,
+          79,
+          1195,
+          423
+        ],
+        "scale": 0.33678756476683935,
+        "offset": [
+          140,
+          108
+        ],
+        "metrics": {
+          "bbox": [
+            140,
+            108,
+            245,
+            224
+          ],
+          "opaquePixels": 5479,
+          "largestComponent": 1.0,
+          "components": [
+            5479
+          ]
+        },
+        "pose": {
+          "ticks": 5,
+          "phase": "startup",
+          "hurtboxes": [
+            {
+              "x": -9,
+              "y": -116,
+              "w": 52,
+              "h": 18
+            },
+            {
+              "x": -24,
+              "y": -98,
+              "w": 69,
+              "h": 29
+            },
+            {
+              "x": -28,
+              "y": -69,
+              "w": 71,
+              "h": 26
+            },
+            {
+              "x": -43,
+              "y": -43,
+              "w": 93,
+              "h": 23
+            },
+            {
+              "x": -52,
+              "y": -20,
+              "w": 105,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": -14,
+            "y": -56
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/ki_heavy-source.png",
+        "sourceRect": [
+          61,
+          449,
+          356,
+          817
+        ],
+        "scale": 0.33678756476683935,
+        "offset": [
+          143,
+          100
+        ],
+        "metrics": {
+          "bbox": [
+            143,
+            100,
+            242,
+            224
+          ],
+          "opaquePixels": 5716,
+          "largestComponent": 1.0,
+          "components": [
+            5716
+          ]
+        },
+        "pose": {
+          "ticks": 6,
+          "phase": "startup",
+          "hurtboxes": [
+            {
+              "x": -10,
+              "y": -124,
+              "w": 57,
+              "h": 26
+            },
+            {
+              "x": -24,
+              "y": -98,
+              "w": 71,
+              "h": 29
+            },
+            {
+              "x": -30,
+              "y": -69,
+              "w": 66,
+              "h": 26
+            },
+            {
+              "x": -41,
+              "y": -43,
+              "w": 86,
+              "h": 23
+            },
+            {
+              "x": -49,
+              "y": -20,
+              "w": 99,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": -13,
+            "y": -66
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/ki_heavy-source.png",
+        "sourceRect": [
+          443,
+          458,
+          788,
+          817
+        ],
+        "scale": 0.33678756476683935,
+        "offset": [
+          140,
+          103
+        ],
+        "metrics": {
+          "bbox": [
+            140,
+            103,
+            256,
+            224
+          ],
+          "opaquePixels": 5685,
+          "largestComponent": 1.0,
+          "components": [
+            5685
+          ]
+        },
+        "pose": {
+          "ticks": 1,
+          "phase": "active",
+          "hurtboxes": [
+            {
+              "x": -12,
+              "y": -121,
+              "w": 55,
+              "h": 23
+            },
+            {
+              "x": -12,
+              "y": -98,
+              "w": 76,
+              "h": 29
+            },
+            {
+              "x": -25,
+              "y": -69,
+              "w": 85,
+              "h": 26
+            },
+            {
+              "x": -43,
+              "y": -43,
+              "w": 89,
+              "h": 23
+            },
+            {
+              "x": -52,
+              "y": -20,
+              "w": 105,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 59,
+            "y": -80
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/ki_heavy-source.png",
+        "sourceRect": [
+          818,
+          454,
+          1225,
+          816
+        ],
+        "scale": 0.33678756476683935,
+        "offset": [
+          128,
+          102
+        ],
+        "metrics": {
+          "bbox": [
+            128,
+            102,
+            265,
+            224
+          ],
+          "opaquePixels": 6055,
+          "largestComponent": 1.0,
+          "components": [
+            6055
+          ]
+        },
+        "pose": {
+          "ticks": 3,
+          "phase": "recovery",
+          "hurtboxes": [
+            {
+              "x": -5,
+              "y": -122,
+              "w": 55,
+              "h": 24
+            },
+            {
+              "x": -9,
+              "y": -98,
+              "w": 82,
+              "h": 29
+            },
+            {
+              "x": -27,
+              "y": -69,
+              "w": 77,
+              "h": 26
+            },
+            {
+              "x": -52,
+              "y": -43,
+              "w": 105,
+              "h": 23
+            },
+            {
+              "x": -64,
+              "y": -20,
+              "w": 129,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 66,
+            "y": -87
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/ki_heavy-source.png",
+        "sourceRect": [
+          63,
+          854,
+          376,
+          1209
+        ],
+        "scale": 0.33678756476683935,
+        "offset": [
+          142,
+          104
+        ],
+        "metrics": {
+          "bbox": [
+            142,
+            104,
+            247,
+            224
+          ],
+          "opaquePixels": 5744,
+          "largestComponent": 1.0,
+          "components": [
+            5744
+          ]
+        },
+        "pose": {
+          "ticks": 4,
+          "phase": "recovery",
+          "hurtboxes": [
+            {
+              "x": -13,
+              "y": -120,
+              "w": 53,
+              "h": 22
+            },
+            {
+              "x": -23,
+              "y": -98,
+              "w": 78,
+              "h": 29
+            },
+            {
+              "x": -31,
+              "y": -69,
+              "w": 73,
+              "h": 26
+            },
+            {
+              "x": -42,
+              "y": -43,
+              "w": 86,
+              "h": 23
+            },
+            {
+              "x": -50,
+              "y": -20,
+              "w": 102,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 48,
+            "y": -85
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/ki_heavy-source.png",
+        "sourceRect": [
+          475,
+          840,
+          759,
+          1211
+        ],
+        "scale": 0.33678756476683935,
+        "offset": [
+          144,
+          99
+        ],
+        "metrics": {
+          "bbox": [
+            144,
+            99,
+            240,
+            224
+          ],
+          "opaquePixels": 5731,
+          "largestComponent": 1.0,
+          "components": [
+            5731
+          ]
+        },
+        "pose": {
+          "ticks": 4,
+          "phase": "recovery",
+          "hurtboxes": [
+            {
+              "x": -18,
+              "y": -125,
+              "w": 55,
+              "h": 27
+            },
+            {
+              "x": -29,
+              "y": -98,
+              "w": 76,
+              "h": 29
+            },
+            {
+              "x": -31,
+              "y": -69,
+              "w": 72,
+              "h": 26
+            },
+            {
+              "x": -41,
+              "y": -43,
+              "w": 82,
+              "h": 23
+            },
+            {
+              "x": -48,
+              "y": -20,
+              "w": 96,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 42,
+            "y": -81
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/ki_heavy-source.png",
+        "sourceRect": [
+          898,
+          834,
+          1175,
+          1211
+        ],
+        "scale": 0.33678756476683935,
+        "offset": [
+          146,
+          97
+        ],
+        "metrics": {
+          "bbox": [
+            146,
+            97,
+            239,
+            224
+          ],
+          "opaquePixels": 5784,
+          "largestComponent": 1.0,
+          "components": [
+            5784
+          ]
+        },
+        "pose": {
+          "ticks": 18,
+          "phase": "recovery",
+          "hurtboxes": [
+            {
+              "x": -18,
+              "y": -127,
+              "w": 55,
+              "h": 29
+            },
+            {
+              "x": -32,
+              "y": -98,
+              "w": 79,
+              "h": 29
+            },
+            {
+              "x": -32,
+              "y": -69,
+              "w": 72,
+              "h": 26
+            },
+            {
+              "x": -39,
+              "y": -43,
+              "w": 78,
+              "h": 23
+            },
+            {
+              "x": -46,
+              "y": -20,
+              "w": 93,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 41,
+            "y": -86
+          }
+        }
+      }
+    ]
+  },
+  "kamehameha_light": {
+    "durations": [
+      4,
+      4,
+      5,
+      1,
+      6,
+      5,
+      6,
+      6,
+      6
+    ],
+    "frames": [
+      {
+        "source": "art/goku/specials/stage3/kamehameha-source.png",
+        "sourceRect": [
+          474,
+          38,
+          790,
+          417
+        ],
+        "scale": 0.32338308457711445,
+        "offset": [
+          142,
+          101
+        ],
+        "metrics": {
+          "bbox": [
+            142,
+            101,
+            244,
+            224
+          ],
+          "opaquePixels": 5571,
+          "largestComponent": 1.0,
+          "components": [
+            5571
+          ]
+        },
+        "pose": {
+          "ticks": 4,
+          "phase": "startup",
+          "hurtboxes": [
+            {
+              "x": -14,
+              "y": -123,
+              "w": 54,
+              "h": 25
+            },
+            {
+              "x": -32,
+              "y": -98,
+              "w": 72,
+              "h": 29
+            },
+            {
+              "x": -30,
+              "y": -69,
+              "w": 63,
+              "h": 26
+            },
+            {
+              "x": -40,
+              "y": -43,
+              "w": 82,
+              "h": 23
+            },
+            {
+              "x": -50,
+              "y": -20,
+              "w": 102,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": -17,
+            "y": -61
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/kamehameha-source.png",
+        "sourceRect": [
+          874,
+          71,
+          1196,
+          416
+        ],
+        "scale": 0.32338308457711445,
+        "offset": [
+          140,
+          112
+        ],
+        "metrics": {
+          "bbox": [
+            140,
+            112,
+            244,
+            224
+          ],
+          "opaquePixels": 5495,
+          "largestComponent": 1.0,
+          "components": [
+            5495
+          ]
+        },
+        "pose": {
+          "ticks": 4,
+          "phase": "startup",
+          "hurtboxes": [
+            {
+              "x": -2,
+              "y": -112,
+              "w": 43,
+              "h": 14
+            },
+            {
+              "x": -29,
+              "y": -98,
+              "w": 72,
+              "h": 29
+            },
+            {
+              "x": -30,
+              "y": -69,
+              "w": 69,
+              "h": 26
+            },
+            {
+              "x": -43,
+              "y": -43,
+              "w": 87,
+              "h": 23
+            },
+            {
+              "x": -52,
+              "y": -20,
+              "w": 104,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": -18,
+            "y": -58
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/kamehameha-source.png",
+        "sourceRect": [
+          46,
+          464,
+          371,
+          815
+        ],
+        "scale": 0.32338308457711445,
+        "offset": [
+          140,
+          110
+        ],
+        "metrics": {
+          "bbox": [
+            140,
+            110,
+            245,
+            224
+          ],
+          "opaquePixels": 5474,
+          "largestComponent": 1.0,
+          "components": [
+            5474
+          ]
+        },
+        "pose": {
+          "ticks": 5,
+          "phase": "startup",
+          "hurtboxes": [
+            {
+              "x": -13,
+              "y": -114,
+              "w": 48,
+              "h": 16
+            },
+            {
+              "x": -37,
+              "y": -98,
+              "w": 75,
+              "h": 29
+            },
+            {
+              "x": -39,
+              "y": -69,
+              "w": 75,
+              "h": 26
+            },
+            {
+              "x": -44,
+              "y": -43,
+              "w": 87,
+              "h": 23
+            },
+            {
+              "x": -52,
+              "y": -20,
+              "w": 105,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": -20,
+            "y": -56
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/kamehameha-source.png",
+        "sourceRect": [
+          447,
+          452,
+          782,
+          813
+        ],
+        "scale": 0.32338308457711445,
+        "offset": [
+          138,
+          107
+        ],
+        "metrics": {
+          "bbox": [
+            138,
+            107,
+            246,
+            224
+          ],
+          "opaquePixels": 5447,
+          "largestComponent": 1.0,
+          "components": [
+            5447
+          ]
+        },
+        "pose": {
+          "ticks": 1,
+          "phase": "active",
+          "hurtboxes": [
+            {
+              "x": -14,
+              "y": -117,
+              "w": 50,
+              "h": 19
+            },
+            {
+              "x": -23,
+              "y": -98,
+              "w": 71,
+              "h": 29
+            },
+            {
+              "x": -29,
+              "y": -69,
+              "w": 78,
+              "h": 26
+            },
+            {
+              "x": -46,
+              "y": -43,
+              "w": 88,
+              "h": 23
+            },
+            {
+              "x": -54,
+              "y": -20,
+              "w": 108,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 42,
+            "y": -66
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/kamehameha-source.png",
+        "sourceRect": [
+          838,
+          455,
+          1211,
+          812
+        ],
+        "scale": 0.32338308457711445,
+        "offset": [
+          132,
+          109
+        ],
+        "metrics": {
+          "bbox": [
+            132,
+            109,
+            253,
+            224
+          ],
+          "opaquePixels": 5784,
+          "largestComponent": 0.9998271092669433,
+          "components": [
+            5783,
+            1
+          ]
+        },
+        "pose": {
+          "ticks": 6,
+          "phase": "active",
+          "hurtboxes": [
+            {
+              "x": -20,
+              "y": -115,
+              "w": 47,
+              "h": 17
+            },
+            {
+              "x": -24,
+              "y": -98,
+              "w": 85,
+              "h": 29
+            },
+            {
+              "x": -25,
+              "y": -69,
+              "w": 84,
+              "h": 26
+            },
+            {
+              "x": -47,
+              "y": -43,
+              "w": 95,
+              "h": 23
+            },
+            {
+              "x": -60,
+              "y": -20,
+              "w": 121,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 54,
+            "y": -81
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/kamehameha-source.png",
+        "sourceRect": [
+          43,
+          858,
+          385,
+          1222
+        ],
+        "scale": 0.32338308457711445,
+        "offset": [
+          138,
+          106
+        ],
+        "metrics": {
+          "bbox": [
+            138,
+            106,
+            249,
+            224
+          ],
+          "opaquePixels": 5769,
+          "largestComponent": 1.0,
+          "components": [
+            5769
+          ]
+        },
+        "pose": {
+          "ticks": 5,
+          "phase": "active",
+          "hurtboxes": [
+            {
+              "x": -28,
+              "y": -118,
+              "w": 48,
+              "h": 20
+            },
+            {
+              "x": -31,
+              "y": -98,
+              "w": 88,
+              "h": 29
+            },
+            {
+              "x": -30,
+              "y": -69,
+              "w": 85,
+              "h": 26
+            },
+            {
+              "x": -43,
+              "y": -43,
+              "w": 87,
+              "h": 23
+            },
+            {
+              "x": -54,
+              "y": -20,
+              "w": 110,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 51,
+            "y": -76
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/kamehameha-source.png",
+        "sourceRect": [
+          465,
+          853,
+          791,
+          1223
+        ],
+        "scale": 0.32338308457711445,
+        "offset": [
+          140,
+          104
+        ],
+        "metrics": {
+          "bbox": [
+            140,
+            104,
+            245,
+            224
+          ],
+          "opaquePixels": 5601,
+          "largestComponent": 1.0,
+          "components": [
+            5601
+          ]
+        },
+        "pose": {
+          "ticks": 6,
+          "phase": "recovery",
+          "hurtboxes": [
+            {
+              "x": -16,
+              "y": -120,
+              "w": 49,
+              "h": 22
+            },
+            {
+              "x": -29,
+              "y": -98,
+              "w": 74,
+              "h": 29
+            },
+            {
+              "x": -30,
+              "y": -69,
+              "w": 75,
+              "h": 26
+            },
+            {
+              "x": -42,
+              "y": -43,
+              "w": 83,
+              "h": 23
+            },
+            {
+              "x": -52,
+              "y": -20,
+              "w": 105,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 39,
+            "y": -73
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/kamehameha-source.png",
+        "sourceRect": [
+          890,
+          827,
+          1184,
+          1226
+        ],
+        "scale": 0.32338308457711445,
+        "offset": [
+          145,
+          95
+        ],
+        "metrics": {
+          "bbox": [
+            145,
+            95,
+            240,
+            224
+          ],
+          "opaquePixels": 5997,
+          "largestComponent": 1.0,
+          "components": [
+            5997
+          ]
+        },
+        "pose": {
+          "ticks": 6,
+          "phase": "recovery",
+          "hurtboxes": [
+            {
+              "x": -19,
+              "y": -129,
+              "w": 55,
+              "h": 31
+            },
+            {
+              "x": -32,
+              "y": -98,
+              "w": 80,
+              "h": 29
+            },
+            {
+              "x": -32,
+              "y": -69,
+              "w": 72,
+              "h": 26
+            },
+            {
+              "x": -39,
+              "y": -43,
+              "w": 78,
+              "h": 23
+            },
+            {
+              "x": -47,
+              "y": -20,
+              "w": 95,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 42,
+            "y": -86
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/kamehameha-source.png",
+        "sourceRect": [
+          67,
+          15,
+          357,
+          417
+        ],
+        "scale": 0.32338308457711445,
+        "offset": [
+          146,
+          94
+        ],
+        "metrics": {
+          "bbox": [
+            146,
+            94,
+            240,
+            224
+          ],
+          "opaquePixels": 5946,
+          "largestComponent": 1.0,
+          "components": [
+            5946
+          ]
+        },
+        "pose": {
+          "ticks": 6,
+          "phase": "recovery",
+          "hurtboxes": [
+            {
+              "x": -18,
+              "y": -130,
+              "w": 54,
+              "h": 32
+            },
+            {
+              "x": -31,
+              "y": -98,
+              "w": 79,
+              "h": 29
+            },
+            {
+              "x": -31,
+              "y": -69,
+              "w": 71,
+              "h": 26
+            },
+            {
+              "x": -39,
+              "y": -43,
+              "w": 78,
+              "h": 23
+            },
+            {
+              "x": -46,
+              "y": -20,
+              "w": 93,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 39,
+            "y": -85
+          }
+        }
+      }
+    ]
+  },
+  "kamehameha_medium": {
+    "durations": [
+      6,
+      6,
+      7,
+      1,
+      12,
+      12,
+      8,
+      8,
+      8
+    ],
+    "frames": [
+      {
+        "source": "art/goku/specials/stage3/kamehameha-source.png",
+        "sourceRect": [
+          474,
+          38,
+          790,
+          417
+        ],
+        "scale": 0.32338308457711445,
+        "offset": [
+          142,
+          101
+        ],
+        "metrics": {
+          "bbox": [
+            142,
+            101,
+            244,
+            224
+          ],
+          "opaquePixels": 5571,
+          "largestComponent": 1.0,
+          "components": [
+            5571
+          ]
+        },
+        "pose": {
+          "ticks": 6,
+          "phase": "startup",
+          "hurtboxes": [
+            {
+              "x": -14,
+              "y": -123,
+              "w": 54,
+              "h": 25
+            },
+            {
+              "x": -32,
+              "y": -98,
+              "w": 72,
+              "h": 29
+            },
+            {
+              "x": -30,
+              "y": -69,
+              "w": 63,
+              "h": 26
+            },
+            {
+              "x": -40,
+              "y": -43,
+              "w": 82,
+              "h": 23
+            },
+            {
+              "x": -50,
+              "y": -20,
+              "w": 102,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": -17,
+            "y": -61
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/kamehameha-source.png",
+        "sourceRect": [
+          874,
+          71,
+          1196,
+          416
+        ],
+        "scale": 0.32338308457711445,
+        "offset": [
+          140,
+          112
+        ],
+        "metrics": {
+          "bbox": [
+            140,
+            112,
+            244,
+            224
+          ],
+          "opaquePixels": 5495,
+          "largestComponent": 1.0,
+          "components": [
+            5495
+          ]
+        },
+        "pose": {
+          "ticks": 6,
+          "phase": "startup",
+          "hurtboxes": [
+            {
+              "x": -2,
+              "y": -112,
+              "w": 43,
+              "h": 14
+            },
+            {
+              "x": -29,
+              "y": -98,
+              "w": 72,
+              "h": 29
+            },
+            {
+              "x": -30,
+              "y": -69,
+              "w": 69,
+              "h": 26
+            },
+            {
+              "x": -43,
+              "y": -43,
+              "w": 87,
+              "h": 23
+            },
+            {
+              "x": -52,
+              "y": -20,
+              "w": 104,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": -18,
+            "y": -58
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/kamehameha-source.png",
+        "sourceRect": [
+          46,
+          464,
+          371,
+          815
+        ],
+        "scale": 0.32338308457711445,
+        "offset": [
+          140,
+          110
+        ],
+        "metrics": {
+          "bbox": [
+            140,
+            110,
+            245,
+            224
+          ],
+          "opaquePixels": 5474,
+          "largestComponent": 1.0,
+          "components": [
+            5474
+          ]
+        },
+        "pose": {
+          "ticks": 7,
+          "phase": "startup",
+          "hurtboxes": [
+            {
+              "x": -13,
+              "y": -114,
+              "w": 48,
+              "h": 16
+            },
+            {
+              "x": -37,
+              "y": -98,
+              "w": 75,
+              "h": 29
+            },
+            {
+              "x": -39,
+              "y": -69,
+              "w": 75,
+              "h": 26
+            },
+            {
+              "x": -44,
+              "y": -43,
+              "w": 87,
+              "h": 23
+            },
+            {
+              "x": -52,
+              "y": -20,
+              "w": 105,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": -20,
+            "y": -56
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/kamehameha-source.png",
+        "sourceRect": [
+          447,
+          452,
+          782,
+          813
+        ],
+        "scale": 0.32338308457711445,
+        "offset": [
+          138,
+          107
+        ],
+        "metrics": {
+          "bbox": [
+            138,
+            107,
+            246,
+            224
+          ],
+          "opaquePixels": 5447,
+          "largestComponent": 1.0,
+          "components": [
+            5447
+          ]
+        },
+        "pose": {
+          "ticks": 1,
+          "phase": "active",
+          "hurtboxes": [
+            {
+              "x": -14,
+              "y": -117,
+              "w": 50,
+              "h": 19
+            },
+            {
+              "x": -23,
+              "y": -98,
+              "w": 71,
+              "h": 29
+            },
+            {
+              "x": -29,
+              "y": -69,
+              "w": 78,
+              "h": 26
+            },
+            {
+              "x": -46,
+              "y": -43,
+              "w": 88,
+              "h": 23
+            },
+            {
+              "x": -54,
+              "y": -20,
+              "w": 108,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 42,
+            "y": -66
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/kamehameha-source.png",
+        "sourceRect": [
+          838,
+          455,
+          1211,
+          812
+        ],
+        "scale": 0.32338308457711445,
+        "offset": [
+          132,
+          109
+        ],
+        "metrics": {
+          "bbox": [
+            132,
+            109,
+            253,
+            224
+          ],
+          "opaquePixels": 5784,
+          "largestComponent": 0.9998271092669433,
+          "components": [
+            5783,
+            1
+          ]
+        },
+        "pose": {
+          "ticks": 12,
+          "phase": "active",
+          "hurtboxes": [
+            {
+              "x": -20,
+              "y": -115,
+              "w": 47,
+              "h": 17
+            },
+            {
+              "x": -24,
+              "y": -98,
+              "w": 85,
+              "h": 29
+            },
+            {
+              "x": -25,
+              "y": -69,
+              "w": 84,
+              "h": 26
+            },
+            {
+              "x": -47,
+              "y": -43,
+              "w": 95,
+              "h": 23
+            },
+            {
+              "x": -60,
+              "y": -20,
+              "w": 121,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 54,
+            "y": -81
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/kamehameha-source.png",
+        "sourceRect": [
+          43,
+          858,
+          385,
+          1222
+        ],
+        "scale": 0.32338308457711445,
+        "offset": [
+          138,
+          106
+        ],
+        "metrics": {
+          "bbox": [
+            138,
+            106,
+            249,
+            224
+          ],
+          "opaquePixels": 5769,
+          "largestComponent": 1.0,
+          "components": [
+            5769
+          ]
+        },
+        "pose": {
+          "ticks": 12,
+          "phase": "active",
+          "hurtboxes": [
+            {
+              "x": -28,
+              "y": -118,
+              "w": 48,
+              "h": 20
+            },
+            {
+              "x": -31,
+              "y": -98,
+              "w": 88,
+              "h": 29
+            },
+            {
+              "x": -30,
+              "y": -69,
+              "w": 85,
+              "h": 26
+            },
+            {
+              "x": -43,
+              "y": -43,
+              "w": 87,
+              "h": 23
+            },
+            {
+              "x": -54,
+              "y": -20,
+              "w": 110,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 51,
+            "y": -76
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/kamehameha-source.png",
+        "sourceRect": [
+          465,
+          853,
+          791,
+          1223
+        ],
+        "scale": 0.32338308457711445,
+        "offset": [
+          140,
+          104
+        ],
+        "metrics": {
+          "bbox": [
+            140,
+            104,
+            245,
+            224
+          ],
+          "opaquePixels": 5601,
+          "largestComponent": 1.0,
+          "components": [
+            5601
+          ]
+        },
+        "pose": {
+          "ticks": 8,
+          "phase": "recovery",
+          "hurtboxes": [
+            {
+              "x": -16,
+              "y": -120,
+              "w": 49,
+              "h": 22
+            },
+            {
+              "x": -29,
+              "y": -98,
+              "w": 74,
+              "h": 29
+            },
+            {
+              "x": -30,
+              "y": -69,
+              "w": 75,
+              "h": 26
+            },
+            {
+              "x": -42,
+              "y": -43,
+              "w": 83,
+              "h": 23
+            },
+            {
+              "x": -52,
+              "y": -20,
+              "w": 105,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 39,
+            "y": -73
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/kamehameha-source.png",
+        "sourceRect": [
+          890,
+          827,
+          1184,
+          1226
+        ],
+        "scale": 0.32338308457711445,
+        "offset": [
+          145,
+          95
+        ],
+        "metrics": {
+          "bbox": [
+            145,
+            95,
+            240,
+            224
+          ],
+          "opaquePixels": 5997,
+          "largestComponent": 1.0,
+          "components": [
+            5997
+          ]
+        },
+        "pose": {
+          "ticks": 8,
+          "phase": "recovery",
+          "hurtboxes": [
+            {
+              "x": -19,
+              "y": -129,
+              "w": 55,
+              "h": 31
+            },
+            {
+              "x": -32,
+              "y": -98,
+              "w": 80,
+              "h": 29
+            },
+            {
+              "x": -32,
+              "y": -69,
+              "w": 72,
+              "h": 26
+            },
+            {
+              "x": -39,
+              "y": -43,
+              "w": 78,
+              "h": 23
+            },
+            {
+              "x": -47,
+              "y": -20,
+              "w": 95,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 42,
+            "y": -86
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/kamehameha-source.png",
+        "sourceRect": [
+          67,
+          15,
+          357,
+          417
+        ],
+        "scale": 0.32338308457711445,
+        "offset": [
+          146,
+          94
+        ],
+        "metrics": {
+          "bbox": [
+            146,
+            94,
+            240,
+            224
+          ],
+          "opaquePixels": 5946,
+          "largestComponent": 1.0,
+          "components": [
+            5946
+          ]
+        },
+        "pose": {
+          "ticks": 8,
+          "phase": "recovery",
+          "hurtboxes": [
+            {
+              "x": -18,
+              "y": -130,
+              "w": 54,
+              "h": 32
+            },
+            {
+              "x": -31,
+              "y": -98,
+              "w": 79,
+              "h": 29
+            },
+            {
+              "x": -31,
+              "y": -69,
+              "w": 71,
+              "h": 26
+            },
+            {
+              "x": -39,
+              "y": -43,
+              "w": 78,
+              "h": 23
+            },
+            {
+              "x": -46,
+              "y": -20,
+              "w": 93,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 39,
+            "y": -85
+          }
+        }
+      }
+    ]
+  },
+  "kamehameha_heavy": {
+    "durations": [
+      8,
+      8,
+      9,
+      1,
+      20,
+      19,
+      10,
+      10,
+      12
+    ],
+    "frames": [
+      {
+        "source": "art/goku/specials/stage3/kamehameha-source.png",
+        "sourceRect": [
+          474,
+          38,
+          790,
+          417
+        ],
+        "scale": 0.32338308457711445,
+        "offset": [
+          142,
+          101
+        ],
+        "metrics": {
+          "bbox": [
+            142,
+            101,
+            244,
+            224
+          ],
+          "opaquePixels": 5571,
+          "largestComponent": 1.0,
+          "components": [
+            5571
+          ]
+        },
+        "pose": {
+          "ticks": 8,
+          "phase": "startup",
+          "hurtboxes": [
+            {
+              "x": -14,
+              "y": -123,
+              "w": 54,
+              "h": 25
+            },
+            {
+              "x": -32,
+              "y": -98,
+              "w": 72,
+              "h": 29
+            },
+            {
+              "x": -30,
+              "y": -69,
+              "w": 63,
+              "h": 26
+            },
+            {
+              "x": -40,
+              "y": -43,
+              "w": 82,
+              "h": 23
+            },
+            {
+              "x": -50,
+              "y": -20,
+              "w": 102,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": -17,
+            "y": -61
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/kamehameha-source.png",
+        "sourceRect": [
+          874,
+          71,
+          1196,
+          416
+        ],
+        "scale": 0.32338308457711445,
+        "offset": [
+          140,
+          112
+        ],
+        "metrics": {
+          "bbox": [
+            140,
+            112,
+            244,
+            224
+          ],
+          "opaquePixels": 5495,
+          "largestComponent": 1.0,
+          "components": [
+            5495
+          ]
+        },
+        "pose": {
+          "ticks": 8,
+          "phase": "startup",
+          "hurtboxes": [
+            {
+              "x": -2,
+              "y": -112,
+              "w": 43,
+              "h": 14
+            },
+            {
+              "x": -29,
+              "y": -98,
+              "w": 72,
+              "h": 29
+            },
+            {
+              "x": -30,
+              "y": -69,
+              "w": 69,
+              "h": 26
+            },
+            {
+              "x": -43,
+              "y": -43,
+              "w": 87,
+              "h": 23
+            },
+            {
+              "x": -52,
+              "y": -20,
+              "w": 104,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": -18,
+            "y": -58
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/kamehameha-source.png",
+        "sourceRect": [
+          46,
+          464,
+          371,
+          815
+        ],
+        "scale": 0.32338308457711445,
+        "offset": [
+          140,
+          110
+        ],
+        "metrics": {
+          "bbox": [
+            140,
+            110,
+            245,
+            224
+          ],
+          "opaquePixels": 5474,
+          "largestComponent": 1.0,
+          "components": [
+            5474
+          ]
+        },
+        "pose": {
+          "ticks": 9,
+          "phase": "startup",
+          "hurtboxes": [
+            {
+              "x": -13,
+              "y": -114,
+              "w": 48,
+              "h": 16
+            },
+            {
+              "x": -37,
+              "y": -98,
+              "w": 75,
+              "h": 29
+            },
+            {
+              "x": -39,
+              "y": -69,
+              "w": 75,
+              "h": 26
+            },
+            {
+              "x": -44,
+              "y": -43,
+              "w": 87,
+              "h": 23
+            },
+            {
+              "x": -52,
+              "y": -20,
+              "w": 105,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": -20,
+            "y": -56
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/kamehameha-source.png",
+        "sourceRect": [
+          447,
+          452,
+          782,
+          813
+        ],
+        "scale": 0.32338308457711445,
+        "offset": [
+          138,
+          107
+        ],
+        "metrics": {
+          "bbox": [
+            138,
+            107,
+            246,
+            224
+          ],
+          "opaquePixels": 5447,
+          "largestComponent": 1.0,
+          "components": [
+            5447
+          ]
+        },
+        "pose": {
+          "ticks": 1,
+          "phase": "active",
+          "hurtboxes": [
+            {
+              "x": -14,
+              "y": -117,
+              "w": 50,
+              "h": 19
+            },
+            {
+              "x": -23,
+              "y": -98,
+              "w": 71,
+              "h": 29
+            },
+            {
+              "x": -29,
+              "y": -69,
+              "w": 78,
+              "h": 26
+            },
+            {
+              "x": -46,
+              "y": -43,
+              "w": 88,
+              "h": 23
+            },
+            {
+              "x": -54,
+              "y": -20,
+              "w": 108,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 42,
+            "y": -66
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/kamehameha-source.png",
+        "sourceRect": [
+          838,
+          455,
+          1211,
+          812
+        ],
+        "scale": 0.32338308457711445,
+        "offset": [
+          132,
+          109
+        ],
+        "metrics": {
+          "bbox": [
+            132,
+            109,
+            253,
+            224
+          ],
+          "opaquePixels": 5784,
+          "largestComponent": 0.9998271092669433,
+          "components": [
+            5783,
+            1
+          ]
+        },
+        "pose": {
+          "ticks": 20,
+          "phase": "active",
+          "hurtboxes": [
+            {
+              "x": -20,
+              "y": -115,
+              "w": 47,
+              "h": 17
+            },
+            {
+              "x": -24,
+              "y": -98,
+              "w": 85,
+              "h": 29
+            },
+            {
+              "x": -25,
+              "y": -69,
+              "w": 84,
+              "h": 26
+            },
+            {
+              "x": -47,
+              "y": -43,
+              "w": 95,
+              "h": 23
+            },
+            {
+              "x": -60,
+              "y": -20,
+              "w": 121,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 54,
+            "y": -81
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/kamehameha-source.png",
+        "sourceRect": [
+          43,
+          858,
+          385,
+          1222
+        ],
+        "scale": 0.32338308457711445,
+        "offset": [
+          138,
+          106
+        ],
+        "metrics": {
+          "bbox": [
+            138,
+            106,
+            249,
+            224
+          ],
+          "opaquePixels": 5769,
+          "largestComponent": 1.0,
+          "components": [
+            5769
+          ]
+        },
+        "pose": {
+          "ticks": 19,
+          "phase": "active",
+          "hurtboxes": [
+            {
+              "x": -28,
+              "y": -118,
+              "w": 48,
+              "h": 20
+            },
+            {
+              "x": -31,
+              "y": -98,
+              "w": 88,
+              "h": 29
+            },
+            {
+              "x": -30,
+              "y": -69,
+              "w": 85,
+              "h": 26
+            },
+            {
+              "x": -43,
+              "y": -43,
+              "w": 87,
+              "h": 23
+            },
+            {
+              "x": -54,
+              "y": -20,
+              "w": 110,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 51,
+            "y": -76
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/kamehameha-source.png",
+        "sourceRect": [
+          465,
+          853,
+          791,
+          1223
+        ],
+        "scale": 0.32338308457711445,
+        "offset": [
+          140,
+          104
+        ],
+        "metrics": {
+          "bbox": [
+            140,
+            104,
+            245,
+            224
+          ],
+          "opaquePixels": 5601,
+          "largestComponent": 1.0,
+          "components": [
+            5601
+          ]
+        },
+        "pose": {
+          "ticks": 10,
+          "phase": "recovery",
+          "hurtboxes": [
+            {
+              "x": -16,
+              "y": -120,
+              "w": 49,
+              "h": 22
+            },
+            {
+              "x": -29,
+              "y": -98,
+              "w": 74,
+              "h": 29
+            },
+            {
+              "x": -30,
+              "y": -69,
+              "w": 75,
+              "h": 26
+            },
+            {
+              "x": -42,
+              "y": -43,
+              "w": 83,
+              "h": 23
+            },
+            {
+              "x": -52,
+              "y": -20,
+              "w": 105,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 39,
+            "y": -73
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/kamehameha-source.png",
+        "sourceRect": [
+          890,
+          827,
+          1184,
+          1226
+        ],
+        "scale": 0.32338308457711445,
+        "offset": [
+          145,
+          95
+        ],
+        "metrics": {
+          "bbox": [
+            145,
+            95,
+            240,
+            224
+          ],
+          "opaquePixels": 5997,
+          "largestComponent": 1.0,
+          "components": [
+            5997
+          ]
+        },
+        "pose": {
+          "ticks": 10,
+          "phase": "recovery",
+          "hurtboxes": [
+            {
+              "x": -19,
+              "y": -129,
+              "w": 55,
+              "h": 31
+            },
+            {
+              "x": -32,
+              "y": -98,
+              "w": 80,
+              "h": 29
+            },
+            {
+              "x": -32,
+              "y": -69,
+              "w": 72,
+              "h": 26
+            },
+            {
+              "x": -39,
+              "y": -43,
+              "w": 78,
+              "h": 23
+            },
+            {
+              "x": -47,
+              "y": -20,
+              "w": 95,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 42,
+            "y": -86
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/kamehameha-source.png",
+        "sourceRect": [
+          67,
+          15,
+          357,
+          417
+        ],
+        "scale": 0.32338308457711445,
+        "offset": [
+          146,
+          94
+        ],
+        "metrics": {
+          "bbox": [
+            146,
+            94,
+            240,
+            224
+          ],
+          "opaquePixels": 5946,
+          "largestComponent": 1.0,
+          "components": [
+            5946
+          ]
+        },
+        "pose": {
+          "ticks": 12,
+          "phase": "recovery",
+          "hurtboxes": [
+            {
+              "x": -18,
+              "y": -130,
+              "w": 54,
+              "h": 32
+            },
+            {
+              "x": -31,
+              "y": -98,
+              "w": 79,
+              "h": 29
+            },
+            {
+              "x": -31,
+              "y": -69,
+              "w": 71,
+              "h": 26
+            },
+            {
+              "x": -39,
+              "y": -43,
+              "w": 78,
+              "h": 23
+            },
+            {
+              "x": -46,
+              "y": -20,
+              "w": 93,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 39,
+            "y": -85
+          }
+        }
+      }
+    ]
+  },
+  "teleport_light": {
+    "durations": [
+      3,
+      3,
+      4,
+      6,
+      4,
+      4,
+      4,
+      4,
+      4
+    ],
+    "frames": [
+      {
+        "source": "art/goku/specials/stage3/teleport-source.png",
+        "sourceRect": [
+          640,
+          7,
+          876,
+          334
+        ],
+        "scale": 0.4,
+        "offset": [
+          146,
+          93
+        ],
+        "metrics": {
+          "bbox": [
+            146,
+            93,
+            240,
+            224
+          ],
+          "opaquePixels": 5553,
+          "largestComponent": 1.0,
+          "components": [
+            5553
+          ]
+        },
+        "pose": {
+          "ticks": 3,
+          "phase": "startup",
+          "hurtboxes": [
+            {
+              "x": -16,
+              "y": -131,
+              "w": 52,
+              "h": 33
+            },
+            {
+              "x": -30,
+              "y": -98,
+              "w": 67,
+              "h": 29
+            },
+            {
+              "x": -28,
+              "y": -69,
+              "w": 65,
+              "h": 26
+            },
+            {
+              "x": -37,
+              "y": -43,
+              "w": 77,
+              "h": 23
+            },
+            {
+              "x": -46,
+              "y": -20,
+              "w": 94,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 15,
+            "y": -108
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/teleport-source.png",
+        "sourceRect": [
+          1119,
+          7,
+          1355,
+          334
+        ],
+        "scale": 0.4,
+        "offset": [
+          146,
+          93
+        ],
+        "metrics": {
+          "bbox": [
+            146,
+            93,
+            240,
+            224
+          ],
+          "opaquePixels": 5842,
+          "largestComponent": 1.0,
+          "components": [
+            5842
+          ]
+        },
+        "pose": {
+          "ticks": 3,
+          "phase": "startup",
+          "hurtboxes": [
+            {
+              "x": -17,
+              "y": -131,
+              "w": 53,
+              "h": 33
+            },
+            {
+              "x": -31,
+              "y": -98,
+              "w": 70,
+              "h": 29
+            },
+            {
+              "x": -31,
+              "y": -69,
+              "w": 69,
+              "h": 26
+            },
+            {
+              "x": -37,
+              "y": -43,
+              "w": 77,
+              "h": 23
+            },
+            {
+              "x": -46,
+              "y": -20,
+              "w": 94,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 15,
+            "y": -108
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/teleport-source.png",
+        "sourceRect": [
+          160,
+          348,
+          396,
+          674
+        ],
+        "scale": 0.4,
+        "offset": [
+          146,
+          94
+        ],
+        "metrics": {
+          "bbox": [
+            146,
+            94,
+            240,
+            224
+          ],
+          "opaquePixels": 5819,
+          "largestComponent": 1.0,
+          "components": [
+            5819
+          ]
+        },
+        "pose": {
+          "ticks": 4,
+          "phase": "startup",
+          "hurtboxes": [
+            {
+              "x": -16,
+              "y": -130,
+              "w": 53,
+              "h": 32
+            },
+            {
+              "x": -32,
+              "y": -98,
+              "w": 72,
+              "h": 29
+            },
+            {
+              "x": -32,
+              "y": -69,
+              "w": 71,
+              "h": 26
+            },
+            {
+              "x": -37,
+              "y": -43,
+              "w": 77,
+              "h": 23
+            },
+            {
+              "x": -46,
+              "y": -20,
+              "w": 94,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 15,
+            "y": -108
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/teleport-source.png",
+        "sourceRect": [
+          640,
+          354,
+          878,
+          674
+        ],
+        "scale": 0.4,
+        "offset": [
+          145,
+          96
+        ],
+        "metrics": {
+          "bbox": [
+            145,
+            96,
+            240,
+            224
+          ],
+          "opaquePixels": 6020,
+          "largestComponent": 1.0,
+          "components": [
+            6020
+          ]
+        },
+        "pose": {
+          "ticks": 6,
+          "phase": "active",
+          "hurtboxes": [
+            {
+              "x": -16,
+              "y": -128,
+              "w": 56,
+              "h": 30
+            },
+            {
+              "x": -32,
+              "y": -98,
+              "w": 70,
+              "h": 29
+            },
+            {
+              "x": -32,
+              "y": -69,
+              "w": 69,
+              "h": 26
+            },
+            {
+              "x": -39,
+              "y": -43,
+              "w": 81,
+              "h": 23
+            },
+            {
+              "x": -47,
+              "y": -20,
+              "w": 95,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 15,
+            "y": -108
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/teleport-source.png",
+        "sourceRect": [
+          1120,
+          348,
+          1357,
+          674
+        ],
+        "scale": 0.4,
+        "offset": [
+          145,
+          94
+        ],
+        "metrics": {
+          "bbox": [
+            145,
+            94,
+            240,
+            224
+          ],
+          "opaquePixels": 5947,
+          "largestComponent": 0.9998318479905834,
+          "components": [
+            5946,
+            1
+          ]
+        },
+        "pose": {
+          "ticks": 4,
+          "phase": "recovery",
+          "hurtboxes": [
+            {
+              "x": -14,
+              "y": -130,
+              "w": 54,
+              "h": 32
+            },
+            {
+              "x": -31,
+              "y": -98,
+              "w": 71,
+              "h": 29
+            },
+            {
+              "x": -31,
+              "y": -69,
+              "w": 70,
+              "h": 26
+            },
+            {
+              "x": -38,
+              "y": -43,
+              "w": 80,
+              "h": 23
+            },
+            {
+              "x": -47,
+              "y": -20,
+              "w": 95,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 15,
+            "y": -108
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/teleport-source.png",
+        "sourceRect": [
+          159,
+          686,
+          398,
+          1008
+        ],
+        "scale": 0.4,
+        "offset": [
+          144,
+          95
+        ],
+        "metrics": {
+          "bbox": [
+            144,
+            95,
+            240,
+            224
+          ],
+          "opaquePixels": 5949,
+          "largestComponent": 1.0,
+          "components": [
+            5949
+          ]
+        },
+        "pose": {
+          "ticks": 4,
+          "phase": "recovery",
+          "hurtboxes": [
+            {
+              "x": -24,
+              "y": -129,
+              "w": 64,
+              "h": 31
+            },
+            {
+              "x": -34,
+              "y": -98,
+              "w": 76,
+              "h": 29
+            },
+            {
+              "x": -29,
+              "y": -69,
+              "w": 70,
+              "h": 26
+            },
+            {
+              "x": -39,
+              "y": -43,
+              "w": 81,
+              "h": 23
+            },
+            {
+              "x": -48,
+              "y": -20,
+              "w": 96,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 15,
+            "y": -108
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/teleport-source.png",
+        "sourceRect": [
+          638,
+          691,
+          877,
+          1008
+        ],
+        "scale": 0.4,
+        "offset": [
+          144,
+          97
+        ],
+        "metrics": {
+          "bbox": [
+            144,
+            97,
+            240,
+            224
+          ],
+          "opaquePixels": 5901,
+          "largestComponent": 1.0,
+          "components": [
+            5901
+          ]
+        },
+        "pose": {
+          "ticks": 4,
+          "phase": "recovery",
+          "hurtboxes": [
+            {
+              "x": -18,
+              "y": -127,
+              "w": 56,
+              "h": 29
+            },
+            {
+              "x": -34,
+              "y": -98,
+              "w": 82,
+              "h": 29
+            },
+            {
+              "x": -34,
+              "y": -69,
+              "w": 76,
+              "h": 26
+            },
+            {
+              "x": -40,
+              "y": -43,
+              "w": 80,
+              "h": 23
+            },
+            {
+              "x": -48,
+              "y": -20,
+              "w": 96,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 15,
+            "y": -108
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/teleport-source.png",
+        "sourceRect": [
+          1118,
+          689,
+          1364,
+          1008
+        ],
+        "scale": 0.4,
+        "offset": [
+          146,
+          96
+        ],
+        "metrics": {
+          "bbox": [
+            146,
+            96,
+            244,
+            224
+          ],
+          "opaquePixels": 5832,
+          "largestComponent": 0.9998285322359396,
+          "components": [
+            5831,
+            1
+          ]
+        },
+        "pose": {
+          "ticks": 4,
+          "phase": "recovery",
+          "hurtboxes": [
+            {
+              "x": -15,
+              "y": -128,
+              "w": 52,
+              "h": 30
+            },
+            {
+              "x": -31,
+              "y": -98,
+              "w": 83,
+              "h": 29
+            },
+            {
+              "x": -31,
+              "y": -69,
+              "w": 75,
+              "h": 26
+            },
+            {
+              "x": -37,
+              "y": -43,
+              "w": 78,
+              "h": 23
+            },
+            {
+              "x": -46,
+              "y": -20,
+              "w": 94,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 15,
+            "y": -108
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/teleport-source.png",
+        "sourceRect": [
+          160,
+          9,
+          405,
+          334
+        ],
+        "scale": 0.4,
+        "offset": [
+          146,
+          94
+        ],
+        "metrics": {
+          "bbox": [
+            146,
+            94,
+            244,
+            224
+          ],
+          "opaquePixels": 5894,
+          "largestComponent": 1.0,
+          "components": [
+            5894
+          ]
+        },
+        "pose": {
+          "ticks": 4,
+          "phase": "recovery",
+          "hurtboxes": [
+            {
+              "x": -17,
+              "y": -130,
+              "w": 55,
+              "h": 32
+            },
+            {
+              "x": -31,
+              "y": -98,
+              "w": 83,
+              "h": 29
+            },
+            {
+              "x": -31,
+              "y": -69,
+              "w": 75,
+              "h": 26
+            },
+            {
+              "x": -37,
+              "y": -43,
+              "w": 78,
+              "h": 23
+            },
+            {
+              "x": -46,
+              "y": -20,
+              "w": 94,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 15,
+            "y": -108
+          }
+        }
+      }
+    ]
+  },
+  "teleport_medium": {
+    "durations": [
+      4,
+      4,
+      5,
+      7,
+      5,
+      5,
+      5,
+      5,
+      5
+    ],
+    "frames": [
+      {
+        "source": "art/goku/specials/stage3/teleport-source.png",
+        "sourceRect": [
+          640,
+          7,
+          876,
+          334
+        ],
+        "scale": 0.4,
+        "offset": [
+          146,
+          93
+        ],
+        "metrics": {
+          "bbox": [
+            146,
+            93,
+            240,
+            224
+          ],
+          "opaquePixels": 5553,
+          "largestComponent": 1.0,
+          "components": [
+            5553
+          ]
+        },
+        "pose": {
+          "ticks": 4,
+          "phase": "startup",
+          "hurtboxes": [
+            {
+              "x": -16,
+              "y": -131,
+              "w": 52,
+              "h": 33
+            },
+            {
+              "x": -30,
+              "y": -98,
+              "w": 67,
+              "h": 29
+            },
+            {
+              "x": -28,
+              "y": -69,
+              "w": 65,
+              "h": 26
+            },
+            {
+              "x": -37,
+              "y": -43,
+              "w": 77,
+              "h": 23
+            },
+            {
+              "x": -46,
+              "y": -20,
+              "w": 94,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 15,
+            "y": -108
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/teleport-source.png",
+        "sourceRect": [
+          1119,
+          7,
+          1355,
+          334
+        ],
+        "scale": 0.4,
+        "offset": [
+          146,
+          93
+        ],
+        "metrics": {
+          "bbox": [
+            146,
+            93,
+            240,
+            224
+          ],
+          "opaquePixels": 5842,
+          "largestComponent": 1.0,
+          "components": [
+            5842
+          ]
+        },
+        "pose": {
+          "ticks": 4,
+          "phase": "startup",
+          "hurtboxes": [
+            {
+              "x": -17,
+              "y": -131,
+              "w": 53,
+              "h": 33
+            },
+            {
+              "x": -31,
+              "y": -98,
+              "w": 70,
+              "h": 29
+            },
+            {
+              "x": -31,
+              "y": -69,
+              "w": 69,
+              "h": 26
+            },
+            {
+              "x": -37,
+              "y": -43,
+              "w": 77,
+              "h": 23
+            },
+            {
+              "x": -46,
+              "y": -20,
+              "w": 94,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 15,
+            "y": -108
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/teleport-source.png",
+        "sourceRect": [
+          160,
+          348,
+          396,
+          674
+        ],
+        "scale": 0.4,
+        "offset": [
+          146,
+          94
+        ],
+        "metrics": {
+          "bbox": [
+            146,
+            94,
+            240,
+            224
+          ],
+          "opaquePixels": 5819,
+          "largestComponent": 1.0,
+          "components": [
+            5819
+          ]
+        },
+        "pose": {
+          "ticks": 5,
+          "phase": "startup",
+          "hurtboxes": [
+            {
+              "x": -16,
+              "y": -130,
+              "w": 53,
+              "h": 32
+            },
+            {
+              "x": -32,
+              "y": -98,
+              "w": 72,
+              "h": 29
+            },
+            {
+              "x": -32,
+              "y": -69,
+              "w": 71,
+              "h": 26
+            },
+            {
+              "x": -37,
+              "y": -43,
+              "w": 77,
+              "h": 23
+            },
+            {
+              "x": -46,
+              "y": -20,
+              "w": 94,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 15,
+            "y": -108
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/teleport-source.png",
+        "sourceRect": [
+          640,
+          354,
+          878,
+          674
+        ],
+        "scale": 0.4,
+        "offset": [
+          145,
+          96
+        ],
+        "metrics": {
+          "bbox": [
+            145,
+            96,
+            240,
+            224
+          ],
+          "opaquePixels": 6020,
+          "largestComponent": 1.0,
+          "components": [
+            6020
+          ]
+        },
+        "pose": {
+          "ticks": 7,
+          "phase": "active",
+          "hurtboxes": [
+            {
+              "x": -16,
+              "y": -128,
+              "w": 56,
+              "h": 30
+            },
+            {
+              "x": -32,
+              "y": -98,
+              "w": 70,
+              "h": 29
+            },
+            {
+              "x": -32,
+              "y": -69,
+              "w": 69,
+              "h": 26
+            },
+            {
+              "x": -39,
+              "y": -43,
+              "w": 81,
+              "h": 23
+            },
+            {
+              "x": -47,
+              "y": -20,
+              "w": 95,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 15,
+            "y": -108
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/teleport-source.png",
+        "sourceRect": [
+          1120,
+          348,
+          1357,
+          674
+        ],
+        "scale": 0.4,
+        "offset": [
+          145,
+          94
+        ],
+        "metrics": {
+          "bbox": [
+            145,
+            94,
+            240,
+            224
+          ],
+          "opaquePixels": 5947,
+          "largestComponent": 0.9998318479905834,
+          "components": [
+            5946,
+            1
+          ]
+        },
+        "pose": {
+          "ticks": 5,
+          "phase": "recovery",
+          "hurtboxes": [
+            {
+              "x": -14,
+              "y": -130,
+              "w": 54,
+              "h": 32
+            },
+            {
+              "x": -31,
+              "y": -98,
+              "w": 71,
+              "h": 29
+            },
+            {
+              "x": -31,
+              "y": -69,
+              "w": 70,
+              "h": 26
+            },
+            {
+              "x": -38,
+              "y": -43,
+              "w": 80,
+              "h": 23
+            },
+            {
+              "x": -47,
+              "y": -20,
+              "w": 95,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 15,
+            "y": -108
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/teleport-source.png",
+        "sourceRect": [
+          159,
+          686,
+          398,
+          1008
+        ],
+        "scale": 0.4,
+        "offset": [
+          144,
+          95
+        ],
+        "metrics": {
+          "bbox": [
+            144,
+            95,
+            240,
+            224
+          ],
+          "opaquePixels": 5949,
+          "largestComponent": 1.0,
+          "components": [
+            5949
+          ]
+        },
+        "pose": {
+          "ticks": 5,
+          "phase": "recovery",
+          "hurtboxes": [
+            {
+              "x": -24,
+              "y": -129,
+              "w": 64,
+              "h": 31
+            },
+            {
+              "x": -34,
+              "y": -98,
+              "w": 76,
+              "h": 29
+            },
+            {
+              "x": -29,
+              "y": -69,
+              "w": 70,
+              "h": 26
+            },
+            {
+              "x": -39,
+              "y": -43,
+              "w": 81,
+              "h": 23
+            },
+            {
+              "x": -48,
+              "y": -20,
+              "w": 96,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 15,
+            "y": -108
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/teleport-source.png",
+        "sourceRect": [
+          638,
+          691,
+          877,
+          1008
+        ],
+        "scale": 0.4,
+        "offset": [
+          144,
+          97
+        ],
+        "metrics": {
+          "bbox": [
+            144,
+            97,
+            240,
+            224
+          ],
+          "opaquePixels": 5901,
+          "largestComponent": 1.0,
+          "components": [
+            5901
+          ]
+        },
+        "pose": {
+          "ticks": 5,
+          "phase": "recovery",
+          "hurtboxes": [
+            {
+              "x": -18,
+              "y": -127,
+              "w": 56,
+              "h": 29
+            },
+            {
+              "x": -34,
+              "y": -98,
+              "w": 82,
+              "h": 29
+            },
+            {
+              "x": -34,
+              "y": -69,
+              "w": 76,
+              "h": 26
+            },
+            {
+              "x": -40,
+              "y": -43,
+              "w": 80,
+              "h": 23
+            },
+            {
+              "x": -48,
+              "y": -20,
+              "w": 96,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 15,
+            "y": -108
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/teleport-source.png",
+        "sourceRect": [
+          1118,
+          689,
+          1364,
+          1008
+        ],
+        "scale": 0.4,
+        "offset": [
+          146,
+          96
+        ],
+        "metrics": {
+          "bbox": [
+            146,
+            96,
+            244,
+            224
+          ],
+          "opaquePixels": 5832,
+          "largestComponent": 0.9998285322359396,
+          "components": [
+            5831,
+            1
+          ]
+        },
+        "pose": {
+          "ticks": 5,
+          "phase": "recovery",
+          "hurtboxes": [
+            {
+              "x": -15,
+              "y": -128,
+              "w": 52,
+              "h": 30
+            },
+            {
+              "x": -31,
+              "y": -98,
+              "w": 83,
+              "h": 29
+            },
+            {
+              "x": -31,
+              "y": -69,
+              "w": 75,
+              "h": 26
+            },
+            {
+              "x": -37,
+              "y": -43,
+              "w": 78,
+              "h": 23
+            },
+            {
+              "x": -46,
+              "y": -20,
+              "w": 94,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 15,
+            "y": -108
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/teleport-source.png",
+        "sourceRect": [
+          160,
+          9,
+          405,
+          334
+        ],
+        "scale": 0.4,
+        "offset": [
+          146,
+          94
+        ],
+        "metrics": {
+          "bbox": [
+            146,
+            94,
+            244,
+            224
+          ],
+          "opaquePixels": 5894,
+          "largestComponent": 1.0,
+          "components": [
+            5894
+          ]
+        },
+        "pose": {
+          "ticks": 5,
+          "phase": "recovery",
+          "hurtboxes": [
+            {
+              "x": -17,
+              "y": -130,
+              "w": 55,
+              "h": 32
+            },
+            {
+              "x": -31,
+              "y": -98,
+              "w": 83,
+              "h": 29
+            },
+            {
+              "x": -31,
+              "y": -69,
+              "w": 75,
+              "h": 26
+            },
+            {
+              "x": -37,
+              "y": -43,
+              "w": 78,
+              "h": 23
+            },
+            {
+              "x": -46,
+              "y": -20,
+              "w": 94,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 15,
+            "y": -108
+          }
+        }
+      }
+    ]
+  },
+  "teleport_heavy": {
+    "durations": [
+      5,
+      5,
+      5,
+      8,
+      6,
+      6,
+      6,
+      7
+    ],
+    "frames": [
+      {
+        "source": "art/goku/specials/stage3/teleport-source.png",
+        "sourceRect": [
+          640,
+          7,
+          876,
+          334
+        ],
+        "scale": 0.4,
+        "offset": [
+          146,
+          93
+        ],
+        "metrics": {
+          "bbox": [
+            146,
+            93,
+            240,
+            224
+          ],
+          "opaquePixels": 5553,
+          "largestComponent": 1.0,
+          "components": [
+            5553
+          ]
+        },
+        "pose": {
+          "ticks": 5,
+          "phase": "startup",
+          "hurtboxes": [
+            {
+              "x": -16,
+              "y": -131,
+              "w": 52,
+              "h": 33
+            },
+            {
+              "x": -30,
+              "y": -98,
+              "w": 67,
+              "h": 29
+            },
+            {
+              "x": -28,
+              "y": -69,
+              "w": 65,
+              "h": 26
+            },
+            {
+              "x": -37,
+              "y": -43,
+              "w": 77,
+              "h": 23
+            },
+            {
+              "x": -46,
+              "y": -20,
+              "w": 94,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 15,
+            "y": -108
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/teleport-source.png",
+        "sourceRect": [
+          1119,
+          7,
+          1355,
+          334
+        ],
+        "scale": 0.4,
+        "offset": [
+          146,
+          93
+        ],
+        "metrics": {
+          "bbox": [
+            146,
+            93,
+            240,
+            224
+          ],
+          "opaquePixels": 5842,
+          "largestComponent": 1.0,
+          "components": [
+            5842
+          ]
+        },
+        "pose": {
+          "ticks": 5,
+          "phase": "startup",
+          "hurtboxes": [
+            {
+              "x": -17,
+              "y": -131,
+              "w": 53,
+              "h": 33
+            },
+            {
+              "x": -31,
+              "y": -98,
+              "w": 70,
+              "h": 29
+            },
+            {
+              "x": -31,
+              "y": -69,
+              "w": 69,
+              "h": 26
+            },
+            {
+              "x": -37,
+              "y": -43,
+              "w": 77,
+              "h": 23
+            },
+            {
+              "x": -46,
+              "y": -20,
+              "w": 94,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 15,
+            "y": -108
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/teleport-source.png",
+        "sourceRect": [
+          160,
+          348,
+          396,
+          674
+        ],
+        "scale": 0.4,
+        "offset": [
+          146,
+          94
+        ],
+        "metrics": {
+          "bbox": [
+            146,
+            94,
+            240,
+            224
+          ],
+          "opaquePixels": 5819,
+          "largestComponent": 1.0,
+          "components": [
+            5819
+          ]
+        },
+        "pose": {
+          "ticks": 5,
+          "phase": "startup",
+          "hurtboxes": [
+            {
+              "x": -16,
+              "y": -130,
+              "w": 53,
+              "h": 32
+            },
+            {
+              "x": -32,
+              "y": -98,
+              "w": 72,
+              "h": 29
+            },
+            {
+              "x": -32,
+              "y": -69,
+              "w": 71,
+              "h": 26
+            },
+            {
+              "x": -37,
+              "y": -43,
+              "w": 77,
+              "h": 23
+            },
+            {
+              "x": -46,
+              "y": -20,
+              "w": 94,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 15,
+            "y": -108
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/teleport-source.png",
+        "sourceRect": [
+          640,
+          354,
+          878,
+          674
+        ],
+        "scale": 0.4,
+        "offset": [
+          145,
+          96
+        ],
+        "metrics": {
+          "bbox": [
+            145,
+            96,
+            240,
+            224
+          ],
+          "opaquePixels": 6020,
+          "largestComponent": 1.0,
+          "components": [
+            6020
+          ]
+        },
+        "pose": {
+          "ticks": 8,
+          "phase": "active",
+          "hurtboxes": [
+            {
+              "x": -16,
+              "y": -128,
+              "w": 56,
+              "h": 30
+            },
+            {
+              "x": -32,
+              "y": -98,
+              "w": 70,
+              "h": 29
+            },
+            {
+              "x": -32,
+              "y": -69,
+              "w": 69,
+              "h": 26
+            },
+            {
+              "x": -39,
+              "y": -43,
+              "w": 81,
+              "h": 23
+            },
+            {
+              "x": -47,
+              "y": -20,
+              "w": 95,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 15,
+            "y": -108
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/teleport_air-source.png",
+        "sourceRect": [
+          109,
+          425,
+          371,
+          800
+        ],
+        "scale": 0.3439153439153439,
+        "offset": [
+          147,
+          94
+        ],
+        "metrics": {
+          "bbox": [
+            147,
+            94,
+            237,
+            223
+          ],
+          "opaquePixels": 5315,
+          "largestComponent": 1.0,
+          "components": [
+            5315
+          ]
+        },
+        "pose": {
+          "ticks": 6,
+          "phase": "recovery",
+          "hurtboxes": [
+            {
+              "x": -27,
+              "y": -130,
+              "w": 55,
+              "h": 32
+            },
+            {
+              "x": -41,
+              "y": -98,
+              "w": 86,
+              "h": 29
+            },
+            {
+              "x": -45,
+              "y": -69,
+              "w": 90,
+              "h": 26
+            },
+            {
+              "x": -43,
+              "y": -43,
+              "w": 69,
+              "h": 23
+            },
+            {
+              "x": -7,
+              "y": -20,
+              "w": 18,
+              "h": 19
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 15,
+            "y": -108
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/teleport_air-source.png",
+        "sourceRect": [
+          516,
+          419,
+          792,
+          771
+        ],
+        "scale": 0.3439153439153439,
+        "offset": [
+          144,
+          94
+        ],
+        "metrics": {
+          "bbox": [
+            144,
+            94,
+            239,
+            215
+          ],
+          "opaquePixels": 5386,
+          "largestComponent": 0.999814333457111,
+          "components": [
+            5385,
+            1
+          ]
+        },
+        "pose": {
+          "ticks": 6,
+          "phase": "recovery",
+          "hurtboxes": [
+            {
+              "x": -36,
+              "y": -130,
+              "w": 56,
+              "h": 32
+            },
+            {
+              "x": -48,
+              "y": -98,
+              "w": 95,
+              "h": 29
+            },
+            {
+              "x": -45,
+              "y": -69,
+              "w": 89,
+              "h": 26
+            },
+            {
+              "x": -45,
+              "y": -43,
+              "w": 69,
+              "h": 23
+            },
+            {
+              "x": -28,
+              "y": -20,
+              "w": 23,
+              "h": 11
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 15,
+            "y": -108
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/teleport_air-source.png",
+        "sourceRect": [
+          79,
+          811,
+          354,
+          1205
+        ],
+        "scale": 0.3439153439153439,
+        "offset": [
+          144,
+          88
+        ],
+        "metrics": {
+          "bbox": [
+            144,
+            88,
+            239,
+            224
+          ],
+          "opaquePixels": 5543,
+          "largestComponent": 1.0,
+          "components": [
+            5543
+          ]
+        },
+        "pose": {
+          "ticks": 6,
+          "phase": "recovery",
+          "hurtboxes": [
+            {
+              "x": -47,
+              "y": -136,
+              "w": 78,
+              "h": 38
+            },
+            {
+              "x": -48,
+              "y": -98,
+              "w": 92,
+              "h": 29
+            },
+            {
+              "x": -36,
+              "y": -69,
+              "w": 69,
+              "h": 26
+            },
+            {
+              "x": -31,
+              "y": -43,
+              "w": 69,
+              "h": 23
+            },
+            {
+              "x": 22,
+              "y": -20,
+              "w": 25,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 15,
+            "y": -108
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/teleport_air-source.png",
+        "sourceRect": [
+          927,
+          809,
+          1185,
+          1223
+        ],
+        "scale": 0.3439153439153439,
+        "offset": [
+          148,
+          82
+        ],
+        "metrics": {
+          "bbox": [
+            148,
+            82,
+            237,
+            224
+          ],
+          "opaquePixels": 6252,
+          "largestComponent": 0.9987204094689699,
+          "components": [
+            6244,
+            8
+          ]
+        },
+        "pose": {
+          "ticks": 7,
+          "phase": "recovery",
+          "hurtboxes": [
+            {
+              "x": -40,
+              "y": -142,
+              "w": 76,
+              "h": 44
+            },
+            {
+              "x": -44,
+              "y": -98,
+              "w": 83,
+              "h": 29
+            },
+            {
+              "x": -41,
+              "y": -69,
+              "w": 74,
+              "h": 26
+            },
+            {
+              "x": -43,
+              "y": -43,
+              "w": 79,
+              "h": 23
+            },
+            {
+              "x": -43,
+              "y": -20,
+              "w": 88,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 15,
+            "y": -108
+          }
+        }
+      }
+    ]
+  },
+  "teleport_air": {
+    "durations": [
+      5,
+      5,
+      5,
+      8,
+      8,
+      8,
+      9
+    ],
+    "frames": [
+      {
+        "source": "art/goku/specials/stage3/teleport_air-source.png",
+        "sourceRect": [
+          485,
+          36,
+          758,
+          378
+        ],
+        "scale": 0.3439153439153439,
+        "offset": [
+          145,
+          94
+        ],
+        "metrics": {
+          "bbox": [
+            145,
+            94,
+            239,
+            212
+          ],
+          "opaquePixels": 5181,
+          "largestComponent": 0.9998069870681335,
+          "components": [
+            5180,
+            1
+          ]
+        },
+        "pose": {
+          "ticks": 5,
+          "phase": "startup",
+          "hurtboxes": [
+            {
+              "x": -18,
+              "y": -130,
+              "w": 62,
+              "h": 32
+            },
+            {
+              "x": -43,
+              "y": -98,
+              "w": 90,
+              "h": 29
+            },
+            {
+              "x": -47,
+              "y": -69,
+              "w": 90,
+              "h": 26
+            },
+            {
+              "x": -22,
+              "y": -43,
+              "w": 58,
+              "h": 23
+            },
+            {
+              "x": -1,
+              "y": -20,
+              "w": 10,
+              "h": 8
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 15,
+            "y": -108
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/teleport_air-source.png",
+        "sourceRect": [
+          907,
+          33,
+          1156,
+          400
+        ],
+        "scale": 0.3439153439153439,
+        "offset": [
+          149,
+          94
+        ],
+        "metrics": {
+          "bbox": [
+            149,
+            94,
+            235,
+            220
+          ],
+          "opaquePixels": 5050,
+          "largestComponent": 1.0,
+          "components": [
+            5050
+          ]
+        },
+        "pose": {
+          "ticks": 5,
+          "phase": "startup",
+          "hurtboxes": [
+            {
+              "x": -16,
+              "y": -130,
+              "w": 57,
+              "h": 32
+            },
+            {
+              "x": -43,
+              "y": -98,
+              "w": 86,
+              "h": 29
+            },
+            {
+              "x": -43,
+              "y": -69,
+              "w": 85,
+              "h": 26
+            },
+            {
+              "x": -24,
+              "y": -43,
+              "w": 57,
+              "h": 23
+            },
+            {
+              "x": -1,
+              "y": -20,
+              "w": 17,
+              "h": 16
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 15,
+            "y": -108
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/teleport_air-source.png",
+        "sourceRect": [
+          109,
+          425,
+          371,
+          800
+        ],
+        "scale": 0.3439153439153439,
+        "offset": [
+          147,
+          94
+        ],
+        "metrics": {
+          "bbox": [
+            147,
+            94,
+            237,
+            223
+          ],
+          "opaquePixels": 5315,
+          "largestComponent": 1.0,
+          "components": [
+            5315
+          ]
+        },
+        "pose": {
+          "ticks": 5,
+          "phase": "startup",
+          "hurtboxes": [
+            {
+              "x": -27,
+              "y": -130,
+              "w": 55,
+              "h": 32
+            },
+            {
+              "x": -41,
+              "y": -98,
+              "w": 86,
+              "h": 29
+            },
+            {
+              "x": -45,
+              "y": -69,
+              "w": 90,
+              "h": 26
+            },
+            {
+              "x": -43,
+              "y": -43,
+              "w": 69,
+              "h": 23
+            },
+            {
+              "x": -7,
+              "y": -20,
+              "w": 18,
+              "h": 19
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 15,
+            "y": -108
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/teleport_air-source.png",
+        "sourceRect": [
+          516,
+          419,
+          792,
+          771
+        ],
+        "scale": 0.3439153439153439,
+        "offset": [
+          144,
+          94
+        ],
+        "metrics": {
+          "bbox": [
+            144,
+            94,
+            239,
+            215
+          ],
+          "opaquePixels": 5386,
+          "largestComponent": 0.999814333457111,
+          "components": [
+            5385,
+            1
+          ]
+        },
+        "pose": {
+          "ticks": 8,
+          "phase": "active",
+          "hurtboxes": [
+            {
+              "x": -36,
+              "y": -130,
+              "w": 56,
+              "h": 32
+            },
+            {
+              "x": -48,
+              "y": -98,
+              "w": 95,
+              "h": 29
+            },
+            {
+              "x": -45,
+              "y": -69,
+              "w": 89,
+              "h": 26
+            },
+            {
+              "x": -45,
+              "y": -43,
+              "w": 69,
+              "h": 23
+            },
+            {
+              "x": -28,
+              "y": -20,
+              "w": 23,
+              "h": 11
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 15,
+            "y": -108
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/teleport_air-source.png",
+        "sourceRect": [
+          79,
+          811,
+          354,
+          1205
+        ],
+        "scale": 0.3439153439153439,
+        "offset": [
+          144,
+          88
+        ],
+        "metrics": {
+          "bbox": [
+            144,
+            88,
+            239,
+            224
+          ],
+          "opaquePixels": 5543,
+          "largestComponent": 1.0,
+          "components": [
+            5543
+          ]
+        },
+        "pose": {
+          "ticks": 8,
+          "phase": "recovery",
+          "hurtboxes": [
+            {
+              "x": -47,
+              "y": -136,
+              "w": 78,
+              "h": 38
+            },
+            {
+              "x": -48,
+              "y": -98,
+              "w": 92,
+              "h": 29
+            },
+            {
+              "x": -36,
+              "y": -69,
+              "w": 69,
+              "h": 26
+            },
+            {
+              "x": -31,
+              "y": -43,
+              "w": 69,
+              "h": 23
+            },
+            {
+              "x": 22,
+              "y": -20,
+              "w": 25,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 15,
+            "y": -108
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/teleport_air-source.png",
+        "sourceRect": [
+          514,
+          809,
+          750,
+          1179
+        ],
+        "scale": 0.3439153439153439,
+        "offset": [
+          152,
+          94
+        ],
+        "metrics": {
+          "bbox": [
+            152,
+            94,
+            233,
+            221
+          ],
+          "opaquePixels": 5306,
+          "largestComponent": 1.0,
+          "components": [
+            5306
+          ]
+        },
+        "pose": {
+          "ticks": 8,
+          "phase": "recovery",
+          "hurtboxes": [
+            {
+              "x": -24,
+              "y": -130,
+              "w": 55,
+              "h": 32
+            },
+            {
+              "x": -40,
+              "y": -98,
+              "w": 81,
+              "h": 29
+            },
+            {
+              "x": -35,
+              "y": -69,
+              "w": 72,
+              "h": 26
+            },
+            {
+              "x": -35,
+              "y": -43,
+              "w": 71,
+              "h": 23
+            },
+            {
+              "x": -20,
+              "y": -20,
+              "w": 44,
+              "h": 17
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 15,
+            "y": -108
+          }
+        }
+      },
+      {
+        "source": "art/goku/specials/stage3/teleport_air-source.png",
+        "sourceRect": [
+          927,
+          809,
+          1185,
+          1223
+        ],
+        "scale": 0.3439153439153439,
+        "offset": [
+          148,
+          82
+        ],
+        "metrics": {
+          "bbox": [
+            148,
+            82,
+            237,
+            224
+          ],
+          "opaquePixels": 6252,
+          "largestComponent": 0.9987204094689699,
+          "components": [
+            6244,
+            8
+          ]
+        },
+        "pose": {
+          "ticks": 9,
+          "phase": "recovery",
+          "hurtboxes": [
+            {
+              "x": -40,
+              "y": -142,
+              "w": 76,
+              "h": 44
+            },
+            {
+              "x": -44,
+              "y": -98,
+              "w": 83,
+              "h": 29
+            },
+            {
+              "x": -41,
+              "y": -69,
+              "w": 74,
+              "h": 26
+            },
+            {
+              "x": -43,
+              "y": -43,
+              "w": 79,
+              "h": 23
+            },
+            {
+              "x": -43,
+              "y": -20,
+              "w": 88,
+              "h": 20
+            }
+          ],
+          "hitboxes": [],
+          "release": {
+            "x": 15,
+            "y": -108
+          }
+        }
+      }
+    ]
+  }
+}

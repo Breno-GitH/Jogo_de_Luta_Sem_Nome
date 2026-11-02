@@ -1,0 +1,50 @@
+{
+  "easy": {
+    "reaction": 26,
+    "decision": 16,
+    "jitter": 9,
+    "confirm": 8,
+    "guard": 0.3,
+    "punish": 0.3,
+    "combo": 0.48,
+    "airCombo": 0.2,
+    "special": 0.12,
+    "grab": 0.14,
+    "ultimate": 0.45,
+    "retreat": 0.12,
+    "jump": 0.09,
+    "range": 100
+  },
+  "normal": {
+    "reaction": 17,
+    "decision": 10,
+    "jitter": 6,
+    "confirm": 5,
+    "guard": 0.62,
+    "punish": 0.66,
+    "combo": 0.8,
+    "airCombo": 0.6,
+    "special": 0.25,
+    "grab": 0.2,
+    "ultimate": 0.75,
+    "retreat": 0.2,
+    "jump": 0.13,
+    "range": 98
+  },
+  "hard": {
+    "reaction": 10,
+    "decision": 6,
+    "jitter": 4,
+    "confirm": 3,
+    "guard": 0.82,
+    "punish": 0.9,
+    "combo": 0.96,
+    "airCombo": 0.9,
+    "special": 0.38,
+    "grab": 0.26,
+    "ultimate": 0.92,
+    "retreat": 0.27,
+    "jump": 0.16,
+    "range": 94
+  }
+}

@@ -1,0 +1,2936 @@
+{
+  "stage": "jump",
+  "method": "whole-pose",
+  "palette": [
+    "#080a10",
+    "#141621",
+    "#202331",
+    "#303547",
+    "#444c62",
+    "#63342b",
+    "#92513c",
+    "#be7853",
+    "#e7a776",
+    "#ffd0a0",
+    "#ffe3b8",
+    "#542119",
+    "#883116",
+    "#ac3c0b",
+    "#d95208",
+    "#f67a14",
+    "#ff9b2b",
+    "#ffbc57",
+    "#071326",
+    "#0c2146",
+    "#173a6b",
+    "#24599a",
+    "#3272b5",
+    "#5a91c8",
+    "#5b2020",
+    "#a43929",
+    "#e35e35",
+    "#49341f",
+    "#ac7940",
+    "#f1d38a",
+    "#fff0d4",
+    "#f1f5f5"
+  ],
+  "alphaThreshold": 180,
+  "clips": {
+    "jumpStart": {
+      "source": {
+        "path": "art/goku/rebuild/jump-ground-source.png",
+        "columns": 3,
+        "rows": 3,
+        "calibration": 0
+      },
+      "cells": [
+        1,
+        2,
+        3
+      ],
+      "durations": [
+        2,
+        2,
+        2
+      ],
+      "grounded": true,
+      "loop": false,
+      "minHeight": 75,
+      "label": "Jump Start / load and push",
+      "frames": [
+        {
+          "source": "art/goku/rebuild/jump-ground-source.png",
+          "sourceRect": [
+            494,
+            105,
+            770,
+            433
+          ],
+          "cellRect": [
+            418,
+            0,
+            836,
+            418
+          ],
+          "calibrationCell": 0,
+          "scale": 0.34120734908136485,
+          "offset": [
+            82,
+            112
+          ],
+          "bbox": [
+            82,
+            112,
+            176,
+            224
+          ],
+          "hurtboxes": [
+            {
+              "x": -5,
+              "y": -112,
+              "w": 41,
+              "h": 14
+            },
+            {
+              "x": -31,
+              "y": -98,
+              "w": 73,
+              "h": 29
+            },
+            {
+              "x": -35,
+              "y": -69,
+              "w": 77,
+              "h": 25
+            },
+            {
+              "x": -39,
+              "y": -44,
+              "w": 79,
+              "h": 23
+            },
+            {
+              "x": -46,
+              "y": -21,
+              "w": 94,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        },
+        {
+          "source": "art/goku/rebuild/jump-ground-source.png",
+          "sourceRect": [
+            917,
+            157,
+            1163,
+            433
+          ],
+          "cellRect": [
+            836,
+            0,
+            1254,
+            418
+          ],
+          "calibrationCell": 0,
+          "scale": 0.34120734908136485,
+          "offset": [
+            92,
+            130
+          ],
+          "bbox": [
+            92,
+            130,
+            176,
+            224
+          ],
+          "hurtboxes": [
+            {
+              "x": -8,
+              "y": -94,
+              "w": 55,
+              "h": 25
+            },
+            {
+              "x": -35,
+              "y": -69,
+              "w": 83,
+              "h": 25
+            },
+            {
+              "x": -35,
+              "y": -44,
+              "w": 80,
+              "h": 23
+            },
+            {
+              "x": -36,
+              "y": -21,
+              "w": 80,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        },
+        {
+          "source": "art/goku/rebuild/jump-ground-source.png",
+          "sourceRect": [
+            74,
+            468,
+            405,
+            837
+          ],
+          "cellRect": [
+            0,
+            418,
+            418,
+            836
+          ],
+          "calibrationCell": 0,
+          "scale": 0.34120734908136485,
+          "offset": [
+            102,
+            98
+          ],
+          "bbox": [
+            102,
+            98,
+            214,
+            224
+          ],
+          "hurtboxes": [
+            {
+              "x": 23,
+              "y": -126,
+              "w": 63,
+              "h": 28
+            },
+            {
+              "x": -17,
+              "y": -98,
+              "w": 93,
+              "h": 29
+            },
+            {
+              "x": -13,
+              "y": -69,
+              "w": 79,
+              "h": 25
+            },
+            {
+              "x": -15,
+              "y": -44,
+              "w": 82,
+              "h": 23
+            },
+            {
+              "x": -26,
+              "y": -21,
+              "w": 71,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        }
+      ],
+      "method": "whole-pose",
+      "uniqueDrawings": 3,
+      "ticks": 6
+    },
+    "jumpRise": {
+      "source": {
+        "path": "art/goku/rebuild/jump-neutral-source.png",
+        "columns": 3,
+        "rows": 3,
+        "calibration": 0
+      },
+      "cells": [
+        1,
+        2,
+        3
+      ],
+      "durations": [
+        4,
+        4,
+        4
+      ],
+      "grounded": false,
+      "loop": false,
+      "minHeight": 70,
+      "registration": {},
+      "label": "jumpRise / whole aerial pose",
+      "frames": [
+        {
+          "source": "art/goku/rebuild/jump-neutral-source.png",
+          "sourceRect": [
+            699,
+            4,
+            867,
+            330
+          ],
+          "cellRect": [
+            512,
+            0,
+            1024,
+            341
+          ],
+          "calibrationCell": 0,
+          "scale": 0.41009463722397477,
+          "offset": [
+            94,
+            90
+          ],
+          "bbox": [
+            94,
+            90,
+            163,
+            224
+          ],
+          "hurtboxes": [
+            {
+              "x": -23,
+              "y": -134,
+              "w": 55,
+              "h": 36
+            },
+            {
+              "x": -34,
+              "y": -98,
+              "w": 69,
+              "h": 29
+            },
+            {
+              "x": -27,
+              "y": -69,
+              "w": 53,
+              "h": 25
+            },
+            {
+              "x": -31,
+              "y": -44,
+              "w": 58,
+              "h": 23
+            },
+            {
+              "x": -34,
+              "y": -21,
+              "w": 54,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        },
+        {
+          "source": "art/goku/rebuild/jump-neutral-source.png",
+          "sourceRect": [
+            1108,
+            8,
+            1272,
+            326
+          ],
+          "cellRect": [
+            1024,
+            0,
+            1536,
+            341
+          ],
+          "calibrationCell": 0,
+          "scale": 0.41009463722397477,
+          "offset": [
+            94,
+            94
+          ],
+          "bbox": [
+            94,
+            94,
+            161,
+            224
+          ],
+          "hurtboxes": [
+            {
+              "x": -20,
+              "y": -130,
+              "w": 53,
+              "h": 32
+            },
+            {
+              "x": -34,
+              "y": -98,
+              "w": 67,
+              "h": 29
+            },
+            {
+              "x": -33,
+              "y": -69,
+              "w": 62,
+              "h": 25
+            },
+            {
+              "x": -32,
+              "y": -44,
+              "w": 61,
+              "h": 23
+            },
+            {
+              "x": -32,
+              "y": -21,
+              "w": 40,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        },
+        {
+          "source": "art/goku/rebuild/jump-neutral-source.png",
+          "sourceRect": [
+            284,
+            345,
+            454,
+            654
+          ],
+          "cellRect": [
+            0,
+            341,
+            512,
+            683
+          ],
+          "calibrationCell": 0,
+          "scale": 0.41009463722397477,
+          "offset": [
+            93,
+            94
+          ],
+          "bbox": [
+            93,
+            94,
+            163,
+            221
+          ],
+          "hurtboxes": [
+            {
+              "x": -19,
+              "y": -130,
+              "w": 52,
+              "h": 32
+            },
+            {
+              "x": -35,
+              "y": -98,
+              "w": 70,
+              "h": 29
+            },
+            {
+              "x": -35,
+              "y": -69,
+              "w": 66,
+              "h": 25
+            },
+            {
+              "x": -28,
+              "y": -44,
+              "w": 55,
+              "h": 23
+            },
+            {
+              "x": -30,
+              "y": -21,
+              "w": 42,
+              "h": 18
+            }
+          ],
+          "hitboxes": []
+        }
+      ],
+      "method": "whole-pose",
+      "uniqueDrawings": 3,
+      "ticks": 12
+    },
+    "jumpApex": {
+      "source": {
+        "path": "art/goku/rebuild/jump-neutral-source.png",
+        "columns": 3,
+        "rows": 3,
+        "calibration": 0
+      },
+      "cells": [
+        4,
+        5
+      ],
+      "durations": [
+        4,
+        4
+      ],
+      "grounded": false,
+      "loop": false,
+      "minHeight": 70,
+      "registration": {},
+      "label": "jumpApex / whole aerial pose",
+      "frames": [
+        {
+          "source": "art/goku/rebuild/jump-neutral-source.png",
+          "sourceRect": [
+            697,
+            351,
+            867,
+            631
+          ],
+          "cellRect": [
+            512,
+            341,
+            1024,
+            683
+          ],
+          "calibrationCell": 0,
+          "scale": 0.41009463722397477,
+          "offset": [
+            93,
+            94
+          ],
+          "bbox": [
+            93,
+            94,
+            163,
+            209
+          ],
+          "hurtboxes": [
+            {
+              "x": -22,
+              "y": -130,
+              "w": 54,
+              "h": 32
+            },
+            {
+              "x": -35,
+              "y": -98,
+              "w": 70,
+              "h": 29
+            },
+            {
+              "x": -33,
+              "y": -69,
+              "w": 66,
+              "h": 25
+            },
+            {
+              "x": -21,
+              "y": -44,
+              "w": 47,
+              "h": 23
+            },
+            {
+              "x": -18,
+              "y": -21,
+              "w": 12,
+              "h": 6
+            }
+          ],
+          "hitboxes": []
+        },
+        {
+          "source": "art/goku/rebuild/jump-neutral-source.png",
+          "sourceRect": [
+            1110,
+            346,
+            1277,
+            626
+          ],
+          "cellRect": [
+            1024,
+            341,
+            1536,
+            683
+          ],
+          "calibrationCell": 0,
+          "scale": 0.41009463722397477,
+          "offset": [
+            94,
+            94
+          ],
+          "bbox": [
+            94,
+            94,
+            162,
+            209
+          ],
+          "hurtboxes": [
+            {
+              "x": -20,
+              "y": -130,
+              "w": 54,
+              "h": 32
+            },
+            {
+              "x": -34,
+              "y": -98,
+              "w": 67,
+              "h": 29
+            },
+            {
+              "x": -32,
+              "y": -69,
+              "w": 62,
+              "h": 25
+            },
+            {
+              "x": -23,
+              "y": -44,
+              "w": 48,
+              "h": 23
+            },
+            {
+              "x": -19,
+              "y": -21,
+              "w": 23,
+              "h": 6
+            }
+          ],
+          "hitboxes": []
+        }
+      ],
+      "method": "whole-pose",
+      "uniqueDrawings": 2,
+      "ticks": 8
+    },
+    "jumpFall": {
+      "source": {
+        "path": "art/goku/rebuild/jump-neutral-source.png",
+        "columns": 3,
+        "rows": 3,
+        "calibration": 0
+      },
+      "cells": [
+        6,
+        7,
+        8
+      ],
+      "durations": [
+        4,
+        4,
+        4
+      ],
+      "grounded": false,
+      "loop": false,
+      "minHeight": 70,
+      "registration": {
+        "2": {
+          "mode": "feet"
+        }
+      },
+      "label": "jumpFall / whole aerial pose",
+      "frames": [
+        {
+          "source": "art/goku/rebuild/jump-neutral-source.png",
+          "sourceRect": [
+            287,
+            669,
+            457,
+            991
+          ],
+          "cellRect": [
+            0,
+            683,
+            512,
+            1024
+          ],
+          "calibrationCell": 0,
+          "scale": 0.41009463722397477,
+          "offset": [
+            93,
+            92
+          ],
+          "bbox": [
+            93,
+            92,
+            163,
+            224
+          ],
+          "hurtboxes": [
+            {
+              "x": -21,
+              "y": -132,
+              "w": 54,
+              "h": 34
+            },
+            {
+              "x": -35,
+              "y": -98,
+              "w": 70,
+              "h": 29
+            },
+            {
+              "x": -23,
+              "y": -69,
+              "w": 55,
+              "h": 25
+            },
+            {
+              "x": -30,
+              "y": -44,
+              "w": 62,
+              "h": 23
+            },
+            {
+              "x": -30,
+              "y": -21,
+              "w": 46,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        },
+        {
+          "source": "art/goku/rebuild/jump-neutral-source.png",
+          "sourceRect": [
+            700,
+            655,
+            865,
+            1001
+          ],
+          "cellRect": [
+            512,
+            683,
+            1024,
+            1024
+          ],
+          "calibrationCell": 0,
+          "scale": 0.41009463722397477,
+          "offset": [
+            94,
+            82
+          ],
+          "bbox": [
+            94,
+            82,
+            162,
+            224
+          ],
+          "hurtboxes": [
+            {
+              "x": -32,
+              "y": -142,
+              "w": 66,
+              "h": 44
+            },
+            {
+              "x": -34,
+              "y": -98,
+              "w": 68,
+              "h": 29
+            },
+            {
+              "x": -27,
+              "y": -69,
+              "w": 52,
+              "h": 25
+            },
+            {
+              "x": -30,
+              "y": -44,
+              "w": 55,
+              "h": 23
+            },
+            {
+              "x": -33,
+              "y": -21,
+              "w": 46,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        },
+        {
+          "source": "art/goku/rebuild/jump-neutral-source.png",
+          "sourceRect": [
+            1097,
+            678,
+            1293,
+            1003
+          ],
+          "cellRect": [
+            1024,
+            683,
+            1536,
+            1024
+          ],
+          "calibrationCell": 0,
+          "scale": 0.41009463722397477,
+          "offset": [
+            89,
+            91
+          ],
+          "bbox": [
+            89,
+            91,
+            169,
+            224
+          ],
+          "hurtboxes": [
+            {
+              "x": -17,
+              "y": -133,
+              "w": 53,
+              "h": 35
+            },
+            {
+              "x": -33,
+              "y": -98,
+              "w": 70,
+              "h": 29
+            },
+            {
+              "x": -26,
+              "y": -69,
+              "w": 61,
+              "h": 25
+            },
+            {
+              "x": -32,
+              "y": -44,
+              "w": 69,
+              "h": 23
+            },
+            {
+              "x": -39,
+              "y": -21,
+              "w": 80,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        }
+      ],
+      "method": "whole-pose",
+      "uniqueDrawings": 3,
+      "ticks": 12
+    },
+    "jumpRiseForward": {
+      "source": {
+        "path": "art/goku/rebuild/jump-forward-source.png",
+        "columns": 3,
+        "rows": 3,
+        "calibration": 0
+      },
+      "cells": [
+        1,
+        2,
+        3
+      ],
+      "durations": [
+        4,
+        4,
+        4
+      ],
+      "grounded": false,
+      "loop": false,
+      "minHeight": 70,
+      "registration": {},
+      "label": "jumpRiseForward / whole aerial pose",
+      "frames": [
+        {
+          "source": "art/goku/rebuild/jump-forward-source.png",
+          "sourceRect": [
+            603,
+            23,
+            932,
+            374
+          ],
+          "cellRect": [
+            512,
+            0,
+            1024,
+            341
+          ],
+          "calibrationCell": 0,
+          "scale": 0.37572254335260113,
+          "offset": [
+            66,
+            92
+          ],
+          "bbox": [
+            66,
+            92,
+            189,
+            224
+          ],
+          "hurtboxes": [
+            {
+              "x": -15,
+              "y": -132,
+              "w": 76,
+              "h": 34
+            },
+            {
+              "x": -48,
+              "y": -98,
+              "w": 98,
+              "h": 29
+            },
+            {
+              "x": -46,
+              "y": -69,
+              "w": 83,
+              "h": 25
+            },
+            {
+              "x": -59,
+              "y": -44,
+              "w": 93,
+              "h": 23
+            },
+            {
+              "x": -62,
+              "y": -21,
+              "w": 59,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        },
+        {
+          "source": "art/goku/rebuild/jump-forward-source.png",
+          "sourceRect": [
+            1126,
+            12,
+            1398,
+            374
+          ],
+          "cellRect": [
+            1024,
+            0,
+            1536,
+            341
+          ],
+          "calibrationCell": 0,
+          "scale": 0.37572254335260113,
+          "offset": [
+            77,
+            88
+          ],
+          "bbox": [
+            77,
+            88,
+            179,
+            224
+          ],
+          "hurtboxes": [
+            {
+              "x": -15,
+              "y": -136,
+              "w": 66,
+              "h": 38
+            },
+            {
+              "x": -39,
+              "y": -98,
+              "w": 80,
+              "h": 29
+            },
+            {
+              "x": -41,
+              "y": -69,
+              "w": 82,
+              "h": 25
+            },
+            {
+              "x": -48,
+              "y": -44,
+              "w": 72,
+              "h": 23
+            },
+            {
+              "x": -51,
+              "y": -21,
+              "w": 63,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        },
+        {
+          "source": "art/goku/rebuild/jump-forward-source.png",
+          "sourceRect": [
+            183,
+            388,
+            385,
+            682
+          ],
+          "cellRect": [
+            0,
+            341,
+            512,
+            683
+          ],
+          "calibrationCell": 0,
+          "scale": 0.37572254335260113,
+          "offset": [
+            90,
+            94
+          ],
+          "bbox": [
+            90,
+            94,
+            166,
+            204
+          ],
+          "hurtboxes": [
+            {
+              "x": -25,
+              "y": -130,
+              "w": 63,
+              "h": 32
+            },
+            {
+              "x": -38,
+              "y": -98,
+              "w": 71,
+              "h": 29
+            },
+            {
+              "x": -29,
+              "y": -69,
+              "w": 61,
+              "h": 25
+            },
+            {
+              "x": -17,
+              "y": -44,
+              "w": 37,
+              "h": 23
+            },
+            {
+              "x": -10,
+              "y": -21,
+              "w": 4,
+              "h": 1
+            }
+          ],
+          "hitboxes": []
+        }
+      ],
+      "method": "whole-pose",
+      "uniqueDrawings": 3,
+      "ticks": 12
+    },
+    "jumpApexForward": {
+      "source": {
+        "path": "art/goku/rebuild/jump-forward-source.png",
+        "columns": 3,
+        "rows": 3,
+        "calibration": 0
+      },
+      "cells": [
+        4,
+        5
+      ],
+      "durations": [
+        4,
+        4
+      ],
+      "grounded": false,
+      "loop": false,
+      "minHeight": 70,
+      "registration": {},
+      "label": "jumpApexForward / whole aerial pose",
+      "frames": [
+        {
+          "source": "art/goku/rebuild/jump-forward-source.png",
+          "sourceRect": [
+            670,
+            380,
+            885,
+            671
+          ],
+          "cellRect": [
+            512,
+            341,
+            1024,
+            683
+          ],
+          "calibrationCell": 0,
+          "scale": 0.37572254335260113,
+          "offset": [
+            88,
+            94
+          ],
+          "bbox": [
+            88,
+            94,
+            169,
+            203
+          ],
+          "hurtboxes": [
+            {
+              "x": -22,
+              "y": -130,
+              "w": 63,
+              "h": 32
+            },
+            {
+              "x": -40,
+              "y": -98,
+              "w": 75,
+              "h": 29
+            },
+            {
+              "x": -34,
+              "y": -69,
+              "w": 65,
+              "h": 25
+            },
+            {
+              "x": -23,
+              "y": -44,
+              "w": 40,
+              "h": 23
+            }
+          ],
+          "hitboxes": []
+        },
+        {
+          "source": "art/goku/rebuild/jump-forward-source.png",
+          "sourceRect": [
+            1140,
+            387,
+            1398,
+            664
+          ],
+          "cellRect": [
+            1024,
+            341,
+            1536,
+            683
+          ],
+          "calibrationCell": 0,
+          "scale": 0.37572254335260113,
+          "offset": [
+            80,
+            94
+          ],
+          "bbox": [
+            80,
+            94,
+            177,
+            198
+          ],
+          "hurtboxes": [
+            {
+              "x": -17,
+              "y": -130,
+              "w": 66,
+              "h": 32
+            },
+            {
+              "x": -48,
+              "y": -98,
+              "w": 85,
+              "h": 29
+            },
+            {
+              "x": -43,
+              "y": -69,
+              "w": 82,
+              "h": 25
+            },
+            {
+              "x": -11,
+              "y": -44,
+              "w": 34,
+              "h": 18
+            }
+          ],
+          "hitboxes": []
+        }
+      ],
+      "method": "whole-pose",
+      "uniqueDrawings": 2,
+      "ticks": 8
+    },
+    "jumpFallForward": {
+      "source": {
+        "path": "art/goku/rebuild/jump-forward-source.png",
+        "columns": 3,
+        "rows": 3,
+        "calibration": 0
+      },
+      "cells": [
+        6,
+        7,
+        8
+      ],
+      "durations": [
+        4,
+        4,
+        4
+      ],
+      "grounded": false,
+      "loop": false,
+      "minHeight": 70,
+      "registration": {
+        "2": {
+          "mode": "feet"
+        }
+      },
+      "label": "jumpFallForward / whole aerial pose",
+      "frames": [
+        {
+          "source": "art/goku/rebuild/jump-forward-source.png",
+          "sourceRect": [
+            142,
+            691,
+            471,
+            994
+          ],
+          "cellRect": [
+            0,
+            683,
+            512,
+            1024
+          ],
+          "calibrationCell": 0,
+          "scale": 0.37572254335260113,
+          "offset": [
+            66,
+            94
+          ],
+          "bbox": [
+            66,
+            94,
+            190,
+            208
+          ],
+          "hurtboxes": [
+            {
+              "x": -50,
+              "y": -130,
+              "w": 83,
+              "h": 32
+            },
+            {
+              "x": -62,
+              "y": -98,
+              "w": 96,
+              "h": 29
+            },
+            {
+              "x": -47,
+              "y": -69,
+              "w": 87,
+              "h": 25
+            },
+            {
+              "x": -24,
+              "y": -44,
+              "w": 86,
+              "h": 23
+            },
+            {
+              "x": 38,
+              "y": -21,
+              "w": 11,
+              "h": 5
+            }
+          ],
+          "hitboxes": []
+        },
+        {
+          "source": "art/goku/rebuild/jump-forward-source.png",
+          "sourceRect": [
+            650,
+            698,
+            956,
+            1001
+          ],
+          "cellRect": [
+            512,
+            683,
+            1024,
+            1024
+          ],
+          "calibrationCell": 0,
+          "scale": 0.37572254335260113,
+          "offset": [
+            70,
+            94
+          ],
+          "bbox": [
+            70,
+            94,
+            185,
+            208
+          ],
+          "hurtboxes": [
+            {
+              "x": -36,
+              "y": -130,
+              "w": 73,
+              "h": 32
+            },
+            {
+              "x": -58,
+              "y": -98,
+              "w": 89,
+              "h": 29
+            },
+            {
+              "x": -51,
+              "y": -69,
+              "w": 88,
+              "h": 25
+            },
+            {
+              "x": -13,
+              "y": -44,
+              "w": 70,
+              "h": 23
+            },
+            {
+              "x": 3,
+              "y": -21,
+              "w": 37,
+              "h": 5
+            }
+          ],
+          "hitboxes": []
+        },
+        {
+          "source": "art/goku/rebuild/jump-forward-source.png",
+          "sourceRect": [
+            1131,
+            688,
+            1432,
+            1012
+          ],
+          "cellRect": [
+            1024,
+            683,
+            1536,
+            1024
+          ],
+          "calibrationCell": 0,
+          "scale": 0.37572254335260113,
+          "offset": [
+            70,
+            102
+          ],
+          "bbox": [
+            70,
+            102,
+            183,
+            224
+          ],
+          "hurtboxes": [
+            {
+              "x": -24,
+              "y": -122,
+              "w": 59,
+              "h": 24
+            },
+            {
+              "x": -52,
+              "y": -98,
+              "w": 89,
+              "h": 29
+            },
+            {
+              "x": -58,
+              "y": -69,
+              "w": 92,
+              "h": 25
+            },
+            {
+              "x": -30,
+              "y": -44,
+              "w": 70,
+              "h": 23
+            },
+            {
+              "x": -16,
+              "y": -21,
+              "w": 71,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        }
+      ],
+      "method": "whole-pose",
+      "uniqueDrawings": 3,
+      "ticks": 12
+    },
+    "jumpRiseBackward": {
+      "source": {
+        "path": "art/goku/rebuild/jump-back-source.png",
+        "columns": 3,
+        "rows": 3,
+        "calibration": 0
+      },
+      "cells": [
+        1,
+        2,
+        3
+      ],
+      "durations": [
+        4,
+        4,
+        4
+      ],
+      "grounded": false,
+      "loop": false,
+      "minHeight": 70,
+      "registration": {},
+      "label": "jumpRiseBackward / whole aerial pose",
+      "frames": [
+        {
+          "source": "art/goku/rebuild/jump-back-source.png",
+          "sourceRect": [
+            528,
+            45,
+            826,
+            440
+          ],
+          "cellRect": [
+            418,
+            0,
+            836,
+            418
+          ],
+          "calibrationCell": 0,
+          "scale": 0.3258145363408521,
+          "offset": [
+            80,
+            94
+          ],
+          "bbox": [
+            80,
+            94,
+            177,
+            223
+          ],
+          "hurtboxes": [
+            {
+              "x": -38,
+              "y": -130,
+              "w": 56,
+              "h": 32
+            },
+            {
+              "x": -48,
+              "y": -98,
+              "w": 75,
+              "h": 29
+            },
+            {
+              "x": -35,
+              "y": -69,
+              "w": 59,
+              "h": 25
+            },
+            {
+              "x": -26,
+              "y": -44,
+              "w": 62,
+              "h": 23
+            },
+            {
+              "x": -10,
+              "y": -21,
+              "w": 59,
+              "h": 20
+            }
+          ],
+          "hitboxes": []
+        },
+        {
+          "source": "art/goku/rebuild/jump-back-source.png",
+          "sourceRect": [
+            927,
+            16,
+            1141,
+            382
+          ],
+          "cellRect": [
+            836,
+            0,
+            1254,
+            418
+          ],
+          "calibrationCell": 0,
+          "scale": 0.3258145363408521,
+          "offset": [
+            93,
+            94
+          ],
+          "bbox": [
+            93,
+            94,
+            163,
+            213
+          ],
+          "hurtboxes": [
+            {
+              "x": -25,
+              "y": -130,
+              "w": 57,
+              "h": 32
+            },
+            {
+              "x": -35,
+              "y": -98,
+              "w": 70,
+              "h": 29
+            },
+            {
+              "x": -21,
+              "y": -69,
+              "w": 54,
+              "h": 25
+            },
+            {
+              "x": -25,
+              "y": -44,
+              "w": 53,
+              "h": 23
+            },
+            {
+              "x": -25,
+              "y": -21,
+              "w": 38,
+              "h": 10
+            }
+          ],
+          "hitboxes": []
+        },
+        {
+          "source": "art/goku/rebuild/jump-back-source.png",
+          "sourceRect": [
+            122,
+            468,
+            332,
+            790
+          ],
+          "cellRect": [
+            0,
+            418,
+            418,
+            836
+          ],
+          "calibrationCell": 0,
+          "scale": 0.3258145363408521,
+          "offset": [
+            94,
+            94
+          ],
+          "bbox": [
+            94,
+            94,
+            162,
+            199
+          ],
+          "hurtboxes": [
+            {
+              "x": -26,
+              "y": -130,
+              "w": 57,
+              "h": 32
+            },
+            {
+              "x": -34,
+              "y": -98,
+              "w": 68,
+              "h": 29
+            },
+            {
+              "x": -25,
+              "y": -69,
+              "w": 54,
+              "h": 25
+            },
+            {
+              "x": -16,
+              "y": -44,
+              "w": 26,
+              "h": 19
+            }
+          ],
+          "hitboxes": []
+        }
+      ],
+      "method": "whole-pose",
+      "uniqueDrawings": 3,
+      "ticks": 12
+    },
+    "jumpApexBackward": {
+      "source": {
+        "path": "art/goku/rebuild/jump-back-source.png",
+        "columns": 3,
+        "rows": 3,
+        "calibration": 0
+      },
+      "cells": [
+        4,
+        5
+      ],
+      "durations": [
+        4,
+        4
+      ],
+      "grounded": false,
+      "loop": false,
+      "minHeight": 70,
+      "registration": {},
+      "label": "jumpApexBackward / whole aerial pose",
+      "frames": [
+        {
+          "source": "art/goku/rebuild/jump-back-source.png",
+          "sourceRect": [
+            511,
+            468,
+            748,
+            800
+          ],
+          "cellRect": [
+            418,
+            418,
+            836,
+            836
+          ],
+          "calibrationCell": 0,
+          "scale": 0.3258145363408521,
+          "offset": [
+            90,
+            94
+          ],
+          "bbox": [
+            90,
+            94,
+            167,
+            202
+          ],
+          "hurtboxes": [
+            {
+              "x": -32,
+              "y": -130,
+              "w": 63,
+              "h": 32
+            },
+            {
+              "x": -38,
+              "y": -98,
+              "w": 71,
+              "h": 29
+            },
+            {
+              "x": -37,
+              "y": -69,
+              "w": 76,
+              "h": 25
+            },
+            {
+              "x": -6,
+              "y": -44,
+              "w": 36,
+              "h": 22
+            }
+          ],
+          "hitboxes": []
+        },
+        {
+          "source": "art/goku/rebuild/jump-back-source.png",
+          "sourceRect": [
+            951,
+            470,
+            1187,
+            808
+          ],
+          "cellRect": [
+            836,
+            418,
+            1254,
+            836
+          ],
+          "calibrationCell": 0,
+          "scale": 0.3258145363408521,
+          "offset": [
+            90,
+            94
+          ],
+          "bbox": [
+            90,
+            94,
+            167,
+            204
+          ],
+          "hurtboxes": [
+            {
+              "x": -25,
+              "y": -130,
+              "w": 64,
+              "h": 32
+            },
+            {
+              "x": -36,
+              "y": -98,
+              "w": 74,
+              "h": 29
+            },
+            {
+              "x": -38,
+              "y": -69,
+              "w": 74,
+              "h": 25
+            },
+            {
+              "x": -18,
+              "y": -44,
+              "w": 48,
+              "h": 23
+            },
+            {
+              "x": -12,
+              "y": -21,
+              "w": 3,
+              "h": 1
+            }
+          ],
+          "hitboxes": []
+        }
+      ],
+      "method": "whole-pose",
+      "uniqueDrawings": 2,
+      "ticks": 8
+    },
+    "jumpFallBackward": {
+      "source": {
+        "path": "art/goku/rebuild/jump-back-source.png",
+        "columns": 3,
+        "rows": 3,
+        "calibration": 0
+      },
+      "cells": [
+        6,
+        7,
+        0
+      ],
+      "durations": [
+        4,
+        4,
+        4
+      ],
+      "grounded": false,
+      "loop": false,
+      "minHeight": 70,
+      "registration": {
+        "2": {
+          "mode": "feet"
+        }
+      },
+      "label": "jumpFallBackward / whole aerial pose",
+      "frames": [
+        {
+          "source": "art/goku/rebuild/jump-back-source.png",
+          "sourceRect": [
+            109,
+            817,
+            413,
+            1212
+          ],
+          "cellRect": [
+            0,
+            836,
+            418,
+            1254
+          ],
+          "calibrationCell": 0,
+          "scale": 0.3258145363408521,
+          "offset": [
+            78,
+            94
+          ],
+          "bbox": [
+            78,
+            94,
+            177,
+            223
+          ],
+          "hurtboxes": [
+            {
+              "x": -39,
+              "y": -130,
+              "w": 60,
+              "h": 32
+            },
+            {
+              "x": -50,
+              "y": -98,
+              "w": 72,
+              "h": 29
+            },
+            {
+              "x": -33,
+              "y": -69,
+              "w": 61,
+              "h": 25
+            },
+            {
+              "x": -25,
+              "y": -44,
+              "w": 63,
+              "h": 23
+            },
+            {
+              "x": -10,
+              "y": -21,
+              "w": 59,
+              "h": 20
+            }
+          ],
+          "hitboxes": []
+        },
+        {
+          "source": "art/goku/rebuild/jump-back-source.png",
+          "sourceRect": [
+            525,
+            830,
+            816,
+            1221
+          ],
+          "cellRect": [
+            418,
+            836,
+            836,
+            1254
+          ],
+          "calibrationCell": 0,
+          "scale": 0.3258145363408521,
+          "offset": [
+            80,
+            94
+          ],
+          "bbox": [
+            80,
+            94,
+            175,
+            221
+          ],
+          "hurtboxes": [
+            {
+              "x": -37,
+              "y": -130,
+              "w": 62,
+              "h": 32
+            },
+            {
+              "x": -48,
+              "y": -98,
+              "w": 76,
+              "h": 29
+            },
+            {
+              "x": -35,
+              "y": -69,
+              "w": 64,
+              "h": 25
+            },
+            {
+              "x": -26,
+              "y": -44,
+              "w": 62,
+              "h": 23
+            },
+            {
+              "x": -24,
+              "y": -21,
+              "w": 71,
+              "h": 18
+            }
+          ],
+          "hitboxes": []
+        },
+        {
+          "source": "art/goku/rebuild/jump-back-source.png",
+          "sourceRect": [
+            60,
+            41,
+            360,
+            440
+          ],
+          "cellRect": [
+            0,
+            0,
+            418,
+            418
+          ],
+          "calibrationCell": 0,
+          "scale": 0.3258145363408521,
+          "offset": [
+            80,
+            94
+          ],
+          "bbox": [
+            80,
+            94,
+            178,
+            224
+          ],
+          "hurtboxes": [
+            {
+              "x": -21,
+              "y": -130,
+              "w": 58,
+              "h": 32
+            },
+            {
+              "x": -32,
+              "y": -98,
+              "w": 79,
+              "h": 29
+            },
+            {
+              "x": -31,
+              "y": -69,
+              "w": 70,
+              "h": 25
+            },
+            {
+              "x": -40,
+              "y": -44,
+              "w": 82,
+              "h": 23
+            },
+            {
+              "x": -48,
+              "y": -21,
+              "w": 98,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        }
+      ],
+      "method": "whole-pose",
+      "uniqueDrawings": 3,
+      "ticks": 12
+    },
+    "landing": {
+      "source": {
+        "path": "art/goku/rebuild/jump-ground-source.png",
+        "columns": 3,
+        "rows": 3,
+        "calibration": 0
+      },
+      "cells": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "prependReference": {
+        "stage": "current",
+        "clip": "jumpFall",
+        "index": 2
+      },
+      "durations": [
+        1,
+        1,
+        2,
+        2,
+        2
+      ],
+      "grounded": true,
+      "loop": false,
+      "minHeight": 75,
+      "label": "Landing / contact and absorption",
+      "frames": [
+        {
+          "source": "art/goku/rebuild/jump-neutral-source.png",
+          "sourceRect": [
+            1097,
+            678,
+            1293,
+            1003
+          ],
+          "cellRect": [
+            1024,
+            683,
+            1536,
+            1024
+          ],
+          "calibrationCell": 0,
+          "scale": 0.41009463722397477,
+          "offset": [
+            89,
+            91
+          ],
+          "bbox": [
+            89,
+            91,
+            169,
+            224
+          ],
+          "hurtboxes": [
+            {
+              "x": -17,
+              "y": -133,
+              "w": 53,
+              "h": 35
+            },
+            {
+              "x": -33,
+              "y": -98,
+              "w": 70,
+              "h": 29
+            },
+            {
+              "x": -26,
+              "y": -69,
+              "w": 61,
+              "h": 25
+            },
+            {
+              "x": -32,
+              "y": -44,
+              "w": 69,
+              "h": 23
+            },
+            {
+              "x": -39,
+              "y": -21,
+              "w": 80,
+              "h": 21
+            }
+          ],
+          "hitboxes": [],
+          "wholeFrameReference": {
+            "stage": "current",
+            "clip": "jumpFall",
+            "index": 2
+          }
+        },
+        {
+          "source": "art/goku/rebuild/jump-ground-source.png",
+          "sourceRect": [
+            906,
+            516,
+            1196,
+            837
+          ],
+          "cellRect": [
+            836,
+            418,
+            1254,
+            836
+          ],
+          "calibrationCell": 0,
+          "scale": 0.34120734908136485,
+          "offset": [
+            82,
+            114
+          ],
+          "bbox": [
+            82,
+            114,
+            181,
+            224
+          ],
+          "hurtboxes": [
+            {
+              "x": 4,
+              "y": -110,
+              "w": 47,
+              "h": 12
+            },
+            {
+              "x": -43,
+              "y": -98,
+              "w": 96,
+              "h": 29
+            },
+            {
+              "x": -46,
+              "y": -69,
+              "w": 98,
+              "h": 25
+            },
+            {
+              "x": -31,
+              "y": -44,
+              "w": 68,
+              "h": 23
+            },
+            {
+              "x": -40,
+              "y": -21,
+              "w": 81,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        },
+        {
+          "source": "art/goku/rebuild/jump-ground-source.png",
+          "sourceRect": [
+            79,
+            938,
+            383,
+            1228
+          ],
+          "cellRect": [
+            0,
+            836,
+            418,
+            1254
+          ],
+          "calibrationCell": 0,
+          "scale": 0.34120734908136485,
+          "offset": [
+            76,
+            125
+          ],
+          "bbox": [
+            76,
+            125,
+            180,
+            224
+          ],
+          "hurtboxes": [
+            {
+              "x": 18,
+              "y": -99,
+              "w": 7,
+              "h": 1
+            },
+            {
+              "x": -25,
+              "y": -98,
+              "w": 70,
+              "h": 29
+            },
+            {
+              "x": -40,
+              "y": -69,
+              "w": 89,
+              "h": 25
+            },
+            {
+              "x": -41,
+              "y": -44,
+              "w": 85,
+              "h": 23
+            },
+            {
+              "x": -52,
+              "y": -21,
+              "w": 104,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        },
+        {
+          "source": "art/goku/rebuild/jump-ground-source.png",
+          "sourceRect": [
+            483,
+            879,
+            782,
+            1228
+          ],
+          "cellRect": [
+            418,
+            836,
+            836,
+            1254
+          ],
+          "calibrationCell": 0,
+          "scale": 0.34120734908136485,
+          "offset": [
+            78,
+            105
+          ],
+          "bbox": [
+            78,
+            105,
+            180,
+            224
+          ],
+          "hurtboxes": [
+            {
+              "x": -12,
+              "y": -119,
+              "w": 52,
+              "h": 21
+            },
+            {
+              "x": -36,
+              "y": -98,
+              "w": 85,
+              "h": 29
+            },
+            {
+              "x": -36,
+              "y": -69,
+              "w": 87,
+              "h": 25
+            },
+            {
+              "x": -39,
+              "y": -44,
+              "w": 81,
+              "h": 23
+            },
+            {
+              "x": -50,
+              "y": -21,
+              "w": 102,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        },
+        {
+          "source": "art/goku/rebuild/jump-ground-source.png",
+          "sourceRect": [
+            917,
+            856,
+            1184,
+            1228
+          ],
+          "cellRect": [
+            836,
+            836,
+            1254,
+            1254
+          ],
+          "calibrationCell": 0,
+          "scale": 0.34120734908136485,
+          "offset": [
+            83,
+            97
+          ],
+          "bbox": [
+            83,
+            97,
+            174,
+            224
+          ],
+          "hurtboxes": [
+            {
+              "x": -19,
+              "y": -127,
+              "w": 55,
+              "h": 29
+            },
+            {
+              "x": -33,
+              "y": -98,
+              "w": 77,
+              "h": 29
+            },
+            {
+              "x": -33,
+              "y": -69,
+              "w": 70,
+              "h": 25
+            },
+            {
+              "x": -38,
+              "y": -44,
+              "w": 75,
+              "h": 23
+            },
+            {
+              "x": -45,
+              "y": -21,
+              "w": 91,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        }
+      ],
+      "method": "whole-pose",
+      "uniqueDrawings": 5,
+      "ticks": 8
+    },
+    "landingForward": {
+      "source": {
+        "path": "art/goku/rebuild/jump-ground-source.png",
+        "columns": 3,
+        "rows": 3,
+        "calibration": 0
+      },
+      "cells": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "prependReference": {
+        "stage": "current",
+        "clip": "jumpFallForward",
+        "index": 2
+      },
+      "durations": [
+        1,
+        1,
+        2,
+        2,
+        2
+      ],
+      "grounded": true,
+      "loop": false,
+      "minHeight": 75,
+      "label": "LandingForward / contact and absorption",
+      "frames": [
+        {
+          "source": "art/goku/rebuild/jump-forward-source.png",
+          "sourceRect": [
+            1131,
+            688,
+            1432,
+            1012
+          ],
+          "cellRect": [
+            1024,
+            683,
+            1536,
+            1024
+          ],
+          "calibrationCell": 0,
+          "scale": 0.37572254335260113,
+          "offset": [
+            70,
+            102
+          ],
+          "bbox": [
+            70,
+            102,
+            183,
+            224
+          ],
+          "hurtboxes": [
+            {
+              "x": -24,
+              "y": -122,
+              "w": 59,
+              "h": 24
+            },
+            {
+              "x": -52,
+              "y": -98,
+              "w": 89,
+              "h": 29
+            },
+            {
+              "x": -58,
+              "y": -69,
+              "w": 92,
+              "h": 25
+            },
+            {
+              "x": -30,
+              "y": -44,
+              "w": 70,
+              "h": 23
+            },
+            {
+              "x": -16,
+              "y": -21,
+              "w": 71,
+              "h": 21
+            }
+          ],
+          "hitboxes": [],
+          "wholeFrameReference": {
+            "stage": "current",
+            "clip": "jumpFallForward",
+            "index": 2
+          }
+        },
+        {
+          "source": "art/goku/rebuild/jump-ground-source.png",
+          "sourceRect": [
+            906,
+            516,
+            1196,
+            837
+          ],
+          "cellRect": [
+            836,
+            418,
+            1254,
+            836
+          ],
+          "calibrationCell": 0,
+          "scale": 0.34120734908136485,
+          "offset": [
+            82,
+            114
+          ],
+          "bbox": [
+            82,
+            114,
+            181,
+            224
+          ],
+          "hurtboxes": [
+            {
+              "x": 4,
+              "y": -110,
+              "w": 47,
+              "h": 12
+            },
+            {
+              "x": -43,
+              "y": -98,
+              "w": 96,
+              "h": 29
+            },
+            {
+              "x": -46,
+              "y": -69,
+              "w": 98,
+              "h": 25
+            },
+            {
+              "x": -31,
+              "y": -44,
+              "w": 68,
+              "h": 23
+            },
+            {
+              "x": -40,
+              "y": -21,
+              "w": 81,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        },
+        {
+          "source": "art/goku/rebuild/jump-ground-source.png",
+          "sourceRect": [
+            79,
+            938,
+            383,
+            1228
+          ],
+          "cellRect": [
+            0,
+            836,
+            418,
+            1254
+          ],
+          "calibrationCell": 0,
+          "scale": 0.34120734908136485,
+          "offset": [
+            76,
+            125
+          ],
+          "bbox": [
+            76,
+            125,
+            180,
+            224
+          ],
+          "hurtboxes": [
+            {
+              "x": 18,
+              "y": -99,
+              "w": 7,
+              "h": 1
+            },
+            {
+              "x": -25,
+              "y": -98,
+              "w": 70,
+              "h": 29
+            },
+            {
+              "x": -40,
+              "y": -69,
+              "w": 89,
+              "h": 25
+            },
+            {
+              "x": -41,
+              "y": -44,
+              "w": 85,
+              "h": 23
+            },
+            {
+              "x": -52,
+              "y": -21,
+              "w": 104,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        },
+        {
+          "source": "art/goku/rebuild/jump-ground-source.png",
+          "sourceRect": [
+            483,
+            879,
+            782,
+            1228
+          ],
+          "cellRect": [
+            418,
+            836,
+            836,
+            1254
+          ],
+          "calibrationCell": 0,
+          "scale": 0.34120734908136485,
+          "offset": [
+            78,
+            105
+          ],
+          "bbox": [
+            78,
+            105,
+            180,
+            224
+          ],
+          "hurtboxes": [
+            {
+              "x": -12,
+              "y": -119,
+              "w": 52,
+              "h": 21
+            },
+            {
+              "x": -36,
+              "y": -98,
+              "w": 85,
+              "h": 29
+            },
+            {
+              "x": -36,
+              "y": -69,
+              "w": 87,
+              "h": 25
+            },
+            {
+              "x": -39,
+              "y": -44,
+              "w": 81,
+              "h": 23
+            },
+            {
+              "x": -50,
+              "y": -21,
+              "w": 102,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        },
+        {
+          "source": "art/goku/rebuild/jump-ground-source.png",
+          "sourceRect": [
+            917,
+            856,
+            1184,
+            1228
+          ],
+          "cellRect": [
+            836,
+            836,
+            1254,
+            1254
+          ],
+          "calibrationCell": 0,
+          "scale": 0.34120734908136485,
+          "offset": [
+            83,
+            97
+          ],
+          "bbox": [
+            83,
+            97,
+            174,
+            224
+          ],
+          "hurtboxes": [
+            {
+              "x": -19,
+              "y": -127,
+              "w": 55,
+              "h": 29
+            },
+            {
+              "x": -33,
+              "y": -98,
+              "w": 77,
+              "h": 29
+            },
+            {
+              "x": -33,
+              "y": -69,
+              "w": 70,
+              "h": 25
+            },
+            {
+              "x": -38,
+              "y": -44,
+              "w": 75,
+              "h": 23
+            },
+            {
+              "x": -45,
+              "y": -21,
+              "w": 91,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        }
+      ],
+      "method": "whole-pose",
+      "uniqueDrawings": 5,
+      "ticks": 8
+    },
+    "landingBackward": {
+      "source": {
+        "path": "art/goku/rebuild/jump-ground-source.png",
+        "columns": 3,
+        "rows": 3,
+        "calibration": 0
+      },
+      "cells": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "prependReference": {
+        "stage": "current",
+        "clip": "jumpFallBackward",
+        "index": 2
+      },
+      "durations": [
+        1,
+        1,
+        2,
+        2,
+        2
+      ],
+      "grounded": true,
+      "loop": false,
+      "minHeight": 75,
+      "label": "LandingBackward / contact and absorption",
+      "frames": [
+        {
+          "source": "art/goku/rebuild/jump-back-source.png",
+          "sourceRect": [
+            60,
+            41,
+            360,
+            440
+          ],
+          "cellRect": [
+            0,
+            0,
+            418,
+            418
+          ],
+          "calibrationCell": 0,
+          "scale": 0.3258145363408521,
+          "offset": [
+            80,
+            94
+          ],
+          "bbox": [
+            80,
+            94,
+            178,
+            224
+          ],
+          "hurtboxes": [
+            {
+              "x": -21,
+              "y": -130,
+              "w": 58,
+              "h": 32
+            },
+            {
+              "x": -32,
+              "y": -98,
+              "w": 79,
+              "h": 29
+            },
+            {
+              "x": -31,
+              "y": -69,
+              "w": 70,
+              "h": 25
+            },
+            {
+              "x": -40,
+              "y": -44,
+              "w": 82,
+              "h": 23
+            },
+            {
+              "x": -48,
+              "y": -21,
+              "w": 98,
+              "h": 21
+            }
+          ],
+          "hitboxes": [],
+          "wholeFrameReference": {
+            "stage": "current",
+            "clip": "jumpFallBackward",
+            "index": 2
+          }
+        },
+        {
+          "source": "art/goku/rebuild/jump-ground-source.png",
+          "sourceRect": [
+            906,
+            516,
+            1196,
+            837
+          ],
+          "cellRect": [
+            836,
+            418,
+            1254,
+            836
+          ],
+          "calibrationCell": 0,
+          "scale": 0.34120734908136485,
+          "offset": [
+            82,
+            114
+          ],
+          "bbox": [
+            82,
+            114,
+            181,
+            224
+          ],
+          "hurtboxes": [
+            {
+              "x": 4,
+              "y": -110,
+              "w": 47,
+              "h": 12
+            },
+            {
+              "x": -43,
+              "y": -98,
+              "w": 96,
+              "h": 29
+            },
+            {
+              "x": -46,
+              "y": -69,
+              "w": 98,
+              "h": 25
+            },
+            {
+              "x": -31,
+              "y": -44,
+              "w": 68,
+              "h": 23
+            },
+            {
+              "x": -40,
+              "y": -21,
+              "w": 81,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        },
+        {
+          "source": "art/goku/rebuild/jump-ground-source.png",
+          "sourceRect": [
+            79,
+            938,
+            383,
+            1228
+          ],
+          "cellRect": [
+            0,
+            836,
+            418,
+            1254
+          ],
+          "calibrationCell": 0,
+          "scale": 0.34120734908136485,
+          "offset": [
+            76,
+            125
+          ],
+          "bbox": [
+            76,
+            125,
+            180,
+            224
+          ],
+          "hurtboxes": [
+            {
+              "x": 18,
+              "y": -99,
+              "w": 7,
+              "h": 1
+            },
+            {
+              "x": -25,
+              "y": -98,
+              "w": 70,
+              "h": 29
+            },
+            {
+              "x": -40,
+              "y": -69,
+              "w": 89,
+              "h": 25
+            },
+            {
+              "x": -41,
+              "y": -44,
+              "w": 85,
+              "h": 23
+            },
+            {
+              "x": -52,
+              "y": -21,
+              "w": 104,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        },
+        {
+          "source": "art/goku/rebuild/jump-ground-source.png",
+          "sourceRect": [
+            483,
+            879,
+            782,
+            1228
+          ],
+          "cellRect": [
+            418,
+            836,
+            836,
+            1254
+          ],
+          "calibrationCell": 0,
+          "scale": 0.34120734908136485,
+          "offset": [
+            78,
+            105
+          ],
+          "bbox": [
+            78,
+            105,
+            180,
+            224
+          ],
+          "hurtboxes": [
+            {
+              "x": -12,
+              "y": -119,
+              "w": 52,
+              "h": 21
+            },
+            {
+              "x": -36,
+              "y": -98,
+              "w": 85,
+              "h": 29
+            },
+            {
+              "x": -36,
+              "y": -69,
+              "w": 87,
+              "h": 25
+            },
+            {
+              "x": -39,
+              "y": -44,
+              "w": 81,
+              "h": 23
+            },
+            {
+              "x": -50,
+              "y": -21,
+              "w": 102,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        },
+        {
+          "source": "art/goku/rebuild/jump-ground-source.png",
+          "sourceRect": [
+            917,
+            856,
+            1184,
+            1228
+          ],
+          "cellRect": [
+            836,
+            836,
+            1254,
+            1254
+          ],
+          "calibrationCell": 0,
+          "scale": 0.34120734908136485,
+          "offset": [
+            83,
+            97
+          ],
+          "bbox": [
+            83,
+            97,
+            174,
+            224
+          ],
+          "hurtboxes": [
+            {
+              "x": -19,
+              "y": -127,
+              "w": 55,
+              "h": 29
+            },
+            {
+              "x": -33,
+              "y": -98,
+              "w": 77,
+              "h": 29
+            },
+            {
+              "x": -33,
+              "y": -69,
+              "w": 70,
+              "h": 25
+            },
+            {
+              "x": -38,
+              "y": -44,
+              "w": 75,
+              "h": 23
+            },
+            {
+              "x": -45,
+              "y": -21,
+              "w": 91,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        }
+      ],
+      "method": "whole-pose",
+      "uniqueDrawings": 5,
+      "ticks": 8
+    }
+  }
+}

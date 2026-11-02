@@ -1,0 +1,100 @@
+{
+  "engineVersion": "301aa5a32f542cff5cd9f83a",
+  "tests": {
+    "simulation": 337,
+    "art": 73,
+    "browser": 54,
+    "onlineExistingSamuraiRooms": 5,
+    "compiledProduction": {
+      "origin": "http://127.0.0.1:3001",
+      "version": "301aa5a32f542cff5cd9f83a",
+      "results": [
+        {
+          "scenario": "guardCrouch",
+          "clip": "secondaryGuardCrouch"
+        },
+        {
+          "scenario": "damageHeavy",
+          "clip": "secondaryDamageHeavy"
+        },
+        {
+          "scenario": "grabbed",
+          "clip": "secondaryGrabbed"
+        },
+        {
+          "scenario": "taunt",
+          "clip": "secondaryTaunt"
+        },
+        {
+          "scenario": "victory",
+          "clip": "secondaryVictory"
+        }
+      ],
+      "actualBotEntrance": true,
+      "launcherRecovery": true,
+      "interruptionBothSides": true,
+      "koDissipation": true,
+      "mainKeyboardRT": true,
+      "exactAssets": true,
+      "errors": []
+    },
+    "roadRollerCompiledRegression": true
+  },
+  "build": "TypeScript + Vite + Node passed",
+  "preservedPNGs": {
+    "samurai": 449,
+    "dio": 565,
+    "the-world": 704,
+    "fx": 2,
+    "road-roller": 35,
+    "road-fx": 59
+  },
+  "newArt": {
+    "dio": {
+      "clips": 27,
+      "exportedCells": 147
+    },
+    "the-world": {
+      "clips": 9,
+      "exportedCells": 54
+    }
+  },
+  "preview": {
+    "source": "four explicitly staged real game Canvas scenarios, not a continuous fight",
+    "scenarios": [
+      "entrance",
+      "taunt",
+      "launched",
+      "ko"
+    ],
+    "simulationHz": 60,
+    "capturedFrames": 205,
+    "captureFPS": 30,
+    "durationMs": 6833.333333333332,
+    "apngFrames": 129,
+    "silent": true,
+    "trace": "art/dio/qa/secondary/trace.json",
+    "losslessCanvasCapturesVerified": 205,
+    "gifDurationMs": 6830
+  },
+  "files": {
+    "public/downloads/dio-secondary.zip": {
+      "bytes": 3556383,
+      "sha256": "c050da2deb7c9076657a185252e9645ea9990b818dc0c2274dfd2fa9e6e48b26"
+    },
+    "public/previews/dio-secondary.png": {
+      "bytes": 3102946,
+      "sha256": "282a6fe498463a85be9412de6b5be364012c14df75a63c5486e9cad22dc79243"
+    },
+    "public/previews/dio-secondary.gif": {
+      "bytes": 4926447,
+      "sha256": "db8f6832bfad9a2e787afa0edd1bef7e1501311f73b139e66fde120960213170"
+    }
+  },
+  "limitations": [
+    "Existing articulated pixel rig; facial expression is subtle at native face resolution.",
+    "Extreme anatomical angles still benefit from manual art review.",
+    "Own offensive throw and Dio online remain unavailable.",
+    "Preview concatenates four explicitly prepared game scenarios and has no audio."
+  ]
+}

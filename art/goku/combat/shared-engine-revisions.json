@@ -1,0 +1,31 @@
+{
+  "stage": "Goku normal combat",
+  "originalFreeze": "art/goku/rebuild/physics-freeze.json",
+  "files": {
+    "src/engine/bot.ts": {
+      "baseline": "0c3a5f1be8210a087fd11b16c6386887502a866835d440d3504effb4c20ac07b",
+      "current": "f48bdbc0b86fcb5894ef8097761e4277f3e806f02ee4f9ed37d3b7393ee1a99b",
+      "reason": "Goku-only choices use its available normals, launcher and universal grab; previous character branches retained."
+    },
+    "src/engine/characters.ts": {
+      "baseline": "49a870d85ddd10eb2d68332996192b3a1950b3ab549e8a4f33abd43c924be77a",
+      "current": "82cfa62ab479616905475d6431fd209a171b9eb093d758eb8ecf30b821af204b",
+      "reason": "Registers additive Goku combat data; Samurai and Dio composition retained."
+    },
+    "src/engine/combat.ts": {
+      "baseline": "ed1676686f0e2b68ab9e730a4f1e58a5d99c6d0b4146e956b2aaaf6d02eb5f7b",
+      "current": "722d72a4329a8d856214055d4993e276f671f94cce5b42770dcfbb1c14da94e0",
+      "reason": "Optional data-driven capture trajectory/release and Goku landing knockdown. Default capture path retained for Samurai/Dio; serializer unchanged."
+    },
+    "src/engine/input.ts": {
+      "baseline": "a03d90a5eec3424bd8372acd3a7947408e30d36136f9aa8092bd22c7ed96f127",
+      "current": "34b123f396fd0db229bd306b04d38f4de10d85859750895880104f2f60a4ccfa",
+      "reason": "Pre-existing unconnected gokuSpecial recognizer draft retained unchanged during this stage. No active Goku specialMoves, superMoves or dispatch added."
+    },
+    "src/engine/types.ts": {
+      "baseline": "f11f713bbf8e86186d53542d53ed343fc3d8e3ded8a3d4d1b6971cbc56c95c96",
+      "current": "adfc8e9bd467be47b0934e75daa0cf7ed494fdacff49d69ff3f9f38c0d7dabce",
+      "reason": "Optional shared grabSequence schema. Existing unconnected Goku specials draft fields were present before this stage and are not used."
+    }
+  }
+}

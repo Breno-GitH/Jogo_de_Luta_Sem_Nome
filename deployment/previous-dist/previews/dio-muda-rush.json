@@ -1,0 +1,10 @@
+{
+  "source": "actual fixed-tick game Canvas capture",
+  "sourceTicks": 132,
+  "ticksPerSecond": 60,
+  "apngFrames": 130,
+  "hits": 10,
+  "ownerStationary": true,
+  "durationMs": 2200.0,
+  "sourceTrace": "art/dio/qa/specials/rush-trace.json"
+}

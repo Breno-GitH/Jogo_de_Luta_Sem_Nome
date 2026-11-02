@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Fixture de fluxo real</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module">
+      // Test-only entry, deliberately absent from Vite's production inputs. It uses
+      // the actual application and only shortens health for KO/round-flow fixtures.
+      import "../src/style.css";
+      import { GameApp } from "../src/game/app.ts";
+      const game = new GameApp(document.querySelector("#app"));
+      window.flowFixture = {
+        knockOut(loser) {
+          const match = game.session?.match;
+          if (!match || match.phase !== "fight")
+            throw new Error("Fixture requires an active fight");
+          match.fighters[loser].health = 0;
+        },
+      };
+    </script>
+  </body>
+</html>

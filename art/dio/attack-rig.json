@@ -1,0 +1,1012 @@
+{
+  "stand_light": {
+    "label": "Stand Light",
+    "durations": [
+      5,
+      3,
+      4,
+      6
+    ],
+    "poses": [
+      {
+        "lean": -3,
+        "farTarget": [
+          150,
+          133
+        ],
+        "farWrist": -10,
+        "fists": [
+          "far"
+        ]
+      },
+      {
+        "lean": 9,
+        "x": 4,
+        "nearFoot": [
+          3,
+          0
+        ],
+        "farFoot": [
+          2,
+          3
+        ],
+        "farTarget": [
+          172,
+          128
+        ],
+        "farWrist": 0,
+        "nearHand": [
+          -3,
+          -2
+        ],
+        "fists": [
+          "far"
+        ],
+        "cloth": 2
+      },
+      {
+        "lean": 5,
+        "x": 2,
+        "farTarget": [
+          161,
+          134
+        ],
+        "farWrist": 3,
+        "fists": [
+          "far"
+        ],
+        "cloth": 2
+      },
+      {
+        "lean": 0,
+        "farTarget": [
+          153,
+          144
+        ],
+        "farWrist": -5,
+        "fists": [
+          "far"
+        ],
+        "cloth": 1
+      }
+    ],
+    "phases": [
+      "startup",
+      "active",
+      "recovery",
+      "recovery"
+    ],
+    "stats": {
+      "damage": 45,
+      "stun": 24,
+      "blockstun": 11,
+      "push": 1.4,
+      "launch": 0,
+      "hitstop": 6,
+      "level": "mid",
+      "rank": 1,
+      "cancels": [
+        "medium",
+        "heavy"
+      ],
+      "contact": "farhand"
+    }
+  },
+  "stand_medium": {
+    "label": "Stand Medium",
+    "durations": [
+      4,
+      4,
+      4,
+      7,
+      8
+    ],
+    "poses": [
+      {
+        "lean": -4,
+        "hip": 3,
+        "farKick": [
+          147,
+          190
+        ],
+        "farToe": -15,
+        "nearHand": [
+          1,
+          -3
+        ]
+      },
+      {
+        "lean": -9,
+        "hip": 2,
+        "farKick": [
+          150,
+          175
+        ],
+        "farToe": -20,
+        "farHand": [
+          0,
+          -5
+        ],
+        "cloth": -1
+      },
+      {
+        "lean": -13,
+        "hip": 2,
+        "farKick": [
+          199,
+          156
+        ],
+        "farToe": -12,
+        "nearHand": [
+          -2,
+          -6
+        ],
+        "farHand": [
+          1,
+          -9
+        ],
+        "cloth": 3
+      },
+      {
+        "lean": -7,
+        "hip": 4,
+        "farKick": [
+          175,
+          177
+        ],
+        "farToe": -7,
+        "nearHand": [
+          0,
+          -4
+        ],
+        "cloth": 2
+      },
+      {
+        "lean": -1,
+        "hip": 2,
+        "farFoot": [
+          1,
+          2
+        ],
+        "cloth": 1
+      }
+    ],
+    "phases": [
+      "startup",
+      "startup",
+      "active",
+      "recovery",
+      "recovery"
+    ],
+    "stats": {
+      "damage": 70,
+      "stun": 32,
+      "blockstun": 16,
+      "push": 2.2,
+      "launch": 0,
+      "hitstop": 9,
+      "level": "mid",
+      "rank": 2,
+      "cancels": [
+        "heavy"
+      ],
+      "contact": "farboot"
+    }
+  },
+  "stand_heavy": {
+    "label": "Stand Heavy",
+    "durations": [
+      5,
+      7,
+      6,
+      6,
+      8,
+      12
+    ],
+    "poses": [
+      {
+        "lean": -2,
+        "farHand": [
+          1,
+          -3
+        ],
+        "nearHand": [
+          1,
+          0
+        ]
+      },
+      {
+        "lean": -4,
+        "farTarget": [
+          147,
+          127
+        ],
+        "farWrist": -35,
+        "nearHand": [
+          2,
+          -1
+        ],
+        "cloth": -1
+      },
+      {
+        "lean": 1,
+        "farTarget": [
+          165,
+          125
+        ],
+        "farWrist": -5,
+        "nearHand": [
+          3,
+          -2
+        ],
+        "cloth": 2
+      },
+      {
+        "lean": 5,
+        "farTarget": [
+          171,
+          130
+        ],
+        "farWrist": 0,
+        "nearHand": [
+          4,
+          -3
+        ],
+        "cloth": 3
+      },
+      {
+        "lean": 2,
+        "farTarget": [
+          158,
+          135
+        ],
+        "farWrist": 8,
+        "cloth": 2
+      },
+      {
+        "lean": 0,
+        "farHand": [
+          0,
+          -1
+        ],
+        "cloth": 1
+      }
+    ],
+    "phases": [
+      "startup",
+      "startup",
+      "startup",
+      "active",
+      "recovery",
+      "recovery"
+    ],
+    "stats": {
+      "damage": 110,
+      "stun": 38,
+      "blockstun": 22,
+      "push": 5.5,
+      "launch": 0,
+      "hitstop": 12,
+      "level": "mid",
+      "rank": 3,
+      "cancels": []
+    }
+  },
+  "crouch_light": {
+    "label": "Crouch Light",
+    "durations": [
+      5,
+      3,
+      4,
+      6
+    ],
+    "poses": [
+      {
+        "hip": 29,
+        "lean": 10,
+        "farTarget": [
+          151,
+          168
+        ],
+        "fists": [
+          "far"
+        ]
+      },
+      {
+        "hip": 31,
+        "lean": 20,
+        "x": 3,
+        "nearFoot": [
+          -3,
+          0
+        ],
+        "farFoot": [
+          4,
+          5
+        ],
+        "farTarget": [
+          175,
+          185
+        ],
+        "farWrist": 8,
+        "fists": [
+          "far"
+        ],
+        "cloth": 2
+      },
+      {
+        "hip": 30,
+        "lean": 13,
+        "farTarget": [
+          161,
+          179
+        ],
+        "farWrist": 12,
+        "fists": [
+          "far"
+        ],
+        "cloth": 1
+      },
+      {
+        "hip": 29,
+        "lean": 6,
+        "farHand": [
+          1,
+          -6
+        ],
+        "farFoot": [
+          4,
+          5
+        ],
+        "fists": [
+          "far"
+        ]
+      }
+    ],
+    "phases": [
+      "startup",
+      "active",
+      "recovery",
+      "recovery"
+    ],
+    "stats": {
+      "damage": 40,
+      "stun": 24,
+      "blockstun": 10,
+      "push": 1.2,
+      "launch": 0,
+      "hitstop": 6,
+      "level": "low",
+      "rank": 1,
+      "cancels": [
+        "medium",
+        "heavy"
+      ],
+      "contact": "farhand"
+    }
+  },
+  "crouch_medium": {
+    "label": "Crouch Medium",
+    "durations": [
+      4,
+      4,
+      4,
+      7,
+      9
+    ],
+    "poses": [
+      {
+        "hip": 27,
+        "lean": -4,
+        "farKick": [
+          143,
+          211
+        ],
+        "nearFoot": [
+          -5,
+          0
+        ],
+        "farToe": 0
+      },
+      {
+        "hip": 29,
+        "lean": -8,
+        "farKick": [
+          150,
+          207
+        ],
+        "nearFoot": [
+          -7,
+          0
+        ],
+        "farHand": [
+          0,
+          -5
+        ],
+        "cloth": -1
+      },
+      {
+        "hip": 27,
+        "lean": -10,
+        "x": 3,
+        "farKick": [
+          196,
+          215
+        ],
+        "nearFoot": [
+          -8,
+          0
+        ],
+        "farToe": -4,
+        "nearHand": [
+          1,
+          -6
+        ],
+        "cloth": 3
+      },
+      {
+        "hip": 28,
+        "lean": -4,
+        "farKick": [
+          177,
+          216
+        ],
+        "farToe": -2,
+        "nearFoot": [
+          -5,
+          0
+        ],
+        "cloth": 2
+      },
+      {
+        "hip": 29,
+        "lean": 5,
+        "farFoot": [
+          4,
+          5
+        ],
+        "nearFoot": [
+          -4,
+          0
+        ],
+        "cloth": 1
+      }
+    ],
+    "phases": [
+      "startup",
+      "startup",
+      "active",
+      "recovery",
+      "recovery"
+    ],
+    "stats": {
+      "damage": 65,
+      "stun": 32,
+      "blockstun": 15,
+      "push": 2,
+      "launch": 0,
+      "hitstop": 8,
+      "level": "low",
+      "rank": 2,
+      "cancels": [
+        "heavy"
+      ],
+      "contact": "farboot"
+    }
+  },
+  "crouch_heavy": {
+    "label": "Crouch Heavy",
+    "durations": [
+      4,
+      6,
+      7,
+      6,
+      8,
+      13
+    ],
+    "poses": [
+      {
+        "hip": 30,
+        "lean": 2,
+        "farHand": [
+          1,
+          -6
+        ],
+        "nearHand": [
+          0,
+          -2
+        ],
+        "farFoot": [
+          4,
+          5
+        ]
+      },
+      {
+        "hip": 32,
+        "lean": -4,
+        "farTarget": [
+          149,
+          163
+        ],
+        "farWrist": -30,
+        "farFoot": [
+          4,
+          5
+        ],
+        "cloth": -2
+      },
+      {
+        "hip": 25,
+        "lean": 4,
+        "farTarget": [
+          162,
+          153
+        ],
+        "farWrist": -45,
+        "nearHand": [
+          1,
+          -4
+        ],
+        "farFoot": [
+          5,
+          5
+        ],
+        "cloth": 2
+      },
+      {
+        "hip": 18,
+        "lean": 8,
+        "farTarget": [
+          167,
+          139
+        ],
+        "farWrist": -65,
+        "nearHand": [
+          2,
+          -7
+        ],
+        "farFoot": [
+          5,
+          5
+        ],
+        "cloth": 3
+      },
+      {
+        "hip": 25,
+        "lean": 5,
+        "farTarget": [
+          158,
+          159
+        ],
+        "farWrist": -25,
+        "farFoot": [
+          4,
+          5
+        ],
+        "cloth": 2
+      },
+      {
+        "hip": 29,
+        "lean": 5,
+        "farHand": [
+          1,
+          -6
+        ],
+        "farFoot": [
+          4,
+          5
+        ],
+        "cloth": 1
+      }
+    ],
+    "phases": [
+      "startup",
+      "startup",
+      "startup",
+      "active",
+      "recovery",
+      "recovery"
+    ],
+    "stats": {
+      "damage": 90,
+      "stun": 48,
+      "blockstun": 21,
+      "push": 2,
+      "launch": -14,
+      "hitstop": 11,
+      "level": "mid",
+      "rank": 3,
+      "cancels": [
+        "jump"
+      ]
+    }
+  },
+  "air_light": {
+    "label": "Air Light",
+    "durations": [
+      4,
+      3,
+      4,
+      6
+    ],
+    "poses": [
+      {
+        "lean": -3,
+        "farTarget": [
+          150,
+          133
+        ],
+        "farWrist": -10,
+        "fists": [
+          "far"
+        ],
+        "nearFoot": [
+          8,
+          -10
+        ],
+        "farFoot": [
+          -5,
+          -9
+        ]
+      },
+      {
+        "lean": 9,
+        "x": 10,
+        "nearFoot": [
+          12,
+          -14
+        ],
+        "farFoot": [
+          -6,
+          -10
+        ],
+        "farTarget": [
+          178,
+          128
+        ],
+        "farWrist": 0,
+        "nearHand": [
+          -3,
+          -2
+        ],
+        "fists": [
+          "far"
+        ],
+        "cloth": 2
+      },
+      {
+        "lean": 5,
+        "x": 2,
+        "farTarget": [
+          161,
+          134
+        ],
+        "farWrist": 3,
+        "fists": [
+          "far"
+        ],
+        "cloth": 2,
+        "nearFoot": [
+          8,
+          -10
+        ],
+        "farFoot": [
+          -5,
+          -9
+        ]
+      },
+      {
+        "lean": 0,
+        "farTarget": [
+          153,
+          144
+        ],
+        "farWrist": -5,
+        "fists": [
+          "far"
+        ],
+        "cloth": 1,
+        "nearFoot": [
+          8,
+          -10
+        ],
+        "farFoot": [
+          -5,
+          -9
+        ]
+      }
+    ],
+    "phases": [
+      "startup",
+      "active",
+      "recovery",
+      "recovery"
+    ],
+    "stats": {
+      "damage": 40,
+      "stun": 31,
+      "blockstun": 12,
+      "push": 1,
+      "launch": -3,
+      "airHold": -3,
+      "hitstop": 6,
+      "level": "high",
+      "rank": 1,
+      "cancels": [
+        "medium",
+        "heavy"
+      ],
+      "contact": "farhand"
+    }
+  },
+  "air_medium": {
+    "label": "Air Medium",
+    "durations": [
+      3,
+      4,
+      5,
+      6,
+      8
+    ],
+    "poses": [
+      {
+        "lean": -5,
+        "nearFoot": [
+          7,
+          -10
+        ],
+        "farKick": [
+          146,
+          185
+        ],
+        "farToe": -10,
+        "nearHand": [
+          -1,
+          -5
+        ]
+      },
+      {
+        "lean": -10,
+        "nearFoot": [
+          10,
+          -15
+        ],
+        "farKick": [
+          153,
+          172
+        ],
+        "farToe": -18,
+        "farHand": [
+          1,
+          -9
+        ],
+        "cloth": -1
+      },
+      {
+        "lean": -14,
+        "nearFoot": [
+          14,
+          -16
+        ],
+        "farKick": [
+          197,
+          154
+        ],
+        "farToe": -10,
+        "nearHand": [
+          -2,
+          -8
+        ],
+        "farHand": [
+          2,
+          -11
+        ],
+        "cloth": 3
+      },
+      {
+        "lean": -8,
+        "nearFoot": [
+          11,
+          -14
+        ],
+        "farKick": [
+          177,
+          174
+        ],
+        "farToe": -5,
+        "cloth": 2
+      },
+      {
+        "lean": -1,
+        "nearFoot": [
+          8,
+          -10
+        ],
+        "farFoot": [
+          -5,
+          -9
+        ],
+        "nearHand": [
+          -1,
+          -3
+        ],
+        "farHand": [
+          1,
+          -5
+        ],
+        "cloth": 1
+      }
+    ],
+    "phases": [
+      "startup",
+      "startup",
+      "active",
+      "recovery",
+      "recovery"
+    ],
+    "stats": {
+      "damage": 65,
+      "stun": 35,
+      "blockstun": 16,
+      "push": 1.5,
+      "launch": -3,
+      "airHold": -2,
+      "hitstop": 9,
+      "level": "high",
+      "rank": 2,
+      "cancels": [
+        "heavy"
+      ],
+      "contact": "farboot"
+    }
+  },
+  "air_heavy": {
+    "label": "Air Heavy",
+    "durations": [
+      4,
+      5,
+      5,
+      6,
+      7,
+      12
+    ],
+    "poses": [
+      {
+        "lean": -2,
+        "farHand": [
+          1,
+          -3
+        ],
+        "nearHand": [
+          1,
+          0
+        ],
+        "nearFoot": [
+          8,
+          -10
+        ],
+        "farFoot": [
+          -5,
+          -9
+        ]
+      },
+      {
+        "lean": -4,
+        "farTarget": [
+          147,
+          127
+        ],
+        "farWrist": -35,
+        "nearHand": [
+          2,
+          -1
+        ],
+        "cloth": -1,
+        "nearFoot": [
+          8,
+          -10
+        ],
+        "farFoot": [
+          -5,
+          -9
+        ]
+      },
+      {
+        "lean": 1,
+        "farTarget": [
+          165,
+          119
+        ],
+        "farWrist": -20,
+        "nearHand": [
+          3,
+          -2
+        ],
+        "cloth": 2,
+        "nearFoot": [
+          8,
+          -10
+        ],
+        "farFoot": [
+          -5,
+          -9
+        ]
+      },
+      {
+        "lean": 8,
+        "farTarget": [
+          172,
+          147
+        ],
+        "farWrist": 25,
+        "nearHand": [
+          4,
+          -3
+        ],
+        "cloth": 3,
+        "nearFoot": [
+          13,
+          -9
+        ],
+        "farFoot": [
+          -6,
+          -6
+        ]
+      },
+      {
+        "lean": 2,
+        "farTarget": [
+          158,
+          135
+        ],
+        "farWrist": 8,
+        "cloth": 2,
+        "nearFoot": [
+          8,
+          -10
+        ],
+        "farFoot": [
+          -5,
+          -9
+        ]
+      },
+      {
+        "lean": 0,
+        "farHand": [
+          0,
+          -1
+        ],
+        "cloth": 1,
+        "nearFoot": [
+          8,
+          -10
+        ],
+        "farFoot": [
+          -5,
+          -9
+        ]
+      }
+    ],
+    "phases": [
+      "startup",
+      "startup",
+      "startup",
+      "active",
+      "recovery",
+      "recovery"
+    ],
+    "stats": {
+      "damage": 105,
+      "stun": 38,
+      "blockstun": 22,
+      "push": 4.5,
+      "launch": 12,
+      "airHold": 3,
+      "knockdown": true,
+      "hitstop": 13,
+      "level": "high",
+      "rank": 3,
+      "cancels": []
+    }
+  }
+}

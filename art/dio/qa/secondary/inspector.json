@@ -1,0 +1,182 @@
+[
+  {
+    "who": "dio",
+    "key": "secondaryGuardStand",
+    "frames": 4
+  },
+  {
+    "who": "dio",
+    "key": "secondaryGuardCrouch",
+    "frames": 4
+  },
+  {
+    "who": "dio",
+    "key": "secondaryGuardImpactStand",
+    "frames": 3
+  },
+  {
+    "who": "dio",
+    "key": "secondaryGuardImpactCrouch",
+    "frames": 3
+  },
+  {
+    "who": "dio",
+    "key": "secondaryDamageLight",
+    "frames": 4
+  },
+  {
+    "who": "dio",
+    "key": "secondaryDamageMedium",
+    "frames": 5
+  },
+  {
+    "who": "dio",
+    "key": "secondaryDamageHeavy",
+    "frames": 6
+  },
+  {
+    "who": "dio",
+    "key": "secondaryDamageCrouch",
+    "frames": 4
+  },
+  {
+    "who": "dio",
+    "key": "secondaryDamageAir",
+    "frames": 4
+  },
+  {
+    "who": "dio",
+    "key": "secondaryLaunched",
+    "frames": 4
+  },
+  {
+    "who": "dio",
+    "key": "secondaryFalling",
+    "frames": 4
+  },
+  {
+    "who": "dio",
+    "key": "secondaryDowned",
+    "frames": 4
+  },
+  {
+    "who": "dio",
+    "key": "secondaryGetup",
+    "frames": 7
+  },
+  {
+    "who": "dio",
+    "key": "secondaryGrabbed",
+    "frames": 5
+  },
+  {
+    "who": "dio",
+    "key": "secondaryKo",
+    "frames": 8
+  },
+  {
+    "who": "dio",
+    "key": "secondaryDefeat",
+    "frames": 6
+  },
+  {
+    "who": "dio",
+    "key": "secondaryEntrance",
+    "frames": 46
+  },
+  {
+    "who": "dio",
+    "key": "secondaryTaunt",
+    "frames": 10
+  },
+  {
+    "who": "dio",
+    "key": "secondaryVictory",
+    "frames": 8
+  },
+  {
+    "who": "dio",
+    "key": "secondaryExpressionNeutral",
+    "frames": 1
+  },
+  {
+    "who": "dio",
+    "key": "secondaryExpressionSmirk",
+    "frames": 1
+  },
+  {
+    "who": "dio",
+    "key": "secondaryExpressionAnger",
+    "frames": 1
+  },
+  {
+    "who": "dio",
+    "key": "secondaryExpressionChallenge",
+    "frames": 1
+  },
+  {
+    "who": "dio",
+    "key": "secondaryExpressionSurprise",
+    "frames": 1
+  },
+  {
+    "who": "dio",
+    "key": "secondaryExpressionVictory",
+    "frames": 1
+  },
+  {
+    "who": "dio",
+    "key": "secondaryExpressionPain",
+    "frames": 1
+  },
+  {
+    "who": "dio",
+    "key": "secondaryExpressionClosed",
+    "frames": 1
+  },
+  {
+    "who": "the-world",
+    "key": "secondaryInterrupt",
+    "frames": 4
+  },
+  {
+    "who": "the-world",
+    "key": "secondaryRecoil",
+    "frames": 5
+  },
+  {
+    "who": "the-world",
+    "key": "secondaryReturn",
+    "frames": 6
+  },
+  {
+    "who": "the-world",
+    "key": "secondaryVanish",
+    "frames": 6
+  },
+  {
+    "who": "the-world",
+    "key": "secondaryHidden",
+    "frames": 1
+  },
+  {
+    "who": "the-world",
+    "key": "secondaryAppear",
+    "frames": 8
+  },
+  {
+    "who": "the-world",
+    "key": "secondaryDissipate",
+    "frames": 10
+  },
+  {
+    "who": "the-world",
+    "key": "secondaryThreat",
+    "frames": 6
+  },
+  {
+    "who": "the-world",
+    "key": "secondaryVictory",
+    "frames": 8
+  }
+]

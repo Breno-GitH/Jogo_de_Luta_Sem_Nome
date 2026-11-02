@@ -1,0 +1,160 @@
+{
+  "method": "whole-pose",
+  "canvas": [
+    384,
+    256
+  ],
+  "pivot": {
+    "x": 192,
+    "y": 224
+  },
+  "config": {
+    "source": "art/goku/combat/hit_crouch_air-source.png",
+    "kind": "reaction",
+    "grounded": true,
+    "cells": [
+      1,
+      2
+    ],
+    "durations": [
+      4,
+      8
+    ],
+    "loop": false,
+    "label": "hitCrouch"
+  },
+  "frames": [
+    {
+      "source": "art/goku/combat/hit_crouch_air-source.png",
+      "sourceRect": [
+        504,
+        112,
+        771,
+        405
+      ],
+      "cellRect": [
+        418,
+        0,
+        836,
+        418
+      ],
+      "scale": 0.33248081841432225,
+      "offset": [
+        151,
+        127
+      ],
+      "metrics": {
+        "bbox": [
+          151,
+          127,
+          240,
+          224
+        ],
+        "opaquePixels": 4966,
+        "largestComponent": 1.0,
+        "components": [
+          4966
+        ]
+      },
+      "pose": {
+        "ticks": 4,
+        "phase": "reaction",
+        "hitboxes": [],
+        "hurtboxes": [
+          {
+            "x": -23,
+            "y": -97,
+            "w": 71,
+            "h": 28
+          },
+          {
+            "x": -27,
+            "y": -69,
+            "w": 70,
+            "h": 26
+          },
+          {
+            "x": -35,
+            "y": -43,
+            "w": 74,
+            "h": 23
+          },
+          {
+            "x": -41,
+            "y": -20,
+            "w": 83,
+            "h": 20
+          }
+        ]
+      },
+      "strikePoint": null,
+      "discardedSpeckles": []
+    },
+    {
+      "source": "art/goku/combat/hit_crouch_air-source.png",
+      "sourceRect": [
+        910,
+        175,
+        1163,
+        405
+      ],
+      "cellRect": [
+        836,
+        0,
+        1254,
+        418
+      ],
+      "scale": 0.33248081841432225,
+      "offset": [
+        158,
+        148
+      ],
+      "metrics": {
+        "bbox": [
+          158,
+          148,
+          242,
+          224
+        ],
+        "opaquePixels": 4084,
+        "largestComponent": 1.0,
+        "components": [
+          4084
+        ]
+      },
+      "pose": {
+        "ticks": 8,
+        "phase": "reaction",
+        "hitboxes": [],
+        "hurtboxes": [
+          {
+            "x": 2,
+            "y": -76,
+            "w": 41,
+            "h": 7
+          },
+          {
+            "x": -21,
+            "y": -69,
+            "w": 71,
+            "h": 26
+          },
+          {
+            "x": -32,
+            "y": -43,
+            "w": 72,
+            "h": 23
+          },
+          {
+            "x": -34,
+            "y": -20,
+            "w": 73,
+            "h": 20
+          }
+        ]
+      },
+      "strikePoint": null,
+      "discardedSpeckles": []
+    }
+  ]
+}

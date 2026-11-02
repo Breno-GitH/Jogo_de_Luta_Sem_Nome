@@ -1,0 +1,73 @@
+{
+  "idle": [
+    11,
+    9,
+    10,
+    11,
+    9,
+    10
+  ],
+  "walkForward": [
+    4,
+    4,
+    4,
+    4,
+    4,
+    4
+  ],
+  "walkBack": [
+    4,
+    4,
+    4,
+    4,
+    4,
+    4
+  ],
+  "dashForward": [
+    2,
+    2,
+    3,
+    3,
+    3
+  ],
+  "backdash": [
+    2,
+    2,
+    3,
+    3,
+    3
+  ],
+  "crouchStart": [
+    3,
+    3
+  ],
+  "crouchIdle": [
+    16,
+    18
+  ],
+  "crouchEnd": [
+    3,
+    3
+  ],
+  "jumpStart": [
+    1,
+    1,
+    2
+  ],
+  "jumpRise": [
+    4,
+    5
+  ],
+  "jumpApex": [
+    8
+  ],
+  "jumpFall": [
+    4,
+    5
+  ],
+  "landing": [
+    2,
+    2,
+    2
+  ]
+}

@@ -1,0 +1,247 @@
+{
+  "stage": "walk",
+  "beforeAtlas": true,
+  "method": "whole-pose",
+  "frames": [
+    {
+      "label": "walkForward/0",
+      "bbox": [
+        72,
+        93,
+        178,
+        224
+      ],
+      "opaquePixels": 5756,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5756
+      ],
+      "colors": 28
+    },
+    {
+      "label": "walkForward/1",
+      "bbox": [
+        81,
+        92,
+        166,
+        224
+      ],
+      "opaquePixels": 5661,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5661
+      ],
+      "colors": 28
+    },
+    {
+      "label": "walkForward/2",
+      "bbox": [
+        99,
+        94,
+        166,
+        224
+      ],
+      "opaquePixels": 4738,
+      "mainComponentFraction": 1.0,
+      "components": [
+        4738
+      ],
+      "colors": 27
+    },
+    {
+      "label": "walkForward/3",
+      "bbox": [
+        92,
+        93,
+        176,
+        224
+      ],
+      "opaquePixels": 5126,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5126
+      ],
+      "colors": 28
+    },
+    {
+      "label": "walkForward/4",
+      "bbox": [
+        70,
+        94,
+        179,
+        224
+      ],
+      "opaquePixels": 6095,
+      "mainComponentFraction": 1.0,
+      "components": [
+        6095
+      ],
+      "colors": 27
+    },
+    {
+      "label": "walkForward/5",
+      "bbox": [
+        82,
+        95,
+        168,
+        224
+      ],
+      "opaquePixels": 5619,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5619
+      ],
+      "colors": 29
+    },
+    {
+      "label": "walkForward/6",
+      "bbox": [
+        92,
+        95,
+        165,
+        224
+      ],
+      "opaquePixels": 4787,
+      "mainComponentFraction": 1.0,
+      "components": [
+        4787
+      ],
+      "colors": 27
+    },
+    {
+      "label": "walkForward/7",
+      "bbox": [
+        90,
+        93,
+        178,
+        224
+      ],
+      "opaquePixels": 4998,
+      "mainComponentFraction": 1.0,
+      "components": [
+        4998
+      ],
+      "colors": 29
+    },
+    {
+      "label": "walkBack/0",
+      "bbox": [
+        67,
+        92,
+        174,
+        224
+      ],
+      "opaquePixels": 5731,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5731
+      ],
+      "colors": 28
+    },
+    {
+      "label": "walkBack/1",
+      "bbox": [
+        79,
+        93,
+        163,
+        224
+      ],
+      "opaquePixels": 5550,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5550
+      ],
+      "colors": 28
+    },
+    {
+      "label": "walkBack/2",
+      "bbox": [
+        97,
+        98,
+        165,
+        224
+      ],
+      "opaquePixels": 4630,
+      "mainComponentFraction": 1.0,
+      "components": [
+        4630
+      ],
+      "colors": 27
+    },
+    {
+      "label": "walkBack/3",
+      "bbox": [
+        74,
+        93,
+        163,
+        224
+      ],
+      "opaquePixels": 5114,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5114
+      ],
+      "colors": 29
+    },
+    {
+      "label": "walkBack/4",
+      "bbox": [
+        76,
+        95,
+        179,
+        224
+      ],
+      "opaquePixels": 5621,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5621
+      ],
+      "colors": 29
+    },
+    {
+      "label": "walkBack/5",
+      "bbox": [
+        85,
+        95,
+        165,
+        224
+      ],
+      "opaquePixels": 5426,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5426
+      ],
+      "colors": 29
+    },
+    {
+      "label": "walkBack/6",
+      "bbox": [
+        96,
+        98,
+        164,
+        224
+      ],
+      "opaquePixels": 4642,
+      "mainComponentFraction": 1.0,
+      "components": [
+        4642
+      ],
+      "colors": 28
+    },
+    {
+      "label": "walkBack/7",
+      "bbox": [
+        76,
+        97,
+        166,
+        224
+      ],
+      "opaquePixels": 5434,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5434
+      ],
+      "colors": 28
+    }
+  ]
+}

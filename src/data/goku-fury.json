@@ -1,0 +1,32 @@
+{
+  "name": "SUPER SAIYAJIN 1 — FÚRIA SAIYAJIN",
+  "meterMaximum": 100,
+  "cost": 100,
+  "meterGainScale": 0.35,
+  "command": { "motionTicks": 36, "finishTicks": 6 },
+  "startup": 106,
+  "active": 5,
+  "recovery": 58,
+  "dash": { "from": 88, "to": 105, "speed": 10 },
+  "initialDamage": 25,
+  "minimumComboScale": 0.45,
+  "duration": 434,
+  "phases": { "ground": 0, "pursuit": 44, "teleports": 104, "charge": 224, "beam": 278, "dissipation": 344, "descent": 354, "landing": 384, "ending": 398, "base": 430 },
+  "hits": [
+    { "tick": 16, "damage": 20, "kind": "punch" },
+    { "tick": 34, "damage": 24, "kind": "launch" },
+    { "tick": 65, "damage": 15, "kind": "punch" },
+    { "tick": 78, "damage": 18, "kind": "kick" },
+    { "tick": 90, "damage": 15, "kind": "punch" },
+    { "tick": 100, "damage": 20, "kind": "kick" },
+    { "tick": 116, "damage": 18, "kind": "punch" },
+    { "tick": 140, "damage": 20, "kind": "kick" },
+    { "tick": 164, "damage": 20, "kind": "kick" },
+    { "tick": 188, "damage": 22, "kind": "smash" },
+    { "tick": 212, "damage": 25, "kind": "launch" },
+    { "tick": 290, "damage": 18, "kind": "beam" },
+    { "tick": 306, "damage": 18, "kind": "beam" },
+    { "tick": 322, "damage": 18, "kind": "beam" },
+    { "tick": 334, "damage": 72, "kind": "explosion" }
+  ]
+}

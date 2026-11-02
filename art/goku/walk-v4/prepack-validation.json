@@ -1,0 +1,758 @@
+{
+  "method": "whole-pose",
+  "frames": [
+    {
+      "label": "walkForward/0",
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        72,
+        93,
+        178,
+        224
+      ],
+      "opaquePixels": 5756,
+      "mainComponentFraction": 1.0,
+      "components": [
+        {
+          "pixels": 5756,
+          "bbox": [
+            72,
+            93,
+            178,
+            224
+          ]
+        }
+      ],
+      "colors": 28,
+      "materials": {
+        "orange": 2225,
+        "blue": 898,
+        "skin": 420,
+        "upperDark": 974,
+        "groundBlue": 85
+      },
+      "provenance": {
+        "label": "walkForward/0",
+        "source": "art/goku/walk-v4/forward-source-00.png",
+        "rawSource": "art/goku/walk-v4/forward-sheet-source.png",
+        "sourceRect": [
+          77,
+          23,
+          401,
+          424
+        ],
+        "normalizationScale": 1.0,
+        "rgbaSha256": "c81922dbf642589e87b4fb4c246950b1fd1c0be5f2781059c0441627e7527b24"
+      }
+    },
+    {
+      "label": "walkForward/1",
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        81,
+        92,
+        166,
+        224
+      ],
+      "opaquePixels": 5661,
+      "mainComponentFraction": 1.0,
+      "components": [
+        {
+          "pixels": 5661,
+          "bbox": [
+            81,
+            92,
+            166,
+            224
+          ]
+        }
+      ],
+      "colors": 28,
+      "materials": {
+        "orange": 2124,
+        "blue": 880,
+        "skin": 476,
+        "upperDark": 982,
+        "groundBlue": 69
+      },
+      "provenance": {
+        "label": "walkForward/1",
+        "source": "art/goku/walk-v4/forward-source-01.png",
+        "rawSource": "art/goku/walk-v4/forward-sheet-source.png",
+        "sourceRect": [
+          523,
+          23,
+          784,
+          426
+        ],
+        "normalizationScale": 1.0,
+        "rgbaSha256": "16aed47cc8a8a93af72553b46c8c143849846f369641e4622988b8f678924009"
+      }
+    },
+    {
+      "label": "walkForward/2",
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        101,
+        91,
+        164,
+        224
+      ],
+      "opaquePixels": 4303,
+      "mainComponentFraction": 1.0,
+      "components": [
+        {
+          "pixels": 4303,
+          "bbox": [
+            101,
+            91,
+            164,
+            224
+          ]
+        }
+      ],
+      "colors": 28,
+      "materials": {
+        "orange": 1303,
+        "blue": 694,
+        "skin": 441,
+        "upperDark": 949,
+        "groundBlue": 45
+      },
+      "provenance": {
+        "label": "walkForward/2",
+        "source": "art/goku/walk-v4/forward-source-02.png",
+        "rawSource": "art/goku/walk-v4/forward-sheet-source.png",
+        "sourceRect": [
+          1008,
+          24,
+          1204,
+          429
+        ],
+        "normalizationScale": 1.0,
+        "rgbaSha256": "109f722768781a7d41784d19209e9a3a5bd8d3fa7913131a3ea94f28da2864ef"
+      }
+    },
+    {
+      "label": "walkForward/3",
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        92,
+        93,
+        176,
+        224
+      ],
+      "opaquePixels": 5126,
+      "mainComponentFraction": 1.0,
+      "components": [
+        {
+          "pixels": 5126,
+          "bbox": [
+            92,
+            93,
+            176,
+            224
+          ]
+        }
+      ],
+      "colors": 28,
+      "materials": {
+        "orange": 1939,
+        "blue": 733,
+        "skin": 149,
+        "upperDark": 1023,
+        "groundBlue": 68
+      },
+      "provenance": {
+        "label": "walkForward/3",
+        "source": "art/goku/walk-v4/forward-source-03.png",
+        "rawSource": "art/goku/walk-v4/forward-low-step-source.png",
+        "sourceRect": [
+          274,
+          65,
+          1005,
+          1197
+        ],
+        "normalizationScale": 0.35291519434628976,
+        "rgbaSha256": "32f5e6392c0ac714dfd18c246738617e95f852cc4cc6f35293e784b480dff541"
+      }
+    },
+    {
+      "label": "walkForward/4",
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        70,
+        94,
+        179,
+        224
+      ],
+      "opaquePixels": 6095,
+      "mainComponentFraction": 1.0,
+      "components": [
+        {
+          "pixels": 6095,
+          "bbox": [
+            70,
+            94,
+            179,
+            224
+          ]
+        }
+      ],
+      "colors": 27,
+      "materials": {
+        "orange": 2299,
+        "blue": 1036,
+        "skin": 471,
+        "upperDark": 1027,
+        "groundBlue": 79
+      },
+      "provenance": {
+        "label": "walkForward/4",
+        "source": "art/goku/walk-v4/forward-source-04.png",
+        "rawSource": "art/goku/walk-v4/forward-sheet-source.png",
+        "sourceRect": [
+          65,
+          451,
+          399,
+          849
+        ],
+        "normalizationScale": 1.0,
+        "rgbaSha256": "4117fd68b9c7edf196ff691ccb875b5bbce95ca6bb83e05cbfe2cdf3cfce4847"
+      }
+    },
+    {
+      "label": "walkForward/5",
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        82,
+        95,
+        168,
+        224
+      ],
+      "opaquePixels": 5619,
+      "mainComponentFraction": 1.0,
+      "components": [
+        {
+          "pixels": 5619,
+          "bbox": [
+            82,
+            95,
+            168,
+            224
+          ]
+        }
+      ],
+      "colors": 29,
+      "materials": {
+        "orange": 2167,
+        "blue": 811,
+        "skin": 453,
+        "upperDark": 1001,
+        "groundBlue": 66
+      },
+      "provenance": {
+        "label": "walkForward/5",
+        "source": "art/goku/walk-v4/forward-source-05.png",
+        "rawSource": "art/goku/walk-v4/forward-sheet-source.png",
+        "sourceRect": [
+          524,
+          455,
+          790,
+          848
+        ],
+        "normalizationScale": 1.0,
+        "rgbaSha256": "5c3c362edbaa833f7f5bd4ac5e369076fc3c6b10817e3ea5802f26a8fd97bccd"
+      }
+    },
+    {
+      "label": "walkForward/6",
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        102,
+        96,
+        164,
+        224
+      ],
+      "opaquePixels": 4079,
+      "mainComponentFraction": 1.0,
+      "components": [
+        {
+          "pixels": 4079,
+          "bbox": [
+            102,
+            96,
+            164,
+            224
+          ]
+        }
+      ],
+      "colors": 28,
+      "materials": {
+        "orange": 1107,
+        "blue": 638,
+        "skin": 424,
+        "upperDark": 971,
+        "groundBlue": 48
+      },
+      "provenance": {
+        "label": "walkForward/6",
+        "source": "art/goku/walk-v4/forward-source-06.png",
+        "rawSource": "art/goku/walk-v4/forward-sheet-source.png",
+        "sourceRect": [
+          1010,
+          457,
+          1201,
+          849
+        ],
+        "normalizationScale": 1.0,
+        "rgbaSha256": "eb01d9592886a9861ab4b1ebbe05b36d0221081db9dfa9e10deafb85a0ef5d5f"
+      }
+    },
+    {
+      "label": "walkForward/7",
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        90,
+        93,
+        178,
+        224
+      ],
+      "opaquePixels": 4998,
+      "mainComponentFraction": 1.0,
+      "components": [
+        {
+          "pixels": 4998,
+          "bbox": [
+            90,
+            93,
+            178,
+            224
+          ]
+        }
+      ],
+      "colors": 29,
+      "materials": {
+        "orange": 1955,
+        "blue": 697,
+        "skin": 428,
+        "upperDark": 976,
+        "groundBlue": 58
+      },
+      "provenance": {
+        "label": "walkForward/7",
+        "source": "art/goku/walk-v4/forward-source-07.png",
+        "rawSource": "art/goku/walk-v4/forward-opposite-low-step-source.png",
+        "sourceRect": [
+          254,
+          67,
+          1016,
+          1197
+        ],
+        "normalizationScale": 0.35353982300884956,
+        "rgbaSha256": "53dac68a3f542e33e271e7561bc385bdd0411e33dee18f5cc35146d9e1fdf197"
+      }
+    },
+    {
+      "label": "walkBack/0",
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        67,
+        92,
+        174,
+        224
+      ],
+      "opaquePixels": 5731,
+      "mainComponentFraction": 1.0,
+      "components": [
+        {
+          "pixels": 5731,
+          "bbox": [
+            67,
+            92,
+            174,
+            224
+          ]
+        }
+      ],
+      "colors": 28,
+      "materials": {
+        "orange": 2394,
+        "blue": 817,
+        "skin": 391,
+        "upperDark": 942,
+        "groundBlue": 36
+      },
+      "provenance": {
+        "label": "walkBack/0",
+        "source": "art/goku/walk-v4/back-source-00.png",
+        "rawSource": "art/goku/walk-v4/back-sheet-source.png",
+        "sourceRect": [
+          90,
+          24,
+          424,
+          434
+        ],
+        "normalizationScale": 1.0,
+        "rgbaSha256": "4142a3acb1d9597be29779eb98d16e0ab84beaf1b63662f292796cde9d41bdf1"
+      }
+    },
+    {
+      "label": "walkBack/1",
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        79,
+        93,
+        163,
+        224
+      ],
+      "opaquePixels": 5550,
+      "mainComponentFraction": 1.0,
+      "components": [
+        {
+          "pixels": 5550,
+          "bbox": [
+            79,
+            93,
+            163,
+            224
+          ]
+        }
+      ],
+      "colors": 28,
+      "materials": {
+        "orange": 2238,
+        "blue": 800,
+        "skin": 397,
+        "upperDark": 948,
+        "groundBlue": 36
+      },
+      "provenance": {
+        "label": "walkBack/1",
+        "source": "art/goku/walk-v4/back-source-01.png",
+        "rawSource": "art/goku/walk-v4/back-sheet-source.png",
+        "sourceRect": [
+          552,
+          24,
+          818,
+          433
+        ],
+        "normalizationScale": 1.0,
+        "rgbaSha256": "dd2d9553aa79a51fe57bf1147448045b9bc6b16ec2bebdb377b6149330a440c8"
+      }
+    },
+    {
+      "label": "walkBack/2",
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        101,
+        93,
+        164,
+        224
+      ],
+      "opaquePixels": 4112,
+      "mainComponentFraction": 1.0,
+      "components": [
+        {
+          "pixels": 4112,
+          "bbox": [
+            101,
+            93,
+            164,
+            224
+          ]
+        }
+      ],
+      "colors": 29,
+      "materials": {
+        "orange": 1469,
+        "blue": 524,
+        "skin": 308,
+        "upperDark": 936,
+        "groundBlue": 52
+      },
+      "provenance": {
+        "label": "walkBack/2",
+        "source": "art/goku/walk-v4/back-source-02.png",
+        "rawSource": "art/goku/walk-v4/back-sheet-source.png",
+        "sourceRect": [
+          1047,
+          24,
+          1244,
+          433
+        ],
+        "normalizationScale": 1.0,
+        "rgbaSha256": "4a2c2847169e56e27f458e12816f53e26c34a5e4676fa3eaa6be2e14341876ab"
+      }
+    },
+    {
+      "label": "walkBack/3",
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        74,
+        93,
+        163,
+        224
+      ],
+      "opaquePixels": 5114,
+      "mainComponentFraction": 1.0,
+      "components": [
+        {
+          "pixels": 5114,
+          "bbox": [
+            74,
+            93,
+            163,
+            224
+          ]
+        }
+      ],
+      "colors": 29,
+      "materials": {
+        "orange": 1916,
+        "blue": 789,
+        "skin": 333,
+        "upperDark": 937,
+        "groundBlue": 54
+      },
+      "provenance": {
+        "label": "walkBack/3",
+        "source": "art/goku/walk-v4/back-source-03.png",
+        "rawSource": "art/goku/walk-v4/back-sheet-source.png",
+        "sourceRect": [
+          1409,
+          25,
+          1689,
+          434
+        ],
+        "normalizationScale": 1.0,
+        "rgbaSha256": "bde66797637bfd54045c6a0d18d4d7af7b14bb234e5477e8121791d20677ace1"
+      }
+    },
+    {
+      "label": "walkBack/4",
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        76,
+        95,
+        179,
+        224
+      ],
+      "opaquePixels": 5621,
+      "mainComponentFraction": 1.0,
+      "components": [
+        {
+          "pixels": 5621,
+          "bbox": [
+            76,
+            95,
+            179,
+            224
+          ]
+        }
+      ],
+      "colors": 29,
+      "materials": {
+        "orange": 2228,
+        "blue": 839,
+        "skin": 402,
+        "upperDark": 967,
+        "groundBlue": 24
+      },
+      "provenance": {
+        "label": "walkBack/4",
+        "source": "art/goku/walk-v4/back-source-04.png",
+        "rawSource": "art/goku/walk-v4/back-sheet-source.png",
+        "sourceRect": [
+          111,
+          453,
+          434,
+          856
+        ],
+        "normalizationScale": 1.0,
+        "rgbaSha256": "1064e414d87171079ac6072dba0917af5813b323bf6a51e669c754548b14d68c"
+      }
+    },
+    {
+      "label": "walkBack/5",
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        85,
+        95,
+        165,
+        224
+      ],
+      "opaquePixels": 5426,
+      "mainComponentFraction": 1.0,
+      "components": [
+        {
+          "pixels": 5426,
+          "bbox": [
+            85,
+            95,
+            165,
+            224
+          ]
+        }
+      ],
+      "colors": 29,
+      "materials": {
+        "orange": 2121,
+        "blue": 790,
+        "skin": 365,
+        "upperDark": 960,
+        "groundBlue": 32
+      },
+      "provenance": {
+        "label": "walkBack/5",
+        "source": "art/goku/walk-v4/back-source-05.png",
+        "rawSource": "art/goku/walk-v4/back-sheet-source.png",
+        "sourceRect": [
+          565,
+          453,
+          815,
+          856
+        ],
+        "normalizationScale": 1.0,
+        "rgbaSha256": "8069826545d500f587908316f8f5a7ee1afde5a5f8c0b7d7a1067e286538b147"
+      }
+    },
+    {
+      "label": "walkBack/6",
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        99,
+        95,
+        163,
+        224
+      ],
+      "opaquePixels": 4275,
+      "mainComponentFraction": 1.0,
+      "components": [
+        {
+          "pixels": 4275,
+          "bbox": [
+            99,
+            95,
+            163,
+            224
+          ]
+        }
+      ],
+      "colors": 27,
+      "materials": {
+        "orange": 1392,
+        "blue": 629,
+        "skin": 295,
+        "upperDark": 950,
+        "groundBlue": 46
+      },
+      "provenance": {
+        "label": "walkBack/6",
+        "source": "art/goku/walk-v4/back-source-06.png",
+        "rawSource": "art/goku/walk-v4/back-sheet-source.png",
+        "sourceRect": [
+          1042,
+          454,
+          1244,
+          856
+        ],
+        "normalizationScale": 1.0,
+        "rgbaSha256": "70aed8d3b2d0b53454d24c18b303a6138ffab7993658f2592325c6ee1a5cd120"
+      }
+    },
+    {
+      "label": "walkBack/7",
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        76,
+        97,
+        166,
+        224
+      ],
+      "opaquePixels": 5434,
+      "mainComponentFraction": 1.0,
+      "components": [
+        {
+          "pixels": 5434,
+          "bbox": [
+            76,
+            97,
+            166,
+            224
+          ]
+        }
+      ],
+      "colors": 28,
+      "materials": {
+        "orange": 2139,
+        "blue": 819,
+        "skin": 383,
+        "upperDark": 965,
+        "groundBlue": 69
+      },
+      "provenance": {
+        "label": "walkBack/7",
+        "source": "art/goku/walk-v4/back-source-07.png",
+        "rawSource": "art/goku/walk-v4/back-sheet-source.png",
+        "sourceRect": [
+          1418,
+          455,
+          1699,
+          852
+        ],
+        "normalizationScale": 1.0,
+        "rgbaSha256": "4e059c43006c1e94ef9982f7719eabb881fce126118e3b8c1d85f8510670a617"
+      }
+    }
+  ],
+  "beforeAtlas": true
+}

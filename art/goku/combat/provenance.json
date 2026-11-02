@@ -1,0 +1,42 @@
+{
+  "tool": "built-in image_gen with approved whole-pose Goku reference",
+  "reference": "art/goku/rebuild/canonical-reference.png",
+  "import": "whole-figure source rectangle, one uniform nearest-neighbor scale per calibration sheet, 32-color palette, binary alpha, integer registration; explicit isolated-noise cleanup recorded below",
+  "forbiddenOperationsUsed": [],
+  "clips": 31,
+  "celReferences": 126,
+  "canvas": [
+    384,
+    256
+  ],
+  "pivot": [
+    192,
+    224
+  ],
+  "sourceFiles": {
+    "air_heavy-source.png": "83c58e91a930c2349d9dcb89a668b9aea4249e8dfec85cab0c947479d12d121d",
+    "air_light-source.png": "34bb07993c11dab8f708c05b2a3f282446229d003e4d5cf1c2f8b99fdd28d8df",
+    "air_medium-source.png": "46a770926d5509b073b7529eb16cb2687fa1f342bb9d879c202ffc24a6c52eb0",
+    "crouch_heavy-source.png": "8897b0746791ef8e395f0520d0880c3c34d0ad6655f752affe72d5573771887c",
+    "crouch_light-source.png": "5cf1e8d86d48f1f7b56cc3139c14af6879ea1c1b21fd6902ff3519a558c27938",
+    "crouch_medium-source.png": "16696fb3e83c5bc8e38c5f77b45381cabcf5d4df52fc8883d95219f841be87f2",
+    "down_getup-source.png": "7bc17d61f70936dba94bdbb34ce45921b5d2198c7cfe6a846a13edcdb93f9c86",
+    "grabbed_victim-source.png": "363ed27f4488b0db7cebd58ba38d2bf81bba8a9171b73016e5898c16841f0852",
+    "guard_crouch-source.png": "06761dda7607d5581e5a0e5a1479b8fe5a116bd93d80a3c2368219275fedd2ae",
+    "guard_standing-source.png": "7f0dd0948cf5692440dcff07c413d085233e67cd1aac2be8db5a4d6986b0c34b",
+    "hit_crouch_air-source.png": "df9f94c6409aea04e492df9a846847bffada1fa4e800145cffb7bf51cc698d32",
+    "hit_standing-source.png": "151d969de00889ba19f3d53726453de56412e17707cfc2bafdec5f98d537f401",
+    "stand_heavy-source.png": "317df600cd2c38586f84aa0b4819198e9dc6575fd7a3a2b5a05cf2c61ae12460",
+    "stand_light-source.png": "ba8f9b46826dacab9db0e8aa0d657a6b1d65360ec84251359bec64b1a32f1109",
+    "stand_medium-source.png": "75bc3365912125531ab1e4d82d84b8f08910fe329a7a6720fa49294dccd1383b",
+    "throw_attacker-source.png": "20e2a58ece5e5ac83a2be39e746cc4f4c6d5fae08e4d71074b10e4a5e8ed066f"
+  },
+  "limits": [
+    "AI-assisted whole-pose drawings retain small hair/face/cloth differences; not a claim of professional manual frame polish.",
+    "Pose-derived rectangular hurtbox bands are conservative; striking capsules follow real fists, shins and boots.",
+    "Goku is available in local modes; existing online protocol still supports Samurai only.",
+    "Goku specials and Super are not implemented in this stage."
+  ],
+  "nativeCleanup": "Eight explicitly reviewed isolated dark noise pixels in stand_heavy only; every removed coordinate/color is recorded, checked to be disconnected from anatomy and independently reconstructed in tests.",
+  "uniqueDrawingsIgnoringTranslation": 114
+}

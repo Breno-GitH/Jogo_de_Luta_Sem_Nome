@@ -1,0 +1,35 @@
+{
+  "stage": "Goku cinematic SSJ1, always returns to base",
+  "files": {
+    "src/engine/bot.ts": {
+      "baseline": "0c3a5f1be8210a087fd11b16c6386887502a866835d440d3504effb4c20ac07b",
+      "current": "28aae5c79f662aa53e80453a76bd7344f586f26d8df57174b3f3905b4e77903b",
+      "reason": "Pause bot plans during Fury and add delayed Goku-only normal-input Super command. Existing perception and opponent branches retained."
+    },
+    "src/engine/characters.ts": {
+      "baseline": "49a870d85ddd10eb2d68332996192b3a1950b3ab549e8a4f33abd43c924be77a",
+      "current": "82cfa62ab479616905475d6431fd209a171b9eb093d758eb8ecf30b821af204b",
+      "reason": "Registers additive Goku combat data; Samurai and Dio composition retained."
+    },
+    "src/engine/combat.ts": {
+      "baseline": "ed1676686f0e2b68ab9e730a4f1e58a5d99c6d0b4146e956b2aaaf6d02eb5f7b",
+      "current": "d5d3668c31b0c319f2405e18c739e97848b474750f13173f6b49d03a622bac38",
+      "reason": "Add Goku-only motion priority, vulnerable startup/hit confirmation, fixed cinematic ownership/release and meter gain multiplier. Existing Road Roller/Samurai branches retained; regression checks required."
+    },
+    "src/engine/input.ts": {
+      "baseline": "a03d90a5eec3424bd8372acd3a7947408e30d36136f9aa8092bd22c7ed96f127",
+      "current": "805837d574eeec1241017d75b59a22012cf3cb35342cbfb782f54f828381ed96",
+      "reason": "Add edge-sampled double quarter circle for Goku heavy only. Other motion recognizers and retained history bounds unchanged."
+    },
+    "src/engine/state.ts": {
+      "baseline": "1c97abf7a8f7b7ad163bf91b0f63a54292d51766803bd010f7e3a5f8b8328ac2",
+      "current": "26ece9bf01a6f9d5834cf63e65083f7a445f73a0b935a4c742283db7be2cd3cb",
+      "reason": "Explicit optional FuryState snapshot; no client-provided character data, no playable SSJ1 state."
+    },
+    "src/engine/types.ts": {
+      "baseline": "f11f713bbf8e86186d53542d53ed343fc3d8e3ded8a3d4d1b6971cbc56c95c96",
+      "current": "3b58db18e3796684d4689f660b2bbcbcc3c60e8b2e25c3202eb5cec518047df3",
+      "reason": "Add optional per-character meterGainScale. No other character data changed."
+    }
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "revision": 2,
+  "engineVersion": "6f853fe0415ebd87bdb79bfe",
+  "approvedSourceSha256": "17d2bf1a578b29704f999147e5588d9327dc73e8ad19999a6eeb05777d5c4bd5",
+  "tests": {
+    "simulation": 357,
+    "art": 84,
+    "browser": 60,
+    "onlineExistingSamuraiRooms": 5,
+    "compiledProduction": {
+      "origin": "http://127.0.0.1:3001",
+      "version": "6f853fe0415ebd87bdb79bfe",
+      "revision": 2,
+      "comparison": true,
+      "wallCrouchRecovery": true,
+      "mainTraining": true,
+      "walkBothDirections": true,
+      "mirroring": true,
+      "crouch": true,
+      "jump": true,
+      "allExportedSheetsInspectable": true,
+      "unimplementedAttacksHonest": true,
+      "receivesBotAttacks": true,
+      "pause": true,
+      "exactServedAssets": true,
+      "errors": []
+    }
+  },
+  "build": "TypeScript + Vite + Node passed",
+  "newArt": {
+    "basicClips": 13,
+    "basicCells": 94,
+    "totalSheets": 25,
+    "totalCells": 139
+  },
+  "preservedPNGs": {
+    "samurai": 449,
+    "dio": 766,
+    "the-world": 776
+  },
+  "mobility": {
+    "samuraiSpeed": 5.5,
+    "gokuSpeed": 6.1,
+    "airSpeed": 6.5,
+    "jump": -17.7
+  },
+  "preview": {
+    "losslessCanvasSamplesVerified": 171,
+    "durationMs": 5699.999999999994,
+    "captureFPS": 30,
+    "gifDurationMs": 5700,
+    "phases": [
+      "backdash",
+      "crouchEnd",
+      "crouchIdle",
+      "crouchStart",
+      "dashForward",
+      "idle",
+      "jumpApex",
+      "jumpApexBackward",
+      "jumpApexForward",
+      "jumpFall",
+      "jumpFallBackward",
+      "jumpFallForward",
+      "jumpRise",
+      "jumpRiseBackward",
+      "jumpRiseForward",
+      "jumpStart",
+      "landing",
+      "walkBack",
+      "walkForward"
+    ]
+  },
+  "files": {
+    "public/downloads/goku-movement.zip": {
+      "bytes": 2737949,
+      "sha256": "927b8475736368f5ba0bf697019188a5c7edbf4483a41efef6facba929b0c32b"
+    },
+    "public/previews/goku-gameplay.png": {
+      "bytes": 4823220,
+      "sha256": "434004b7951af5834e2d734fd4079eac873f04adf932366f9ae96d25a542e853"
+    },
+    "public/previews/goku-gameplay.gif": {
+      "bytes": 3847845,
+      "sha256": "f0afd4ef43c5c232dde1b76e6f9a2be673a674f63939fc0c6e3de99c06e6a1e1"
+    },
+    "public/previews/goku-movement.png": {
+      "bytes": 1659963,
+      "sha256": "235d6a14c8745896150b335767899abc55fc153ae8b9b096126d7447a9e19886"
+    }
+  },
+  "limitations": [
+    "Movement-stage character selectable in Training; no attacks, specials, Super or Goku online.",
+    "Four provisional support reaction sheets; extreme fabric folds benefit from manual refinement.",
+    "User-approved generated image supplies the actual new head/upper gi and painted cloth colours; limbs use a native-pixel articulated rig, not manual frame-by-frame animation.",
+    "The 130px palette import retains less facial and cloth detail than the supplied large guide."
+  ],
+  "testNotes": [
+    "Initial concurrent unit run exceeded the 5s BOT self-play timeout; the clean npm test run passed all 357 simulation tests and 84 art checks.",
+    "The full browser run passed 59/60. The last existing Dio recording scenario exceeded its 5s initial asset-load wait; its isolated rerun passed. All 60 scenarios were covered, not a single uninterrupted 60/60 run."
+  ]
+}

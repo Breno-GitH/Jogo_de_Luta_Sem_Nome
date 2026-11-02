@@ -1,0 +1,17 @@
+{
+  "date": "2026-11-02",
+  "version": "eab6e61d1eeacc2543022544",
+  "logicTests": 408,
+  "artTests": 105,
+  "regressionBrowserTests": 51,
+  "finalGokuBrowserRepeat": 5,
+  "productionBrowserTests": 2,
+  "build": "passed",
+  "baseURL": "http://127.0.0.1:3001",
+  "clips": 31,
+  "exportedCells": 126,
+  "uniqueDrawings": 114,
+  "normalDrawings": 63,
+  "oldMovementAndOtherCharacters": "hash verified",
+  "productionAssets": "byte equality verified"
+}

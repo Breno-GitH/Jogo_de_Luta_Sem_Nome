@@ -1,0 +1,6083 @@
+{
+  "secondaryGuardStand": {
+    "label": "Defesa em p\u00e9",
+    "poses": [
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -35,
+        "cloth": -1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "nearTarget": [
+          139,
+          129
+        ],
+        "farTarget": [
+          154,
+          123
+        ],
+        "farWrist": -25,
+        "lean": -5,
+        "expression": "neutral"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": -1,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -35,
+        "cloth": 0,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "nearTarget": [
+          139,
+          128
+        ],
+        "farTarget": [
+          154,
+          122
+        ],
+        "farWrist": -25,
+        "lean": -5,
+        "expression": "neutral"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": -0.5,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -35,
+        "cloth": 1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "nearTarget": [
+          139,
+          128.5
+        ],
+        "farTarget": [
+          154,
+          122.5
+        ],
+        "farWrist": -25,
+        "lean": -5,
+        "expression": "neutral"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0.6,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -35,
+        "cloth": -1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "nearTarget": [
+          139,
+          129.6
+        ],
+        "farTarget": [
+          154,
+          123.6
+        ],
+        "farWrist": -25,
+        "lean": -5,
+        "expression": "neutral"
+      }
+    ],
+    "durations": [
+      9,
+      9,
+      9,
+      9
+    ],
+    "loop": true,
+    "grounded": true
+  },
+  "secondaryGuardCrouch": {
+    "label": "Defesa agachada",
+    "poses": [
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 31,
+        "x": -5.58,
+        "lean": 6.82,
+        "forwardBoot": true,
+        "nearHand": [
+          3.86,
+          -8.06
+        ],
+        "farHand": [
+          2,
+          -11.78
+        ],
+        "nearWrist": -25,
+        "farWrist": -15,
+        "cloth": -1,
+        "head": [
+          0,
+          -0.9299999999999999
+        ],
+        "hair": 0.0,
+        "nearTarget": [
+          138,
+          157
+        ],
+        "farTarget": [
+          154,
+          150
+        ],
+        "expression": "neutral"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 30,
+        "x": -5.58,
+        "lean": 6.82,
+        "forwardBoot": true,
+        "nearHand": [
+          3.86,
+          -8.06
+        ],
+        "farHand": [
+          2,
+          -11.78
+        ],
+        "nearWrist": -25,
+        "farWrist": -15,
+        "cloth": 0,
+        "head": [
+          0,
+          -0.9299999999999999
+        ],
+        "hair": 0.0,
+        "nearTarget": [
+          138,
+          156
+        ],
+        "farTarget": [
+          154,
+          149
+        ],
+        "expression": "neutral"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 31.5,
+        "x": -5.58,
+        "lean": 6.82,
+        "forwardBoot": true,
+        "nearHand": [
+          3.86,
+          -8.06
+        ],
+        "farHand": [
+          2,
+          -11.78
+        ],
+        "nearWrist": -25,
+        "farWrist": -15,
+        "cloth": 1,
+        "head": [
+          0,
+          -0.9299999999999999
+        ],
+        "hair": 0.0,
+        "nearTarget": [
+          138,
+          157.5
+        ],
+        "farTarget": [
+          154,
+          150.5
+        ],
+        "expression": "neutral"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 32.6,
+        "x": -5.58,
+        "lean": 6.82,
+        "forwardBoot": true,
+        "nearHand": [
+          3.86,
+          -8.06
+        ],
+        "farHand": [
+          2,
+          -11.78
+        ],
+        "nearWrist": -25,
+        "farWrist": -15,
+        "cloth": -1,
+        "head": [
+          0,
+          -0.9299999999999999
+        ],
+        "hair": 0.0,
+        "nearTarget": [
+          138,
+          158.6
+        ],
+        "farTarget": [
+          154,
+          151.6
+        ],
+        "expression": "neutral"
+      }
+    ],
+    "durations": [
+      9,
+      9,
+      9,
+      9
+    ],
+    "loop": true,
+    "grounded": true
+  },
+  "secondaryGuardImpactStand": {
+    "label": "Impacto na defesa Stand",
+    "poses": [
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -35,
+        "cloth": -2,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "nearTarget": [
+          136,
+          129
+        ],
+        "farTarget": [
+          154,
+          123
+        ],
+        "farWrist": -25,
+        "lean": -12,
+        "expression": "anger",
+        "x": -2
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -35,
+        "cloth": -1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "nearTarget": [
+          137,
+          129
+        ],
+        "farTarget": [
+          154,
+          123
+        ],
+        "farWrist": -25,
+        "lean": -9,
+        "expression": "neutral",
+        "x": -1
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -35,
+        "cloth": 0,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "nearTarget": [
+          139,
+          129
+        ],
+        "farTarget": [
+          154,
+          123
+        ],
+        "farWrist": -25,
+        "lean": -5,
+        "expression": "neutral",
+        "x": 0
+      }
+    ],
+    "durations": [
+      2,
+      2,
+      2
+    ],
+    "loop": false,
+    "grounded": true
+  },
+  "secondaryGuardImpactCrouch": {
+    "label": "Impacto na defesa Crouch",
+    "poses": [
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 31,
+        "nearHand": [
+          3.86,
+          -8.06
+        ],
+        "farHand": [
+          2,
+          -11.78
+        ],
+        "nearWrist": -25,
+        "cloth": -2,
+        "hair": 0.0,
+        "head": [
+          0,
+          -0.9299999999999999
+        ],
+        "x": -7.58,
+        "lean": -12,
+        "forwardBoot": true,
+        "farWrist": -15,
+        "nearTarget": [
+          135,
+          157
+        ],
+        "farTarget": [
+          154,
+          150
+        ],
+        "expression": "anger"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 31,
+        "nearHand": [
+          3.86,
+          -8.06
+        ],
+        "farHand": [
+          2,
+          -11.78
+        ],
+        "nearWrist": -25,
+        "cloth": -1,
+        "hair": 0.0,
+        "head": [
+          0,
+          -0.9299999999999999
+        ],
+        "x": -6.58,
+        "lean": -9,
+        "forwardBoot": true,
+        "farWrist": -15,
+        "nearTarget": [
+          136,
+          157
+        ],
+        "farTarget": [
+          154,
+          150
+        ],
+        "expression": "neutral"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 31,
+        "nearHand": [
+          3.86,
+          -8.06
+        ],
+        "farHand": [
+          2,
+          -11.78
+        ],
+        "nearWrist": -25,
+        "cloth": 0,
+        "hair": 0.0,
+        "head": [
+          0,
+          -0.9299999999999999
+        ],
+        "x": -5.58,
+        "lean": -5,
+        "forwardBoot": true,
+        "farWrist": -15,
+        "nearTarget": [
+          138,
+          157
+        ],
+        "farTarget": [
+          154,
+          150
+        ],
+        "expression": "neutral"
+      }
+    ],
+    "durations": [
+      2,
+      2,
+      2
+    ],
+    "loop": false,
+    "grounded": true
+  },
+  "secondaryDamageLight": {
+    "label": "Dano leve",
+    "poses": [
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 0,
+        "hair": -1,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -6,
+        "nearTarget": [
+          114,
+          151
+        ],
+        "farTarget": [
+          145,
+          146
+        ],
+        "farWrist": 12,
+        "expression": "surprise"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 1,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -4,
+        "cloth": -1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -10,
+        "nearTarget": [
+          115,
+          152
+        ],
+        "farTarget": [
+          144,
+          147
+        ],
+        "farWrist": 15,
+        "expression": "pain"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 2,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -8,
+        "cloth": -2,
+        "hair": 1,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -7,
+        "nearTarget": [
+          116,
+          153
+        ],
+        "farTarget": [
+          143,
+          148
+        ],
+        "farWrist": 18,
+        "expression": "pain"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 3,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -12,
+        "cloth": -3,
+        "hair": -1,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -2,
+        "nearTarget": [
+          117,
+          154
+        ],
+        "farTarget": [
+          142,
+          149
+        ],
+        "farWrist": 21,
+        "expression": "pain"
+      }
+    ],
+    "durations": [
+      3,
+      3,
+      3,
+      3
+    ],
+    "loop": false,
+    "grounded": true
+  },
+  "secondaryDamageMedium": {
+    "label": "Dano m\u00e9dio",
+    "poses": [
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 0,
+        "hair": -1,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -7,
+        "nearTarget": [
+          114,
+          151
+        ],
+        "farTarget": [
+          145,
+          146
+        ],
+        "farWrist": 12,
+        "expression": "surprise"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 1,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -4,
+        "cloth": -1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -16,
+        "nearTarget": [
+          115,
+          152
+        ],
+        "farTarget": [
+          144,
+          147
+        ],
+        "farWrist": 15,
+        "expression": "pain"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 2,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -8,
+        "cloth": -2,
+        "hair": 1,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -22,
+        "nearTarget": [
+          116,
+          153
+        ],
+        "farTarget": [
+          143,
+          148
+        ],
+        "farWrist": 18,
+        "expression": "pain"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 3,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -12,
+        "cloth": -3,
+        "hair": -1,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -14,
+        "nearTarget": [
+          117,
+          154
+        ],
+        "farTarget": [
+          142,
+          149
+        ],
+        "farWrist": 21,
+        "expression": "pain"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 4,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -16,
+        "cloth": -4,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -5,
+        "nearTarget": [
+          118,
+          155
+        ],
+        "farTarget": [
+          141,
+          150
+        ],
+        "farWrist": 24,
+        "expression": "pain"
+      }
+    ],
+    "durations": [
+      3,
+      3,
+      3,
+      3,
+      3
+    ],
+    "loop": false,
+    "grounded": true
+  },
+  "secondaryDamageHeavy": {
+    "label": "Dano forte",
+    "poses": [
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 0,
+        "hair": -1,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -8,
+        "nearTarget": [
+          114,
+          151
+        ],
+        "farTarget": [
+          145,
+          146
+        ],
+        "farWrist": 12,
+        "expression": "surprise"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 1,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -4,
+        "cloth": -1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -20,
+        "nearTarget": [
+          115,
+          152
+        ],
+        "farTarget": [
+          144,
+          147
+        ],
+        "farWrist": 15,
+        "expression": "pain"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 2,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -8,
+        "cloth": -2,
+        "hair": 1,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -32,
+        "nearTarget": [
+          116,
+          153
+        ],
+        "farTarget": [
+          143,
+          148
+        ],
+        "farWrist": 18,
+        "expression": "pain"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 3,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -12,
+        "cloth": -3,
+        "hair": -1,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -28,
+        "nearTarget": [
+          117,
+          154
+        ],
+        "farTarget": [
+          142,
+          149
+        ],
+        "farWrist": 21,
+        "expression": "pain"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 4,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -16,
+        "cloth": -4,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -19,
+        "nearTarget": [
+          118,
+          155
+        ],
+        "farTarget": [
+          141,
+          150
+        ],
+        "farWrist": 24,
+        "expression": "pain"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 4,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -20,
+        "cloth": -5,
+        "hair": 1,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -7,
+        "nearTarget": [
+          119,
+          156
+        ],
+        "farTarget": [
+          140,
+          151
+        ],
+        "farWrist": 27,
+        "expression": "pain"
+      }
+    ],
+    "durations": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      3
+    ],
+    "loop": false,
+    "grounded": true
+  },
+  "secondaryDamageCrouch": {
+    "label": "Dano agachado",
+    "poses": [
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 31,
+        "x": -5.58,
+        "lean": -4,
+        "forwardBoot": true,
+        "nearHand": [
+          3.86,
+          -8.06
+        ],
+        "farHand": [
+          2,
+          -11.78
+        ],
+        "nearWrist": -25,
+        "farWrist": -15,
+        "cloth": 0,
+        "head": [
+          0,
+          -0.9299999999999999
+        ],
+        "hair": 0.0,
+        "nearTarget": [
+          126,
+          162
+        ],
+        "farTarget": [
+          150,
+          161
+        ],
+        "expression": "surprise"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 35,
+        "x": -5.58,
+        "lean": -12,
+        "forwardBoot": true,
+        "nearHand": [
+          3.86,
+          -8.06
+        ],
+        "farHand": [
+          2,
+          -11.78
+        ],
+        "nearWrist": -25,
+        "farWrist": -15,
+        "cloth": -1,
+        "head": [
+          0,
+          -0.9299999999999999
+        ],
+        "hair": 0.0,
+        "nearTarget": [
+          126,
+          166
+        ],
+        "farTarget": [
+          150,
+          165
+        ],
+        "expression": "pain"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 34,
+        "x": -5.58,
+        "lean": -17,
+        "forwardBoot": true,
+        "nearHand": [
+          3.86,
+          -8.06
+        ],
+        "farHand": [
+          2,
+          -11.78
+        ],
+        "nearWrist": -25,
+        "farWrist": -15,
+        "cloth": -2,
+        "head": [
+          0,
+          -0.9299999999999999
+        ],
+        "hair": 0.0,
+        "nearTarget": [
+          126,
+          165
+        ],
+        "farTarget": [
+          150,
+          164
+        ],
+        "expression": "pain"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 32,
+        "x": -5.58,
+        "lean": -6,
+        "forwardBoot": true,
+        "nearHand": [
+          3.86,
+          -8.06
+        ],
+        "farHand": [
+          2,
+          -11.78
+        ],
+        "nearWrist": -25,
+        "farWrist": -15,
+        "cloth": -3,
+        "head": [
+          0,
+          -0.9299999999999999
+        ],
+        "hair": 0.0,
+        "nearTarget": [
+          126,
+          163
+        ],
+        "farTarget": [
+          150,
+          162
+        ],
+        "expression": "pain"
+      }
+    ],
+    "durations": [
+      4,
+      4,
+      4,
+      4
+    ],
+    "loop": false,
+    "grounded": true
+  },
+  "secondaryDamageAir": {
+    "label": "Dano a\u00e9reo",
+    "poses": [
+      {
+        "nearAnkle": [
+          119,
+          188
+        ],
+        "farAnkle": [
+          144,
+          198
+        ],
+        "support": [],
+        "hip": 1,
+        "lean": -5,
+        "nearHand": [
+          -5,
+          -10
+        ],
+        "farHand": [
+          6,
+          -12
+        ],
+        "nearToe": -10,
+        "farToe": 3,
+        "cloth": 0,
+        "hair": 1,
+        "nearTarget": [
+          112,
+          140
+        ],
+        "farTarget": [
+          151,
+          137
+        ],
+        "roll": -3,
+        "expression": "surprise"
+      },
+      {
+        "nearAnkle": [
+          119,
+          188
+        ],
+        "farAnkle": [
+          144,
+          198
+        ],
+        "support": [],
+        "hip": 1,
+        "lean": -12,
+        "nearHand": [
+          -5,
+          -10
+        ],
+        "farHand": [
+          6,
+          -12
+        ],
+        "nearToe": -10,
+        "farToe": 3,
+        "cloth": -1,
+        "hair": 1,
+        "nearTarget": [
+          113,
+          140
+        ],
+        "farTarget": [
+          151,
+          138
+        ],
+        "roll": -9,
+        "expression": "pain"
+      },
+      {
+        "nearAnkle": [
+          119,
+          188
+        ],
+        "farAnkle": [
+          144,
+          198
+        ],
+        "support": [],
+        "hip": 1,
+        "lean": -17,
+        "nearHand": [
+          -5,
+          -10
+        ],
+        "farHand": [
+          6,
+          -12
+        ],
+        "nearToe": -10,
+        "farToe": 3,
+        "cloth": -2,
+        "hair": 1,
+        "nearTarget": [
+          114,
+          140
+        ],
+        "farTarget": [
+          151,
+          139
+        ],
+        "roll": -14,
+        "expression": "pain"
+      },
+      {
+        "nearAnkle": [
+          119,
+          188
+        ],
+        "farAnkle": [
+          144,
+          198
+        ],
+        "support": [],
+        "hip": 1,
+        "lean": -9,
+        "nearHand": [
+          -5,
+          -10
+        ],
+        "farHand": [
+          6,
+          -12
+        ],
+        "nearToe": -10,
+        "farToe": 3,
+        "cloth": -3,
+        "hair": 1,
+        "nearTarget": [
+          115,
+          140
+        ],
+        "farTarget": [
+          151,
+          140
+        ],
+        "roll": -8,
+        "expression": "pain"
+      }
+    ],
+    "durations": [
+      4,
+      4,
+      4,
+      4
+    ],
+    "loop": false,
+    "grounded": false
+  },
+  "secondaryLaunched": {
+    "label": "Lan\u00e7ado para cima",
+    "poses": [
+      {
+        "nearAnkle": [
+          120,
+          189
+        ],
+        "farAnkle": [
+          143,
+          197
+        ],
+        "support": [],
+        "hip": 1,
+        "lean": -10,
+        "nearHand": [
+          -5,
+          -10
+        ],
+        "farHand": [
+          6,
+          -12
+        ],
+        "nearToe": -10,
+        "farToe": 3,
+        "cloth": 3,
+        "hair": 1,
+        "nearTarget": [
+          111,
+          135
+        ],
+        "farTarget": [
+          151,
+          127
+        ],
+        "roll": -6,
+        "expression": "pain"
+      },
+      {
+        "nearAnkle": [
+          122,
+          188
+        ],
+        "farAnkle": [
+          143,
+          195
+        ],
+        "support": [],
+        "hip": 1,
+        "lean": -13,
+        "nearHand": [
+          -5,
+          -10
+        ],
+        "farHand": [
+          6,
+          -12
+        ],
+        "nearToe": -10,
+        "farToe": 3,
+        "cloth": 4,
+        "hair": 1,
+        "nearTarget": [
+          111,
+          136
+        ],
+        "farTarget": [
+          151,
+          128
+        ],
+        "roll": -11,
+        "expression": "pain"
+      },
+      {
+        "nearAnkle": [
+          124,
+          187
+        ],
+        "farAnkle": [
+          143,
+          193
+        ],
+        "support": [],
+        "hip": 1,
+        "lean": -16,
+        "nearHand": [
+          -5,
+          -10
+        ],
+        "farHand": [
+          6,
+          -12
+        ],
+        "nearToe": -10,
+        "farToe": 3,
+        "cloth": 5,
+        "hair": 1,
+        "nearTarget": [
+          111,
+          137
+        ],
+        "farTarget": [
+          151,
+          129
+        ],
+        "roll": -16,
+        "expression": "pain"
+      },
+      {
+        "nearAnkle": [
+          126,
+          186
+        ],
+        "farAnkle": [
+          143,
+          191
+        ],
+        "support": [],
+        "hip": 1,
+        "lean": -19,
+        "nearHand": [
+          -5,
+          -10
+        ],
+        "farHand": [
+          6,
+          -12
+        ],
+        "nearToe": -10,
+        "farToe": 3,
+        "cloth": 6,
+        "hair": 1,
+        "nearTarget": [
+          111,
+          138
+        ],
+        "farTarget": [
+          151,
+          130
+        ],
+        "roll": -21,
+        "expression": "pain"
+      }
+    ],
+    "durations": [
+      4,
+      4,
+      4,
+      4
+    ],
+    "loop": false,
+    "grounded": false
+  },
+  "secondaryFalling": {
+    "label": "Queda",
+    "poses": [
+      {
+        "nearAnkle": [
+          118,
+          191
+        ],
+        "farAnkle": [
+          147,
+          199
+        ],
+        "support": [],
+        "hip": 1,
+        "lean": -9,
+        "nearHand": [
+          -5,
+          -10
+        ],
+        "farHand": [
+          6,
+          -12
+        ],
+        "nearToe": -10,
+        "farToe": 3,
+        "cloth": 2,
+        "hair": 1,
+        "nearTarget": [
+          110,
+          142
+        ],
+        "farTarget": [
+          154,
+          139
+        ],
+        "roll": -20,
+        "expression": "pain"
+      },
+      {
+        "nearAnkle": [
+          117,
+          193
+        ],
+        "farAnkle": [
+          148,
+          200
+        ],
+        "support": [],
+        "hip": 1,
+        "lean": -8,
+        "nearHand": [
+          -5,
+          -10
+        ],
+        "farHand": [
+          6,
+          -12
+        ],
+        "nearToe": -10,
+        "farToe": 3,
+        "cloth": 1,
+        "hair": 1,
+        "nearTarget": [
+          112,
+          143
+        ],
+        "farTarget": [
+          153,
+          140
+        ],
+        "roll": -26,
+        "expression": "pain"
+      },
+      {
+        "nearAnkle": [
+          116,
+          195
+        ],
+        "farAnkle": [
+          149,
+          201
+        ],
+        "support": [],
+        "hip": 1,
+        "lean": -7,
+        "nearHand": [
+          -5,
+          -10
+        ],
+        "farHand": [
+          6,
+          -12
+        ],
+        "nearToe": -10,
+        "farToe": 3,
+        "cloth": 0,
+        "hair": 1,
+        "nearTarget": [
+          114,
+          144
+        ],
+        "farTarget": [
+          152,
+          141
+        ],
+        "roll": -32,
+        "expression": "pain"
+      },
+      {
+        "nearAnkle": [
+          115,
+          197
+        ],
+        "farAnkle": [
+          150,
+          202
+        ],
+        "support": [],
+        "hip": 1,
+        "lean": -6,
+        "nearHand": [
+          -5,
+          -10
+        ],
+        "farHand": [
+          6,
+          -12
+        ],
+        "nearToe": -10,
+        "farToe": 3,
+        "cloth": -1,
+        "hair": 1,
+        "nearTarget": [
+          116,
+          145
+        ],
+        "farTarget": [
+          151,
+          142
+        ],
+        "roll": -38,
+        "expression": "pain"
+      }
+    ],
+    "durations": [
+      4,
+      4,
+      4,
+      4
+    ],
+    "loop": true,
+    "grounded": false
+  },
+  "secondaryDowned": {
+    "label": "Derrubado",
+    "poses": [
+      {
+        "nearAnkle": [
+          110,
+          204
+        ],
+        "farAnkle": [
+          147,
+          211
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": -1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -2,
+        "nearTarget": [
+          119,
+          151
+        ],
+        "farTarget": [
+          151,
+          154
+        ],
+        "roll": -90,
+        "expression": "closed"
+      },
+      {
+        "nearAnkle": [
+          110,
+          204
+        ],
+        "farAnkle": [
+          147,
+          211
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 0,
+        "hair": 1,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -2,
+        "nearTarget": [
+          119,
+          152
+        ],
+        "farTarget": [
+          151,
+          153
+        ],
+        "roll": -90,
+        "expression": "closed"
+      },
+      {
+        "nearAnkle": [
+          110,
+          204
+        ],
+        "farAnkle": [
+          147,
+          211
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -2,
+        "nearTarget": [
+          119,
+          151
+        ],
+        "farTarget": [
+          151,
+          154
+        ],
+        "roll": -90,
+        "expression": "closed"
+      },
+      {
+        "nearAnkle": [
+          110,
+          204
+        ],
+        "farAnkle": [
+          147,
+          211
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": -1,
+        "hair": 1,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -2,
+        "nearTarget": [
+          119,
+          152
+        ],
+        "farTarget": [
+          151,
+          153
+        ],
+        "roll": -90,
+        "expression": "closed"
+      }
+    ],
+    "durations": [
+      6,
+      6,
+      6,
+      6
+    ],
+    "loop": true,
+    "grounded": true
+  },
+  "secondaryGetup": {
+    "label": "Levantando",
+    "poses": [
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": -1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "roll": -90,
+        "lean": -2,
+        "nearTarget": [
+          119,
+          151
+        ],
+        "farTarget": [
+          151,
+          154
+        ],
+        "expression": "anger"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 8,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 0,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "roll": -77,
+        "lean": 4,
+        "nearTarget": [
+          117,
+          157
+        ],
+        "farTarget": [
+          153,
+          160
+        ],
+        "expression": "anger"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 19,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "roll": -54,
+        "lean": 9,
+        "nearTarget": [
+          117,
+          166
+        ],
+        "farTarget": [
+          155,
+          163
+        ],
+        "expression": "anger"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 29,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": -1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "roll": -30,
+        "lean": 10,
+        "nearTarget": [
+          123,
+          172
+        ],
+        "farTarget": [
+          154,
+          166
+        ],
+        "expression": "anger"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 21,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 0,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "roll": -8,
+        "lean": 6,
+        "nearTarget": [
+          127,
+          167
+        ],
+        "farTarget": [
+          151,
+          159
+        ],
+        "expression": "anger"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 9,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "roll": 0,
+        "lean": 3,
+        "nearTarget": [
+          121,
+          162
+        ],
+        "farTarget": [
+          151,
+          154
+        ],
+        "expression": "neutral"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": -1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "roll": 0,
+        "lean": 0,
+        "nearTarget": [
+          115,
+          160
+        ],
+        "farTarget": [
+          150,
+          151
+        ],
+        "expression": "neutral"
+      }
+    ],
+    "durations": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      4
+    ],
+    "loop": false,
+    "grounded": true
+  },
+  "secondaryGrabbed": {
+    "label": "Agarrado",
+    "poses": [
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -20,
+        "cloth": 0,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 6,
+        "nearTarget": [
+          118,
+          139
+        ],
+        "farTarget": [
+          149,
+          137
+        ],
+        "expression": "surprise"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 1,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -20,
+        "cloth": -1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 15,
+        "nearTarget": [
+          119,
+          141
+        ],
+        "farTarget": [
+          148,
+          138
+        ],
+        "expression": "surprise"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 2,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -20,
+        "cloth": -2,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 21,
+        "nearTarget": [
+          120,
+          143
+        ],
+        "farTarget": [
+          147,
+          139
+        ],
+        "expression": "pain"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -20,
+        "cloth": -3,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 16,
+        "nearTarget": [
+          121,
+          145
+        ],
+        "farTarget": [
+          146,
+          140
+        ],
+        "expression": "pain"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 1,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -20,
+        "cloth": -4,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -7,
+        "nearTarget": [
+          122,
+          147
+        ],
+        "farTarget": [
+          145,
+          141
+        ],
+        "expression": "pain"
+      }
+    ],
+    "durations": [
+      4,
+      4,
+      4,
+      4,
+      6
+    ],
+    "loop": false,
+    "grounded": true
+  },
+  "secondaryKo": {
+    "label": "Nocaute",
+    "poses": [
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146.0,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 2,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 0,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "roll": 0,
+        "lean": -5,
+        "nearTarget": [
+          113,
+          151.0
+        ],
+        "farTarget": [
+          147.0,
+          149
+        ],
+        "expression": "surprise"
+      },
+      {
+        "nearAnkle": [
+          107,
+          210
+        ],
+        "farAnkle": [
+          146.5,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 6,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 3,
+        "hair": 1,
+        "head": [
+          0,
+          0.0
+        ],
+        "roll": -9,
+        "lean": -14,
+        "nearTarget": [
+          114,
+          151.2
+        ],
+        "farTarget": [
+          147.3,
+          150
+        ],
+        "expression": "surprise"
+      },
+      {
+        "nearAnkle": [
+          108,
+          209
+        ],
+        "farAnkle": [
+          147.0,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 9,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 2,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "roll": -22,
+        "lean": -18,
+        "nearTarget": [
+          115,
+          151.4
+        ],
+        "farTarget": [
+          147.6,
+          151
+        ],
+        "expression": "pain"
+      },
+      {
+        "nearAnkle": [
+          109,
+          211
+        ],
+        "farAnkle": [
+          147.5,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 7,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 1,
+        "hair": 1,
+        "head": [
+          0,
+          0.0
+        ],
+        "roll": -41,
+        "lean": -13,
+        "nearTarget": [
+          116,
+          151.6
+        ],
+        "farTarget": [
+          147.9,
+          152
+        ],
+        "expression": "pain"
+      },
+      {
+        "nearAnkle": [
+          110,
+          210
+        ],
+        "farAnkle": [
+          148.0,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 3,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 0,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "roll": -66,
+        "lean": -6,
+        "nearTarget": [
+          117,
+          151.8
+        ],
+        "farTarget": [
+          148.2,
+          153
+        ],
+        "expression": "pain"
+      },
+      {
+        "nearAnkle": [
+          111,
+          209
+        ],
+        "farAnkle": [
+          148.5,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 3,
+        "hair": 1,
+        "head": [
+          0,
+          0.0
+        ],
+        "roll": -82,
+        "lean": -2,
+        "nearTarget": [
+          118,
+          152.0
+        ],
+        "farTarget": [
+          148.5,
+          154
+        ],
+        "expression": "closed"
+      },
+      {
+        "nearAnkle": [
+          112,
+          211
+        ],
+        "farAnkle": [
+          149.0,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 2,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "roll": -90,
+        "lean": -2,
+        "nearTarget": [
+          119,
+          152.2
+        ],
+        "farTarget": [
+          148.8,
+          155
+        ],
+        "expression": "closed"
+      },
+      {
+        "nearAnkle": [
+          113,
+          210
+        ],
+        "farAnkle": [
+          149.5,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 1,
+        "hair": 1,
+        "head": [
+          0,
+          0.0
+        ],
+        "roll": -90,
+        "lean": -2,
+        "nearTarget": [
+          120,
+          152.4
+        ],
+        "farTarget": [
+          149.1,
+          156
+        ],
+        "expression": "closed"
+      }
+    ],
+    "durations": [
+      4,
+      5,
+      6,
+      7,
+      8,
+      8,
+      10,
+      12
+    ],
+    "loop": false,
+    "grounded": true
+  },
+  "secondaryDefeat": {
+    "label": "Derrota",
+    "poses": [
+      {
+        "nearAnkle": [
+          110,
+          204
+        ],
+        "farAnkle": [
+          147,
+          211
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 2.0,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -2,
+        "nearTarget": [
+          119.0,
+          151
+        ],
+        "farTarget": [
+          151,
+          154
+        ],
+        "roll": -90,
+        "expression": "closed"
+      },
+      {
+        "nearAnkle": [
+          110,
+          204
+        ],
+        "farAnkle": [
+          147,
+          211
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 1.6,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -2,
+        "nearTarget": [
+          119.3,
+          152
+        ],
+        "farTarget": [
+          151,
+          153
+        ],
+        "roll": -90,
+        "expression": "closed"
+      },
+      {
+        "nearAnkle": [
+          110,
+          204
+        ],
+        "farAnkle": [
+          147,
+          211
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 1.2,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -2,
+        "nearTarget": [
+          119.6,
+          151
+        ],
+        "farTarget": [
+          151,
+          154
+        ],
+        "roll": -90,
+        "expression": "closed"
+      },
+      {
+        "nearAnkle": [
+          110,
+          204
+        ],
+        "farAnkle": [
+          147,
+          211
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 0.7999999999999998,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -2,
+        "nearTarget": [
+          119.9,
+          152
+        ],
+        "farTarget": [
+          151,
+          153
+        ],
+        "roll": -90,
+        "expression": "closed"
+      },
+      {
+        "nearAnkle": [
+          110,
+          204
+        ],
+        "farAnkle": [
+          147,
+          211
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 0.3999999999999999,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -2,
+        "nearTarget": [
+          120.2,
+          151
+        ],
+        "farTarget": [
+          151,
+          154
+        ],
+        "roll": -90,
+        "expression": "closed"
+      },
+      {
+        "nearAnkle": [
+          110,
+          204
+        ],
+        "farAnkle": [
+          147,
+          211
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 0.0,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -2,
+        "nearTarget": [
+          120.5,
+          152
+        ],
+        "farTarget": [
+          151,
+          153
+        ],
+        "roll": -90,
+        "expression": "closed"
+      }
+    ],
+    "durations": [
+      8,
+      8,
+      8,
+      8,
+      8,
+      8
+    ],
+    "loop": false,
+    "grounded": true
+  },
+  "secondaryEntrance": {
+    "label": "Entrada confiante e manifesta\u00e7\u00e3o",
+    "poses": [
+      {
+        "x": 0.0,
+        "farToe": 0.0,
+        "farWrist": -0.0,
+        "forwardBoot": true,
+        "nearHand": [
+          0.0,
+          1.0
+        ],
+        "lean": 0.5,
+        "nearAnkle": [
+          112.0,
+          211.0
+        ],
+        "head": [
+          -0.0,
+          -0.3
+        ],
+        "hair": -0.0,
+        "nearToe": 0.0,
+        "hip": 5.0,
+        "cloth": 0.0,
+        "farHand": [
+          -0.0,
+          -2.0
+        ],
+        "nearWrist": 0.0,
+        "farAnkle": [
+          144.0,
+          214.0
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "expression": "smirk"
+      },
+      {
+        "x": 0.0,
+        "farToe": 0.0,
+        "farWrist": -0.5656854249492381,
+        "forwardBoot": true,
+        "nearHand": [
+          1.2727922061357857,
+          0.7171572875253809
+        ],
+        "lean": 0.6272792206135785,
+        "nearAnkle": [
+          112.8,
+          209.6
+        ],
+        "head": [
+          -0.05656854249492382,
+          -0.42
+        ],
+        "hair": -0.11313708498984763,
+        "nearToe": 1.0,
+        "hip": 5.4,
+        "cloth": 0.28284271247461906,
+        "farHand": [
+          -0.9899494936611666,
+          -2.282842712474619
+        ],
+        "nearWrist": 0.7071067811865476,
+        "farAnkle": [
+          142.4,
+          214.0
+        ],
+        "support": [
+          "far"
+        ],
+        "expression": "smirk"
+      },
+      {
+        "x": 0.0,
+        "farToe": 0.0,
+        "farWrist": -1.1313708498984762,
+        "forwardBoot": true,
+        "nearHand": [
+          2.5455844122715714,
+          0.4343145750507619
+        ],
+        "lean": 0.7545584412271571,
+        "nearAnkle": [
+          113.6,
+          208.2
+        ],
+        "head": [
+          -0.11313708498984763,
+          -0.5399999999999999
+        ],
+        "hair": -0.22627416997969527,
+        "nearToe": 2.0,
+        "hip": 5.8,
+        "cloth": 0.5656854249492381,
+        "farHand": [
+          -1.9798989873223332,
+          -2.565685424949238
+        ],
+        "nearWrist": 1.4142135623730951,
+        "farAnkle": [
+          140.8,
+          214.0
+        ],
+        "support": [
+          "far"
+        ],
+        "expression": "smirk"
+      },
+      {
+        "x": 0.0,
+        "farToe": 0.0,
+        "farWrist": -1.697056274847714,
+        "forwardBoot": true,
+        "nearHand": [
+          3.818376618407357,
+          0.15147186257614298
+        ],
+        "lean": 0.8818376618407358,
+        "nearAnkle": [
+          114.4,
+          206.8
+        ],
+        "head": [
+          -0.16970562748477144,
+          -0.6599999999999999
+        ],
+        "hair": -0.3394112549695429,
+        "nearToe": 3.0,
+        "hip": 6.2,
+        "cloth": 0.848528137423857,
+        "farHand": [
+          -2.9698484809834995,
+          -2.848528137423857
+        ],
+        "nearWrist": 2.1213203435596424,
+        "farAnkle": [
+          139.2,
+          214.0
+        ],
+        "support": [
+          "far"
+        ],
+        "expression": "smirk"
+      },
+      {
+        "x": 0.0,
+        "farToe": 0.0,
+        "farWrist": -2.2627416997969525,
+        "forwardBoot": true,
+        "nearHand": [
+          5.091168824543143,
+          -0.13137084989847625
+        ],
+        "lean": 1.0091168824543142,
+        "nearAnkle": [
+          115.2,
+          205.4
+        ],
+        "head": [
+          -0.22627416997969527,
+          -0.7799999999999999
+        ],
+        "hair": -0.45254833995939053,
+        "nearToe": 4.0,
+        "hip": 6.6,
+        "cloth": 1.1313708498984762,
+        "farHand": [
+          -3.9597979746446663,
+          -3.131370849898476
+        ],
+        "nearWrist": 2.8284271247461903,
+        "farAnkle": [
+          137.6,
+          214.0
+        ],
+        "support": [
+          "far"
+        ],
+        "expression": "smirk"
+      },
+      {
+        "x": 0.0,
+        "farToe": 0.0,
+        "farWrist": -2.8284271247461903,
+        "forwardBoot": true,
+        "nearHand": [
+          6.3639610306789285,
+          -0.41421356237309515
+        ],
+        "lean": 1.1363961030678928,
+        "nearAnkle": [
+          116.0,
+          204.0
+        ],
+        "head": [
+          -0.28284271247461906,
+          -0.8999999999999999
+        ],
+        "hair": -0.5656854249492381,
+        "nearToe": 5.0,
+        "hip": 7.0,
+        "cloth": 1.4142135623730951,
+        "farHand": [
+          -4.949747468305833,
+          -3.414213562373095
+        ],
+        "nearWrist": 3.5355339059327378,
+        "farAnkle": [
+          136.0,
+          214.0
+        ],
+        "support": [
+          "far"
+        ],
+        "expression": "smirk"
+      },
+      {
+        "x": 0.0,
+        "farToe": 0.0,
+        "farWrist": -3.0627416997969523,
+        "forwardBoot": true,
+        "nearHand": [
+          6.891168824543143,
+          -0.5313708498984762
+        ],
+        "lean": 1.1891168824543144,
+        "nearAnkle": [
+          118.4,
+          202.8
+        ],
+        "head": [
+          -0.30627416997969525,
+          -0.7799999999999999
+        ],
+        "hair": -0.6125483399593905,
+        "nearToe": 2.8,
+        "hip": 6.6,
+        "cloth": 1.5313708498984762,
+        "farHand": [
+          -5.359797974644666,
+          -3.531370849898476
+        ],
+        "nearWrist": 3.8284271247461903,
+        "farAnkle": [
+          134.4,
+          214.0
+        ],
+        "support": [
+          "far"
+        ],
+        "expression": "smirk"
+      },
+      {
+        "x": 0.0,
+        "farToe": 0.0,
+        "farWrist": -3.2970562748477144,
+        "forwardBoot": true,
+        "nearHand": [
+          7.418376618407358,
+          -0.6485281374238571
+        ],
+        "lean": 1.2418376618407356,
+        "nearAnkle": [
+          120.8,
+          201.6
+        ],
+        "head": [
+          -0.32970562748477145,
+          -0.6599999999999999
+        ],
+        "hair": -0.6594112549695429,
+        "nearToe": 0.5999999999999996,
+        "hip": 6.2,
+        "cloth": 1.6485281374238572,
+        "farHand": [
+          -5.7698484809835,
+          -3.648528137423857
+        ],
+        "nearWrist": 4.121320343559643,
+        "farAnkle": [
+          132.8,
+          214.0
+        ],
+        "support": [
+          "far"
+        ],
+        "expression": "smirk"
+      },
+      {
+        "x": 0.0,
+        "farToe": 0.0,
+        "farWrist": -3.531370849898476,
+        "forwardBoot": true,
+        "nearHand": [
+          7.945584412271572,
+          -0.765685424949238
+        ],
+        "lean": 1.2945584412271571,
+        "nearAnkle": [
+          123.2,
+          200.4
+        ],
+        "head": [
+          -0.35313708498984764,
+          -0.54
+        ],
+        "hair": -0.7062741699796953,
+        "nearToe": -1.5999999999999996,
+        "hip": 5.8,
+        "cloth": 1.765685424949238,
+        "farHand": [
+          -6.179898987322333,
+          -3.765685424949238
+        ],
+        "nearWrist": 4.414213562373095,
+        "farAnkle": [
+          131.2,
+          214.0
+        ],
+        "support": [
+          "far"
+        ],
+        "expression": "smirk"
+      },
+      {
+        "x": 0.0,
+        "farToe": 0.0,
+        "farWrist": -3.765685424949238,
+        "forwardBoot": true,
+        "nearHand": [
+          8.472792206135786,
+          -0.882842712474619
+        ],
+        "lean": 1.3472792206135784,
+        "nearAnkle": [
+          125.6,
+          199.2
+        ],
+        "head": [
+          -0.37656854249492383,
+          -0.42
+        ],
+        "hair": -0.7531370849898477,
+        "nearToe": -3.8000000000000007,
+        "hip": 5.4,
+        "cloth": 1.882842712474619,
+        "farHand": [
+          -6.589949493661167,
+          -3.882842712474619
+        ],
+        "nearWrist": 4.707106781186548,
+        "farAnkle": [
+          129.6,
+          214.0
+        ],
+        "support": [
+          "far"
+        ],
+        "expression": "smirk"
+      },
+      {
+        "x": 0.0,
+        "farToe": 0.0,
+        "farWrist": -4.0,
+        "forwardBoot": true,
+        "nearHand": [
+          9.0,
+          -1.0
+        ],
+        "lean": 1.4,
+        "nearAnkle": [
+          128.0,
+          198.0
+        ],
+        "head": [
+          -0.4,
+          -0.3
+        ],
+        "hair": -0.8,
+        "nearToe": -6.0,
+        "hip": 5.0,
+        "cloth": 2.0,
+        "farHand": [
+          -7.0,
+          -4.0
+        ],
+        "nearWrist": 5.0,
+        "farAnkle": [
+          128.0,
+          214.0
+        ],
+        "support": [
+          "far"
+        ],
+        "expression": "smirk"
+      },
+      {
+        "x": 0.0,
+        "farToe": 0.0,
+        "farWrist": -3.765685424949238,
+        "forwardBoot": true,
+        "nearHand": [
+          8.472792206135786,
+          -0.882842712474619
+        ],
+        "lean": 1.3472792206135784,
+        "nearAnkle": [
+          130.4,
+          199.2
+        ],
+        "head": [
+          -0.37656854249492383,
+          -0.18
+        ],
+        "hair": -0.7531370849898477,
+        "nearToe": -3.8,
+        "hip": 4.6,
+        "cloth": 1.882842712474619,
+        "farHand": [
+          -6.589949493661167,
+          -3.882842712474619
+        ],
+        "nearWrist": 4.707106781186548,
+        "farAnkle": [
+          126.4,
+          214.0
+        ],
+        "support": [
+          "far"
+        ],
+        "expression": "smirk"
+      },
+      {
+        "x": 0.0,
+        "farToe": 0.0,
+        "farWrist": -3.531370849898476,
+        "forwardBoot": true,
+        "nearHand": [
+          7.945584412271572,
+          -0.7656854249492381
+        ],
+        "lean": 1.2945584412271571,
+        "nearAnkle": [
+          132.8,
+          200.4
+        ],
+        "head": [
+          -0.35313708498984764,
+          -0.06
+        ],
+        "hair": -0.7062741699796953,
+        "nearToe": -1.5999999999999996,
+        "hip": 4.2,
+        "cloth": 1.765685424949238,
+        "farHand": [
+          -6.179898987322333,
+          -3.765685424949238
+        ],
+        "nearWrist": 4.414213562373095,
+        "farAnkle": [
+          124.8,
+          214.0
+        ],
+        "support": [
+          "far"
+        ],
+        "expression": "smirk"
+      },
+      {
+        "x": 0.0,
+        "farToe": 0.0,
+        "farWrist": -3.2970562748477144,
+        "forwardBoot": true,
+        "nearHand": [
+          7.418376618407358,
+          -0.6485281374238572
+        ],
+        "lean": 1.2418376618407356,
+        "nearAnkle": [
+          135.2,
+          201.6
+        ],
+        "head": [
+          -0.32970562748477145,
+          0.06
+        ],
+        "hair": -0.6594112549695429,
+        "nearToe": 0.5999999999999996,
+        "hip": 3.8,
+        "cloth": 1.6485281374238572,
+        "farHand": [
+          -5.7698484809835,
+          -3.648528137423857
+        ],
+        "nearWrist": 4.121320343559643,
+        "farAnkle": [
+          123.2,
+          214.0
+        ],
+        "support": [
+          "far"
+        ],
+        "expression": "smirk"
+      },
+      {
+        "x": 0.0,
+        "farToe": 0.0,
+        "farWrist": -3.0627416997969523,
+        "forwardBoot": true,
+        "nearHand": [
+          6.891168824543143,
+          -0.5313708498984762
+        ],
+        "lean": 1.1891168824543144,
+        "nearAnkle": [
+          137.6,
+          202.8
+        ],
+        "head": [
+          -0.30627416997969525,
+          0.18
+        ],
+        "hair": -0.6125483399593905,
+        "nearToe": 2.8000000000000007,
+        "hip": 3.4,
+        "cloth": 1.5313708498984762,
+        "farHand": [
+          -5.359797974644666,
+          -3.531370849898476
+        ],
+        "nearWrist": 3.82842712474619,
+        "farAnkle": [
+          121.6,
+          214.0
+        ],
+        "support": [
+          "far"
+        ],
+        "expression": "smirk"
+      },
+      {
+        "x": 0.0,
+        "farToe": 0.0,
+        "farWrist": -2.8284271247461903,
+        "forwardBoot": true,
+        "nearHand": [
+          6.3639610306789285,
+          -0.41421356237309515
+        ],
+        "lean": 1.1363961030678928,
+        "nearAnkle": [
+          140.0,
+          204.0
+        ],
+        "head": [
+          -0.28284271247461906,
+          0.3
+        ],
+        "hair": -0.5656854249492381,
+        "nearToe": 5.0,
+        "hip": 3.0,
+        "cloth": 1.4142135623730951,
+        "farHand": [
+          -4.949747468305833,
+          -3.414213562373095
+        ],
+        "nearWrist": 3.5355339059327378,
+        "farAnkle": [
+          120.0,
+          214.0
+        ],
+        "support": [
+          "far"
+        ],
+        "expression": "smirk"
+      },
+      {
+        "x": 0.0,
+        "farToe": 0.0,
+        "farWrist": -2.262741699796952,
+        "forwardBoot": true,
+        "nearHand": [
+          5.091168824543143,
+          -0.13137084989847614
+        ],
+        "lean": 1.0091168824543142,
+        "nearAnkle": [
+          140.8,
+          205.4
+        ],
+        "head": [
+          -0.22627416997969527,
+          0.18
+        ],
+        "hair": -0.45254833995939053,
+        "nearToe": 4.0,
+        "hip": 3.4,
+        "cloth": 1.131370849898476,
+        "farHand": [
+          -3.9597979746446663,
+          -3.131370849898476
+        ],
+        "nearWrist": 2.8284271247461903,
+        "farAnkle": [
+          118.4,
+          214.0
+        ],
+        "support": [
+          "far"
+        ],
+        "expression": "smirk"
+      },
+      {
+        "x": 0.0,
+        "farToe": 0.0,
+        "farWrist": -1.6970562748477143,
+        "forwardBoot": true,
+        "nearHand": [
+          3.818376618407357,
+          0.15147186257614287
+        ],
+        "lean": 0.8818376618407358,
+        "nearAnkle": [
+          141.6,
+          206.8
+        ],
+        "head": [
+          -0.16970562748477147,
+          0.06
+        ],
+        "hair": -0.33941125496954294,
+        "nearToe": 3.0,
+        "hip": 3.8,
+        "cloth": 0.8485281374238571,
+        "farHand": [
+          -2.9698484809835,
+          -2.848528137423857
+        ],
+        "nearWrist": 2.121320343559643,
+        "farAnkle": [
+          116.8,
+          214.0
+        ],
+        "support": [
+          "far"
+        ],
+        "expression": "smirk"
+      },
+      {
+        "x": 0.0,
+        "farToe": 0.0,
+        "farWrist": -1.1313708498984765,
+        "forwardBoot": true,
+        "nearHand": [
+          2.5455844122715723,
+          0.43431457505076176
+        ],
+        "lean": 0.7545584412271572,
+        "nearAnkle": [
+          142.4,
+          208.2
+        ],
+        "head": [
+          -0.11313708498984767,
+          -0.06
+        ],
+        "hair": -0.22627416997969535,
+        "nearToe": 2.0,
+        "hip": 4.2,
+        "cloth": 0.5656854249492382,
+        "farHand": [
+          -1.9798989873223336,
+          -2.5656854249492382
+        ],
+        "nearWrist": 1.4142135623730954,
+        "farAnkle": [
+          115.2,
+          214.0
+        ],
+        "support": [
+          "far"
+        ],
+        "expression": "smirk"
+      },
+      {
+        "x": 0.0,
+        "farToe": 0.0,
+        "farWrist": -0.5656854249492382,
+        "forwardBoot": true,
+        "nearHand": [
+          1.2727922061357857,
+          0.7171572875253809
+        ],
+        "lean": 0.6272792206135787,
+        "nearAnkle": [
+          143.2,
+          209.6
+        ],
+        "head": [
+          -0.05656854249492385,
+          -0.18
+        ],
+        "hair": -0.1131370849898477,
+        "nearToe": 1.0,
+        "hip": 4.6,
+        "cloth": 0.2828427124746191,
+        "farHand": [
+          -0.9899494936611672,
+          -2.2828427124746193
+        ],
+        "nearWrist": 0.7071067811865479,
+        "farAnkle": [
+          113.6,
+          214.0
+        ],
+        "support": [
+          "far"
+        ],
+        "expression": "smirk"
+      },
+      {
+        "x": 0.0,
+        "farToe": 0.0,
+        "farWrist": -4.898587196589413e-16,
+        "forwardBoot": true,
+        "nearHand": [
+          1.102182119232618e-15,
+          0.9999999999999998
+        ],
+        "lean": 0.5000000000000001,
+        "nearAnkle": [
+          144.0,
+          211.0
+        ],
+        "head": [
+          -4.898587196589413e-17,
+          -0.3
+        ],
+        "hair": -9.797174393178826e-17,
+        "nearToe": 0.0,
+        "hip": 5.0,
+        "cloth": 2.4492935982947064e-16,
+        "farHand": [
+          -8.572527594031472e-16,
+          -2.0000000000000004
+        ],
+        "nearWrist": 6.123233995736766e-16,
+        "farAnkle": [
+          112.0,
+          214.0
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "expression": "smirk"
+      },
+      {
+        "x": 0.0,
+        "farToe": 1.0,
+        "farWrist": 0.5656854249492377,
+        "forwardBoot": true,
+        "nearHand": [
+          -1.2727922061357846,
+          0.7171572875253809
+        ],
+        "lean": 0.37272077938642156,
+        "nearAnkle": [
+          142.4,
+          211.0
+        ],
+        "head": [
+          0.05656854249492377,
+          -0.42
+        ],
+        "hair": 0.11313708498984754,
+        "nearToe": 0.0,
+        "hip": 5.4,
+        "cloth": -0.28284271247461884,
+        "farHand": [
+          0.9899494936611657,
+          -2.2828427124746193
+        ],
+        "nearWrist": -0.7071067811865469,
+        "farAnkle": [
+          112.8,
+          212.6
+        ],
+        "support": [
+          "near"
+        ],
+        "expression": "smirk"
+      },
+      {
+        "x": 0.0,
+        "farToe": 2.0,
+        "farWrist": 1.1313708498984758,
+        "forwardBoot": true,
+        "nearHand": [
+          -2.5455844122715705,
+          0.4343145750507619
+        ],
+        "lean": 0.24544155877284296,
+        "nearAnkle": [
+          140.8,
+          211.0
+        ],
+        "head": [
+          0.11313708498984758,
+          -0.5399999999999999
+        ],
+        "hair": 0.22627416997969516,
+        "nearToe": 0.0,
+        "hip": 5.8,
+        "cloth": -0.5656854249492379,
+        "farHand": [
+          1.9798989873223323,
+          -2.5656854249492382
+        ],
+        "nearWrist": -1.4142135623730945,
+        "farAnkle": [
+          113.6,
+          211.2
+        ],
+        "support": [
+          "near"
+        ],
+        "expression": "smirk"
+      },
+      {
+        "x": 0.0,
+        "farToe": 3.0,
+        "farWrist": 1.6970562748477136,
+        "forwardBoot": true,
+        "nearHand": [
+          -3.818376618407356,
+          0.15147186257614298
+        ],
+        "lean": 0.11816233815926441,
+        "nearAnkle": [
+          139.2,
+          211.0
+        ],
+        "head": [
+          0.1697056274847714,
+          -0.6599999999999999
+        ],
+        "hair": 0.3394112549695428,
+        "nearToe": 0.0,
+        "hip": 6.2,
+        "cloth": -0.8485281374238568,
+        "farHand": [
+          2.9698484809834986,
+          -2.848528137423857
+        ],
+        "nearWrist": -2.121320343559642,
+        "farAnkle": [
+          114.4,
+          209.8
+        ],
+        "support": [
+          "near"
+        ],
+        "expression": "smirk"
+      },
+      {
+        "x": 0.0,
+        "farToe": 4.0,
+        "farWrist": 2.262741699796952,
+        "forwardBoot": true,
+        "nearHand": [
+          -5.091168824543142,
+          -0.13137084989847603
+        ],
+        "lean": -0.00911688245431419,
+        "nearAnkle": [
+          137.6,
+          211.0
+        ],
+        "head": [
+          0.2262741699796952,
+          -0.7799999999999999
+        ],
+        "hair": 0.4525483399593904,
+        "nearToe": 0.0,
+        "hip": 6.6,
+        "cloth": -1.131370849898476,
+        "farHand": [
+          3.9597979746446654,
+          -3.131370849898476
+        ],
+        "nearWrist": -2.82842712474619,
+        "farAnkle": [
+          115.2,
+          208.4
+        ],
+        "support": [
+          "near"
+        ],
+        "expression": "smirk"
+      },
+      {
+        "x": 0.0,
+        "farToe": 5.0,
+        "farWrist": 2.82842712474619,
+        "forwardBoot": true,
+        "nearHand": [
+          -6.363961030678928,
+          -0.4142135623730949
+        ],
+        "lean": -0.13639610306789274,
+        "nearAnkle": [
+          136.0,
+          211.0
+        ],
+        "head": [
+          0.282842712474619,
+          -0.8999999999999999
+        ],
+        "hair": 0.565685424949238,
+        "nearToe": 0.0,
+        "hip": 7.0,
+        "cloth": -1.414213562373095,
+        "farHand": [
+          4.949747468305832,
+          -3.414213562373095
+        ],
+        "nearWrist": -3.5355339059327373,
+        "farAnkle": [
+          116.0,
+          207.0
+        ],
+        "support": [
+          "near"
+        ],
+        "expression": "smirk"
+      },
+      {
+        "x": 0.0,
+        "farToe": 2.8,
+        "farWrist": 3.062741699796952,
+        "forwardBoot": true,
+        "nearHand": [
+          -6.891168824543142,
+          -0.5313708498984759
+        ],
+        "lean": -0.18911688245431418,
+        "nearAnkle": [
+          134.4,
+          211.0
+        ],
+        "head": [
+          0.3062741699796952,
+          -0.7799999999999999
+        ],
+        "hair": 0.6125483399593904,
+        "nearToe": 0.0,
+        "hip": 6.6,
+        "cloth": -1.531370849898476,
+        "farHand": [
+          5.359797974644666,
+          -3.531370849898476
+        ],
+        "nearWrist": -3.82842712474619,
+        "farAnkle": [
+          118.4,
+          205.8
+        ],
+        "support": [
+          "near"
+        ],
+        "expression": "smirk"
+      },
+      {
+        "x": 0.0,
+        "farToe": 0.5999999999999996,
+        "farWrist": 3.297056274847714,
+        "forwardBoot": true,
+        "nearHand": [
+          -7.418376618407357,
+          -0.648528137423857
+        ],
+        "lean": -0.24183766184073566,
+        "nearAnkle": [
+          132.8,
+          211.0
+        ],
+        "head": [
+          0.3297056274847714,
+          -0.6599999999999999
+        ],
+        "hair": 0.6594112549695428,
+        "nearToe": 0.0,
+        "hip": 6.2,
+        "cloth": -1.648528137423857,
+        "farHand": [
+          5.769848480983499,
+          -3.648528137423857
+        ],
+        "nearWrist": -4.121320343559642,
+        "farAnkle": [
+          120.8,
+          204.6
+        ],
+        "support": [
+          "near"
+        ],
+        "expression": "smirk"
+      },
+      {
+        "x": 0.0,
+        "farToe": -1.5999999999999996,
+        "farWrist": 3.531370849898476,
+        "forwardBoot": true,
+        "nearHand": [
+          -7.945584412271571,
+          -0.765685424949238
+        ],
+        "lean": -0.29455844122715713,
+        "nearAnkle": [
+          131.2,
+          211.0
+        ],
+        "head": [
+          0.35313708498984764,
+          -0.54
+        ],
+        "hair": 0.7062741699796953,
+        "nearToe": 0.0,
+        "hip": 5.8,
+        "cloth": -1.765685424949238,
+        "farHand": [
+          6.179898987322333,
+          -3.765685424949238
+        ],
+        "nearWrist": -4.414213562373095,
+        "farAnkle": [
+          123.2,
+          203.4
+        ],
+        "support": [
+          "near"
+        ],
+        "expression": "smirk"
+      },
+      {
+        "x": 0.0,
+        "farToe": -3.8000000000000007,
+        "farWrist": 3.765685424949238,
+        "forwardBoot": true,
+        "nearHand": [
+          -8.472792206135786,
+          -0.882842712474619
+        ],
+        "lean": -0.3472792206135786,
+        "nearAnkle": [
+          129.6,
+          211.0
+        ],
+        "head": [
+          0.37656854249492383,
+          -0.42
+        ],
+        "hair": 0.7531370849898477,
+        "nearToe": 0.0,
+        "hip": 5.4,
+        "cloth": -1.882842712474619,
+        "farHand": [
+          6.589949493661166,
+          -3.882842712474619
+        ],
+        "nearWrist": -4.707106781186548,
+        "farAnkle": [
+          125.6,
+          202.2
+        ],
+        "support": [
+          "near"
+        ],
+        "expression": "smirk"
+      },
+      {
+        "x": 0.0,
+        "farToe": -6.0,
+        "farWrist": 4.0,
+        "forwardBoot": true,
+        "nearHand": [
+          -9.0,
+          -1.0
+        ],
+        "lean": -0.4,
+        "nearAnkle": [
+          128.0,
+          211.0
+        ],
+        "head": [
+          0.4,
+          -0.3
+        ],
+        "hair": 0.8,
+        "nearToe": 0.0,
+        "hip": 5.0,
+        "cloth": -2.0,
+        "farHand": [
+          7.0,
+          -4.0
+        ],
+        "nearWrist": -5.0,
+        "farAnkle": [
+          128.0,
+          201.0
+        ],
+        "support": [
+          "near"
+        ],
+        "expression": "smirk"
+      },
+      {
+        "x": 0.0,
+        "farToe": -3.8,
+        "farWrist": 3.765685424949238,
+        "forwardBoot": true,
+        "nearHand": [
+          -8.472792206135786,
+          -0.8828427124746191
+        ],
+        "lean": -0.34727922061357863,
+        "nearAnkle": [
+          126.4,
+          211.0
+        ],
+        "head": [
+          0.37656854249492383,
+          -0.18
+        ],
+        "hair": 0.7531370849898477,
+        "nearToe": 0.0,
+        "hip": 4.6,
+        "cloth": -1.882842712474619,
+        "farHand": [
+          6.589949493661167,
+          -3.882842712474619
+        ],
+        "nearWrist": -4.707106781186548,
+        "farAnkle": [
+          130.4,
+          202.2
+        ],
+        "support": [
+          "near"
+        ],
+        "expression": "smirk"
+      },
+      {
+        "x": 0.0,
+        "farToe": -1.5999999999999996,
+        "farWrist": 3.5313708498984764,
+        "forwardBoot": true,
+        "nearHand": [
+          -7.945584412271572,
+          -0.7656854249492382
+        ],
+        "lean": -0.2945584412271572,
+        "nearAnkle": [
+          124.8,
+          211.0
+        ],
+        "head": [
+          0.35313708498984764,
+          -0.06
+        ],
+        "hair": 0.7062741699796953,
+        "nearToe": 0.0,
+        "hip": 4.2,
+        "cloth": -1.7656854249492382,
+        "farHand": [
+          6.179898987322334,
+          -3.765685424949238
+        ],
+        "nearWrist": -4.414213562373096,
+        "farAnkle": [
+          132.8,
+          203.4
+        ],
+        "support": [
+          "near"
+        ],
+        "expression": "smirk"
+      },
+      {
+        "x": 0.0,
+        "farToe": 0.5999999999999996,
+        "farWrist": 3.2970562748477144,
+        "forwardBoot": true,
+        "nearHand": [
+          -7.418376618407358,
+          -0.6485281374238572
+        ],
+        "lean": -0.2418376618407358,
+        "nearAnkle": [
+          123.2,
+          211.0
+        ],
+        "head": [
+          0.32970562748477145,
+          0.06
+        ],
+        "hair": 0.6594112549695429,
+        "nearToe": 0.0,
+        "hip": 3.8,
+        "cloth": -1.6485281374238572,
+        "farHand": [
+          5.7698484809835,
+          -3.6485281374238574
+        ],
+        "nearWrist": -4.121320343559643,
+        "farAnkle": [
+          135.2,
+          204.6
+        ],
+        "support": [
+          "near"
+        ],
+        "expression": "smirk"
+      },
+      {
+        "x": 0.0,
+        "farToe": 2.8000000000000007,
+        "farWrist": 3.0627416997969528,
+        "forwardBoot": true,
+        "nearHand": [
+          -6.8911688245431435,
+          -0.5313708498984763
+        ],
+        "lean": -0.18911688245431435,
+        "nearAnkle": [
+          121.6,
+          211.0
+        ],
+        "head": [
+          0.30627416997969525,
+          0.18
+        ],
+        "hair": 0.6125483399593905,
+        "nearToe": 0.0,
+        "hip": 3.4,
+        "cloth": -1.5313708498984764,
+        "farHand": [
+          5.359797974644667,
+          -3.5313708498984764
+        ],
+        "nearWrist": -3.8284271247461907,
+        "farAnkle": [
+          137.6,
+          205.8
+        ],
+        "support": [
+          "near"
+        ],
+        "expression": "smirk"
+      },
+      {
+        "x": 0.0,
+        "farToe": 5.0,
+        "farWrist": 2.8284271247461907,
+        "forwardBoot": true,
+        "nearHand": [
+          -6.363961030678929,
+          -0.41421356237309537
+        ],
+        "lean": -0.13639610306789296,
+        "nearAnkle": [
+          120.0,
+          211.0
+        ],
+        "head": [
+          0.28284271247461906,
+          0.3
+        ],
+        "hair": 0.5656854249492381,
+        "nearToe": 0.0,
+        "hip": 3.0,
+        "cloth": -1.4142135623730954,
+        "farHand": [
+          4.949747468305834,
+          -3.4142135623730954
+        ],
+        "nearWrist": -3.5355339059327386,
+        "farAnkle": [
+          140.0,
+          207.0
+        ],
+        "support": [
+          "near"
+        ],
+        "expression": "smirk"
+      },
+      {
+        "x": 0.0,
+        "farToe": 4.0,
+        "farWrist": 2.2627416997969525,
+        "forwardBoot": true,
+        "nearHand": [
+          -5.091168824543144,
+          -0.1313708498984763
+        ],
+        "lean": -0.009116882454314357,
+        "nearAnkle": [
+          118.4,
+          211.0
+        ],
+        "head": [
+          0.22627416997969524,
+          0.18
+        ],
+        "hair": 0.4525483399593905,
+        "nearToe": 0.0,
+        "hip": 3.4,
+        "cloth": -1.1313708498984762,
+        "farHand": [
+          3.9597979746446668,
+          -3.1313708498984765
+        ],
+        "nearWrist": -2.8284271247461907,
+        "farAnkle": [
+          140.8,
+          208.4
+        ],
+        "support": [
+          "near"
+        ],
+        "expression": "smirk"
+      },
+      {
+        "x": 0.0,
+        "farToe": 3.0,
+        "farWrist": 1.6970562748477145,
+        "forwardBoot": true,
+        "nearHand": [
+          -3.8183766184073575,
+          0.15147186257614276
+        ],
+        "lean": 0.11816233815926425,
+        "nearAnkle": [
+          116.8,
+          211.0
+        ],
+        "head": [
+          0.16970562748477142,
+          0.06
+        ],
+        "hair": 0.33941125496954283,
+        "nearToe": 0.0,
+        "hip": 3.8,
+        "cloth": -0.8485281374238572,
+        "farHand": [
+          2.9698484809835,
+          -2.848528137423857
+        ],
+        "nearWrist": -2.121320343559643,
+        "farAnkle": [
+          141.6,
+          209.8
+        ],
+        "support": [
+          "near"
+        ],
+        "expression": "smirk"
+      },
+      {
+        "x": 0.0,
+        "farToe": 2.0,
+        "farWrist": 1.1313708498984762,
+        "forwardBoot": true,
+        "nearHand": [
+          -2.545584412271572,
+          0.4343145750507619
+        ],
+        "lean": 0.2454415587728428,
+        "nearAnkle": [
+          115.2,
+          211.0
+        ],
+        "head": [
+          0.11313708498984762,
+          -0.06
+        ],
+        "hair": 0.22627416997969524,
+        "nearToe": 0.0,
+        "hip": 4.2,
+        "cloth": -0.5656854249492381,
+        "farHand": [
+          1.9798989873223336,
+          -2.5656854249492382
+        ],
+        "nearWrist": -1.4142135623730954,
+        "farAnkle": [
+          142.4,
+          211.2
+        ],
+        "support": [
+          "near"
+        ],
+        "expression": "smirk"
+      },
+      {
+        "x": 0.0,
+        "farToe": 1.0,
+        "farWrist": 0.5656854249492382,
+        "forwardBoot": true,
+        "nearHand": [
+          -1.2727922061357857,
+          0.7171572875253809
+        ],
+        "lean": 0.37272077938642145,
+        "nearAnkle": [
+          113.6,
+          211.0
+        ],
+        "head": [
+          0.056568542494923796,
+          -0.18
+        ],
+        "hair": 0.11313708498984759,
+        "nearToe": 0.0,
+        "hip": 4.6,
+        "cloth": -0.2828427124746191,
+        "farHand": [
+          0.9899494936611664,
+          -2.2828427124746193
+        ],
+        "nearWrist": -0.7071067811865475,
+        "farAnkle": [
+          143.2,
+          212.6
+        ],
+        "support": [
+          "near"
+        ],
+        "expression": "smirk"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 2,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": -1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 1,
+        "nearTarget": [
+          117,
+          157
+        ],
+        "farTarget": [
+          151,
+          151
+        ],
+        "expression": "smirk"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 1,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 0,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -1,
+        "nearTarget": [
+          119,
+          153
+        ],
+        "farTarget": [
+          154,
+          145
+        ],
+        "expression": "smirk"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -3,
+        "nearTarget": [
+          121,
+          151
+        ],
+        "farTarget": [
+          156,
+          139
+        ],
+        "expression": "smirk"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": -1,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": -1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -3,
+        "nearTarget": [
+          123,
+          150
+        ],
+        "farTarget": [
+          158,
+          135
+        ],
+        "expression": "smirk"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 0,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -2,
+        "nearTarget": [
+          121,
+          152
+        ],
+        "farTarget": [
+          156,
+          140
+        ],
+        "expression": "smirk"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 0,
+        "nearTarget": [
+          115,
+          160
+        ],
+        "farTarget": [
+          150,
+          151
+        ],
+        "expression": "smirk"
+      }
+    ],
+    "durations": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      6,
+      7,
+      8,
+      12,
+      13,
+      14
+    ],
+    "loop": false,
+    "grounded": true
+  },
+  "secondaryTaunt": {
+    "label": "Provoca\u00e7\u00e3o: bra\u00e7os cruzados",
+    "poses": [
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": -1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -1,
+        "nearTarget": [
+          117,
+          156
+        ],
+        "farTarget": [
+          152,
+          148
+        ],
+        "farWrist": 0,
+        "expression": "challenge"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 0,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -3,
+        "nearTarget": [
+          125,
+          146
+        ],
+        "farTarget": [
+          153,
+          137
+        ],
+        "farWrist": 0,
+        "expression": "challenge"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -4,
+        "nearTarget": [
+          137,
+          137
+        ],
+        "farTarget": [
+          143,
+          134
+        ],
+        "farWrist": 0,
+        "expression": "challenge"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -20,
+        "cloth": -1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -5,
+        "nearTarget": [
+          145,
+          132
+        ],
+        "farTarget": [
+          131,
+          136
+        ],
+        "farWrist": 15,
+        "expression": "smirk"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -20,
+        "cloth": 0,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -5,
+        "nearTarget": [
+          148,
+          132
+        ],
+        "farTarget": [
+          127,
+          137
+        ],
+        "farWrist": 15,
+        "expression": "smirk"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -20,
+        "cloth": 1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -4,
+        "nearTarget": [
+          147,
+          131
+        ],
+        "farTarget": [
+          128,
+          136
+        ],
+        "farWrist": 15,
+        "expression": "smirk"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -20,
+        "cloth": -1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -5,
+        "nearTarget": [
+          148,
+          132
+        ],
+        "farTarget": [
+          127,
+          137
+        ],
+        "farWrist": 15,
+        "expression": "smirk"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 0,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -3,
+        "nearTarget": [
+          142,
+          136
+        ],
+        "farTarget": [
+          139,
+          138
+        ],
+        "farWrist": 0,
+        "expression": "smirk"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -1,
+        "nearTarget": [
+          125,
+          149
+        ],
+        "farTarget": [
+          153,
+          146
+        ],
+        "farWrist": 0,
+        "expression": "smirk"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": -1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 0,
+        "nearTarget": [
+          115,
+          160
+        ],
+        "farTarget": [
+          150,
+          151
+        ],
+        "farWrist": 0,
+        "expression": "smirk"
+      }
+    ],
+    "durations": [
+      4,
+      4,
+      4,
+      5,
+      8,
+      8,
+      8,
+      5,
+      4,
+      4
+    ],
+    "loop": false,
+    "grounded": true
+  },
+  "secondaryVictory": {
+    "label": "Vit\u00f3ria triunfante",
+    "poses": [
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -20,
+        "cloth": -1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 0,
+        "nearTarget": [
+          115,
+          160
+        ],
+        "farTarget": [
+          150,
+          151
+        ],
+        "farWrist": -25,
+        "expression": "victory"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -20,
+        "cloth": 0,
+        "hair": 1,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -3,
+        "nearTarget": [
+          119,
+          150
+        ],
+        "farTarget": [
+          153,
+          144
+        ],
+        "farWrist": -25,
+        "expression": "victory"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -20,
+        "cloth": 1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -5,
+        "nearTarget": [
+          124,
+          139
+        ],
+        "farTarget": [
+          156,
+          130
+        ],
+        "farWrist": -25,
+        "expression": "victory"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -20,
+        "cloth": -1,
+        "hair": 1,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -6,
+        "nearTarget": [
+          127,
+          129
+        ],
+        "farTarget": [
+          157,
+          118
+        ],
+        "farWrist": -25,
+        "expression": "victory"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -20,
+        "cloth": 0,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -5,
+        "nearTarget": [
+          129,
+          123
+        ],
+        "farTarget": [
+          158,
+          111
+        ],
+        "farWrist": -25,
+        "expression": "victory"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -20,
+        "cloth": 1,
+        "hair": 1,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -4,
+        "nearTarget": [
+          130,
+          122
+        ],
+        "farTarget": [
+          159,
+          110
+        ],
+        "farWrist": -25,
+        "expression": "victory"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -20,
+        "cloth": -1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -5,
+        "nearTarget": [
+          130,
+          121
+        ],
+        "farTarget": [
+          159,
+          109
+        ],
+        "farWrist": -25,
+        "expression": "victory"
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -20,
+        "cloth": 0,
+        "hair": 1,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -4,
+        "nearTarget": [
+          130,
+          122
+        ],
+        "farTarget": [
+          159,
+          110
+        ],
+        "farWrist": -25,
+        "expression": "victory"
+      }
+    ],
+    "durations": [
+      5,
+      5,
+      6,
+      6,
+      7,
+      9,
+      10,
+      12
+    ],
+    "loop": false,
+    "grounded": true
+  },
+  "secondaryExpressionNeutral": {
+    "label": "Express\u00e3o: neutral",
+    "poses": [
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 0,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "expression": "neutral"
+      }
+    ],
+    "durations": [
+      30
+    ],
+    "loop": true,
+    "grounded": true
+  },
+  "secondaryExpressionSmirk": {
+    "label": "Express\u00e3o: smirk",
+    "poses": [
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 0,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "expression": "smirk"
+      }
+    ],
+    "durations": [
+      30
+    ],
+    "loop": true,
+    "grounded": true
+  },
+  "secondaryExpressionAnger": {
+    "label": "Express\u00e3o: anger",
+    "poses": [
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 0,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "expression": "anger"
+      }
+    ],
+    "durations": [
+      30
+    ],
+    "loop": true,
+    "grounded": true
+  },
+  "secondaryExpressionChallenge": {
+    "label": "Express\u00e3o: challenge",
+    "poses": [
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 0,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "expression": "challenge"
+      }
+    ],
+    "durations": [
+      30
+    ],
+    "loop": true,
+    "grounded": true
+  },
+  "secondaryExpressionSurprise": {
+    "label": "Express\u00e3o: surprise",
+    "poses": [
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 0,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "expression": "surprise"
+      }
+    ],
+    "durations": [
+      30
+    ],
+    "loop": true,
+    "grounded": true
+  },
+  "secondaryExpressionVictory": {
+    "label": "Express\u00e3o: victory",
+    "poses": [
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 0,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "expression": "victory"
+      }
+    ],
+    "durations": [
+      30
+    ],
+    "loop": true,
+    "grounded": true
+  },
+  "secondaryExpressionPain": {
+    "label": "Express\u00e3o: pain",
+    "poses": [
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 0,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "expression": "pain"
+      }
+    ],
+    "durations": [
+      30
+    ],
+    "loop": true,
+    "grounded": true
+  },
+  "secondaryExpressionClosed": {
+    "label": "Express\u00e3o: closed",
+    "poses": [
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 0,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "expression": "closed"
+      }
+    ],
+    "durations": [
+      30
+    ],
+    "loop": true,
+    "grounded": true
+  }
+}

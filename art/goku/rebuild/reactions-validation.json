@@ -1,0 +1,221 @@
+{
+  "stage": "reactions",
+  "beforeAtlas": true,
+  "method": "whole-pose",
+  "frames": [
+    {
+      "label": "trainingHit/0",
+      "bbox": [
+        69,
+        99,
+        177,
+        224
+      ],
+      "opaquePixels": 5562,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5562
+      ],
+      "colors": 29
+    },
+    {
+      "label": "trainingHit/1",
+      "bbox": [
+        64,
+        118,
+        174,
+        224
+      ],
+      "opaquePixels": 5090,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5090
+      ],
+      "colors": 29
+    },
+    {
+      "label": "trainingHit/2",
+      "bbox": [
+        80,
+        110,
+        189,
+        224
+      ],
+      "opaquePixels": 5705,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5705
+      ],
+      "colors": 29
+    },
+    {
+      "label": "trainingAirHit/0",
+      "bbox": [
+        66,
+        94,
+        189,
+        199
+      ],
+      "opaquePixels": 5453,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5453
+      ],
+      "colors": 29
+    },
+    {
+      "label": "trainingAirHit/1",
+      "bbox": [
+        57,
+        94,
+        198,
+        161
+      ],
+      "opaquePixels": 5261,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5261
+      ],
+      "colors": 29
+    },
+    {
+      "label": "trainingAirHit/2",
+      "bbox": [
+        65,
+        94,
+        191,
+        186
+      ],
+      "opaquePixels": 5750,
+      "mainComponentFraction": 0.9996521739130435,
+      "components": [
+        5748,
+        2
+      ],
+      "colors": 29
+    },
+    {
+      "label": "trainingDown/0",
+      "bbox": [
+        98,
+        118,
+        212,
+        224
+      ],
+      "opaquePixels": 5222,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5222
+      ],
+      "colors": 27
+    },
+    {
+      "label": "trainingDown/1",
+      "bbox": [
+        72,
+        150,
+        184,
+        224
+      ],
+      "opaquePixels": 4956,
+      "mainComponentFraction": 1.0,
+      "components": [
+        4956
+      ],
+      "colors": 27
+    },
+    {
+      "label": "trainingDown/2",
+      "bbox": [
+        68,
+        184,
+        197,
+        224
+      ],
+      "opaquePixels": 3618,
+      "mainComponentFraction": 1.0,
+      "components": [
+        3618
+      ],
+      "colors": 27
+    },
+    {
+      "label": "trainingGetup/0",
+      "bbox": [
+        72,
+        145,
+        184,
+        224
+      ],
+      "opaquePixels": 4671,
+      "mainComponentFraction": 0.9997859130807107,
+      "components": [
+        4670,
+        1
+      ],
+      "colors": 28
+    },
+    {
+      "label": "trainingGetup/1",
+      "bbox": [
+        54,
+        144,
+        167,
+        224
+      ],
+      "opaquePixels": 4862,
+      "mainComponentFraction": 1.0,
+      "components": [
+        4862
+      ],
+      "colors": 28
+    },
+    {
+      "label": "trainingGetup/2",
+      "bbox": [
+        83,
+        116,
+        174,
+        224
+      ],
+      "opaquePixels": 5364,
+      "mainComponentFraction": 0.999813571961223,
+      "components": [
+        5363,
+        1
+      ],
+      "colors": 29
+    },
+    {
+      "label": "trainingGetup/3",
+      "bbox": [
+        83,
+        109,
+        174,
+        224
+      ],
+      "opaquePixels": 5278,
+      "mainComponentFraction": 0.9998105342932929,
+      "components": [
+        5277,
+        1
+      ],
+      "colors": 28
+    },
+    {
+      "label": "trainingGetup/initial-reference",
+      "bbox": [
+        68,
+        184,
+        197,
+        224
+      ],
+      "opaquePixels": 3618,
+      "mainComponentFraction": 1.0,
+      "components": [
+        3618
+      ],
+      "colors": 27
+    }
+  ]
+}

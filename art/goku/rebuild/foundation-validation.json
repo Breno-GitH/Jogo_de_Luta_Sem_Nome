@@ -1,0 +1,103 @@
+{
+  "stage": "foundation",
+  "beforeAtlas": true,
+  "method": "whole-pose",
+  "frames": [
+    {
+      "label": "idle/0",
+      "bbox": [
+        83,
+        94,
+        175,
+        224
+      ],
+      "opaquePixels": 5768,
+      "mainComponentFraction": 0.9996532593619972,
+      "components": [
+        5766,
+        2
+      ],
+      "colors": 28
+    },
+    {
+      "label": "idle/1",
+      "bbox": [
+        83,
+        94,
+        174,
+        224
+      ],
+      "opaquePixels": 5809,
+      "mainComponentFraction": 0.9994835599931141,
+      "components": [
+        5806,
+        3
+      ],
+      "colors": 29
+    },
+    {
+      "label": "idle/2",
+      "bbox": [
+        82,
+        95,
+        174,
+        224
+      ],
+      "opaquePixels": 5797,
+      "mainComponentFraction": 0.9996549939623943,
+      "components": [
+        5795,
+        1,
+        1
+      ],
+      "colors": 27
+    },
+    {
+      "label": "idle/3",
+      "bbox": [
+        83,
+        97,
+        174,
+        224
+      ],
+      "opaquePixels": 5754,
+      "mainComponentFraction": 0.9991310392770246,
+      "components": [
+        5749,
+        5
+      ],
+      "colors": 29
+    },
+    {
+      "label": "idle/4",
+      "bbox": [
+        83,
+        96,
+        174,
+        224
+      ],
+      "opaquePixels": 5728,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5728
+      ],
+      "colors": 28
+    },
+    {
+      "label": "idle/5",
+      "bbox": [
+        83,
+        97,
+        175,
+        224
+      ],
+      "opaquePixels": 5709,
+      "mainComponentFraction": 0.999824837975127,
+      "components": [
+        5708,
+        1
+      ],
+      "colors": 28
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+[
+  {
+    "scenario": "guardStand",
+    "clip": "secondaryGuardStand"
+  },
+  {
+    "scenario": "guardCrouch",
+    "clip": "secondaryGuardCrouch"
+  },
+  {
+    "scenario": "guardImpactStand",
+    "clip": "secondaryGuardImpactStand"
+  },
+  {
+    "scenario": "guardImpactCrouch",
+    "clip": "secondaryGuardImpactCrouch"
+  },
+  {
+    "scenario": "damageLight",
+    "clip": "secondaryDamageLight"
+  },
+  {
+    "scenario": "damageMedium",
+    "clip": "secondaryDamageMedium"
+  },
+  {
+    "scenario": "damageHeavy",
+    "clip": "secondaryDamageHeavy"
+  },
+  {
+    "scenario": "damageCrouch",
+    "clip": "secondaryDamageCrouch"
+  },
+  {
+    "scenario": "damageAir",
+    "clip": "secondaryDamageAir"
+  },
+  {
+    "scenario": "launched",
+    "clip": "secondaryLaunched"
+  },
+  {
+    "scenario": "falling",
+    "clip": "secondaryFalling"
+  },
+  {
+    "scenario": "downed",
+    "clip": "secondaryDowned"
+  },
+  {
+    "scenario": "getup",
+    "clip": "secondaryGetup"
+  },
+  {
+    "scenario": "grabbed",
+    "clip": "secondaryGrabbed"
+  },
+  {
+    "scenario": "ko",
+    "clip": "secondaryKo"
+  },
+  {
+    "scenario": "defeat",
+    "clip": "secondaryDefeat"
+  },
+  {
+    "scenario": "taunt",
+    "clip": "secondaryTaunt"
+  },
+  {
+    "scenario": "victory",
+    "clip": "secondaryVictory"
+  }
+]

@@ -1,0 +1,193 @@
+{
+  "sheet": "previous-movement/the-world/base.png",
+  "frameWidth": 256,
+  "frameHeight": 256,
+  "columns": 1,
+  "pivot": {
+    "x": 128,
+    "y": 224
+  },
+  "scale": 1,
+  "clips": {
+    "standIdle": {
+      "sheet": "previous-movement/the-world/standIdle.png",
+      "columns": 6,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "ticks": 10,
+      "durations": [
+        10,
+        9,
+        9,
+        10,
+        9,
+        9
+      ],
+      "loop": true
+    },
+    "floating": {
+      "sheet": "previous-movement/the-world/floating.png",
+      "columns": 6,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "ticks": 8,
+      "durations": [
+        8,
+        7,
+        8,
+        8,
+        7,
+        8
+      ],
+      "loop": true
+    },
+    "followForward": {
+      "sheet": "previous-movement/the-world/followForward.png",
+      "columns": 6,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "ticks": 4,
+      "durations": [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "loop": true
+    },
+    "followBackward": {
+      "sheet": "previous-movement/the-world/followBackward.png",
+      "columns": 6,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "ticks": 4,
+      "durations": [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "loop": true
+    },
+    "dashFollow": {
+      "sheet": "previous-movement/the-world/dashFollow.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 2,
+      "durations": [
+        2,
+        2,
+        3,
+        3,
+        3
+      ],
+      "loop": false
+    },
+    "jumpFollow": {
+      "sheet": "previous-movement/the-world/jumpFollow.png",
+      "columns": 4,
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "ticks": 5,
+      "durations": [
+        5,
+        6,
+        7,
+        7
+      ],
+      "loop": false
+    },
+    "returnPosition": {
+      "sheet": "previous-movement/the-world/returnPosition.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 3,
+      "durations": [
+        3,
+        3,
+        3,
+        4,
+        5
+      ],
+      "loop": false
+    },
+    "base": {
+      "sheet": "previous-movement/the-world/base.png",
+      "columns": 1,
+      "frames": [
+        0
+      ],
+      "ticks": 60,
+      "durations": [
+        60
+      ],
+      "loop": true
+    },
+    "hover": {
+      "sheet": "previous-movement/the-world/floating.png",
+      "columns": 6,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "ticks": 8,
+      "durations": [
+        8,
+        7,
+        8,
+        8,
+        7,
+        8
+      ],
+      "loop": true
+    }
+  }
+}

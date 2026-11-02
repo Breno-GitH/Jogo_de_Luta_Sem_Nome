@@ -1,0 +1,35 @@
+{
+  "stage": "Goku common specials, no Super",
+  "files": {
+    "src/engine/bot.ts": {
+      "baseline": "0c3a5f1be8210a087fd11b16c6386887502a866835d440d3504effb4c20ac07b",
+      "current": "68dbe0c2a996963e0bfc94c086f9d0bf155dae37f19059b819bf3ee63ed1ddb3",
+      "reason": "Goku-only probabilistic delayed-perception Ki, Kamehameha and teleport choices. Earlier character branches retained."
+    },
+    "src/engine/characters.ts": {
+      "baseline": "49a870d85ddd10eb2d68332996192b3a1950b3ab549e8a4f33abd43c924be77a",
+      "current": "82cfa62ab479616905475d6431fd209a171b9eb093d758eb8ecf30b821af204b",
+      "reason": "Registers additive Goku combat data; Samurai and Dio composition retained."
+    },
+    "src/engine/combat.ts": {
+      "baseline": "ed1676686f0e2b68ab9e730a4f1e58a5d99c6d0b4146e956b2aaaf6d02eb5f7b",
+      "current": "e5114b59dda2917957a54aadde3c3ffe4643788ce5cd3fc0f0023d37466f0666",
+      "reason": "Goku-only special dispatch, can-cancel gates, separate Ki/beam simulation and teleport validation. Existing Samurai/Dio paths retained; common new energy arrays reset at round end."
+    },
+    "src/engine/input.ts": {
+      "baseline": "a03d90a5eec3424bd8372acd3a7947408e30d36136f9aa8092bd22c7ed96f127",
+      "current": "3dc83b768a0b8bab8c8a8f6ebeabdca28bb40434cb2d094b3883e562402128cf",
+      "reason": "Existing Goku command recognizer formatted and integrated. Relative cardinal/diagonal motion and strict 2-neutral-2 double down; Dio/Samurai recognizers unchanged."
+    },
+    "src/engine/state.ts": {
+      "baseline": "1c97abf7a8f7b7ad163bf91b0f63a54292d51766803bd010f7e3a5f8b8328ac2",
+      "current": "fe54d150348fc8b92a6d2ec9e44138538726f740c2b5a971540b422487cd26b9",
+      "reason": "Explicit deterministic snapshot fields for Ki projectiles, beams and Goku teleport lock/cast serial. No externally supplied character data is restored."
+    },
+    "src/engine/types.ts": {
+      "baseline": "f11f713bbf8e86186d53542d53ed343fc3d8e3ded8a3d4d1b6971cbc56c95c96",
+      "current": "adfc8e9bd467be47b0934e75daa0cf7ed494fdacff49d69ff3f9f38c0d7dabce",
+      "reason": "Optional shared grabSequence schema. Existing unconnected Goku specials draft fields were present before this stage and are not used."
+    }
+  }
+}

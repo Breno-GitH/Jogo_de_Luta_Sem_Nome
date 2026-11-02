@@ -1,0 +1,3 @@
+import{readFileSync,writeFileSync}from"node:fs";
+const p="src/ui/online.ts";let s=readFileSync(p,"utf8"),a=s.indexOf("export function lobby("),b=s.indexOf("export function onlineResult(");if(a>=0&&b>a)s=s.slice(0,a)+'export {lobby} from "./online-lobby";\n'+s.slice(b);s=s.replace('${!closed ? `<button','${!closed ? `<button');
+s=s.replace('<p class="online-error" id="online-error" role="alert">${escapeText(client.message)}</p><button class="text" id="leave-room">','<button id="online-lobby">RETORNAR AO LOBBY</button><p class="online-error" id="online-error" role="alert">${escapeText(client.message)}</p><button class="text" id="leave-room">');writeFileSync(p,s);

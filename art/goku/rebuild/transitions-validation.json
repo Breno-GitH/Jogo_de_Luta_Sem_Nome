@@ -1,0 +1,437 @@
+{
+  "stage": "transitions",
+  "beforeAtlas": true,
+  "method": "whole-pose",
+  "frames": [
+    {
+      "label": "idleToWalkForward/0",
+      "bbox": [
+        84,
+        95,
+        173,
+        224
+      ],
+      "opaquePixels": 5685,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5685
+      ],
+      "colors": 28
+    },
+    {
+      "label": "idleToWalkForward/1",
+      "bbox": [
+        80,
+        95,
+        186,
+        224
+      ],
+      "opaquePixels": 5824,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5824
+      ],
+      "colors": 29
+    },
+    {
+      "label": "idleToWalkForward/reference",
+      "bbox": [
+        72,
+        93,
+        178,
+        224
+      ],
+      "opaquePixels": 5756,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5756
+      ],
+      "colors": 28
+    },
+    {
+      "label": "idleToWalkForward/initial-reference",
+      "bbox": [
+        83,
+        94,
+        175,
+        224
+      ],
+      "opaquePixels": 5768,
+      "mainComponentFraction": 0.9996532593619972,
+      "components": [
+        5766,
+        2
+      ],
+      "colors": 28
+    },
+    {
+      "label": "walkToIdleForward/0",
+      "bbox": [
+        76,
+        97,
+        182,
+        224
+      ],
+      "opaquePixels": 5971,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5971
+      ],
+      "colors": 30
+    },
+    {
+      "label": "walkToIdleForward/1",
+      "bbox": [
+        80,
+        95,
+        176,
+        224
+      ],
+      "opaquePixels": 6072,
+      "mainComponentFraction": 1.0,
+      "components": [
+        6072
+      ],
+      "colors": 28
+    },
+    {
+      "label": "walkToIdleForward/reference",
+      "bbox": [
+        83,
+        94,
+        175,
+        224
+      ],
+      "opaquePixels": 5768,
+      "mainComponentFraction": 0.9996532593619972,
+      "components": [
+        5766,
+        2
+      ],
+      "colors": 28
+    },
+    {
+      "label": "crouchWalkForward/0",
+      "bbox": [
+        80,
+        124,
+        181,
+        224
+      ],
+      "opaquePixels": 5323,
+      "mainComponentFraction": 0.9998121360135263,
+      "components": [
+        5322,
+        1
+      ],
+      "colors": 27
+    },
+    {
+      "label": "crouchWalkForward/1",
+      "bbox": [
+        80,
+        119,
+        176,
+        224
+      ],
+      "opaquePixels": 5098,
+      "mainComponentFraction": 0.9996076892899176,
+      "components": [
+        5096,
+        1,
+        1
+      ],
+      "colors": 29
+    },
+    {
+      "label": "crouchWalkForward/2",
+      "bbox": [
+        80,
+        114,
+        177,
+        224
+      ],
+      "opaquePixels": 5302,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5302
+      ],
+      "colors": 28
+    },
+    {
+      "label": "crouchWalkForward/3",
+      "bbox": [
+        81,
+        106,
+        176,
+        224
+      ],
+      "opaquePixels": 5446,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5446
+      ],
+      "colors": 28
+    },
+    {
+      "label": "crouchWalkForward/4",
+      "bbox": [
+        80,
+        106,
+        178,
+        224
+      ],
+      "opaquePixels": 5512,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5512
+      ],
+      "colors": 28
+    },
+    {
+      "label": "crouchWalkForward/reference",
+      "bbox": [
+        72,
+        93,
+        178,
+        224
+      ],
+      "opaquePixels": 5756,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5756
+      ],
+      "colors": 28
+    },
+    {
+      "label": "crouchWalkForward/initial-reference",
+      "bbox": [
+        81,
+        133,
+        179,
+        224
+      ],
+      "opaquePixels": 4864,
+      "mainComponentFraction": 1.0,
+      "components": [
+        4864
+      ],
+      "colors": 28
+    },
+    {
+      "label": "idleToWalkBack/0",
+      "bbox": [
+        84,
+        95,
+        171,
+        224
+      ],
+      "opaquePixels": 5418,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5418
+      ],
+      "colors": 29
+    },
+    {
+      "label": "idleToWalkBack/1",
+      "bbox": [
+        82,
+        101,
+        172,
+        224
+      ],
+      "opaquePixels": 5716,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5716
+      ],
+      "colors": 29
+    },
+    {
+      "label": "idleToWalkBack/reference",
+      "bbox": [
+        67,
+        92,
+        174,
+        224
+      ],
+      "opaquePixels": 5731,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5731
+      ],
+      "colors": 28
+    },
+    {
+      "label": "idleToWalkBack/initial-reference",
+      "bbox": [
+        83,
+        94,
+        175,
+        224
+      ],
+      "opaquePixels": 5768,
+      "mainComponentFraction": 0.9996532593619972,
+      "components": [
+        5766,
+        2
+      ],
+      "colors": 28
+    },
+    {
+      "label": "walkToIdleBack/0",
+      "bbox": [
+        80,
+        104,
+        178,
+        224
+      ],
+      "opaquePixels": 5626,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5626
+      ],
+      "colors": 28
+    },
+    {
+      "label": "walkToIdleBack/1",
+      "bbox": [
+        81,
+        100,
+        176,
+        224
+      ],
+      "opaquePixels": 5735,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5735
+      ],
+      "colors": 29
+    },
+    {
+      "label": "walkToIdleBack/reference",
+      "bbox": [
+        83,
+        94,
+        175,
+        224
+      ],
+      "opaquePixels": 5768,
+      "mainComponentFraction": 0.9996532593619972,
+      "components": [
+        5766,
+        2
+      ],
+      "colors": 28
+    },
+    {
+      "label": "crouchWalkBack/0",
+      "bbox": [
+        80,
+        124,
+        181,
+        224
+      ],
+      "opaquePixels": 5323,
+      "mainComponentFraction": 0.9998121360135263,
+      "components": [
+        5322,
+        1
+      ],
+      "colors": 27
+    },
+    {
+      "label": "crouchWalkBack/1",
+      "bbox": [
+        80,
+        119,
+        176,
+        224
+      ],
+      "opaquePixels": 5098,
+      "mainComponentFraction": 0.9996076892899176,
+      "components": [
+        5096,
+        1,
+        1
+      ],
+      "colors": 29
+    },
+    {
+      "label": "crouchWalkBack/2",
+      "bbox": [
+        80,
+        114,
+        177,
+        224
+      ],
+      "opaquePixels": 5302,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5302
+      ],
+      "colors": 28
+    },
+    {
+      "label": "crouchWalkBack/3",
+      "bbox": [
+        81,
+        106,
+        176,
+        224
+      ],
+      "opaquePixels": 5446,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5446
+      ],
+      "colors": 28
+    },
+    {
+      "label": "crouchWalkBack/4",
+      "bbox": [
+        80,
+        106,
+        178,
+        224
+      ],
+      "opaquePixels": 5512,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5512
+      ],
+      "colors": 28
+    },
+    {
+      "label": "crouchWalkBack/reference",
+      "bbox": [
+        67,
+        92,
+        174,
+        224
+      ],
+      "opaquePixels": 5731,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5731
+      ],
+      "colors": 28
+    },
+    {
+      "label": "crouchWalkBack/initial-reference",
+      "bbox": [
+        81,
+        133,
+        179,
+        224
+      ],
+      "opaquePixels": 4864,
+      "mainComponentFraction": 1.0,
+      "components": [
+        4864
+      ],
+      "colors": 28
+    }
+  ]
+}

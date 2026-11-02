@@ -1,0 +1,92 @@
+{
+  "furyKamehamehaPreparation": [
+    {
+      "ticks": 7,
+      "x": -20,
+      "y": -63
+    },
+    {
+      "ticks": 9,
+      "x": -20,
+      "y": -62
+    },
+    {
+      "ticks": 12,
+      "x": -23,
+      "y": -61
+    },
+    {
+      "ticks": 14,
+      "x": -24,
+      "y": -65
+    }
+  ],
+  "furyFuriousExpression": [
+    {
+      "ticks": 3,
+      "x": -18,
+      "y": -77
+    },
+    {
+      "ticks": 3,
+      "x": -20,
+      "y": -72
+    },
+    {
+      "ticks": 3,
+      "x": 42,
+      "y": -57
+    },
+    {
+      "ticks": 3,
+      "x": 50,
+      "y": -46
+    }
+  ],
+  "furyDownwardBeam": [
+    {
+      "ticks": 2,
+      "x": 23,
+      "y": -90
+    },
+    {
+      "ticks": 3,
+      "x": 37,
+      "y": -46
+    },
+    {
+      "ticks": 4,
+      "x": 53,
+      "y": -62
+    },
+    {
+      "ticks": 5,
+      "x": 50,
+      "y": -53
+    }
+  ],
+  "furyKamehamehaMaintain": [
+    {
+      "ticks": 4,
+      "x": 55,
+      "y": -44
+    },
+    {
+      "ticks": 4,
+      "x": 44,
+      "y": -53
+    }
+  ],
+  "furyKamehamehaRecovery": [
+    {
+      "ticks": 5,
+      "x": 37,
+      "y": -68
+    },
+    {
+      "ticks": 5,
+      "x": 48,
+      "y": -76
+    }
+  ]
+}

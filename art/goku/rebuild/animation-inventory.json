@@ -1,0 +1,152 @@
+{
+  "idle": {
+    "count": 6,
+    "ticks": 60,
+    "loop": true,
+    "grounded": true
+  },
+  "walkForward": {
+    "count": 8,
+    "ticks": 36,
+    "loop": true,
+    "grounded": true
+  },
+  "walkBack": {
+    "count": 8,
+    "ticks": 36,
+    "loop": true,
+    "grounded": true
+  },
+  "crouchStart": {
+    "count": 4,
+    "ticks": 8,
+    "loop": false,
+    "grounded": true
+  },
+  "crouchIdle": {
+    "count": 3,
+    "ticks": 40,
+    "loop": true,
+    "grounded": true
+  },
+  "crouchEnd": {
+    "count": 4,
+    "ticks": 8,
+    "loop": false,
+    "grounded": true
+  },
+  "crouchWalkForward": {
+    "count": 8,
+    "ticks": 8,
+    "loop": false,
+    "grounded": true
+  },
+  "crouchWalkBack": {
+    "count": 8,
+    "ticks": 8,
+    "loop": false,
+    "grounded": true
+  },
+  "dashForward": {
+    "count": 7,
+    "ticks": 14,
+    "loop": false,
+    "grounded": true
+  },
+  "backdash": {
+    "count": 7,
+    "ticks": 14,
+    "loop": false,
+    "grounded": true
+  },
+  "jumpStart": {
+    "count": 3,
+    "ticks": 6,
+    "loop": false,
+    "grounded": true
+  },
+  "jumpRise": {
+    "count": 3,
+    "ticks": 12,
+    "loop": false,
+    "grounded": false
+  },
+  "jumpRiseForward": {
+    "count": 3,
+    "ticks": 12,
+    "loop": false,
+    "grounded": false
+  },
+  "jumpRiseBackward": {
+    "count": 3,
+    "ticks": 12,
+    "loop": false,
+    "grounded": false
+  },
+  "jumpApex": {
+    "count": 2,
+    "ticks": 8,
+    "loop": false,
+    "grounded": false
+  },
+  "jumpApexForward": {
+    "count": 2,
+    "ticks": 8,
+    "loop": false,
+    "grounded": false
+  },
+  "jumpApexBackward": {
+    "count": 2,
+    "ticks": 8,
+    "loop": false,
+    "grounded": false
+  },
+  "jumpFall": {
+    "count": 3,
+    "ticks": 12,
+    "loop": false,
+    "grounded": false
+  },
+  "jumpFallForward": {
+    "count": 3,
+    "ticks": 12,
+    "loop": false,
+    "grounded": false
+  },
+  "jumpFallBackward": {
+    "count": 3,
+    "ticks": 12,
+    "loop": false,
+    "grounded": false
+  },
+  "landing": {
+    "count": 4,
+    "ticks": 8,
+    "loop": false,
+    "grounded": true
+  },
+  "trainingHit": {
+    "count": 3,
+    "ticks": 12,
+    "loop": false,
+    "grounded": true
+  },
+  "trainingAirHit": {
+    "count": 3,
+    "ticks": 15,
+    "loop": false,
+    "grounded": false
+  },
+  "trainingDown": {
+    "count": 3,
+    "ticks": 28,
+    "loop": false,
+    "grounded": true
+  },
+  "trainingGetup": {
+    "count": 4,
+    "ticks": 18,
+    "loop": false,
+    "grounded": true
+  }
+}

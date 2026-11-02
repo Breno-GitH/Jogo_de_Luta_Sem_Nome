@@ -1,0 +1,85 @@
+{
+  "origin": "http://127.0.0.1:3001",
+  "cases": [
+    {
+      "enemy": "samurai",
+      "type": "knives",
+      "strength": "light",
+      "hits": 1
+    },
+    {
+      "enemy": "samurai",
+      "type": "knives",
+      "strength": "medium",
+      "hits": 2
+    },
+    {
+      "enemy": "samurai",
+      "type": "knives",
+      "strength": "heavy",
+      "hits": 3
+    },
+    {
+      "enemy": "samurai",
+      "type": "rush",
+      "strength": "light",
+      "hits": 4
+    },
+    {
+      "enemy": "samurai",
+      "type": "rush",
+      "strength": "medium",
+      "hits": 7
+    },
+    {
+      "enemy": "samurai",
+      "type": "rush",
+      "strength": "heavy",
+      "hits": 10
+    },
+    {
+      "enemy": "dio",
+      "type": "knives",
+      "strength": "light",
+      "hits": 1
+    },
+    {
+      "enemy": "dio",
+      "type": "knives",
+      "strength": "medium",
+      "hits": 2
+    },
+    {
+      "enemy": "dio",
+      "type": "knives",
+      "strength": "heavy",
+      "hits": 3
+    },
+    {
+      "enemy": "dio",
+      "type": "rush",
+      "strength": "light",
+      "hits": 4
+    },
+    {
+      "enemy": "dio",
+      "type": "rush",
+      "strength": "medium",
+      "hits": 7
+    },
+    {
+      "enemy": "dio",
+      "type": "rush",
+      "strength": "heavy",
+      "hits": 10
+    }
+  ],
+  "mainKeyboard": true,
+  "freeze": true,
+  "cooldownProgression": true,
+  "roundPersistence": true,
+  "newMatchReset": true,
+  "downloadsByteIdentical": true,
+  "version": "b0a2b34562c38b5358284f2a",
+  "errors": []
+}

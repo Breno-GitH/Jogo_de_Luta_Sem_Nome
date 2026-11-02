@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Fixture de divergência local</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module">
+      // Not a production entry. Corrupt only one browser's mirror to verify that
+      // server health cannot be changed and authoritative recovery repairs it.
+      import "../../src/style.css";
+      import { GameApp } from "../../src/game/app.ts";
+      const game = new GameApp(document.querySelector("#app"));
+      window.networkFixture = {
+        corrupt() {
+          game.online.match.fighters[0].health += 123;
+        },
+      };
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1781 @@
+{
+  "sheet": "samurai/idle.png",
+  "frameWidth": 256,
+  "frameHeight": 256,
+  "clips": {
+    "idle": {
+      "sheet": "samurai/idle.png",
+      "player2Sheet": "samurai/idle-p2.png",
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "ticks": 16,
+      "durations": [
+        16,
+        14,
+        14,
+        16,
+        14,
+        16
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 6,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1
+    },
+    "walk": {
+      "sheet": "samurai/walkForward.png",
+      "player2Sheet": "samurai/walkForward-p2.png",
+      "frames": [
+        0
+      ],
+      "ticks": 12,
+      "durations": [
+        12
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 6,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "loop": true
+    },
+    "crouch": {
+      "sheet": "samurai/crouchIdle.png",
+      "player2Sheet": "samurai/crouchIdle-p2.png",
+      "frames": [
+        0
+      ],
+      "ticks": 12,
+      "durations": [
+        12
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 2,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "loop": true
+    },
+    "air": {
+      "sheet": "samurai/jumpRise.png",
+      "player2Sheet": "samurai/jumpRise-p2.png",
+      "frames": [
+        0
+      ],
+      "ticks": 12,
+      "durations": [
+        12
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 2,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "loop": true
+    },
+    "dash": {
+      "sheet": "samurai/dashForward.png",
+      "player2Sheet": "samurai/dashForward-p2.png",
+      "frames": [
+        0
+      ],
+      "ticks": 12,
+      "durations": [
+        12
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 5,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "loop": true
+    },
+    "attack": {
+      "sheet": "samurai/stand_heavy.png",
+      "player2Sheet": "samurai/stand_heavy-p2.png",
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 6,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "frames": [
+        2
+      ],
+      "ticks": 12,
+      "durations": [
+        12
+      ],
+      "loop": true
+    },
+    "hitstun": {
+      "sheet": "samurai/backdash.png",
+      "player2Sheet": "samurai/backdash-p2.png",
+      "frames": [
+        2
+      ],
+      "ticks": 12,
+      "durations": [
+        12
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 5,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "loop": true
+    },
+    "blockstun": {
+      "sheet": "samurai/backdash.png",
+      "player2Sheet": "samurai/backdash-p2.png",
+      "frames": [
+        1
+      ],
+      "ticks": 12,
+      "durations": [
+        12
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 5,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "loop": true
+    },
+    "ko": {
+      "sheet": "samurai/ko.png",
+      "player2Sheet": "samurai/ko-p2.png",
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 6,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "ticks": 5,
+      "durations": [
+        5,
+        6,
+        7,
+        8,
+        10,
+        12
+      ],
+      "loop": false
+    },
+    "walkForward": {
+      "sheet": "samurai/walkForward.png",
+      "player2Sheet": "samurai/walkForward-p2.png",
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "ticks": 3,
+      "durations": [
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 6,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "loop": true
+    },
+    "walkBack": {
+      "sheet": "samurai/walkBack.png",
+      "player2Sheet": "samurai/walkBack-p2.png",
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "ticks": 3,
+      "durations": [
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 6,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "loop": true
+    },
+    "dashForward": {
+      "sheet": "samurai/dashForward.png",
+      "player2Sheet": "samurai/dashForward-p2.png",
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 2,
+      "durations": [
+        2,
+        2,
+        3,
+        3,
+        3
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 5,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "loop": false
+    },
+    "backdash": {
+      "sheet": "samurai/backdash.png",
+      "player2Sheet": "samurai/backdash-p2.png",
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 2,
+      "durations": [
+        2,
+        2,
+        3,
+        3,
+        3
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 5,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "loop": false
+    },
+    "crouchStart": {
+      "sheet": "samurai/crouchStart.png",
+      "player2Sheet": "samurai/crouchStart-p2.png",
+      "frames": [
+        0,
+        1
+      ],
+      "ticks": 3,
+      "durations": [
+        3,
+        3
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 2,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "loop": false
+    },
+    "crouchIdle": {
+      "sheet": "samurai/crouchIdle.png",
+      "player2Sheet": "samurai/crouchIdle-p2.png",
+      "frames": [
+        0,
+        1
+      ],
+      "ticks": 18,
+      "durations": [
+        18,
+        20
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 2,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "loop": true
+    },
+    "crouchEnd": {
+      "sheet": "samurai/crouchEnd.png",
+      "player2Sheet": "samurai/crouchEnd-p2.png",
+      "frames": [
+        0,
+        1
+      ],
+      "ticks": 3,
+      "durations": [
+        3,
+        3
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 2,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "loop": false
+    },
+    "jumpStart": {
+      "sheet": "samurai/jumpStart.png",
+      "player2Sheet": "samurai/jumpStart-p2.png",
+      "frames": [
+        0,
+        1,
+        2
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        2
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 3,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "loop": false
+    },
+    "jumpRise": {
+      "sheet": "samurai/jumpRise.png",
+      "player2Sheet": "samurai/jumpRise-p2.png",
+      "frames": [
+        0,
+        1
+      ],
+      "ticks": 4,
+      "durations": [
+        4,
+        4
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 2,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "loop": false
+    },
+    "jumpApex": {
+      "sheet": "samurai/jumpApex.png",
+      "player2Sheet": "samurai/jumpApex-p2.png",
+      "frames": [
+        0
+      ],
+      "ticks": 8,
+      "durations": [
+        8
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 1,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "loop": false
+    },
+    "jumpFall": {
+      "sheet": "samurai/jumpFall.png",
+      "player2Sheet": "samurai/jumpFall-p2.png",
+      "frames": [
+        0,
+        1
+      ],
+      "ticks": 4,
+      "durations": [
+        4,
+        4
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 2,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "loop": false
+    },
+    "landing": {
+      "sheet": "samurai/landing.png",
+      "player2Sheet": "samurai/landing-p2.png",
+      "frames": [
+        0,
+        1,
+        2
+      ],
+      "ticks": 2,
+      "durations": [
+        2,
+        2,
+        2
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 3,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "loop": false
+    },
+    "stand_light": {
+      "sheet": "samurai/stand_light.png",
+      "player2Sheet": "samurai/stand_light-p2.png",
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 4,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "ticks": 5,
+      "durations": [
+        5,
+        3,
+        4,
+        6
+      ],
+      "loop": false
+    },
+    "stand_medium": {
+      "sheet": "samurai/stand_medium.png",
+      "player2Sheet": "samurai/stand_medium-p2.png",
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 5,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 4,
+      "durations": [
+        4,
+        4,
+        4,
+        7,
+        9
+      ],
+      "loop": false
+    },
+    "stand_heavy": {
+      "sheet": "samurai/stand_heavy.png",
+      "player2Sheet": "samurai/stand_heavy-p2.png",
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 6,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "ticks": 5,
+      "durations": [
+        5,
+        7,
+        3,
+        2,
+        9,
+        14
+      ],
+      "loop": false
+    },
+    "crouch_light": {
+      "sheet": "samurai/crouch_light.png",
+      "player2Sheet": "samurai/crouch_light-p2.png",
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 4,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "ticks": 5,
+      "durations": [
+        5,
+        3,
+        4,
+        7
+      ],
+      "loop": false
+    },
+    "crouch_medium": {
+      "sheet": "samurai/crouch_medium.png",
+      "player2Sheet": "samurai/crouch_medium-p2.png",
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 5,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 4,
+      "durations": [
+        4,
+        4,
+        4,
+        7,
+        9
+      ],
+      "loop": false
+    },
+    "crouch_heavy": {
+      "sheet": "samurai/crouch_heavy.png",
+      "player2Sheet": "samurai/crouch_heavy-p2.png",
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 6,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "ticks": 5,
+      "durations": [
+        5,
+        6,
+        3,
+        2,
+        9,
+        15
+      ],
+      "loop": false
+    },
+    "air_light": {
+      "sheet": "samurai/air_light.png",
+      "player2Sheet": "samurai/air_light-p2.png",
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 4,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "ticks": 4,
+      "durations": [
+        4,
+        4,
+        4,
+        5
+      ],
+      "loop": false
+    },
+    "air_medium": {
+      "sheet": "samurai/air_medium.png",
+      "player2Sheet": "samurai/air_medium-p2.png",
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 5,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 3,
+      "durations": [
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "loop": false
+    },
+    "air_heavy": {
+      "sheet": "samurai/air_heavy.png",
+      "player2Sheet": "samurai/air_heavy-p2.png",
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 6,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "ticks": 4,
+      "durations": [
+        4,
+        6,
+        3,
+        2,
+        7,
+        13
+      ],
+      "loop": false
+    },
+    "guardStand": {
+      "sheet": "samurai/guardStand.png",
+      "player2Sheet": "samurai/guardStand-p2.png",
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 4,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "ticks": 8,
+      "durations": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "loop": true
+    },
+    "guardCrouch": {
+      "sheet": "samurai/guardCrouch.png",
+      "player2Sheet": "samurai/guardCrouch-p2.png",
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 4,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "ticks": 8,
+      "durations": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "loop": true
+    },
+    "guardImpactStand": {
+      "sheet": "samurai/guardImpactStand.png",
+      "player2Sheet": "samurai/guardImpactStand-p2.png",
+      "frames": [
+        0,
+        1,
+        2
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 3,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "ticks": 2,
+      "durations": [
+        2,
+        2,
+        2
+      ],
+      "loop": false
+    },
+    "guardImpactCrouch": {
+      "sheet": "samurai/guardImpactCrouch.png",
+      "player2Sheet": "samurai/guardImpactCrouch-p2.png",
+      "frames": [
+        0,
+        1,
+        2
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 3,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "ticks": 2,
+      "durations": [
+        2,
+        2,
+        2
+      ],
+      "loop": false
+    },
+    "damageLight": {
+      "sheet": "samurai/damageLight.png",
+      "player2Sheet": "samurai/damageLight-p2.png",
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 4,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "ticks": 3,
+      "durations": [
+        3,
+        3,
+        3,
+        3
+      ],
+      "loop": false
+    },
+    "damageMedium": {
+      "sheet": "samurai/damageMedium.png",
+      "player2Sheet": "samurai/damageMedium-p2.png",
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 5,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "ticks": 3,
+      "durations": [
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "loop": false
+    },
+    "damageHeavy": {
+      "sheet": "samurai/damageHeavy.png",
+      "player2Sheet": "samurai/damageHeavy-p2.png",
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 6,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "ticks": 3,
+      "durations": [
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "loop": false
+    },
+    "damageCrouch": {
+      "sheet": "samurai/damageCrouch.png",
+      "player2Sheet": "samurai/damageCrouch-p2.png",
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 4,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "ticks": 4,
+      "durations": [
+        4,
+        4,
+        4,
+        4
+      ],
+      "loop": false
+    },
+    "damageAir": {
+      "sheet": "samurai/damageAir.png",
+      "player2Sheet": "samurai/damageAir-p2.png",
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 4,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "ticks": 4,
+      "durations": [
+        4,
+        4,
+        4,
+        4
+      ],
+      "loop": false
+    },
+    "launched": {
+      "sheet": "samurai/launched.png",
+      "player2Sheet": "samurai/launched-p2.png",
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 4,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "ticks": 4,
+      "durations": [
+        4,
+        4,
+        4,
+        4
+      ],
+      "loop": false
+    },
+    "falling": {
+      "sheet": "samurai/falling.png",
+      "player2Sheet": "samurai/falling-p2.png",
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 4,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "ticks": 4,
+      "durations": [
+        4,
+        4,
+        4,
+        4
+      ],
+      "loop": true
+    },
+    "downed": {
+      "sheet": "samurai/downed.png",
+      "player2Sheet": "samurai/downed-p2.png",
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 4,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "ticks": 6,
+      "durations": [
+        6,
+        6,
+        6,
+        6
+      ],
+      "loop": true
+    },
+    "getup": {
+      "sheet": "samurai/getup.png",
+      "player2Sheet": "samurai/getup-p2.png",
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 6,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "ticks": 3,
+      "durations": [
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "loop": false
+    },
+    "throw": {
+      "sheet": "samurai/throw.png",
+      "player2Sheet": "samurai/throw-p2.png",
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 5,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "ticks": 3,
+      "durations": [
+        3,
+        2,
+        2,
+        12,
+        16
+      ],
+      "loop": false
+    },
+    "grabHold": {
+      "sheet": "samurai/grabHold.png",
+      "player2Sheet": "samurai/grabHold-p2.png",
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 6,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "ticks": 3,
+      "durations": [
+        3,
+        3,
+        4,
+        3,
+        4,
+        5
+      ],
+      "loop": false
+    },
+    "grabbed": {
+      "sheet": "samurai/grabbed.png",
+      "player2Sheet": "samurai/grabbed-p2.png",
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 5,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "ticks": 4,
+      "durations": [
+        4,
+        4,
+        4,
+        4,
+        6
+      ],
+      "loop": false
+    },
+    "defeat": {
+      "sheet": "samurai/defeat.png",
+      "player2Sheet": "samurai/defeat-p2.png",
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 6,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "ticks": 7,
+      "durations": [
+        7,
+        7,
+        7,
+        7,
+        7,
+        7
+      ],
+      "loop": false
+    },
+    "entrance": {
+      "sheet": "samurai/entrance.png",
+      "player2Sheet": "samurai/entrance-p2.png",
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 12,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "ticks": 4,
+      "durations": [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        6,
+        6
+      ],
+      "loop": false
+    },
+    "taunt": {
+      "sheet": "samurai/taunt.png",
+      "player2Sheet": "samurai/taunt-p2.png",
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 8,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "ticks": 5,
+      "durations": [
+        5,
+        5,
+        6,
+        6,
+        6,
+        6,
+        6,
+        8
+      ],
+      "loop": false
+    },
+    "victory": {
+      "sheet": "samurai/victory.png",
+      "player2Sheet": "samurai/victory-p2.png",
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 12,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "ticks": 4,
+      "durations": [
+        4,
+        4,
+        4,
+        4,
+        5,
+        5,
+        5,
+        5,
+        6,
+        6,
+        6,
+        6
+      ],
+      "loop": false
+    },
+    "counterEntry": {
+      "sheet": "samurai/counterEntry.png",
+      "player2Sheet": "samurai/counterEntry-p2.png",
+      "frames": [
+        0,
+        1,
+        2
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 3,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "ticks": 2,
+      "durations": [
+        2,
+        2,
+        2
+      ],
+      "loop": false
+    },
+    "counterWait": {
+      "sheet": "samurai/counterWait.png",
+      "player2Sheet": "samurai/counterWait-p2.png",
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 4,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "ticks": 5,
+      "durations": [
+        5,
+        5,
+        5,
+        5
+      ],
+      "loop": true
+    },
+    "counterFail": {
+      "sheet": "samurai/counterFail.png",
+      "player2Sheet": "samurai/counterFail-p2.png",
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 4,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "ticks": 6,
+      "durations": [
+        6,
+        6,
+        6,
+        6
+      ],
+      "loop": false
+    },
+    "counter_strike": {
+      "sheet": "samurai/counter_strike.png",
+      "player2Sheet": "samurai/counter_strike-p2.png",
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 6,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "ticks": 2,
+      "durations": [
+        2,
+        2,
+        2,
+        2,
+        7,
+        9
+      ],
+      "loop": false
+    },
+    "draw_light": {
+      "sheet": "samurai/draw_light.png",
+      "player2Sheet": "samurai/draw_light-p2.png",
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 6,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "ticks": 3,
+      "durations": [
+        3,
+        4,
+        2,
+        2,
+        9,
+        9
+      ],
+      "loop": false
+    },
+    "crescent_light": {
+      "sheet": "samurai/crescent_light.png",
+      "player2Sheet": "samurai/crescent_light-p2.png",
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 7,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "ticks": 2,
+      "durations": [
+        2,
+        3,
+        2,
+        3,
+        9,
+        9,
+        9
+      ],
+      "loop": false
+    },
+    "draw_medium": {
+      "sheet": "samurai/draw_medium.png",
+      "player2Sheet": "samurai/draw_medium-p2.png",
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 6,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "ticks": 5,
+      "durations": [
+        5,
+        5,
+        2,
+        3,
+        12,
+        12
+      ],
+      "loop": false
+    },
+    "crescent_medium": {
+      "sheet": "samurai/crescent_medium.png",
+      "player2Sheet": "samurai/crescent_medium-p2.png",
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 7,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "ticks": 3,
+      "durations": [
+        3,
+        4,
+        3,
+        3,
+        11,
+        11,
+        11
+      ],
+      "loop": false
+    },
+    "draw_heavy": {
+      "sheet": "samurai/draw_heavy.png",
+      "player2Sheet": "samurai/draw_heavy-p2.png",
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 6,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "ticks": 7,
+      "durations": [
+        7,
+        7,
+        3,
+        3,
+        16,
+        16
+      ],
+      "loop": false
+    },
+    "crescent_heavy": {
+      "sheet": "samurai/crescent_heavy.png",
+      "player2Sheet": "samurai/crescent_heavy-p2.png",
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 7,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "ticks": 5,
+      "durations": [
+        5,
+        5,
+        3,
+        4,
+        14,
+        14,
+        14
+      ],
+      "loop": false
+    },
+    "ultimate_start": {
+      "sheet": "samurai/ultimate_start.png",
+      "player2Sheet": "samurai/ultimate_start-p2.png",
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 6,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "ticks": 5,
+      "durations": [
+        5,
+        5,
+        2,
+        1,
+        16,
+        19
+      ],
+      "loop": false
+    },
+    "ultimateRush": {
+      "sheet": "samurai/ultimateRush.png",
+      "player2Sheet": "samurai/ultimateRush-p2.png",
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 12,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "ticks": 4,
+      "durations": [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "loop": false
+    },
+    "ultimateFinish": {
+      "sheet": "samurai/ultimateFinish.png",
+      "player2Sheet": "samurai/ultimateFinish-p2.png",
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 6,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "ticks": 2,
+      "durations": [
+        2,
+        2,
+        2,
+        3,
+        3,
+        6
+      ],
+      "loop": false
+    },
+    "ultimateRecover": {
+      "sheet": "samurai/ultimateRecover.png",
+      "player2Sheet": "samurai/ultimateRecover-p2.png",
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 4,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "ticks": 4,
+      "durations": [
+        4,
+        4,
+        5,
+        5
+      ],
+      "loop": false
+    },
+    "throwRecover": {
+      "sheet": "samurai/throwRecover.png",
+      "player2Sheet": "samurai/throwRecover-p2.png",
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "columns": 4,
+      "pivot": {
+        "x": 128,
+        "y": 224
+      },
+      "scale": 1,
+      "ticks": 3,
+      "durations": [
+        3,
+        3,
+        3,
+        3
+      ],
+      "loop": false
+    }
+  },
+  "pivot": {
+    "x": 128,
+    "y": 224
+  },
+  "scale": 1
+}

@@ -1,0 +1,4391 @@
+{
+  "knifePrepare": {
+    "label": "Facas / prepara\u00e7\u00e3o",
+    "poses": [
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          -1,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 0,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -2,
+        "farTarget": [
+          148,
+          148
+        ]
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 1,
+        "nearHand": [
+          -2,
+          -1
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": -1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -4,
+        "farTarget": [
+          145,
+          152
+        ]
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 1,
+        "nearHand": [
+          -2,
+          -2
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": -2,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -6,
+        "farTarget": [
+          141,
+          153
+        ]
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          -1,
+          -3
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": -1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -5,
+        "farTarget": [
+          140,
+          150
+        ]
+      }
+    ],
+    "durations": [
+      2,
+      2,
+      2,
+      2
+    ],
+    "contacts": {}
+  },
+  "knifeDraw": {
+    "label": "Facas / retirada",
+    "poses": [
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": -1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -6,
+        "farTarget": [
+          140,
+          150
+        ],
+        "farWrist": -40,
+        "heldKnife": -70
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": -2,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -5,
+        "farTarget": [
+          141,
+          143
+        ],
+        "farWrist": -60,
+        "heldKnife": -85
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": -1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -4,
+        "farTarget": [
+          144,
+          133
+        ],
+        "farWrist": -70,
+        "heldKnife": -90
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 0,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -3,
+        "farTarget": [
+          147,
+          126
+        ],
+        "farWrist": -65,
+        "heldKnife": -90
+      }
+    ],
+    "durations": [
+      2,
+      2,
+      2,
+      2
+    ],
+    "contacts": {}
+  },
+  "knifeArm": {
+    "label": "Facas / bra\u00e7o",
+    "poses": [
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          1,
+          -4
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": -2,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -8,
+        "farTarget": [
+          143,
+          123
+        ],
+        "farWrist": -80,
+        "heldKnife": -95
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          2,
+          -5
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": -3,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -10,
+        "farTarget": [
+          140,
+          116
+        ],
+        "farWrist": -90,
+        "heldKnife": -105
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          2,
+          -4
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": -2,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -7,
+        "farTarget": [
+          148,
+          112
+        ],
+        "farWrist": -100,
+        "heldKnife": -70
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          2,
+          -3
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -2,
+        "farTarget": [
+          157,
+          118
+        ],
+        "farWrist": -45,
+        "heldKnife": -30
+      }
+    ],
+    "durations": [
+      2,
+      2,
+      2,
+      2
+    ],
+    "contacts": {}
+  },
+  "knifeThrow": {
+    "label": "Facas / arremesso",
+    "poses": [
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          1,
+          -3
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": -1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -3,
+        "farTarget": [
+          152,
+          117
+        ],
+        "farWrist": -60,
+        "heldKnife": -50
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          2,
+          -2
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 2,
+        "farTarget": [
+          164,
+          126
+        ],
+        "farWrist": -20,
+        "heldKnife": -10
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          2,
+          -1
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 3,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 8,
+        "farTarget": [
+          180,
+          135
+        ],
+        "farWrist": 0
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          3,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 4,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 11,
+        "farTarget": [
+          184,
+          141
+        ],
+        "farWrist": 5
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          1,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 2,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 7,
+        "farTarget": [
+          174,
+          143
+        ],
+        "farWrist": 9
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 3,
+        "farTarget": [
+          160,
+          145
+        ],
+        "farWrist": 4
+      }
+    ],
+    "durations": [
+      1,
+      1,
+      2,
+      2,
+      3,
+      3
+    ],
+    "contacts": {}
+  },
+  "knifeRecover": {
+    "label": "Facas / recupera\u00e7\u00e3o",
+    "poses": [
+      {
+        "farWrist": 4.0,
+        "cloth": 1.0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0.0,
+        "head": [
+          0.0,
+          0.0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "lean": 3.0,
+        "hair": 0.0,
+        "farAnkle": [
+          146,
+          214
+        ],
+        "hip": 0.0,
+        "farTarget": [
+          160,
+          145
+        ],
+        "nearAnkle": [
+          106,
+          211
+        ]
+      },
+      {
+        "farWrist": 3.0,
+        "cloth": 0.75,
+        "nearHand": [
+          0.0,
+          0.0
+        ],
+        "nearWrist": 0.0,
+        "head": [
+          0.0,
+          0.0
+        ],
+        "farHand": [
+          0.0,
+          0.0
+        ],
+        "lean": 2.25,
+        "hair": 0.0,
+        "farAnkle": [
+          146.0,
+          214.0
+        ],
+        "hip": 0.0,
+        "farTarget": [
+          120.0,
+          108.75
+        ],
+        "nearAnkle": [
+          106.0,
+          211.0
+        ]
+      },
+      {
+        "farWrist": 2.0,
+        "cloth": 0.5,
+        "nearHand": [
+          0.0,
+          0.0
+        ],
+        "nearWrist": 0.0,
+        "head": [
+          0.0,
+          0.0
+        ],
+        "farHand": [
+          0.0,
+          0.0
+        ],
+        "lean": 1.5,
+        "hair": 0.0,
+        "farAnkle": [
+          146.0,
+          214.0
+        ],
+        "hip": 0.0,
+        "farTarget": [
+          80.0,
+          72.5
+        ],
+        "nearAnkle": [
+          106.0,
+          211.0
+        ]
+      },
+      {
+        "farWrist": 1.0,
+        "cloth": 0.25,
+        "nearHand": [
+          0.0,
+          0.0
+        ],
+        "nearWrist": 0.0,
+        "head": [
+          0.0,
+          0.0
+        ],
+        "farHand": [
+          0.0,
+          0.0
+        ],
+        "lean": 0.75,
+        "hair": 0.0,
+        "farAnkle": [
+          146.0,
+          214.0
+        ],
+        "hip": 0.0,
+        "farTarget": [
+          40.0,
+          36.25
+        ],
+        "nearAnkle": [
+          106.0,
+          211.0
+        ]
+      },
+      {
+        "farWrist": 0.0,
+        "cloth": 0.0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0.0,
+        "head": [
+          0.0,
+          0.0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "lean": 0.0,
+        "hair": 0.0,
+        "farAnkle": [
+          146,
+          214
+        ],
+        "hip": 0.0,
+        "farTarget": [
+          0,
+          0
+        ],
+        "nearAnkle": [
+          106,
+          211
+        ]
+      }
+    ],
+    "durations": [
+      2,
+      2,
+      2,
+      2,
+      2
+    ],
+    "contacts": {}
+  },
+  "rushCommand": {
+    "label": "Muda / comando de Dio",
+    "poses": [
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          1,
+          -2
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 0,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -2,
+        "farTarget": [
+          152,
+          142
+        ],
+        "farWrist": -5,
+        "pointing": true
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 1,
+        "nearHand": [
+          1,
+          -2
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": -1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -3,
+        "farTarget": [
+          151,
+          132
+        ],
+        "farWrist": -20,
+        "pointing": true
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          1,
+          -2
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": -2,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -1,
+        "farTarget": [
+          158,
+          127
+        ],
+        "farWrist": -15,
+        "pointing": true
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": -1,
+        "nearHand": [
+          1,
+          -2
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 3,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 2,
+        "farTarget": [
+          166,
+          131
+        ],
+        "farWrist": 0,
+        "pointing": true
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": -0.5,
+        "nearHand": [
+          1,
+          -2
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 1,
+        "farTarget": [
+          160,
+          136
+        ],
+        "farWrist": 3,
+        "pointing": true
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          1,
+          -2
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": -1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 0,
+        "farTarget": [
+          153,
+          142
+        ],
+        "farWrist": 0,
+        "pointing": true
+      }
+    ],
+    "durations": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      3
+    ],
+    "contacts": {}
+  },
+  "timePreparation": {
+    "label": "Tempo / prepara\u00e7\u00e3o",
+    "poses": [
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 0,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -1,
+        "nearTarget": [
+          111,
+          149
+        ],
+        "farTarget": [
+          151,
+          143
+        ],
+        "farWrist": 0
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 1,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 15,
+        "cloth": -1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -3,
+        "nearTarget": [
+          112,
+          144
+        ],
+        "farTarget": [
+          153,
+          137
+        ],
+        "farWrist": -15
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 1,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 30,
+        "cloth": -2,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -5,
+        "nearTarget": [
+          113,
+          137
+        ],
+        "farTarget": [
+          156,
+          129
+        ],
+        "farWrist": -30
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 45,
+        "cloth": -1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -3,
+        "nearTarget": [
+          110,
+          129
+        ],
+        "farTarget": [
+          158,
+          121
+        ],
+        "farWrist": -45
+      }
+    ],
+    "durations": [
+      3,
+      3,
+      3,
+      3
+    ],
+    "contacts": {}
+  },
+  "timeCommand": {
+    "label": "Tempo / comando",
+    "poses": [
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -35,
+        "cloth": -1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -2,
+        "nearTarget": [
+          109,
+          125
+        ],
+        "farTarget": [
+          159,
+          116
+        ],
+        "farWrist": -70
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -35,
+        "cloth": 0,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -1,
+        "nearTarget": [
+          106,
+          121
+        ],
+        "farTarget": [
+          161,
+          110
+        ],
+        "farWrist": -70
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -35,
+        "cloth": 1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 0,
+        "nearTarget": [
+          104,
+          119
+        ],
+        "farTarget": [
+          163,
+          104
+        ],
+        "farWrist": -70
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -35,
+        "cloth": 2,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 1,
+        "nearTarget": [
+          102,
+          116
+        ],
+        "farTarget": [
+          165,
+          100
+        ],
+        "farWrist": -70
+      }
+    ],
+    "durations": [
+      3,
+      3,
+      3,
+      3
+    ],
+    "contacts": {}
+  },
+  "timeActivation": {
+    "label": "Tempo / ativa\u00e7\u00e3o",
+    "poses": [
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -35,
+        "cloth": 1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 1,
+        "nearTarget": [
+          102,
+          116
+        ],
+        "farTarget": [
+          165,
+          100
+        ],
+        "farWrist": -80
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": -1,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -35,
+        "cloth": 3,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 2,
+        "nearTarget": [
+          101,
+          113
+        ],
+        "farTarget": [
+          168,
+          95
+        ],
+        "farWrist": -80
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": -1,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -35,
+        "cloth": 4,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 3,
+        "nearTarget": [
+          100,
+          112
+        ],
+        "farTarget": [
+          169,
+          92
+        ],
+        "farWrist": -80
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -35,
+        "cloth": 2,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 2,
+        "nearTarget": [
+          103,
+          117
+        ],
+        "farTarget": [
+          165,
+          105
+        ],
+        "farWrist": -80
+      }
+    ],
+    "durations": [
+      2,
+      2,
+      3,
+      2
+    ],
+    "contacts": {}
+  },
+  "timeGuard": {
+    "label": "Tempo / retorno \u00e0 guarda",
+    "poses": [
+      {
+        "farWrist": -80.0,
+        "cloth": 2.0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "nearWrist": -35.0,
+        "head": [
+          0.0,
+          0.0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "lean": 2.0,
+        "hair": 0.0,
+        "farAnkle": [
+          146,
+          214
+        ],
+        "hip": 0.0,
+        "farTarget": [
+          165,
+          105
+        ],
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "nearTarget": [
+          103,
+          117
+        ]
+      },
+      {
+        "farWrist": -53.599999999999994,
+        "cloth": 1.3399999999999999,
+        "nearHand": [
+          0.0,
+          0.0
+        ],
+        "nearWrist": -23.45,
+        "head": [
+          0.0,
+          0.0
+        ],
+        "farHand": [
+          0.0,
+          0.0
+        ],
+        "lean": 1.3399999999999999,
+        "hair": 0.0,
+        "farAnkle": [
+          146.0,
+          214.0
+        ],
+        "hip": 0.0,
+        "farTarget": [
+          110.55,
+          70.35
+        ],
+        "nearAnkle": [
+          106.0,
+          211.0
+        ],
+        "nearTarget": [
+          69.00999999999999,
+          78.39
+        ]
+      },
+      {
+        "farWrist": -27.199999999999996,
+        "cloth": 0.6799999999999999,
+        "nearHand": [
+          0.0,
+          0.0
+        ],
+        "nearWrist": -11.899999999999999,
+        "head": [
+          0.0,
+          0.0
+        ],
+        "farHand": [
+          0.0,
+          0.0
+        ],
+        "lean": 0.6799999999999999,
+        "hair": 0.0,
+        "farAnkle": [
+          146.0,
+          214.0
+        ],
+        "hip": 0.0,
+        "farTarget": [
+          56.099999999999994,
+          35.7
+        ],
+        "nearAnkle": [
+          106.0,
+          211.0
+        ],
+        "nearTarget": [
+          35.019999999999996,
+          39.78
+        ]
+      },
+      {
+        "farWrist": 0.0,
+        "cloth": 0.0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0.0,
+        "head": [
+          0.0,
+          0.0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "lean": 0.0,
+        "hair": 0.0,
+        "farAnkle": [
+          146,
+          214
+        ],
+        "hip": 0.0,
+        "farTarget": [
+          0,
+          0
+        ],
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "nearTarget": [
+          0,
+          0
+        ]
+      }
+    ],
+    "durations": [
+      2,
+      2,
+      2,
+      2
+    ],
+    "contacts": {}
+  },
+  "knives_light": {
+    "label": "Lan\u00e7amento de facas / light",
+    "poses": [
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          -1,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 0.0,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -2,
+        "farTarget": [
+          148,
+          148
+        ]
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 1,
+        "nearHand": [
+          -2,
+          -2
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": -1.92,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -6,
+        "farTarget": [
+          141,
+          153
+        ]
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": -1.84,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -5,
+        "farTarget": [
+          141,
+          143
+        ],
+        "farWrist": -60,
+        "heldKnife": -85
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 0.24,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -3,
+        "farTarget": [
+          147,
+          126
+        ],
+        "farWrist": -65,
+        "heldKnife": -90
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          2,
+          -5
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": -2.68,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -10,
+        "farTarget": [
+          140,
+          116
+        ],
+        "farWrist": -90,
+        "heldKnife": -105
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          2,
+          -1
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 3.4,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 8,
+        "farTarget": [
+          180,
+          135
+        ],
+        "farWrist": 0
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          3,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 4.48,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 11,
+        "farTarget": [
+          184,
+          141
+        ],
+        "farWrist": 5
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 1.56,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 3,
+        "farTarget": [
+          160,
+          145
+        ],
+        "farWrist": 4
+      },
+      {
+        "farWrist": 3.0,
+        "cloth": 1.3900000000000001,
+        "nearHand": [
+          0.0,
+          0.0
+        ],
+        "nearWrist": 0.0,
+        "head": [
+          0.0,
+          0.0
+        ],
+        "farHand": [
+          0.0,
+          0.0
+        ],
+        "lean": 2.25,
+        "hair": 0.0,
+        "farAnkle": [
+          146.0,
+          214.0
+        ],
+        "hip": 0.0,
+        "farTarget": [
+          120.0,
+          108.75
+        ],
+        "nearAnkle": [
+          106.0,
+          211.0
+        ]
+      },
+      {
+        "farWrist": 1.0,
+        "cloth": 0.97,
+        "nearHand": [
+          0.0,
+          0.0
+        ],
+        "nearWrist": 0.0,
+        "head": [
+          0.0,
+          0.0
+        ],
+        "farHand": [
+          0.0,
+          0.0
+        ],
+        "lean": 0.75,
+        "hair": 0.0,
+        "farAnkle": [
+          146.0,
+          214.0
+        ],
+        "hip": 0.0,
+        "farTarget": [
+          40.0,
+          36.25
+        ],
+        "nearAnkle": [
+          106.0,
+          211.0
+        ]
+      }
+    ],
+    "durations": [
+      3,
+      3,
+      2,
+      1,
+      2,
+      2,
+      3,
+      4,
+      4,
+      5
+    ],
+    "contacts": {}
+  },
+  "rush_light": {
+    "label": "Comando / Muda light",
+    "poses": [
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          1,
+          -2
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 0,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -2,
+        "farTarget": [
+          152,
+          142
+        ],
+        "farWrist": -5,
+        "pointing": true
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 1,
+        "nearHand": [
+          1,
+          -2
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": -1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -3,
+        "farTarget": [
+          151,
+          132
+        ],
+        "farWrist": -20,
+        "pointing": true
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          1,
+          -2
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": -2,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -1,
+        "farTarget": [
+          158,
+          127
+        ],
+        "farWrist": -15,
+        "pointing": true
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": -1,
+        "nearHand": [
+          1,
+          -2
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 3,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 2,
+        "farTarget": [
+          166,
+          131
+        ],
+        "farWrist": 0,
+        "pointing": true
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": -0.5,
+        "nearHand": [
+          1,
+          -2
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 1,
+        "farTarget": [
+          160,
+          136
+        ],
+        "farWrist": 3,
+        "pointing": true
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          1,
+          -2
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": -1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 0,
+        "farTarget": [
+          153,
+          142
+        ],
+        "farWrist": 0,
+        "pointing": true
+      }
+    ],
+    "durations": [
+      8,
+      7,
+      7,
+      7,
+      7,
+      7
+    ],
+    "contacts": {}
+  },
+  "knives_medium": {
+    "label": "Lan\u00e7amento de facas / medium",
+    "poses": [
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          -1,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 0.0,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -2,
+        "farTarget": [
+          148,
+          148
+        ]
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 1,
+        "nearHand": [
+          -2,
+          -2
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": -1.92,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -6,
+        "farTarget": [
+          141,
+          153
+        ]
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": -1.84,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -5,
+        "farTarget": [
+          141,
+          143
+        ],
+        "farWrist": -60,
+        "heldKnife": -85
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 0.24,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -3,
+        "farTarget": [
+          147,
+          126
+        ],
+        "farWrist": -65,
+        "heldKnife": -90
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          2,
+          -5
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": -2.68,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -10,
+        "farTarget": [
+          140,
+          116
+        ],
+        "farWrist": -90,
+        "heldKnife": -105
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          2,
+          -1
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 3.4,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 8,
+        "farTarget": [
+          180,
+          135
+        ],
+        "farWrist": 0
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          3,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 4.48,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 11,
+        "farTarget": [
+          184,
+          141
+        ],
+        "farWrist": 5
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          1,
+          -4
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": -1.44,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -8,
+        "farTarget": [
+          143,
+          123
+        ],
+        "farWrist": -80,
+        "heldKnife": -95
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          2,
+          -4
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": -1.3599999999999999,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -7,
+        "farTarget": [
+          148,
+          112
+        ],
+        "farWrist": -100,
+        "heldKnife": -70
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": -1,
+        "nearHand": [
+          2,
+          -1
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 3.7199999999999998,
+        "hair": 1,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 8,
+        "farTarget": [
+          180,
+          135
+        ],
+        "farWrist": 0
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          1,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 2.8,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 7,
+        "farTarget": [
+          174,
+          143
+        ],
+        "farWrist": 9
+      },
+      {
+        "farWrist": 4.0,
+        "cloth": 1.88,
+        "nearHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0.0,
+        "head": [
+          0.0,
+          0.0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "lean": 3.0,
+        "hair": 0.0,
+        "farAnkle": [
+          146,
+          214
+        ],
+        "hip": 0.0,
+        "farTarget": [
+          160,
+          145
+        ],
+        "nearAnkle": [
+          106,
+          211
+        ]
+      },
+      {
+        "farWrist": 2.0,
+        "cloth": 1.46,
+        "nearHand": [
+          0.0,
+          0.0
+        ],
+        "nearWrist": 0.0,
+        "head": [
+          0.0,
+          0.0
+        ],
+        "farHand": [
+          0.0,
+          0.0
+        ],
+        "lean": 1.5,
+        "hair": 0.0,
+        "farAnkle": [
+          146.0,
+          214.0
+        ],
+        "hip": 0.0,
+        "farTarget": [
+          80.0,
+          72.5
+        ],
+        "nearAnkle": [
+          106.0,
+          211.0
+        ]
+      },
+      {
+        "farWrist": 0.0,
+        "cloth": 1.04,
+        "nearHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0.0,
+        "head": [
+          0.0,
+          0.0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "lean": 0.0,
+        "hair": 0.0,
+        "farAnkle": [
+          146,
+          214
+        ],
+        "hip": 0.0,
+        "farTarget": [
+          0,
+          0
+        ],
+        "nearAnkle": [
+          106,
+          211
+        ]
+      }
+    ],
+    "durations": [
+      4,
+      4,
+      3,
+      2,
+      3,
+      2,
+      2,
+      2,
+      2,
+      3,
+      4,
+      5,
+      5,
+      5
+    ],
+    "contacts": {}
+  },
+  "rush_medium": {
+    "label": "Comando / Muda medium",
+    "poses": [
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          1,
+          -2
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 0,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -2,
+        "farTarget": [
+          152,
+          142
+        ],
+        "farWrist": -5,
+        "pointing": true
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 1,
+        "nearHand": [
+          1,
+          -2
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": -1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -3,
+        "farTarget": [
+          151,
+          132
+        ],
+        "farWrist": -20,
+        "pointing": true
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          1,
+          -2
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": -2,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -1,
+        "farTarget": [
+          158,
+          127
+        ],
+        "farWrist": -15,
+        "pointing": true
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": -1,
+        "nearHand": [
+          1,
+          -2
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 3,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 2,
+        "farTarget": [
+          166,
+          131
+        ],
+        "farWrist": 0,
+        "pointing": true
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": -0.5,
+        "nearHand": [
+          1,
+          -2
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 1,
+        "farTarget": [
+          160,
+          136
+        ],
+        "farWrist": 3,
+        "pointing": true
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          1,
+          -2
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": -1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 0,
+        "farTarget": [
+          153,
+          142
+        ],
+        "farWrist": 0,
+        "pointing": true
+      }
+    ],
+    "durations": [
+      12,
+      11,
+      11,
+      11,
+      11,
+      11
+    ],
+    "contacts": {}
+  },
+  "knives_heavy": {
+    "label": "Lan\u00e7amento de facas / heavy",
+    "poses": [
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          -1,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 0.0,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -2,
+        "farTarget": [
+          148,
+          148
+        ]
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 1,
+        "nearHand": [
+          -2,
+          -2
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": -1.92,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -6,
+        "farTarget": [
+          141,
+          153
+        ]
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": -1.84,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -5,
+        "farTarget": [
+          141,
+          143
+        ],
+        "farWrist": -60,
+        "heldKnife": -85
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 0.24,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -3,
+        "farTarget": [
+          147,
+          126
+        ],
+        "farWrist": -65,
+        "heldKnife": -90
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          1,
+          -4
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": -1.68,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -8,
+        "farTarget": [
+          143,
+          123
+        ],
+        "farWrist": -80,
+        "heldKnife": -95
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          2,
+          -4
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": -1.6,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -7,
+        "farTarget": [
+          148,
+          112
+        ],
+        "farWrist": -100,
+        "heldKnife": -70
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          2,
+          -1
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 3.48,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 8,
+        "farTarget": [
+          180,
+          135
+        ],
+        "farWrist": 0
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          3,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 4.5600000000000005,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 11,
+        "farTarget": [
+          184,
+          141
+        ],
+        "farWrist": 5
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          1,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 2.64,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 7,
+        "farTarget": [
+          174,
+          143
+        ],
+        "farWrist": 9
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 1.72,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 3,
+        "farTarget": [
+          160,
+          145
+        ],
+        "farWrist": 4
+      },
+      {
+        "farWrist": 4.0,
+        "cloth": 1.8,
+        "nearHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0.0,
+        "head": [
+          0.0,
+          0.0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "lean": 3.0,
+        "hair": 0.0,
+        "farAnkle": [
+          146,
+          214
+        ],
+        "hip": 0.0,
+        "farTarget": [
+          160,
+          145
+        ],
+        "nearAnkle": [
+          106,
+          211
+        ]
+      },
+      {
+        "farWrist": 2.0,
+        "cloth": 1.38,
+        "nearHand": [
+          0.0,
+          0.0
+        ],
+        "nearWrist": 0.0,
+        "head": [
+          0.0,
+          0.0
+        ],
+        "farHand": [
+          0.0,
+          0.0
+        ],
+        "lean": 1.5,
+        "hair": 0.0,
+        "farAnkle": [
+          146.0,
+          214.0
+        ],
+        "hip": 0.0,
+        "farTarget": [
+          80.0,
+          72.5
+        ],
+        "nearAnkle": [
+          106.0,
+          211.0
+        ]
+      },
+      {
+        "farWrist": 0.0,
+        "cloth": 0.96,
+        "nearHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0.0,
+        "head": [
+          0.0,
+          0.0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "lean": 0.0,
+        "hair": 0.0,
+        "farAnkle": [
+          146,
+          214
+        ],
+        "hip": 0.0,
+        "farTarget": [
+          0,
+          0
+        ],
+        "nearAnkle": [
+          106,
+          211
+        ]
+      }
+    ],
+    "durations": [
+      5,
+      4,
+      4,
+      4,
+      3,
+      2,
+      3,
+      4,
+      5,
+      6,
+      6,
+      5,
+      5
+    ],
+    "contacts": {}
+  },
+  "rush_heavy": {
+    "label": "Comando / Muda heavy",
+    "poses": [
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          1,
+          -2
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 0,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -2,
+        "farTarget": [
+          152,
+          142
+        ],
+        "farWrist": -5,
+        "pointing": true
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 1,
+        "nearHand": [
+          1,
+          -2
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": -1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -3,
+        "farTarget": [
+          151,
+          132
+        ],
+        "farWrist": -20,
+        "pointing": true
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          1,
+          -2
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": -2,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -1,
+        "farTarget": [
+          158,
+          127
+        ],
+        "farWrist": -15,
+        "pointing": true
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": -1,
+        "nearHand": [
+          1,
+          -2
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 3,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 2,
+        "farTarget": [
+          166,
+          131
+        ],
+        "farWrist": 0,
+        "pointing": true
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": -0.5,
+        "nearHand": [
+          1,
+          -2
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 1,
+        "farTarget": [
+          160,
+          136
+        ],
+        "farWrist": 3,
+        "pointing": true
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          1,
+          -2
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": -1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 0,
+        "farTarget": [
+          153,
+          142
+        ],
+        "farWrist": 0,
+        "pointing": true
+      }
+    ],
+    "durations": [
+      16,
+      16,
+      15,
+      15,
+      15,
+      15
+    ],
+    "contacts": {}
+  },
+  "time_stop": {
+    "label": "Parada do Tempo",
+    "poses": [
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0,
+        "cloth": 0,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -1,
+        "nearTarget": [
+          111,
+          149
+        ],
+        "farTarget": [
+          151,
+          143
+        ],
+        "farWrist": 0
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 1,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 15,
+        "cloth": -1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -3,
+        "nearTarget": [
+          112,
+          144
+        ],
+        "farTarget": [
+          153,
+          137
+        ],
+        "farWrist": -15
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 1,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 30,
+        "cloth": -2,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -5,
+        "nearTarget": [
+          113,
+          137
+        ],
+        "farTarget": [
+          156,
+          129
+        ],
+        "farWrist": -30
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": 45,
+        "cloth": -1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -3,
+        "nearTarget": [
+          110,
+          129
+        ],
+        "farTarget": [
+          158,
+          121
+        ],
+        "farWrist": -45
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -35,
+        "cloth": -1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -2,
+        "nearTarget": [
+          109,
+          125
+        ],
+        "farTarget": [
+          159,
+          116
+        ],
+        "farWrist": -70
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -35,
+        "cloth": 0,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": -1,
+        "nearTarget": [
+          106,
+          121
+        ],
+        "farTarget": [
+          161,
+          110
+        ],
+        "farWrist": -70
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -35,
+        "cloth": 1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 0,
+        "nearTarget": [
+          104,
+          119
+        ],
+        "farTarget": [
+          163,
+          104
+        ],
+        "farWrist": -70
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -35,
+        "cloth": 2,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 1,
+        "nearTarget": [
+          102,
+          116
+        ],
+        "farTarget": [
+          165,
+          100
+        ],
+        "farWrist": -70
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": 0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -35,
+        "cloth": 1,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 1,
+        "nearTarget": [
+          102,
+          116
+        ],
+        "farTarget": [
+          165,
+          100
+        ],
+        "farWrist": -80
+      },
+      {
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "farAnkle": [
+          146,
+          214
+        ],
+        "support": [
+          "near",
+          "far"
+        ],
+        "hip": -1,
+        "nearHand": [
+          0,
+          0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "nearWrist": -35,
+        "cloth": 3,
+        "hair": 0,
+        "head": [
+          0,
+          0.0
+        ],
+        "lean": 2,
+        "nearTarget": [
+          101,
+          113
+        ],
+        "farTarget": [
+          168,
+          95
+        ],
+        "farWrist": -80
+      },
+      {
+        "farWrist": -53.599999999999994,
+        "cloth": 1.3399999999999999,
+        "nearHand": [
+          0.0,
+          0.0
+        ],
+        "nearWrist": -23.45,
+        "head": [
+          0.0,
+          0.0
+        ],
+        "farHand": [
+          0.0,
+          0.0
+        ],
+        "lean": 1.3399999999999999,
+        "hair": 0.0,
+        "farAnkle": [
+          146.0,
+          214.0
+        ],
+        "hip": 0.0,
+        "farTarget": [
+          110.55,
+          70.35
+        ],
+        "nearAnkle": [
+          106.0,
+          211.0
+        ],
+        "nearTarget": [
+          69.00999999999999,
+          78.39
+        ]
+      },
+      {
+        "farWrist": -27.199999999999996,
+        "cloth": 0.6799999999999999,
+        "nearHand": [
+          0.0,
+          0.0
+        ],
+        "nearWrist": -11.899999999999999,
+        "head": [
+          0.0,
+          0.0
+        ],
+        "farHand": [
+          0.0,
+          0.0
+        ],
+        "lean": 0.6799999999999999,
+        "hair": 0.0,
+        "farAnkle": [
+          146.0,
+          214.0
+        ],
+        "hip": 0.0,
+        "farTarget": [
+          56.099999999999994,
+          35.7
+        ],
+        "nearAnkle": [
+          106.0,
+          211.0
+        ],
+        "nearTarget": [
+          35.019999999999996,
+          39.78
+        ]
+      },
+      {
+        "farWrist": 0.0,
+        "cloth": 0.0,
+        "nearHand": [
+          0,
+          0
+        ],
+        "nearWrist": 0.0,
+        "head": [
+          0.0,
+          0.0
+        ],
+        "farHand": [
+          0,
+          0
+        ],
+        "lean": 0.0,
+        "hair": 0.0,
+        "farAnkle": [
+          146,
+          214
+        ],
+        "hip": 0.0,
+        "farTarget": [
+          0,
+          0
+        ],
+        "nearAnkle": [
+          106,
+          211
+        ],
+        "nearTarget": [
+          0,
+          0
+        ]
+      }
+    ],
+    "durations": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      1,
+      2,
+      2,
+      2,
+      2
+    ],
+    "contacts": {}
+  }
+}

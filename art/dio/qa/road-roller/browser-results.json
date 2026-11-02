@@ -1,0 +1,26 @@
+[
+  {
+    "enemy": "samurai",
+    "mirror": false,
+    "damage": 350,
+    "hits": 15
+  },
+  {
+    "enemy": "samurai",
+    "mirror": true,
+    "damage": 350,
+    "hits": 15
+  },
+  {
+    "enemy": "dio",
+    "mirror": false,
+    "damage": 350,
+    "hits": 15
+  },
+  {
+    "enemy": "dio",
+    "mirror": true,
+    "damage": 350,
+    "hits": 15
+  }
+]

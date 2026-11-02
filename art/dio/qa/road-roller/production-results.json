@@ -1,0 +1,36 @@
+{
+  "origin": "http://127.0.0.1:3001",
+  "results": [
+    {
+      "enemy": "samurai",
+      "mirror": false,
+      "damage": 350
+    },
+    {
+      "enemy": "samurai",
+      "mirror": true,
+      "damage": 350
+    },
+    {
+      "enemy": "dio",
+      "mirror": false,
+      "damage": 350
+    },
+    {
+      "enemy": "dio",
+      "mirror": true,
+      "damage": 350
+    }
+  ],
+  "insufficientMeter": true,
+  "block": true,
+  "ko": true,
+  "rematch": true,
+  "cooldownPreserved": true,
+  "mainKeyboardConfirmed": true,
+  "pause": true,
+  "cameraRestored": true,
+  "exactAssets": true,
+  "version": "301aa5a32f542cff5cd9f83a",
+  "errors": []
+}

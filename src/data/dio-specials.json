@@ -1,0 +1,31 @@
+{
+  "commands": { "motionTicks": 24, "finishTicks": 5, "specialCancelOnContact": true },
+  "knives": {
+    "maximumPerOwner": 6,
+    "lifeTicks": 110,
+    "light": { "startup": 11, "duration": 29, "releases": [11], "angles": [0], "speed": 13, "damage": 38, "stun": 21, "blockstun": 12 },
+    "medium": { "startup": 16, "duration": 46, "releases": [16,24], "angles": [0,0], "speed": 13.5, "damage": 32, "stun": 22, "blockstun": 13 },
+    "heavy": { "startup": 22, "duration": 56, "releases": [22,22,22], "angles": [-0.045,0,0.045], "speed": 14, "damage": 28, "stun": 23, "blockstun": 14 }
+  },
+  "rush": {
+    "spacingTicks": 5,
+    "contactTicks": 2,
+    "comboHitLimit": 16,
+    "light": { "startup": 10, "hits": 4, "damage": 17, "finisherDamage": 32, "recovery": 16, "advance": 60 },
+    "medium": { "startup": 13, "hits": 7, "damage": 15, "finisherDamage": 40, "recovery": 22, "advance": 95 },
+    "heavy": { "startup": 17, "hits": 10, "damage": 13, "finisherDamage": 50, "recovery": 28, "advance": 130 }
+  },
+  "timeStop": {
+    "startupTicks": 24,
+    "activationRecoveryTicks": 9,
+    "durationTicks": 120,
+    "cooldownBaseSeconds": 20,
+    "cooldownIncreaseSeconds": 10,
+    "damageScale": 0.65,
+    "damageDecayPerHit": 0.07,
+    "minimumDamageScale": 0.25,
+    "maximumDamage": 220,
+    "maximumHits": 8,
+    "freezeAllProjectiles": true
+  }
+}

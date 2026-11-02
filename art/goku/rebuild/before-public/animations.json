@@ -1,0 +1,476 @@
+{
+  "sheet": "goku/idle.png",
+  "frameWidth": 256,
+  "frameHeight": 256,
+  "pivot": {
+    "x": 128,
+    "y": 224
+  },
+  "scale": 1,
+  "clips": {
+    "idle": {
+      "sheet": "goku/idle.png",
+      "columns": 6,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "ticks": 11,
+      "durations": [
+        11,
+        10,
+        10,
+        11,
+        9,
+        9
+      ],
+      "loop": true
+    },
+    "walkForward": {
+      "sheet": "goku/walkForward.png",
+      "columns": 8,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "ticks": 4,
+      "durations": [
+        4,
+        5,
+        4,
+        5,
+        4,
+        5,
+        4,
+        5
+      ],
+      "loop": true
+    },
+    "walkBack": {
+      "sheet": "goku/walkBack.png",
+      "columns": 8,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "ticks": 4,
+      "durations": [
+        4,
+        5,
+        4,
+        5,
+        4,
+        5,
+        4,
+        5
+      ],
+      "loop": true
+    },
+    "crouchStart": {
+      "sheet": "goku/crouchStart.png",
+      "columns": 4,
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "ticks": 2,
+      "durations": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "loop": false
+    },
+    "crouchIdle": {
+      "sheet": "goku/crouchIdle.png",
+      "columns": 3,
+      "frames": [
+        0,
+        1,
+        2
+      ],
+      "ticks": 12,
+      "durations": [
+        12,
+        14,
+        14
+      ],
+      "loop": true
+    },
+    "crouchEnd": {
+      "sheet": "goku/crouchEnd.png",
+      "columns": 4,
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "ticks": 2,
+      "durations": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "loop": false
+    },
+    "crouchWalkForward": {
+      "sheet": "goku/crouchWalkForward.png",
+      "columns": 8,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "crouchWalkBack": {
+      "sheet": "goku/crouchWalkBack.png",
+      "columns": 8,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "dashForward": {
+      "sheet": "goku/dashForward.png",
+      "columns": 7,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "ticks": 2,
+      "durations": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "loop": false
+    },
+    "backdash": {
+      "sheet": "goku/backdash.png",
+      "columns": 7,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "ticks": 2,
+      "durations": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "loop": false
+    },
+    "jumpStart": {
+      "sheet": "goku/jumpStart.png",
+      "columns": 3,
+      "frames": [
+        0,
+        1,
+        2
+      ],
+      "ticks": 2,
+      "durations": [
+        2,
+        2,
+        2
+      ],
+      "loop": false
+    },
+    "jumpRise": {
+      "sheet": "goku/jumpRise.png",
+      "columns": 3,
+      "frames": [
+        0,
+        1,
+        2
+      ],
+      "ticks": 4,
+      "durations": [
+        4,
+        4,
+        4
+      ],
+      "loop": false
+    },
+    "jumpRiseForward": {
+      "sheet": "goku/jumpRiseForward.png",
+      "columns": 3,
+      "frames": [
+        0,
+        1,
+        2
+      ],
+      "ticks": 4,
+      "durations": [
+        4,
+        4,
+        4
+      ],
+      "loop": false
+    },
+    "jumpRiseBackward": {
+      "sheet": "goku/jumpRiseBackward.png",
+      "columns": 3,
+      "frames": [
+        0,
+        1,
+        2
+      ],
+      "ticks": 4,
+      "durations": [
+        4,
+        4,
+        4
+      ],
+      "loop": false
+    },
+    "jumpApex": {
+      "sheet": "goku/jumpApex.png",
+      "columns": 2,
+      "frames": [
+        0,
+        1
+      ],
+      "ticks": 4,
+      "durations": [
+        4,
+        4
+      ],
+      "loop": false
+    },
+    "jumpApexForward": {
+      "sheet": "goku/jumpApexForward.png",
+      "columns": 2,
+      "frames": [
+        0,
+        1
+      ],
+      "ticks": 4,
+      "durations": [
+        4,
+        4
+      ],
+      "loop": false
+    },
+    "jumpApexBackward": {
+      "sheet": "goku/jumpApexBackward.png",
+      "columns": 2,
+      "frames": [
+        0,
+        1
+      ],
+      "ticks": 4,
+      "durations": [
+        4,
+        4
+      ],
+      "loop": false
+    },
+    "jumpFall": {
+      "sheet": "goku/jumpFall.png",
+      "columns": 3,
+      "frames": [
+        0,
+        1,
+        2
+      ],
+      "ticks": 4,
+      "durations": [
+        4,
+        4,
+        4
+      ],
+      "loop": false
+    },
+    "jumpFallForward": {
+      "sheet": "goku/jumpFallForward.png",
+      "columns": 3,
+      "frames": [
+        0,
+        1,
+        2
+      ],
+      "ticks": 4,
+      "durations": [
+        4,
+        4,
+        4
+      ],
+      "loop": false
+    },
+    "jumpFallBackward": {
+      "sheet": "goku/jumpFallBackward.png",
+      "columns": 3,
+      "frames": [
+        0,
+        1,
+        2
+      ],
+      "ticks": 4,
+      "durations": [
+        4,
+        4,
+        4
+      ],
+      "loop": false
+    },
+    "landing": {
+      "sheet": "goku/landing.png",
+      "columns": 4,
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "ticks": 2,
+      "durations": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "loop": false
+    },
+    "trainingHit": {
+      "sheet": "goku/trainingHit.png",
+      "columns": 3,
+      "frames": [
+        0,
+        1,
+        2
+      ],
+      "ticks": 4,
+      "durations": [
+        4,
+        4,
+        4
+      ],
+      "loop": false
+    },
+    "trainingAirHit": {
+      "sheet": "goku/trainingAirHit.png",
+      "columns": 3,
+      "frames": [
+        0,
+        1,
+        2
+      ],
+      "ticks": 5,
+      "durations": [
+        5,
+        5,
+        5
+      ],
+      "loop": false
+    },
+    "trainingDown": {
+      "sheet": "goku/trainingDown.png",
+      "columns": 3,
+      "frames": [
+        0,
+        1,
+        2
+      ],
+      "ticks": 8,
+      "durations": [
+        8,
+        8,
+        12
+      ],
+      "loop": false
+    },
+    "trainingGetup": {
+      "sheet": "goku/trainingGetup.png",
+      "columns": 4,
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "ticks": 4,
+      "durations": [
+        4,
+        4,
+        5,
+        5
+      ],
+      "loop": false
+    }
+  }
+}

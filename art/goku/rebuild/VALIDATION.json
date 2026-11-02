@@ -1,0 +1,63 @@
+{
+  "date": "2026-11-01",
+  "revision": 5,
+  "implemented": {
+    "clips": 33,
+    "celReferences": 142,
+    "uniqueWholeDrawings": 98,
+    "sourceProtocol": "complete whole poses; no limb cutout or morphing; includes intentionally reused transition endpoints",
+    "bodyPhysicsUnchanged": true,
+    "otherCharacterFilesVerified": 1995
+  },
+  "tested": {
+    "npmTest": {
+      "simulationTests": 361,
+      "simulationFiles": 17,
+      "pythonArtTests": 95,
+      "passed": true,
+      "log": "full-test.log"
+    },
+    "build": {
+      "passed": true,
+      "log": "build.log",
+      "warning": "existing large bundle warning"
+    },
+    "gokuBrowser": {
+      "distinctCases": 17,
+      "passed": true,
+      "meaning": "16 development cases plus1 compiled-production case; corrected transient expectations were rerun; not one single combined log"
+    },
+    "regressionBrowser": {
+      "cases": 19,
+      "passed": true,
+      "log": "regression-browser.log"
+    },
+    "production": {
+      "passed": true,
+      "log": "production-browser.log",
+      "checks": "33 exact sheets; movement both facings; current metadata/download/previews; server/client simulation version match"
+    },
+    "allCelsInspected": {
+      "count": 142,
+      "report": "qa/all-cels-browser.json"
+    }
+  },
+  "remainingLimits": [
+    "Held walking cels can show residual sliding and discrete pose changes.",
+    "Face, hair and cloth still show small painting variations; not equivalent to a manually polished professional animation set.",
+    "Anatomy guides are projected estimates for2 key poses, not a3D length proof or animation rig.",
+    "Training reaction drawings are shared across several damage/defense states; Goku remains training-only without attacks/specials/Super."
+  ],
+  "preview": {
+    "source": "actual keyboard-driven Match + Canvas Renderer",
+    "samples": 171,
+    "captureFPS": 30,
+    "seconds": 5.7,
+    "png": "public/previews/goku-rebuild-gameplay.png",
+    "gif": "public/previews/goku-rebuild-gameplay.gif"
+  },
+  "server": {
+    "url": "http://127.0.0.1:3001/art/goku.html?rebuild=5",
+    "session": 65783
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "combatLimits": {
+    "maxHits": 8,
+    "maxAirHits": 6,
+    "maxTicks": 180
+  },
+  "airChaseSpeed": 3.4,
+  "airChaseTicks": 8,
+  "reactionClips": {
+    "damageLight": "hitLight",
+    "damageMedium": "hitMedium",
+    "damageHeavy": "hitHeavy",
+    "damageCrouch": "hitCrouch",
+    "damageAir": "hitAir",
+    "launched": "launched",
+    "falling": "falling",
+    "downed": "downed",
+    "getup": "getup",
+    "ko": "ko",
+    "defeat": "ko",
+    "grabbed": "grabbed",
+    "guardStand": "guardStand",
+    "guardCrouch": "guardCrouch",
+    "guardImpactStand": "guardImpactStand",
+    "guardImpactCrouch": "guardImpactCrouch",
+    "throwRecover": "throwRecover"
+  },
+  "grabSequence": {
+    "duration": 22,
+    "hitTick": 12,
+    "damage": 125,
+    "recoveryTicks": 12,
+    "release": {
+      "vx": 7,
+      "vy": -7,
+      "stun": 38
+    },
+    "victimTrack": [
+      {
+        "tick": 0,
+        "x": 72,
+        "y": 0,
+        "clip": "grabbed"
+      },
+      {
+        "tick": 4,
+        "x": 52,
+        "y": -12,
+        "clip": "grabbed"
+      },
+      {
+        "tick": 8,
+        "x": 38,
+        "y": -42,
+        "clip": "grabbed"
+      },
+      {
+        "tick": 12,
+        "x": 70,
+        "y": -72,
+        "clip": "damageAir"
+      },
+      {
+        "tick": 17,
+        "x": 110,
+        "y": -40,
+        "clip": "damageAir"
+      },
+      {
+        "tick": 21,
+        "x": 132,
+        "y": -18,
+        "clip": "falling"
+      }
+    ]
+  }
+}

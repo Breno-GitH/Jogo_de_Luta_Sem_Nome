@@ -1,0 +1,21 @@
+{
+  "air_heavy-p2.png": "5fe41e47bb3b81b81b1bad692028d3313753195354dbb030f6c43397e453746b",
+  "air_heavy.png": "dada7422d1b0b30065a9dcc2f2e59d3dfdd7f6daca3f4dde1a8b464274568ffa",
+  "air_light-p2.png": "8afae239ce3ee918c3a8b891e25a34c00d2cf940bfb73a1cfae33b55c3b79d29",
+  "air_light.png": "d5d0a478f3d2df5460a03472cdc9531ea7334361f51c6b68f4569693692a6bec",
+  "air_medium-p2.png": "8ca42ff3146c78948361aca64e2d05e32b391a4796ec6c67e0b97fa69baac5a9",
+  "air_medium.png": "c7061acca545675e7ea5dc754c3c598d1cafbb14bdf7d19c7192fcce586721b5",
+  "attacks.json": "f20ef62ba5b7399daabcb80c0c45d16778bfa5bbee8c3072729958c4348a0a5f",
+  "crouch_heavy-p2.png": "99e30c39b51a1dcee620576783821803f37dda719308b216da62fc62eb679108",
+  "crouch_heavy.png": "eec36da3d1ee2aad38f605533c853821716d9d080b44ef7daba30e390723a828",
+  "crouch_light-p2.png": "06cb25664d719717c3fbe0c010bed172f2201b8b8c4368b02c5396f675aa7f15",
+  "crouch_light.png": "915e4dbe473d4966c6946b6cf417b63f85fecb5f6cbddf26e05ff9af4f9535d0",
+  "crouch_medium-p2.png": "edb6182c18b97b2a8c760a884dc35328cf9736f7f1232d56b2b82c7e67a4df03",
+  "crouch_medium.png": "69469a76af764fc33391efb82b59bcd411f2c5ff102303aaa628c5cf7d647422",
+  "stand_heavy-p2.png": "0f523bbcf74d9f1c2b2b998efc4663b2a70200fc02a565bb7c7b575f10e32abd",
+  "stand_heavy.png": "87bf31b844ebcfc3a43b9f2876f49c661556fc6cc83ab740667a6fca9d8679e5",
+  "stand_light-p2.png": "fa85633d5074150f8bf838ce47cd9111a71c44490073775df4343cf43da1a204",
+  "stand_light.png": "935a56f9f4db8fdaa0811e67368d874cfc90429e066827a95fdd0dd9b7fb4e98",
+  "stand_medium-p2.png": "c8528589c808430a7c30fabe7db95ed9f9a1ea07c2febd9a8b9254ad65e1254a",
+  "stand_medium.png": "e7fb80c43d2e4b4a99ce1fc7ba1c93bd06cbe377b953a132a90aa082415371d4"
+}

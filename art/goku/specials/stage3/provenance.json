@@ -1,0 +1,38 @@
+{
+  "tool": "built-in image_gen",
+  "reference": "art/goku/rebuild/canonical-reference.png",
+  "bodyMethod": "complete original poses, one uniform nearest-neighbor scale per calibration sheet, 32-color palette, binary alpha, integer registration; no limb reconstruction, morphing or body deformation",
+  "bodyClips": 10,
+  "bodyCelReferences": 85,
+  "uniqueBodyDrawingsIgnoringTranslation": 50,
+  "fxClips": 7,
+  "fxDrawings": 28,
+  "cell": [
+    384,
+    256
+  ],
+  "pivot": [
+    192,
+    224
+  ],
+  "rejected": [
+    "teleport_air raw source cell 5: disconnected native component; not published"
+  ],
+  "sources": {
+    "energy-source.png": "1548900e4ce24e94e3a6aebd692b81e075cc54280b7325eca99c8b61ab4d46ca",
+    "impact-source.png": "e890eab0f4eff2ca497a902eaeaf70731ac38ea994bc6e998a74a6749e9070e7",
+    "kamehameha-source.png": "6609ce37450f8212c589c55bbe6c94384897cc66cc2d0e0dec93f451d9a81296",
+    "ki_heavy-source.png": "657366719e8ac8ba0c14f638a7994030166632956a8364bd7de7cfc120c3c967",
+    "ki_light-source.png": "91de8624e47fe93cbf3eee454a33d5d68847e7ce93f8c9b2eda91baf15e09325",
+    "ki_medium-source.png": "618bec55af119c7a9d33d0feb5ec175e2588749a3d3363d87d6045b59bc8f789",
+    "teleport-source.png": "e833d2fe4172f950fd8fe844cb055f2832958462d3fa07a5dbf8e1d56334cd44",
+    "teleport_air-source.png": "420d694cbc013fc1349ff6240dfd70f2338c094b17da501372445e2e1ba95d0c"
+  },
+  "limitations": [
+    "AI-assisted whole drawings retain some small facial/hair/fabric differences; professional manual cleanup could refine the transitions.",
+    "Kamehameha strengths share body drawings with different timing and independently sized/animated beam layers.",
+    "Pose-based hurtboxes use conservative rectangles.",
+    "Goku remains local-only; the existing online selection remains Samurai.",
+    "SSJ1 transformation is not implemented."
+  ]
+}

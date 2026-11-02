@@ -1,0 +1,92 @@
+{
+  "engineVersion": "7bdaf1fcf51c545fdf2dac9c",
+  "tests": {
+    "simulation": 352,
+    "art": 80,
+    "browser": 58,
+    "onlineExistingSamuraiRooms": 5,
+    "compiledProduction": {
+      "origin": "http://127.0.0.1:3001",
+      "version": "7bdaf1fcf51c545fdf2dac9c",
+      "mainTraining": true,
+      "walkBothDirections": true,
+      "mirroring": true,
+      "crouch": true,
+      "jump": true,
+      "allExportedSheetsInspectable": true,
+      "unimplementedAttacksHonest": true,
+      "receivesBotAttacks": true,
+      "pause": true,
+      "exactServedAssets": true,
+      "errors": []
+    }
+  },
+  "build": "TypeScript + Vite + Node passed",
+  "newArt": {
+    "basicClips": 13,
+    "basicCells": 81,
+    "totalSheets": 23,
+    "totalCells": 110
+  },
+  "preservedPNGs": {
+    "samurai": 449,
+    "dio": 766,
+    "the-world": 776
+  },
+  "mobility": {
+    "samuraiSpeed": 5.5,
+    "gokuSpeed": 6.1,
+    "airSpeed": 6.5,
+    "jump": -17.7
+  },
+  "preview": {
+    "losslessCanvasSamplesVerified": 171,
+    "durationMs": 5699.9999999999945,
+    "captureFPS": 30,
+    "gifDurationMs": 5700,
+    "phases": [
+      "backdash",
+      "crouchEnd",
+      "crouchIdle",
+      "crouchStart",
+      "dashForward",
+      "idle",
+      "jumpApex",
+      "jumpApexBackward",
+      "jumpApexForward",
+      "jumpFall",
+      "jumpFallBackward",
+      "jumpFallForward",
+      "jumpRise",
+      "jumpRiseBackward",
+      "jumpRiseForward",
+      "jumpStart",
+      "landing",
+      "walkBack",
+      "walkForward"
+    ]
+  },
+  "files": {
+    "public/downloads/goku-movement.zip": {
+      "bytes": 3033518,
+      "sha256": "b3ccd7d7b489ccfc5c9df21720a8da68b31d655fb5cd6bac7916b090564e9444"
+    },
+    "public/previews/goku-gameplay.png": {
+      "bytes": 5289379,
+      "sha256": "081a172b100e092ad57c5bff897e18e75b48ee21436e2901d47286e943e8a068"
+    },
+    "public/previews/goku-gameplay.gif": {
+      "bytes": 4047816,
+      "sha256": "deee8493da5a0023b83094ba076ed397ecf26ba125cf72d15cde631d3076d91b"
+    },
+    "public/previews/goku-movement.png": {
+      "bytes": 2298099,
+      "sha256": "34c65e581d6d6470c6f10ed8a21f860386488805a68521947130f72800002ad3"
+    }
+  },
+  "limitations": [
+    "Movement-stage character selectable in Training; no attacks, specials, Super or Goku online.",
+    "Four provisional support reaction sheets; extreme fabric folds benefit from manual refinement.",
+    "Base generated with imagegen, native import and articulated painted rig, not manually drawn frame-by-frame."
+  ]
+}

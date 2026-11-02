@@ -1,0 +1,496 @@
+{
+  "method": "whole-pose",
+  "canvas": [
+    384,
+    256
+  ],
+  "pivot": {
+    "x": 192,
+    "y": 224
+  },
+  "config": {
+    "source": "art/goku/combat/crouch_light-source.png",
+    "kind": "normal",
+    "grounded": true,
+    "cells": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "durations": [
+      2,
+      2,
+      3,
+      3,
+      3,
+      4
+    ],
+    "startup": 4,
+    "active": 3,
+    "strike": "lowPunch",
+    "combat": {
+      "damage": 38,
+      "stun": 24,
+      "blockstun": 10,
+      "push": 0.7,
+      "launch": 0,
+      "hitstop": 5,
+      "level": "low",
+      "rank": 1,
+      "cancels": [
+        "medium",
+        "heavy"
+      ],
+      "cancelWindow": {
+        "fromTick": 5,
+        "toTick": 14
+      },
+      "cancelMoves": [
+        "crouch_medium",
+        "crouch_heavy"
+      ]
+    },
+    "label": "crouch_light"
+  },
+  "frames": [
+    {
+      "source": "art/goku/combat/crouch_light-source.png",
+      "sourceRect": [
+        909,
+        154,
+        1193,
+        445
+      ],
+      "cellRect": [
+        836,
+        0,
+        1254,
+        418
+      ],
+      "scale": 0.31630170316301703,
+      "offset": [
+        148,
+        132
+      ],
+      "metrics": {
+        "bbox": [
+          148,
+          132,
+          238,
+          224
+        ],
+        "opaquePixels": 4501,
+        "largestComponent": 1.0,
+        "components": [
+          4501
+        ]
+      },
+      "pose": {
+        "ticks": 2,
+        "phase": "startup",
+        "hitboxes": [],
+        "hurtboxes": [
+          {
+            "x": -7,
+            "y": -92,
+            "w": 50,
+            "h": 23
+          },
+          {
+            "x": -26,
+            "y": -69,
+            "w": 70,
+            "h": 26
+          },
+          {
+            "x": -36,
+            "y": -43,
+            "w": 80,
+            "h": 23
+          },
+          {
+            "x": -44,
+            "y": -20,
+            "w": 90,
+            "h": 20
+          }
+        ]
+      },
+      "strikePoint": null,
+      "discardedSpeckles": []
+    },
+    {
+      "source": "art/goku/combat/crouch_light-source.png",
+      "sourceRect": [
+        51,
+        512,
+        367,
+        829
+      ],
+      "cellRect": [
+        0,
+        418,
+        418,
+        836
+      ],
+      "scale": 0.31630170316301703,
+      "offset": [
+        142,
+        124
+      ],
+      "metrics": {
+        "bbox": [
+          142,
+          124,
+          242,
+          224
+        ],
+        "opaquePixels": 5218,
+        "largestComponent": 0.9998083556918359,
+        "components": [
+          5217,
+          1
+        ]
+      },
+      "pose": {
+        "ticks": 2,
+        "phase": "startup",
+        "hitboxes": [],
+        "hurtboxes": [
+          {
+            "x": 26,
+            "y": -100,
+            "w": 8,
+            "h": 2
+          },
+          {
+            "x": -24,
+            "y": -98,
+            "w": 74,
+            "h": 29
+          },
+          {
+            "x": -34,
+            "y": -69,
+            "w": 77,
+            "h": 26
+          },
+          {
+            "x": -39,
+            "y": -43,
+            "w": 84,
+            "h": 23
+          },
+          {
+            "x": -50,
+            "y": -20,
+            "w": 100,
+            "h": 20
+          }
+        ]
+      },
+      "strikePoint": null,
+      "discardedSpeckles": []
+    },
+    {
+      "source": "art/goku/combat/crouch_light-source.png",
+      "sourceRect": [
+        460,
+        530,
+        859,
+        829
+      ],
+      "cellRect": [
+        418,
+        418,
+        836,
+        836
+      ],
+      "scale": 0.31630170316301703,
+      "offset": [
+        139,
+        129
+      ],
+      "metrics": {
+        "bbox": [
+          139,
+          129,
+          265,
+          224
+        ],
+        "opaquePixels": 5090,
+        "largestComponent": 1.0,
+        "components": [
+          5090
+        ]
+      },
+      "pose": {
+        "ticks": 3,
+        "phase": "active",
+        "hitboxes": [
+          {
+            "a": {
+              "x": 56,
+              "y": -57
+            },
+            "b": {
+              "x": 70,
+              "y": -57
+            },
+            "r": 7
+          }
+        ],
+        "hurtboxes": [
+          {
+            "x": -16,
+            "y": -95,
+            "w": 62,
+            "h": 26
+          },
+          {
+            "x": -27,
+            "y": -69,
+            "w": 100,
+            "h": 26
+          },
+          {
+            "x": -41,
+            "y": -43,
+            "w": 87,
+            "h": 23
+          },
+          {
+            "x": -53,
+            "y": -20,
+            "w": 108,
+            "h": 20
+          }
+        ]
+      },
+      "strikePoint": [
+        262,
+        167
+      ],
+      "discardedSpeckles": []
+    },
+    {
+      "source": "art/goku/combat/crouch_light-source.png",
+      "sourceRect": [
+        909,
+        516,
+        1203,
+        829
+      ],
+      "cellRect": [
+        836,
+        418,
+        1254,
+        836
+      ],
+      "scale": 0.31630170316301703,
+      "offset": [
+        146,
+        125
+      ],
+      "metrics": {
+        "bbox": [
+          146,
+          125,
+          239,
+          224
+        ],
+        "opaquePixels": 4788,
+        "largestComponent": 1.0,
+        "components": [
+          4788
+        ]
+      },
+      "pose": {
+        "ticks": 3,
+        "phase": "recovery",
+        "hitboxes": [],
+        "hurtboxes": [
+          {
+            "x": 22,
+            "y": -99,
+            "w": 5,
+            "h": 1
+          },
+          {
+            "x": -21,
+            "y": -98,
+            "w": 64,
+            "h": 29
+          },
+          {
+            "x": -26,
+            "y": -69,
+            "w": 65,
+            "h": 26
+          },
+          {
+            "x": -37,
+            "y": -43,
+            "w": 80,
+            "h": 23
+          },
+          {
+            "x": -46,
+            "y": -20,
+            "w": 93,
+            "h": 20
+          }
+        ]
+      },
+      "strikePoint": null,
+      "discardedSpeckles": []
+    },
+    {
+      "source": "art/goku/combat/crouch_light-source.png",
+      "sourceRect": [
+        53,
+        896,
+        359,
+        1221
+      ],
+      "cellRect": [
+        0,
+        836,
+        418,
+        1254
+      ],
+      "scale": 0.31630170316301703,
+      "offset": [
+        144,
+        121
+      ],
+      "metrics": {
+        "bbox": [
+          144,
+          121,
+          241,
+          224
+        ],
+        "opaquePixels": 5044,
+        "largestComponent": 1.0,
+        "components": [
+          5044
+        ]
+      },
+      "pose": {
+        "ticks": 3,
+        "phase": "recovery",
+        "hitboxes": [],
+        "hurtboxes": [
+          {
+            "x": 20,
+            "y": -103,
+            "w": 14,
+            "h": 5
+          },
+          {
+            "x": -21,
+            "y": -98,
+            "w": 69,
+            "h": 29
+          },
+          {
+            "x": -25,
+            "y": -69,
+            "w": 68,
+            "h": 26
+          },
+          {
+            "x": -37,
+            "y": -43,
+            "w": 81,
+            "h": 23
+          },
+          {
+            "x": -48,
+            "y": -20,
+            "w": 97,
+            "h": 20
+          }
+        ]
+      },
+      "strikePoint": null,
+      "discardedSpeckles": []
+    },
+    {
+      "source": "art/goku/combat/crouch_light-source.png",
+      "sourceRect": [
+        476,
+        892,
+        794,
+        1221
+      ],
+      "cellRect": [
+        418,
+        836,
+        836,
+        1254
+      ],
+      "scale": 0.31630170316301703,
+      "offset": [
+        142,
+        120
+      ],
+      "metrics": {
+        "bbox": [
+          142,
+          120,
+          243,
+          224
+        ],
+        "opaquePixels": 5009,
+        "largestComponent": 1.0,
+        "components": [
+          5009
+        ]
+      },
+      "pose": {
+        "ticks": 4,
+        "phase": "recovery",
+        "hitboxes": [],
+        "hurtboxes": [
+          {
+            "x": 8,
+            "y": -104,
+            "w": 20,
+            "h": 6
+          },
+          {
+            "x": -23,
+            "y": -98,
+            "w": 65,
+            "h": 29
+          },
+          {
+            "x": -26,
+            "y": -69,
+            "w": 64,
+            "h": 26
+          },
+          {
+            "x": -40,
+            "y": -43,
+            "w": 84,
+            "h": 23
+          },
+          {
+            "x": -50,
+            "y": -20,
+            "w": 101,
+            "h": 20
+          }
+        ]
+      },
+      "strikePoint": null,
+      "discardedSpeckles": []
+    }
+  ]
+}

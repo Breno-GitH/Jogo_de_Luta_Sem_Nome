@@ -1,0 +1,111 @@
+{
+  "sheet": "road-roller/roadBase.png",
+  "frameWidth": 384,
+  "frameHeight": 256,
+  "pivot": {
+    "x": 192,
+    "y": 224
+  },
+  "clips": {
+    "roadBase": {
+      "sheet": "road-roller/roadBase.png",
+      "columns": 1,
+      "frames": [
+        0
+      ],
+      "ticks": 1,
+      "durations": [
+        1
+      ],
+      "loop": false
+    },
+    "roadFalling": {
+      "sheet": "road-roller/roadFalling.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 6,
+      "durations": [
+        6,
+        6,
+        6,
+        6,
+        6
+      ],
+      "loop": false
+    },
+    "roadImpact": {
+      "sheet": "road-roller/roadImpact.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 2,
+      "durations": [
+        2,
+        2,
+        3,
+        4,
+        5
+      ],
+      "loop": false
+    },
+    "roadPunched": {
+      "sheet": "road-roller/roadPunched.png",
+      "columns": 6,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "ticks": 4,
+      "durations": [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "loop": false
+    },
+    "roadExplosion": {
+      "sheet": "road-roller/roadExplosion.png",
+      "columns": 8,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "ticks": 3,
+      "durations": [
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "loop": false
+    }
+  }
+}

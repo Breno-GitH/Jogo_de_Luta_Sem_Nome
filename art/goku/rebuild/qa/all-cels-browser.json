@@ -1,0 +1,10 @@
+{
+  "clips": 33,
+  "cels": 142,
+  "bounds": true,
+  "pivot": true,
+  "individualTiming": true,
+  "frameStepping": true,
+  "anatomicalGuide": true,
+  "errors": []
+}

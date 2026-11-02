@@ -1,0 +1,127 @@
+{
+  "engineVersion": "3f3547e2e2f3b909f39a4ef8",
+  "build": "TypeScript + Vite + Node server passed",
+  "tests": {
+    "simulation": 307,
+    "art": 66,
+    "browser": 48,
+    "onlineTwoBrowsers": 5,
+    "finalSuperUnitRerun": 23,
+    "compiledProduction": {
+      "origin": "http://127.0.0.1:3001",
+      "results": [
+        {
+          "enemy": "samurai",
+          "mirror": false,
+          "damage": 350
+        },
+        {
+          "enemy": "samurai",
+          "mirror": true,
+          "damage": 350
+        },
+        {
+          "enemy": "dio",
+          "mirror": false,
+          "damage": 350
+        },
+        {
+          "enemy": "dio",
+          "mirror": true,
+          "damage": 350
+        }
+      ],
+      "insufficientMeter": true,
+      "block": true,
+      "ko": true,
+      "rematch": true,
+      "cooldownPreserved": true,
+      "mainKeyboardConfirmed": true,
+      "pause": true,
+      "cameraRestored": true,
+      "exactAssets": true,
+      "version": "3f3547e2e2f3b909f39a4ef8",
+      "errors": []
+    }
+  },
+  "preservedPNGs": {
+    "samurai": 449,
+    "dio": 484,
+    "the-world": 558,
+    "fx": 2
+  },
+  "newAssets": {
+    "dio": {
+      "clips": 9,
+      "exportedCells": 54
+    },
+    "theWorld": {
+      "clips": 12,
+      "exportedCells": 96
+    },
+    "object": {
+      "clips": 5,
+      "exportedCells": 25
+    },
+    "effects": {
+      "clips": 6,
+      "exportedCells": 47
+    },
+    "cancelTransitions": {
+      "clips": 14,
+      "exportedCells": 70
+    }
+  },
+  "preview": {
+    "source": "actual fixed-tick game Canvas, captured every second simulation tick",
+    "simulationTicks": 360,
+    "ticksPerSecond": 60,
+    "capturedFrames": 180,
+    "captureFPS": 30,
+    "apngFrames": 174,
+    "durationMs": 6000.0,
+    "hits": 15,
+    "damage": 350,
+    "cost": 200,
+    "cameraRestored": true,
+    "ownerAndStandReturned": true,
+    "phases": [
+      "activation",
+      "ascent",
+      "barrage",
+      "descent",
+      "explosion",
+      "finish",
+      "finisher",
+      "impact",
+      "landing",
+      "offscreen",
+      "preparation",
+      "smoke"
+    ],
+    "trace": "art/dio/qa/road-roller/trace.json",
+    "losslessCanvasSamplesVerified": 180,
+    "gifFrames": 174,
+    "gifDurationMs": 6000
+  },
+  "files": {
+    "public/downloads/road-roller.zip": {
+      "bytes": 2911656,
+      "sha256": "f3d2c228a9b2ad3ac344fc0a0c489888fee40ded15e782aca7e33206efb7245d"
+    },
+    "public/previews/road-roller-complete.png": {
+      "bytes": 6381205,
+      "sha256": "ae06e62c7ea1e993a2861cb5a10863ad8320702660b2aeefabbb574d68f4098e"
+    },
+    "public/previews/road-roller-complete.gif": {
+      "bytes": 6662789,
+      "sha256": "ecabda90b6d7062efaf20fbc5498736588c9622b74a38295b07bbfe0d359ea98"
+    }
+  },
+  "limitations": [
+    "Articulated pixel rig with limited facial acting and volume rotation.",
+    "Initial damage and timing; no long-term human competitive balance study.",
+    "Integer camera zoom cuts; synthesized audio without voices.",
+    "Dio remains local-only; online regression covers the existing Samurai rooms."
+  ]
+}

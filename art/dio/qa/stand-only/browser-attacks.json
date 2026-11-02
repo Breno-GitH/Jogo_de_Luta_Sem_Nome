@@ -1,0 +1,218 @@
+[
+  {
+    "enemy": "samurai",
+    "mirror": false,
+    "name": "stand_light",
+    "damage": 42
+  },
+  {
+    "enemy": "samurai",
+    "mirror": false,
+    "name": "stand_medium",
+    "damage": 72
+  },
+  {
+    "enemy": "samurai",
+    "mirror": false,
+    "name": "stand_heavy",
+    "damage": 116
+  },
+  {
+    "enemy": "samurai",
+    "mirror": false,
+    "name": "crouch_light",
+    "damage": 38
+  },
+  {
+    "enemy": "samurai",
+    "mirror": false,
+    "name": "crouch_medium",
+    "damage": 64
+  },
+  {
+    "enemy": "samurai",
+    "mirror": false,
+    "name": "crouch_heavy",
+    "damage": 88
+  },
+  {
+    "enemy": "samurai",
+    "mirror": false,
+    "name": "air_light",
+    "damage": 38
+  },
+  {
+    "enemy": "samurai",
+    "mirror": false,
+    "name": "air_medium",
+    "damage": 66
+  },
+  {
+    "enemy": "samurai",
+    "mirror": false,
+    "name": "air_heavy",
+    "damage": 108
+  },
+  {
+    "enemy": "samurai",
+    "mirror": true,
+    "name": "stand_light",
+    "damage": 42
+  },
+  {
+    "enemy": "samurai",
+    "mirror": true,
+    "name": "stand_medium",
+    "damage": 72
+  },
+  {
+    "enemy": "samurai",
+    "mirror": true,
+    "name": "stand_heavy",
+    "damage": 116
+  },
+  {
+    "enemy": "samurai",
+    "mirror": true,
+    "name": "crouch_light",
+    "damage": 38
+  },
+  {
+    "enemy": "samurai",
+    "mirror": true,
+    "name": "crouch_medium",
+    "damage": 64
+  },
+  {
+    "enemy": "samurai",
+    "mirror": true,
+    "name": "crouch_heavy",
+    "damage": 88
+  },
+  {
+    "enemy": "samurai",
+    "mirror": true,
+    "name": "air_light",
+    "damage": 38
+  },
+  {
+    "enemy": "samurai",
+    "mirror": true,
+    "name": "air_medium",
+    "damage": 66
+  },
+  {
+    "enemy": "samurai",
+    "mirror": true,
+    "name": "air_heavy",
+    "damage": 108
+  },
+  {
+    "enemy": "dio",
+    "mirror": false,
+    "name": "stand_light",
+    "damage": 42
+  },
+  {
+    "enemy": "dio",
+    "mirror": false,
+    "name": "stand_medium",
+    "damage": 72
+  },
+  {
+    "enemy": "dio",
+    "mirror": false,
+    "name": "stand_heavy",
+    "damage": 116
+  },
+  {
+    "enemy": "dio",
+    "mirror": false,
+    "name": "crouch_light",
+    "damage": 38
+  },
+  {
+    "enemy": "dio",
+    "mirror": false,
+    "name": "crouch_medium",
+    "damage": 64
+  },
+  {
+    "enemy": "dio",
+    "mirror": false,
+    "name": "crouch_heavy",
+    "damage": 88
+  },
+  {
+    "enemy": "dio",
+    "mirror": false,
+    "name": "air_light",
+    "damage": 38
+  },
+  {
+    "enemy": "dio",
+    "mirror": false,
+    "name": "air_medium",
+    "damage": 66
+  },
+  {
+    "enemy": "dio",
+    "mirror": false,
+    "name": "air_heavy",
+    "damage": 108
+  },
+  {
+    "enemy": "dio",
+    "mirror": true,
+    "name": "stand_light",
+    "damage": 42
+  },
+  {
+    "enemy": "dio",
+    "mirror": true,
+    "name": "stand_medium",
+    "damage": 72
+  },
+  {
+    "enemy": "dio",
+    "mirror": true,
+    "name": "stand_heavy",
+    "damage": 116
+  },
+  {
+    "enemy": "dio",
+    "mirror": true,
+    "name": "crouch_light",
+    "damage": 38
+  },
+  {
+    "enemy": "dio",
+    "mirror": true,
+    "name": "crouch_medium",
+    "damage": 64
+  },
+  {
+    "enemy": "dio",
+    "mirror": true,
+    "name": "crouch_heavy",
+    "damage": 88
+  },
+  {
+    "enemy": "dio",
+    "mirror": true,
+    "name": "air_light",
+    "damage": 38
+  },
+  {
+    "enemy": "dio",
+    "mirror": true,
+    "name": "air_medium",
+    "damage": 66
+  },
+  {
+    "enemy": "dio",
+    "mirror": true,
+    "name": "air_heavy",
+    "damage": 108
+  }
+]

@@ -1,0 +1,42 @@
+{
+  "furyFirstPunch": {
+    "x": 55,
+    "y": -75
+  },
+  "furySecondStrike": {
+    "x": 56,
+    "y": -80
+  },
+  "furyUppercut": {
+    "x": 20,
+    "y": -136
+  },
+  "furyAirPunch": {
+    "x": 51,
+    "y": -83
+  },
+  "furyAirKick": {
+    "x": 59,
+    "y": -53
+  },
+  "furyTeleportPunch": {
+    "x": 51,
+    "y": -83
+  },
+  "furyTeleportKick": {
+    "x": 59,
+    "y": -53
+  },
+  "furyAerialUppercut": {
+    "x": 16,
+    "y": -144
+  },
+  "furySmash": {
+    "x": 45,
+    "y": -24
+  },
+  "furyDownwardBeam": {
+    "x": 52,
+    "y": -63
+  }
+}

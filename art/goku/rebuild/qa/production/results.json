@@ -1,0 +1,11 @@
+{
+  "base": "http://127.0.0.1:3001",
+  "version": "a947c3677382c42be06a80df",
+  "revision": 5,
+  "clips": 33,
+  "exactAssets": true,
+  "bothFacings": true,
+  "allMovement": true,
+  "comparison": true,
+  "errors": []
+}

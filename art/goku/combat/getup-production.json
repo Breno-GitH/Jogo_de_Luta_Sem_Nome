@@ -1,0 +1,358 @@
+{
+  "method": "whole-pose",
+  "canvas": [
+    384,
+    256
+  ],
+  "pivot": {
+    "x": 192,
+    "y": 224
+  },
+  "config": {
+    "source": "art/goku/combat/down_getup-source.png",
+    "kind": "reaction",
+    "grounded": true,
+    "cells": [
+      3,
+      5,
+      6,
+      7,
+      8
+    ],
+    "durations": [
+      2,
+      4,
+      4,
+      4,
+      4
+    ],
+    "loop": false,
+    "label": "getup"
+  },
+  "frames": [
+    {
+      "source": "art/goku/combat/down_getup-source.png",
+      "sourceRect": [
+        33,
+        587,
+        457,
+        705
+      ],
+      "cellRect": [
+        0,
+        374,
+        467,
+        748
+      ],
+      "scale": 0.33766233766233766,
+      "offset": [
+        118,
+        184
+      ],
+      "metrics": {
+        "bbox": [
+          118,
+          184,
+          261,
+          224
+        ],
+        "opaquePixels": 3871,
+        "largestComponent": 1.0,
+        "components": [
+          3871
+        ]
+      },
+      "pose": {
+        "ticks": 2,
+        "phase": "reaction",
+        "hitboxes": [],
+        "hurtboxes": [
+          {
+            "x": -68,
+            "y": -40,
+            "w": 111,
+            "h": 20
+          },
+          {
+            "x": -74,
+            "y": -20,
+            "w": 143,
+            "h": 20
+          }
+        ]
+      },
+      "strikePoint": null,
+      "discardedSpeckles": []
+    },
+    {
+      "source": "art/goku/combat/down_getup-source.png",
+      "sourceRect": [
+        1000,
+        511,
+        1313,
+        714
+      ],
+      "cellRect": [
+        935,
+        374,
+        1402,
+        748
+      ],
+      "scale": 0.33766233766233766,
+      "offset": [
+        162,
+        155
+      ],
+      "metrics": {
+        "bbox": [
+          162,
+          155,
+          268,
+          224
+        ],
+        "opaquePixels": 3765,
+        "largestComponent": 1.0,
+        "components": [
+          3765
+        ]
+      },
+      "pose": {
+        "ticks": 4,
+        "phase": "reaction",
+        "hitboxes": [],
+        "hurtboxes": [
+          {
+            "x": 10,
+            "y": -69,
+            "w": 58,
+            "h": 26
+          },
+          {
+            "x": -17,
+            "y": -43,
+            "w": 92,
+            "h": 23
+          },
+          {
+            "x": -30,
+            "y": -20,
+            "w": 106,
+            "h": 20
+          }
+        ]
+      },
+      "strikePoint": null,
+      "discardedSpeckles": []
+    },
+    {
+      "source": "art/goku/combat/down_getup-source.png",
+      "sourceRect": [
+        87,
+        819,
+        378,
+        1096
+      ],
+      "cellRect": [
+        0,
+        748,
+        467,
+        1122
+      ],
+      "scale": 0.33766233766233766,
+      "offset": [
+        142,
+        130
+      ],
+      "metrics": {
+        "bbox": [
+          142,
+          130,
+          240,
+          224
+        ],
+        "opaquePixels": 4884,
+        "largestComponent": 1.0,
+        "components": [
+          4884
+        ]
+      },
+      "pose": {
+        "ticks": 4,
+        "phase": "reaction",
+        "hitboxes": [],
+        "hurtboxes": [
+          {
+            "x": -12,
+            "y": -94,
+            "w": 60,
+            "h": 25
+          },
+          {
+            "x": -21,
+            "y": -69,
+            "w": 68,
+            "h": 26
+          },
+          {
+            "x": -45,
+            "y": -43,
+            "w": 85,
+            "h": 23
+          },
+          {
+            "x": -50,
+            "y": -20,
+            "w": 98,
+            "h": 20
+          }
+        ]
+      },
+      "strikePoint": null,
+      "discardedSpeckles": []
+    },
+    {
+      "source": "art/goku/combat/down_getup-source.png",
+      "sourceRect": [
+        559,
+        776,
+        832,
+        1096
+      ],
+      "cellRect": [
+        467,
+        748,
+        935,
+        1122
+      ],
+      "scale": 0.33766233766233766,
+      "offset": [
+        146,
+        116
+      ],
+      "metrics": {
+        "bbox": [
+          146,
+          116,
+          238,
+          224
+        ],
+        "opaquePixels": 5170,
+        "largestComponent": 1.0,
+        "components": [
+          5170
+        ]
+      },
+      "pose": {
+        "ticks": 4,
+        "phase": "reaction",
+        "hitboxes": [],
+        "hurtboxes": [
+          {
+            "x": 6,
+            "y": -108,
+            "w": 32,
+            "h": 10
+          },
+          {
+            "x": -32,
+            "y": -98,
+            "w": 72,
+            "h": 29
+          },
+          {
+            "x": -34,
+            "y": -69,
+            "w": 79,
+            "h": 26
+          },
+          {
+            "x": -39,
+            "y": -43,
+            "w": 85,
+            "h": 23
+          },
+          {
+            "x": -46,
+            "y": -20,
+            "w": 92,
+            "h": 20
+          }
+        ]
+      },
+      "strikePoint": null,
+      "discardedSpeckles": []
+    },
+    {
+      "source": "art/goku/combat/down_getup-source.png",
+      "sourceRect": [
+        1024,
+        740,
+        1302,
+        1102
+      ],
+      "cellRect": [
+        935,
+        748,
+        1402,
+        1122
+      ],
+      "scale": 0.33766233766233766,
+      "offset": [
+        146,
+        102
+      ],
+      "metrics": {
+        "bbox": [
+          146,
+          102,
+          240,
+          224
+        ],
+        "opaquePixels": 5474,
+        "largestComponent": 1.0,
+        "components": [
+          5474
+        ]
+      },
+      "pose": {
+        "ticks": 4,
+        "phase": "reaction",
+        "hitboxes": [],
+        "hurtboxes": [
+          {
+            "x": -17,
+            "y": -122,
+            "w": 50,
+            "h": 24
+          },
+          {
+            "x": -32,
+            "y": -98,
+            "w": 80,
+            "h": 29
+          },
+          {
+            "x": -32,
+            "y": -69,
+            "w": 73,
+            "h": 26
+          },
+          {
+            "x": -38,
+            "y": -43,
+            "w": 77,
+            "h": 23
+          },
+          {
+            "x": -46,
+            "y": -20,
+            "w": 94,
+            "h": 20
+          }
+        ]
+      },
+      "strikePoint": null,
+      "discardedSpeckles": []
+    }
+  ]
+}

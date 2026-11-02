@@ -1,0 +1,950 @@
+{
+  "version": 5,
+  "method": "whole-pose",
+  "stages": {
+    "foundation": {
+      "idle": {
+        "source": {
+          "path": "art/goku/rebuild/idle-source-attempt1.png",
+          "columns": 3,
+          "rows": 2,
+          "calibration": 0
+        },
+        "cells": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "durations": [
+          9,
+          9,
+          10,
+          11,
+          10,
+          11
+        ],
+        "loop": true,
+        "grounded": true,
+        "minHeight": 124,
+        "maxHeight": 136,
+        "label": "Idle Â· figura inteira"
+      }
+    },
+    "walk": {
+      "walkForward": {
+        "kind": "wholeFrames",
+        "production": "art/goku/walk-v4/production.json",
+        "durations": [
+          4,
+          5,
+          4,
+          5,
+          4,
+          5,
+          4,
+          5
+        ],
+        "loop": true,
+        "grounded": true,
+        "label": "walkForward / whole guarded poses"
+      },
+      "walkBack": {
+        "kind": "wholeFrames",
+        "production": "art/goku/walk-v4/production.json",
+        "durations": [
+          4,
+          5,
+          4,
+          5,
+          4,
+          5,
+          4,
+          5
+        ],
+        "loop": true,
+        "grounded": true,
+        "label": "walkBack / whole guarded poses"
+      }
+    },
+    "crouch": {
+      "crouchStart": {
+        "source": {
+          "path": "art/goku/rebuild/crouch-source.png",
+          "columns": 3,
+          "rows": 3,
+          "calibration": 0
+        },
+        "cells": [
+          1,
+          2,
+          6,
+          3,
+          4
+        ],
+        "prependReference": {
+          "stage": "foundation",
+          "clip": "idle",
+          "index": 3
+        },
+        "durations": [
+          1,
+          1,
+          2,
+          1,
+          1,
+          2
+        ],
+        "loop": false,
+        "grounded": true,
+        "minHeight": 85,
+        "label": "Crouch Start / whole anatomy"
+      },
+      "crouchIdle": {
+        "source": {
+          "path": "art/goku/rebuild/crouch-source.png",
+          "columns": 3,
+          "rows": 3,
+          "calibration": 0
+        },
+        "cells": [
+          4,
+          5,
+          3
+        ],
+        "durations": [
+          12,
+          14,
+          14
+        ],
+        "loop": true,
+        "grounded": true,
+        "minHeight": 85,
+        "label": "Crouch Idle / stable guard"
+      },
+      "crouchEnd": {
+        "source": {
+          "path": "art/goku/rebuild/crouch-source.png",
+          "columns": 3,
+          "rows": 3,
+          "calibration": 0
+        },
+        "cells": [
+          3,
+          6,
+          2,
+          7,
+          1,
+          8
+        ],
+        "appendReference": {
+          "stage": "foundation",
+          "clip": "idle",
+          "index": 0
+        },
+        "durations": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          2
+        ],
+        "loop": false,
+        "grounded": true,
+        "minHeight": 85,
+        "label": "Crouch End / whole recovery"
+      }
+    },
+    "jump": {
+      "jumpStart": {
+        "source": {
+          "path": "art/goku/rebuild/jump-ground-source.png",
+          "columns": 3,
+          "rows": 3,
+          "calibration": 0
+        },
+        "cells": [
+          1,
+          2,
+          3
+        ],
+        "durations": [
+          2,
+          2,
+          2
+        ],
+        "grounded": true,
+        "loop": false,
+        "minHeight": 75,
+        "label": "Jump Start / load and push"
+      },
+      "jumpRise": {
+        "source": {
+          "path": "art/goku/rebuild/jump-neutral-source.png",
+          "columns": 3,
+          "rows": 3,
+          "calibration": 0
+        },
+        "cells": [
+          1,
+          2,
+          3
+        ],
+        "durations": [
+          4,
+          4,
+          4
+        ],
+        "grounded": false,
+        "loop": false,
+        "minHeight": 70,
+        "registration": {},
+        "label": "jumpRise / whole aerial pose"
+      },
+      "jumpApex": {
+        "source": {
+          "path": "art/goku/rebuild/jump-neutral-source.png",
+          "columns": 3,
+          "rows": 3,
+          "calibration": 0
+        },
+        "cells": [
+          4,
+          5
+        ],
+        "durations": [
+          4,
+          4
+        ],
+        "grounded": false,
+        "loop": false,
+        "minHeight": 70,
+        "registration": {},
+        "label": "jumpApex / whole aerial pose"
+      },
+      "jumpFall": {
+        "source": {
+          "path": "art/goku/rebuild/jump-neutral-source.png",
+          "columns": 3,
+          "rows": 3,
+          "calibration": 0
+        },
+        "cells": [
+          6,
+          7,
+          8
+        ],
+        "durations": [
+          4,
+          4,
+          4
+        ],
+        "grounded": false,
+        "loop": false,
+        "minHeight": 70,
+        "registration": {
+          "2": {
+            "mode": "feet"
+          }
+        },
+        "label": "jumpFall / whole aerial pose"
+      },
+      "jumpRiseForward": {
+        "source": {
+          "path": "art/goku/rebuild/jump-forward-source.png",
+          "columns": 3,
+          "rows": 3,
+          "calibration": 0
+        },
+        "cells": [
+          1,
+          2,
+          3
+        ],
+        "durations": [
+          4,
+          4,
+          4
+        ],
+        "grounded": false,
+        "loop": false,
+        "minHeight": 70,
+        "registration": {},
+        "label": "jumpRiseForward / whole aerial pose"
+      },
+      "jumpApexForward": {
+        "source": {
+          "path": "art/goku/rebuild/jump-forward-source.png",
+          "columns": 3,
+          "rows": 3,
+          "calibration": 0
+        },
+        "cells": [
+          4,
+          5
+        ],
+        "durations": [
+          4,
+          4
+        ],
+        "grounded": false,
+        "loop": false,
+        "minHeight": 70,
+        "registration": {},
+        "label": "jumpApexForward / whole aerial pose"
+      },
+      "jumpFallForward": {
+        "source": {
+          "path": "art/goku/rebuild/jump-forward-source.png",
+          "columns": 3,
+          "rows": 3,
+          "calibration": 0
+        },
+        "cells": [
+          6,
+          7,
+          8
+        ],
+        "durations": [
+          4,
+          4,
+          4
+        ],
+        "grounded": false,
+        "loop": false,
+        "minHeight": 70,
+        "registration": {
+          "2": {
+            "mode": "feet"
+          }
+        },
+        "label": "jumpFallForward / whole aerial pose"
+      },
+      "jumpRiseBackward": {
+        "source": {
+          "path": "art/goku/rebuild/jump-back-source.png",
+          "columns": 3,
+          "rows": 3,
+          "calibration": 0
+        },
+        "cells": [
+          1,
+          2,
+          3
+        ],
+        "durations": [
+          4,
+          4,
+          4
+        ],
+        "grounded": false,
+        "loop": false,
+        "minHeight": 70,
+        "registration": {},
+        "label": "jumpRiseBackward / whole aerial pose"
+      },
+      "jumpApexBackward": {
+        "source": {
+          "path": "art/goku/rebuild/jump-back-source.png",
+          "columns": 3,
+          "rows": 3,
+          "calibration": 0
+        },
+        "cells": [
+          4,
+          5
+        ],
+        "durations": [
+          4,
+          4
+        ],
+        "grounded": false,
+        "loop": false,
+        "minHeight": 70,
+        "registration": {},
+        "label": "jumpApexBackward / whole aerial pose"
+      },
+      "jumpFallBackward": {
+        "source": {
+          "path": "art/goku/rebuild/jump-back-source.png",
+          "columns": 3,
+          "rows": 3,
+          "calibration": 0
+        },
+        "cells": [
+          6,
+          7,
+          0
+        ],
+        "durations": [
+          4,
+          4,
+          4
+        ],
+        "grounded": false,
+        "loop": false,
+        "minHeight": 70,
+        "registration": {
+          "2": {
+            "mode": "feet"
+          }
+        },
+        "label": "jumpFallBackward / whole aerial pose"
+      },
+      "landing": {
+        "source": {
+          "path": "art/goku/rebuild/jump-ground-source.png",
+          "columns": 3,
+          "rows": 3,
+          "calibration": 0
+        },
+        "cells": [
+          5,
+          6,
+          7,
+          8
+        ],
+        "prependReference": {
+          "stage": "current",
+          "clip": "jumpFall",
+          "index": 2
+        },
+        "durations": [
+          1,
+          1,
+          2,
+          2,
+          2
+        ],
+        "grounded": true,
+        "loop": false,
+        "minHeight": 75,
+        "label": "Landing / contact and absorption"
+      },
+      "landingForward": {
+        "source": {
+          "path": "art/goku/rebuild/jump-ground-source.png",
+          "columns": 3,
+          "rows": 3,
+          "calibration": 0
+        },
+        "cells": [
+          5,
+          6,
+          7,
+          8
+        ],
+        "prependReference": {
+          "stage": "current",
+          "clip": "jumpFallForward",
+          "index": 2
+        },
+        "durations": [
+          1,
+          1,
+          2,
+          2,
+          2
+        ],
+        "grounded": true,
+        "loop": false,
+        "minHeight": 75,
+        "label": "LandingForward / contact and absorption"
+      },
+      "landingBackward": {
+        "source": {
+          "path": "art/goku/rebuild/jump-ground-source.png",
+          "columns": 3,
+          "rows": 3,
+          "calibration": 0
+        },
+        "cells": [
+          5,
+          6,
+          7,
+          8
+        ],
+        "prependReference": {
+          "stage": "current",
+          "clip": "jumpFallBackward",
+          "index": 2
+        },
+        "durations": [
+          1,
+          1,
+          2,
+          2,
+          2
+        ],
+        "grounded": true,
+        "loop": false,
+        "minHeight": 75,
+        "label": "LandingBackward / contact and absorption"
+      }
+    },
+    "dash": {
+      "dashForward": {
+        "source": {
+          "path": "art/goku/rebuild/dash-forward-source.png",
+          "columns": 3,
+          "rows": 3,
+          "calibration": 0
+        },
+        "cells": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "registration": {
+          "0": {
+            "mode": "centerFeet"
+          },
+          "1": {
+            "mode": "centerFeet"
+          },
+          "2": {
+            "mode": "centerFeet"
+          },
+          "3": {
+            "mode": "centerFeet"
+          },
+          "4": {
+            "mode": "centerFeet"
+          },
+          "5": {
+            "mode": "centerFeet"
+          },
+          "6": {
+            "mode": "centerFeet"
+          }
+        },
+        "durations": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "loop": false,
+        "grounded": true,
+        "minHeight": 85,
+        "label": "dashForward / anticipation, drive and braking"
+      },
+      "dashForwardRecovery": {
+        "source": {
+          "path": "art/goku/rebuild/dash-forward-source.png",
+          "columns": 3,
+          "rows": 3,
+          "calibration": 0
+        },
+        "cells": [
+          8
+        ],
+        "prependReference": {
+          "stage": "current",
+          "clip": "dashForward",
+          "index": 6
+        },
+        "appendReference": {
+          "stage": "foundation",
+          "clip": "idle",
+          "index": 0
+        },
+        "durations": [
+          1,
+          2,
+          1
+        ],
+        "loop": false,
+        "grounded": true,
+        "minHeight": 85,
+        "label": "dashForward / settling guard"
+      },
+      "backdash": {
+        "source": {
+          "path": "art/goku/rebuild/dash-back-source.png",
+          "columns": 3,
+          "rows": 3,
+          "calibration": 0
+        },
+        "cells": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "registration": {
+          "0": {
+            "mode": "centerFeet"
+          },
+          "1": {
+            "mode": "centerFeet"
+          },
+          "2": {
+            "mode": "centerFeet"
+          },
+          "3": {
+            "mode": "centerFeet"
+          },
+          "4": {
+            "mode": "centerFeet"
+          },
+          "5": {
+            "mode": "centerFeet"
+          },
+          "6": {
+            "mode": "centerFeet"
+          }
+        },
+        "durations": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "loop": false,
+        "grounded": true,
+        "minHeight": 85,
+        "label": "backdash / anticipation, drive and braking"
+      },
+      "backdashRecovery": {
+        "source": {
+          "path": "art/goku/rebuild/dash-back-source.png",
+          "columns": 3,
+          "rows": 3,
+          "calibration": 0
+        },
+        "cells": [
+          8
+        ],
+        "prependReference": {
+          "stage": "current",
+          "clip": "backdash",
+          "index": 6
+        },
+        "appendReference": {
+          "stage": "foundation",
+          "clip": "idle",
+          "index": 0
+        },
+        "durations": [
+          1,
+          2,
+          1
+        ],
+        "loop": false,
+        "grounded": true,
+        "minHeight": 85,
+        "label": "backdash / settling guard"
+      }
+    },
+    "transitions": {
+      "idleToWalkForward": {
+        "source": {
+          "path": "art/goku/rebuild/transitions-source.png",
+          "columns": 3,
+          "rows": 3,
+          "calibration": 0
+        },
+        "cells": [
+          1,
+          2
+        ],
+        "prependReference": {
+          "stage": "foundation",
+          "clip": "idle",
+          "index": 0
+        },
+        "appendReference": {
+          "stage": "walk",
+          "clip": "walkForward",
+          "index": 0
+        },
+        "durations": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "loop": false,
+        "grounded": true,
+        "minHeight": 110,
+        "label": "Idle to walk Forward"
+      },
+      "walkToIdleForward": {
+        "source": {
+          "path": "art/goku/rebuild/transitions-source.png",
+          "columns": 3,
+          "rows": 3,
+          "calibration": 0
+        },
+        "cells": [
+          3,
+          4
+        ],
+        "appendReference": {
+          "stage": "foundation",
+          "clip": "idle",
+          "index": 0
+        },
+        "durations": [
+          1,
+          2,
+          1
+        ],
+        "loop": false,
+        "grounded": true,
+        "minHeight": 110,
+        "label": "Walk to idle Forward"
+      },
+      "crouchWalkForward": {
+        "source": {
+          "path": "art/goku/rebuild/crouch-source.png",
+          "columns": 3,
+          "rows": 3,
+          "calibration": 0
+        },
+        "cells": [
+          6,
+          2,
+          7,
+          1,
+          8
+        ],
+        "prependReference": {
+          "stage": "crouch",
+          "clip": "crouchIdle",
+          "index": 0
+        },
+        "appendReference": {
+          "stage": "walk",
+          "clip": "walkForward",
+          "index": 0
+        },
+        "durations": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          2
+        ],
+        "loop": false,
+        "grounded": true,
+        "minHeight": 75,
+        "label": "Crouch rising into walk Forward"
+      },
+      "idleToWalkBack": {
+        "source": {
+          "path": "art/goku/rebuild/transitions-source.png",
+          "columns": 3,
+          "rows": 3,
+          "calibration": 0
+        },
+        "cells": [
+          5,
+          6
+        ],
+        "prependReference": {
+          "stage": "foundation",
+          "clip": "idle",
+          "index": 0
+        },
+        "appendReference": {
+          "stage": "walk",
+          "clip": "walkBack",
+          "index": 0
+        },
+        "durations": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "loop": false,
+        "grounded": true,
+        "minHeight": 110,
+        "label": "Idle to walk Back"
+      },
+      "walkToIdleBack": {
+        "source": {
+          "path": "art/goku/rebuild/transitions-source.png",
+          "columns": 3,
+          "rows": 3,
+          "calibration": 0
+        },
+        "cells": [
+          7,
+          8
+        ],
+        "appendReference": {
+          "stage": "foundation",
+          "clip": "idle",
+          "index": 0
+        },
+        "durations": [
+          1,
+          2,
+          1
+        ],
+        "loop": false,
+        "grounded": true,
+        "minHeight": 110,
+        "label": "Walk to idle Back"
+      },
+      "crouchWalkBack": {
+        "source": {
+          "path": "art/goku/rebuild/crouch-source.png",
+          "columns": 3,
+          "rows": 3,
+          "calibration": 0
+        },
+        "cells": [
+          6,
+          2,
+          7,
+          1,
+          8
+        ],
+        "prependReference": {
+          "stage": "crouch",
+          "clip": "crouchIdle",
+          "index": 0
+        },
+        "appendReference": {
+          "stage": "walk",
+          "clip": "walkBack",
+          "index": 0
+        },
+        "durations": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          2
+        ],
+        "loop": false,
+        "grounded": true,
+        "minHeight": 75,
+        "label": "Crouch rising into walk Back"
+      }
+    },
+    "reactions": {
+      "trainingHit": {
+        "source": {
+          "path": "art/goku/rebuild/reactions-source.png",
+          "columns": 3,
+          "rows": 3,
+          "calibration": 0
+        },
+        "cells": [
+          1,
+          2,
+          3
+        ],
+        "durations": [
+          3,
+          4,
+          5
+        ],
+        "loop": false,
+        "grounded": true,
+        "minHeight": 80,
+        "label": "Training hit / complete-body fallback"
+      },
+      "trainingAirHit": {
+        "source": {
+          "path": "art/goku/rebuild/reactions-source.png",
+          "columns": 3,
+          "rows": 3,
+          "calibration": 0
+        },
+        "cells": [
+          4,
+          5,
+          6
+        ],
+        "durations": [
+          5,
+          5,
+          5
+        ],
+        "loop": false,
+        "grounded": false,
+        "minHeight": 45,
+        "label": "Training air recoil / complete-body fallback"
+      },
+      "trainingDown": {
+        "source": {
+          "path": "art/goku/rebuild/getup-source.png",
+          "columns": 3,
+          "rows": 3,
+          "calibration": 0
+        },
+        "cells": [
+          1,
+          2,
+          3
+        ],
+        "durations": [
+          4,
+          6,
+          18
+        ],
+        "loop": false,
+        "grounded": true,
+        "minHeight": 32,
+        "label": "Training fall / down"
+      },
+      "trainingGetup": {
+        "source": {
+          "path": "art/goku/rebuild/getup-source.png",
+          "columns": 3,
+          "rows": 3,
+          "calibration": 0
+        },
+        "cells": [
+          5,
+          6,
+          7,
+          8
+        ],
+        "prependReference": {
+          "stage": "current",
+          "clip": "trainingDown",
+          "index": 2
+        },
+        "durations": [
+          2,
+          4,
+          4,
+          4,
+          4
+        ],
+        "loop": false,
+        "grounded": true,
+        "minHeight": 32,
+        "label": "Training getup / bracing, kneel and rising"
+      }
+    }
+  }
+}

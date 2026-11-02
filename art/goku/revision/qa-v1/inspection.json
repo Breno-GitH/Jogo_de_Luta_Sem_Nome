@@ -1,0 +1,94 @@
+[
+  {
+    "key": "idle",
+    "count": 6
+  },
+  {
+    "key": "walkForward",
+    "count": 20
+  },
+  {
+    "key": "walkBack",
+    "count": 20
+  },
+  {
+    "key": "dashForward",
+    "count": 6
+  },
+  {
+    "key": "backdash",
+    "count": 6
+  },
+  {
+    "key": "crouchStart",
+    "count": 3
+  },
+  {
+    "key": "crouchIdle",
+    "count": 3
+  },
+  {
+    "key": "crouchEnd",
+    "count": 3
+  },
+  {
+    "key": "jumpStart",
+    "count": 3
+  },
+  {
+    "key": "jumpRise",
+    "count": 3
+  },
+  {
+    "key": "jumpRiseForward",
+    "count": 3
+  },
+  {
+    "key": "jumpRiseBackward",
+    "count": 3
+  },
+  {
+    "key": "jumpApex",
+    "count": 2
+  },
+  {
+    "key": "jumpApexForward",
+    "count": 2
+  },
+  {
+    "key": "jumpApexBackward",
+    "count": 2
+  },
+  {
+    "key": "jumpFall",
+    "count": 3
+  },
+  {
+    "key": "jumpFallForward",
+    "count": 3
+  },
+  {
+    "key": "jumpFallBackward",
+    "count": 3
+  },
+  {
+    "key": "landing",
+    "count": 3
+  },
+  {
+    "key": "trainingHit",
+    "count": 3
+  },
+  {
+    "key": "trainingAirHit",
+    "count": 3
+  },
+  {
+    "key": "trainingDown",
+    "count": 3
+  },
+  {
+    "key": "trainingGetup",
+    "count": 4
+  }
+]

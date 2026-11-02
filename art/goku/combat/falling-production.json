@@ -1,0 +1,241 @@
+{
+  "method": "whole-pose",
+  "canvas": [
+    384,
+    256
+  ],
+  "pivot": {
+    "x": 192,
+    "y": 224
+  },
+  "config": {
+    "source": "art/goku/combat/hit_crouch_air-source.png",
+    "kind": "reaction",
+    "grounded": false,
+    "cells": [
+      5,
+      7,
+      8
+    ],
+    "durations": [
+      4,
+      5,
+      5
+    ],
+    "loop": false,
+    "label": "falling"
+  },
+  "frames": [
+    {
+      "source": "art/goku/combat/hit_crouch_air-source.png",
+      "sourceRect": [
+        858,
+        483,
+        1222,
+        797
+      ],
+      "cellRect": [
+        836,
+        418,
+        1254,
+        836
+      ],
+      "scale": 0.33248081841432225,
+      "offset": [
+        132,
+        94
+      ],
+      "metrics": {
+        "bbox": [
+          132,
+          94,
+          253,
+          198
+        ],
+        "opaquePixels": 5766,
+        "largestComponent": 1.0,
+        "components": [
+          5766
+        ]
+      },
+      "pose": {
+        "ticks": 4,
+        "phase": "reaction",
+        "hitboxes": [],
+        "hurtboxes": [
+          {
+            "x": -60,
+            "y": -130,
+            "w": 92,
+            "h": 32
+          },
+          {
+            "x": -60,
+            "y": -98,
+            "w": 121,
+            "h": 29
+          },
+          {
+            "x": -51,
+            "y": -69,
+            "w": 110,
+            "h": 26
+          },
+          {
+            "x": 3,
+            "y": -43,
+            "w": 29,
+            "h": 17
+          }
+        ]
+      },
+      "strikePoint": null,
+      "discardedSpeckles": []
+    },
+    {
+      "source": "art/goku/combat/hit_crouch_air-source.png",
+      "sourceRect": [
+        456,
+        843,
+        796,
+        1229
+      ],
+      "cellRect": [
+        418,
+        836,
+        836,
+        1254
+      ],
+      "scale": 0.33248081841432225,
+      "offset": [
+        136,
+        94
+      ],
+      "metrics": {
+        "bbox": [
+          136,
+          94,
+          249,
+          222
+        ],
+        "opaquePixels": 5383,
+        "largestComponent": 0.9998142299832807,
+        "components": [
+          5382,
+          1
+        ]
+      },
+      "pose": {
+        "ticks": 5,
+        "phase": "reaction",
+        "hitboxes": [],
+        "hurtboxes": [
+          {
+            "x": -49,
+            "y": -130,
+            "w": 84,
+            "h": 32
+          },
+          {
+            "x": -56,
+            "y": -98,
+            "w": 113,
+            "h": 29
+          },
+          {
+            "x": -19,
+            "y": -69,
+            "w": 59,
+            "h": 26
+          },
+          {
+            "x": -11,
+            "y": -43,
+            "w": 50,
+            "h": 23
+          },
+          {
+            "x": 5,
+            "y": -20,
+            "w": 22,
+            "h": 18
+          }
+        ]
+      },
+      "strikePoint": null,
+      "discardedSpeckles": []
+    },
+    {
+      "source": "art/goku/combat/hit_crouch_air-source.png",
+      "sourceRect": [
+        912,
+        847,
+        1165,
+        1183
+      ],
+      "cellRect": [
+        836,
+        836,
+        1254,
+        1254
+      ],
+      "scale": 0.33248081841432225,
+      "offset": [
+        150,
+        94
+      ],
+      "metrics": {
+        "bbox": [
+          150,
+          94,
+          234,
+          206
+        ],
+        "opaquePixels": 5062,
+        "largestComponent": 1.0,
+        "components": [
+          5062
+        ]
+      },
+      "pose": {
+        "ticks": 5,
+        "phase": "reaction",
+        "hitboxes": [],
+        "hurtboxes": [
+          {
+            "x": -41,
+            "y": -130,
+            "w": 79,
+            "h": 32
+          },
+          {
+            "x": -42,
+            "y": -98,
+            "w": 84,
+            "h": 29
+          },
+          {
+            "x": -36,
+            "y": -69,
+            "w": 66,
+            "h": 26
+          },
+          {
+            "x": -37,
+            "y": -43,
+            "w": 63,
+            "h": 23
+          },
+          {
+            "x": 4,
+            "y": -20,
+            "w": 5,
+            "h": 2
+          }
+        ]
+      },
+      "strikePoint": null,
+      "discardedSpeckles": []
+    }
+  ]
+}

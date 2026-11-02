@@ -1,0 +1,8887 @@
+{
+  "guardStand": {
+    "label": "Defesa em p\u00e9",
+    "poses": [
+      {
+        "grip": [
+          150.0,
+          140.0
+        ],
+        "angle": -70,
+        "hip": 0,
+        "lean": -5,
+        "free": [
+          137.0,
+          144.0
+        ],
+        "cloth": 0,
+        "hair": 0,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.4643972515790153,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          150.0,
+          139.0
+        ],
+        "angle": -70,
+        "hip": -1,
+        "lean": -5,
+        "free": [
+          137.0,
+          144.0
+        ],
+        "cloth": 1,
+        "hair": 1,
+        "left": [
+          0.4252654083173866,
+          0.0
+        ],
+        "right": [
+          -4.410697944211705,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          150.0,
+          140.0
+        ],
+        "angle": -70,
+        "hip": 0,
+        "lean": -5,
+        "free": [
+          137.0,
+          144.0
+        ],
+        "cloth": 2,
+        "hair": 0,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.4643972515790153,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          150.0,
+          141.0
+        ],
+        "angle": -70,
+        "hip": 1,
+        "lean": -5,
+        "free": [
+          137.0,
+          144.0
+        ],
+        "cloth": 3,
+        "hair": 1,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -0.7030955391618932,
+          0.0
+        ],
+        "farReach": 41
+      }
+    ],
+    "durations": [
+      8,
+      8,
+      8,
+      8
+    ],
+    "loop": true,
+    "grounded": true
+  },
+  "guardCrouch": {
+    "label": "Defesa agachada",
+    "poses": [
+      {
+        "grip": [
+          154.0,
+          177.0
+        ],
+        "angle": -50,
+        "hip": 22,
+        "lean": -4,
+        "free": [
+          137.0,
+          149.0
+        ],
+        "cloth": 0,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          154.0,
+          176.0
+        ],
+        "angle": -50,
+        "hip": 21,
+        "lean": -4,
+        "free": [
+          137.0,
+          149.0
+        ],
+        "cloth": 1,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          154.0,
+          177.0
+        ],
+        "angle": -50,
+        "hip": 22,
+        "lean": -4,
+        "free": [
+          137.0,
+          149.0
+        ],
+        "cloth": 2,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          154.0,
+          178.0
+        ],
+        "angle": -50,
+        "hip": 23,
+        "lean": -4,
+        "free": [
+          137.0,
+          149.0
+        ],
+        "cloth": 3,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41
+      }
+    ],
+    "durations": [
+      8,
+      8,
+      8,
+      8
+    ],
+    "loop": true,
+    "grounded": true
+  },
+  "guardImpactStand": {
+    "label": "Impacto na defesa stand",
+    "poses": [
+      {
+        "grip": [
+          148.0,
+          142.0
+        ],
+        "angle": -72,
+        "hip": 0,
+        "lean": -11,
+        "x": -2,
+        "free": [
+          136.0,
+          145.0
+        ],
+        "cloth": -2,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -4.851876149285886,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          149.0,
+          141.0
+        ],
+        "angle": -71,
+        "hip": 0,
+        "lean": -8,
+        "x": -1,
+        "free": [
+          136.0,
+          145.0
+        ],
+        "cloth": -1,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -3.6314528057581867,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          150.0,
+          140.0
+        ],
+        "angle": -70,
+        "hip": 0,
+        "lean": -5,
+        "free": [
+          137.0,
+          144.0
+        ],
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.4643972515790153,
+          0.0
+        ],
+        "farReach": 41
+      }
+    ],
+    "durations": [
+      2,
+      2,
+      2
+    ],
+    "loop": false,
+    "grounded": true
+  },
+  "guardImpactCrouch": {
+    "label": "Impacto na defesa crouch",
+    "poses": [
+      {
+        "grip": [
+          148.0,
+          164.0
+        ],
+        "angle": -72,
+        "hip": 22,
+        "lean": -11,
+        "x": -2,
+        "free": [
+          136.0,
+          145.0
+        ],
+        "cloth": -2,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          149.0,
+          163.0
+        ],
+        "angle": -71,
+        "hip": 22,
+        "lean": -8,
+        "x": -1,
+        "free": [
+          136.0,
+          145.0
+        ],
+        "cloth": -1,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          150.0,
+          162.0
+        ],
+        "angle": -70,
+        "hip": 22,
+        "lean": -5,
+        "free": [
+          137.0,
+          144.0
+        ],
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41
+      }
+    ],
+    "durations": [
+      2,
+      2,
+      2
+    ],
+    "loop": false,
+    "grounded": true
+  },
+  "damageLight": {
+    "label": "Dano leve",
+    "poses": [
+      {
+        "grip": [
+          139.0,
+          173.0
+        ],
+        "angle": 37,
+        "lean": -5,
+        "hip": 0,
+        "free": [
+          118.0,
+          158.0
+        ],
+        "cloth": 0,
+        "hair": 0,
+        "expression": "pain",
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.4643972515790153,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          140.0,
+          173.0
+        ],
+        "angle": 40,
+        "lean": -9,
+        "hip": 1,
+        "free": [
+          118.0,
+          158.0
+        ],
+        "cloth": -1,
+        "hair": 1,
+        "expression": "pain",
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -0.8814949948506978,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          141.0,
+          173.0
+        ],
+        "angle": 43,
+        "lean": -5,
+        "hip": 2,
+        "free": [
+          118.0,
+          158.0
+        ],
+        "cloth": -2,
+        "hair": 2,
+        "expression": "pain",
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          142.0,
+          173.0
+        ],
+        "angle": 46,
+        "lean": -2,
+        "hip": 3,
+        "free": [
+          118.0,
+          158.0
+        ],
+        "cloth": -3,
+        "hair": 3,
+        "expression": "pain",
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41
+      }
+    ],
+    "durations": [
+      3,
+      3,
+      3,
+      3
+    ],
+    "loop": false,
+    "grounded": true
+  },
+  "damageMedium": {
+    "label": "Dano m\u00e9dio",
+    "poses": [
+      {
+        "grip": [
+          139.0,
+          173.0
+        ],
+        "angle": 37,
+        "lean": -7,
+        "hip": 0,
+        "free": [
+          118.0,
+          158.0
+        ],
+        "cloth": 0,
+        "hair": 0,
+        "expression": "pain",
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.5699542986165227,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          140.0,
+          173.0
+        ],
+        "angle": 40,
+        "lean": -15,
+        "hip": 1,
+        "free": [
+          118.0,
+          158.0
+        ],
+        "cloth": -1,
+        "hair": 1,
+        "expression": "pain",
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -1.313801886989637,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          141.0,
+          173.0
+        ],
+        "angle": 43,
+        "lean": -20,
+        "hip": 2,
+        "free": [
+          118.0,
+          158.0
+        ],
+        "cloth": -2,
+        "hair": 2,
+        "expression": "pain",
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -0.012549200723611875,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          142.0,
+          173.0
+        ],
+        "angle": 46,
+        "lean": -11,
+        "hip": 3,
+        "free": [
+          118.0,
+          158.0
+        ],
+        "cloth": -3,
+        "hair": 3,
+        "expression": "pain",
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          143.0,
+          173.0
+        ],
+        "angle": 49,
+        "lean": -4,
+        "hip": 4,
+        "free": [
+          118.0,
+          158.0
+        ],
+        "cloth": -4,
+        "hair": 4,
+        "expression": "pain",
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41
+      }
+    ],
+    "durations": [
+      3,
+      3,
+      3,
+      3,
+      3
+    ],
+    "loop": false,
+    "grounded": true
+  },
+  "damageHeavy": {
+    "label": "Dano forte",
+    "poses": [
+      {
+        "grip": [
+          139.0,
+          173.0
+        ],
+        "angle": 37,
+        "lean": -9,
+        "hip": 0,
+        "free": [
+          118.0,
+          158.0
+        ],
+        "cloth": 0,
+        "hair": 0,
+        "expression": "pain",
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.698879248127355,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          140.0,
+          173.0
+        ],
+        "angle": 40,
+        "lean": -21,
+        "hip": 1,
+        "free": [
+          118.0,
+          158.0
+        ],
+        "cloth": -1,
+        "hair": 1,
+        "expression": "pain",
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -1.9582208859031596,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          141.0,
+          173.0
+        ],
+        "angle": 43,
+        "lean": -29,
+        "hip": 2,
+        "free": [
+          118.0,
+          158.0
+        ],
+        "cloth": -2,
+        "hair": 2,
+        "expression": "pain",
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -1.1654678833433252,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          142.0,
+          173.0
+        ],
+        "angle": 46,
+        "lean": -25,
+        "hip": 3,
+        "free": [
+          118.0,
+          158.0
+        ],
+        "cloth": -3,
+        "hair": 3,
+        "expression": "pain",
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          143.0,
+          173.0
+        ],
+        "angle": 49,
+        "lean": -15,
+        "hip": 4,
+        "free": [
+          118.0,
+          158.0
+        ],
+        "cloth": -4,
+        "hair": 4,
+        "expression": "pain",
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          144.0,
+          173.0
+        ],
+        "angle": 52,
+        "lean": -6,
+        "hip": 5,
+        "free": [
+          118.0,
+          158.0
+        ],
+        "cloth": -5,
+        "hair": 5,
+        "expression": "pain",
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41
+      }
+    ],
+    "durations": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      3
+    ],
+    "loop": false,
+    "grounded": true
+  },
+  "damageCrouch": {
+    "label": "Dano agachado",
+    "poses": [
+      {
+        "grip": [
+          145.0,
+          193.0
+        ],
+        "angle": 30,
+        "hip": 22,
+        "lean": -7,
+        "free": [
+          121.0,
+          159.0
+        ],
+        "cloth": 0,
+        "expression": "pain",
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          145.0,
+          193.0
+        ],
+        "angle": 30,
+        "hip": 24,
+        "lean": -13,
+        "free": [
+          121.0,
+          159.0
+        ],
+        "cloth": -2,
+        "expression": "pain",
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          145.0,
+          193.0
+        ],
+        "angle": 30,
+        "hip": 25,
+        "lean": -16,
+        "free": [
+          121.0,
+          159.0
+        ],
+        "cloth": -3,
+        "expression": "pain",
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          145.0,
+          193.0
+        ],
+        "angle": 30,
+        "hip": 23,
+        "lean": -10,
+        "free": [
+          121.0,
+          159.0
+        ],
+        "cloth": -1,
+        "expression": "pain",
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41
+      }
+    ],
+    "durations": [
+      4,
+      4,
+      4,
+      4
+    ],
+    "loop": false,
+    "grounded": true
+  },
+  "damageAir": {
+    "label": "Dano a\u00e9reo",
+    "poses": [
+      {
+        "grip": [
+          142.0,
+          166.0
+        ],
+        "angle": 45,
+        "lean": -10,
+        "left": [
+          9.0,
+          -12.0
+        ],
+        "right": [
+          -4.0,
+          -10.0
+        ],
+        "free": [
+          119.0,
+          157.0
+        ],
+        "cloth": 0,
+        "roll": 0,
+        "expression": "pain",
+        "farReach": 41
+      },
+      {
+        "grip": [
+          142.0,
+          166.0
+        ],
+        "angle": 45,
+        "lean": -16,
+        "left": [
+          9.0,
+          -12.0
+        ],
+        "right": [
+          -4.0,
+          -10.0
+        ],
+        "free": [
+          119.0,
+          157.0
+        ],
+        "cloth": -2,
+        "roll": -4,
+        "expression": "pain",
+        "farReach": 41
+      },
+      {
+        "grip": [
+          142.0,
+          166.0
+        ],
+        "angle": 45,
+        "lean": -19,
+        "left": [
+          9.0,
+          -12.0
+        ],
+        "right": [
+          -4.0,
+          -10.0
+        ],
+        "free": [
+          119.0,
+          157.0
+        ],
+        "cloth": -3,
+        "roll": -6,
+        "expression": "pain",
+        "farReach": 41
+      },
+      {
+        "grip": [
+          142.0,
+          166.0
+        ],
+        "angle": 45,
+        "lean": -13,
+        "left": [
+          9.0,
+          -12.0
+        ],
+        "right": [
+          -4.0,
+          -10.0
+        ],
+        "free": [
+          119.0,
+          157.0
+        ],
+        "cloth": -1,
+        "roll": -2,
+        "expression": "pain",
+        "farReach": 41
+      }
+    ],
+    "durations": [
+      4,
+      4,
+      4,
+      4
+    ],
+    "loop": false,
+    "grounded": false
+  },
+  "launched": {
+    "label": "Lan\u00e7ado para cima",
+    "poses": [
+      {
+        "grip": [
+          139.0,
+          163.0
+        ],
+        "angle": 55,
+        "lean": -15,
+        "left": [
+          10.0,
+          -15.0
+        ],
+        "right": [
+          -7.0,
+          -12.0
+        ],
+        "free": [
+          116.0,
+          151.0
+        ],
+        "cloth": 4,
+        "roll": -4,
+        "expression": "pain",
+        "farReach": 41
+      },
+      {
+        "grip": [
+          139.0,
+          163.0
+        ],
+        "angle": 55,
+        "lean": -18,
+        "left": [
+          10.0,
+          -15.0
+        ],
+        "right": [
+          -7.0,
+          -12.0
+        ],
+        "free": [
+          116.0,
+          151.0
+        ],
+        "cloth": 5,
+        "roll": -8,
+        "expression": "pain",
+        "farReach": 41
+      },
+      {
+        "grip": [
+          139.0,
+          163.0
+        ],
+        "angle": 55,
+        "lean": -21,
+        "left": [
+          10.0,
+          -15.0
+        ],
+        "right": [
+          -7.0,
+          -12.0
+        ],
+        "free": [
+          116.0,
+          151.0
+        ],
+        "cloth": 6,
+        "roll": -12,
+        "expression": "pain",
+        "farReach": 41
+      },
+      {
+        "grip": [
+          139.0,
+          163.0
+        ],
+        "angle": 55,
+        "lean": -24,
+        "left": [
+          10.0,
+          -15.0
+        ],
+        "right": [
+          -7.0,
+          -12.0
+        ],
+        "free": [
+          116.0,
+          151.0
+        ],
+        "cloth": 7,
+        "roll": -16,
+        "expression": "pain",
+        "farReach": 41
+      }
+    ],
+    "durations": [
+      4,
+      4,
+      4,
+      4
+    ],
+    "loop": false,
+    "grounded": false
+  },
+  "falling": {
+    "label": "Queda",
+    "poses": [
+      {
+        "grip": [
+          143.0,
+          172.0
+        ],
+        "angle": 60,
+        "lean": -12,
+        "left": [
+          6.0,
+          -7.0
+        ],
+        "right": [
+          -5.0,
+          -5.0
+        ],
+        "free": [
+          118.0,
+          155.0
+        ],
+        "cloth": -2,
+        "roll": -10,
+        "expression": "pain",
+        "farReach": 41
+      },
+      {
+        "grip": [
+          143.0,
+          172.0
+        ],
+        "angle": 60,
+        "lean": -12,
+        "left": [
+          6.0,
+          -7.0
+        ],
+        "right": [
+          -5.0,
+          -5.0
+        ],
+        "free": [
+          118.0,
+          155.0
+        ],
+        "cloth": -3,
+        "roll": -15,
+        "expression": "pain",
+        "farReach": 41
+      },
+      {
+        "grip": [
+          143.0,
+          172.0
+        ],
+        "angle": 60,
+        "lean": -12,
+        "left": [
+          6.0,
+          -7.0
+        ],
+        "right": [
+          -5.0,
+          -5.0
+        ],
+        "free": [
+          118.0,
+          155.0
+        ],
+        "cloth": -4,
+        "roll": -20,
+        "expression": "pain",
+        "farReach": 41
+      },
+      {
+        "grip": [
+          143.0,
+          172.0
+        ],
+        "angle": 60,
+        "lean": -12,
+        "left": [
+          6.0,
+          -7.0
+        ],
+        "right": [
+          -5.0,
+          -5.0
+        ],
+        "free": [
+          118.0,
+          155.0
+        ],
+        "cloth": -5,
+        "roll": -25,
+        "expression": "pain",
+        "farReach": 41
+      }
+    ],
+    "durations": [
+      4,
+      4,
+      4,
+      4
+    ],
+    "loop": true,
+    "grounded": false
+  },
+  "downed": {
+    "label": "Derrubado",
+    "poses": [
+      {
+        "grip": [
+          140.0,
+          160.0
+        ],
+        "angle": 82,
+        "hip": -3,
+        "lean": -3.0,
+        "left": [
+          39.93225983696644,
+          9.9439493359408
+        ],
+        "right": [
+          -25.2004321197343,
+          3.219942153449608
+        ],
+        "free": [
+          126.0,
+          156.0
+        ],
+        "leftAngle": -5,
+        "rightAngle": 5,
+        "floorCloth": true,
+        "cloth": 0,
+        "roll": -90,
+        "expression": "closed",
+        "farReach": 41
+      },
+      {
+        "grip": [
+          140.0,
+          161.0
+        ],
+        "angle": 82,
+        "hip": -3,
+        "lean": -3.35,
+        "left": [
+          39.933757282402695,
+          9.962372189509807
+        ],
+        "right": [
+          -25.196903216346584,
+          3.19444262622045
+        ],
+        "free": [
+          126.0,
+          156.0
+        ],
+        "leftAngle": -5,
+        "rightAngle": 5,
+        "floorCloth": true,
+        "cloth": 1,
+        "roll": -90,
+        "expression": "closed",
+        "farReach": 41
+      },
+      {
+        "grip": [
+          140.0,
+          160.0
+        ],
+        "angle": 82,
+        "hip": -3,
+        "lean": -3.7,
+        "left": [
+          39.93523824800883,
+          9.980679057570171
+        ],
+        "right": [
+          -25.193371572056407,
+          3.168703688478587
+        ],
+        "free": [
+          126.0,
+          156.0
+        ],
+        "leftAngle": -5,
+        "rightAngle": 5,
+        "floorCloth": true,
+        "cloth": 2,
+        "roll": -90,
+        "expression": "closed",
+        "farReach": 41
+      },
+      {
+        "grip": [
+          140.0,
+          161.0
+        ],
+        "angle": 82,
+        "hip": -3,
+        "lean": -4.05,
+        "left": [
+          39.93670266553883,
+          9.998869146607916
+        ],
+        "right": [
+          -25.189837133989442,
+          3.142726607285283
+        ],
+        "free": [
+          126.0,
+          156.0
+        ],
+        "leftAngle": -5,
+        "rightAngle": 5,
+        "floorCloth": true,
+        "cloth": 3,
+        "roll": -90,
+        "expression": "closed",
+        "farReach": 41
+      }
+    ],
+    "durations": [
+      6,
+      6,
+      6,
+      6
+    ],
+    "loop": true,
+    "grounded": true
+  },
+  "getup": {
+    "label": "Levantando",
+    "poses": [
+      {
+        "grip": [
+          132.49107710401944,
+          176.23333767680364
+        ],
+        "angle": 82,
+        "hip": -3,
+        "lean": -3,
+        "free": [
+          126.0,
+          156.0
+        ],
+        "left": [
+          39.93225983696644,
+          9.9439493359408
+        ],
+        "right": [
+          -25.2004321197343,
+          3.219942153449608
+        ],
+        "cloth": 0,
+        "roll": -90,
+        "floorCloth": true,
+        "farReach": 41
+      },
+      {
+        "grip": [
+          135.0,
+          177.0
+        ],
+        "angle": 72,
+        "hip": 4,
+        "lean": -4,
+        "free": [
+          125.0,
+          157.0
+        ],
+        "left": [
+          32.0,
+          9.0
+        ],
+        "right": [
+          -20.0,
+          8.0
+        ],
+        "cloth": 1,
+        "roll": -73,
+        "floorCloth": true,
+        "farReach": 41
+      },
+      {
+        "grip": [
+          137.0,
+          175.0
+        ],
+        "angle": 62,
+        "hip": 12,
+        "lean": -5,
+        "free": [
+          124.0,
+          158.0
+        ],
+        "left": [
+          24.0,
+          7.0
+        ],
+        "right": [
+          -15.0,
+          6.0
+        ],
+        "cloth": 2,
+        "roll": -48,
+        "floorCloth": false,
+        "farReach": 41
+      },
+      {
+        "grip": [
+          140.0,
+          174.0
+        ],
+        "angle": 52,
+        "hip": 15,
+        "lean": -6,
+        "free": [
+          123.0,
+          159.0
+        ],
+        "left": [
+          16.0,
+          4.0
+        ],
+        "right": [
+          -10.0,
+          4.0
+        ],
+        "cloth": 3,
+        "roll": -23,
+        "floorCloth": false,
+        "farReach": 41
+      },
+      {
+        "grip": [
+          142.0,
+          172.0
+        ],
+        "angle": 42,
+        "hip": 7,
+        "lean": -7,
+        "free": [
+          122.0,
+          160.0
+        ],
+        "left": [
+          8.0,
+          2.0
+        ],
+        "right": [
+          -5.0,
+          2.0
+        ],
+        "cloth": 4,
+        "roll": -8,
+        "floorCloth": false,
+        "farReach": 41
+      },
+      {
+        "grip": [
+          145.0,
+          170.0
+        ],
+        "angle": 32,
+        "hip": 0,
+        "lean": -8,
+        "free": [
+          121.0,
+          161.0
+        ],
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.6314528057581867,
+          0.0
+        ],
+        "cloth": 5,
+        "roll": 0,
+        "floorCloth": false,
+        "farReach": 41
+      }
+    ],
+    "durations": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      3
+    ],
+    "loop": false,
+    "grounded": true
+  },
+  "throw": {
+    "label": "Tentativa de agarr\u00e3o",
+    "poses": [
+      {
+        "grip": [
+          140.0,
+          172.0
+        ],
+        "angle": 30,
+        "lean": 0,
+        "x": 0,
+        "free": [
+          128.0,
+          163.0
+        ],
+        "cloth": 0,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.298472247377333,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          140.0,
+          172.0
+        ],
+        "angle": 30,
+        "lean": 4,
+        "x": 4,
+        "free": [
+          144.0,
+          150.0
+        ],
+        "cloth": 1,
+        "left": [
+          3.2653491845749443,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          140.0,
+          172.0
+        ],
+        "angle": 30,
+        "lean": 9,
+        "x": 8,
+        "free": [
+          151.1517862576477,
+          142.61981580842522
+        ],
+        "cloth": 2,
+        "left": [
+          7.404401772773269,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          140.0,
+          172.0
+        ],
+        "angle": 30,
+        "lean": 5,
+        "x": 5,
+        "free": [
+          147.06607924732842,
+          152.7931664070379
+        ],
+        "cloth": 3,
+        "left": [
+          4.288603605999413,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          140.0,
+          172.0
+        ],
+        "angle": 30,
+        "lean": 0,
+        "x": 0,
+        "free": [
+          125.0,
+          165.0
+        ],
+        "cloth": 4,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.298472247377333,
+          0.0
+        ],
+        "farReach": 41
+      }
+    ],
+    "durations": [
+      3,
+      2,
+      2,
+      12,
+      16
+    ],
+    "loop": false,
+    "grounded": true
+  },
+  "grabHold": {
+    "label": "Agarrando",
+    "poses": [
+      {
+        "grip": [
+          140.0,
+          172.0
+        ],
+        "angle": 25,
+        "lean": 7,
+        "x": 6,
+        "free": [
+          151.18966257147895,
+          142.47194811139295
+        ],
+        "cloth": 0,
+        "left": [
+          5.341940054877426,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          140.0,
+          172.0
+        ],
+        "angle": 25,
+        "lean": 10,
+        "x": 8,
+        "free": [
+          151.58836586193684,
+          140.7554454446183
+        ],
+        "cloth": 1,
+        "left": [
+          7.439060376647703,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          140.0,
+          172.0
+        ],
+        "angle": 25,
+        "lean": 3,
+        "x": 4,
+        "free": [
+          152.03633255997724,
+          138.26073038127322
+        ],
+        "cloth": 2,
+        "left": [
+          3.244365020122828,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          140.0,
+          172.0
+        ],
+        "angle": 25,
+        "lean": -5,
+        "x": 0,
+        "free": [
+          148.0,
+          141.0
+        ],
+        "cloth": 3,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.4643972515790153,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          140.0,
+          172.0
+        ],
+        "angle": 25,
+        "lean": 13,
+        "x": 9,
+        "free": [
+          150.9126649565407,
+          143.50668701902708
+        ],
+        "cloth": 4,
+        "left": [
+          8.556759026971207,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          140.0,
+          172.0
+        ],
+        "angle": 25,
+        "lean": 5,
+        "x": 4,
+        "free": [
+          144.10464949021068,
+          157.35986756964382
+        ],
+        "cloth": 5,
+        "left": [
+          3.2886036059994126,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41
+      }
+    ],
+    "durations": [
+      3,
+      3,
+      4,
+      3,
+      4,
+      5
+    ],
+    "loop": false,
+    "grounded": true
+  },
+  "grabbed": {
+    "label": "Sendo agarrado",
+    "poses": [
+      {
+        "grip": [
+          139.0,
+          172.0
+        ],
+        "angle": 45,
+        "lean": 8,
+        "hip": 0,
+        "free": [
+          119.0,
+          148.0
+        ],
+        "cloth": 0,
+        "expression": "pain",
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.3050859985706893,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          139.0,
+          172.0
+        ],
+        "angle": 45,
+        "lean": 16,
+        "hip": 1,
+        "free": [
+          119.0,
+          148.0
+        ],
+        "cloth": -1,
+        "expression": "pain",
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -1.037593532261468,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          139.0,
+          172.0
+        ],
+        "angle": 45,
+        "lean": 22,
+        "hip": 2,
+        "free": [
+          119.0,
+          148.0
+        ],
+        "cloth": -2,
+        "expression": "pain",
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -0.0396311592993186,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          139.0,
+          172.0
+        ],
+        "angle": 45,
+        "lean": 15,
+        "hip": 3,
+        "free": [
+          119.0,
+          148.0
+        ],
+        "cloth": -3,
+        "expression": "pain",
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          139.0,
+          172.0
+        ],
+        "angle": 45,
+        "lean": -10,
+        "hip": 4,
+        "free": [
+          119.0,
+          148.0
+        ],
+        "cloth": -4,
+        "expression": "pain",
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41
+      }
+    ],
+    "durations": [
+      4,
+      4,
+      4,
+      4,
+      6
+    ],
+    "loop": false,
+    "grounded": true
+  },
+  "throwRecover": {
+    "label": "Agarr\u00e3o: retorno",
+    "poses": [
+      {
+        "grip": [
+          142.0,
+          170.0
+        ],
+        "angle": 30,
+        "lean": 6,
+        "free": [
+          125.0,
+          162.0
+        ],
+        "cloth": 3,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.2735311991191054,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          143.0,
+          169.0
+        ],
+        "angle": 28,
+        "lean": 4,
+        "free": [
+          125.0,
+          162.0
+        ],
+        "cloth": 2,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.2615653772156747,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          144.0,
+          168.0
+        ],
+        "angle": 26,
+        "lean": 2,
+        "free": [
+          125.0,
+          162.0
+        ],
+        "cloth": 1,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.269701198478913,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          145.0,
+          167.0
+        ],
+        "angle": 24,
+        "lean": 0,
+        "free": [
+          125.0,
+          162.0
+        ],
+        "cloth": 0,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.298472247377333,
+          0.0
+        ],
+        "farReach": 41
+      }
+    ],
+    "durations": [
+      3,
+      3,
+      3,
+      3
+    ],
+    "loop": false,
+    "grounded": true
+  },
+  "ko": {
+    "label": "Nocaute",
+    "poses": [
+      {
+        "grip": [
+          139.0,
+          174.0
+        ],
+        "angle": 45,
+        "lean": -15,
+        "hip": 0,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -3.2331453559517342,
+          0.0
+        ],
+        "free": [
+          116.0,
+          156.0
+        ],
+        "cloth": 0,
+        "roll": -8,
+        "floorCloth": false,
+        "expression": "closed",
+        "farReach": 41
+      },
+      {
+        "grip": [
+          138.0,
+          175.0
+        ],
+        "angle": 52,
+        "lean": -13,
+        "hip": -1,
+        "left": [
+          8.0,
+          2.0
+        ],
+        "right": [
+          -10.357406484963008,
+          2.0
+        ],
+        "free": [
+          118.0,
+          156.0
+        ],
+        "cloth": -1,
+        "roll": -18,
+        "floorCloth": false,
+        "expression": "closed",
+        "farReach": 41
+      },
+      {
+        "grip": [
+          136.0,
+          176.0
+        ],
+        "angle": 59,
+        "lean": -10,
+        "hip": -1,
+        "left": [
+          16.0,
+          4.0
+        ],
+        "right": [
+          -17.800306483684693,
+          4.0
+        ],
+        "free": [
+          120.0,
+          156.0
+        ],
+        "cloth": -2,
+        "roll": -35,
+        "floorCloth": false,
+        "expression": "closed",
+        "farReach": 41
+      },
+      {
+        "grip": [
+          135.0052973709917,
+          176.8984834783384
+        ],
+        "angle": 66,
+        "lean": -8,
+        "hip": -2,
+        "left": [
+          24.0,
+          6.0
+        ],
+        "right": [
+          -15.694625386765011,
+          2.737938703416546
+        ],
+        "free": [
+          122.0,
+          156.0
+        ],
+        "cloth": -3,
+        "roll": -60,
+        "floorCloth": true,
+        "expression": "closed",
+        "farReach": 41
+      },
+      {
+        "grip": [
+          133.1230447360061,
+          177.09804071855143
+        ],
+        "angle": 73,
+        "lean": -5,
+        "hip": -2,
+        "left": [
+          32.0,
+          8.0
+        ],
+        "right": [
+          -20.509605461694065,
+          3.7321678201463158
+        ],
+        "free": [
+          124.0,
+          156.0
+        ],
+        "cloth": -4,
+        "roll": -85,
+        "floorCloth": true,
+        "expression": "closed",
+        "farReach": 41
+      },
+      {
+        "grip": [
+          132.49107710401944,
+          176.23333767680364
+        ],
+        "angle": 80,
+        "lean": -3,
+        "hip": -3,
+        "left": [
+          38.92296727498439,
+          10.0
+        ],
+        "right": [
+          -25.2004321197343,
+          3.219942153449608
+        ],
+        "free": [
+          126.0,
+          156.0
+        ],
+        "cloth": -5,
+        "roll": -90,
+        "floorCloth": true,
+        "expression": "closed",
+        "farReach": 41
+      }
+    ],
+    "durations": [
+      5,
+      6,
+      7,
+      8,
+      10,
+      12
+    ],
+    "loop": false,
+    "grounded": true
+  },
+  "defeat": {
+    "label": "Derrota",
+    "poses": [
+      {
+        "grip": [
+          140.0,
+          160.0
+        ],
+        "angle": 82.0,
+        "hip": -3,
+        "lean": -3.0,
+        "left": [
+          39.93225983696644,
+          9.9439493359408
+        ],
+        "right": [
+          -25.2004321197343,
+          3.219942153449608
+        ],
+        "free": [
+          126.0,
+          156.0
+        ],
+        "leftAngle": -5,
+        "rightAngle": 5,
+        "floorCloth": true,
+        "cloth": 3.0,
+        "hair": 0,
+        "roll": -90,
+        "expression": "closed",
+        "farReach": 41
+      },
+      {
+        "grip": [
+          139.6,
+          160.2
+        ],
+        "angle": 82.3,
+        "hip": -3,
+        "lean": -3.15,
+        "left": [
+          39.93290361271809,
+          9.951858995859027
+        ],
+        "right": [
+          -25.19892006444877,
+          3.209043181060366
+        ],
+        "free": [
+          126.0,
+          156.0
+        ],
+        "leftAngle": -5,
+        "rightAngle": 5,
+        "floorCloth": true,
+        "cloth": 2.5,
+        "hair": 0,
+        "roll": -90,
+        "expression": "closed",
+        "farReach": 41
+      },
+      {
+        "grip": [
+          139.2,
+          160.4
+        ],
+        "angle": 82.6,
+        "hip": -3,
+        "lean": -3.3,
+        "left": [
+          39.93354436896132,
+          9.95974743588144
+        ],
+        "right": [
+          -25.197407511873394,
+          3.198100103036694
+        ],
+        "free": [
+          126.0,
+          156.0
+        ],
+        "leftAngle": -5,
+        "rightAngle": 5,
+        "floorCloth": true,
+        "cloth": 2.0,
+        "hair": 0,
+        "roll": -90,
+        "expression": "closed",
+        "farReach": 41
+      },
+      {
+        "grip": [
+          138.8,
+          160.6
+        ],
+        "angle": 82.9,
+        "hip": -3,
+        "lean": -3.45,
+        "left": [
+          39.934182100096194,
+          9.967614593274476
+        ],
+        "right": [
+          -25.195894457275585,
+          3.187113018431887
+        ],
+        "free": [
+          126.0,
+          156.0
+        ],
+        "leftAngle": -5,
+        "rightAngle": 5,
+        "floorCloth": true,
+        "cloth": 1.5,
+        "hair": 0,
+        "roll": -90,
+        "expression": "closed",
+        "farReach": 41
+      },
+      {
+        "grip": [
+          138.4,
+          160.8
+        ],
+        "angle": 83.2,
+        "hip": -3,
+        "lean": -3.6,
+        "left": [
+          39.934816800636526,
+          9.975460405439122
+        ],
+        "right": [
+          -25.19438089620772,
+          3.1760820266434564
+        ],
+        "free": [
+          126.0,
+          156.0
+        ],
+        "leftAngle": -5,
+        "rightAngle": 5,
+        "floorCloth": true,
+        "cloth": 1.0,
+        "hair": 0,
+        "roll": -90,
+        "expression": "closed",
+        "farReach": 41
+      },
+      {
+        "grip": [
+          138.0,
+          161.0
+        ],
+        "angle": 83.5,
+        "hip": -3,
+        "lean": -3.75,
+        "left": [
+          39.9354484652101,
+          9.983284809911765
+        ],
+        "right": [
+          -25.192866824507604,
+          3.165007227411934
+        ],
+        "free": [
+          126.0,
+          156.0
+        ],
+        "leftAngle": -5,
+        "rightAngle": 5,
+        "floorCloth": true,
+        "cloth": 0.5,
+        "hair": 0,
+        "roll": -90,
+        "expression": "closed",
+        "farReach": 41
+      }
+    ],
+    "durations": [
+      7,
+      7,
+      7,
+      7,
+      7,
+      7
+    ],
+    "loop": false,
+    "grounded": true
+  },
+  "entrance": {
+    "label": "Entrada: caminhar e desembainhar",
+    "poses": [
+      {
+        "grip": [
+          122.0,
+          168.0
+        ],
+        "angle": 25,
+        "lean": -1,
+        "left": [
+          -0.8169774623918045,
+          0.0
+        ],
+        "right": [
+          5.035970840150384,
+          -5.0
+        ],
+        "cloth": 0,
+        "detail": "sheath",
+        "free": [
+          124.0,
+          162.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          122.0,
+          168.0
+        ],
+        "angle": 25,
+        "lean": 0,
+        "left": [
+          -0.805018651694013,
+          0.0
+        ],
+        "right": [
+          2.0,
+          -7.0
+        ],
+        "cloth": 1,
+        "detail": "sheath",
+        "free": [
+          124.0,
+          162.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          122.0,
+          168.0
+        ],
+        "angle": 25,
+        "lean": 1,
+        "left": [
+          4.0,
+          -3.0
+        ],
+        "right": [
+          -3.0,
+          0.0
+        ],
+        "cloth": 2,
+        "detail": "sheath",
+        "free": [
+          124.0,
+          162.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          122.0,
+          168.0
+        ],
+        "angle": 25,
+        "lean": -1,
+        "left": [
+          8.0,
+          -6.0
+        ],
+        "right": [
+          -5.0,
+          0.0
+        ],
+        "cloth": 0,
+        "detail": "sheath",
+        "free": [
+          124.0,
+          162.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          122.0,
+          168.0
+        ],
+        "angle": 25,
+        "lean": 0,
+        "left": [
+          3.0,
+          -4.0
+        ],
+        "right": [
+          -2.298472247377333,
+          0.0
+        ],
+        "cloth": 1,
+        "detail": "sheath",
+        "free": [
+          124.0,
+          162.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          122.0,
+          168.0
+        ],
+        "angle": 25,
+        "lean": 1,
+        "left": [
+          -0.7908130310075308,
+          0.0
+        ],
+        "right": [
+          0.9650873401425315,
+          -2.0
+        ],
+        "cloth": 2,
+        "detail": "sheath",
+        "free": [
+          124.0,
+          162.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          123.0,
+          166.0
+        ],
+        "angle": 20,
+        "detail": "sheath",
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.298472247377333,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          130.0,
+          164.0
+        ],
+        "angle": 5,
+        "detail": "sheath",
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.298472247377333,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          148.0,
+          161.0
+        ],
+        "angle": 0,
+        "free": [
+          124.0,
+          162.0
+        ],
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.298472247377333,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          157.0,
+          150.0
+        ],
+        "angle": -25,
+        "free": [
+          123.0,
+          164.0
+        ],
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.298472247377333,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          150.0,
+          159.0
+        ],
+        "angle": 12,
+        "two": true,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.298472247377333,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          145.0,
+          165.0
+        ],
+        "angle": 24,
+        "two": true,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.298472247377333,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      }
+    ],
+    "durations": [
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      6,
+      6
+    ],
+    "loop": false,
+    "grounded": true
+  },
+  "taunt": {
+    "label": "Provoca\u00e7\u00e3o",
+    "poses": [
+      {
+        "grip": [
+          140.0,
+          178.0
+        ],
+        "angle": 50,
+        "lean": -3,
+        "free": [
+          125.0,
+          162.0
+        ],
+        "cloth": 0,
+        "detail": "",
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.3815447778286796,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          140.0,
+          178.0
+        ],
+        "angle": 50,
+        "lean": -3,
+        "free": [
+          140.0,
+          149.0
+        ],
+        "cloth": 1,
+        "detail": "",
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.3815447778286796,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          140.0,
+          178.0
+        ],
+        "angle": 50,
+        "lean": -3,
+        "free": [
+          150.0,
+          139.0
+        ],
+        "cloth": 2,
+        "detail": "challenge",
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.3815447778286796,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          140.0,
+          178.0
+        ],
+        "angle": 50,
+        "lean": -3,
+        "free": [
+          151.48795005781798,
+          141.2195444572929
+        ],
+        "cloth": 0,
+        "detail": "challenge",
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.3815447778286796,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          140.0,
+          178.0
+        ],
+        "angle": 50,
+        "lean": -3,
+        "free": [
+          149.0,
+          145.0
+        ],
+        "cloth": 1,
+        "detail": "challenge",
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.3815447778286796,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          140.0,
+          178.0
+        ],
+        "angle": 50,
+        "lean": -3,
+        "free": [
+          151.84390658090103,
+          139.43891672549353
+        ],
+        "cloth": 2,
+        "detail": "challenge",
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.3815447778286796,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          140.0,
+          178.0
+        ],
+        "angle": 50,
+        "lean": -3,
+        "free": [
+          139.0,
+          151.0
+        ],
+        "cloth": 0,
+        "detail": "",
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.3815447778286796,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          140.0,
+          178.0
+        ],
+        "angle": 50,
+        "lean": -3,
+        "free": [
+          125.0,
+          165.0
+        ],
+        "cloth": 1,
+        "detail": "",
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.3815447778286796,
+          0.0
+        ],
+        "farReach": 41
+      }
+    ],
+    "durations": [
+      5,
+      5,
+      6,
+      6,
+      6,
+      6,
+      6,
+      8
+    ],
+    "loop": false,
+    "grounded": true
+  },
+  "victory": {
+    "label": "Vit\u00f3ria: limpar, embainhar e virar",
+    "poses": [
+      {
+        "grip": [
+          146.0,
+          157.0
+        ],
+        "angle": 0,
+        "free": [
+          148.0,
+          151.0
+        ],
+        "detail": "wipe",
+        "cloth": 0,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.298472247377333,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          146.0,
+          157.0
+        ],
+        "angle": 0,
+        "free": [
+          148.72208672063013,
+          149.51713446885648
+        ],
+        "detail": "wipe",
+        "cloth": 1,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.298472247377333,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          146.0,
+          157.0
+        ],
+        "angle": 0,
+        "free": [
+          149.28111062582605,
+          148.2248065628412
+        ],
+        "detail": "wipe",
+        "cloth": 0,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.298472247377333,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          146.0,
+          157.0
+        ],
+        "angle": 0,
+        "free": [
+          149.72830217500484,
+          147.09675482650184
+        ],
+        "detail": "wipe",
+        "cloth": 1,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.298472247377333,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          151.0,
+          160.0
+        ],
+        "angle": 10,
+        "free": [
+          128.0,
+          164.0
+        ],
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.298472247377333,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          139.0,
+          164.0
+        ],
+        "angle": 18,
+        "free": [
+          125.0,
+          166.0
+        ],
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.298472247377333,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          127.0,
+          167.0
+        ],
+        "angle": 23,
+        "detail": "sheath",
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.298472247377333,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          122.0,
+          168.0
+        ],
+        "angle": 25,
+        "detail": "sheath",
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.298472247377333,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          122.0,
+          168.0
+        ],
+        "angle": 25,
+        "detail": "sheath",
+        "backTurn": true,
+        "lean": 0,
+        "cloth": 0,
+        "free": [
+          123.0,
+          166.0
+        ],
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.298472247377333,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          122.0,
+          168.0
+        ],
+        "angle": 25,
+        "detail": "sheath",
+        "backTurn": true,
+        "lean": -1,
+        "cloth": 1,
+        "free": [
+          123.0,
+          166.0
+        ],
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.3207689930120807,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          122.0,
+          168.0
+        ],
+        "angle": 25,
+        "detail": "sheath",
+        "backTurn": true,
+        "lean": -2,
+        "cloth": 0,
+        "free": [
+          123.0,
+          166.0
+        ],
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.348435282278615,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          122.0,
+          168.0
+        ],
+        "angle": 25,
+        "detail": "sheath",
+        "backTurn": true,
+        "lean": -3,
+        "cloth": 1,
+        "free": [
+          123.0,
+          166.0
+        ],
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.3815447778286796,
+          0.0
+        ],
+        "farReach": 41
+      }
+    ],
+    "durations": [
+      4,
+      4,
+      4,
+      4,
+      5,
+      5,
+      5,
+      5,
+      6,
+      6,
+      6,
+      6
+    ],
+    "loop": false,
+    "grounded": true
+  },
+  "counterEntry": {
+    "label": "Contra-ataque: entrada",
+    "poses": [
+      {
+        "grip": [
+          150.0,
+          152.0
+        ],
+        "angle": -45,
+        "lean": -1,
+        "free": [
+          137.0,
+          146.0
+        ],
+        "cloth": -1,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.3207689930120807,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          150.0,
+          152.0
+        ],
+        "angle": -45,
+        "lean": -4,
+        "free": [
+          137.0,
+          146.0
+        ],
+        "cloth": -4,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.4201729614101737,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          150.0,
+          152.0
+        ],
+        "angle": -45,
+        "lean": -6,
+        "free": [
+          137.0,
+          146.0
+        ],
+        "cloth": -6,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.5142971330123487,
+          0.0
+        ],
+        "farReach": 41
+      }
+    ],
+    "durations": [
+      2,
+      2,
+      2
+    ],
+    "loop": false,
+    "grounded": true
+  },
+  "counterWait": {
+    "label": "Contra-ataque: espera",
+    "poses": [
+      {
+        "grip": [
+          152.0,
+          145.0
+        ],
+        "angle": -65,
+        "hip": 0,
+        "lean": -6,
+        "free": [
+          137.0,
+          145.0
+        ],
+        "cloth": 0,
+        "hair": 0,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.5142971330123487,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          152.0,
+          144.0
+        ],
+        "angle": -65,
+        "hip": -1,
+        "lean": -6,
+        "free": [
+          137.0,
+          145.0
+        ],
+        "cloth": 1,
+        "hair": 1,
+        "left": [
+          0.4210612068973205,
+          0.0
+        ],
+        "right": [
+          -4.4773133035058095,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          152.0,
+          145.0
+        ],
+        "angle": -65,
+        "hip": 0,
+        "lean": -6,
+        "free": [
+          137.0,
+          145.0
+        ],
+        "cloth": 2,
+        "hair": 0,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.5142971330123487,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          152.0,
+          146.0
+        ],
+        "angle": -65,
+        "hip": 1,
+        "lean": -6,
+        "free": [
+          137.0,
+          145.0
+        ],
+        "cloth": 3,
+        "hair": 1,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -0.7397695133952311,
+          0.0
+        ],
+        "farReach": 41
+      }
+    ],
+    "durations": [
+      5,
+      5,
+      5,
+      5
+    ],
+    "loop": true,
+    "grounded": true
+  },
+  "counterFail": {
+    "label": "Contra-ataque: recupera\u00e7\u00e3o sem ativa\u00e7\u00e3o",
+    "poses": [
+      {
+        "grip": [
+          150.0,
+          148.0
+        ],
+        "angle": -55,
+        "lean": -6,
+        "free": [
+          130.0,
+          158.0
+        ],
+        "cloth": 3,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.5142971330123487,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          149.0,
+          153.0
+        ],
+        "angle": -30,
+        "lean": -4,
+        "free": [
+          130.0,
+          158.0
+        ],
+        "cloth": 2,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.4201729614101737,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          148.0,
+          158.0
+        ],
+        "angle": -5,
+        "lean": -2,
+        "free": [
+          130.0,
+          158.0
+        ],
+        "cloth": 1,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.348435282278615,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          147.0,
+          163.0
+        ],
+        "angle": 20,
+        "lean": 0,
+        "free": [
+          130.0,
+          158.0
+        ],
+        "cloth": 0,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.298472247377333,
+          0.0
+        ],
+        "farReach": 41
+      }
+    ],
+    "durations": [
+      6,
+      6,
+      6,
+      6
+    ],
+    "loop": false,
+    "grounded": true
+  },
+  "counter_strike": {
+    "label": "Contra-ataque bem-sucedido",
+    "poses": [
+      {
+        "grip": [
+          150.0,
+          145.0
+        ],
+        "angle": -65,
+        "lean": -6,
+        "free": [
+          137.0,
+          145.0
+        ],
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.5142971330123487,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          155.0,
+          148.0
+        ],
+        "angle": -30,
+        "lean": 2,
+        "x": 4,
+        "free": [
+          125.0,
+          162.0
+        ],
+        "left": [
+          3.225646139152076,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          172.54892236074184,
+          145.80112889565606
+        ],
+        "angle": -3,
+        "lean": 12,
+        "x": 9,
+        "two": true,
+        "cloth": 4,
+        "left": [
+          8.51523885815243,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          173.12100646205116,
+          149.8411754023916
+        ],
+        "angle": 4,
+        "lean": 14,
+        "x": 10,
+        "two": true,
+        "cloth": 3,
+        "left": [
+          9.600565527855608,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          154.34850327870797,
+          157.3810168267068
+        ],
+        "angle": 17,
+        "lean": 5,
+        "two": true,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.2650680910983283,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          145.0,
+          165.0
+        ],
+        "angle": 24,
+        "two": true,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.298472247377333,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      }
+    ],
+    "durations": [
+      2,
+      2,
+      2,
+      2,
+      7,
+      9
+    ],
+    "loop": false,
+    "grounded": true,
+    "move": {
+      "startup": 4,
+      "active": 4,
+      "recovery": 16,
+      "damage": 110,
+      "stun": 32,
+      "blockstun": 17,
+      "push": 5,
+      "launch": -4,
+      "hitstop": 11,
+      "level": "mid",
+      "rank": 4,
+      "cancels": [],
+      "kind": "counterStrike",
+      "drive": {
+        "from": 0,
+        "to": 4,
+        "speed": 9
+      },
+      "invulnerable": {
+        "from": 0,
+        "to": 8
+      },
+      "poses": [
+        {
+          "ticks": 2,
+          "phase": "startup",
+          "blade": {
+            "a": {
+              "x": 23.98,
+              "y": -83.01
+            },
+            "b": {
+              "x": 48.66,
+              "y": -136.16
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": -9,
+              "y": -115,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -22,
+              "y": -95,
+              "w": 40,
+              "h": 45
+            },
+            {
+              "x": -46,
+              "y": -61,
+              "w": 51,
+              "h": 60
+            },
+            {
+              "x": -3,
+              "y": -59,
+              "w": 39,
+              "h": 59
+            },
+            {
+              "x": -26,
+              "y": -94,
+              "w": 17,
+              "h": 28
+            },
+            {
+              "x": -18,
+              "y": -84,
+              "w": 29,
+              "h": 18
+            },
+            {
+              "x": 6,
+              "y": -90,
+              "w": 9,
+              "h": 22
+            },
+            {
+              "x": 6,
+              "y": -83,
+              "w": 20,
+              "h": 15
+            }
+          ]
+        },
+        {
+          "ticks": 2,
+          "phase": "startup",
+          "blade": {
+            "a": {
+              "x": 30.92,
+              "y": -78.15
+            },
+            "b": {
+              "x": 81.62,
+              "y": -107.54
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": 0,
+              "y": -115,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -13,
+              "y": -95,
+              "w": 35,
+              "h": 43
+            },
+            {
+              "x": -43,
+              "y": -62,
+              "w": 51,
+              "h": 61
+            },
+            {
+              "x": 0,
+              "y": -58,
+              "w": 38,
+              "h": 58
+            },
+            {
+              "x": -23,
+              "y": -97,
+              "w": 15,
+              "h": 29
+            },
+            {
+              "x": -23,
+              "y": -77,
+              "w": 29,
+              "h": 19
+            },
+            {
+              "x": 10,
+              "y": -88,
+              "w": 12,
+              "h": 22
+            },
+            {
+              "x": 10,
+              "y": -80,
+              "w": 21,
+              "h": 14
+            }
+          ]
+        },
+        {
+          "ticks": 2,
+          "phase": "active",
+          "blade": {
+            "a": {
+              "x": 49.02,
+              "y": -78.34
+            },
+            "b": {
+              "x": 107.53,
+              "y": -81.5
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": 13,
+              "y": -114,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -4,
+              "y": -97,
+              "w": 34,
+              "h": 45
+            },
+            {
+              "x": -38,
+              "y": -62,
+              "w": 51,
+              "h": 61
+            },
+            {
+              "x": 4,
+              "y": -58,
+              "w": 34,
+              "h": 58
+            },
+            {
+              "x": -6,
+              "y": -99,
+              "w": 27,
+              "h": 20
+            },
+            {
+              "x": 12,
+              "y": -88,
+              "w": 30,
+              "h": 15
+            },
+            {
+              "x": 23,
+              "y": -85,
+              "w": 15,
+              "h": 20
+            },
+            {
+              "x": 29,
+              "y": -83,
+              "w": 20,
+              "h": 18
+            }
+          ]
+        },
+        {
+          "ticks": 2,
+          "phase": "active",
+          "blade": {
+            "a": {
+              "x": 49.57,
+              "y": -73.75
+            },
+            "b": {
+              "x": 108.04,
+              "y": -69.76
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": 15,
+              "y": -113,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -3,
+              "y": -98,
+              "w": 36,
+              "h": 47
+            },
+            {
+              "x": -37,
+              "y": -62,
+              "w": 51,
+              "h": 61
+            },
+            {
+              "x": 5,
+              "y": -58,
+              "w": 34,
+              "h": 58
+            },
+            {
+              "x": -3,
+              "y": -100,
+              "w": 25,
+              "h": 22
+            },
+            {
+              "x": 13,
+              "y": -87,
+              "w": 30,
+              "h": 17
+            },
+            {
+              "x": 25,
+              "y": -85,
+              "w": 13,
+              "h": 22
+            },
+            {
+              "x": 29,
+              "y": -79,
+              "w": 21,
+              "h": 16
+            }
+          ]
+        },
+        {
+          "ticks": 7,
+          "phase": "recovery",
+          "blade": {
+            "a": {
+              "x": 30.6,
+              "y": -65.22
+            },
+            "b": {
+              "x": 86.66,
+              "y": -48.18
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": -1,
+              "y": -115,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -15,
+              "y": -96,
+              "w": 33,
+              "h": 44
+            },
+            {
+              "x": -46,
+              "y": -62,
+              "w": 50,
+              "h": 61
+            },
+            {
+              "x": -4,
+              "y": -58,
+              "w": 40,
+              "h": 58
+            },
+            {
+              "x": -19,
+              "y": -98,
+              "w": 24,
+              "h": 24
+            },
+            {
+              "x": -4,
+              "y": -83,
+              "w": 28,
+              "h": 19
+            },
+            {
+              "x": 8,
+              "y": -87,
+              "w": 12,
+              "h": 22
+            },
+            {
+              "x": 8,
+              "y": -74,
+              "w": 23,
+              "h": 12
+            }
+          ]
+        },
+        {
+          "ticks": 9,
+          "phase": "recovery",
+          "blade": {
+            "a": {
+              "x": 21.05,
+              "y": -57.09
+            },
+            "b": {
+              "x": 74.62,
+              "y": -33.35
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": -5,
+              "y": -115,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -18,
+              "y": -94,
+              "w": 36,
+              "h": 42
+            },
+            {
+              "x": -46,
+              "y": -61,
+              "w": 50,
+              "h": 60
+            },
+            {
+              "x": -3,
+              "y": -58,
+              "w": 39,
+              "h": 58
+            },
+            {
+              "x": -22,
+              "y": -96,
+              "w": 18,
+              "h": 27
+            },
+            {
+              "x": -13,
+              "y": -78,
+              "w": 28,
+              "h": 21
+            },
+            {
+              "x": 9,
+              "y": -88,
+              "w": 15,
+              "h": 20
+            },
+            {
+              "x": 13,
+              "y": -77,
+              "w": 11,
+              "h": 22
+            }
+          ]
+        }
+      ],
+      "box": {
+        "x": 0,
+        "y": -110,
+        "w": 100,
+        "h": 80
+      }
+    }
+  },
+  "draw_light": {
+    "label": "Saque Rel\u00e2mpago \u2014 light",
+    "poses": [
+      {
+        "grip": [
+          121.0,
+          170.0
+        ],
+        "angle": 30,
+        "hip": 9,
+        "lean": 3,
+        "detail": "sheath",
+        "free": [
+          122.0,
+          167.0
+        ],
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          128.0,
+          168.0
+        ],
+        "angle": 12,
+        "hip": 6,
+        "lean": 9,
+        "detail": "sheath",
+        "free": [
+          124.0,
+          166.0
+        ],
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          168.0,
+          147.0
+        ],
+        "angle": -2,
+        "lean": 16,
+        "x": 8,
+        "left": [
+          7.69503044979227,
+          0.0
+        ],
+        "right": [
+          4.0,
+          0.0
+        ],
+        "free": [
+          120.0,
+          163.0
+        ],
+        "cloth": 5,
+        "farReach": 41
+      },
+      {
+        "grip": [
+          174.0,
+          151.0
+        ],
+        "angle": 4,
+        "lean": 13,
+        "x": 7,
+        "left": [
+          6.556759026971207,
+          0.0
+        ],
+        "right": [
+          3.0,
+          0.0
+        ],
+        "free": [
+          119.0,
+          163.0
+        ],
+        "cloth": 4,
+        "farReach": 41
+      },
+      {
+        "grip": [
+          156.0,
+          160.0
+        ],
+        "angle": 17,
+        "lean": 5,
+        "cloth": 2,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.2650680910983283,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          145.0,
+          165.0
+        ],
+        "angle": 24,
+        "two": true,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.298472247377333,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      }
+    ],
+    "durations": [
+      3,
+      4,
+      2,
+      2,
+      9,
+      9
+    ],
+    "loop": false,
+    "grounded": true,
+    "move": {
+      "startup": 7,
+      "active": 4,
+      "recovery": 18,
+      "damage": 75,
+      "stun": 25,
+      "blockstun": 13,
+      "push": 4,
+      "launch": 0,
+      "hitstop": 8,
+      "level": "mid",
+      "rank": 4,
+      "cancels": [],
+      "kind": "draw",
+      "cost": 0,
+      "drive": {
+        "from": 4,
+        "to": 12,
+        "speed": 10
+      },
+      "poses": [
+        {
+          "ticks": 3,
+          "phase": "startup",
+          "blade": {
+            "a": {
+              "x": -10,
+              "y": -46
+            },
+            "b": {
+              "x": -46,
+              "y": -22
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": -3,
+              "y": -106,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -17,
+              "y": -86,
+              "w": 35,
+              "h": 43
+            },
+            {
+              "x": -46,
+              "y": -53,
+              "w": 50,
+              "h": 52
+            },
+            {
+              "x": -4,
+              "y": -49,
+              "w": 42,
+              "h": 49
+            },
+            {
+              "x": -26,
+              "y": -88,
+              "w": 14,
+              "h": 29
+            },
+            {
+              "x": -26,
+              "y": -68,
+              "w": 25,
+              "h": 24
+            },
+            {
+              "x": 1,
+              "y": -79,
+              "w": 18,
+              "h": 21
+            },
+            {
+              "x": -11,
+              "y": -67,
+              "w": 21,
+              "h": 17
+            }
+          ]
+        },
+        {
+          "ticks": 4,
+          "phase": "startup",
+          "blade": {
+            "a": {
+              "x": -10,
+              "y": -49
+            },
+            "b": {
+              "x": -46,
+              "y": -25
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": 2,
+              "y": -108,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -13,
+              "y": -91,
+              "w": 33,
+              "h": 44
+            },
+            {
+              "x": -46,
+              "y": -56,
+              "w": 50,
+              "h": 55
+            },
+            {
+              "x": -4,
+              "y": -52,
+              "w": 42,
+              "h": 52
+            },
+            {
+              "x": -24,
+              "y": -93,
+              "w": 16,
+              "h": 29
+            },
+            {
+              "x": -24,
+              "y": -73,
+              "w": 25,
+              "h": 25
+            },
+            {
+              "x": 7,
+              "y": -80,
+              "w": 15,
+              "h": 21
+            },
+            {
+              "x": -4,
+              "y": -68,
+              "w": 20,
+              "h": 16
+            }
+          ]
+        },
+        {
+          "ticks": 2,
+          "phase": "active",
+          "blade": {
+            "a": {
+              "x": 44.47,
+              "y": -77.06
+            },
+            "b": {
+              "x": 103.03,
+              "y": -79.2
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": 14,
+              "y": -113,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -5,
+              "y": -98,
+              "w": 37,
+              "h": 47
+            },
+            {
+              "x": -39,
+              "y": -62,
+              "w": 51,
+              "h": 61
+            },
+            {
+              "x": 3,
+              "y": -58,
+              "w": 39,
+              "h": 58
+            },
+            {
+              "x": -18,
+              "y": -100,
+              "w": 23,
+              "h": 25
+            },
+            {
+              "x": -18,
+              "y": -84,
+              "w": 24,
+              "h": 25
+            },
+            {
+              "x": 23,
+              "y": -84,
+              "w": 12,
+              "h": 22
+            },
+            {
+              "x": 26,
+              "y": -81,
+              "w": 18,
+              "h": 19
+            }
+          ]
+        },
+        {
+          "ticks": 2,
+          "phase": "active",
+          "blade": {
+            "a": {
+              "x": 50.45,
+              "y": -72.59
+            },
+            "b": {
+              "x": 108.92,
+              "y": -68.6
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": 11,
+              "y": -113,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -6,
+              "y": -97,
+              "w": 35,
+              "h": 45
+            },
+            {
+              "x": -40,
+              "y": -62,
+              "w": 51,
+              "h": 61
+            },
+            {
+              "x": 2,
+              "y": -58,
+              "w": 39,
+              "h": 58
+            },
+            {
+              "x": -20,
+              "y": -100,
+              "w": 22,
+              "h": 26
+            },
+            {
+              "x": -20,
+              "y": -83,
+              "w": 24,
+              "h": 25
+            },
+            {
+              "x": 21,
+              "y": -85,
+              "w": 16,
+              "h": 20
+            },
+            {
+              "x": 28,
+              "y": -77,
+              "w": 22,
+              "h": 12
+            }
+          ]
+        },
+        {
+          "ticks": 9,
+          "phase": "recovery",
+          "blade": {
+            "a": {
+              "x": 32.25,
+              "y": -62.6
+            },
+            "b": {
+              "x": 88.32,
+              "y": -45.56
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": -1,
+              "y": -115,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -15,
+              "y": -96,
+              "w": 33,
+              "h": 44
+            },
+            {
+              "x": -46,
+              "y": -62,
+              "w": 50,
+              "h": 61
+            },
+            {
+              "x": -4,
+              "y": -58,
+              "w": 40,
+              "h": 58
+            },
+            {
+              "x": -25,
+              "y": -98,
+              "w": 15,
+              "h": 29
+            },
+            {
+              "x": -25,
+              "y": -78,
+              "w": 26,
+              "h": 23
+            },
+            {
+              "x": 11,
+              "y": -87,
+              "w": 9,
+              "h": 22
+            },
+            {
+              "x": 11,
+              "y": -74,
+              "w": 21,
+              "h": 14
+            }
+          ]
+        },
+        {
+          "ticks": 9,
+          "phase": "recovery",
+          "blade": {
+            "a": {
+              "x": 21.05,
+              "y": -57.09
+            },
+            "b": {
+              "x": 74.62,
+              "y": -33.35
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": -5,
+              "y": -115,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -18,
+              "y": -94,
+              "w": 36,
+              "h": 42
+            },
+            {
+              "x": -46,
+              "y": -61,
+              "w": 50,
+              "h": 60
+            },
+            {
+              "x": -3,
+              "y": -58,
+              "w": 39,
+              "h": 58
+            },
+            {
+              "x": -22,
+              "y": -96,
+              "w": 18,
+              "h": 27
+            },
+            {
+              "x": -13,
+              "y": -78,
+              "w": 28,
+              "h": 21
+            },
+            {
+              "x": 9,
+              "y": -88,
+              "w": 15,
+              "h": 20
+            },
+            {
+              "x": 13,
+              "y": -77,
+              "w": 11,
+              "h": 22
+            }
+          ]
+        }
+      ],
+      "box": {
+        "x": 0,
+        "y": -110,
+        "w": 100,
+        "h": 80
+      }
+    }
+  },
+  "crescent_light": {
+    "label": "Corte Crescente \u2014 light",
+    "poses": [
+      {
+        "grip": [
+          138.4437274845069,
+          182.9807953847876
+        ],
+        "angle": 15,
+        "hip": 13,
+        "lean": -8,
+        "two": true,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          145.44352214232234,
+          169.55051315230236
+        ],
+        "angle": -15,
+        "hip": 8,
+        "lean": 0,
+        "two": true,
+        "cloth": -2,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          163.09839059504685,
+          143.2528740446031
+        ],
+        "angle": -55,
+        "hip": -1,
+        "lean": 11,
+        "x": 5,
+        "left": [
+          7.0,
+          -4.0
+        ],
+        "right": [
+          -3.0,
+          -4.0
+        ],
+        "two": true,
+        "cloth": 4,
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          164.0,
+          125.0
+        ],
+        "angle": -87,
+        "hip": -3,
+        "lean": 13,
+        "x": 4,
+        "left": [
+          10.0,
+          -9.0
+        ],
+        "right": [
+          -4.0,
+          -8.0
+        ],
+        "two": true,
+        "cloth": 5,
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          154.217317888671,
+          132.8861980402101
+        ],
+        "angle": -103,
+        "lean": 7,
+        "left": [
+          8.0,
+          -6.0
+        ],
+        "right": [
+          -3.0,
+          -5.0
+        ],
+        "two": true,
+        "cloth": 3,
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          150.0,
+          155.0
+        ],
+        "angle": -8,
+        "lean": 2,
+        "two": true,
+        "cloth": 1,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.269701198478913,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          145.0,
+          165.0
+        ],
+        "angle": 24,
+        "two": true,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.298472247377333,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      }
+    ],
+    "durations": [
+      2,
+      3,
+      2,
+      3,
+      9,
+      9,
+      9
+    ],
+    "loop": false,
+    "grounded": false,
+    "move": {
+      "startup": 5,
+      "active": 5,
+      "recovery": 27,
+      "damage": 90,
+      "stun": 35,
+      "blockstun": 17,
+      "push": 3,
+      "launch": -12,
+      "hitstop": 10,
+      "level": "mid",
+      "rank": 4,
+      "cancels": [],
+      "kind": "crescent",
+      "cost": 0,
+      "hopAt": 5,
+      "hopVelocity": -8,
+      "invulnerable": {
+        "from": 0,
+        "to": 3,
+        "upperOnly": true
+      },
+      "poses": [
+        {
+          "ticks": 2,
+          "phase": "startup",
+          "blade": {
+            "a": {
+              "x": 14.74,
+              "y": -39.77
+            },
+            "b": {
+              "x": 71.37,
+              "y": -24.7
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": -11,
+              "y": -102,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -23,
+              "y": -82,
+              "w": 41,
+              "h": 45
+            },
+            {
+              "x": -46,
+              "y": -48,
+              "w": 51,
+              "h": 47
+            },
+            {
+              "x": -3,
+              "y": -46,
+              "w": 43,
+              "h": 46
+            },
+            {
+              "x": -27,
+              "y": -81,
+              "w": 19,
+              "h": 28
+            },
+            {
+              "x": -17,
+              "y": -62,
+              "w": 25,
+              "h": 24
+            },
+            {
+              "x": 5,
+              "y": -77,
+              "w": 12,
+              "h": 24
+            },
+            {
+              "x": 6,
+              "y": -62,
+              "w": 11,
+              "h": 25
+            }
+          ]
+        },
+        {
+          "ticks": 3,
+          "phase": "startup",
+          "blade": {
+            "a": {
+              "x": 21.79,
+              "y": -55.51
+            },
+            "b": {
+              "x": 78.37,
+              "y": -70.77
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": -5,
+              "y": -107,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -18,
+              "y": -86,
+              "w": 36,
+              "h": 42
+            },
+            {
+              "x": -46,
+              "y": -53,
+              "w": 50,
+              "h": 52
+            },
+            {
+              "x": -3,
+              "y": -50,
+              "w": 41,
+              "h": 50
+            },
+            {
+              "x": -22,
+              "y": -88,
+              "w": 20,
+              "h": 26
+            },
+            {
+              "x": -11,
+              "y": -71,
+              "w": 26,
+              "h": 23
+            },
+            {
+              "x": 9,
+              "y": -80,
+              "w": 18,
+              "h": 17
+            },
+            {
+              "x": 13,
+              "y": -72,
+              "w": 14,
+              "h": 22
+            }
+          ]
+        },
+        {
+          "ticks": 2,
+          "phase": "active",
+          "blade": {
+            "a": {
+              "x": 37.74,
+              "y": -84.36
+            },
+            "b": {
+              "x": 71.27,
+              "y": -132.41
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": 8,
+              "y": -115,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -8,
+              "y": -98,
+              "w": 34,
+              "h": 45
+            },
+            {
+              "x": -39,
+              "y": -63,
+              "w": 48,
+              "h": 58
+            },
+            {
+              "x": 0,
+              "y": -59,
+              "w": 37,
+              "h": 55
+            },
+            {
+              "x": -10,
+              "y": -100,
+              "w": 25,
+              "h": 22
+            },
+            {
+              "x": 6,
+              "y": -87,
+              "w": 30,
+              "h": 16
+            },
+            {
+              "x": 18,
+              "y": -87,
+              "w": 14,
+              "h": 22
+            },
+            {
+              "x": 23,
+              "y": -85,
+              "w": 17,
+              "h": 20
+            }
+          ]
+        },
+        {
+          "ticks": 3,
+          "phase": "active",
+          "blade": {
+            "a": {
+              "x": 36.33,
+              "y": -103.46
+            },
+            "b": {
+              "x": 39.3,
+              "y": -161.98
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": 8,
+              "y": -116,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -9,
+              "y": -100,
+              "w": 35,
+              "h": 45
+            },
+            {
+              "x": -38,
+              "y": -65,
+              "w": 46,
+              "h": 55
+            },
+            {
+              "x": -1,
+              "y": -61,
+              "w": 39,
+              "h": 53
+            },
+            {
+              "x": -10,
+              "y": -103,
+              "w": 28,
+              "h": 17
+            },
+            {
+              "x": 9,
+              "y": -97,
+              "w": 31,
+              "h": 11
+            },
+            {
+              "x": 18,
+              "y": -90,
+              "w": 22,
+              "h": 11
+            },
+            {
+              "x": 31,
+              "y": -103,
+              "w": 9,
+              "h": 22
+            }
+          ]
+        },
+        {
+          "ticks": 9,
+          "phase": "recovery",
+          "blade": {
+            "a": {
+              "x": 25.3,
+              "y": -95.49
+            },
+            "b": {
+              "x": 12.03,
+              "y": -152.57
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": 0,
+              "y": -114,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -14,
+              "y": -96,
+              "w": 33,
+              "h": 43
+            },
+            {
+              "x": -42,
+              "y": -62,
+              "w": 46,
+              "h": 55
+            },
+            {
+              "x": -4,
+              "y": -58,
+              "w": 39,
+              "h": 53
+            },
+            {
+              "x": -18,
+              "y": -98,
+              "w": 28,
+              "h": 16
+            },
+            {
+              "x": 1,
+              "y": -91,
+              "w": 31,
+              "h": 11
+            },
+            {
+              "x": 12,
+              "y": -87,
+              "w": 21,
+              "h": 14
+            },
+            {
+              "x": 22,
+              "y": -96,
+              "w": 11,
+              "h": 23
+            }
+          ]
+        },
+        {
+          "ticks": 9,
+          "phase": "recovery",
+          "blade": {
+            "a": {
+              "x": 26.44,
+              "y": -69.53
+            },
+            "b": {
+              "x": 84.46,
+              "y": -77.78
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": -4,
+              "y": -115,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -17,
+              "y": -95,
+              "w": 35,
+              "h": 43
+            },
+            {
+              "x": -46,
+              "y": -62,
+              "w": 50,
+              "h": 61
+            },
+            {
+              "x": -4,
+              "y": -58,
+              "w": 40,
+              "h": 58
+            },
+            {
+              "x": -21,
+              "y": -97,
+              "w": 20,
+              "h": 27
+            },
+            {
+              "x": -10,
+              "y": -79,
+              "w": 30,
+              "h": 15
+            },
+            {
+              "x": 4,
+              "y": -88,
+              "w": 14,
+              "h": 21
+            },
+            {
+              "x": 4,
+              "y": -76,
+              "w": 22,
+              "h": 11
+            }
+          ]
+        },
+        {
+          "ticks": 9,
+          "phase": "recovery",
+          "blade": {
+            "a": {
+              "x": 21.05,
+              "y": -57.09
+            },
+            "b": {
+              "x": 74.62,
+              "y": -33.35
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": -5,
+              "y": -115,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -18,
+              "y": -94,
+              "w": 36,
+              "h": 42
+            },
+            {
+              "x": -46,
+              "y": -61,
+              "w": 50,
+              "h": 60
+            },
+            {
+              "x": -3,
+              "y": -58,
+              "w": 39,
+              "h": 58
+            },
+            {
+              "x": -22,
+              "y": -96,
+              "w": 18,
+              "h": 27
+            },
+            {
+              "x": -13,
+              "y": -78,
+              "w": 28,
+              "h": 21
+            },
+            {
+              "x": 9,
+              "y": -88,
+              "w": 15,
+              "h": 20
+            },
+            {
+              "x": 13,
+              "y": -77,
+              "w": 11,
+              "h": 22
+            }
+          ]
+        }
+      ],
+      "box": {
+        "x": 0,
+        "y": -110,
+        "w": 100,
+        "h": 80
+      }
+    }
+  },
+  "draw_medium": {
+    "label": "Saque Rel\u00e2mpago \u2014 medium",
+    "poses": [
+      {
+        "grip": [
+          121.0,
+          170.0
+        ],
+        "angle": 30,
+        "hip": 9,
+        "lean": 3,
+        "detail": "sheath",
+        "free": [
+          122.0,
+          167.0
+        ],
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          128.0,
+          168.0
+        ],
+        "angle": 12,
+        "hip": 6,
+        "lean": 9,
+        "detail": "sheath",
+        "free": [
+          124.0,
+          166.0
+        ],
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          171.0,
+          147.0
+        ],
+        "angle": -2,
+        "lean": 18,
+        "x": 10,
+        "left": [
+          9.798612284133156,
+          0.0
+        ],
+        "right": [
+          4.0,
+          0.0
+        ],
+        "free": [
+          120.0,
+          163.0
+        ],
+        "cloth": 5,
+        "farReach": 41
+      },
+      {
+        "grip": [
+          176.0,
+          151.0
+        ],
+        "angle": 4,
+        "lean": 13,
+        "x": 7,
+        "left": [
+          6.556759026971207,
+          0.0
+        ],
+        "right": [
+          3.0,
+          0.0
+        ],
+        "free": [
+          119.0,
+          163.0
+        ],
+        "cloth": 4,
+        "farReach": 41
+      },
+      {
+        "grip": [
+          156.0,
+          160.0
+        ],
+        "angle": 17,
+        "lean": 5,
+        "cloth": 2,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.2650680910983283,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          145.0,
+          165.0
+        ],
+        "angle": 24,
+        "two": true,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.298472247377333,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      }
+    ],
+    "durations": [
+      5,
+      5,
+      2,
+      3,
+      12,
+      12
+    ],
+    "loop": false,
+    "grounded": true,
+    "move": {
+      "startup": 10,
+      "active": 5,
+      "recovery": 24,
+      "damage": 100,
+      "stun": 30,
+      "blockstun": 17,
+      "push": 5,
+      "launch": 0,
+      "hitstop": 10,
+      "level": "mid",
+      "rank": 4,
+      "cancels": [],
+      "kind": "draw",
+      "cost": 0,
+      "drive": {
+        "from": 5,
+        "to": 17,
+        "speed": 13
+      },
+      "poses": [
+        {
+          "ticks": 5,
+          "phase": "startup",
+          "blade": {
+            "a": {
+              "x": -10,
+              "y": -46
+            },
+            "b": {
+              "x": -46,
+              "y": -22
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": -3,
+              "y": -106,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -17,
+              "y": -86,
+              "w": 35,
+              "h": 43
+            },
+            {
+              "x": -46,
+              "y": -53,
+              "w": 50,
+              "h": 52
+            },
+            {
+              "x": -4,
+              "y": -49,
+              "w": 42,
+              "h": 49
+            },
+            {
+              "x": -26,
+              "y": -88,
+              "w": 14,
+              "h": 29
+            },
+            {
+              "x": -26,
+              "y": -68,
+              "w": 25,
+              "h": 24
+            },
+            {
+              "x": 1,
+              "y": -79,
+              "w": 18,
+              "h": 21
+            },
+            {
+              "x": -11,
+              "y": -67,
+              "w": 21,
+              "h": 17
+            }
+          ]
+        },
+        {
+          "ticks": 5,
+          "phase": "startup",
+          "blade": {
+            "a": {
+              "x": -10,
+              "y": -49
+            },
+            "b": {
+              "x": -46,
+              "y": -25
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": 2,
+              "y": -108,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -13,
+              "y": -91,
+              "w": 33,
+              "h": 44
+            },
+            {
+              "x": -46,
+              "y": -56,
+              "w": 50,
+              "h": 55
+            },
+            {
+              "x": -4,
+              "y": -52,
+              "w": 42,
+              "h": 52
+            },
+            {
+              "x": -24,
+              "y": -93,
+              "w": 16,
+              "h": 29
+            },
+            {
+              "x": -24,
+              "y": -73,
+              "w": 25,
+              "h": 25
+            },
+            {
+              "x": 7,
+              "y": -80,
+              "w": 15,
+              "h": 21
+            },
+            {
+              "x": -4,
+              "y": -68,
+              "w": 20,
+              "h": 16
+            }
+          ]
+        },
+        {
+          "ticks": 2,
+          "phase": "active",
+          "blade": {
+            "a": {
+              "x": 47.47,
+              "y": -77.06
+            },
+            "b": {
+              "x": 106.03,
+              "y": -79.2
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": 18,
+              "y": -112,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -3,
+              "y": -98,
+              "w": 38,
+              "h": 48
+            },
+            {
+              "x": -37,
+              "y": -63,
+              "w": 51,
+              "h": 62
+            },
+            {
+              "x": 4,
+              "y": -58,
+              "w": 38,
+              "h": 58
+            },
+            {
+              "x": -15,
+              "y": -100,
+              "w": 23,
+              "h": 24
+            },
+            {
+              "x": -15,
+              "y": -85,
+              "w": 23,
+              "h": 26
+            },
+            {
+              "x": 26,
+              "y": -83,
+              "w": 13,
+              "h": 21
+            },
+            {
+              "x": 30,
+              "y": -81,
+              "w": 17,
+              "h": 19
+            }
+          ]
+        },
+        {
+          "ticks": 3,
+          "phase": "active",
+          "blade": {
+            "a": {
+              "x": 52.45,
+              "y": -72.59
+            },
+            "b": {
+              "x": 110.92,
+              "y": -68.6
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": 11,
+              "y": -113,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -6,
+              "y": -97,
+              "w": 35,
+              "h": 45
+            },
+            {
+              "x": -40,
+              "y": -62,
+              "w": 51,
+              "h": 61
+            },
+            {
+              "x": 2,
+              "y": -58,
+              "w": 39,
+              "h": 58
+            },
+            {
+              "x": -20,
+              "y": -100,
+              "w": 22,
+              "h": 26
+            },
+            {
+              "x": -20,
+              "y": -83,
+              "w": 24,
+              "h": 25
+            },
+            {
+              "x": 21,
+              "y": -85,
+              "w": 18,
+              "h": 19
+            },
+            {
+              "x": 30,
+              "y": -77,
+              "w": 22,
+              "h": 11
+            }
+          ]
+        },
+        {
+          "ticks": 12,
+          "phase": "recovery",
+          "blade": {
+            "a": {
+              "x": 32.25,
+              "y": -62.6
+            },
+            "b": {
+              "x": 88.32,
+              "y": -45.56
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": -1,
+              "y": -115,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -15,
+              "y": -96,
+              "w": 33,
+              "h": 44
+            },
+            {
+              "x": -46,
+              "y": -62,
+              "w": 50,
+              "h": 61
+            },
+            {
+              "x": -4,
+              "y": -58,
+              "w": 40,
+              "h": 58
+            },
+            {
+              "x": -25,
+              "y": -98,
+              "w": 15,
+              "h": 29
+            },
+            {
+              "x": -25,
+              "y": -78,
+              "w": 26,
+              "h": 23
+            },
+            {
+              "x": 11,
+              "y": -87,
+              "w": 9,
+              "h": 22
+            },
+            {
+              "x": 11,
+              "y": -74,
+              "w": 21,
+              "h": 14
+            }
+          ]
+        },
+        {
+          "ticks": 12,
+          "phase": "recovery",
+          "blade": {
+            "a": {
+              "x": 21.05,
+              "y": -57.09
+            },
+            "b": {
+              "x": 74.62,
+              "y": -33.35
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": -5,
+              "y": -115,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -18,
+              "y": -94,
+              "w": 36,
+              "h": 42
+            },
+            {
+              "x": -46,
+              "y": -61,
+              "w": 50,
+              "h": 60
+            },
+            {
+              "x": -3,
+              "y": -58,
+              "w": 39,
+              "h": 58
+            },
+            {
+              "x": -22,
+              "y": -96,
+              "w": 18,
+              "h": 27
+            },
+            {
+              "x": -13,
+              "y": -78,
+              "w": 28,
+              "h": 21
+            },
+            {
+              "x": 9,
+              "y": -88,
+              "w": 15,
+              "h": 20
+            },
+            {
+              "x": 13,
+              "y": -77,
+              "w": 11,
+              "h": 22
+            }
+          ]
+        }
+      ],
+      "box": {
+        "x": 0,
+        "y": -110,
+        "w": 100,
+        "h": 80
+      }
+    }
+  },
+  "crescent_medium": {
+    "label": "Corte Crescente \u2014 medium",
+    "poses": [
+      {
+        "grip": [
+          138.4437274845069,
+          182.9807953847876
+        ],
+        "angle": 15,
+        "hip": 13,
+        "lean": -8,
+        "two": true,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          145.44352214232234,
+          169.55051315230236
+        ],
+        "angle": -15,
+        "hip": 8,
+        "lean": 0,
+        "two": true,
+        "cloth": -2,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          163.09839059504685,
+          143.2528740446031
+        ],
+        "angle": -55,
+        "hip": -1,
+        "lean": 11,
+        "x": 5,
+        "left": [
+          7.0,
+          -4.0
+        ],
+        "right": [
+          -3.0,
+          -4.0
+        ],
+        "two": true,
+        "cloth": 4,
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          164.0,
+          125.0
+        ],
+        "angle": -87,
+        "hip": -3,
+        "lean": 13,
+        "x": 4,
+        "left": [
+          10.0,
+          -9.0
+        ],
+        "right": [
+          -4.0,
+          -8.0
+        ],
+        "two": true,
+        "cloth": 5,
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          154.217317888671,
+          132.8861980402101
+        ],
+        "angle": -103,
+        "lean": 7,
+        "left": [
+          8.0,
+          -6.0
+        ],
+        "right": [
+          -3.0,
+          -5.0
+        ],
+        "two": true,
+        "cloth": 3,
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          150.0,
+          155.0
+        ],
+        "angle": -8,
+        "lean": 2,
+        "two": true,
+        "cloth": 1,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.269701198478913,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          145.0,
+          165.0
+        ],
+        "angle": 24,
+        "two": true,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.298472247377333,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      }
+    ],
+    "durations": [
+      3,
+      4,
+      3,
+      3,
+      11,
+      11,
+      11
+    ],
+    "loop": false,
+    "grounded": false,
+    "move": {
+      "startup": 7,
+      "active": 6,
+      "recovery": 33,
+      "damage": 115,
+      "stun": 40,
+      "blockstun": 21,
+      "push": 4,
+      "launch": -15,
+      "hitstop": 12,
+      "level": "mid",
+      "rank": 4,
+      "cancels": [],
+      "kind": "crescent",
+      "cost": 0,
+      "hopAt": 7,
+      "hopVelocity": -10,
+      "invulnerable": {
+        "from": 0,
+        "to": 7,
+        "upperOnly": false
+      },
+      "poses": [
+        {
+          "ticks": 3,
+          "phase": "startup",
+          "blade": {
+            "a": {
+              "x": 14.74,
+              "y": -39.77
+            },
+            "b": {
+              "x": 71.37,
+              "y": -24.7
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": -11,
+              "y": -102,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -23,
+              "y": -82,
+              "w": 41,
+              "h": 45
+            },
+            {
+              "x": -46,
+              "y": -48,
+              "w": 51,
+              "h": 47
+            },
+            {
+              "x": -3,
+              "y": -46,
+              "w": 43,
+              "h": 46
+            },
+            {
+              "x": -27,
+              "y": -81,
+              "w": 19,
+              "h": 28
+            },
+            {
+              "x": -17,
+              "y": -62,
+              "w": 25,
+              "h": 24
+            },
+            {
+              "x": 5,
+              "y": -77,
+              "w": 12,
+              "h": 24
+            },
+            {
+              "x": 6,
+              "y": -62,
+              "w": 11,
+              "h": 25
+            }
+          ]
+        },
+        {
+          "ticks": 4,
+          "phase": "startup",
+          "blade": {
+            "a": {
+              "x": 21.79,
+              "y": -55.51
+            },
+            "b": {
+              "x": 78.37,
+              "y": -70.77
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": -5,
+              "y": -107,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -18,
+              "y": -86,
+              "w": 36,
+              "h": 42
+            },
+            {
+              "x": -46,
+              "y": -53,
+              "w": 50,
+              "h": 52
+            },
+            {
+              "x": -3,
+              "y": -50,
+              "w": 41,
+              "h": 50
+            },
+            {
+              "x": -22,
+              "y": -88,
+              "w": 20,
+              "h": 26
+            },
+            {
+              "x": -11,
+              "y": -71,
+              "w": 26,
+              "h": 23
+            },
+            {
+              "x": 9,
+              "y": -80,
+              "w": 18,
+              "h": 17
+            },
+            {
+              "x": 13,
+              "y": -72,
+              "w": 14,
+              "h": 22
+            }
+          ]
+        },
+        {
+          "ticks": 3,
+          "phase": "active",
+          "blade": {
+            "a": {
+              "x": 37.74,
+              "y": -84.36
+            },
+            "b": {
+              "x": 71.27,
+              "y": -132.41
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": 8,
+              "y": -115,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -8,
+              "y": -98,
+              "w": 34,
+              "h": 45
+            },
+            {
+              "x": -39,
+              "y": -63,
+              "w": 48,
+              "h": 58
+            },
+            {
+              "x": 0,
+              "y": -59,
+              "w": 37,
+              "h": 55
+            },
+            {
+              "x": -10,
+              "y": -100,
+              "w": 25,
+              "h": 22
+            },
+            {
+              "x": 6,
+              "y": -87,
+              "w": 30,
+              "h": 16
+            },
+            {
+              "x": 18,
+              "y": -87,
+              "w": 14,
+              "h": 22
+            },
+            {
+              "x": 23,
+              "y": -85,
+              "w": 17,
+              "h": 20
+            }
+          ]
+        },
+        {
+          "ticks": 3,
+          "phase": "active",
+          "blade": {
+            "a": {
+              "x": 36.33,
+              "y": -103.46
+            },
+            "b": {
+              "x": 39.3,
+              "y": -161.98
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": 8,
+              "y": -116,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -9,
+              "y": -100,
+              "w": 35,
+              "h": 45
+            },
+            {
+              "x": -38,
+              "y": -65,
+              "w": 46,
+              "h": 55
+            },
+            {
+              "x": -1,
+              "y": -61,
+              "w": 39,
+              "h": 53
+            },
+            {
+              "x": -10,
+              "y": -103,
+              "w": 28,
+              "h": 17
+            },
+            {
+              "x": 9,
+              "y": -97,
+              "w": 31,
+              "h": 11
+            },
+            {
+              "x": 18,
+              "y": -90,
+              "w": 22,
+              "h": 11
+            },
+            {
+              "x": 31,
+              "y": -103,
+              "w": 9,
+              "h": 22
+            }
+          ]
+        },
+        {
+          "ticks": 11,
+          "phase": "recovery",
+          "blade": {
+            "a": {
+              "x": 25.3,
+              "y": -95.49
+            },
+            "b": {
+              "x": 12.03,
+              "y": -152.57
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": 0,
+              "y": -114,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -14,
+              "y": -96,
+              "w": 33,
+              "h": 43
+            },
+            {
+              "x": -42,
+              "y": -62,
+              "w": 46,
+              "h": 55
+            },
+            {
+              "x": -4,
+              "y": -58,
+              "w": 39,
+              "h": 53
+            },
+            {
+              "x": -18,
+              "y": -98,
+              "w": 28,
+              "h": 16
+            },
+            {
+              "x": 1,
+              "y": -91,
+              "w": 31,
+              "h": 11
+            },
+            {
+              "x": 12,
+              "y": -87,
+              "w": 21,
+              "h": 14
+            },
+            {
+              "x": 22,
+              "y": -96,
+              "w": 11,
+              "h": 23
+            }
+          ]
+        },
+        {
+          "ticks": 11,
+          "phase": "recovery",
+          "blade": {
+            "a": {
+              "x": 26.44,
+              "y": -69.53
+            },
+            "b": {
+              "x": 84.46,
+              "y": -77.78
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": -4,
+              "y": -115,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -17,
+              "y": -95,
+              "w": 35,
+              "h": 43
+            },
+            {
+              "x": -46,
+              "y": -62,
+              "w": 50,
+              "h": 61
+            },
+            {
+              "x": -4,
+              "y": -58,
+              "w": 40,
+              "h": 58
+            },
+            {
+              "x": -21,
+              "y": -97,
+              "w": 20,
+              "h": 27
+            },
+            {
+              "x": -10,
+              "y": -79,
+              "w": 30,
+              "h": 15
+            },
+            {
+              "x": 4,
+              "y": -88,
+              "w": 14,
+              "h": 21
+            },
+            {
+              "x": 4,
+              "y": -76,
+              "w": 22,
+              "h": 11
+            }
+          ]
+        },
+        {
+          "ticks": 11,
+          "phase": "recovery",
+          "blade": {
+            "a": {
+              "x": 21.05,
+              "y": -57.09
+            },
+            "b": {
+              "x": 74.62,
+              "y": -33.35
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": -5,
+              "y": -115,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -18,
+              "y": -94,
+              "w": 36,
+              "h": 42
+            },
+            {
+              "x": -46,
+              "y": -61,
+              "w": 50,
+              "h": 60
+            },
+            {
+              "x": -3,
+              "y": -58,
+              "w": 39,
+              "h": 58
+            },
+            {
+              "x": -22,
+              "y": -96,
+              "w": 18,
+              "h": 27
+            },
+            {
+              "x": -13,
+              "y": -78,
+              "w": 28,
+              "h": 21
+            },
+            {
+              "x": 9,
+              "y": -88,
+              "w": 15,
+              "h": 20
+            },
+            {
+              "x": 13,
+              "y": -77,
+              "w": 11,
+              "h": 22
+            }
+          ]
+        }
+      ],
+      "box": {
+        "x": 0,
+        "y": -110,
+        "w": 100,
+        "h": 80
+      }
+    }
+  },
+  "draw_heavy": {
+    "label": "Saque Rel\u00e2mpago \u2014 heavy",
+    "poses": [
+      {
+        "grip": [
+          121.0,
+          170.0
+        ],
+        "angle": 30,
+        "hip": 9,
+        "lean": 3,
+        "detail": "sheath",
+        "free": [
+          122.0,
+          167.0
+        ],
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          128.0,
+          168.0
+        ],
+        "angle": 12,
+        "hip": 6,
+        "lean": 9,
+        "detail": "sheath",
+        "free": [
+          124.0,
+          166.0
+        ],
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          174.0,
+          147.0
+        ],
+        "angle": -2,
+        "lean": 20,
+        "x": 12,
+        "left": [
+          11.911277968039201,
+          0.0
+        ],
+        "right": [
+          4.0,
+          0.0
+        ],
+        "free": [
+          120.0,
+          163.0
+        ],
+        "cloth": 5,
+        "farReach": 41
+      },
+      {
+        "grip": [
+          178.0,
+          151.0
+        ],
+        "angle": 4,
+        "lean": 13,
+        "x": 7,
+        "left": [
+          6.556759026971207,
+          0.0
+        ],
+        "right": [
+          3.0,
+          0.0
+        ],
+        "free": [
+          119.0,
+          163.0
+        ],
+        "cloth": 4,
+        "farReach": 41
+      },
+      {
+        "grip": [
+          156.0,
+          160.0
+        ],
+        "angle": 17,
+        "lean": 5,
+        "cloth": 2,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.2650680910983283,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          145.0,
+          165.0
+        ],
+        "angle": 24,
+        "two": true,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.298472247377333,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      }
+    ],
+    "durations": [
+      7,
+      7,
+      3,
+      3,
+      16,
+      16
+    ],
+    "loop": false,
+    "grounded": true,
+    "move": {
+      "startup": 14,
+      "active": 6,
+      "recovery": 32,
+      "damage": 125,
+      "stun": 35,
+      "blockstun": 21,
+      "push": 7,
+      "launch": 0,
+      "hitstop": 12,
+      "level": "mid",
+      "rank": 4,
+      "cancels": [],
+      "kind": "draw",
+      "cost": 0,
+      "drive": {
+        "from": 7,
+        "to": 23,
+        "speed": 16
+      },
+      "poses": [
+        {
+          "ticks": 7,
+          "phase": "startup",
+          "blade": {
+            "a": {
+              "x": -10,
+              "y": -46
+            },
+            "b": {
+              "x": -46,
+              "y": -22
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": -3,
+              "y": -106,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -17,
+              "y": -86,
+              "w": 35,
+              "h": 43
+            },
+            {
+              "x": -46,
+              "y": -53,
+              "w": 50,
+              "h": 52
+            },
+            {
+              "x": -4,
+              "y": -49,
+              "w": 42,
+              "h": 49
+            },
+            {
+              "x": -26,
+              "y": -88,
+              "w": 14,
+              "h": 29
+            },
+            {
+              "x": -26,
+              "y": -68,
+              "w": 25,
+              "h": 24
+            },
+            {
+              "x": 1,
+              "y": -79,
+              "w": 18,
+              "h": 21
+            },
+            {
+              "x": -11,
+              "y": -67,
+              "w": 21,
+              "h": 17
+            }
+          ]
+        },
+        {
+          "ticks": 7,
+          "phase": "startup",
+          "blade": {
+            "a": {
+              "x": -10,
+              "y": -49
+            },
+            "b": {
+              "x": -46,
+              "y": -25
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": 2,
+              "y": -108,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -13,
+              "y": -91,
+              "w": 33,
+              "h": 44
+            },
+            {
+              "x": -46,
+              "y": -56,
+              "w": 50,
+              "h": 55
+            },
+            {
+              "x": -4,
+              "y": -52,
+              "w": 42,
+              "h": 52
+            },
+            {
+              "x": -24,
+              "y": -93,
+              "w": 16,
+              "h": 29
+            },
+            {
+              "x": -24,
+              "y": -73,
+              "w": 25,
+              "h": 25
+            },
+            {
+              "x": 7,
+              "y": -80,
+              "w": 15,
+              "h": 21
+            },
+            {
+              "x": -4,
+              "y": -68,
+              "w": 20,
+              "h": 16
+            }
+          ]
+        },
+        {
+          "ticks": 3,
+          "phase": "active",
+          "blade": {
+            "a": {
+              "x": 50.47,
+              "y": -77.06
+            },
+            "b": {
+              "x": 109.03,
+              "y": -79.2
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": 21,
+              "y": -112,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -1,
+              "y": -98,
+              "w": 39,
+              "h": 48
+            },
+            {
+              "x": -35,
+              "y": -63,
+              "w": 51,
+              "h": 62
+            },
+            {
+              "x": 6,
+              "y": -57,
+              "w": 36,
+              "h": 57
+            },
+            {
+              "x": -12,
+              "y": -101,
+              "w": 24,
+              "h": 25
+            },
+            {
+              "x": -12,
+              "y": -85,
+              "w": 22,
+              "h": 26
+            },
+            {
+              "x": 29,
+              "y": -82,
+              "w": 14,
+              "h": 21
+            },
+            {
+              "x": 34,
+              "y": -81,
+              "w": 16,
+              "h": 20
+            }
+          ]
+        },
+        {
+          "ticks": 3,
+          "phase": "active",
+          "blade": {
+            "a": {
+              "x": 54.45,
+              "y": -72.59
+            },
+            "b": {
+              "x": 112.92,
+              "y": -68.6
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": 11,
+              "y": -113,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -6,
+              "y": -97,
+              "w": 35,
+              "h": 45
+            },
+            {
+              "x": -40,
+              "y": -62,
+              "w": 51,
+              "h": 61
+            },
+            {
+              "x": 2,
+              "y": -58,
+              "w": 39,
+              "h": 58
+            },
+            {
+              "x": -20,
+              "y": -100,
+              "w": 22,
+              "h": 26
+            },
+            {
+              "x": -20,
+              "y": -83,
+              "w": 24,
+              "h": 25
+            },
+            {
+              "x": 21,
+              "y": -85,
+              "w": 20,
+              "h": 17
+            },
+            {
+              "x": 32,
+              "y": -77,
+              "w": 22,
+              "h": 9
+            }
+          ]
+        },
+        {
+          "ticks": 16,
+          "phase": "recovery",
+          "blade": {
+            "a": {
+              "x": 32.25,
+              "y": -62.6
+            },
+            "b": {
+              "x": 88.32,
+              "y": -45.56
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": -1,
+              "y": -115,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -15,
+              "y": -96,
+              "w": 33,
+              "h": 44
+            },
+            {
+              "x": -46,
+              "y": -62,
+              "w": 50,
+              "h": 61
+            },
+            {
+              "x": -4,
+              "y": -58,
+              "w": 40,
+              "h": 58
+            },
+            {
+              "x": -25,
+              "y": -98,
+              "w": 15,
+              "h": 29
+            },
+            {
+              "x": -25,
+              "y": -78,
+              "w": 26,
+              "h": 23
+            },
+            {
+              "x": 11,
+              "y": -87,
+              "w": 9,
+              "h": 22
+            },
+            {
+              "x": 11,
+              "y": -74,
+              "w": 21,
+              "h": 14
+            }
+          ]
+        },
+        {
+          "ticks": 16,
+          "phase": "recovery",
+          "blade": {
+            "a": {
+              "x": 21.05,
+              "y": -57.09
+            },
+            "b": {
+              "x": 74.62,
+              "y": -33.35
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": -5,
+              "y": -115,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -18,
+              "y": -94,
+              "w": 36,
+              "h": 42
+            },
+            {
+              "x": -46,
+              "y": -61,
+              "w": 50,
+              "h": 60
+            },
+            {
+              "x": -3,
+              "y": -58,
+              "w": 39,
+              "h": 58
+            },
+            {
+              "x": -22,
+              "y": -96,
+              "w": 18,
+              "h": 27
+            },
+            {
+              "x": -13,
+              "y": -78,
+              "w": 28,
+              "h": 21
+            },
+            {
+              "x": 9,
+              "y": -88,
+              "w": 15,
+              "h": 20
+            },
+            {
+              "x": 13,
+              "y": -77,
+              "w": 11,
+              "h": 22
+            }
+          ]
+        }
+      ],
+      "box": {
+        "x": 0,
+        "y": -110,
+        "w": 100,
+        "h": 80
+      }
+    }
+  },
+  "crescent_heavy": {
+    "label": "Corte Crescente \u2014 heavy",
+    "poses": [
+      {
+        "grip": [
+          138.4437274845069,
+          182.9807953847876
+        ],
+        "angle": 15,
+        "hip": 13,
+        "lean": -8,
+        "two": true,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          145.44352214232234,
+          169.55051315230236
+        ],
+        "angle": -15,
+        "hip": 8,
+        "lean": 0,
+        "two": true,
+        "cloth": -2,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          163.09839059504685,
+          143.2528740446031
+        ],
+        "angle": -55,
+        "hip": -1,
+        "lean": 11,
+        "x": 5,
+        "left": [
+          7.0,
+          -4.0
+        ],
+        "right": [
+          -3.0,
+          -4.0
+        ],
+        "two": true,
+        "cloth": 4,
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          164.0,
+          125.0
+        ],
+        "angle": -87,
+        "hip": -3,
+        "lean": 13,
+        "x": 4,
+        "left": [
+          10.0,
+          -9.0
+        ],
+        "right": [
+          -4.0,
+          -8.0
+        ],
+        "two": true,
+        "cloth": 5,
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          154.217317888671,
+          132.8861980402101
+        ],
+        "angle": -103,
+        "lean": 7,
+        "left": [
+          8.0,
+          -6.0
+        ],
+        "right": [
+          -3.0,
+          -5.0
+        ],
+        "two": true,
+        "cloth": 3,
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          150.0,
+          155.0
+        ],
+        "angle": -8,
+        "lean": 2,
+        "two": true,
+        "cloth": 1,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.269701198478913,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          145.0,
+          165.0
+        ],
+        "angle": 24,
+        "two": true,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.298472247377333,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      }
+    ],
+    "durations": [
+      5,
+      5,
+      3,
+      4,
+      14,
+      14,
+      14
+    ],
+    "loop": false,
+    "grounded": false,
+    "move": {
+      "startup": 10,
+      "active": 7,
+      "recovery": 42,
+      "damage": 140,
+      "stun": 45,
+      "blockstun": 25,
+      "push": 5,
+      "launch": -17,
+      "hitstop": 14,
+      "level": "mid",
+      "rank": 4,
+      "cancels": [],
+      "kind": "crescent",
+      "cost": 0,
+      "hopAt": 10,
+      "hopVelocity": -12,
+      "invulnerable": {
+        "from": 0,
+        "to": 12,
+        "upperOnly": false
+      },
+      "poses": [
+        {
+          "ticks": 5,
+          "phase": "startup",
+          "blade": {
+            "a": {
+              "x": 14.74,
+              "y": -39.77
+            },
+            "b": {
+              "x": 71.37,
+              "y": -24.7
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": -11,
+              "y": -102,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -23,
+              "y": -82,
+              "w": 41,
+              "h": 45
+            },
+            {
+              "x": -46,
+              "y": -48,
+              "w": 51,
+              "h": 47
+            },
+            {
+              "x": -3,
+              "y": -46,
+              "w": 43,
+              "h": 46
+            },
+            {
+              "x": -27,
+              "y": -81,
+              "w": 19,
+              "h": 28
+            },
+            {
+              "x": -17,
+              "y": -62,
+              "w": 25,
+              "h": 24
+            },
+            {
+              "x": 5,
+              "y": -77,
+              "w": 12,
+              "h": 24
+            },
+            {
+              "x": 6,
+              "y": -62,
+              "w": 11,
+              "h": 25
+            }
+          ]
+        },
+        {
+          "ticks": 5,
+          "phase": "startup",
+          "blade": {
+            "a": {
+              "x": 21.79,
+              "y": -55.51
+            },
+            "b": {
+              "x": 78.37,
+              "y": -70.77
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": -5,
+              "y": -107,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -18,
+              "y": -86,
+              "w": 36,
+              "h": 42
+            },
+            {
+              "x": -46,
+              "y": -53,
+              "w": 50,
+              "h": 52
+            },
+            {
+              "x": -3,
+              "y": -50,
+              "w": 41,
+              "h": 50
+            },
+            {
+              "x": -22,
+              "y": -88,
+              "w": 20,
+              "h": 26
+            },
+            {
+              "x": -11,
+              "y": -71,
+              "w": 26,
+              "h": 23
+            },
+            {
+              "x": 9,
+              "y": -80,
+              "w": 18,
+              "h": 17
+            },
+            {
+              "x": 13,
+              "y": -72,
+              "w": 14,
+              "h": 22
+            }
+          ]
+        },
+        {
+          "ticks": 3,
+          "phase": "active",
+          "blade": {
+            "a": {
+              "x": 37.74,
+              "y": -84.36
+            },
+            "b": {
+              "x": 71.27,
+              "y": -132.41
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": 8,
+              "y": -115,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -8,
+              "y": -98,
+              "w": 34,
+              "h": 45
+            },
+            {
+              "x": -39,
+              "y": -63,
+              "w": 48,
+              "h": 58
+            },
+            {
+              "x": 0,
+              "y": -59,
+              "w": 37,
+              "h": 55
+            },
+            {
+              "x": -10,
+              "y": -100,
+              "w": 25,
+              "h": 22
+            },
+            {
+              "x": 6,
+              "y": -87,
+              "w": 30,
+              "h": 16
+            },
+            {
+              "x": 18,
+              "y": -87,
+              "w": 14,
+              "h": 22
+            },
+            {
+              "x": 23,
+              "y": -85,
+              "w": 17,
+              "h": 20
+            }
+          ]
+        },
+        {
+          "ticks": 4,
+          "phase": "active",
+          "blade": {
+            "a": {
+              "x": 36.33,
+              "y": -103.46
+            },
+            "b": {
+              "x": 39.3,
+              "y": -161.98
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": 8,
+              "y": -116,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -9,
+              "y": -100,
+              "w": 35,
+              "h": 45
+            },
+            {
+              "x": -38,
+              "y": -65,
+              "w": 46,
+              "h": 55
+            },
+            {
+              "x": -1,
+              "y": -61,
+              "w": 39,
+              "h": 53
+            },
+            {
+              "x": -10,
+              "y": -103,
+              "w": 28,
+              "h": 17
+            },
+            {
+              "x": 9,
+              "y": -97,
+              "w": 31,
+              "h": 11
+            },
+            {
+              "x": 18,
+              "y": -90,
+              "w": 22,
+              "h": 11
+            },
+            {
+              "x": 31,
+              "y": -103,
+              "w": 9,
+              "h": 22
+            }
+          ]
+        },
+        {
+          "ticks": 14,
+          "phase": "recovery",
+          "blade": {
+            "a": {
+              "x": 25.3,
+              "y": -95.49
+            },
+            "b": {
+              "x": 12.03,
+              "y": -152.57
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": 0,
+              "y": -114,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -14,
+              "y": -96,
+              "w": 33,
+              "h": 43
+            },
+            {
+              "x": -42,
+              "y": -62,
+              "w": 46,
+              "h": 55
+            },
+            {
+              "x": -4,
+              "y": -58,
+              "w": 39,
+              "h": 53
+            },
+            {
+              "x": -18,
+              "y": -98,
+              "w": 28,
+              "h": 16
+            },
+            {
+              "x": 1,
+              "y": -91,
+              "w": 31,
+              "h": 11
+            },
+            {
+              "x": 12,
+              "y": -87,
+              "w": 21,
+              "h": 14
+            },
+            {
+              "x": 22,
+              "y": -96,
+              "w": 11,
+              "h": 23
+            }
+          ]
+        },
+        {
+          "ticks": 14,
+          "phase": "recovery",
+          "blade": {
+            "a": {
+              "x": 26.44,
+              "y": -69.53
+            },
+            "b": {
+              "x": 84.46,
+              "y": -77.78
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": -4,
+              "y": -115,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -17,
+              "y": -95,
+              "w": 35,
+              "h": 43
+            },
+            {
+              "x": -46,
+              "y": -62,
+              "w": 50,
+              "h": 61
+            },
+            {
+              "x": -4,
+              "y": -58,
+              "w": 40,
+              "h": 58
+            },
+            {
+              "x": -21,
+              "y": -97,
+              "w": 20,
+              "h": 27
+            },
+            {
+              "x": -10,
+              "y": -79,
+              "w": 30,
+              "h": 15
+            },
+            {
+              "x": 4,
+              "y": -88,
+              "w": 14,
+              "h": 21
+            },
+            {
+              "x": 4,
+              "y": -76,
+              "w": 22,
+              "h": 11
+            }
+          ]
+        },
+        {
+          "ticks": 14,
+          "phase": "recovery",
+          "blade": {
+            "a": {
+              "x": 21.05,
+              "y": -57.09
+            },
+            "b": {
+              "x": 74.62,
+              "y": -33.35
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": -5,
+              "y": -115,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -18,
+              "y": -94,
+              "w": 36,
+              "h": 42
+            },
+            {
+              "x": -46,
+              "y": -61,
+              "w": 50,
+              "h": 60
+            },
+            {
+              "x": -3,
+              "y": -58,
+              "w": 39,
+              "h": 58
+            },
+            {
+              "x": -22,
+              "y": -96,
+              "w": 18,
+              "h": 27
+            },
+            {
+              "x": -13,
+              "y": -78,
+              "w": 28,
+              "h": 21
+            },
+            {
+              "x": 9,
+              "y": -88,
+              "w": 15,
+              "h": 20
+            },
+            {
+              "x": 13,
+              "y": -77,
+              "w": 11,
+              "h": 22
+            }
+          ]
+        }
+      ],
+      "box": {
+        "x": 0,
+        "y": -110,
+        "w": 100,
+        "h": 80
+      }
+    }
+  },
+  "ultimate_start": {
+    "label": "Mil Cortes: ativa\u00e7\u00e3o e confirma\u00e7\u00e3o",
+    "poses": [
+      {
+        "grip": [
+          121.0,
+          170.0
+        ],
+        "angle": 25,
+        "hip": 8,
+        "detail": "sheath",
+        "free": [
+          122.0,
+          164.0
+        ],
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          128.0,
+          168.0
+        ],
+        "angle": 5,
+        "hip": 7,
+        "lean": 7,
+        "detail": "sheath",
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          173.0,
+          146.0
+        ],
+        "angle": 0,
+        "lean": 17,
+        "x": 10,
+        "left": [
+          9.745683540875305,
+          0.0
+        ],
+        "right": [
+          4.0,
+          0.0
+        ],
+        "two": true,
+        "cloth": 5,
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          171.92030747890146,
+          148.43742543113086
+        ],
+        "angle": 5,
+        "lean": 14,
+        "x": 8,
+        "two": true,
+        "cloth": 4,
+        "left": [
+          7.600565527855608,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          154.0594655717459,
+          157.84557117181762
+        ],
+        "angle": 18,
+        "lean": 5,
+        "two": true,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.2650680910983283,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          145.0,
+          165.0
+        ],
+        "angle": 24,
+        "two": true,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.298472247377333,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      }
+    ],
+    "durations": [
+      5,
+      5,
+      2,
+      1,
+      16,
+      19
+    ],
+    "loop": false,
+    "grounded": true,
+    "move": {
+      "startup": 10,
+      "active": 3,
+      "recovery": 35,
+      "damage": 55,
+      "stun": 40,
+      "blockstun": 23,
+      "push": 0,
+      "launch": 0,
+      "hitstop": 12,
+      "level": "mid",
+      "rank": 5,
+      "cancels": [],
+      "kind": "ultimate",
+      "cost": 100,
+      "drive": {
+        "from": 5,
+        "to": 13,
+        "speed": 10
+      },
+      "invulnerable": {
+        "from": 0,
+        "to": 5
+      },
+      "poses": [
+        {
+          "ticks": 5,
+          "phase": "startup",
+          "blade": {
+            "a": {
+              "x": -10,
+              "y": -47
+            },
+            "b": {
+              "x": -46,
+              "y": -23
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": -5,
+              "y": -107,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -18,
+              "y": -86,
+              "w": 36,
+              "h": 42
+            },
+            {
+              "x": -46,
+              "y": -53,
+              "w": 50,
+              "h": 52
+            },
+            {
+              "x": -3,
+              "y": -50,
+              "w": 41,
+              "h": 50
+            },
+            {
+              "x": -29,
+              "y": -88,
+              "w": 15,
+              "h": 28
+            },
+            {
+              "x": -29,
+              "y": -69,
+              "w": 27,
+              "h": 21
+            },
+            {
+              "x": 1,
+              "y": -80,
+              "w": 16,
+              "h": 21
+            },
+            {
+              "x": -11,
+              "y": -68,
+              "w": 21,
+              "h": 18
+            }
+          ]
+        },
+        {
+          "ticks": 5,
+          "phase": "startup",
+          "blade": {
+            "a": {
+              "x": -10,
+              "y": -48
+            },
+            "b": {
+              "x": -46,
+              "y": -24
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": 0,
+              "y": -107,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -14,
+              "y": -89,
+              "w": 33,
+              "h": 43
+            },
+            {
+              "x": -46,
+              "y": -55,
+              "w": 50,
+              "h": 54
+            },
+            {
+              "x": -4,
+              "y": -51,
+              "w": 42,
+              "h": 51
+            },
+            {
+              "x": -25,
+              "y": -91,
+              "w": 16,
+              "h": 28
+            },
+            {
+              "x": -25,
+              "y": -72,
+              "w": 26,
+              "h": 24
+            },
+            {
+              "x": 8,
+              "y": -80,
+              "w": 13,
+              "h": 22
+            },
+            {
+              "x": -4,
+              "y": -67,
+              "w": 21,
+              "h": 15
+            }
+          ]
+        },
+        {
+          "ticks": 2,
+          "phase": "active",
+          "blade": {
+            "a": {
+              "x": 49.47,
+              "y": -77.9
+            },
+            "b": {
+              "x": 108.07,
+              "y": -78.0
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": 17,
+              "y": -113,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -3,
+              "y": -98,
+              "w": 37,
+              "h": 47
+            },
+            {
+              "x": -37,
+              "y": -63,
+              "w": 51,
+              "h": 62
+            },
+            {
+              "x": 5,
+              "y": -58,
+              "w": 37,
+              "h": 58
+            },
+            {
+              "x": -1,
+              "y": -100,
+              "w": 22,
+              "h": 25
+            },
+            {
+              "x": 12,
+              "y": -84,
+              "w": 30,
+              "h": 10
+            },
+            {
+              "x": 26,
+              "y": -84,
+              "w": 15,
+              "h": 21
+            },
+            {
+              "x": 32,
+              "y": -82,
+              "w": 17,
+              "h": 19
+            }
+          ]
+        },
+        {
+          "ticks": 1,
+          "phase": "active",
+          "blade": {
+            "a": {
+              "x": 48.37,
+              "y": -75.08
+            },
+            "b": {
+              "x": 106.75,
+              "y": -70.07
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": 13,
+              "y": -113,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -5,
+              "y": -98,
+              "w": 36,
+              "h": 47
+            },
+            {
+              "x": -39,
+              "y": -62,
+              "w": 51,
+              "h": 61
+            },
+            {
+              "x": 3,
+              "y": -58,
+              "w": 35,
+              "h": 58
+            },
+            {
+              "x": -5,
+              "y": -100,
+              "w": 26,
+              "h": 21
+            },
+            {
+              "x": 12,
+              "y": -88,
+              "w": 29,
+              "h": 16
+            },
+            {
+              "x": 23,
+              "y": -85,
+              "w": 14,
+              "h": 22
+            },
+            {
+              "x": 28,
+              "y": -80,
+              "w": 20,
+              "h": 17
+            }
+          ]
+        },
+        {
+          "ticks": 16,
+          "phase": "recovery",
+          "blade": {
+            "a": {
+              "x": 30.28,
+              "y": -64.68
+            },
+            "b": {
+              "x": 86.04,
+              "y": -46.66
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": -1,
+              "y": -115,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -15,
+              "y": -96,
+              "w": 33,
+              "h": 44
+            },
+            {
+              "x": -46,
+              "y": -62,
+              "w": 50,
+              "h": 61
+            },
+            {
+              "x": -4,
+              "y": -58,
+              "w": 40,
+              "h": 58
+            },
+            {
+              "x": -19,
+              "y": -98,
+              "w": 23,
+              "h": 24
+            },
+            {
+              "x": -5,
+              "y": -83,
+              "w": 29,
+              "h": 19
+            },
+            {
+              "x": 8,
+              "y": -87,
+              "w": 12,
+              "h": 22
+            },
+            {
+              "x": 8,
+              "y": -74,
+              "w": 23,
+              "h": 12
+            }
+          ]
+        },
+        {
+          "ticks": 19,
+          "phase": "recovery",
+          "blade": {
+            "a": {
+              "x": 21.05,
+              "y": -57.09
+            },
+            "b": {
+              "x": 74.62,
+              "y": -33.35
+            },
+            "r": 3
+          },
+          "hurtboxes": [
+            {
+              "x": -5,
+              "y": -115,
+              "w": 21,
+              "h": 19
+            },
+            {
+              "x": -18,
+              "y": -94,
+              "w": 36,
+              "h": 42
+            },
+            {
+              "x": -46,
+              "y": -61,
+              "w": 50,
+              "h": 60
+            },
+            {
+              "x": -3,
+              "y": -58,
+              "w": 39,
+              "h": 58
+            },
+            {
+              "x": -22,
+              "y": -96,
+              "w": 18,
+              "h": 27
+            },
+            {
+              "x": -13,
+              "y": -78,
+              "w": 28,
+              "h": 21
+            },
+            {
+              "x": 9,
+              "y": -88,
+              "w": 15,
+              "h": 20
+            },
+            {
+              "x": 13,
+              "y": -77,
+              "w": 11,
+              "h": 22
+            }
+          ]
+        }
+      ],
+      "box": {
+        "x": 0,
+        "y": -110,
+        "w": 100,
+        "h": 80
+      }
+    }
+  },
+  "ultimateRush": {
+    "label": "Mil Cortes: sequ\u00eancia",
+    "poses": [
+      {
+        "grip": [
+          166.0,
+          143.0
+        ],
+        "angle": -35,
+        "lean": 10,
+        "x": 6,
+        "two": true,
+        "free": [
+          117.0,
+          156.0
+        ],
+        "cloth": -2,
+        "hair": 0,
+        "left": [
+          5.439060376647703,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          169.0,
+          148.0
+        ],
+        "angle": 25,
+        "lean": -5,
+        "x": -3,
+        "two": false,
+        "free": [
+          117.0,
+          156.0
+        ],
+        "cloth": -1,
+        "hair": 1,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -5.464397251579015,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          170.55443833090567,
+          151.94793305436374
+        ],
+        "angle": -12,
+        "lean": 16,
+        "x": 9,
+        "two": true,
+        "free": [
+          117.0,
+          156.0
+        ],
+        "cloth": 0,
+        "hair": 2,
+        "left": [
+          8.69503044979227,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          166.0,
+          158.0
+        ],
+        "angle": 40,
+        "lean": 4,
+        "x": 1,
+        "two": false,
+        "free": [
+          117.0,
+          156.0
+        ],
+        "cloth": 1,
+        "hair": 0,
+        "left": [
+          0.26534918457491585,
+          0.0
+        ],
+        "right": [
+          -1.2615653772156747,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          167.12324290421367,
+          142.19227822127502
+        ],
+        "angle": -35,
+        "lean": 10,
+        "x": 6,
+        "two": true,
+        "free": [
+          117.0,
+          156.0
+        ],
+        "cloth": 2,
+        "hair": 1,
+        "left": [
+          5.439060376647703,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          172.0,
+          148.0
+        ],
+        "angle": 25,
+        "lean": -5,
+        "x": -3,
+        "two": false,
+        "free": [
+          117.0,
+          156.0
+        ],
+        "cloth": -2,
+        "hair": 2,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -5.464397251579015,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          166.0,
+          153.0
+        ],
+        "angle": -12,
+        "lean": 16,
+        "x": 9,
+        "two": true,
+        "free": [
+          117.0,
+          156.0
+        ],
+        "cloth": -1,
+        "hair": 0,
+        "left": [
+          8.69503044979227,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          169.0,
+          158.0
+        ],
+        "angle": 40,
+        "lean": 4,
+        "x": 1,
+        "two": false,
+        "free": [
+          117.0,
+          156.0
+        ],
+        "cloth": 0,
+        "hair": 1,
+        "left": [
+          0.26534918457491585,
+          0.0
+        ],
+        "right": [
+          -1.2615653772156747,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          167.53211925479934,
+          141.20846699094656
+        ],
+        "angle": -35,
+        "lean": 10,
+        "x": 6,
+        "two": true,
+        "free": [
+          117.0,
+          156.0
+        ],
+        "cloth": 1,
+        "hair": 2,
+        "left": [
+          5.439060376647703,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          166.0,
+          148.0
+        ],
+        "angle": 25,
+        "lean": -5,
+        "x": -3,
+        "two": false,
+        "free": [
+          117.0,
+          156.0
+        ],
+        "cloth": 2,
+        "hair": 0,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -5.464397251579015,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          169.0,
+          153.0
+        ],
+        "angle": -12,
+        "lean": 16,
+        "x": 9,
+        "two": true,
+        "free": [
+          117.0,
+          156.0
+        ],
+        "cloth": -2,
+        "hair": 1,
+        "left": [
+          8.69503044979227,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          172.0,
+          158.0
+        ],
+        "angle": 40,
+        "lean": 4,
+        "x": 1,
+        "two": false,
+        "free": [
+          117.0,
+          156.0
+        ],
+        "cloth": -1,
+        "hair": 2,
+        "left": [
+          0.26534918457491585,
+          0.0
+        ],
+        "right": [
+          -1.2615653772156747,
+          0.0
+        ],
+        "farReach": 41
+      }
+    ],
+    "durations": [
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4
+    ],
+    "loop": false,
+    "grounded": true
+  },
+  "ultimateFinish": {
+    "label": "Mil Cortes: finaliza\u00e7\u00e3o",
+    "poses": [
+      {
+        "grip": [
+          141.0,
+          130.0
+        ],
+        "angle": -130,
+        "lean": -8,
+        "two": true,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.6314528057581867,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          144.15946880908825,
+          125.08997557076401
+        ],
+        "angle": -100,
+        "lean": -12,
+        "two": true,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.937634278133487,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          169.0,
+          144.0
+        ],
+        "angle": -5,
+        "lean": 16,
+        "x": 9,
+        "two": true,
+        "cloth": 5,
+        "left": [
+          8.69503044979227,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          177.33657214966314,
+          153.53020507571964
+        ],
+        "angle": 9,
+        "lean": 21,
+        "x": 12,
+        "two": true,
+        "cloth": 6,
+        "left": [
+          11.971003638552986,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          166.98928975777497,
+          157.56665153009746
+        ],
+        "angle": 24,
+        "lean": 14,
+        "x": 8,
+        "two": true,
+        "left": [
+          7.600565527855608,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          150.85364168413378,
+          162.11802065822803
+        ],
+        "angle": 24,
+        "lean": 5,
+        "two": true,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.2650680910983283,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      }
+    ],
+    "durations": [
+      2,
+      2,
+      2,
+      3,
+      3,
+      6
+    ],
+    "loop": false,
+    "grounded": true
+  },
+  "ultimateRecover": {
+    "label": "Mil Cortes: retorno",
+    "poses": [
+      {
+        "grip": [
+          151.10698900116031,
+          162.27839638158116
+        ],
+        "angle": 24,
+        "lean": 6,
+        "two": true,
+        "cloth": 3,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.2735311991191054,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          149.30714563692837,
+          163.34913284458753
+        ],
+        "angle": 24,
+        "lean": 4,
+        "two": true,
+        "cloth": 2,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.2615653772156747,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          147.48847096405973,
+          164.48195357128517
+        ],
+        "angle": 24,
+        "lean": 2,
+        "two": true,
+        "cloth": 1,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.269701198478913,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          145.0,
+          165.0
+        ],
+        "angle": 24,
+        "lean": 0,
+        "two": true,
+        "cloth": 0,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.298472247377333,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      }
+    ],
+    "durations": [
+      4,
+      4,
+      5,
+      5
+    ],
+    "loop": false,
+    "grounded": true
+  }
+}

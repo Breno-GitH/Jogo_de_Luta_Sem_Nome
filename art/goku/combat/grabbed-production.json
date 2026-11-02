@@ -1,0 +1,321 @@
+{
+  "method": "whole-pose",
+  "canvas": [
+    384,
+    256
+  ],
+  "pivot": {
+    "x": 192,
+    "y": 224
+  },
+  "config": {
+    "source": "art/goku/combat/grabbed_victim-source.png",
+    "kind": "reaction",
+    "grounded": false,
+    "cells": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "durations": [
+      4,
+      4,
+      6,
+      8
+    ],
+    "loop": false,
+    "label": "grabbed"
+  },
+  "frames": [
+    {
+      "source": "art/goku/combat/grabbed_victim-source.png",
+      "sourceRect": [
+        654,
+        48,
+        893,
+        363
+      ],
+      "cellRect": [
+        512,
+        0,
+        1024,
+        341
+      ],
+      "scale": 0.37037037037037035,
+      "offset": [
+        148,
+        94
+      ],
+      "metrics": {
+        "bbox": [
+          148,
+          94,
+          237,
+          211
+        ],
+        "opaquePixels": 5256,
+        "largestComponent": 1.0,
+        "components": [
+          5256
+        ]
+      },
+      "pose": {
+        "ticks": 4,
+        "phase": "reaction",
+        "hitboxes": [],
+        "hurtboxes": [
+          {
+            "x": -22,
+            "y": -130,
+            "w": 67,
+            "h": 32
+          },
+          {
+            "x": -27,
+            "y": -98,
+            "w": 63,
+            "h": 29
+          },
+          {
+            "x": -31,
+            "y": -69,
+            "w": 64,
+            "h": 26
+          },
+          {
+            "x": -41,
+            "y": -43,
+            "w": 75,
+            "h": 23
+          },
+          {
+            "x": -44,
+            "y": -20,
+            "w": 85,
+            "h": 7
+          }
+        ]
+      },
+      "strikePoint": null,
+      "discardedSpeckles": []
+    },
+    {
+      "source": "art/goku/combat/grabbed_victim-source.png",
+      "sourceRect": [
+        1097,
+        43,
+        1420,
+        363
+      ],
+      "cellRect": [
+        1024,
+        0,
+        1536,
+        341
+      ],
+      "scale": 0.37037037037037035,
+      "offset": [
+        132,
+        94
+      ],
+      "metrics": {
+        "bbox": [
+          132,
+          94,
+          252,
+          213
+        ],
+        "opaquePixels": 5628,
+        "largestComponent": 1.0,
+        "components": [
+          5628
+        ]
+      },
+      "pose": {
+        "ticks": 4,
+        "phase": "reaction",
+        "hitboxes": [],
+        "hurtboxes": [
+          {
+            "x": -23,
+            "y": -130,
+            "w": 61,
+            "h": 32
+          },
+          {
+            "x": -30,
+            "y": -98,
+            "w": 58,
+            "h": 29
+          },
+          {
+            "x": -47,
+            "y": -69,
+            "w": 91,
+            "h": 26
+          },
+          {
+            "x": -52,
+            "y": -43,
+            "w": 101,
+            "h": 23
+          },
+          {
+            "x": -60,
+            "y": -20,
+            "w": 120,
+            "h": 9
+          }
+        ]
+      },
+      "strikePoint": null,
+      "discardedSpeckles": []
+    },
+    {
+      "source": "art/goku/combat/grabbed_victim-source.png",
+      "sourceRect": [
+        179,
+        376,
+        381,
+        681
+      ],
+      "cellRect": [
+        0,
+        341,
+        512,
+        683
+      ],
+      "scale": 0.37037037037037035,
+      "offset": [
+        154,
+        94
+      ],
+      "metrics": {
+        "bbox": [
+          154,
+          94,
+          229,
+          207
+        ],
+        "opaquePixels": 4742,
+        "largestComponent": 1.0,
+        "components": [
+          4742
+        ]
+      },
+      "pose": {
+        "ticks": 6,
+        "phase": "reaction",
+        "hitboxes": [],
+        "hurtboxes": [
+          {
+            "x": -32,
+            "y": -130,
+            "w": 69,
+            "h": 32
+          },
+          {
+            "x": -38,
+            "y": -98,
+            "w": 64,
+            "h": 29
+          },
+          {
+            "x": -38,
+            "y": -69,
+            "w": 62,
+            "h": 26
+          },
+          {
+            "x": -32,
+            "y": -43,
+            "w": 48,
+            "h": 23
+          },
+          {
+            "x": -9,
+            "y": -20,
+            "w": 7,
+            "h": 3
+          }
+        ]
+      },
+      "strikePoint": null,
+      "discardedSpeckles": []
+    },
+    {
+      "source": "art/goku/combat/grabbed_victim-source.png",
+      "sourceRect": [
+        593,
+        380,
+        954,
+        681
+      ],
+      "cellRect": [
+        512,
+        341,
+        1024,
+        683
+      ],
+      "scale": 0.37037037037037035,
+      "offset": [
+        125,
+        94
+      ],
+      "metrics": {
+        "bbox": [
+          125,
+          94,
+          259,
+          205
+        ],
+        "opaquePixels": 6074,
+        "largestComponent": 0.9998353638459005,
+        "components": [
+          6073,
+          1
+        ]
+      },
+      "pose": {
+        "ticks": 8,
+        "phase": "reaction",
+        "hitboxes": [],
+        "hurtboxes": [
+          {
+            "x": -67,
+            "y": -130,
+            "w": 89,
+            "h": 32
+          },
+          {
+            "x": -64,
+            "y": -98,
+            "w": 108,
+            "h": 29
+          },
+          {
+            "x": -64,
+            "y": -69,
+            "w": 131,
+            "h": 26
+          },
+          {
+            "x": -4,
+            "y": -43,
+            "w": 55,
+            "h": 23
+          },
+          {
+            "x": 17,
+            "y": -20,
+            "w": 4,
+            "h": 1
+          }
+        ]
+      },
+      "strikePoint": null,
+      "discardedSpeckles": []
+    }
+  ]
+}

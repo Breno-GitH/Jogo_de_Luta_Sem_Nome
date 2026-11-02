@@ -1,0 +1,312 @@
+{
+  "stage": "dash",
+  "beforeAtlas": true,
+  "method": "whole-pose",
+  "frames": [
+    {
+      "label": "dashForward/0",
+      "bbox": [
+        73,
+        115,
+        183,
+        224
+      ],
+      "opaquePixels": 5503,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5503
+      ],
+      "colors": 28
+    },
+    {
+      "label": "dashForward/1",
+      "bbox": [
+        58,
+        121,
+        199,
+        224
+      ],
+      "opaquePixels": 5851,
+      "mainComponentFraction": 0.9996581780892155,
+      "components": [
+        5849,
+        2
+      ],
+      "colors": 30
+    },
+    {
+      "label": "dashForward/2",
+      "bbox": [
+        62,
+        102,
+        195,
+        224
+      ],
+      "opaquePixels": 6077,
+      "mainComponentFraction": 1.0,
+      "components": [
+        6077
+      ],
+      "colors": 29
+    },
+    {
+      "label": "dashForward/3",
+      "bbox": [
+        52,
+        115,
+        204,
+        224
+      ],
+      "opaquePixels": 6478,
+      "mainComponentFraction": 1.0,
+      "components": [
+        6478
+      ],
+      "colors": 28
+    },
+    {
+      "label": "dashForward/4",
+      "bbox": [
+        64,
+        117,
+        192,
+        224
+      ],
+      "opaquePixels": 5940,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5940
+      ],
+      "colors": 27
+    },
+    {
+      "label": "dashForward/5",
+      "bbox": [
+        66,
+        101,
+        189,
+        224
+      ],
+      "opaquePixels": 6295,
+      "mainComponentFraction": 1.0,
+      "components": [
+        6295
+      ],
+      "colors": 28
+    },
+    {
+      "label": "dashForward/6",
+      "bbox": [
+        72,
+        100,
+        184,
+        224
+      ],
+      "opaquePixels": 6277,
+      "mainComponentFraction": 1.0,
+      "components": [
+        6277
+      ],
+      "colors": 29
+    },
+    {
+      "label": "dashForwardRecovery/0",
+      "bbox": [
+        75,
+        94,
+        182,
+        224
+      ],
+      "opaquePixels": 6408,
+      "mainComponentFraction": 1.0,
+      "components": [
+        6408
+      ],
+      "colors": 30
+    },
+    {
+      "label": "dashForwardRecovery/reference",
+      "bbox": [
+        83,
+        94,
+        175,
+        224
+      ],
+      "opaquePixels": 5768,
+      "mainComponentFraction": 0.9996532593619972,
+      "components": [
+        5766,
+        2
+      ],
+      "colors": 28
+    },
+    {
+      "label": "dashForwardRecovery/initial-reference",
+      "bbox": [
+        72,
+        100,
+        184,
+        224
+      ],
+      "opaquePixels": 6277,
+      "mainComponentFraction": 1.0,
+      "components": [
+        6277
+      ],
+      "colors": 29
+    },
+    {
+      "label": "backdash/0",
+      "bbox": [
+        84,
+        102,
+        172,
+        224
+      ],
+      "opaquePixels": 5522,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5522
+      ],
+      "colors": 28
+    },
+    {
+      "label": "backdash/1",
+      "bbox": [
+        79,
+        102,
+        177,
+        224
+      ],
+      "opaquePixels": 5407,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5407
+      ],
+      "colors": 29
+    },
+    {
+      "label": "backdash/2",
+      "bbox": [
+        78,
+        95,
+        177,
+        224
+      ],
+      "opaquePixels": 5307,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5307
+      ],
+      "colors": 28
+    },
+    {
+      "label": "backdash/3",
+      "bbox": [
+        83,
+        92,
+        173,
+        224
+      ],
+      "opaquePixels": 5128,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5128
+      ],
+      "colors": 27
+    },
+    {
+      "label": "backdash/4",
+      "bbox": [
+        76,
+        108,
+        179,
+        224
+      ],
+      "opaquePixels": 5451,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5451
+      ],
+      "colors": 29
+    },
+    {
+      "label": "backdash/5",
+      "bbox": [
+        76,
+        118,
+        179,
+        224
+      ],
+      "opaquePixels": 5236,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5236
+      ],
+      "colors": 28
+    },
+    {
+      "label": "backdash/6",
+      "bbox": [
+        80,
+        99,
+        176,
+        224
+      ],
+      "opaquePixels": 5733,
+      "mainComponentFraction": 0.9998255712541427,
+      "components": [
+        5732,
+        1
+      ],
+      "colors": 29
+    },
+    {
+      "label": "backdashRecovery/0",
+      "bbox": [
+        80,
+        99,
+        177,
+        224
+      ],
+      "opaquePixels": 5944,
+      "mainComponentFraction": 1.0,
+      "components": [
+        5944
+      ],
+      "colors": 29
+    },
+    {
+      "label": "backdashRecovery/reference",
+      "bbox": [
+        83,
+        94,
+        175,
+        224
+      ],
+      "opaquePixels": 5768,
+      "mainComponentFraction": 0.9996532593619972,
+      "components": [
+        5766,
+        2
+      ],
+      "colors": 28
+    },
+    {
+      "label": "backdashRecovery/initial-reference",
+      "bbox": [
+        80,
+        99,
+        176,
+        224
+      ],
+      "opaquePixels": 5733,
+      "mainComponentFraction": 0.9998255712541427,
+      "components": [
+        5732,
+        1
+      ],
+      "colors": 29
+    }
+  ]
+}

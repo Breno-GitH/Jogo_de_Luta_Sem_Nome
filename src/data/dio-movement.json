@@ -1,0 +1,15 @@
+{
+  "walkSpeed": 1.6,
+  "backSpeed": 1.2,
+  "airSpeed": 3.3,
+  "dashForward": [0, 2, 5, 9, 13, 15, 15, 15, 14, 12, 10, 8, 6, 4, 2, 0],
+  "backdash": [0, 2, 4, 7, 10, 11, 11, 10, 9, 8, 7, 5, 4, 3, 2, 0],
+  "jumpStartup": 8,
+  "landingTicks": 8,
+  "jumpVelocity": -15.5,
+  "gravity": 0.7,
+  "crouchStartTicks": 8,
+  "crouchEndTicks": 8,
+  "leftBound": 80,
+  "rightBound": 1200
+}

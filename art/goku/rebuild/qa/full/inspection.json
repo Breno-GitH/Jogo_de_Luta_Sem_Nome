@@ -1,0 +1,134 @@
+[
+  {
+    "key": "idle",
+    "count": 6
+  },
+  {
+    "key": "walkForward",
+    "count": 8
+  },
+  {
+    "key": "walkBack",
+    "count": 8
+  },
+  {
+    "key": "crouchStart",
+    "count": 6
+  },
+  {
+    "key": "crouchIdle",
+    "count": 3
+  },
+  {
+    "key": "crouchEnd",
+    "count": 7
+  },
+  {
+    "key": "jumpStart",
+    "count": 3
+  },
+  {
+    "key": "jumpRise",
+    "count": 3
+  },
+  {
+    "key": "jumpApex",
+    "count": 2
+  },
+  {
+    "key": "jumpFall",
+    "count": 3
+  },
+  {
+    "key": "jumpRiseForward",
+    "count": 3
+  },
+  {
+    "key": "jumpApexForward",
+    "count": 2
+  },
+  {
+    "key": "jumpFallForward",
+    "count": 3
+  },
+  {
+    "key": "jumpRiseBackward",
+    "count": 3
+  },
+  {
+    "key": "jumpApexBackward",
+    "count": 2
+  },
+  {
+    "key": "jumpFallBackward",
+    "count": 3
+  },
+  {
+    "key": "landing",
+    "count": 5
+  },
+  {
+    "key": "landingForward",
+    "count": 5
+  },
+  {
+    "key": "landingBackward",
+    "count": 5
+  },
+  {
+    "key": "dashForward",
+    "count": 7
+  },
+  {
+    "key": "dashForwardRecovery",
+    "count": 3
+  },
+  {
+    "key": "backdash",
+    "count": 7
+  },
+  {
+    "key": "backdashRecovery",
+    "count": 3
+  },
+  {
+    "key": "idleToWalkForward",
+    "count": 4
+  },
+  {
+    "key": "walkToIdleForward",
+    "count": 3
+  },
+  {
+    "key": "crouchWalkForward",
+    "count": 7
+  },
+  {
+    "key": "idleToWalkBack",
+    "count": 4
+  },
+  {
+    "key": "walkToIdleBack",
+    "count": 3
+  },
+  {
+    "key": "crouchWalkBack",
+    "count": 7
+  },
+  {
+    "key": "trainingHit",
+    "count": 3
+  },
+  {
+    "key": "trainingAirHit",
+    "count": 3
+  },
+  {
+    "key": "trainingDown",
+    "count": 3
+  },
+  {
+    "key": "trainingGetup",
+    "count": 5
+  }
+]

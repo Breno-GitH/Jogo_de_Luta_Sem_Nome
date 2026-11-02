@@ -1,0 +1,194 @@
+[
+  {
+    "enemy": "samurai",
+    "mirror": false,
+    "type": "knives",
+    "strength": "light",
+    "hits": 1,
+    "damage": "38"
+  },
+  {
+    "enemy": "samurai",
+    "mirror": false,
+    "type": "knives",
+    "strength": "medium",
+    "hits": 2,
+    "damage": "61"
+  },
+  {
+    "enemy": "samurai",
+    "mirror": false,
+    "type": "knives",
+    "strength": "heavy",
+    "hits": 3,
+    "damage": "75"
+  },
+  {
+    "enemy": "samurai",
+    "mirror": false,
+    "type": "rush",
+    "strength": "light",
+    "hits": 4,
+    "damage": "68"
+  },
+  {
+    "enemy": "samurai",
+    "mirror": false,
+    "type": "rush",
+    "strength": "medium",
+    "hits": 7,
+    "damage": "85"
+  },
+  {
+    "enemy": "samurai",
+    "mirror": false,
+    "type": "rush",
+    "strength": "heavy",
+    "hits": 10,
+    "damage": "92"
+  },
+  {
+    "enemy": "samurai",
+    "mirror": true,
+    "type": "knives",
+    "strength": "light",
+    "hits": 1,
+    "damage": "38"
+  },
+  {
+    "enemy": "samurai",
+    "mirror": true,
+    "type": "knives",
+    "strength": "medium",
+    "hits": 2,
+    "damage": "61"
+  },
+  {
+    "enemy": "samurai",
+    "mirror": true,
+    "type": "knives",
+    "strength": "heavy",
+    "hits": 3,
+    "damage": "75"
+  },
+  {
+    "enemy": "samurai",
+    "mirror": true,
+    "type": "rush",
+    "strength": "light",
+    "hits": 4,
+    "damage": "68"
+  },
+  {
+    "enemy": "samurai",
+    "mirror": true,
+    "type": "rush",
+    "strength": "medium",
+    "hits": 7,
+    "damage": "85"
+  },
+  {
+    "enemy": "samurai",
+    "mirror": true,
+    "type": "rush",
+    "strength": "heavy",
+    "hits": 10,
+    "damage": "92"
+  },
+  {
+    "enemy": "dio",
+    "mirror": false,
+    "type": "knives",
+    "strength": "light",
+    "hits": 1,
+    "damage": "38"
+  },
+  {
+    "enemy": "dio",
+    "mirror": false,
+    "type": "knives",
+    "strength": "medium",
+    "hits": 2,
+    "damage": "61"
+  },
+  {
+    "enemy": "dio",
+    "mirror": false,
+    "type": "knives",
+    "strength": "heavy",
+    "hits": 3,
+    "damage": "75"
+  },
+  {
+    "enemy": "dio",
+    "mirror": false,
+    "type": "rush",
+    "strength": "light",
+    "hits": 4,
+    "damage": "68"
+  },
+  {
+    "enemy": "dio",
+    "mirror": false,
+    "type": "rush",
+    "strength": "medium",
+    "hits": 7,
+    "damage": "85"
+  },
+  {
+    "enemy": "dio",
+    "mirror": false,
+    "type": "rush",
+    "strength": "heavy",
+    "hits": 10,
+    "damage": "92"
+  },
+  {
+    "enemy": "dio",
+    "mirror": true,
+    "type": "knives",
+    "strength": "light",
+    "hits": 1,
+    "damage": "38"
+  },
+  {
+    "enemy": "dio",
+    "mirror": true,
+    "type": "knives",
+    "strength": "medium",
+    "hits": 2,
+    "damage": "61"
+  },
+  {
+    "enemy": "dio",
+    "mirror": true,
+    "type": "knives",
+    "strength": "heavy",
+    "hits": 3,
+    "damage": "75"
+  },
+  {
+    "enemy": "dio",
+    "mirror": true,
+    "type": "rush",
+    "strength": "light",
+    "hits": 4,
+    "damage": "68"
+  },
+  {
+    "enemy": "dio",
+    "mirror": true,
+    "type": "rush",
+    "strength": "medium",
+    "hits": 7,
+    "damage": "85"
+  },
+  {
+    "enemy": "dio",
+    "mirror": true,
+    "type": "rush",
+    "strength": "heavy",
+    "hits": 10,
+    "damage": "92"
+  }
+]

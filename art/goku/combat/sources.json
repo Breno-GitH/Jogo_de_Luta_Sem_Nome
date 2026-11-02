@@ -1,0 +1,904 @@
+{
+  "version": 1,
+  "method": "whole-pose",
+  "clips": {
+    "stand_light": {
+      "source": "art/goku/combat/stand_light-source.png",
+      "kind": "normal",
+      "grounded": true,
+      "cells": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "durations": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        4
+      ],
+      "startup": 4,
+      "active": 4,
+      "strike": "punch",
+      "combat": {
+        "damage": 42,
+        "stun": 24,
+        "blockstun": 11,
+        "push": 0.9,
+        "launch": 0,
+        "hitstop": 6,
+        "level": "mid",
+        "rank": 1,
+        "cancels": [
+          "medium",
+          "heavy"
+        ],
+        "cancelWindow": {
+          "fromTick": 5,
+          "toTick": 15
+        },
+        "cancelMoves": [
+          "stand_medium",
+          "stand_heavy"
+        ]
+      },
+      "label": "stand_light"
+    },
+    "stand_medium": {
+      "source": "art/goku/combat/stand_medium-source.png",
+      "kind": "normal",
+      "grounded": true,
+      "cells": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "durations": [
+        3,
+        3,
+        2,
+        3,
+        2,
+        5,
+        6
+      ],
+      "startup": 8,
+      "active": 5,
+      "strike": "kick",
+      "combat": {
+        "damage": 66,
+        "stun": 27,
+        "blockstun": 15,
+        "push": 1.3,
+        "launch": 0,
+        "hitstop": 8,
+        "level": "mid",
+        "rank": 2,
+        "cancels": [
+          "heavy"
+        ],
+        "cancelWindow": {
+          "fromTick": 9,
+          "toTick": 20
+        },
+        "cancelMoves": [
+          "stand_heavy"
+        ]
+      },
+      "label": "stand_medium"
+    },
+    "stand_heavy": {
+      "source": "art/goku/combat/stand_heavy-source.png",
+      "kind": "normal",
+      "grounded": true,
+      "cells": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "durations": [
+        3,
+        3,
+        3,
+        2,
+        3,
+        3,
+        5,
+        6
+      ],
+      "startup": 9,
+      "active": 5,
+      "strike": "punch",
+      "combat": {
+        "damage": 100,
+        "stun": 32,
+        "blockstun": 20,
+        "push": 7,
+        "launch": 0,
+        "hitstop": 11,
+        "level": "mid",
+        "rank": 3,
+        "cancels": [],
+        "cancelWindow": {
+          "fromTick": 10,
+          "toTick": 21
+        },
+        "cancelMoves": []
+      },
+      "label": "stand_heavy",
+      "discardSpeckles": {
+        "3": [
+          [
+            259,
+            221
+          ],
+          [
+            259,
+            222
+          ]
+        ],
+        "4": [
+          [
+            136,
+            143
+          ],
+          [
+            136,
+            144
+          ],
+          [
+            136,
+            145
+          ],
+          [
+            136,
+            146
+          ],
+          [
+            136,
+            147
+          ],
+          [
+            136,
+            148
+          ]
+        ]
+      }
+    },
+    "crouch_light": {
+      "source": "art/goku/combat/crouch_light-source.png",
+      "kind": "normal",
+      "grounded": true,
+      "cells": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "durations": [
+        2,
+        2,
+        3,
+        3,
+        3,
+        4
+      ],
+      "startup": 4,
+      "active": 3,
+      "strike": "lowPunch",
+      "combat": {
+        "damage": 38,
+        "stun": 24,
+        "blockstun": 10,
+        "push": 0.7,
+        "launch": 0,
+        "hitstop": 5,
+        "level": "low",
+        "rank": 1,
+        "cancels": [
+          "medium",
+          "heavy"
+        ],
+        "cancelWindow": {
+          "fromTick": 5,
+          "toTick": 14
+        },
+        "cancelMoves": [
+          "crouch_medium",
+          "crouch_heavy"
+        ]
+      },
+      "label": "crouch_light"
+    },
+    "crouch_medium": {
+      "source": "art/goku/combat/crouch_medium-source.png",
+      "kind": "normal",
+      "grounded": true,
+      "cells": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "durations": [
+        3,
+        3,
+        2,
+        3,
+        2,
+        5,
+        6
+      ],
+      "startup": 8,
+      "active": 5,
+      "strike": "sweep",
+      "combat": {
+        "damage": 62,
+        "stun": 28,
+        "blockstun": 15,
+        "push": 1.2,
+        "launch": 0,
+        "hitstop": 8,
+        "level": "low",
+        "rank": 2,
+        "cancels": [
+          "heavy"
+        ],
+        "cancelWindow": {
+          "fromTick": 9,
+          "toTick": 20
+        },
+        "cancelMoves": [
+          "crouch_heavy"
+        ]
+      },
+      "label": "crouch_medium",
+      "registration": {
+        "4": {
+          "offsetDelta": [
+            56,
+            0
+          ]
+        }
+      }
+    },
+    "crouch_heavy": {
+      "source": "art/goku/combat/crouch_heavy-source.png",
+      "kind": "normal",
+      "grounded": true,
+      "cells": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "durations": [
+        3,
+        3,
+        3,
+        2,
+        3,
+        3,
+        5,
+        6
+      ],
+      "startup": 9,
+      "active": 5,
+      "strike": "uppercut",
+      "combat": {
+        "damage": 88,
+        "stun": 42,
+        "blockstun": 20,
+        "push": 0.7,
+        "launch": -19,
+        "hitstop": 10,
+        "level": "mid",
+        "rank": 3,
+        "cancels": [
+          "jump"
+        ],
+        "cancelWindow": {
+          "fromTick": 10,
+          "toTick": 21
+        },
+        "cancelMoves": [],
+        "drive": {
+          "from": 2,
+          "to": 9,
+          "speed": 3
+        }
+      },
+      "label": "crouch_heavy",
+      "strikePoints": {
+        "3": [
+          228,
+          128
+        ],
+        "4": [
+          210,
+          83
+        ]
+      }
+    },
+    "air_light": {
+      "source": "art/goku/combat/air_light-source.png",
+      "kind": "normal",
+      "grounded": false,
+      "cells": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "durations": [
+        2,
+        1,
+        2,
+        2,
+        3,
+        3
+      ],
+      "startup": 3,
+      "active": 4,
+      "strike": "punch",
+      "combat": {
+        "damage": 36,
+        "stun": 25,
+        "blockstun": 10,
+        "push": 0.6,
+        "launch": -5,
+        "hitstop": 5,
+        "level": "high",
+        "rank": 1,
+        "cancels": [
+          "medium",
+          "heavy"
+        ],
+        "cancelWindow": {
+          "fromTick": 4,
+          "toTick": 14
+        },
+        "cancelMoves": [
+          "air_medium",
+          "air_heavy"
+        ],
+        "airHold": -3
+      },
+      "label": "air_light",
+      "registration": {
+        "2": {
+          "offsetDelta": [
+            16,
+            0
+          ]
+        },
+        "3": {
+          "offsetDelta": [
+            16,
+            0
+          ]
+        }
+      }
+    },
+    "air_medium": {
+      "source": "art/goku/combat/air_medium-source.png",
+      "kind": "normal",
+      "grounded": false,
+      "cells": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "durations": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        4,
+        4
+      ],
+      "startup": 6,
+      "active": 4,
+      "strike": "kick",
+      "combat": {
+        "damage": 59,
+        "stun": 28,
+        "blockstun": 14,
+        "push": 0.7,
+        "launch": -2.5,
+        "hitstop": 7,
+        "level": "high",
+        "rank": 2,
+        "cancels": [
+          "heavy"
+        ],
+        "cancelWindow": {
+          "fromTick": 7,
+          "toTick": 17
+        },
+        "cancelMoves": [
+          "air_heavy"
+        ],
+        "airHold": -8
+      },
+      "label": "air_medium",
+      "registration": {
+        "3": {
+          "offsetDelta": [
+            20,
+            0
+          ]
+        },
+        "4": {
+          "offsetDelta": [
+            20,
+            0
+          ]
+        }
+      }
+    },
+    "air_heavy": {
+      "source": "art/goku/combat/air_heavy-source.png",
+      "kind": "normal",
+      "grounded": false,
+      "cells": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "durations": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        3,
+        4,
+        5
+      ],
+      "startup": 6,
+      "active": 4,
+      "strike": "downkick",
+      "combat": {
+        "damage": 92,
+        "stun": 35,
+        "blockstun": 20,
+        "push": 5,
+        "launch": 13,
+        "hitstop": 11,
+        "level": "high",
+        "rank": 3,
+        "cancels": [],
+        "cancelWindow": {
+          "fromTick": 7,
+          "toTick": 17
+        },
+        "cancelMoves": [],
+        "airHold": 2,
+        "knockdown": true
+      },
+      "label": "air_heavy"
+    },
+    "guardStand": {
+      "source": "art/goku/combat/guard_standing-source.png",
+      "kind": "reaction",
+      "grounded": true,
+      "cells": [
+        1,
+        2,
+        3
+      ],
+      "durations": [
+        6,
+        9,
+        9
+      ],
+      "loop": true,
+      "label": "guardStand"
+    },
+    "guardCrouch": {
+      "source": "art/goku/combat/guard_crouch-source.png",
+      "kind": "reaction",
+      "grounded": true,
+      "cells": [
+        2,
+        3
+      ],
+      "durations": [
+        10,
+        12
+      ],
+      "loop": true,
+      "label": "guardCrouch"
+    },
+    "guardImpactStand": {
+      "source": "art/goku/combat/guard_standing-source.png",
+      "kind": "reaction",
+      "grounded": true,
+      "cells": [
+        4,
+        5,
+        6
+      ],
+      "durations": [
+        2,
+        2,
+        2
+      ],
+      "loop": false,
+      "label": "guardImpactStand"
+    },
+    "guardImpactCrouch": {
+      "source": "art/goku/combat/guard_crouch-source.png",
+      "kind": "reaction",
+      "grounded": true,
+      "cells": [
+        4,
+        5,
+        6
+      ],
+      "durations": [
+        2,
+        2,
+        2
+      ],
+      "loop": false,
+      "label": "guardImpactCrouch"
+    },
+    "guardRecovery": {
+      "source": "art/goku/combat/guard_standing-source.png",
+      "kind": "reaction",
+      "grounded": true,
+      "cells": [
+        6,
+        7,
+        8
+      ],
+      "durations": [
+        2,
+        3,
+        3
+      ],
+      "loop": false,
+      "label": "guardRecovery"
+    },
+    "guardRecoveryCrouch": {
+      "source": "art/goku/combat/guard_crouch-source.png",
+      "kind": "reaction",
+      "grounded": true,
+      "cells": [
+        6,
+        7,
+        8
+      ],
+      "durations": [
+        2,
+        3,
+        3
+      ],
+      "loop": false,
+      "label": "guardRecoveryCrouch"
+    },
+    "hitLight": {
+      "source": "art/goku/combat/hit_standing-source.png",
+      "kind": "reaction",
+      "grounded": true,
+      "cells": [
+        1,
+        2
+      ],
+      "durations": [
+        4,
+        6
+      ],
+      "loop": false,
+      "label": "hitLight"
+    },
+    "hitMedium": {
+      "source": "art/goku/combat/hit_standing-source.png",
+      "kind": "reaction",
+      "grounded": true,
+      "cells": [
+        3,
+        4
+      ],
+      "durations": [
+        4,
+        8
+      ],
+      "loop": false,
+      "label": "hitMedium"
+    },
+    "hitHeavy": {
+      "source": "art/goku/combat/hit_standing-source.png",
+      "kind": "reaction",
+      "grounded": true,
+      "cells": [
+        5,
+        6
+      ],
+      "durations": [
+        4,
+        10
+      ],
+      "loop": false,
+      "label": "hitHeavy"
+    },
+    "hitRecovery": {
+      "source": "art/goku/combat/hit_standing-source.png",
+      "kind": "reaction",
+      "grounded": true,
+      "cells": [
+        7,
+        8
+      ],
+      "durations": [
+        4,
+        4
+      ],
+      "loop": false,
+      "label": "hitRecovery"
+    },
+    "hitCrouch": {
+      "source": "art/goku/combat/hit_crouch_air-source.png",
+      "kind": "reaction",
+      "grounded": true,
+      "cells": [
+        1,
+        2
+      ],
+      "durations": [
+        4,
+        8
+      ],
+      "loop": false,
+      "label": "hitCrouch"
+    },
+    "hitRecoveryCrouch": {
+      "source": "art/goku/combat/hit_crouch_air-source.png",
+      "kind": "reaction",
+      "grounded": true,
+      "cells": [
+        2,
+        3
+      ],
+      "durations": [
+        3,
+        5
+      ],
+      "loop": false,
+      "label": "hitRecoveryCrouch"
+    },
+    "hitAir": {
+      "source": "art/goku/combat/hit_crouch_air-source.png",
+      "kind": "reaction",
+      "grounded": false,
+      "cells": [
+        4,
+        5
+      ],
+      "durations": [
+        6,
+        7
+      ],
+      "loop": false,
+      "label": "hitAir"
+    },
+    "launched": {
+      "source": "art/goku/combat/hit_crouch_air-source.png",
+      "kind": "reaction",
+      "grounded": false,
+      "cells": [
+        6,
+        4
+      ],
+      "durations": [
+        5,
+        6
+      ],
+      "loop": false,
+      "label": "launched"
+    },
+    "falling": {
+      "source": "art/goku/combat/hit_crouch_air-source.png",
+      "kind": "reaction",
+      "grounded": false,
+      "cells": [
+        5,
+        7,
+        8
+      ],
+      "durations": [
+        4,
+        5,
+        5
+      ],
+      "loop": false,
+      "label": "falling"
+    },
+    "downed": {
+      "source": "art/goku/combat/down_getup-source.png",
+      "kind": "reaction",
+      "grounded": true,
+      "cells": [
+        1,
+        3,
+        4
+      ],
+      "durations": [
+        3,
+        4,
+        17
+      ],
+      "loop": false,
+      "label": "downed"
+    },
+    "getup": {
+      "source": "art/goku/combat/down_getup-source.png",
+      "kind": "reaction",
+      "grounded": true,
+      "cells": [
+        3,
+        5,
+        6,
+        7,
+        8
+      ],
+      "durations": [
+        2,
+        4,
+        4,
+        4,
+        4
+      ],
+      "loop": false,
+      "label": "getup"
+    },
+    "ko": {
+      "source": "art/goku/combat/down_getup-source.png",
+      "kind": "reaction",
+      "grounded": true,
+      "cells": [
+        1,
+        3,
+        4
+      ],
+      "durations": [
+        5,
+        10,
+        15
+      ],
+      "loop": false,
+      "label": "ko"
+    },
+    "grabHold": {
+      "source": "art/goku/combat/throw_attacker-source.png",
+      "kind": "reaction",
+      "grounded": true,
+      "cells": [
+        3,
+        4,
+        5,
+        6
+      ],
+      "durations": [
+        4,
+        4,
+        4,
+        10
+      ],
+      "loop": false,
+      "label": "grabHold"
+    },
+    "throwRecover": {
+      "source": "art/goku/combat/throw_attacker-source.png",
+      "kind": "reaction",
+      "grounded": true,
+      "cells": [
+        7,
+        8,
+        0
+      ],
+      "durations": [
+        4,
+        4,
+        4
+      ],
+      "loop": false,
+      "label": "throwRecover"
+    },
+    "grabbed": {
+      "source": "art/goku/combat/grabbed_victim-source.png",
+      "kind": "reaction",
+      "grounded": false,
+      "cells": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "durations": [
+        4,
+        4,
+        6,
+        8
+      ],
+      "loop": false,
+      "label": "grabbed"
+    },
+    "throw": {
+      "source": "art/goku/combat/throw_attacker-source.png",
+      "kind": "throw",
+      "grounded": true,
+      "cells": [
+        0,
+        1,
+        2,
+        7,
+        8
+      ],
+      "durations": [
+        3,
+        4,
+        2,
+        8,
+        12
+      ],
+      "startup": 7,
+      "active": 2,
+      "label": "Universal throw / attempt",
+      "combat": {
+        "damage": 0,
+        "stun": 0,
+        "blockstun": 0,
+        "push": 0,
+        "launch": 0,
+        "level": "throw",
+        "kind": "grab",
+        "box": {
+          "x": 24,
+          "y": -115,
+          "w": 50,
+          "h": 62
+        },
+        "rank": 4,
+        "cancels": []
+      }
+    }
+  }
+}

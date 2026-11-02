@@ -1,0 +1,15 @@
+{
+  "idle": 6,
+  "walkForward": 6,
+  "walkBack": 6,
+  "dashForward": 5,
+  "backdash": 5,
+  "crouchStart": 2,
+  "crouchIdle": 2,
+  "crouchEnd": 2,
+  "jumpStart": 3,
+  "jumpRise": 2,
+  "jumpApex": 1,
+  "jumpFall": 2,
+  "landing": 3
+}

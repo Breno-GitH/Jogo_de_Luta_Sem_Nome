@@ -1,0 +1,22 @@
+{
+  "date": "2026-11-02",
+  "engineVersion": "a947c3677382c42be06a80df",
+  "logic": { "passed": 490, "evidence": "vitest-final.log" },
+  "art": { "passedDistinctTests": 123, "existingTests": 113, "furyTests": 10, "evidence": ["npm-test.log", "art-final.log"] },
+  "browser": {
+    "developmentDistinctTests": 56,
+    "productionDistinctTests": 4,
+    "totalDistinctTestsValidated": 60,
+    "furyOpponentScenarios": 42,
+    "opponents": ["samurai", "dio", "goku"],
+    "furyOwnTestCases": 6,
+    "evidence": ["trace.json", "scenarios-samurai.json", "scenarios-dio.json", "scenarios-goku.json", "production.json"],
+    "reruns": [
+      "The original 42-scenario test exceeded its timeout. It was divided by opponent, preserving every scenario and assertion; all three groups passed.",
+      "The legacy Dio keyboard test released its final cardinal after 17 ms, which can precede the next fixed tick under Playwright rAF. It now allows two fixed updates and enough time for all six variants; the isolated test passed.",
+      "A heavy bot self-play timed out when Vitest and Chrome ran concurrently. The complete 490-test logic suite was rerun alone and passed without changing its assertions or timeout."
+    ]
+  },
+  "build": { "passed": true, "evidence": "build.log", "remainingWarning": "Existing character data chunk exceeds Vite's 500 kB recommendation." },
+  "delivery": { "bodyClips": 33, "bodyCelReferences": 138, "uniqueBodyDrawings": 94, "fxAtlases": 14, "preview": "Canvas recording, 200 captures at 20 FPS; nearest-neighbor 640x360 APNG/GIF at 10 FPS", "server": "http://127.0.0.1:3001/art/goku-fury.html" }
+}

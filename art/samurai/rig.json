@@ -1,0 +1,13 @@
+{
+  "cell": [256,256],
+  "pivot": {"x":128,"y":224},
+  "durations": [16,14,14,16,14,16],
+  "frames": [
+    {"name":"neutral","breath":0,"chest":0,"hair":0,"cloth":0,"wrist":0},
+    {"name":"inhale","breath":-1,"chest":0.5,"hair":-1,"cloth":1,"wrist":0},
+    {"name":"full_inhale","breath":-2,"chest":1,"hair":0,"cloth":2,"wrist":-1},
+    {"name":"settle","breath":-1,"chest":0.5,"hair":1,"cloth":0,"wrist":-1},
+    {"name":"exhale","breath":0,"chest":-0.5,"hair":2,"cloth":-1,"wrist":0},
+    {"name":"full_exhale","breath":1,"chest":-0.5,"hair":1,"cloth":-2,"wrist":1}
+  ]
+}

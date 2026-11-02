@@ -1,0 +1,1333 @@
+{
+  "stand_light": {
+    "label": "Stand Light",
+    "durations": [
+      5,
+      3,
+      4,
+      6
+    ],
+    "phases": [
+      "startup",
+      "active",
+      "recovery",
+      "recovery"
+    ],
+    "poses": [
+      {
+        "grip": [
+          146.0,
+          151.0
+        ],
+        "angle": -65,
+        "lean": -3,
+        "x": 0,
+        "free": [
+          123.0,
+          165.0
+        ],
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.3815447778286796,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          161.0,
+          148.0
+        ],
+        "angle": -2,
+        "lean": 6,
+        "x": 8,
+        "left": [
+          7.314132648212336,
+          0.0
+        ],
+        "right": [
+          4.0,
+          0.0
+        ],
+        "cloth": 2,
+        "free": [
+          119.0,
+          165.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          158.0,
+          154.0
+        ],
+        "angle": 12,
+        "lean": 4,
+        "x": 5,
+        "left": [
+          4.265349184574944,
+          0.0
+        ],
+        "right": [
+          2.0,
+          0.0
+        ],
+        "cloth": 3,
+        "free": [
+          120.0,
+          166.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          145.0,
+          165.0
+        ],
+        "angle": 24,
+        "lean": 0,
+        "cloth": 1,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.298472247377333,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      }
+    ],
+    "damage": 45,
+    "stun": 20,
+    "blockstun": 11,
+    "push": 2.5,
+    "launch": 0,
+    "hitstop": 6,
+    "level": "mid",
+    "rank": 1,
+    "cancels": [
+      "medium",
+      "heavy",
+      "special"
+    ]
+  },
+  "stand_medium": {
+    "label": "Stand Medium",
+    "durations": [
+      4,
+      4,
+      4,
+      7,
+      9
+    ],
+    "phases": [
+      "startup",
+      "startup",
+      "active",
+      "recovery",
+      "recovery"
+    ],
+    "poses": [
+      {
+        "grip": [
+          143.0,
+          174.0
+        ],
+        "angle": 40,
+        "lean": -7,
+        "hip": 2,
+        "free": [
+          122.0,
+          163.0
+        ],
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          151.0,
+          181.0
+        ],
+        "angle": 18,
+        "lean": -4,
+        "hip": 4,
+        "cloth": -2,
+        "free": [
+          120.0,
+          165.0
+        ],
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          170.0,
+          155.0
+        ],
+        "angle": -25,
+        "lean": 13,
+        "x": 10,
+        "left": [
+          9.556759026971207,
+          0.0
+        ],
+        "right": [
+          5.0,
+          0.0
+        ],
+        "cloth": 3,
+        "free": [
+          115.0,
+          164.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          160.0,
+          131.0
+        ],
+        "angle": -88,
+        "lean": 9,
+        "x": 6,
+        "left": [
+          5.404401772773269,
+          0.0
+        ],
+        "right": [
+          2.0,
+          0.0
+        ],
+        "cloth": 4,
+        "free": [
+          116.0,
+          162.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          145.0,
+          165.0
+        ],
+        "angle": 24,
+        "lean": 1,
+        "cloth": 1,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.28147309465308,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      }
+    ],
+    "damage": 75,
+    "stun": 28,
+    "blockstun": 15,
+    "push": 3.5,
+    "launch": 0,
+    "hitstop": 9,
+    "level": "mid",
+    "rank": 2,
+    "cancels": [
+      "heavy",
+      "special"
+    ]
+  },
+  "stand_heavy": {
+    "label": "Stand Heavy",
+    "durations": [
+      5,
+      7,
+      3,
+      2,
+      9,
+      14
+    ],
+    "phases": [
+      "startup",
+      "startup",
+      "active",
+      "active",
+      "recovery",
+      "recovery"
+    ],
+    "poses": [
+      {
+        "grip": [
+          137.0,
+          141.0
+        ],
+        "angle": -145,
+        "lean": -8,
+        "two": true,
+        "cloth": -1,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.6314528057581867,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          138.0,
+          133.0
+        ],
+        "angle": -110,
+        "lean": -13,
+        "hip": 3,
+        "two": true,
+        "cloth": -3,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          170.0,
+          144.0
+        ],
+        "angle": -5,
+        "lean": 15,
+        "x": 12,
+        "left": [
+          11.646656769992518,
+          0.0
+        ],
+        "right": [
+          6.0,
+          0.0
+        ],
+        "two": true,
+        "cloth": 4,
+        "hair": 2,
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          175.0,
+          151.0
+        ],
+        "angle": 6,
+        "lean": 19,
+        "x": 14,
+        "left": [
+          13.853812177871305,
+          0.0
+        ],
+        "right": [
+          8.0,
+          0.0
+        ],
+        "two": true,
+        "cloth": 5,
+        "hair": 3,
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          163.83921480838296,
+          156.73860115363607
+        ],
+        "angle": 20,
+        "lean": 9,
+        "x": 7,
+        "left": [
+          6.404401772773269,
+          0.0
+        ],
+        "right": [
+          3.0,
+          0.0
+        ],
+        "two": true,
+        "cloth": 3,
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          145.0,
+          165.0
+        ],
+        "angle": 24,
+        "lean": 0,
+        "two": true,
+        "cloth": 1,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          -2.298472247377333,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      }
+    ],
+    "damage": 115,
+    "stun": 35,
+    "blockstun": 19,
+    "push": 7,
+    "launch": 0,
+    "hitstop": 12,
+    "level": "mid",
+    "rank": 3,
+    "cancels": [
+      "special"
+    ]
+  },
+  "crouch_light": {
+    "label": "Crouch Light",
+    "durations": [
+      5,
+      3,
+      4,
+      7
+    ],
+    "phases": [
+      "startup",
+      "active",
+      "recovery",
+      "recovery"
+    ],
+    "poses": [
+      {
+        "grip": [
+          145.0,
+          195.0
+        ],
+        "angle": 18,
+        "hip": 21,
+        "lean": 2,
+        "free": [
+          124.0,
+          165.0
+        ],
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          161.0,
+          193.0
+        ],
+        "angle": -4,
+        "hip": 22,
+        "lean": 9,
+        "x": 6,
+        "left": [
+          3.0,
+          0.0
+        ],
+        "right": [
+          3.0,
+          0.0
+        ],
+        "cloth": 2,
+        "free": [
+          121.0,
+          164.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          157.0,
+          196.0
+        ],
+        "angle": 5,
+        "hip": 23,
+        "lean": 6,
+        "x": 3,
+        "left": [
+          1.0,
+          0.0
+        ],
+        "right": [
+          2.0,
+          0.0
+        ],
+        "cloth": 3,
+        "free": [
+          122.0,
+          165.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          145.0,
+          185.0
+        ],
+        "angle": 17,
+        "hip": 21,
+        "lean": 6,
+        "cloth": 0,
+        "hair": -1,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      }
+    ],
+    "damage": 40,
+    "stun": 20,
+    "blockstun": 10,
+    "push": 2,
+    "launch": 0,
+    "hitstop": 6,
+    "level": "low",
+    "rank": 1,
+    "cancels": [
+      "medium",
+      "heavy",
+      "special"
+    ]
+  },
+  "crouch_medium": {
+    "label": "Crouch Medium",
+    "durations": [
+      4,
+      4,
+      4,
+      7,
+      9
+    ],
+    "phases": [
+      "startup",
+      "startup",
+      "active",
+      "recovery",
+      "recovery"
+    ],
+    "poses": [
+      {
+        "grip": [
+          144.0,
+          188.0
+        ],
+        "angle": -8,
+        "hip": 21,
+        "lean": 0,
+        "free": [
+          122.0,
+          164.0
+        ],
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          137.0,
+          191.0
+        ],
+        "angle": 0,
+        "hip": 23,
+        "lean": -4,
+        "cloth": -1,
+        "free": [
+          121.0,
+          165.0
+        ],
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          179.0,
+          192.0
+        ],
+        "angle": 0,
+        "hip": 19,
+        "lean": 16,
+        "x": 12,
+        "left": [
+          9.0,
+          0.0
+        ],
+        "right": [
+          7.0,
+          0.0
+        ],
+        "cloth": 4,
+        "free": [
+          116.0,
+          164.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          173.0,
+          192.0
+        ],
+        "angle": 2,
+        "hip": 21,
+        "lean": 10,
+        "x": 7,
+        "left": [
+          5.0,
+          0.0
+        ],
+        "right": [
+          4.0,
+          0.0
+        ],
+        "cloth": 3,
+        "free": [
+          119.0,
+          164.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          145.0,
+          185.0
+        ],
+        "angle": 17,
+        "hip": 22,
+        "lean": 7,
+        "cloth": 1,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      }
+    ],
+    "damage": 65,
+    "stun": 28,
+    "blockstun": 14,
+    "push": 3,
+    "launch": 0,
+    "hitstop": 8,
+    "level": "low",
+    "rank": 2,
+    "cancels": [
+      "heavy",
+      "special"
+    ]
+  },
+  "crouch_heavy": {
+    "label": "Crouch Heavy",
+    "durations": [
+      5,
+      6,
+      3,
+      2,
+      9,
+      15
+    ],
+    "phases": [
+      "startup",
+      "startup",
+      "active",
+      "active",
+      "recovery",
+      "recovery"
+    ],
+    "poses": [
+      {
+        "grip": [
+          138.25279616464903,
+          192.2600747134484
+        ],
+        "angle": 15,
+        "hip": 22,
+        "lean": -5,
+        "two": true,
+        "cloth": -1,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          140.59499255307753,
+          191.25200010385862
+        ],
+        "angle": 5,
+        "hip": 24,
+        "lean": -7,
+        "two": true,
+        "cloth": -3,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          157.6235604718699,
+          171.2494923719771
+        ],
+        "angle": -20,
+        "hip": 12,
+        "lean": 10,
+        "x": 7,
+        "left": [
+          5.0,
+          0.0
+        ],
+        "right": [
+          4.0,
+          0.0
+        ],
+        "two": true,
+        "cloth": 4,
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          164.8513505214974,
+          142.9533809933135
+        ],
+        "angle": -80,
+        "hip": -2,
+        "lean": 14,
+        "x": 9,
+        "left": [
+          11.382791738752772,
+          0.0
+        ],
+        "right": [
+          2.8388621745389173,
+          0.0
+        ],
+        "two": true,
+        "cloth": 5,
+        "hair": 2,
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          159.21485267062315,
+          132.59074999048892
+        ],
+        "angle": -95,
+        "hip": 0,
+        "lean": 7,
+        "x": 4,
+        "left": [
+          3.3419400548774263,
+          0.0
+        ],
+        "right": [
+          1.7131087456247371,
+          0.0
+        ],
+        "two": true,
+        "cloth": 3,
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          147.0,
+          184.0
+        ],
+        "angle": 20,
+        "hip": 20,
+        "lean": 5,
+        "two": true,
+        "cloth": 1,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      }
+    ],
+    "damage": 95,
+    "stun": 44,
+    "blockstun": 18,
+    "push": 2.5,
+    "launch": -13,
+    "hitstop": 11,
+    "level": "mid",
+    "rank": 3,
+    "cancels": [
+      "jump",
+      "special"
+    ]
+  },
+  "air_light": {
+    "label": "Air Light",
+    "durations": [
+      4,
+      4,
+      4,
+      5
+    ],
+    "phases": [
+      "startup",
+      "active",
+      "recovery",
+      "recovery"
+    ],
+    "poses": [
+      {
+        "grip": [
+          146.0,
+          151.0
+        ],
+        "angle": -65,
+        "lean": -3,
+        "left": [
+          8.0,
+          -9.0
+        ],
+        "right": [
+          -4.0,
+          -10.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          160.0,
+          146.0
+        ],
+        "angle": -8,
+        "lean": 6,
+        "x": 6,
+        "left": [
+          12.0,
+          -9.0
+        ],
+        "right": [
+          1.0,
+          -10.0
+        ],
+        "cloth": 2,
+        "free": [
+          119.0,
+          164.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          155.0,
+          152.0
+        ],
+        "angle": 14,
+        "lean": 4,
+        "x": 3,
+        "left": [
+          10.0,
+          -8.0
+        ],
+        "right": [
+          -1.0,
+          -9.0
+        ],
+        "cloth": 3,
+        "free": [
+          120.0,
+          165.0
+        ],
+        "farReach": 41
+      },
+      {
+        "grip": [
+          145.0,
+          165.0
+        ],
+        "angle": 24,
+        "lean": 1,
+        "cloth": 1,
+        "left": [
+          8.0,
+          -9.0
+        ],
+        "right": [
+          -4.0,
+          -10.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      }
+    ],
+    "damage": 40,
+    "stun": 27,
+    "blockstun": 12,
+    "push": 1.5,
+    "launch": -3,
+    "hitstop": 6,
+    "level": "high",
+    "rank": 1,
+    "cancels": [
+      "medium",
+      "heavy"
+    ],
+    "airHold": -3
+  },
+  "air_medium": {
+    "label": "Air Medium",
+    "durations": [
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "phases": [
+      "startup",
+      "startup",
+      "active",
+      "recovery",
+      "recovery"
+    ],
+    "poses": [
+      {
+        "grip": [
+          139.0,
+          135.0
+        ],
+        "angle": -150,
+        "lean": -9,
+        "two": true,
+        "left": [
+          8.0,
+          -9.0
+        ],
+        "right": [
+          -4.0,
+          -10.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          141.0,
+          133.0
+        ],
+        "angle": -115,
+        "lean": -12,
+        "two": true,
+        "cloth": -2,
+        "left": [
+          8.0,
+          -9.0
+        ],
+        "right": [
+          -4.0,
+          -10.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          174.0,
+          146.0
+        ],
+        "angle": -2,
+        "lean": 13,
+        "x": 10,
+        "left": [
+          15.0,
+          -8.0
+        ],
+        "right": [
+          4.0,
+          -9.0
+        ],
+        "two": true,
+        "cloth": 4,
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          166.51629376028058,
+          153.3277208389824
+        ],
+        "angle": 18,
+        "lean": 10,
+        "x": 7,
+        "left": [
+          12.0,
+          -7.0
+        ],
+        "right": [
+          1.0,
+          -8.0
+        ],
+        "two": true,
+        "cloth": 3,
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          145.0,
+          165.0
+        ],
+        "angle": 24,
+        "lean": 1,
+        "two": true,
+        "cloth": 1,
+        "left": [
+          8.0,
+          -9.0
+        ],
+        "right": [
+          -4.0,
+          -10.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      }
+    ],
+    "damage": 65,
+    "stun": 31,
+    "blockstun": 15,
+    "push": 2,
+    "launch": -3,
+    "hitstop": 9,
+    "level": "high",
+    "rank": 2,
+    "cancels": [
+      "heavy"
+    ],
+    "airHold": -2
+  },
+  "air_heavy": {
+    "label": "Air Heavy",
+    "durations": [
+      4,
+      6,
+      3,
+      2,
+      7,
+      13
+    ],
+    "phases": [
+      "startup",
+      "startup",
+      "active",
+      "active",
+      "recovery",
+      "recovery"
+    ],
+    "poses": [
+      {
+        "grip": [
+          143.0,
+          124.0
+        ],
+        "angle": -115,
+        "lean": -5,
+        "two": true,
+        "left": [
+          8.0,
+          -9.0
+        ],
+        "right": [
+          -4.0,
+          -10.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          147.78078019381303,
+          118.56210369402487
+        ],
+        "angle": -85,
+        "lean": -8,
+        "hip": -2,
+        "two": true,
+        "cloth": -3,
+        "left": [
+          8.0,
+          -9.0
+        ],
+        "right": [
+          -4.0,
+          -10.0
+        ],
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          172.0,
+          150.0
+        ],
+        "angle": 25,
+        "lean": 13,
+        "x": 9,
+        "left": [
+          9.0,
+          -5.0
+        ],
+        "right": [
+          0.0,
+          -7.0
+        ],
+        "two": true,
+        "cloth": 4,
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          163.43793757525316,
+          163.66077622929024
+        ],
+        "angle": 67,
+        "lean": 18,
+        "x": 8,
+        "left": [
+          8.0,
+          -2.0
+        ],
+        "right": [
+          0.0,
+          -3.0
+        ],
+        "two": true,
+        "cloth": 5,
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          153.4392955538998,
+          165.69355786555082
+        ],
+        "angle": 44,
+        "lean": 11,
+        "x": 3,
+        "left": [
+          5.0,
+          -2.0
+        ],
+        "right": [
+          -2.0,
+          -3.0
+        ],
+        "two": true,
+        "cloth": 3,
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      },
+      {
+        "grip": [
+          145.0,
+          163.0
+        ],
+        "angle": 23,
+        "lean": 2,
+        "left": [
+          3.0,
+          -1.0
+        ],
+        "right": [
+          -1.0,
+          -2.0
+        ],
+        "two": true,
+        "cloth": 1,
+        "farReach": 41,
+        "free": [
+          124.0,
+          165.0
+        ]
+      }
+    ],
+    "damage": 105,
+    "stun": 35,
+    "blockstun": 20,
+    "push": 5,
+    "launch": 12,
+    "hitstop": 13,
+    "level": "high",
+    "rank": 3,
+    "cancels": [],
+    "airHold": 4,
+    "knockdown": true
+  }
+}

@@ -1,0 +1,320 @@
+{
+  "method": "whole-pose",
+  "canvas": [
+    384,
+    256
+  ],
+  "pivot": {
+    "x": 192,
+    "y": 224
+  },
+  "config": {
+    "source": "art/goku/combat/throw_attacker-source.png",
+    "kind": "reaction",
+    "grounded": true,
+    "cells": [
+      3,
+      4,
+      5,
+      6
+    ],
+    "durations": [
+      4,
+      4,
+      4,
+      10
+    ],
+    "loop": false,
+    "label": "grabHold"
+  },
+  "frames": [
+    {
+      "source": "art/goku/combat/throw_attacker-source.png",
+      "sourceRect": [
+        42,
+        460,
+        381,
+        839
+      ],
+      "cellRect": [
+        0,
+        418,
+        418,
+        836
+      ],
+      "scale": 0.3282828282828283,
+      "offset": [
+        183,
+        100
+      ],
+      "metrics": {
+        "bbox": [
+          183,
+          100,
+          294,
+          224
+        ],
+        "opaquePixels": 6106,
+        "largestComponent": 1.0,
+        "components": [
+          6106
+        ]
+      },
+      "pose": {
+        "ticks": 4,
+        "phase": "reaction",
+        "hitboxes": [],
+        "hurtboxes": [
+          {
+            "x": 36,
+            "y": -124,
+            "w": 57,
+            "h": 26
+          },
+          {
+            "x": 9,
+            "y": -98,
+            "w": 85,
+            "h": 29
+          },
+          {
+            "x": 18,
+            "y": -69,
+            "w": 72,
+            "h": 26
+          },
+          {
+            "x": 1,
+            "y": -43,
+            "w": 94,
+            "h": 23
+          },
+          {
+            "x": -9,
+            "y": -20,
+            "w": 111,
+            "h": 20
+          }
+        ]
+      },
+      "strikePoint": null,
+      "discardedSpeckles": []
+    },
+    {
+      "source": "art/goku/combat/throw_attacker-source.png",
+      "sourceRect": [
+        440,
+        486,
+        805,
+        836
+      ],
+      "cellRect": [
+        418,
+        418,
+        836,
+        836
+      ],
+      "scale": 0.3282828282828283,
+      "offset": [
+        132,
+        109
+      ],
+      "metrics": {
+        "bbox": [
+          132,
+          109,
+          252,
+          224
+        ],
+        "opaquePixels": 6058,
+        "largestComponent": 1.0,
+        "components": [
+          6058
+        ]
+      },
+      "pose": {
+        "ticks": 4,
+        "phase": "reaction",
+        "hitboxes": [],
+        "hurtboxes": [
+          {
+            "x": -15,
+            "y": -115,
+            "w": 68,
+            "h": 17
+          },
+          {
+            "x": -24,
+            "y": -98,
+            "w": 80,
+            "h": 29
+          },
+          {
+            "x": -30,
+            "y": -69,
+            "w": 78,
+            "h": 26
+          },
+          {
+            "x": -48,
+            "y": -43,
+            "w": 101,
+            "h": 23
+          },
+          {
+            "x": -60,
+            "y": -20,
+            "w": 120,
+            "h": 20
+          }
+        ]
+      },
+      "strikePoint": null,
+      "discardedSpeckles": []
+    },
+    {
+      "source": "art/goku/combat/throw_attacker-source.png",
+      "sourceRect": [
+        861,
+        447,
+        1233,
+        839
+      ],
+      "cellRect": [
+        836,
+        418,
+        1254,
+        836
+      ],
+      "scale": 0.3282828282828283,
+      "offset": [
+        184,
+        95
+      ],
+      "metrics": {
+        "bbox": [
+          184,
+          95,
+          306,
+          224
+        ],
+        "opaquePixels": 5938,
+        "largestComponent": 1.0,
+        "components": [
+          5938
+        ]
+      },
+      "pose": {
+        "ticks": 4,
+        "phase": "reaction",
+        "hitboxes": [],
+        "hurtboxes": [
+          {
+            "x": 28,
+            "y": -129,
+            "w": 86,
+            "h": 31
+          },
+          {
+            "x": 26,
+            "y": -98,
+            "w": 61,
+            "h": 29
+          },
+          {
+            "x": 30,
+            "y": -69,
+            "w": 62,
+            "h": 26
+          },
+          {
+            "x": 3,
+            "y": -43,
+            "w": 95,
+            "h": 23
+          },
+          {
+            "x": -8,
+            "y": -20,
+            "w": 116,
+            "h": 20
+          }
+        ]
+      },
+      "strikePoint": null,
+      "discardedSpeckles": []
+    },
+    {
+      "source": "art/goku/combat/throw_attacker-source.png",
+      "sourceRect": [
+        17,
+        894,
+        459,
+        1234
+      ],
+      "cellRect": [
+        0,
+        836,
+        418,
+        1254
+      ],
+      "scale": 0.3282828282828283,
+      "offset": [
+        184,
+        112
+      ],
+      "metrics": {
+        "bbox": [
+          184,
+          112,
+          329,
+          224
+        ],
+        "opaquePixels": 5923,
+        "largestComponent": 1.0,
+        "components": [
+          5923
+        ]
+      },
+      "pose": {
+        "ticks": 10,
+        "phase": "reaction",
+        "hitboxes": [],
+        "hurtboxes": [
+          {
+            "x": 63,
+            "y": -112,
+            "w": 55,
+            "h": 14
+          },
+          {
+            "x": 43,
+            "y": -98,
+            "w": 76,
+            "h": 29
+          },
+          {
+            "x": 24,
+            "y": -69,
+            "w": 113,
+            "h": 26
+          },
+          {
+            "x": 3,
+            "y": -43,
+            "w": 119,
+            "h": 23
+          },
+          {
+            "x": -8,
+            "y": -20,
+            "w": 110,
+            "h": 20
+          }
+        ]
+      },
+      "strikePoint": null,
+      "discardedSpeckles": []
+    }
+  ]
+}

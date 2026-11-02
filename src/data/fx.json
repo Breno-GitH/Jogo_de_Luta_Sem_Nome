@@ -1,0 +1,51 @@
+{
+  "hit": {
+    "row": 0,
+    "frames": 6,
+    "ticks": 2,
+    "width": 64,
+    "height": 64
+  },
+  "guard": {
+    "row": 1,
+    "frames": 6,
+    "ticks": 2,
+    "width": 64,
+    "height": 64
+  },
+  "draw": {
+    "row": 2,
+    "frames": 6,
+    "ticks": 2,
+    "width": 64,
+    "height": 64
+  },
+  "crescent": {
+    "row": 3,
+    "frames": 6,
+    "ticks": 2,
+    "width": 64,
+    "height": 64
+  },
+  "counter": {
+    "row": 4,
+    "frames": 6,
+    "ticks": 2,
+    "width": 64,
+    "height": 64
+  },
+  "ultimate": {
+    "row": 5,
+    "frames": 6,
+    "ticks": 2,
+    "width": 64,
+    "height": 64
+  },
+  "power": {
+    "row": 6,
+    "frames": 6,
+    "ticks": 2,
+    "width": 64,
+    "height": 64
+  }
+}

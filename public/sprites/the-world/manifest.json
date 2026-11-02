@@ -1,0 +1,33 @@
+{
+  "id": "the-world",
+  "visibleHeight": 155,
+  "cell": [
+    256,
+    256
+  ],
+  "pivot": [
+    128,
+    224
+  ],
+  "facing": "right",
+  "baseOnly": false,
+  "drawnFrames": 38,
+  "sourceBounds": [
+    98,
+    0,
+    960,
+    1528
+  ],
+  "exportedBounds": [
+    85,
+    69,
+    172,
+    224
+  ],
+  "paletteSize": 35,
+  "sourceSha256": "cb99083abef3453e58c26b5df18039d3f154055260cf9e39158f55c5b783148c",
+  "method": "native painted segments, anatomical forward knee planes, eight walk keys with fixed-tick contact inbetweens",
+  "baseDrawnFrames": 1,
+  "animationClips": 7,
+  "locomotionRevision": 2
+}

@@ -1,0 +1,71 @@
+{
+  "revision": 4,
+  "method": "whole-pose",
+  "drawings": {
+    "walkForward": 8,
+    "walkBack": 8,
+    "interpolated": 0
+  },
+  "canvas": [
+    256,
+    256
+  ],
+  "pivot": [
+    128,
+    224
+  ],
+  "prepack": {
+    "completeFigures": 16,
+    "mainComponentFraction": 1,
+    "visibleHeightRange": [
+      127,
+      133
+    ],
+    "beforeAtlas": true,
+    "exactRawSourceAndImportProvenance": true
+  },
+  "preservation": {
+    "gokuPNGs": 139,
+    "otherGokuClipsPerMetadata": 21,
+    "otherRosterFiles": 1995
+  },
+  "tests": {
+    "vitest": 361,
+    "art": 95,
+    "artSuites": 13,
+    "focusedChrome": 10,
+    "build": true,
+    "productionSmoke": true
+  },
+  "preview": {
+    "revision": 4,
+    "source": "actual keyboard-driven Match/Renderer Canvas",
+    "samples": 96,
+    "sampleFPS": 20,
+    "simulationFPS": 60,
+    "durationMs": 4800.0,
+    "losslessAPNGVerified": true,
+    "wholeDrawings": 16,
+    "interpolatedDrawings": 0,
+    "morphing": false
+  },
+  "production": {
+    "origin": "http://127.0.0.1:3001",
+    "version": "f6d433868036ae2670528d94",
+    "walkRevision": 4,
+    "comparison": true,
+    "bothFacings": true,
+    "forwardAndBackward": true,
+    "directPreservedIdle": true,
+    "mainTraining": true,
+    "exactServedAssets": true,
+    "errors": []
+  },
+  "sourcesAndPrompts": "art/goku/walk-v4/prompts.json",
+  "limitations": [
+    "Generated complete poses, not hand painted frames.",
+    "Held cels can show residual foot sliding; whole-figure compensation is disabled.",
+    "Small cloth/face variation and transition to preserved Idle remain visible in slow playback.",
+    "Historical complete browser/online suite not rerun; focused Goku browser scenarios and full unit/art suite were run."
+  ]
+}

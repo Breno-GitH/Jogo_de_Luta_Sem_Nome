@@ -1,0 +1,610 @@
+{
+  "method": "whole-pose",
+  "canvas": [
+    384,
+    256
+  ],
+  "pivot": {
+    "x": 192,
+    "y": 224
+  },
+  "config": {
+    "source": "art/goku/combat/air_medium-source.png",
+    "kind": "normal",
+    "grounded": false,
+    "cells": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "durations": [
+      2,
+      2,
+      2,
+      2,
+      2,
+      4,
+      4
+    ],
+    "startup": 6,
+    "active": 4,
+    "strike": "kick",
+    "combat": {
+      "damage": 59,
+      "stun": 28,
+      "blockstun": 14,
+      "push": 0.7,
+      "launch": -2.5,
+      "hitstop": 7,
+      "level": "high",
+      "rank": 2,
+      "cancels": [
+        "heavy"
+      ],
+      "cancelWindow": {
+        "fromTick": 7,
+        "toTick": 17
+      },
+      "cancelMoves": [
+        "air_heavy"
+      ],
+      "airHold": -8
+    },
+    "label": "air_medium",
+    "registration": {
+      "3": {
+        "offsetDelta": [
+          20,
+          0
+        ]
+      },
+      "4": {
+        "offsetDelta": [
+          20,
+          0
+        ]
+      }
+    }
+  },
+  "frames": [
+    {
+      "source": "art/goku/combat/air_medium-source.png",
+      "sourceRect": [
+        678,
+        14,
+        848,
+        307
+      ],
+      "cellRect": [
+        512,
+        0,
+        1024,
+        341
+      ],
+      "scale": 0.3987730061349693,
+      "offset": [
+        158,
+        94
+      ],
+      "metrics": {
+        "bbox": [
+          158,
+          94,
+          226,
+          211
+        ],
+        "opaquePixels": 4793,
+        "largestComponent": 1.0,
+        "components": [
+          4793
+        ]
+      },
+      "pose": {
+        "ticks": 2,
+        "phase": "startup",
+        "hitboxes": [],
+        "hurtboxes": [
+          {
+            "x": -24,
+            "y": -130,
+            "w": 58,
+            "h": 32
+          },
+          {
+            "x": -33,
+            "y": -98,
+            "w": 60,
+            "h": 29
+          },
+          {
+            "x": -34,
+            "y": -69,
+            "w": 64,
+            "h": 26
+          },
+          {
+            "x": -27,
+            "y": -43,
+            "w": 53,
+            "h": 23
+          },
+          {
+            "x": -25,
+            "y": -20,
+            "w": 17,
+            "h": 7
+          }
+        ]
+      },
+      "strikePoint": null,
+      "discardedSpeckles": []
+    },
+    {
+      "source": "art/goku/combat/air_medium-source.png",
+      "sourceRect": [
+        1152,
+        11,
+        1355,
+        336
+      ],
+      "cellRect": [
+        1024,
+        0,
+        1536,
+        341
+      ],
+      "scale": 0.3987730061349693,
+      "offset": [
+        152,
+        94
+      ],
+      "metrics": {
+        "bbox": [
+          152,
+          94,
+          233,
+          224
+        ],
+        "opaquePixels": 5085,
+        "largestComponent": 1.0,
+        "components": [
+          5085
+        ]
+      },
+      "pose": {
+        "ticks": 2,
+        "phase": "startup",
+        "hitboxes": [],
+        "hurtboxes": [
+          {
+            "x": -26,
+            "y": -130,
+            "w": 58,
+            "h": 32
+          },
+          {
+            "x": -40,
+            "y": -98,
+            "w": 81,
+            "h": 29
+          },
+          {
+            "x": -37,
+            "y": -69,
+            "w": 74,
+            "h": 26
+          },
+          {
+            "x": -20,
+            "y": -43,
+            "w": 48,
+            "h": 23
+          },
+          {
+            "x": -8,
+            "y": -20,
+            "w": 34,
+            "h": 20
+          }
+        ]
+      },
+      "strikePoint": null,
+      "discardedSpeckles": []
+    },
+    {
+      "source": "art/goku/combat/air_medium-source.png",
+      "sourceRect": [
+        113,
+        355,
+        387,
+        646
+      ],
+      "cellRect": [
+        0,
+        341,
+        512,
+        683
+      ],
+      "scale": 0.3987730061349693,
+      "offset": [
+        138,
+        94
+      ],
+      "metrics": {
+        "bbox": [
+          138,
+          94,
+          247,
+          210
+        ],
+        "opaquePixels": 5752,
+        "largestComponent": 1.0,
+        "components": [
+          5752
+        ]
+      },
+      "pose": {
+        "ticks": 2,
+        "phase": "startup",
+        "hitboxes": [],
+        "hurtboxes": [
+          {
+            "x": -36,
+            "y": -130,
+            "w": 74,
+            "h": 32
+          },
+          {
+            "x": -54,
+            "y": -98,
+            "w": 109,
+            "h": 29
+          },
+          {
+            "x": -34,
+            "y": -69,
+            "w": 89,
+            "h": 26
+          },
+          {
+            "x": -27,
+            "y": -43,
+            "w": 44,
+            "h": 23
+          },
+          {
+            "x": 7,
+            "y": -20,
+            "w": 10,
+            "h": 6
+          }
+        ]
+      },
+      "strikePoint": null,
+      "discardedSpeckles": []
+    },
+    {
+      "source": "art/goku/combat/air_medium-source.png",
+      "sourceRect": [
+        609,
+        355,
+        968,
+        660
+      ],
+      "cellRect": [
+        512,
+        341,
+        1024,
+        683
+      ],
+      "scale": 0.3987730061349693,
+      "offset": [
+        140,
+        94
+      ],
+      "metrics": {
+        "bbox": [
+          140,
+          94,
+          283,
+          216
+        ],
+        "opaquePixels": 6474,
+        "largestComponent": 1.0,
+        "components": [
+          6474
+        ]
+      },
+      "pose": {
+        "ticks": 2,
+        "phase": "active",
+        "hitboxes": [
+          {
+            "a": {
+              "x": 47,
+              "y": -70
+            },
+            "b": {
+              "x": 83,
+              "y": -70
+            },
+            "r": 7
+          }
+        ],
+        "hurtboxes": [
+          {
+            "x": -34,
+            "y": -130,
+            "w": 60,
+            "h": 32
+          },
+          {
+            "x": -52,
+            "y": -98,
+            "w": 143,
+            "h": 29
+          },
+          {
+            "x": -26,
+            "y": -69,
+            "w": 116,
+            "h": 26
+          },
+          {
+            "x": -28,
+            "y": -43,
+            "w": 45,
+            "h": 23
+          },
+          {
+            "x": -19,
+            "y": -20,
+            "w": 37,
+            "h": 12
+          }
+        ]
+      },
+      "strikePoint": [
+        275,
+        154
+      ],
+      "discardedSpeckles": []
+    },
+    {
+      "source": "art/goku/combat/air_medium-source.png",
+      "sourceRect": [
+        1106,
+        364,
+        1503,
+        644
+      ],
+      "cellRect": [
+        1024,
+        341,
+        1536,
+        683
+      ],
+      "scale": 0.3987730061349693,
+      "offset": [
+        133,
+        94
+      ],
+      "metrics": {
+        "bbox": [
+          133,
+          94,
+          291,
+          206
+        ],
+        "opaquePixels": 6442,
+        "largestComponent": 1.0,
+        "components": [
+          6442
+        ]
+      },
+      "pose": {
+        "ticks": 2,
+        "phase": "active",
+        "hitboxes": [
+          {
+            "a": {
+              "x": 55,
+              "y": -71
+            },
+            "b": {
+              "x": 91,
+              "y": -71
+            },
+            "r": 7
+          }
+        ],
+        "hurtboxes": [
+          {
+            "x": -40,
+            "y": -130,
+            "w": 58,
+            "h": 32
+          },
+          {
+            "x": -59,
+            "y": -98,
+            "w": 158,
+            "h": 29
+          },
+          {
+            "x": -34,
+            "y": -69,
+            "w": 132,
+            "h": 26
+          },
+          {
+            "x": -34,
+            "y": -43,
+            "w": 55,
+            "h": 23
+          },
+          {
+            "x": 14,
+            "y": -20,
+            "w": 6,
+            "h": 2
+          }
+        ]
+      },
+      "strikePoint": [
+        283,
+        153
+      ],
+      "discardedSpeckles": []
+    },
+    {
+      "source": "art/goku/combat/air_medium-source.png",
+      "sourceRect": [
+        137,
+        684,
+        370,
+        1013
+      ],
+      "cellRect": [
+        0,
+        683,
+        512,
+        1024
+      ],
+      "scale": 0.3987730061349693,
+      "offset": [
+        146,
+        93
+      ],
+      "metrics": {
+        "bbox": [
+          146,
+          93,
+          239,
+          224
+        ],
+        "opaquePixels": 5477,
+        "largestComponent": 0.9996348365893738,
+        "components": [
+          5475,
+          2
+        ]
+      },
+      "pose": {
+        "ticks": 4,
+        "phase": "recovery",
+        "hitboxes": [],
+        "hurtboxes": [
+          {
+            "x": -33,
+            "y": -131,
+            "w": 64,
+            "h": 33
+          },
+          {
+            "x": -46,
+            "y": -98,
+            "w": 93,
+            "h": 29
+          },
+          {
+            "x": -29,
+            "y": -69,
+            "w": 64,
+            "h": 26
+          },
+          {
+            "x": -18,
+            "y": -43,
+            "w": 39,
+            "h": 23
+          },
+          {
+            "x": -20,
+            "y": -20,
+            "w": 16,
+            "h": 20
+          }
+        ]
+      },
+      "strikePoint": null,
+      "discardedSpeckles": []
+    },
+    {
+      "source": "art/goku/combat/air_medium-source.png",
+      "sourceRect": [
+        678,
+        688,
+        848,
+        983
+      ],
+      "cellRect": [
+        512,
+        683,
+        1024,
+        1024
+      ],
+      "scale": 0.3987730061349693,
+      "offset": [
+        158,
+        94
+      ],
+      "metrics": {
+        "bbox": [
+          158,
+          94,
+          226,
+          212
+        ],
+        "opaquePixels": 4844,
+        "largestComponent": 1.0,
+        "components": [
+          4844
+        ]
+      },
+      "pose": {
+        "ticks": 4,
+        "phase": "recovery",
+        "hitboxes": [],
+        "hurtboxes": [
+          {
+            "x": -24,
+            "y": -130,
+            "w": 58,
+            "h": 32
+          },
+          {
+            "x": -33,
+            "y": -98,
+            "w": 60,
+            "h": 29
+          },
+          {
+            "x": -34,
+            "y": -69,
+            "w": 64,
+            "h": 26
+          },
+          {
+            "x": -27,
+            "y": -43,
+            "w": 54,
+            "h": 23
+          },
+          {
+            "x": -25,
+            "y": -20,
+            "w": 17,
+            "h": 8
+          }
+        ]
+      },
+      "strikePoint": null,
+      "discardedSpeckles": []
+    }
+  ]
+}

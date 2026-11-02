@@ -1,0 +1,1351 @@
+{
+  "walkForward": [
+    {
+      "frame": 0,
+      "phase": "contact",
+      "duration": 4,
+      "source": "art/goku/walk-v4/walkForward-00.png",
+      "sourceSha256": "3b29fa0470353bef9d112978ffb91fe7cf5b4b7f085b524fbbd9cd2d5db743a2",
+      "ankle": {
+        "near": [
+          155,
+          213
+        ],
+        "far": [
+          81,
+          213
+        ]
+      },
+      "ankleEvidence": "anatomical hinge estimates from the painted blue boots; not inverse-kinematics controls",
+      "solePoint": {
+        "near": [
+          168,
+          223
+        ],
+        "far": [
+          81,
+          222
+        ]
+      },
+      "support": [
+        "near"
+      ],
+      "contactFeet": [
+        "near"
+      ],
+      "occluded": {
+        "near": false,
+        "far": false
+      },
+      "footRegion": {
+        "near": [
+          145,
+          190,
+          180,
+          224
+        ],
+        "far": [
+          70,
+          190,
+          97,
+          224
+        ]
+      },
+      "bodyBounds": [
+        72,
+        93,
+        178,
+        224
+      ],
+      "hurtboxes": [
+        {
+          "x": -26,
+          "y": -116,
+          "w": 62,
+          "h": 24
+        },
+        {
+          "x": -34,
+          "y": -92,
+          "w": 71,
+          "h": 30
+        },
+        {
+          "x": -44,
+          "y": -62,
+          "w": 80,
+          "h": 32
+        },
+        {
+          "x": -56,
+          "y": -30,
+          "w": 106,
+          "h": 30
+        }
+      ],
+      "hurtboxMethod": "proposed conservative opaque-pixel band rectangles; no inferred bones",
+      "maxFootCorrection": 0
+    },
+    {
+      "frame": 1,
+      "phase": "down",
+      "duration": 5,
+      "source": "art/goku/walk-v4/walkForward-01.png",
+      "sourceSha256": "daf119f9a6cbaf07bdad61124179c68b24d50ad2bd5cccf799999cbcb8ef4745",
+      "ankle": {
+        "near": [
+          145,
+          213
+        ],
+        "far": [
+          91,
+          212
+        ]
+      },
+      "ankleEvidence": "anatomical hinge estimates from the painted blue boots; not inverse-kinematics controls",
+      "solePoint": {
+        "near": [
+          157,
+          223
+        ],
+        "far": [
+          100,
+          221
+        ]
+      },
+      "support": [
+        "near"
+      ],
+      "contactFeet": [
+        "near"
+      ],
+      "occluded": {
+        "near": false,
+        "far": false
+      },
+      "footRegion": {
+        "near": [
+          134,
+          190,
+          169,
+          224
+        ],
+        "far": [
+          79,
+          190,
+          109,
+          224
+        ]
+      },
+      "bodyBounds": [
+        81,
+        92,
+        166,
+        224
+      ],
+      "hurtboxes": [
+        {
+          "x": -26,
+          "y": -116,
+          "w": 63,
+          "h": 24
+        },
+        {
+          "x": -33,
+          "y": -92,
+          "w": 70,
+          "h": 30
+        },
+        {
+          "x": -36,
+          "y": -62,
+          "w": 69,
+          "h": 32
+        },
+        {
+          "x": -47,
+          "y": -30,
+          "w": 85,
+          "h": 30
+        }
+      ],
+      "hurtboxMethod": "proposed conservative opaque-pixel band rectangles; no inferred bones",
+      "maxFootCorrection": 0
+    },
+    {
+      "frame": 2,
+      "phase": "passing",
+      "duration": 4,
+      "source": "art/goku/walk-v4/walkForward-02.png",
+      "sourceSha256": "a76814a0ebdc75598ac154d8a91367b7532059f9e6e860157a56ae1b6d88c5e7",
+      "ankle": {
+        "near": [
+          115,
+          213
+        ],
+        "far": [
+          112,
+          202
+        ]
+      },
+      "ankleEvidence": "anatomical hinge estimates from the painted blue boots; not inverse-kinematics controls",
+      "solePoint": {
+        "near": [
+          127,
+          223
+        ],
+        "far": null
+      },
+      "support": [
+        "near"
+      ],
+      "contactFeet": [
+        "near"
+      ],
+      "occluded": {
+        "near": false,
+        "far": true
+      },
+      "footRegion": {
+        "near": [
+          104,
+          201,
+          140,
+          224
+        ],
+        "far": null
+      },
+      "bodyBounds": [
+        101,
+        91,
+        164,
+        224
+      ],
+      "hurtboxes": [
+        {
+          "x": -22,
+          "y": -116,
+          "w": 58,
+          "h": 24
+        },
+        {
+          "x": -27,
+          "y": -92,
+          "w": 58,
+          "h": 30
+        },
+        {
+          "x": -20,
+          "y": -62,
+          "w": 36,
+          "h": 32
+        },
+        {
+          "x": -25,
+          "y": -30,
+          "w": 35,
+          "h": 30
+        }
+      ],
+      "hurtboxMethod": "proposed conservative opaque-pixel band rectangles; no inferred bones",
+      "maxFootCorrection": 0
+    },
+    {
+      "frame": 3,
+      "phase": "up",
+      "duration": 5,
+      "source": "art/goku/walk-v4/walkForward-03.png",
+      "sourceSha256": "d17e362eeb336eec122e0bc92957e43df752805d05edbfe5107b4c719104838b",
+      "ankle": {
+        "near": [
+          101,
+          213
+        ],
+        "far": [
+          153,
+          213
+        ]
+      },
+      "ankleEvidence": "anatomical hinge estimates from the painted blue boots; not inverse-kinematics controls",
+      "solePoint": {
+        "near": [
+          109,
+          223
+        ],
+        "far": [
+          153,
+          223
+        ]
+      },
+      "support": [
+        "near"
+      ],
+      "contactFeet": [
+        "near",
+        "far"
+      ],
+      "occluded": {
+        "near": false,
+        "far": false
+      },
+      "footRegion": {
+        "near": [
+          90,
+          190,
+          121,
+          224
+        ],
+        "far": [
+          143,
+          190,
+          179,
+          224
+        ]
+      },
+      "bodyBounds": [
+        92,
+        93,
+        176,
+        224
+      ],
+      "hurtboxes": [
+        {
+          "x": -24,
+          "y": -116,
+          "w": 60,
+          "h": 24
+        },
+        {
+          "x": -32,
+          "y": -92,
+          "w": 66,
+          "h": 30
+        },
+        {
+          "x": -29,
+          "y": -62,
+          "w": 57,
+          "h": 32
+        },
+        {
+          "x": -36,
+          "y": -30,
+          "w": 84,
+          "h": 30
+        }
+      ],
+      "hurtboxMethod": "proposed conservative opaque-pixel band rectangles; no inferred bones",
+      "maxFootCorrection": 0
+    },
+    {
+      "frame": 4,
+      "phase": "opposite contact",
+      "duration": 4,
+      "source": "art/goku/walk-v4/walkForward-04.png",
+      "sourceSha256": "5319fa84c33b88cee8a6e2c94cbc921291adc3b718310312ad05503d7e107067",
+      "ankle": {
+        "near": [
+          80,
+          213
+        ],
+        "far": [
+          155,
+          213
+        ]
+      },
+      "ankleEvidence": "anatomical hinge estimates from the painted blue boots; not inverse-kinematics controls",
+      "solePoint": {
+        "near": [
+          79,
+          222
+        ],
+        "far": [
+          168,
+          223
+        ]
+      },
+      "support": [
+        "far"
+      ],
+      "contactFeet": [
+        "far"
+      ],
+      "occluded": {
+        "near": false,
+        "far": false
+      },
+      "footRegion": {
+        "near": [
+          68,
+          190,
+          96,
+          224
+        ],
+        "far": [
+          145,
+          190,
+          182,
+          224
+        ]
+      },
+      "bodyBounds": [
+        70,
+        94,
+        179,
+        224
+      ],
+      "hurtboxes": [
+        {
+          "x": -28,
+          "y": -116,
+          "w": 68,
+          "h": 24
+        },
+        {
+          "x": -37,
+          "y": -92,
+          "w": 78,
+          "h": 30
+        },
+        {
+          "x": -47,
+          "y": -62,
+          "w": 84,
+          "h": 32
+        },
+        {
+          "x": -58,
+          "y": -30,
+          "w": 109,
+          "h": 30
+        }
+      ],
+      "hurtboxMethod": "proposed conservative opaque-pixel band rectangles; no inferred bones",
+      "maxFootCorrection": 0
+    },
+    {
+      "frame": 5,
+      "phase": "opposite down",
+      "duration": 5,
+      "source": "art/goku/walk-v4/walkForward-05.png",
+      "sourceSha256": "ba51ce0d51f560e12be806ac1e2aa96f6e173b27125cfbb34fea48501411cc13",
+      "ankle": {
+        "near": [
+          94,
+          212
+        ],
+        "far": [
+          146,
+          213
+        ]
+      },
+      "ankleEvidence": "anatomical hinge estimates from the painted blue boots; not inverse-kinematics controls",
+      "solePoint": {
+        "near": [
+          98,
+          219
+        ],
+        "far": [
+          158,
+          223
+        ]
+      },
+      "support": [
+        "far"
+      ],
+      "contactFeet": [
+        "far"
+      ],
+      "occluded": {
+        "near": false,
+        "far": false
+      },
+      "footRegion": {
+        "near": [
+          80,
+          190,
+          108,
+          224
+        ],
+        "far": [
+          135,
+          190,
+          172,
+          224
+        ]
+      },
+      "bodyBounds": [
+        82,
+        95,
+        168,
+        224
+      ],
+      "hurtboxes": [
+        {
+          "x": -28,
+          "y": -116,
+          "w": 67,
+          "h": 24
+        },
+        {
+          "x": -36,
+          "y": -92,
+          "w": 75,
+          "h": 30
+        },
+        {
+          "x": -36,
+          "y": -62,
+          "w": 66,
+          "h": 32
+        },
+        {
+          "x": -46,
+          "y": -30,
+          "w": 86,
+          "h": 30
+        }
+      ],
+      "hurtboxMethod": "proposed conservative opaque-pixel band rectangles; no inferred bones",
+      "maxFootCorrection": 0
+    },
+    {
+      "frame": 6,
+      "phase": "opposite passing",
+      "duration": 4,
+      "source": "art/goku/walk-v4/walkForward-06.png",
+      "sourceSha256": "e4abc32f62d0615e422a66ba062ed22bb9e7af5f73e23d528436ce63eb7a0009",
+      "ankle": {
+        "near": [
+          111,
+          202
+        ],
+        "far": [
+          118,
+          213
+        ]
+      },
+      "ankleEvidence": "anatomical hinge estimates from the painted blue boots; not inverse-kinematics controls",
+      "solePoint": {
+        "near": null,
+        "far": [
+          130,
+          223
+        ]
+      },
+      "support": [
+        "far"
+      ],
+      "contactFeet": [
+        "far"
+      ],
+      "occluded": {
+        "near": true,
+        "far": false
+      },
+      "footRegion": {
+        "near": null,
+        "far": [
+          103,
+          202,
+          142,
+          224
+        ]
+      },
+      "bodyBounds": [
+        102,
+        96,
+        164,
+        224
+      ],
+      "hurtboxes": [
+        {
+          "x": -18,
+          "y": -116,
+          "w": 54,
+          "h": 24
+        },
+        {
+          "x": -24,
+          "y": -92,
+          "w": 54,
+          "h": 30
+        },
+        {
+          "x": -25,
+          "y": -62,
+          "w": 39,
+          "h": 32
+        },
+        {
+          "x": -26,
+          "y": -30,
+          "w": 37,
+          "h": 30
+        }
+      ],
+      "hurtboxMethod": "proposed conservative opaque-pixel band rectangles; no inferred bones",
+      "maxFootCorrection": 0
+    },
+    {
+      "frame": 7,
+      "phase": "recovery",
+      "duration": 5,
+      "source": "art/goku/walk-v4/walkForward-07.png",
+      "sourceSha256": "489004849a269dcc11bb48d7247163a2ea1a539002c205a9ea761cdba164d2b9",
+      "ankle": {
+        "near": [
+          158,
+          213
+        ],
+        "far": [
+          99,
+          213
+        ]
+      },
+      "ankleEvidence": "anatomical hinge estimates from the painted blue boots; not inverse-kinematics controls",
+      "solePoint": {
+        "near": [
+          158,
+          221
+        ],
+        "far": [
+          108,
+          223
+        ]
+      },
+      "support": [
+        "far"
+      ],
+      "contactFeet": [
+        "far"
+      ],
+      "occluded": {
+        "near": false,
+        "far": false
+      },
+      "footRegion": {
+        "near": [
+          146,
+          190,
+          180,
+          224
+        ],
+        "far": [
+          88,
+          190,
+          121,
+          224
+        ]
+      },
+      "bodyBounds": [
+        90,
+        93,
+        178,
+        224
+      ],
+      "hurtboxes": [
+        {
+          "x": -23,
+          "y": -116,
+          "w": 59,
+          "h": 24
+        },
+        {
+          "x": -32,
+          "y": -92,
+          "w": 64,
+          "h": 30
+        },
+        {
+          "x": -30,
+          "y": -62,
+          "w": 61,
+          "h": 32
+        },
+        {
+          "x": -38,
+          "y": -30,
+          "w": 88,
+          "h": 30
+        }
+      ],
+      "hurtboxMethod": "proposed conservative opaque-pixel band rectangles; no inferred bones",
+      "maxFootCorrection": 0
+    }
+  ],
+  "walkBack": [
+    {
+      "frame": 0,
+      "phase": "contact",
+      "duration": 4,
+      "source": "art/goku/walk-v4/walkBack-00.png",
+      "sourceSha256": "d40d70647124843d6ba6450a1c3cccbaab3d9c97d413ce3d68dc868b5207c249",
+      "ankle": {
+        "near": [
+          76,
+          213
+        ],
+        "far": [
+          155,
+          213
+        ]
+      },
+      "ankleEvidence": "anatomical hinge estimates from the painted blue boots; not inverse-kinematics controls",
+      "solePoint": {
+        "near": [
+          80,
+          223
+        ],
+        "far": [
+          153,
+          221
+        ]
+      },
+      "support": [
+        "near"
+      ],
+      "contactFeet": [
+        "near"
+      ],
+      "occluded": {
+        "near": false,
+        "far": false
+      },
+      "footRegion": {
+        "near": [
+          65,
+          190,
+          92,
+          224
+        ],
+        "far": [
+          144,
+          190,
+          176,
+          224
+        ]
+      },
+      "bodyBounds": [
+        67,
+        92,
+        174,
+        224
+      ],
+      "hurtboxes": [
+        {
+          "x": -28,
+          "y": -116,
+          "w": 63,
+          "h": 24
+        },
+        {
+          "x": -33,
+          "y": -92,
+          "w": 68,
+          "h": 30
+        },
+        {
+          "x": -48,
+          "y": -62,
+          "w": 82,
+          "h": 32
+        },
+        {
+          "x": -61,
+          "y": -30,
+          "w": 107,
+          "h": 30
+        }
+      ],
+      "hurtboxMethod": "proposed conservative opaque-pixel band rectangles; no inferred bones",
+      "maxFootCorrection": 0
+    },
+    {
+      "frame": 1,
+      "phase": "down",
+      "duration": 5,
+      "source": "art/goku/walk-v4/walkBack-01.png",
+      "sourceSha256": "30a50fabf0727f870891c4a6859f820eba45321ad1c9ba720c545ceb22754ec5",
+      "ankle": {
+        "near": [
+          87,
+          213
+        ],
+        "far": [
+          136,
+          213
+        ]
+      },
+      "ankleEvidence": "anatomical hinge estimates from the painted blue boots; not inverse-kinematics controls",
+      "solePoint": {
+        "near": [
+          94,
+          223
+        ],
+        "far": [
+          140,
+          220
+        ]
+      },
+      "support": [
+        "near"
+      ],
+      "contactFeet": [
+        "near"
+      ],
+      "occluded": {
+        "near": false,
+        "far": false
+      },
+      "footRegion": {
+        "near": [
+          77,
+          190,
+          104,
+          224
+        ],
+        "far": [
+          125,
+          190,
+          156,
+          224
+        ]
+      },
+      "bodyBounds": [
+        79,
+        93,
+        163,
+        224
+      ],
+      "hurtboxes": [
+        {
+          "x": -27,
+          "y": -116,
+          "w": 62,
+          "h": 24
+        },
+        {
+          "x": -32,
+          "y": -92,
+          "w": 67,
+          "h": 30
+        },
+        {
+          "x": -40,
+          "y": -62,
+          "w": 66,
+          "h": 32
+        },
+        {
+          "x": -49,
+          "y": -30,
+          "w": 74,
+          "h": 30
+        }
+      ],
+      "hurtboxMethod": "proposed conservative opaque-pixel band rectangles; no inferred bones",
+      "maxFootCorrection": 0
+    },
+    {
+      "frame": 2,
+      "phase": "passing",
+      "duration": 4,
+      "source": "art/goku/walk-v4/walkBack-02.png",
+      "sourceSha256": "d662204bbd823b1277a26fae0eaa4b71dba25d074e74debbfa807789dc0e4ca4",
+      "ankle": {
+        "near": [
+          122,
+          213
+        ],
+        "far": [
+          121,
+          194
+        ]
+      },
+      "ankleEvidence": "anatomical hinge estimates from the painted blue boots; not inverse-kinematics controls",
+      "solePoint": {
+        "near": [
+          130,
+          223
+        ],
+        "far": null
+      },
+      "support": [
+        "near"
+      ],
+      "contactFeet": [
+        "near"
+      ],
+      "occluded": {
+        "near": false,
+        "far": true
+      },
+      "footRegion": {
+        "near": [
+          113,
+          202,
+          140,
+          224
+        ],
+        "far": null
+      },
+      "bodyBounds": [
+        101,
+        93,
+        164,
+        224
+      ],
+      "hurtboxes": [
+        {
+          "x": -22,
+          "y": -116,
+          "w": 58,
+          "h": 24
+        },
+        {
+          "x": -27,
+          "y": -92,
+          "w": 57,
+          "h": 30
+        },
+        {
+          "x": -18,
+          "y": -62,
+          "w": 38,
+          "h": 32
+        },
+        {
+          "x": -17,
+          "y": -30,
+          "w": 27,
+          "h": 30
+        }
+      ],
+      "hurtboxMethod": "proposed conservative opaque-pixel band rectangles; no inferred bones",
+      "maxFootCorrection": 0
+    },
+    {
+      "frame": 3,
+      "phase": "up",
+      "duration": 5,
+      "source": "art/goku/walk-v4/walkBack-03.png",
+      "sourceSha256": "668a419dbc3105788d7d17126c497dfc1c86000d24b8de9892b4ffe97db3c40e",
+      "ankle": {
+        "near": [
+          128,
+          213
+        ],
+        "far": [
+          83,
+          208
+        ]
+      },
+      "ankleEvidence": "anatomical hinge estimates from the painted blue boots; not inverse-kinematics controls",
+      "solePoint": {
+        "near": [
+          134,
+          223
+        ],
+        "far": [
+          84,
+          216
+        ]
+      },
+      "support": [
+        "near"
+      ],
+      "contactFeet": [
+        "near"
+      ],
+      "occluded": {
+        "near": false,
+        "far": false
+      },
+      "footRegion": {
+        "near": [
+          117,
+          190,
+          145,
+          224
+        ],
+        "far": [
+          74,
+          185,
+          92,
+          224
+        ]
+      },
+      "bodyBounds": [
+        74,
+        93,
+        163,
+        224
+      ],
+      "hurtboxes": [
+        {
+          "x": -27,
+          "y": -116,
+          "w": 62,
+          "h": 24
+        },
+        {
+          "x": -32,
+          "y": -92,
+          "w": 64,
+          "h": 30
+        },
+        {
+          "x": -48,
+          "y": -62,
+          "w": 63,
+          "h": 32
+        },
+        {
+          "x": -54,
+          "y": -30,
+          "w": 69,
+          "h": 30
+        }
+      ],
+      "hurtboxMethod": "proposed conservative opaque-pixel band rectangles; no inferred bones",
+      "maxFootCorrection": 0
+    },
+    {
+      "frame": 4,
+      "phase": "opposite contact",
+      "duration": 4,
+      "source": "art/goku/walk-v4/walkBack-04.png",
+      "sourceSha256": "902b5830b4ad418df2239d07a6b3c9f811d8563ff0ce4d399621b4984c45b155",
+      "ankle": {
+        "near": [
+          161,
+          210
+        ],
+        "far": [
+          85,
+          213
+        ]
+      },
+      "ankleEvidence": "anatomical hinge estimates from the painted blue boots; not inverse-kinematics controls",
+      "solePoint": {
+        "near": [
+          157,
+          220
+        ],
+        "far": [
+          92,
+          223
+        ]
+      },
+      "support": [
+        "far"
+      ],
+      "contactFeet": [
+        "far"
+      ],
+      "occluded": {
+        "near": false,
+        "far": false
+      },
+      "footRegion": {
+        "near": [
+          148,
+          190,
+          182,
+          224
+        ],
+        "far": [
+          74,
+          190,
+          101,
+          224
+        ]
+      },
+      "bodyBounds": [
+        76,
+        95,
+        179,
+        224
+      ],
+      "hurtboxes": [
+        {
+          "x": -26,
+          "y": -116,
+          "w": 62,
+          "h": 24
+        },
+        {
+          "x": -33,
+          "y": -92,
+          "w": 67,
+          "h": 30
+        },
+        {
+          "x": -42,
+          "y": -62,
+          "w": 78,
+          "h": 32
+        },
+        {
+          "x": -52,
+          "y": -30,
+          "w": 103,
+          "h": 30
+        }
+      ],
+      "hurtboxMethod": "proposed conservative opaque-pixel band rectangles; no inferred bones",
+      "maxFootCorrection": 0
+    },
+    {
+      "frame": 5,
+      "phase": "opposite down",
+      "duration": 5,
+      "source": "art/goku/walk-v4/walkBack-05.png",
+      "sourceSha256": "1c4313d67ac7d5c376c610bcf4ebc1986e6a4db8363451df5a8e43c64af1367c",
+      "ankle": {
+        "near": [
+          138,
+          214
+        ],
+        "far": [
+          94,
+          213
+        ]
+      },
+      "ankleEvidence": "anatomical hinge estimates from the painted blue boots; not inverse-kinematics controls",
+      "solePoint": {
+        "near": [
+          146,
+          219
+        ],
+        "far": [
+          101,
+          223
+        ]
+      },
+      "support": [
+        "far"
+      ],
+      "contactFeet": [
+        "far"
+      ],
+      "occluded": {
+        "near": false,
+        "far": false
+      },
+      "footRegion": {
+        "near": [
+          126,
+          190,
+          156,
+          224
+        ],
+        "far": [
+          83,
+          190,
+          112,
+          224
+        ]
+      },
+      "bodyBounds": [
+        85,
+        95,
+        165,
+        224
+      ],
+      "hurtboxes": [
+        {
+          "x": -23,
+          "y": -116,
+          "w": 60,
+          "h": 24
+        },
+        {
+          "x": -30,
+          "y": -92,
+          "w": 67,
+          "h": 30
+        },
+        {
+          "x": -37,
+          "y": -62,
+          "w": 66,
+          "h": 32
+        },
+        {
+          "x": -43,
+          "y": -30,
+          "w": 69,
+          "h": 30
+        }
+      ],
+      "hurtboxMethod": "proposed conservative opaque-pixel band rectangles; no inferred bones",
+      "maxFootCorrection": 0
+    },
+    {
+      "frame": 6,
+      "phase": "opposite passing",
+      "duration": 4,
+      "source": "art/goku/walk-v4/walkBack-06.png",
+      "sourceSha256": "1f87697468134897297be03a9bddae7fa4b2fd3bb2e0d83fc29e5833ed6fc252",
+      "ankle": {
+        "near": [
+          111,
+          198
+        ],
+        "far": [
+          123,
+          213
+        ]
+      },
+      "ankleEvidence": "anatomical hinge estimates from the painted blue boots; not inverse-kinematics controls",
+      "solePoint": {
+        "near": null,
+        "far": [
+          130,
+          223
+        ]
+      },
+      "support": [
+        "far"
+      ],
+      "contactFeet": [
+        "far"
+      ],
+      "occluded": {
+        "near": true,
+        "far": false
+      },
+      "footRegion": {
+        "near": null,
+        "far": [
+          113,
+          202,
+          141,
+          224
+        ]
+      },
+      "bodyBounds": [
+        99,
+        95,
+        163,
+        224
+      ],
+      "hurtboxes": [
+        {
+          "x": -23,
+          "y": -116,
+          "w": 58,
+          "h": 24
+        },
+        {
+          "x": -29,
+          "y": -92,
+          "w": 57,
+          "h": 30
+        },
+        {
+          "x": -28,
+          "y": -62,
+          "w": 47,
+          "h": 32
+        },
+        {
+          "x": -24,
+          "y": -30,
+          "w": 35,
+          "h": 30
+        }
+      ],
+      "hurtboxMethod": "proposed conservative opaque-pixel band rectangles; no inferred bones",
+      "maxFootCorrection": 0
+    },
+    {
+      "frame": 7,
+      "phase": "recovery",
+      "duration": 5,
+      "source": "art/goku/walk-v4/walkBack-07.png",
+      "sourceSha256": "b6aa5cd8a6e6e921854a5e2dfa56443ae4e1757eda9dd7725152b30592300244",
+      "ankle": {
+        "near": [
+          85,
+          213
+        ],
+        "far": [
+          148,
+          213
+        ]
+      },
+      "ankleEvidence": "anatomical hinge estimates from the painted blue boots; not inverse-kinematics controls",
+      "solePoint": {
+        "near": [
+          86,
+          222
+        ],
+        "far": [
+          157,
+          223
+        ]
+      },
+      "support": [
+        "far"
+      ],
+      "contactFeet": [
+        "far"
+      ],
+      "occluded": {
+        "near": false,
+        "far": false
+      },
+      "footRegion": {
+        "near": [
+          75,
+          185,
+          95,
+          224
+        ],
+        "far": [
+          138,
+          190,
+          169,
+          224
+        ]
+      },
+      "bodyBounds": [
+        76,
+        97,
+        166,
+        224
+      ],
+      "hurtboxes": [
+        {
+          "x": -21,
+          "y": -116,
+          "w": 56,
+          "h": 24
+        },
+        {
+          "x": -31,
+          "y": -92,
+          "w": 68,
+          "h": 30
+        },
+        {
+          "x": -40,
+          "y": -62,
+          "w": 70,
+          "h": 32
+        },
+        {
+          "x": -52,
+          "y": -30,
+          "w": 90,
+          "h": 30
+        }
+      ],
+      "hurtboxMethod": "proposed conservative opaque-pixel band rectangles; no inferred bones",
+      "maxFootCorrection": 0
+    }
+  ]
+}

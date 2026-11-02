@@ -1,0 +1,33 @@
+{
+  "origin": "http://127.0.0.1:3001",
+  "version": "301aa5a32f542cff5cd9f83a",
+  "results": [
+    {
+      "scenario": "guardCrouch",
+      "clip": "secondaryGuardCrouch"
+    },
+    {
+      "scenario": "damageHeavy",
+      "clip": "secondaryDamageHeavy"
+    },
+    {
+      "scenario": "grabbed",
+      "clip": "secondaryGrabbed"
+    },
+    {
+      "scenario": "taunt",
+      "clip": "secondaryTaunt"
+    },
+    {
+      "scenario": "victory",
+      "clip": "secondaryVictory"
+    }
+  ],
+  "actualBotEntrance": true,
+  "launcherRecovery": true,
+  "interruptionBothSides": true,
+  "koDissipation": true,
+  "mainKeyboardRT": true,
+  "exactAssets": true,
+  "errors": []
+}

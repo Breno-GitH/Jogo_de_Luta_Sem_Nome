@@ -1,0 +1,924 @@
+{
+  "stage": "reactions",
+  "method": "whole-pose",
+  "palette": [
+    "#080a10",
+    "#141621",
+    "#202331",
+    "#303547",
+    "#444c62",
+    "#63342b",
+    "#92513c",
+    "#be7853",
+    "#e7a776",
+    "#ffd0a0",
+    "#ffe3b8",
+    "#542119",
+    "#883116",
+    "#ac3c0b",
+    "#d95208",
+    "#f67a14",
+    "#ff9b2b",
+    "#ffbc57",
+    "#071326",
+    "#0c2146",
+    "#173a6b",
+    "#24599a",
+    "#3272b5",
+    "#5a91c8",
+    "#5b2020",
+    "#a43929",
+    "#e35e35",
+    "#49341f",
+    "#ac7940",
+    "#f1d38a",
+    "#fff0d4",
+    "#f1f5f5"
+  ],
+  "alphaThreshold": 180,
+  "clips": {
+    "trainingHit": {
+      "source": {
+        "path": "art/goku/rebuild/reactions-source.png",
+        "columns": 3,
+        "rows": 3,
+        "calibration": 0
+      },
+      "cells": [
+        1,
+        2,
+        3
+      ],
+      "durations": [
+        3,
+        4,
+        5
+      ],
+      "loop": false,
+      "grounded": true,
+      "minHeight": 80,
+      "label": "Training hit / complete-body fallback",
+      "frames": [
+        {
+          "source": "art/goku/rebuild/reactions-source.png",
+          "sourceRect": [
+            608,
+            31,
+            915,
+            386
+          ],
+          "cellRect": [
+            512,
+            0,
+            1024,
+            341
+          ],
+          "calibrationCell": 0,
+          "scale": 0.3532608695652174,
+          "offset": [
+            69,
+            99
+          ],
+          "bbox": [
+            69,
+            99,
+            177,
+            224
+          ],
+          "hurtboxes": [
+            {
+              "x": -52,
+              "y": -125,
+              "w": 44,
+              "h": 27
+            },
+            {
+              "x": -59,
+              "y": -98,
+              "w": 91,
+              "h": 29
+            },
+            {
+              "x": -47,
+              "y": -69,
+              "w": 73,
+              "h": 25
+            },
+            {
+              "x": -40,
+              "y": -44,
+              "w": 77,
+              "h": 23
+            },
+            {
+              "x": -48,
+              "y": -21,
+              "w": 97,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        },
+        {
+          "source": "art/goku/rebuild/reactions-source.png",
+          "sourceRect": [
+            1116,
+            86,
+            1427,
+            385
+          ],
+          "cellRect": [
+            1024,
+            0,
+            1536,
+            341
+          ],
+          "calibrationCell": 0,
+          "scale": 0.3532608695652174,
+          "offset": [
+            64,
+            118
+          ],
+          "bbox": [
+            64,
+            118,
+            174,
+            224
+          ],
+          "hurtboxes": [
+            {
+              "x": -45,
+              "y": -106,
+              "w": 27,
+              "h": 8
+            },
+            {
+              "x": -64,
+              "y": -98,
+              "w": 76,
+              "h": 29
+            },
+            {
+              "x": -61,
+              "y": -69,
+              "w": 83,
+              "h": 25
+            },
+            {
+              "x": -54,
+              "y": -44,
+              "w": 85,
+              "h": 23
+            },
+            {
+              "x": -48,
+              "y": -21,
+              "w": 94,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        },
+        {
+          "source": "art/goku/rebuild/reactions-source.png",
+          "sourceRect": [
+            107,
+            400,
+            415,
+            723
+          ],
+          "cellRect": [
+            0,
+            341,
+            512,
+            683
+          ],
+          "calibrationCell": 0,
+          "scale": 0.3532608695652174,
+          "offset": [
+            80,
+            110
+          ],
+          "bbox": [
+            80,
+            110,
+            189,
+            224
+          ],
+          "hurtboxes": [
+            {
+              "x": -2,
+              "y": -114,
+              "w": 48,
+              "h": 16
+            },
+            {
+              "x": -33,
+              "y": -98,
+              "w": 81,
+              "h": 29
+            },
+            {
+              "x": -33,
+              "y": -69,
+              "w": 94,
+              "h": 25
+            },
+            {
+              "x": -40,
+              "y": -44,
+              "w": 80,
+              "h": 23
+            },
+            {
+              "x": -48,
+              "y": -21,
+              "w": 98,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        }
+      ],
+      "method": "whole-pose",
+      "uniqueDrawings": 3,
+      "ticks": 12
+    },
+    "trainingAirHit": {
+      "source": {
+        "path": "art/goku/rebuild/reactions-source.png",
+        "columns": 3,
+        "rows": 3,
+        "calibration": 0
+      },
+      "cells": [
+        4,
+        5,
+        6
+      ],
+      "durations": [
+        5,
+        5,
+        5
+      ],
+      "loop": false,
+      "grounded": false,
+      "minHeight": 45,
+      "label": "Training air recoil / complete-body fallback",
+      "frames": [
+        {
+          "source": "art/goku/rebuild/reactions-source.png",
+          "sourceRect": [
+            605,
+            404,
+            954,
+            701
+          ],
+          "cellRect": [
+            512,
+            341,
+            1024,
+            683
+          ],
+          "calibrationCell": 0,
+          "scale": 0.3532608695652174,
+          "offset": [
+            66,
+            94
+          ],
+          "bbox": [
+            66,
+            94,
+            189,
+            199
+          ],
+          "hurtboxes": [
+            {
+              "x": -62,
+              "y": -130,
+              "w": 84,
+              "h": 32
+            },
+            {
+              "x": -62,
+              "y": -98,
+              "w": 99,
+              "h": 29
+            },
+            {
+              "x": -51,
+              "y": -69,
+              "w": 112,
+              "h": 25
+            },
+            {
+              "x": -9,
+              "y": -44,
+              "w": 40,
+              "h": 19
+            }
+          ],
+          "hitboxes": []
+        },
+        {
+          "source": "art/goku/rebuild/reactions-source.png",
+          "sourceRect": [
+            1080,
+            467,
+            1481,
+            658
+          ],
+          "cellRect": [
+            1024,
+            341,
+            1536,
+            683
+          ],
+          "calibrationCell": 0,
+          "scale": 0.3532608695652174,
+          "offset": [
+            56,
+            94
+          ],
+          "bbox": [
+            57,
+            94,
+            198,
+            161
+          ],
+          "hurtboxes": [
+            {
+              "x": -67,
+              "y": -130,
+              "w": 137,
+              "h": 32
+            },
+            {
+              "x": -71,
+              "y": -98,
+              "w": 138,
+              "h": 29
+            },
+            {
+              "x": -38,
+              "y": -69,
+              "w": 73,
+              "h": 6
+            }
+          ],
+          "hitboxes": []
+        },
+        {
+          "source": "art/goku/rebuild/reactions-source.png",
+          "sourceRect": [
+            44,
+            734,
+            404,
+            994
+          ],
+          "cellRect": [
+            0,
+            683,
+            512,
+            1024
+          ],
+          "calibrationCell": 0,
+          "scale": 0.3532608695652174,
+          "offset": [
+            64,
+            94
+          ],
+          "bbox": [
+            65,
+            94,
+            191,
+            186
+          ],
+          "hurtboxes": [
+            {
+              "x": -60,
+              "y": -130,
+              "w": 116,
+              "h": 32
+            },
+            {
+              "x": -63,
+              "y": -98,
+              "w": 119,
+              "h": 29
+            },
+            {
+              "x": -50,
+              "y": -69,
+              "w": 113,
+              "h": 25
+            },
+            {
+              "x": -29,
+              "y": -44,
+              "w": 85,
+              "h": 6
+            }
+          ],
+          "hitboxes": []
+        }
+      ],
+      "method": "whole-pose",
+      "uniqueDrawings": 3,
+      "ticks": 15
+    },
+    "trainingDown": {
+      "source": {
+        "path": "art/goku/rebuild/getup-source.png",
+        "columns": 3,
+        "rows": 3,
+        "calibration": 0
+      },
+      "cells": [
+        1,
+        2,
+        3
+      ],
+      "durations": [
+        4,
+        6,
+        18
+      ],
+      "loop": false,
+      "grounded": true,
+      "minHeight": 32,
+      "label": "Training fall / down",
+      "frames": [
+        {
+          "source": "art/goku/rebuild/getup-source.png",
+          "sourceRect": [
+            451,
+            135,
+            816,
+            472
+          ],
+          "cellRect": [
+            418,
+            0,
+            836,
+            418
+          ],
+          "calibrationCell": 0,
+          "scale": 0.3132530120481928,
+          "offset": [
+            98,
+            118
+          ],
+          "bbox": [
+            98,
+            118,
+            212,
+            224
+          ],
+          "hurtboxes": [
+            {
+              "x": 39,
+              "y": -106,
+              "w": 29,
+              "h": 8
+            },
+            {
+              "x": 2,
+              "y": -98,
+              "w": 71,
+              "h": 29
+            },
+            {
+              "x": -2,
+              "y": -69,
+              "w": 86,
+              "h": 25
+            },
+            {
+              "x": -18,
+              "y": -44,
+              "w": 67,
+              "h": 23
+            },
+            {
+              "x": -30,
+              "y": -21,
+              "w": 79,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        },
+        {
+          "source": "art/goku/rebuild/getup-source.png",
+          "sourceRect": [
+            866,
+            237,
+            1223,
+            472
+          ],
+          "cellRect": [
+            836,
+            0,
+            1254,
+            418
+          ],
+          "calibrationCell": 0,
+          "scale": 0.3132530120481928,
+          "offset": [
+            72,
+            150
+          ],
+          "bbox": [
+            72,
+            150,
+            184,
+            224
+          ],
+          "hurtboxes": [
+            {
+              "x": 10,
+              "y": -74,
+              "w": 27,
+              "h": 5
+            },
+            {
+              "x": -34,
+              "y": -69,
+              "w": 84,
+              "h": 25
+            },
+            {
+              "x": -46,
+              "y": -44,
+              "w": 87,
+              "h": 23
+            },
+            {
+              "x": -56,
+              "y": -21,
+              "w": 112,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        },
+        {
+          "source": "art/goku/rebuild/getup-source.png",
+          "sourceRect": [
+            22,
+            663,
+            433,
+            792
+          ],
+          "cellRect": [
+            0,
+            418,
+            418,
+            836
+          ],
+          "calibrationCell": 0,
+          "scale": 0.3132530120481928,
+          "offset": [
+            68,
+            184
+          ],
+          "bbox": [
+            68,
+            184,
+            197,
+            224
+          ],
+          "hurtboxes": [
+            {
+              "x": -36,
+              "y": -40,
+              "w": 104,
+              "h": 19
+            },
+            {
+              "x": -60,
+              "y": -21,
+              "w": 129,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        }
+      ],
+      "method": "whole-pose",
+      "uniqueDrawings": 3,
+      "ticks": 28
+    },
+    "trainingGetup": {
+      "source": {
+        "path": "art/goku/rebuild/getup-source.png",
+        "columns": 3,
+        "rows": 3,
+        "calibration": 0
+      },
+      "cells": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "prependReference": {
+        "stage": "current",
+        "clip": "trainingDown",
+        "index": 2
+      },
+      "durations": [
+        2,
+        4,
+        4,
+        4,
+        4
+      ],
+      "loop": false,
+      "grounded": true,
+      "minHeight": 32,
+      "label": "Training getup / bracing, kneel and rising",
+      "frames": [
+        {
+          "source": "art/goku/rebuild/getup-source.png",
+          "sourceRect": [
+            22,
+            663,
+            433,
+            792
+          ],
+          "cellRect": [
+            0,
+            418,
+            418,
+            836
+          ],
+          "calibrationCell": 0,
+          "scale": 0.3132530120481928,
+          "offset": [
+            68,
+            184
+          ],
+          "bbox": [
+            68,
+            184,
+            197,
+            224
+          ],
+          "hurtboxes": [
+            {
+              "x": -36,
+              "y": -40,
+              "w": 104,
+              "h": 19
+            },
+            {
+              "x": -60,
+              "y": -21,
+              "w": 129,
+              "h": 21
+            }
+          ],
+          "hitboxes": [],
+          "wholeFrameReference": {
+            "stage": "current",
+            "clip": "trainingDown",
+            "index": 2
+          }
+        },
+        {
+          "source": "art/goku/rebuild/getup-source.png",
+          "sourceRect": [
+            878,
+            549,
+            1236,
+            801
+          ],
+          "cellRect": [
+            836,
+            418,
+            1254,
+            836
+          ],
+          "calibrationCell": 0,
+          "scale": 0.3132530120481928,
+          "offset": [
+            72,
+            145
+          ],
+          "bbox": [
+            72,
+            145,
+            184,
+            224
+          ],
+          "hurtboxes": [
+            {
+              "x": 11,
+              "y": -79,
+              "w": 32,
+              "h": 10
+            },
+            {
+              "x": -29,
+              "y": -69,
+              "w": 77,
+              "h": 25
+            },
+            {
+              "x": -44,
+              "y": -44,
+              "w": 84,
+              "h": 23
+            },
+            {
+              "x": -56,
+              "y": -21,
+              "w": 112,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        },
+        {
+          "source": "art/goku/rebuild/getup-source.png",
+          "sourceRect": [
+            49,
+            938,
+            409,
+            1198
+          ],
+          "cellRect": [
+            0,
+            836,
+            418,
+            1254
+          ],
+          "calibrationCell": 0,
+          "scale": 0.3132530120481928,
+          "offset": [
+            54,
+            143
+          ],
+          "bbox": [
+            54,
+            144,
+            167,
+            224
+          ],
+          "hurtboxes": [
+            {
+              "x": -24,
+              "y": -80,
+              "w": 59,
+              "h": 11
+            },
+            {
+              "x": -43,
+              "y": -69,
+              "w": 82,
+              "h": 25
+            },
+            {
+              "x": -69,
+              "y": -44,
+              "w": 87,
+              "h": 23
+            },
+            {
+              "x": -74,
+              "y": -21,
+              "w": 99,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        },
+        {
+          "source": "art/goku/rebuild/getup-source.png",
+          "sourceRect": [
+            487,
+            856,
+            778,
+            1201
+          ],
+          "cellRect": [
+            418,
+            836,
+            836,
+            1254
+          ],
+          "calibrationCell": 0,
+          "scale": 0.3132530120481928,
+          "offset": [
+            83,
+            116
+          ],
+          "bbox": [
+            83,
+            116,
+            174,
+            224
+          ],
+          "hurtboxes": [
+            {
+              "x": 2,
+              "y": -108,
+              "w": 40,
+              "h": 10
+            },
+            {
+              "x": -34,
+              "y": -98,
+              "w": 80,
+              "h": 29
+            },
+            {
+              "x": -36,
+              "y": -69,
+              "w": 71,
+              "h": 25
+            },
+            {
+              "x": -37,
+              "y": -44,
+              "w": 77,
+              "h": 23
+            },
+            {
+              "x": -45,
+              "y": -21,
+              "w": 91,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        },
+        {
+          "source": "art/goku/rebuild/getup-source.png",
+          "sourceRect": [
+            885,
+            837,
+            1175,
+            1204
+          ],
+          "cellRect": [
+            836,
+            836,
+            1254,
+            1254
+          ],
+          "calibrationCell": 0,
+          "scale": 0.3132530120481928,
+          "offset": [
+            83,
+            109
+          ],
+          "bbox": [
+            83,
+            109,
+            174,
+            224
+          ],
+          "hurtboxes": [
+            {
+              "x": -17,
+              "y": -115,
+              "w": 47,
+              "h": 17
+            },
+            {
+              "x": -32,
+              "y": -98,
+              "w": 75,
+              "h": 29
+            },
+            {
+              "x": -33,
+              "y": -69,
+              "w": 73,
+              "h": 25
+            },
+            {
+              "x": -39,
+              "y": -44,
+              "w": 77,
+              "h": 23
+            },
+            {
+              "x": -45,
+              "y": -21,
+              "w": 91,
+              "h": 21
+            }
+          ],
+          "hitboxes": []
+        }
+      ],
+      "method": "whole-pose",
+      "uniqueDrawings": 5,
+      "ticks": 18
+    }
+  }
+}

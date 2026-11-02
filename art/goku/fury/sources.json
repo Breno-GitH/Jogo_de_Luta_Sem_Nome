@@ -1,0 +1,512 @@
+{
+  "method": "whole-pose, uniform source scale, nearest-neighbor, no morphing",
+  "clips": {
+    "furySuperActivationStart": {
+      "cells": [
+        "activation:1",
+        "activation:2",
+        "activation:3"
+      ],
+      "durations": [
+        6,
+        8,
+        10
+      ],
+      "loop": false
+    },
+    "furyEnergyCharging": {
+      "cells": [
+        "activation:4",
+        "activation:5",
+        "activation:6"
+      ],
+      "durations": [
+        8,
+        8,
+        8
+      ],
+      "loop": false
+    },
+    "furyInitialTransformation": {
+      "cells": [
+        "transformation:1",
+        "transformation:2",
+        "transformation:3",
+        "transformation:4"
+      ],
+      "durations": [
+        5,
+        5,
+        5,
+        5
+      ],
+      "loop": false
+    },
+    "furyTransformationTransition": {
+      "cells": [
+        "transformation:5",
+        "transformation:6"
+      ],
+      "durations": [
+        5,
+        5
+      ],
+      "loop": false
+    },
+    "furyTransformationFinish": {
+      "cells": [
+        "transformation:7",
+        "transformation:8"
+      ],
+      "durations": [
+        5,
+        5
+      ],
+      "loop": false
+    },
+    "furySuperFightingPose": {
+      "cells": [
+        "dash:1",
+        "dash:2",
+        "dash:3"
+      ],
+      "durations": [
+        4,
+        5,
+        5
+      ],
+      "loop": true
+    },
+    "furyInitialDash": {
+      "cells": [
+        "dash:4",
+        "dash:5",
+        "dash:6",
+        "dash:7",
+        "dash:8"
+      ],
+      "durations": [
+        3,
+        3,
+        4,
+        4,
+        3
+      ],
+      "loop": false
+    },
+    "furyFirstPunch": {
+      "cells": [
+        "ground:1",
+        "ground:2",
+        "ground:3",
+        "ground:4"
+      ],
+      "durations": [
+        4,
+        3,
+        8,
+        5
+      ],
+      "loop": false
+    },
+    "furySecondStrike": {
+      "cells": [
+        "ground:5",
+        "ground:6",
+        "ground:7",
+        "ground:8"
+      ],
+      "durations": [
+        3,
+        4,
+        5,
+        4
+      ],
+      "loop": false
+    },
+    "furyUppercut": {
+      "cells": [
+        "uppercut:1",
+        "uppercut:2",
+        "uppercut:3",
+        "uppercut:4",
+        "uppercut:5"
+      ],
+      "durations": [
+        3,
+        3,
+        5,
+        5,
+        4
+      ],
+      "loop": false
+    },
+    "furyAirPursuit": {
+      "cells": [
+        "uppercut:6",
+        "uppercut:7",
+        "uppercut:8"
+      ],
+      "durations": [
+        5,
+        5,
+        6
+      ],
+      "loop": false
+    },
+    "furyAirPunch": {
+      "cells": [
+        "air:1",
+        "air:2",
+        "air:3",
+        "air:4"
+      ],
+      "durations": [
+        2,
+        2,
+        4,
+        4
+      ],
+      "loop": false
+    },
+    "furyAirKick": {
+      "cells": [
+        "air:5",
+        "air:6",
+        "air:7",
+        "air:8"
+      ],
+      "durations": [
+        2,
+        2,
+        5,
+        3
+      ],
+      "loop": false
+    },
+    "furyTeleportDisappear": {
+      "cells": [
+        "teleport:1",
+        "teleport:2",
+        "teleport:3",
+        "teleport:4"
+      ],
+      "durations": [
+        2,
+        1,
+        1,
+        2
+      ],
+      "loop": false
+    },
+    "furyTeleportReappear": {
+      "cells": [
+        "teleport:5",
+        "teleport:6",
+        "teleport:7",
+        "teleport:8"
+      ],
+      "durations": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "furyTeleportPunch": {
+      "cells": [
+        "air:1",
+        "air:2",
+        "air:3",
+        "air:4"
+      ],
+      "durations": [
+        2,
+        3,
+        5,
+        8
+      ],
+      "loop": false
+    },
+    "furyTeleportKick": {
+      "cells": [
+        "air:5",
+        "air:6",
+        "air:7",
+        "air:8"
+      ],
+      "durations": [
+        2,
+        3,
+        5,
+        8
+      ],
+      "loop": false
+    },
+    "furySmash": {
+      "cells": [
+        "aerial:1",
+        "aerial:2",
+        "aerial:3",
+        "aerial:4"
+      ],
+      "durations": [
+        2,
+        3,
+        5,
+        8
+      ],
+      "loop": false
+    },
+    "furyAerialUppercut": {
+      "cells": [
+        "aerial:5",
+        "aerial:6",
+        "uppercut:4",
+        "aerial:8"
+      ],
+      "durations": [
+        2,
+        3,
+        5,
+        8
+      ],
+      "loop": false
+    },
+    "furyKamehamehaPreparation": {
+      "cells": [
+        "charge:1",
+        "charge:2",
+        "charge:3",
+        "charge:4"
+      ],
+      "durations": [
+        7,
+        9,
+        12,
+        14
+      ],
+      "loop": false
+    },
+    "furyFuriousExpression": {
+      "cells": [
+        "charge:5",
+        "charge:6",
+        "charge:7",
+        "charge:8"
+      ],
+      "durations": [
+        3,
+        3,
+        3,
+        3
+      ],
+      "loop": false
+    },
+    "furyDownwardBeam": {
+      "cells": [
+        "beam:1",
+        "beam:2",
+        "beam:3",
+        "beam:4"
+      ],
+      "durations": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "loop": false
+    },
+    "furyKamehamehaMaintain": {
+      "cells": [
+        "beam:5",
+        "beam:6"
+      ],
+      "durations": [
+        4,
+        4
+      ],
+      "loop": true
+    },
+    "furyKamehamehaRecovery": {
+      "cells": [
+        "beam:7",
+        "beam:8"
+      ],
+      "durations": [
+        5,
+        5
+      ],
+      "loop": false
+    },
+    "furyAirDescent": {
+      "cells": [
+        "descent:1",
+        "descent:2",
+        "descent:3"
+      ],
+      "durations": [
+        10,
+        10,
+        10
+      ],
+      "loop": false
+    },
+    "furyLanding": {
+      "cells": [
+        "descent:4",
+        "descent:5",
+        "descent:6"
+      ],
+      "durations": [
+        3,
+        5,
+        6
+      ],
+      "loop": false
+    },
+    "furyTransformationEnding": {
+      "cells": [
+        "descent:7",
+        "descent:8"
+      ],
+      "durations": [
+        6,
+        6
+      ],
+      "loop": false
+    },
+    "furyAuraFading": {
+      "cells": [
+        "ending:1",
+        "ending:2"
+      ],
+      "durations": [
+        2,
+        2
+      ],
+      "loop": false
+    },
+    "furyHairColorTransition": {
+      "cells": [
+        "ending:3",
+        "ending:4",
+        "ending:5",
+        "ending:6"
+      ],
+      "durations": [
+        4,
+        4,
+        4,
+        4
+      ],
+      "loop": false
+    },
+    "furyReturnToBase": {
+      "cells": [
+        "ending:6",
+        "ending:7",
+        "ending:8"
+      ],
+      "durations": [
+        4,
+        4,
+        4
+      ],
+      "loop": false
+    },
+    "furyRecoveryPose": {
+      "cells": [
+        "ending:7",
+        "ending:8"
+      ],
+      "durations": [
+        2,
+        2
+      ],
+      "loop": false
+    },
+    "furyReturnToIdle": {
+      "cells": [
+        "ending:8",
+        "base:idle"
+      ],
+      "durations": [
+        3,
+        5
+      ],
+      "loop": false
+    },
+    "ssj1_fury": {
+      "cells": [
+        "activation:1",
+        "activation:2",
+        "activation:3",
+        "activation:4",
+        "activation:5",
+        "activation:6",
+        "transformation:1",
+        "transformation:2",
+        "transformation:3",
+        "transformation:4",
+        "transformation:5",
+        "transformation:6",
+        "transformation:7",
+        "transformation:8",
+        "dash:4",
+        "dash:5",
+        "dash:6",
+        "dash:7",
+        "dash:8",
+        "ground:2",
+        "ground:3",
+        "ground:4",
+        "ending:1",
+        "ending:2",
+        "ending:3",
+        "ending:4",
+        "ending:5",
+        "ending:6",
+        "ending:7",
+        "ending:8",
+        "base:idle"
+      ],
+      "durations": [
+        6,
+        8,
+        10,
+        8,
+        8,
+        8,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        3,
+        3,
+        4,
+        4,
+        3,
+        1,
+        5,
+        8,
+        4,
+        4,
+        5,
+        5,
+        6,
+        6,
+        5,
+        9,
+        6
+      ],
+      "loop": false
+    }
+  }
+}

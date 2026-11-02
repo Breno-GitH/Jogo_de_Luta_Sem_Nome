@@ -1,0 +1,735 @@
+{
+  "walkForward": {
+    "label": "Walk Forward",
+    "durations": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      3
+    ],
+    "poses": [
+      {
+        "hip": 3,
+        "lean": 2,
+        "left": [
+          50.75,
+          0.0
+        ],
+        "right": [
+          -48.75,
+          -4.0
+        ],
+        "cloth": 0,
+        "hair": 0,
+        "wrist": -1
+      },
+      {
+        "hip": 2,
+        "lean": 3,
+        "left": [
+          34.25,
+          0.0
+        ],
+        "right": [
+          -32.25,
+          -10.0
+        ],
+        "cloth": 2,
+        "hair": -1,
+        "wrist": 0
+      },
+      {
+        "hip": 3,
+        "lean": 2,
+        "left": [
+          17.75,
+          0.0
+        ],
+        "right": [
+          -15.75,
+          -4.0
+        ],
+        "cloth": 3,
+        "hair": 0,
+        "wrist": 1
+      },
+      {
+        "hip": 4,
+        "lean": 1,
+        "left": [
+          1.25,
+          -4.0
+        ],
+        "right": [
+          0.75,
+          0.0
+        ],
+        "cloth": 1,
+        "hair": 1,
+        "wrist": 2
+      },
+      {
+        "hip": 3,
+        "lean": 2,
+        "left": [
+          17.75,
+          -10.0
+        ],
+        "right": [
+          -15.75,
+          0.0
+        ],
+        "cloth": -2,
+        "hair": 2,
+        "wrist": 1
+      },
+      {
+        "hip": 2,
+        "lean": 3,
+        "left": [
+          34.25,
+          -4.0
+        ],
+        "right": [
+          -32.25,
+          0.0
+        ],
+        "cloth": -3,
+        "hair": 1,
+        "wrist": 0
+      }
+    ],
+    "loop": true,
+    "grounded": true
+  },
+  "walkBack": {
+    "label": "Walk Back",
+    "durations": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      3
+    ],
+    "poses": [
+      {
+        "hip": 3,
+        "lean": -3,
+        "left": [
+          1.25,
+          0.0
+        ],
+        "right": [
+          0.75,
+          -4.0
+        ],
+        "cloth": 1,
+        "hair": 0,
+        "wrist": -2
+      },
+      {
+        "hip": 2,
+        "lean": -4,
+        "left": [
+          17.75,
+          0.0
+        ],
+        "right": [
+          -15.75,
+          -9.0
+        ],
+        "cloth": 0,
+        "hair": 1,
+        "wrist": -1
+      },
+      {
+        "hip": 3,
+        "lean": -3,
+        "left": [
+          34.25,
+          0.0
+        ],
+        "right": [
+          -32.25,
+          -4.0
+        ],
+        "cloth": -2,
+        "hair": 2,
+        "wrist": 0
+      },
+      {
+        "hip": 4,
+        "lean": -2,
+        "left": [
+          50.75,
+          -4.0
+        ],
+        "right": [
+          -48.75,
+          0.0
+        ],
+        "cloth": -3,
+        "hair": 1,
+        "wrist": 1
+      },
+      {
+        "hip": 3,
+        "lean": -3,
+        "left": [
+          34.25,
+          -9.0
+        ],
+        "right": [
+          -32.25,
+          0.0
+        ],
+        "cloth": 0,
+        "hair": 0,
+        "wrist": 0
+      },
+      {
+        "hip": 2,
+        "lean": -4,
+        "left": [
+          17.75,
+          -4.0
+        ],
+        "right": [
+          -15.75,
+          0.0
+        ],
+        "cloth": 2,
+        "hair": -1,
+        "wrist": -1
+      }
+    ],
+    "loop": true,
+    "grounded": true
+  },
+  "dashForward": {
+    "label": "Dash Forward",
+    "durations": [
+      2,
+      2,
+      3,
+      3,
+      3
+    ],
+    "poses": [
+      {
+        "hip": 5,
+        "lean": 9,
+        "left": [
+          -3.0,
+          0.0
+        ],
+        "right": [
+          3.0,
+          0.0
+        ],
+        "cloth": 1,
+        "hair": -1,
+        "wrist": -15
+      },
+      {
+        "hip": 7,
+        "lean": 20,
+        "left": [
+          -5.0,
+          -2.0
+        ],
+        "right": [
+          6.0,
+          0.0
+        ],
+        "cloth": 3,
+        "hair": -2,
+        "wrist": -26
+      },
+      {
+        "hip": 8,
+        "lean": 28,
+        "left": [
+          -6.0,
+          -5.0
+        ],
+        "right": [
+          4.0,
+          0.0
+        ],
+        "cloth": 5,
+        "hair": -3,
+        "wrist": -34
+      },
+      {
+        "hip": 6,
+        "lean": 22,
+        "left": [
+          -4.0,
+          -3.0
+        ],
+        "right": [
+          2.0,
+          0.0
+        ],
+        "cloth": 4,
+        "hair": -2,
+        "wrist": -28
+      },
+      {
+        "hip": 3,
+        "lean": 10,
+        "left": [
+          -2.0,
+          0.0
+        ],
+        "right": [
+          1.0,
+          0.0
+        ],
+        "cloth": 2,
+        "hair": -1,
+        "wrist": -16
+      }
+    ],
+    "loop": false,
+    "grounded": true
+  },
+  "backdash": {
+    "label": "Backdash",
+    "durations": [
+      2,
+      2,
+      3,
+      3,
+      3
+    ],
+    "poses": [
+      {
+        "hip": 5,
+        "lean": -8,
+        "left": [
+          -3.0,
+          0.0
+        ],
+        "right": [
+          -1.0,
+          0.0
+        ],
+        "cloth": -1,
+        "hair": 1,
+        "wrist": -3
+      },
+      {
+        "hip": 1,
+        "lean": -14,
+        "left": [
+          -4.123565740976176,
+          -2.0
+        ],
+        "right": [
+          -4.0,
+          -4.0
+        ],
+        "cloth": -3,
+        "hair": 2,
+        "wrist": -5
+      },
+      {
+        "hip": -1,
+        "lean": -17,
+        "left": [
+          -2.9880917785841916,
+          -3.0
+        ],
+        "right": [
+          -7.0,
+          -4.0
+        ],
+        "cloth": -4,
+        "hair": 3,
+        "wrist": -7
+      },
+      {
+        "hip": 2,
+        "lean": -11,
+        "left": [
+          -3.0,
+          -1.0
+        ],
+        "right": [
+          -4.0,
+          -2.0
+        ],
+        "cloth": -2,
+        "hair": 2,
+        "wrist": -4
+      },
+      {
+        "hip": 4,
+        "lean": -4,
+        "left": [
+          -1.0,
+          0.0
+        ],
+        "right": [
+          -1.0,
+          0.0
+        ],
+        "cloth": 1,
+        "hair": 0,
+        "wrist": -1
+      }
+    ],
+    "loop": false,
+    "grounded": true
+  },
+  "crouchStart": {
+    "label": "Crouch Start",
+    "durations": [
+      3,
+      3
+    ],
+    "poses": [
+      {
+        "hip": 9,
+        "lean": 3,
+        "cloth": 1,
+        "hair": -1,
+        "wrist": -11.2,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "hip": 22,
+        "lean": 7,
+        "left": [
+          -2.0,
+          0.0
+        ],
+        "right": [
+          3.0,
+          0.0
+        ],
+        "cloth": -1,
+        "hair": 1,
+        "wrist": -21.6,
+        "knee": 4
+      }
+    ],
+    "loop": false,
+    "grounded": true
+  },
+  "crouchIdle": {
+    "label": "Crouch Idle",
+    "durations": [
+      18,
+      20
+    ],
+    "poses": [
+      {
+        "hip": 22,
+        "lean": 7,
+        "left": [
+          -2.0,
+          0.0
+        ],
+        "right": [
+          3.0,
+          0.0
+        ],
+        "cloth": -1,
+        "hair": 1,
+        "wrist": -21.6,
+        "knee": 4
+      },
+      {
+        "hip": 23,
+        "lean": 7,
+        "left": [
+          -2.0,
+          0.0
+        ],
+        "right": [
+          3.0,
+          0.0
+        ],
+        "cloth": 1,
+        "hair": 2,
+        "wrist": -22.400000000000002,
+        "knee": 4
+      }
+    ],
+    "loop": true,
+    "grounded": true
+  },
+  "crouchEnd": {
+    "label": "Crouch End",
+    "durations": [
+      3,
+      3
+    ],
+    "poses": [
+      {
+        "hip": 13,
+        "lean": 4,
+        "cloth": 2,
+        "hair": 1,
+        "wrist": -14.4,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "hip": 2,
+        "lean": 1,
+        "cloth": 1,
+        "hair": 0,
+        "wrist": -1,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ]
+      }
+    ],
+    "loop": false,
+    "grounded": true
+  },
+  "jumpStart": {
+    "label": "Jump Start",
+    "durations": [
+      1,
+      1,
+      2
+    ],
+    "poses": [
+      {
+        "hip": 6,
+        "lean": 1,
+        "cloth": -1,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "hip": 14,
+        "lean": 3,
+        "cloth": -2,
+        "hair": 1,
+        "wrist": -15.200000000000001,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "hip": -1,
+        "lean": 2,
+        "left": [
+          2.0,
+          0.0
+        ],
+        "right": [
+          -4.116772333587477,
+          0.0
+        ],
+        "cloth": 1,
+        "hair": -1,
+        "wrist": -5
+      }
+    ],
+    "loop": false,
+    "grounded": true
+  },
+  "jumpRise": {
+    "label": "Jump Rise",
+    "durations": [
+      4,
+      4
+    ],
+    "poses": [
+      {
+        "hip": -2,
+        "lean": 6,
+        "left": [
+          7.0,
+          -4.0
+        ],
+        "right": [
+          -5.0,
+          -2.0
+        ],
+        "cloth": 3,
+        "hair": 2,
+        "wrist": -8
+      },
+      {
+        "hip": 0,
+        "lean": 8,
+        "left": [
+          13.0,
+          -14.0
+        ],
+        "right": [
+          -7.0,
+          -9.0
+        ],
+        "cloth": 5,
+        "hair": 3,
+        "wrist": -11
+      }
+    ],
+    "loop": false,
+    "grounded": false
+  },
+  "jumpApex": {
+    "label": "Jump Apex",
+    "durations": [
+      8
+    ],
+    "poses": [
+      {
+        "hip": 1,
+        "lean": 5,
+        "left": [
+          15.0,
+          -16.0
+        ],
+        "right": [
+          -10.0,
+          -12.0
+        ],
+        "cloth": 3,
+        "hair": 2,
+        "wrist": -12
+      }
+    ],
+    "loop": false,
+    "grounded": false
+  },
+  "jumpFall": {
+    "label": "Jump Fall",
+    "durations": [
+      4,
+      4
+    ],
+    "poses": [
+      {
+        "hip": 0,
+        "lean": 3,
+        "left": [
+          10.0,
+          -10.0
+        ],
+        "right": [
+          -6.0,
+          -7.0
+        ],
+        "cloth": -2,
+        "hair": -1,
+        "wrist": -9
+      },
+      {
+        "hip": 1,
+        "lean": 1,
+        "left": [
+          3.0,
+          -2.0
+        ],
+        "right": [
+          -2.0,
+          -1.0
+        ],
+        "cloth": -4,
+        "hair": -2,
+        "wrist": -4
+      }
+    ],
+    "loop": false,
+    "grounded": false
+  },
+  "landing": {
+    "label": "Landing",
+    "durations": [
+      2,
+      2,
+      2
+    ],
+    "poses": [
+      {
+        "hip": 8,
+        "lean": 3,
+        "cloth": -3,
+        "hair": -2,
+        "wrist": -10.4,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "hip": 13,
+        "lean": 4,
+        "cloth": -1,
+        "hair": 1,
+        "wrist": -14.4,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "hip": 3,
+        "lean": 1,
+        "cloth": 2,
+        "hair": 2,
+        "wrist": -1,
+        "left": [
+          0.0,
+          0.0
+        ],
+        "right": [
+          0.0,
+          0.0
+        ]
+      }
+    ],
+    "loop": false,
+    "grounded": true
+  }
+}

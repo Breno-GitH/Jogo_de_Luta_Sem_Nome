@@ -1,0 +1,522 @@
+{
+  "method": "whole-pose",
+  "canvas": [
+    384,
+    256
+  ],
+  "pivot": {
+    "x": 192,
+    "y": 224
+  },
+  "config": {
+    "source": "art/goku/combat/stand_light-source.png",
+    "kind": "normal",
+    "grounded": true,
+    "cells": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "durations": [
+      2,
+      2,
+      2,
+      2,
+      4,
+      4
+    ],
+    "startup": 4,
+    "active": 4,
+    "strike": "punch",
+    "combat": {
+      "damage": 42,
+      "stun": 24,
+      "blockstun": 11,
+      "push": 0.9,
+      "launch": 0,
+      "hitstop": 6,
+      "level": "mid",
+      "rank": 1,
+      "cancels": [
+        "medium",
+        "heavy"
+      ],
+      "cancelWindow": {
+        "fromTick": 5,
+        "toTick": 15
+      },
+      "cancelMoves": [
+        "stand_medium",
+        "stand_heavy"
+      ]
+    },
+    "label": "stand_light"
+  },
+  "frames": [
+    {
+      "source": "art/goku/combat/stand_light-source.png",
+      "sourceRect": [
+        484,
+        50,
+        760,
+        411
+      ],
+      "cellRect": [
+        418,
+        0,
+        836,
+        418
+      ],
+      "scale": 0.34946236559139787,
+      "offset": [
+        144,
+        98
+      ],
+      "metrics": {
+        "bbox": [
+          144,
+          98,
+          240,
+          224
+        ],
+        "opaquePixels": 5754,
+        "largestComponent": 1.0,
+        "components": [
+          5754
+        ]
+      },
+      "pose": {
+        "ticks": 2,
+        "phase": "startup",
+        "hitboxes": [],
+        "hurtboxes": [
+          {
+            "x": -16,
+            "y": -126,
+            "w": 58,
+            "h": 28
+          },
+          {
+            "x": -36,
+            "y": -98,
+            "w": 71,
+            "h": 29
+          },
+          {
+            "x": -36,
+            "y": -69,
+            "w": 73,
+            "h": 26
+          },
+          {
+            "x": -40,
+            "y": -43,
+            "w": 80,
+            "h": 23
+          },
+          {
+            "x": -48,
+            "y": -20,
+            "w": 96,
+            "h": 20
+          }
+        ]
+      },
+      "strikePoint": null,
+      "discardedSpeckles": []
+    },
+    {
+      "source": "art/goku/combat/stand_light-source.png",
+      "sourceRect": [
+        876,
+        53,
+        1196,
+        411
+      ],
+      "cellRect": [
+        836,
+        0,
+        1254,
+        418
+      ],
+      "scale": 0.34946236559139787,
+      "offset": [
+        144,
+        99
+      ],
+      "metrics": {
+        "bbox": [
+          144,
+          99,
+          256,
+          224
+        ],
+        "opaquePixels": 5848,
+        "largestComponent": 1.0,
+        "components": [
+          5848
+        ]
+      },
+      "pose": {
+        "ticks": 2,
+        "phase": "startup",
+        "hitboxes": [],
+        "hurtboxes": [
+          {
+            "x": -15,
+            "y": -125,
+            "w": 57,
+            "h": 27
+          },
+          {
+            "x": -33,
+            "y": -98,
+            "w": 97,
+            "h": 29
+          },
+          {
+            "x": -34,
+            "y": -69,
+            "w": 65,
+            "h": 26
+          },
+          {
+            "x": -40,
+            "y": -43,
+            "w": 80,
+            "h": 23
+          },
+          {
+            "x": -48,
+            "y": -20,
+            "w": 97,
+            "h": 20
+          }
+        ]
+      },
+      "strikePoint": null,
+      "discardedSpeckles": []
+    },
+    {
+      "source": "art/goku/combat/stand_light-source.png",
+      "sourceRect": [
+        65,
+        453,
+        395,
+        817
+      ],
+      "cellRect": [
+        0,
+        418,
+        418,
+        836
+      ],
+      "scale": 0.34946236559139787,
+      "offset": [
+        143,
+        97
+      ],
+      "metrics": {
+        "bbox": [
+          143,
+          97,
+          258,
+          224
+        ],
+        "opaquePixels": 6031,
+        "largestComponent": 1.0,
+        "components": [
+          6031
+        ]
+      },
+      "pose": {
+        "ticks": 2,
+        "phase": "active",
+        "hitboxes": [
+          {
+            "a": {
+              "x": 47,
+              "y": -86
+            },
+            "b": {
+              "x": 61,
+              "y": -86
+            },
+            "r": 7
+          }
+        ],
+        "hurtboxes": [
+          {
+            "x": -11,
+            "y": -127,
+            "w": 55,
+            "h": 29
+          },
+          {
+            "x": -33,
+            "y": -98,
+            "w": 99,
+            "h": 29
+          },
+          {
+            "x": -32,
+            "y": -69,
+            "w": 66,
+            "h": 26
+          },
+          {
+            "x": -41,
+            "y": -43,
+            "w": 82,
+            "h": 23
+          },
+          {
+            "x": -49,
+            "y": -20,
+            "w": 99,
+            "h": 20
+          }
+        ]
+      },
+      "strikePoint": [
+        253,
+        138
+      ],
+      "discardedSpeckles": []
+    },
+    {
+      "source": "art/goku/combat/stand_light-source.png",
+      "sourceRect": [
+        467,
+        458,
+        821,
+        817
+      ],
+      "cellRect": [
+        418,
+        418,
+        836,
+        836
+      ],
+      "scale": 0.34946236559139787,
+      "offset": [
+        140,
+        99
+      ],
+      "metrics": {
+        "bbox": [
+          140,
+          99,
+          264,
+          224
+        ],
+        "opaquePixels": 6165,
+        "largestComponent": 1.0,
+        "components": [
+          6165
+        ]
+      },
+      "pose": {
+        "ticks": 2,
+        "phase": "active",
+        "hitboxes": [
+          {
+            "a": {
+              "x": 53,
+              "y": -85
+            },
+            "b": {
+              "x": 67,
+              "y": -85
+            },
+            "r": 7
+          }
+        ],
+        "hurtboxes": [
+          {
+            "x": -12,
+            "y": -125,
+            "w": 52,
+            "h": 27
+          },
+          {
+            "x": -37,
+            "y": -98,
+            "w": 109,
+            "h": 29
+          },
+          {
+            "x": -37,
+            "y": -69,
+            "w": 72,
+            "h": 26
+          },
+          {
+            "x": -44,
+            "y": -43,
+            "w": 86,
+            "h": 23
+          },
+          {
+            "x": -52,
+            "y": -20,
+            "w": 104,
+            "h": 20
+          }
+        ]
+      },
+      "strikePoint": [
+        259,
+        139
+      ],
+      "discardedSpeckles": []
+    },
+    {
+      "source": "art/goku/combat/stand_light-source.png",
+      "sourceRect": [
+        878,
+        454,
+        1162,
+        817
+      ],
+      "cellRect": [
+        836,
+        418,
+        1254,
+        836
+      ],
+      "scale": 0.34946236559139787,
+      "offset": [
+        143,
+        97
+      ],
+      "metrics": {
+        "bbox": [
+          143,
+          97,
+          242,
+          224
+        ],
+        "opaquePixels": 5975,
+        "largestComponent": 1.0,
+        "components": [
+          5975
+        ]
+      },
+      "pose": {
+        "ticks": 4,
+        "phase": "recovery",
+        "hitboxes": [],
+        "hurtboxes": [
+          {
+            "x": -17,
+            "y": -127,
+            "w": 56,
+            "h": 29
+          },
+          {
+            "x": -36,
+            "y": -98,
+            "w": 80,
+            "h": 29
+          },
+          {
+            "x": -35,
+            "y": -69,
+            "w": 75,
+            "h": 26
+          },
+          {
+            "x": -41,
+            "y": -43,
+            "w": 81,
+            "h": 23
+          },
+          {
+            "x": -49,
+            "y": -20,
+            "w": 99,
+            "h": 20
+          }
+        ]
+      },
+      "strikePoint": null,
+      "discardedSpeckles": []
+    },
+    {
+      "source": "art/goku/combat/stand_light-source.png",
+      "sourceRect": [
+        65,
+        853,
+        345,
+        1225
+      ],
+      "cellRect": [
+        0,
+        836,
+        418,
+        1254
+      ],
+      "scale": 0.34946236559139787,
+      "offset": [
+        144,
+        94
+      ],
+      "metrics": {
+        "bbox": [
+          144,
+          94,
+          242,
+          224
+        ],
+        "opaquePixels": 6109,
+        "largestComponent": 1.0,
+        "components": [
+          6109
+        ]
+      },
+      "pose": {
+        "ticks": 4,
+        "phase": "recovery",
+        "hitboxes": [],
+        "hurtboxes": [
+          {
+            "x": -18,
+            "y": -130,
+            "w": 56,
+            "h": 32
+          },
+          {
+            "x": -32,
+            "y": -98,
+            "w": 79,
+            "h": 29
+          },
+          {
+            "x": -32,
+            "y": -69,
+            "w": 72,
+            "h": 26
+          },
+          {
+            "x": -40,
+            "y": -43,
+            "w": 81,
+            "h": 23
+          },
+          {
+            "x": -48,
+            "y": -20,
+            "w": 98,
+            "h": 20
+          }
+        ]
+      },
+      "strikePoint": null,
+      "discardedSpeckles": []
+    }
+  ]
+}

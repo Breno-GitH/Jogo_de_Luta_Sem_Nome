@@ -1,0 +1,15 @@
+{
+  "method": "Manually estimated projected2D landmarks for visual comparison only. Never drive drawing, deformation or physics. Occluded joints are estimates, not a3D bone-length guarantee.",
+  "poses": {
+    "idle/0": {"points":{"head":[141,118],"neck":[137,135],"shoulderNear":[111,142],"elbowNear":[105,159],"wristNear":[123,155],"shoulderFar":[152,142],"elbowFar":[162,157],"wristFar":[172,142],"hip":[130,171],"kneeNear":[110,195],"ankleNear":[94,216],"footNear":[92,223],"kneeFar":[151,194],"ankleFar":[165,216],"footFar":[170,221]}},
+    "crouchIdle/0": {"points":{"head":[141,155],"neck":[136,170],"shoulderNear":[110,170],"elbowNear":[101,186],"wristNear":[120,183],"shoulderFar":[153,173],"elbowFar":[163,188],"wristFar":[172,178],"hip":[129,195],"kneeNear":[100,202],"ankleNear":[91,216],"footNear":[88,223],"kneeFar":[155,202],"ankleFar":[166,216],"footFar":[173,223]}}
+  },
+  "construction": {
+    "head": "Same spiky hair mass and face volume; no grafted fixed head over mismatched body.",
+    "arms": "Shoulder-elbow-wrist chains drawn as complete poses; foreshortening changes projected length, never stretch source parts.",
+    "legs": "Hip-knee-ankle-foot chains; knee flexion supports hip descent, boot size retained.",
+    "crouch": "Pelvis descends between supporting feet; torso counterbalances; clothing follows the bent joints.",
+    "jump": "Takeoff load/push, tucked airborne knees and unfolding landing legs; world trajectory is independent.",
+    "walking": "Alternating support and swing; sole annotations come from real opaque shoe pixels. Held cels can retain residual sliding."
+  }
+}

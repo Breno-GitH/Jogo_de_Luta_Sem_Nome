@@ -1,0 +1,12 @@
+{
+  "source": "actual Canvas frames from paused game, advancing one fixed tick per capture",
+  "sourceTicks": 104,
+  "ticksPerSecond": 60,
+  "apngFrames": 101,
+  "combo": "Stand Light > Medium > Heavy",
+  "damage": 200,
+  "hits": 3,
+  "ownerRemainsInPlace": true,
+  "nearestNeighborCameraZoom": 2,
+  "sourceTrace": "art/dio/qa/stand-only/combo-trace.json"
+}

@@ -1,0 +1,221 @@
+{
+  "revision": 3,
+  "recordedAtUTC": "2026-10-31T00:38:09.392688+00:00",
+  "normalAttacker": "the-world",
+  "owner": "dio",
+  "standOnlyNormals": true,
+  "tests": {
+    "typescript": 230,
+    "art": 49,
+    "browserScenarios": 33,
+    "onlineScenariosTwoBrowsers": 5,
+    "fixedTickCaptureRetest": 1,
+    "productionAttackAndComboCases": 26,
+    "build": "passed"
+  },
+  "preservation": {
+    "samuraiPNGs": 449,
+    "allLockedFiles": 659,
+    "allByteIdentical": true
+  },
+  "exports": {
+    "worldActions": 23,
+    "worldActionDrawings": 129,
+    "worldComboBridges": 81,
+    "worldComboBridgeDrawings": 405,
+    "dioCommandClips": 7,
+    "dioCommandDrawings": 31
+  },
+  "actualBrowserCases": {
+    "isolatedAttacks": 36,
+    "combos": 8
+  },
+  "preview": {
+    "source": "actual Canvas frames from paused game, advancing one fixed tick per capture",
+    "sourceTicks": 104,
+    "ticksPerSecond": 60,
+    "apngFrames": 101,
+    "combo": "Stand Light > Medium > Heavy",
+    "damage": 200,
+    "hits": 3,
+    "ownerRemainsInPlace": true,
+    "nearestNeighborCameraZoom": 2,
+    "sourceTrace": "art/dio/qa/stand-only/combo-trace.json"
+  },
+  "production": {
+    "origin": "http://127.0.0.1:3001",
+    "tests": [
+      {
+        "enemy": "samurai",
+        "name": "stand_light",
+        "hits": 1,
+        "damage": "42"
+      },
+      {
+        "enemy": "samurai",
+        "name": "stand_medium",
+        "hits": 1,
+        "damage": "72"
+      },
+      {
+        "enemy": "samurai",
+        "name": "stand_heavy",
+        "hits": 1,
+        "damage": "116"
+      },
+      {
+        "enemy": "samurai",
+        "name": "crouch_light",
+        "hits": 1,
+        "damage": "38"
+      },
+      {
+        "enemy": "samurai",
+        "name": "crouch_medium",
+        "hits": 1,
+        "damage": "64"
+      },
+      {
+        "enemy": "samurai",
+        "name": "crouch_heavy",
+        "hits": 1,
+        "damage": "88"
+      },
+      {
+        "enemy": "samurai",
+        "name": "air_light",
+        "hits": 1,
+        "damage": "38"
+      },
+      {
+        "enemy": "samurai",
+        "name": "air_medium",
+        "hits": 2,
+        "damage": "66"
+      },
+      {
+        "enemy": "samurai",
+        "name": "air_heavy",
+        "hits": 1,
+        "damage": "108"
+      },
+      {
+        "enemy": "samurai",
+        "name": "groundCombo",
+        "hits": 3,
+        "damage": "200"
+      },
+      {
+        "enemy": "samurai",
+        "name": "crouchCombo",
+        "hits": 3,
+        "damage": "166"
+      },
+      {
+        "enemy": "samurai",
+        "name": "airChain",
+        "hits": 4,
+        "damage": "173"
+      },
+      {
+        "enemy": "samurai",
+        "name": "airCombo",
+        "hits": 5,
+        "damage": "240"
+      },
+      {
+        "enemy": "dio",
+        "name": "stand_light",
+        "hits": 1,
+        "damage": "42"
+      },
+      {
+        "enemy": "dio",
+        "name": "stand_medium",
+        "hits": 1,
+        "damage": "72"
+      },
+      {
+        "enemy": "dio",
+        "name": "stand_heavy",
+        "hits": 1,
+        "damage": "116"
+      },
+      {
+        "enemy": "dio",
+        "name": "crouch_light",
+        "hits": 1,
+        "damage": "38"
+      },
+      {
+        "enemy": "dio",
+        "name": "crouch_medium",
+        "hits": 1,
+        "damage": "64"
+      },
+      {
+        "enemy": "dio",
+        "name": "crouch_heavy",
+        "hits": 1,
+        "damage": "88"
+      },
+      {
+        "enemy": "dio",
+        "name": "air_light",
+        "hits": 1,
+        "damage": "38"
+      },
+      {
+        "enemy": "dio",
+        "name": "air_medium",
+        "hits": 2,
+        "damage": "66"
+      },
+      {
+        "enemy": "dio",
+        "name": "air_heavy",
+        "hits": 1,
+        "damage": "108"
+      },
+      {
+        "enemy": "dio",
+        "name": "groundCombo",
+        "hits": 3,
+        "damage": "200"
+      },
+      {
+        "enemy": "dio",
+        "name": "crouchCombo",
+        "hits": 3,
+        "damage": "166"
+      },
+      {
+        "enemy": "dio",
+        "name": "airChain",
+        "hits": 4,
+        "damage": "173"
+      },
+      {
+        "enemy": "dio",
+        "name": "airCombo",
+        "hits": 5,
+        "damage": "240"
+      }
+    ],
+    "errors": [],
+    "recordedFixedTicks": 104
+  },
+  "limitations": [
+    "Articulated pixel rig; extreme rotations still show stiffness.",
+    "Limited facial acting; Dio reactions and results are provisional.",
+    "Dio specials, knives, Ultimate, throw and online selection are not implemented."
+  ],
+  "logs": {
+    "unit": "art\\dio\\qa\\stand-only\\unit-test.log",
+    "browser": "art\\dio\\qa\\stand-only\\browser-test.log",
+    "online": "art\\dio\\qa\\stand-only\\online-test.log",
+    "capture": "art\\dio\\qa\\stand-only\\capture-test.log",
+    "build": "art\\dio\\qa\\stand-only\\build.log",
+    "production": "art\\dio\\qa\\stand-only\\production-test.log"
+  }
+}

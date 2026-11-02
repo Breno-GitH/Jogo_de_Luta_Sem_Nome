@@ -1,0 +1,12 @@
+{
+  "origin": "http://127.0.0.1:3001",
+  "version": "f6d433868036ae2670528d94",
+  "walkRevision": 4,
+  "comparison": true,
+  "bothFacings": true,
+  "forwardAndBackward": true,
+  "directPreservedIdle": true,
+  "mainTraining": true,
+  "exactServedAssets": true,
+  "errors": []
+}

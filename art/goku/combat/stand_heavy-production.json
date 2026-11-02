@@ -1,0 +1,801 @@
+{
+  "method": "whole-pose",
+  "canvas": [
+    384,
+    256
+  ],
+  "pivot": {
+    "x": 192,
+    "y": 224
+  },
+  "config": {
+    "source": "art/goku/combat/stand_heavy-source.png",
+    "kind": "normal",
+    "grounded": true,
+    "cells": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "durations": [
+      3,
+      3,
+      3,
+      2,
+      3,
+      3,
+      5,
+      6
+    ],
+    "startup": 9,
+    "active": 5,
+    "strike": "punch",
+    "combat": {
+      "damage": 100,
+      "stun": 32,
+      "blockstun": 20,
+      "push": 7,
+      "launch": 0,
+      "hitstop": 11,
+      "level": "mid",
+      "rank": 3,
+      "cancels": [],
+      "cancelWindow": {
+        "fromTick": 10,
+        "toTick": 21
+      },
+      "cancelMoves": []
+    },
+    "label": "stand_heavy",
+    "discardSpeckles": {
+      "3": [
+        [
+          259,
+          221
+        ],
+        [
+          259,
+          222
+        ]
+      ],
+      "4": [
+        [
+          136,
+          143
+        ],
+        [
+          136,
+          144
+        ],
+        [
+          136,
+          145
+        ],
+        [
+          136,
+          146
+        ],
+        [
+          136,
+          147
+        ],
+        [
+          136,
+          148
+        ]
+      ]
+    }
+  },
+  "frames": [
+    {
+      "source": "art/goku/combat/stand_heavy-source.png",
+      "sourceRect": [
+        477,
+        71,
+        771,
+        417
+      ],
+      "cellRect": [
+        418,
+        0,
+        836,
+        418
+      ],
+      "scale": 0.3341902313624679,
+      "offset": [
+        144,
+        108
+      ],
+      "metrics": {
+        "bbox": [
+          144,
+          108,
+          242,
+          224
+        ],
+        "opaquePixels": 5201,
+        "largestComponent": 1.0,
+        "components": [
+          5201
+        ]
+      },
+      "pose": {
+        "ticks": 3,
+        "phase": "startup",
+        "hitboxes": [],
+        "hurtboxes": [
+          {
+            "x": -7,
+            "y": -116,
+            "w": 42,
+            "h": 18
+          },
+          {
+            "x": -30,
+            "y": -98,
+            "w": 69,
+            "h": 29
+          },
+          {
+            "x": -31,
+            "y": -69,
+            "w": 69,
+            "h": 26
+          },
+          {
+            "x": -40,
+            "y": -43,
+            "w": 85,
+            "h": 23
+          },
+          {
+            "x": -48,
+            "y": -20,
+            "w": 98,
+            "h": 20
+          }
+        ]
+      },
+      "strikePoint": null,
+      "discardedSpeckles": []
+    },
+    {
+      "source": "art/goku/combat/stand_heavy-source.png",
+      "sourceRect": [
+        884,
+        71,
+        1198,
+        417
+      ],
+      "cellRect": [
+        836,
+        0,
+        1254,
+        418
+      ],
+      "scale": 0.3341902313624679,
+      "offset": [
+        140,
+        108
+      ],
+      "metrics": {
+        "bbox": [
+          140,
+          108,
+          245,
+          224
+        ],
+        "opaquePixels": 5515,
+        "largestComponent": 1.0,
+        "components": [
+          5515
+        ]
+      },
+      "pose": {
+        "ticks": 3,
+        "phase": "startup",
+        "hitboxes": [],
+        "hurtboxes": [
+          {
+            "x": -6,
+            "y": -116,
+            "w": 42,
+            "h": 18
+          },
+          {
+            "x": -41,
+            "y": -98,
+            "w": 81,
+            "h": 29
+          },
+          {
+            "x": -38,
+            "y": -69,
+            "w": 88,
+            "h": 26
+          },
+          {
+            "x": -39,
+            "y": -43,
+            "w": 80,
+            "h": 23
+          },
+          {
+            "x": -52,
+            "y": -20,
+            "w": 105,
+            "h": 20
+          }
+        ]
+      },
+      "strikePoint": null,
+      "discardedSpeckles": []
+    },
+    {
+      "source": "art/goku/combat/stand_heavy-source.png",
+      "sourceRect": [
+        41,
+        452,
+        415,
+        806
+      ],
+      "cellRect": [
+        0,
+        418,
+        418,
+        836
+      ],
+      "scale": 0.3341902313624679,
+      "offset": [
+        140,
+        106
+      ],
+      "metrics": {
+        "bbox": [
+          140,
+          106,
+          265,
+          224
+        ],
+        "opaquePixels": 5801,
+        "largestComponent": 1.0,
+        "components": [
+          5801
+        ]
+      },
+      "pose": {
+        "ticks": 3,
+        "phase": "startup",
+        "hitboxes": [],
+        "hurtboxes": [
+          {
+            "x": -3,
+            "y": -118,
+            "w": 50,
+            "h": 20
+          },
+          {
+            "x": -29,
+            "y": -98,
+            "w": 102,
+            "h": 29
+          },
+          {
+            "x": -28,
+            "y": -69,
+            "w": 69,
+            "h": 26
+          },
+          {
+            "x": -40,
+            "y": -43,
+            "w": 86,
+            "h": 23
+          },
+          {
+            "x": -52,
+            "y": -20,
+            "w": 105,
+            "h": 20
+          }
+        ]
+      },
+      "strikePoint": null,
+      "discardedSpeckles": []
+    },
+    {
+      "source": "art/goku/combat/stand_heavy-source.png",
+      "sourceRect": [
+        425,
+        460,
+        829,
+        806
+      ],
+      "cellRect": [
+        418,
+        418,
+        836,
+        836
+      ],
+      "scale": 0.3341902313624679,
+      "offset": [
+        125,
+        108
+      ],
+      "metrics": {
+        "bbox": [
+          125,
+          108,
+          260,
+          224
+        ],
+        "opaquePixels": 5901,
+        "largestComponent": 1.0,
+        "components": [
+          5901
+        ]
+      },
+      "pose": {
+        "ticks": 2,
+        "phase": "active",
+        "hitboxes": [
+          {
+            "a": {
+              "x": 49,
+              "y": -77
+            },
+            "b": {
+              "x": 63,
+              "y": -77
+            },
+            "r": 7
+          }
+        ],
+        "hurtboxes": [
+          {
+            "x": -18,
+            "y": -116,
+            "w": 50,
+            "h": 18
+          },
+          {
+            "x": -35,
+            "y": -98,
+            "w": 103,
+            "h": 29
+          },
+          {
+            "x": -38,
+            "y": -69,
+            "w": 68,
+            "h": 26
+          },
+          {
+            "x": -55,
+            "y": -43,
+            "w": 91,
+            "h": 23
+          },
+          {
+            "x": -67,
+            "y": -20,
+            "w": 111,
+            "h": 20
+          }
+        ]
+      },
+      "strikePoint": [
+        255,
+        147
+      ],
+      "discardedSpeckles": [
+        {
+          "point": [
+            259,
+            221
+          ],
+          "rgba": [
+            8,
+            10,
+            16,
+            255
+          ]
+        },
+        {
+          "point": [
+            259,
+            222
+          ],
+          "rgba": [
+            8,
+            10,
+            16,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "source": "art/goku/combat/stand_heavy-source.png",
+      "sourceRect": [
+        826,
+        460,
+        1226,
+        806
+      ],
+      "cellRect": [
+        836,
+        418,
+        1254,
+        836
+      ],
+      "scale": 0.3341902313624679,
+      "offset": [
+        136,
+        108
+      ],
+      "metrics": {
+        "bbox": [
+          136,
+          108,
+          270,
+          224
+        ],
+        "opaquePixels": 5740,
+        "largestComponent": 0.9998257839721254,
+        "components": [
+          5739,
+          1
+        ]
+      },
+      "pose": {
+        "ticks": 3,
+        "phase": "active",
+        "hitboxes": [
+          {
+            "a": {
+              "x": 59,
+              "y": -80
+            },
+            "b": {
+              "x": 73,
+              "y": -80
+            },
+            "r": 7
+          }
+        ],
+        "hurtboxes": [
+          {
+            "x": 1,
+            "y": -116,
+            "w": 47,
+            "h": 18
+          },
+          {
+            "x": -15,
+            "y": -98,
+            "w": 93,
+            "h": 29
+          },
+          {
+            "x": -22,
+            "y": -69,
+            "w": 65,
+            "h": 26
+          },
+          {
+            "x": -43,
+            "y": -43,
+            "w": 93,
+            "h": 23
+          },
+          {
+            "x": -56,
+            "y": -20,
+            "w": 114,
+            "h": 20
+          }
+        ]
+      },
+      "strikePoint": [
+        265,
+        144
+      ],
+      "discardedSpeckles": [
+        {
+          "point": [
+            136,
+            143
+          ],
+          "rgba": [
+            32,
+            35,
+            49,
+            255
+          ]
+        },
+        {
+          "point": [
+            136,
+            146
+          ],
+          "rgba": [
+            8,
+            10,
+            16,
+            255
+          ]
+        },
+        {
+          "point": [
+            136,
+            145
+          ],
+          "rgba": [
+            8,
+            10,
+            16,
+            255
+          ]
+        },
+        {
+          "point": [
+            136,
+            148
+          ],
+          "rgba": [
+            8,
+            10,
+            16,
+            255
+          ]
+        },
+        {
+          "point": [
+            136,
+            147
+          ],
+          "rgba": [
+            8,
+            10,
+            16,
+            255
+          ]
+        },
+        {
+          "point": [
+            136,
+            144
+          ],
+          "rgba": [
+            8,
+            10,
+            16,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "source": "art/goku/combat/stand_heavy-source.png",
+      "sourceRect": [
+        53,
+        853,
+        414,
+        1205
+      ],
+      "cellRect": [
+        0,
+        836,
+        418,
+        1254
+      ],
+      "scale": 0.3341902313624679,
+      "offset": [
+        140,
+        106
+      ],
+      "metrics": {
+        "bbox": [
+          140,
+          106,
+          261,
+          224
+        ],
+        "opaquePixels": 5897,
+        "largestComponent": 1.0,
+        "components": [
+          5897
+        ]
+      },
+      "pose": {
+        "ticks": 3,
+        "phase": "recovery",
+        "hitboxes": [],
+        "hurtboxes": [
+          {
+            "x": -14,
+            "y": -118,
+            "w": 50,
+            "h": 20
+          },
+          {
+            "x": -35,
+            "y": -98,
+            "w": 104,
+            "h": 29
+          },
+          {
+            "x": -36,
+            "y": -69,
+            "w": 71,
+            "h": 26
+          },
+          {
+            "x": -43,
+            "y": -43,
+            "w": 85,
+            "h": 23
+          },
+          {
+            "x": -52,
+            "y": -20,
+            "w": 105,
+            "h": 20
+          }
+        ]
+      },
+      "strikePoint": null,
+      "discardedSpeckles": []
+    },
+    {
+      "source": "art/goku/combat/stand_heavy-source.png",
+      "sourceRect": [
+        480,
+        845,
+        772,
+        1208
+      ],
+      "cellRect": [
+        418,
+        836,
+        836,
+        1254
+      ],
+      "scale": 0.3341902313624679,
+      "offset": [
+        144,
+        103
+      ],
+      "metrics": {
+        "bbox": [
+          144,
+          103,
+          242,
+          224
+        ],
+        "opaquePixels": 5366,
+        "largestComponent": 1.0,
+        "components": [
+          5366
+        ]
+      },
+      "pose": {
+        "ticks": 5,
+        "phase": "recovery",
+        "hitboxes": [],
+        "hurtboxes": [
+          {
+            "x": -11,
+            "y": -121,
+            "w": 49,
+            "h": 23
+          },
+          {
+            "x": -24,
+            "y": -98,
+            "w": 64,
+            "h": 29
+          },
+          {
+            "x": -28,
+            "y": -69,
+            "w": 65,
+            "h": 26
+          },
+          {
+            "x": -40,
+            "y": -43,
+            "w": 83,
+            "h": 23
+          },
+          {
+            "x": -48,
+            "y": -20,
+            "w": 98,
+            "h": 20
+          }
+        ]
+      },
+      "strikePoint": null,
+      "discardedSpeckles": []
+    },
+    {
+      "source": "art/goku/combat/stand_heavy-source.png",
+      "sourceRect": [
+        899,
+        834,
+        1171,
+        1208
+      ],
+      "cellRect": [
+        836,
+        836,
+        1254,
+        1254
+      ],
+      "scale": 0.3341902313624679,
+      "offset": [
+        147,
+        99
+      ],
+      "metrics": {
+        "bbox": [
+          147,
+          99,
+          238,
+          224
+        ],
+        "opaquePixels": 5564,
+        "largestComponent": 1.0,
+        "components": [
+          5564
+        ]
+      },
+      "pose": {
+        "ticks": 6,
+        "phase": "recovery",
+        "hitboxes": [],
+        "hurtboxes": [
+          {
+            "x": -18,
+            "y": -125,
+            "w": 51,
+            "h": 27
+          },
+          {
+            "x": -33,
+            "y": -98,
+            "w": 75,
+            "h": 29
+          },
+          {
+            "x": -33,
+            "y": -69,
+            "w": 69,
+            "h": 26
+          },
+          {
+            "x": -38,
+            "y": -43,
+            "w": 75,
+            "h": 23
+          },
+          {
+            "x": -45,
+            "y": -20,
+            "w": 91,
+            "h": 20
+          }
+        ]
+      },
+      "strikePoint": null,
+      "discardedSpeckles": []
+    }
+  ]
+}

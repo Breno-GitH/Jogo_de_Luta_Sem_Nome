@@ -1,0 +1,19 @@
+{
+  "source": "actual Match/Renderer Canvas with keyboard controls, not a rendered demonstration",
+  "samples": 96,
+  "sampleFPS": 20,
+  "simulationFPS": 60,
+  "durationMs": 4800.0,
+  "walks": [
+    "forward right-facing",
+    "backward right-facing",
+    "forward left-facing",
+    "backward left-facing"
+  ],
+  "pngs": [
+    "goku/walkForward.png",
+    "goku/walkBack.png"
+  ],
+  "nearestNeighbor": true,
+  "losslessAPNGVerified": true
+}

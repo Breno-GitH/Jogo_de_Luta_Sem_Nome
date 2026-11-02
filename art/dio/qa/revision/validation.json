@@ -1,0 +1,20 @@
+{
+  "date": "2026-10-30",
+  "movementRevision": 2,
+  "dioFrames": 140,
+  "dioBasicFrames": 124,
+  "dioDirectionalFrames": 16,
+  "worldFrames": 38,
+  "movementAtlases": 26,
+  "unitTestsPassed": 191,
+  "artTestsPassed": 41,
+  "browserScenariosPassed": 26,
+  "onlineScenariosPassed": 5,
+  "finalDioScenariosRepeated": 7,
+  "productionSmoke": "passed",
+  "productionUrl": "http://127.0.0.1:3001/art/dio.html",
+  "build": "passed",
+  "samuraiPngHashesPreserved": 449,
+  "realPreviewFrames": 80,
+  "previewFloorScreenY": 661
+}

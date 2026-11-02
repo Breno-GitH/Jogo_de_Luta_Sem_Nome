@@ -1,0 +1,11 @@
+{
+  "id": "dio",
+  "name": "DIO BRANDO",
+  "status": "secondary-animations-v6",
+  "combatReady": true,
+  "visibleHeight": 130,
+  "palette": "dio/palette.json",
+  "linkedEntity": "the-world",
+  "depth": 10,
+  "notes": "Movimentação, normais, especiais e sprites anteriores preservados. Defesa, dano, queda, entrada, provocação e vitória usam animações secundárias próprias. R ativa Road Roller com duas barras. T provoca. Agarrão ofensivo próprio e online para Dio não implementados."
+}

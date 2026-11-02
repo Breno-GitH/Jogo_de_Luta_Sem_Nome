@@ -1,0 +1,18 @@
+{
+  "date": "2026-11-02",
+  "version": "1d4ebb9198d3550f005f2c5d",
+  "logicTests": 467,
+  "artTests": 113,
+  "newBrowserTests": 5,
+  "regressionBrowserRuns": 30,
+  "productionBrowserTests": 3,
+  "build": "passed",
+  "baseURL": "http://127.0.0.1:3001",
+  "bodyClips": 10,
+  "bodyCells": 85,
+  "uniqueBodyDrawings": 50,
+  "fxClips": 7,
+  "fxDrawings": 28,
+  "preservedAssetFiles": 2439,
+  "superImplemented": false
+}

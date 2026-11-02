@@ -1,0 +1,8 @@
+from pathlib import Path
+ROOT=Path(__file__).resolve().parents[1]
+p=ROOT/'art/goku-fury.html';s=p.read_text(encoding='utf-8')
+s=s.replace('Goku · três especiais comuns','Goku · Fúria Saiyajin').replace('GOKU / KI, KAMEHAMEHA E TELETRANSPORTE','GOKU / SUPER CINEMATOGRÁFICA SSJ1').replace('Três especiais comuns','Fúria Saiyajin').replace('goku-specials.zip','goku-fury.zip').replace('goku-specials-gameplay.png','goku-fury-gameplay.png').replace('goku-specials-contact.png','goku-fury-contact.png').replace('/src/goku-specials-lab.ts','/src/goku-fury-lab.ts').replace('Prévia real dos golpes e combos','Prévia real da cinematografia').replace('Combate real de Goku e inspeção dos golpes','Fúria Saiyajin real e inspeção de desenhos')
+s=s.replace('Os cenários de teste','Super: ↓ → ↓ → + L; custa a barra completa. SSJ1 termina junto com a sequência. Os cenários de teste')
+p.write_text(s,encoding='utf-8')
+for name in ['src/game/app.ts','src/ui/screens.ts','src/goku-lab.ts']:
+ p=ROOT/name;s=p.read_text(encoding='utf-8');s=s.replace('SSJ1 ainda indisponível.','Fúria Saiyajin: ↓ → ↓ → + L, custa a barra completa.').replace('SSJ1 ainda indisponível','Fúria Saiyajin no laboratório de Super').replace('A transformação em Super Saiyajin 1 será implementada em outra etapa.','Fúria Saiyajin: Super cinematográfica com confirmação de acerto e retorno à forma base.').replace('A transformação SSJ1 ainda não está implementada.','Fúria Saiyajin: ↓ → ↓ → + L, custa uma barra completa e só confirma se o primeiro soco conectar. SSJ1 é exclusivo da cinematografia. <a href="art/goku-fury.html">Testar Super</a>.').replace('NORMAIS + 3 ESPECIAIS','NORMAIS + ESPECIAIS + SUPER');p.write_text(s,encoding='utf-8')

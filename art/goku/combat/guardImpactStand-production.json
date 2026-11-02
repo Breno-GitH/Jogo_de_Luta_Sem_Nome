@@ -1,0 +1,246 @@
+{
+  "method": "whole-pose",
+  "canvas": [
+    384,
+    256
+  ],
+  "pivot": {
+    "x": 192,
+    "y": 224
+  },
+  "config": {
+    "source": "art/goku/combat/guard_standing-source.png",
+    "kind": "reaction",
+    "grounded": true,
+    "cells": [
+      4,
+      5,
+      6
+    ],
+    "durations": [
+      2,
+      2,
+      2
+    ],
+    "loop": false,
+    "label": "guardImpactStand"
+  },
+  "frames": [
+    {
+      "source": "art/goku/combat/guard_standing-source.png",
+      "sourceRect": [
+        503,
+        437,
+        801,
+        828
+      ],
+      "cellRect": [
+        418,
+        418,
+        836,
+        836
+      ],
+      "scale": 0.3299492385786802,
+      "offset": [
+        144,
+        95
+      ],
+      "metrics": {
+        "bbox": [
+          144,
+          95,
+          242,
+          224
+        ],
+        "opaquePixels": 5653,
+        "largestComponent": 1.0,
+        "components": [
+          5653
+        ]
+      },
+      "pose": {
+        "ticks": 2,
+        "phase": "reaction",
+        "hitboxes": [],
+        "hurtboxes": [
+          {
+            "x": -39,
+            "y": -129,
+            "w": 59,
+            "h": 31
+          },
+          {
+            "x": -33,
+            "y": -98,
+            "w": 59,
+            "h": 29
+          },
+          {
+            "x": -27,
+            "y": -69,
+            "w": 69,
+            "h": 26
+          },
+          {
+            "x": -38,
+            "y": -43,
+            "w": 83,
+            "h": 23
+          },
+          {
+            "x": -48,
+            "y": -20,
+            "w": 98,
+            "h": 20
+          }
+        ]
+      },
+      "strikePoint": null,
+      "discardedSpeckles": []
+    },
+    {
+      "source": "art/goku/combat/guard_standing-source.png",
+      "sourceRect": [
+        897,
+        476,
+        1189,
+        828
+      ],
+      "cellRect": [
+        836,
+        418,
+        1254,
+        836
+      ],
+      "scale": 0.3299492385786802,
+      "offset": [
+        144,
+        108
+      ],
+      "metrics": {
+        "bbox": [
+          144,
+          108,
+          240,
+          224
+        ],
+        "opaquePixels": 5654,
+        "largestComponent": 1.0,
+        "components": [
+          5654
+        ]
+      },
+      "pose": {
+        "ticks": 2,
+        "phase": "reaction",
+        "hitboxes": [],
+        "hurtboxes": [
+          {
+            "x": -10,
+            "y": -116,
+            "w": 54,
+            "h": 18
+          },
+          {
+            "x": -22,
+            "y": -98,
+            "w": 64,
+            "h": 29
+          },
+          {
+            "x": -26,
+            "y": -69,
+            "w": 70,
+            "h": 26
+          },
+          {
+            "x": -36,
+            "y": -43,
+            "w": 83,
+            "h": 23
+          },
+          {
+            "x": -48,
+            "y": -20,
+            "w": 96,
+            "h": 20
+          }
+        ]
+      },
+      "strikePoint": null,
+      "discardedSpeckles": []
+    },
+    {
+      "source": "art/goku/combat/guard_standing-source.png",
+      "sourceRect": [
+        66,
+        840,
+        361,
+        1233
+      ],
+      "cellRect": [
+        0,
+        836,
+        418,
+        1254
+      ],
+      "scale": 0.3299492385786802,
+      "offset": [
+        144,
+        94
+      ],
+      "metrics": {
+        "bbox": [
+          144,
+          94,
+          241,
+          224
+        ],
+        "opaquePixels": 5631,
+        "largestComponent": 1.0,
+        "components": [
+          5631
+        ]
+      },
+      "pose": {
+        "ticks": 2,
+        "phase": "reaction",
+        "hitboxes": [],
+        "hurtboxes": [
+          {
+            "x": -19,
+            "y": -130,
+            "w": 53,
+            "h": 32
+          },
+          {
+            "x": -27,
+            "y": -98,
+            "w": 62,
+            "h": 29
+          },
+          {
+            "x": -31,
+            "y": -69,
+            "w": 64,
+            "h": 26
+          },
+          {
+            "x": -41,
+            "y": -43,
+            "w": 80,
+            "h": 23
+          },
+          {
+            "x": -48,
+            "y": -20,
+            "w": 97,
+            "h": 20
+          }
+        ]
+      },
+      "strikePoint": null,
+      "discardedSpeckles": []
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+﻿{
+    "date":  "2026-11-02T17:48:39.4552103-03:00",
+    "backup":  "C:\\xampp\\htdocs\\2025\\Jogo_de_Luta_Sem_Nome\\deployment\\backups\\apache-20261102-174837-23fc09",
+    "version":  [
+                    "Server version: Apache/2.4.58 (Win64)",
+                    "Apache Lounge VS17 Server built:   Oct 18 2023 13:03:18"
+                ],
+    "installed":  "C:\\xampp\\apache\\conf\\extra\\httpd-jogo-luta.conf"
+}

@@ -1,0 +1,123 @@
+import { Match, Fighter, character } from "./combat";
+import type { CommandBuffer } from "./input";
+import { characterById } from "./characters";
+import type { StandState } from "./stand-combat";
+const fighterKeys = [
+  "x",
+  "y",
+  "vx",
+  "vy",
+  "facing",
+  "health",
+  "meter",
+  "state",
+  "stateFrame",
+  "stun",
+  "moveId",
+  "connected",
+  "hitIds",
+  "comboAge",
+  "comboAirHits",
+  "combo",
+  "knockedDown",
+  "dashDirection",
+  "jumpDirection",
+  "airChaseTicks",
+  "gokuTeleportLock",
+  "gokuAirTeleportUsed",
+  "gokuCastSerial",
+  "homeX",
+  "guardIntent",
+  "blockCrouched",
+  "hitCrouched",
+  "reactionStrength",
+  "hitLaunch",
+  "reactionPhase",
+  "reactionFrame",
+  "actionClip",
+  "input",
+] as const;
+const matchKeys = [
+  "frame",
+  "combatFrame",
+  "timer",
+  "hitstop",
+  "phase",
+  "phaseFrames",
+  "wins",
+  "round",
+  "message",
+  "events",
+  "capture",
+  "roadRoller",
+  "fury",
+  "hits",
+  "hitSerial",
+  "rules",
+  "projectiles",
+  "projectileSerial",
+  "kiProjectiles",
+  "beams",
+] as const;
+type FighterState = Pick<Fighter, (typeof fighterKeys)[number]> & {
+  buffer: ReturnType<CommandBuffer["snapshot"]>;
+  characterId: string;
+  stand?: StandState;
+};
+export type MatchState = Pick<Match, (typeof matchKeys)[number]> & {
+  temporal: import("./temporal").TemporalState;
+  fighters: FighterState[];
+};
+const clone = <T>(value: T): T => structuredClone(value);
+export function snapshot(match: Match): MatchState {
+  const state = Object.fromEntries(
+    matchKeys.map((key) => [key, clone(match[key])]),
+  ) as MatchState;
+  state.fighters = match.fighters.map(
+    (f) =>
+      ({
+        ...Object.fromEntries(fighterKeys.map((key) => [key, clone(f[key])])),
+        buffer: f.buffer.snapshot(),
+        characterId: f.data.id,
+        ...(f.stand ? { stand: clone(f.stand.s) } : {}),
+      }) as FighterState,
+  );
+  state.temporal = clone(match.temporal.s);
+  return state;
+}
+/** Restore only explicit simulation fields and rebuild prototypes; character
+ * data/code never comes from a snapshot. The server never accepts this remotely. */
+export function restore(state: MatchState, match = new Match()): Match {
+  Object.assign(
+    match,
+    Object.fromEntries(matchKeys.map((key) => [key, clone(state[key])])),
+  );
+  if (state.temporal) match.temporal.s = clone(state.temporal);
+  match.fighters = state.fighters.map((saved, id) => {
+    const fighter = new Fighter(
+      characterById(saved.characterId ?? "samurai"),
+      id,
+      saved.homeX,
+    );
+    Object.assign(
+      fighter,
+      Object.fromEntries(fighterKeys.map((key) => [key, clone(saved[key])])),
+    );
+    fighter.buffer.restore(saved.buffer);
+    if (fighter.stand && saved.stand) fighter.stand.s = clone(saved.stand);
+    return fighter;
+  }) as [Fighter, Fighter];
+  match.data = match.fighters[0].data;
+  match.opponentData = match.fighters[1].data;
+  match.linkOpponents();
+  return match;
+}
+export function hashState(state: MatchState) {
+  const text = JSON.stringify(state);
+  let hash = 2166136261;
+  for (let i = 0; i < text.length; i++) {
+    hash ^= text.charCodeAt(i);
+    hash = Math.imul(hash, 16777619);
+  }
+  return (hash >>> 0).toString(16).padStart(8, "0");
+}

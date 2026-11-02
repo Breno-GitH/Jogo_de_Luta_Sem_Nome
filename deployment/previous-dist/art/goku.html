@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Goku · revisão de movimento</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        font: 15px system-ui;
+        background: #101825;
+        color: #eee5d7;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        max-width: 1360px;
+        margin: 26px auto;
+        padding: 0 24px;
+      }
+      header,
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 12px;
+      }
+      header {
+        justify-content: space-between;
+      }
+      h1 {
+        font-size: 32px;
+        margin: 8px 0;
+      }
+      p,
+      small {
+        color: #bfc9cd;
+        line-height: 1.6;
+      }
+      a {
+        color: #ffb055;
+      }
+      button,
+      select {
+        font: inherit;
+        color: inherit;
+        background: #25394c;
+        border: 1px solid #5f7c92;
+        padding: 9px;
+      }
+      button {
+        cursor: pointer;
+      }
+      button:disabled {
+        opacity: 0.4;
+        cursor: default;
+      }
+      label {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+      }
+      .controls {
+        margin: 16px 0;
+      }
+      #arena {
+        display: block;
+        width: 100%;
+        border: 1px solid #52677a;
+        image-rendering: pixelated;
+      }
+      #readout {
+        white-space: pre-wrap;
+        font: 12px monospace;
+        background: #1b2c3e;
+        padding: 14px;
+        line-height: 1.8;
+      }
+      #strip {
+        display: flex;
+        gap: 8px;
+        overflow: auto;
+        padding: 8px 0;
+      }
+      #strip button {
+        padding: 0;
+        flex: 0 0 110px;
+      }
+      #strip canvas {
+        width: 110px;
+        height: 110px;
+        image-rendering: pixelated;
+        background: #233747;
+      }
+      #error {
+        color: #ffae9c;
+      }
+    </style>
+    <script type="module" crossorigin src="/assets/goku-DLSZlunN.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/dio-motion-DZ2RWhfF.js">
+    <link rel="modulepreload" crossorigin href="/assets/renderer-B9CQadsw.js">
+    <link rel="modulepreload" crossorigin href="/assets/characters-JDJgWnSa.js">
+    <link rel="modulepreload" crossorigin href="/assets/loop-LRiz5Snv.js">
+  </head>
+  <body>
+    <header>
+      <div>
+        <small>FORMA BASE / RECONSTRUÇÃO DE MOVIMENTAÇÃO · REVISÃO 5</small>
+        <h1>GOKU</h1>
+      </div>
+      <a href="../">Voltar ao jogo</a>
+    </header>
+    <p>
+      Movimente Goku com o motor real ou inspecione os desenhos. A comparação
+      mostra a versão anterior e a revisão na mesma fase do ciclo, sem
+      redimensionar o corpo. Aqui os controles ficam restritos à movimentação.
+      Normais, combos, defesa e agarrão estão no <a href="goku-combat.html">laboratório de combate</a> e nos modos locais. Especiais e Super ainda não estão disponíveis.
+    </p>
+    <div class="controls">
+      <label
+        >Modo
+        <select id="mode">
+          <option value="live">Controlar Goku</option>
+          <option value="inspect">Inspecionar desenhos</option>
+        </select></label
+      >
+      <label
+        >Animação
+        <select id="animation"></select
+      ></label>
+      <button id="pause">Pausar</button
+      ><button id="step" disabled>Avançar tick</button>
+      <button id="frame-prev">Desenho anterior</button
+      ><button id="frame-next">Próximo desenho</button>
+      <label
+        >Velocidade
+        <select id="speed">
+          <option value="0.25">¼×</option>
+          <option value="0.5">½×</option>
+          <option value="1" selected>1×</option>
+          <option value="2">2×</option>
+        </select></label
+      >
+      <label
+        >Ampliação
+        <select id="zoom">
+          <option>1</option>
+          <option selected>2</option>
+          <option>3</option>
+          <option>4</option>
+        </select></label
+      >
+    </div>
+    <div class="controls">
+      <button id="flip">Inverter lado</button
+      ><button id="reset">Reiniciar</button>
+      <label
+        ><input id="repeat" type="checkbox" checked />Repetir na inspeção</label
+      >
+      <label
+        ><input id="compare" type="checkbox" />Comparar anterior e novo</label
+      >
+      <label><input id="guides" type="checkbox" checked />Pivô e chão</label>
+      <label><input id="boxes" type="checkbox" />Caixas</label
+      ><label
+        ><input id="bounds" type="checkbox" checked />Limite do desenho</label
+      >
+      <label
+        ><input id="landmarks" type="checkbox" />Guias anatômicas das
+        poses-chave</label
+      >
+      <a id="sheet-download" download>Baixar PNG</a>
+    </div>
+    <canvas
+      id="arena"
+      width="1280"
+      height="720"
+      tabindex="0"
+      aria-label="Movimentação real de Goku e inspeção ampliada dos sprites"
+    ></canvas>
+    <div id="strip" aria-label="Desenhos individuais"></div>
+    <pre id="readout" role="status"></pre>
+    <p id="error" role="alert"></p>
+    <p>
+      A/D mover · W pular · S agachar · Shift + direção dash ou backdash. Na
+      inspeção, o pivô permanece parado; a trajetória e o contato físico com o
+      chão podem ser conferidos em “Controlar Goku”. Ampliação com
+      nearest-neighbor.
+    </p>
+    <p><small>Guias anatômicas: estimativas visuais para Idle, desenho 1, e Crouch Idle, desenho 1. Servem para comparar a construção; não deformam os sprites nem controlam a física.</small></p>
+    <p>
+      <a href="../downloads/goku-movement.zip" download
+        >Baixar folhas e metadados atualizados</a
+      >
+      ·
+      <a href="../previews/goku-rebuild-gameplay.png"
+        >Prévia animada real da movimentação</a
+      >
+      ·
+      <a href="../previews/goku-rebuild-contact.png"
+        >Contato das animações corrigidas</a
+      >
+    </p>
+  </body>
+</html>

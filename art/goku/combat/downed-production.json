@@ -1,0 +1,204 @@
+{
+  "method": "whole-pose",
+  "canvas": [
+    384,
+    256
+  ],
+  "pivot": {
+    "x": 192,
+    "y": 224
+  },
+  "config": {
+    "source": "art/goku/combat/down_getup-source.png",
+    "kind": "reaction",
+    "grounded": true,
+    "cells": [
+      1,
+      3,
+      4
+    ],
+    "durations": [
+      3,
+      4,
+      17
+    ],
+    "loop": false,
+    "label": "downed"
+  },
+  "frames": [
+    {
+      "source": "art/goku/combat/down_getup-source.png",
+      "sourceRect": [
+        513,
+        173,
+        874,
+        400
+      ],
+      "cellRect": [
+        467,
+        0,
+        935,
+        374
+      ],
+      "scale": 0.33766233766233766,
+      "offset": [
+        134,
+        147
+      ],
+      "metrics": {
+        "bbox": [
+          134,
+          147,
+          256,
+          224
+        ],
+        "opaquePixels": 4799,
+        "largestComponent": 1.0,
+        "components": [
+          4799
+        ]
+      },
+      "pose": {
+        "ticks": 3,
+        "phase": "reaction",
+        "hitboxes": [],
+        "hurtboxes": [
+          {
+            "x": -32,
+            "y": -77,
+            "w": 24,
+            "h": 8
+          },
+          {
+            "x": -50,
+            "y": -69,
+            "w": 81,
+            "h": 26
+          },
+          {
+            "x": -49,
+            "y": -43,
+            "w": 90,
+            "h": 23
+          },
+          {
+            "x": -58,
+            "y": -20,
+            "w": 122,
+            "h": 20
+          }
+        ]
+      },
+      "strikePoint": null,
+      "discardedSpeckles": []
+    },
+    {
+      "source": "art/goku/combat/down_getup-source.png",
+      "sourceRect": [
+        33,
+        587,
+        457,
+        705
+      ],
+      "cellRect": [
+        0,
+        374,
+        467,
+        748
+      ],
+      "scale": 0.33766233766233766,
+      "offset": [
+        118,
+        184
+      ],
+      "metrics": {
+        "bbox": [
+          118,
+          184,
+          261,
+          224
+        ],
+        "opaquePixels": 3871,
+        "largestComponent": 1.0,
+        "components": [
+          3871
+        ]
+      },
+      "pose": {
+        "ticks": 4,
+        "phase": "reaction",
+        "hitboxes": [],
+        "hurtboxes": [
+          {
+            "x": -68,
+            "y": -40,
+            "w": 111,
+            "h": 20
+          },
+          {
+            "x": -74,
+            "y": -20,
+            "w": 143,
+            "h": 20
+          }
+        ]
+      },
+      "strikePoint": null,
+      "discardedSpeckles": []
+    },
+    {
+      "source": "art/goku/combat/down_getup-source.png",
+      "sourceRect": [
+        524,
+        594,
+        938,
+        708
+      ],
+      "cellRect": [
+        467,
+        374,
+        935,
+        748
+      ],
+      "scale": 0.33766233766233766,
+      "offset": [
+        118,
+        186
+      ],
+      "metrics": {
+        "bbox": [
+          118,
+          186,
+          258,
+          224
+        ],
+        "opaquePixels": 3826,
+        "largestComponent": 1.0,
+        "components": [
+          3826
+        ]
+      },
+      "pose": {
+        "ticks": 17,
+        "phase": "reaction",
+        "hitboxes": [],
+        "hurtboxes": [
+          {
+            "x": -72,
+            "y": -38,
+            "w": 130,
+            "h": 18
+          },
+          {
+            "x": -74,
+            "y": -20,
+            "w": 140,
+            "h": 20
+          }
+        ]
+      },
+      "strikePoint": null,
+      "discardedSpeckles": []
+    }
+  ]
+}
