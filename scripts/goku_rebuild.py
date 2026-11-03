@@ -33,7 +33,13 @@ def protect():
  if stage3.exists():revisions.update(read(stage3)['files'])
  stage4=ROOT/'art/goku/fury/shared-engine-revisions.json'
  if stage4.exists():revisions.update(read(stage4)['files'])
+ # A later explicit request rebalances ALL characters and adds universal R /
+ # aerial teleport. Keep the original freeze and a specific file allowlist;
+ # require a separately recorded, reasoned hash for each authorised revision.
+ frenzy=ROOT/'deployment/audit/frenzy-shared-engine-revisions.json'
+ if frenzy.exists():revisions.update(read(frenzy)['files'])
  allowed={'src/engine/bot.ts','src/engine/characters.ts','src/engine/combat.ts','src/engine/types.ts','src/engine/input.ts','src/engine/state.ts'}
+ allowed.update({'src/engine/moves.ts','src/engine/stand-combat.ts','src/render/dio-motion.ts'})
  assert set(revisions)<=allowed,'unreviewed shared-engine exemption'
  for name,digest in frozen['files'].items():
   current=sha(ROOT/name)

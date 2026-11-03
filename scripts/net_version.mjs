@@ -1,6 +1,11 @@
 import { createHash } from "node:crypto";
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
 const files = [
+  "src/data/luffy.json",
+  "src/data/luffy-elastic.json",
+  "src/engine/elastic.ts",
+  "src/engine/pace.ts",
+  "src/data/combat-pace.json",
   "src/engine/combat.ts",
   "src/engine/types.ts",
   "src/engine/input.ts",

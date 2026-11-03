@@ -1,11 +1,11 @@
 {
-  "tick": "69",
-  "hash": "d468716d",
+  "tick": "71",
+  "hash": "2c0c7f81",
   "clients": [
     {
       "animation": "idle",
       "frame": "1",
-      "animationTick": "15",
+      "animationTick": "17",
       "physicsState": "idle",
       "rootY": "580",
       "move": "",
@@ -21,7 +21,7 @@
       "localSeat": "0",
       "matchPhase": "fight",
       "round": "1",
-      "playerX": "508.0000000000001",
+      "playerX": "512.8",
       "targetX": "700",
       "targetState": "idle",
       "targetAnimation": "idle",
@@ -34,13 +34,13 @@
       "character": "dio",
       "vx": "0",
       "vy": "0",
-      "companionX": "478",
-      "companionY": "561",
+      "companionX": "483",
+      "companionY": "562",
       "companionDepth": "0",
       "companionClip": "timeMaintain",
       "companionFrame": "2",
       "temporalOwner": "0",
-      "timeRemaining": "96",
+      "timeRemaining": "94",
       "timeUses": "1",
       "timeCooldown": "0",
       "temporalDamage": "0",
@@ -51,6 +51,10 @@
       "beamHits": "0",
       "invisible": "false",
       "teleportLock": "0",
+      "airTeleportsUsed": "0",
+      "airTeleportAvailable": "false",
+      "hitConfirmed": "false",
+      "comboAirHits": "0",
       "projectiles": "0",
       "playerFrozen": "false",
       "roadTick": "-1",
@@ -63,7 +67,8 @@
       "furyHidden": "false",
       "transformed": "false",
       "cameraZoom": "1",
-      "cameraShake": "0"
+      "cameraShake": "0",
+      "impactShake": "0"
     },
     {
       "animation": "idle",
@@ -85,7 +90,7 @@
       "matchPhase": "fight",
       "round": "1",
       "playerX": "700",
-      "targetX": "508.0000000000001",
+      "targetX": "512.8",
       "targetState": "idle",
       "targetAnimation": "idle",
       "targetFrame": "1",
@@ -103,7 +108,7 @@
       "companionClip": "standIdle",
       "companionFrame": "4",
       "temporalOwner": "0",
-      "timeRemaining": "96",
+      "timeRemaining": "94",
       "timeUses": "0",
       "timeCooldown": "0",
       "temporalDamage": "0",
@@ -114,6 +119,10 @@
       "beamHits": "0",
       "invisible": "false",
       "teleportLock": "0",
+      "airTeleportsUsed": "0",
+      "airTeleportAvailable": "false",
+      "hitConfirmed": "false",
+      "comboAirHits": "0",
       "projectiles": "0",
       "playerFrozen": "true",
       "roadTick": "-1",
@@ -126,7 +135,8 @@
       "furyHidden": "false",
       "transformed": "false",
       "cameraZoom": "1",
-      "cameraShake": "0"
+      "cameraShake": "0",
+      "impactShake": "0"
     }
   ]
 }

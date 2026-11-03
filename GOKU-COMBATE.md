@@ -4,7 +4,7 @@ Registro da etapa 2. A etapa 3 acrescenta os [três especiais comuns](GOKU-ESPEC
 
 Implementado no motor existente. A movimentação MOV5 e todos os PNGs/dados de Samurai, Dio e The World permanecem preservados por hashes. Goku está disponível no Contra BOT, Arcade e Treinamento locais. Seus especiais e Super não foram implementados.
 
-Abra [o jogo](http://127.0.0.1:3001/) ou [o laboratório de combate](http://127.0.0.1:3001/art/goku-combat.html). Com `npm run dev`, use a porta 5173. Para servir a versão compilada: `npm run build`, depois `npm start`.
+Abra [o jogo](http://localhost/jogo-luta/) ou [o laboratório de combate](http://localhost/jogo-luta/art/goku-combat.html). Com `npm run dev`, use a porta 5173. Para servir a versão compilada: `npm run build`, depois `npm start`.
 
 J/K/L executam leve/médio/forte. S altera para normais agachados; durante o salto são usados normais aéreos. U tenta agarrar. Segure a direção oposta ao adversário para defender; acrescente S contra baixos. W cancela o uppercut **após contato confirmado**. O buffer e o hitstop pertencem ao combate em ticks fixos de 60 Hz.
 

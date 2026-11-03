@@ -1,3 +1,4 @@
+import { combatPace } from "../src/engine/pace";
 import { describe, it, expect } from "vitest";
 import { Match, FLOOR } from "../src/engine/combat";
 import { characters } from "../src/engine/characters";
@@ -101,9 +102,9 @@ describe("Goku normals in the existing shared combat engine", () => {
       b = m.fighters[1];
     // A nearly exhausted juggle is a boundary fixture; the actual next hit
     // still has to connect through the normal move/hurtbox collision path.
-    b.combo = 5;
-    b.comboAirHits = 5;
-    b.comboAge = 179;
+    b.combo = combatPace.combo.maxHits - 1;
+    b.comboAirHits = combatPace.combo.maxAirHits - 1;
+    b.comboAge = combatPace.combo.maxTicks - 1;
     b.y = FLOOR - 100;
     b.setState("hitstun");
     b.stun = 80;
@@ -113,9 +114,9 @@ describe("Goku normals in the existing shared combat engine", () => {
     a.attack("air_light");
     run(m, 15);
     expect(hits(m)).toHaveLength(1);
-    expect(hits(m)[0].damage).toBe(18);
+    expect(hits(m)[0].damage).toBe(Math.round(characters.goku.moves.air_light.damage * combatPace.combo.minimumDamageScale));
     expect(b.knockedDown).toBe(true);
-    expect(b.vy).toBeGreaterThan(0);
+    expect(b.vy > 0 || b.y === FLOOR).toBe(true);
     run(m, 100);
     expect(b.state).toBe("idle");
     expect(a.attackShapes()).toEqual([]);

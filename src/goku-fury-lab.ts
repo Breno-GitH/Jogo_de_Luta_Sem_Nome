@@ -46,7 +46,7 @@ const scenarios = {
   ko: "Super causando K.O.",
   interrupt: "Preparação interrompida",
   wall: "Super no canto",
-  combo: "Normal → Super (preparação vulnerável)",
+  combo: "Normal → R (confirmação de combo)",
 };
 const inspecting = () => sel("mode").value === "inspect";
 function sync() {
@@ -54,11 +54,7 @@ function sync() {
   el<HTMLButtonElement>("step").disabled = !paused;
 }
 function command() {
-  queue = [2, 3, 6, 2, 3, 6].map((v, i) => ({
-    direction: (v === 3 || v === 6 ? facing : 0) as -1 | 0 | 1,
-    down: v === 2 || v === 3,
-    pressed: i === 5 ? ["heavy"] : [],
-  }));
+  queue = [{ ...neutral(), pressed: ["ultimate"] }];
 }
 function reset() {
   const scene = sel("scenario").value;
@@ -262,7 +258,7 @@ function draw() {
     mode: sel("mode").value,
   });
   el("readout").textContent =
-    `FÚRIA SAIYAJIN / ${phase}\n${key} · desenho ${frame + 1}${m ? "/" + m.count : ""} · tick visual ${time} · simulação ${match.frame}\nEnergia ${a.meter.toFixed(1)}/${a.meterMaximum} · acertos ${canvas.dataset.hitCount} · dano ${canvas.dataset.damage} · bloqueios ${canvas.dataset.blockedHits}\nGoku (${a.x.toFixed(1)},${a.y.toFixed(1)}) · alvo (${b.x.toFixed(1)},${b.y.toFixed(1)}) · câmera ${canvas.dataset.cameraZoom ?? 1}×\nSSJ1 existe somente na Super. Energia é preenchida ao reiniciar este laboratório, sem recarga automática durante a execução.\nPreparação vulnerável: o normal pode cancelar para a Super, mas não garante o primeiro soco após a transformação.`;
+    `FÚRIA SAIYAJIN / ${phase}\n${key} · desenho ${frame + 1}${m ? "/" + m.count : ""} · tick visual ${time} · simulação ${match.frame}\nEnergia ${a.meter.toFixed(1)}/${a.meterMaximum} · acertos ${canvas.dataset.hitCount} · dano ${canvas.dataset.damage} · bloqueios ${canvas.dataset.blockedHits}\nGoku (${a.x.toFixed(1)},${a.y.toFixed(1)}) · alvo (${b.x.toFixed(1)},${b.y.toFixed(1)}) · câmera ${canvas.dataset.cameraZoom ?? 1}×\nSSJ1 existe somente na Super. Energia é preenchida ao reiniciar este laboratório, sem recarga automática durante a execução.\nR é universal. Em neutro, a preparação pode ser interrompida. Um cancelamento confirmado de normal prolonga o hitstun até o primeiro golpe, que continua usando colisão real.`;
   thumbnails(key);
 }
 async function start() {

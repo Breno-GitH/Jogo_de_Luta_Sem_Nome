@@ -1,0 +1,59 @@
+{
+  "request": "User explicitly requested universal frenetic combat, R-only Supers and aerial teleport; preserve approved sprites/cinematic contents",
+  "originalFreeze": "art/goku/rebuild/physics-freeze.json",
+  "files": {
+    "src/engine/moves.ts": {
+      "baseline": "0710fa2804dc0a201632625fad3c53a105d05b470632f482d599067aacc5be41",
+      "previous": "0710fa2804dc0a201632625fad3c53a105d05b470632f482d599067aacc5be41",
+      "current": "5488c3f614015ad27057c9b64630d01c20f204c708f49daae2774dd632e1687f",
+      "reason": "Resolve authored pose/hurtbox indices through the shared piecewise timing clock; active contact drawings remain unchanged."
+    },
+    "src/engine/stand-combat.ts": {
+      "baseline": "2b48e8a44d2971124a963845248b85674417042bf0096f543404e4dece406016",
+      "previous": "2b48e8a44d2971124a963845248b85674417042bf0096f543404e4dece406016",
+      "current": "fe7c655a0c69c48d9871fb3b38afdbf5f34947ebb3153e351d1b956fea72d311",
+      "reason": "Synchronise The World's authored approach, punch geometry and return using the same remapped owner timing as its sprite animation."
+    },
+    "src/render/dio-motion.ts": {
+      "baseline": "1b79e96ed0df4f6ea33e9a4fa83a651f40f5c07102c23db15788048bd98f2426",
+      "current": "211832c9beffb764ac54850ae19229b4ee79b2e97faf3edc5372a158bd2685fc",
+      "reason": "Map the existing jump anticipation and landing drawings over the new physical durations; retain all approved images and trajectory-based phase selection."
+    },
+    "src/engine/bot.ts": {
+      "baseline": "0c3a5f1be8210a087fd11b16c6386887502a866835d440d3504effb4c20ac07b",
+      "previous": "28aae5c79f662aa53e80453a76bd7344f586f26d8df57174b3f3905b4e77903b",
+      "current": "46f664e39a8e4ab2b0680e8ac3d9f638cd7a052390d19aa20c46a36bcf183c9e",
+      "reason": "Use the universal R input for Goku's Super while retaining delayed perception and character-specific AI."
+    },
+    "src/engine/characters.ts": {
+      "baseline": "49a870d85ddd10eb2d68332996192b3a1950b3ab549e8a4f33abd43c924be77a",
+      "previous": "82cfa62ab479616905475d6431fd209a171b9eb093d758eb8ecf30b821af204b",
+      "current": "a01bdfd524139743e8b8cfd959ff5b96b29d23d9722d44c96dca1611e5cdc023",
+      "reason": "Apply the shared, data-configured pace overlay to the existing three characters; preserve authored sprite/attack geometry data. Register the separate Luffy prototype while retaining the existing three definitions."
+    },
+    "src/engine/combat.ts": {
+      "baseline": "ed1676686f0e2b68ab9e730a4f1e58a5d99c6d0b4146e956b2aaaf6d02eb5f7b",
+      "previous": "d5d3668c31b0c319f2405e18c739e97848b474750f13173f6b49d03a622bac38",
+      "current": "42f1bc72decb632aa3ace3949b2967e9594f9b76c7e2b004e7a0a2d5413eb4a3",
+      "reason": "Universal R/cost/state gates; confirmed vs blocked cancels, one reverse beat, longer finite juggle limits, aerial teleport resource/physics and impact feedback. Existing three cinematic sequences retained."
+    },
+    "src/engine/types.ts": {
+      "baseline": "f11f713bbf8e86186d53542d53ed343fc3d8e3ded8a3d4d1b6971cbc56c95c96",
+      "previous": "3b58db18e3796684d4689f660b2bbcbcc3c60e8b2e25c3202eb5cec518047df3",
+      "current": "5902e7dd2d7df9a69da420b5a0837219b0578056252758b3a6e8db316d1acda9",
+      "reason": "Optional visualTiming and airTeleport data; a timing bridge maps unchanged authored drawings/hit geometry to new fixed-tick durations."
+    },
+    "src/engine/input.ts": {
+      "baseline": "a03d90a5eec3424bd8372acd3a7947408e30d36136f9aa8092bd22c7ed96f127",
+      "previous": "805837d574eeec1241017d75b59a22012cf3cb35342cbfb782f54f828381ed96",
+      "current": "ad4995852541e33f853bf8474122da71d77d27dd363768596ee11ead5cd1186b",
+      "reason": "Remove directional Super recognition; suppress repeated held keys; recognise two real down tap edges during hitstop."
+    },
+    "src/engine/state.ts": {
+      "baseline": "1c97abf7a8f7b7ad163bf91b0f63a54292d51766803bd010f7e3a5f8b8328ac2",
+      "previous": "26ece9bf01a6f9d5834cf63e65083f7a445f73a0b935a4c742283db7be2cd3cb",
+      "current": "81e88a6c8b970a88e38e09d8b190f0f637e6d351203e1e46623fd676312b0dce",
+      "reason": "Explicitly serialize hit confirmation, reverse-beat use and aerial teleport counter for authoritative replay/checkpoint recovery."
+    }
+  }
+}

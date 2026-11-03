@@ -1,0 +1,16 @@
+{
+  "sheet": "luffy/base.png",
+  "frameWidth": 256,
+  "frameHeight": 256,
+  "columns": 1,
+  "pivot": { "x": 128, "y": 224 },
+  "scale": 1,
+  "clips": {
+    "idle": {
+      "frames": [0],
+      "ticks": 1,
+      "loop": false,
+      "player2Sheet": "luffy/base-p2.png"
+    }
+  }
+}

@@ -7,6 +7,7 @@ import { drawFury, furyFxSheets } from "./goku-fury-fx";
 import { FLOOR, type Match } from "../engine/combat";
 import { Animator, metadata, type AnimationData } from "./animator";
 import dioAnimations from "../data/dio-animations.json";
+import luffyAnimations from "../data/luffy-animations.json";
 import { gokuAnimations } from "./goku-animations";
 import worldAnimations from "../data/the-world-animations.json";
 import { FighterPresentation } from "./presentation";
@@ -32,6 +33,7 @@ import { HealthBar } from "./hud";
 import { DamageTracker } from "../engine/stats";
 import { swapPalette, swapGokuPalette, type AlternatePalette } from "./palette";
 import type { Fighter } from "../engine/combat";
+import { combatPace } from "../engine/pace";
 export class Renderer {
   private ctx: CanvasRenderingContext2D;
   private sprites = new Map<string, HTMLImageElement>();
@@ -72,6 +74,7 @@ export class Renderer {
       metadata,
       dioAnimations,
       gokuAnimations,
+      luffyAnimations,
       worldAnimations,
       objectData,
       fxData,
@@ -164,7 +167,9 @@ export class Renderer {
             ? dioAnimations
             : f.data.id === "goku"
               ? gokuAnimations
-              : metadata,
+              : f.data.id === "luffy"
+                ? luffyAnimations
+                : metadata,
         );
         if (f.stand) this.standAnimations.set(f, new Animator(worldAnimations));
       }
@@ -268,6 +273,14 @@ export class Renderer {
       beamHits: String(match.beams.reduce((s, b) => s + b.hitIds.length, 0)),
       invisible: String(gokuInvisible(self)),
       teleportLock: String(self.gokuTeleportLock),
+      airTeleportsUsed: String(self.gokuAirTeleportsUsed),
+      airTeleportAvailable: String(
+        self.data.id === "goku" &&
+          self.gokuAirTeleportsUsed <
+            combatPace.airTeleport.maximumPerJumpOrCombo,
+      ),
+      hitConfirmed: String(self.hitConfirmed),
+      comboAirHits: String(other.comboAirHits),
       projectiles: String(match.projectiles.length),
       playerFrozen: String(match.temporal.isFrozen(self.id)),
       roadTick: String(road?.tick ?? -1),
@@ -295,12 +308,24 @@ export class Renderer {
       ),
     });
     const c = this.ctx;
+    const heavy = match.events.find(
+      (e) =>
+        !e.blocked &&
+        e.strength === 3 &&
+        (e.total ?? 16) - e.life < combatPace.feedback.heavyShakeTicks,
+    );
+    const ordinaryShake =
+      !road && !fury && heavy
+        ? (match.frame % 2 ? 1 : -1) * combatPace.feedback.heavyShakePixels
+        : 0;
+    this.canvas.dataset.impactShake = String(this.effects ? ordinaryShake : 0);
     c.imageSmoothingEnabled = false;
     if (this.inspectionZoom > 1 || road || fury) {
       c.fillStyle = "#101b2b";
       c.fillRect(0, 0, 1280, 720);
     }
     c.save();
+    if (this.effects && ordinaryShake) c.translate(ordinaryShake, 0);
     if (furyStage) {
       const cam = furyStage.camera;
       c.translate(640 + cam.shakeX, 360 + cam.shakeY);
@@ -437,7 +462,32 @@ export class Renderer {
         image &&
         (image instanceof HTMLCanvasElement ||
           (image.complete && image.naturalWidth))
-      )
+      ) {
+        if (
+          this.effects &&
+          !road &&
+          !fury &&
+          combatPace.feedback.dashTrails &&
+          (f.state === "dash" || f.airChaseTicks > 0) &&
+          Math.abs(f.vx) > 5
+        ) {
+          for (const back of [2, 1]) {
+            c.globalAlpha = back === 2 ? 0.08 : 0.16;
+            c.drawImage(
+              image,
+              sprite.x,
+              sprite.y,
+              sprite.width,
+              sprite.height,
+              -sprite.pivot.x -
+                Math.round((back * f.vx * f.facing * 1.2) / sprite.scale),
+              -sprite.pivot.y,
+              sprite.width,
+              sprite.height,
+            );
+          }
+          c.globalAlpha = 1;
+        }
         c.drawImage(
           image,
           sprite.x,
@@ -449,6 +499,7 @@ export class Renderer {
           sprite.width,
           sprite.height,
         );
+      }
       c.restore();
       if (this.debug) {
         c.fillStyle = "#e7c56e";
@@ -596,11 +647,13 @@ export class Renderer {
       c.font = "11px monospace";
       c.fillStyle = i === 0 ? "#e5b16b" : "#73cbd5";
       c.fillText(
-        f.data.id === "goku"
-          ? `FÚRIA SAIYAJIN · ${f.meter >= f.meterMaximum ? "PRONTA · ↓ → ↓ → + L" : Math.floor((100 * f.meter) / f.meterMaximum) + "%"}`
-          : f.data.id === "samurai"
-            ? `MIL CORTES ${f.meter}%${f.meter >= 100 ? " · R" : ""}`
-            : `SUPER ${(f.meter / 100).toFixed(2)} / 2 · ROAD ROLLER · R`,
+        f.data.id === "luffy"
+          ? "LUFFY · SPRITE-BASE · GOLPES E ANIMAÇÕES PENDENTES"
+          : f.data.id === "goku"
+            ? `FÚRIA SAIYAJIN · ${f.meter >= f.meterMaximum ? "PRONTA · R" : Math.floor((100 * f.meter) / f.meterMaximum) + "%"}`
+            : f.data.id === "samurai"
+              ? `MIL CORTES ${f.meter}%${f.meter >= 100 ? " · R" : ""}`
+              : `SUPER ${(f.meter / 100).toFixed(2)} / 2 · ROAD ROLLER · R`,
         x,
         617,
       );

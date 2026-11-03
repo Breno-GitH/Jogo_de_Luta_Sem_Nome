@@ -222,7 +222,7 @@ describe("Road Roller confirmed cinematic Super", () => {
     for (const blocked of [false, true]) {
       const m = fixture("samurai", false, blocked ? 85 : 450),
         [a, b] = m.fighters;
-      b.data = { ...b.data, speed: 0 };
+      b.data = { ...b.data, speed: 0, locomotion: { ...b.data.locomotion!, backSpeed: 0 } };
       const guard = { ...neutral(), direction: -b.facing as -1 | 1 };
       expect(a.attack("road_roller")).toBe(true);
       let blocks = 0;

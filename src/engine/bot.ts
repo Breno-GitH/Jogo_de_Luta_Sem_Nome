@@ -324,7 +324,7 @@ export class Bot {
         this.chance(this.profile.ultimate)
       ) {
         this.lastDecision = "Fúria Saiyajin";
-        return this.command([2, 3, 6, 2, 3, 6], "heavy", self);
+        return this.choose({ ...neutral(), pressed: ["ultimate"] }, "Fúria Saiyajin");
       }
       if (
         lowHealth &&

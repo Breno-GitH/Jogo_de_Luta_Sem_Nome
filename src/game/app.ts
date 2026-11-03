@@ -1,4 +1,5 @@
 import { assetBase } from "../asset-base";
+import { combatPace } from "../engine/pace";
 import { Match } from "../engine/combat";
 import { KeyboardInput } from "../engine/input";
 import { Bot, type Difficulty } from "../engine/bot";
@@ -11,6 +12,7 @@ import { onlineEntry, lobby, onlineResult, escapeText } from "../ui/online";
 import { neutral } from "../engine/types";
 import type { DummyBehavior } from "./training";
 import type { CharacterId } from "../engine/characters";
+import { ONLINE_CHARACTERS } from "../net/protocol";
 import {
   menuScreen,
   selectionScreen,
@@ -47,7 +49,7 @@ export class GameApp {
   private loop: FixedLoop;
   private samuraiControls = "";
   constructor(private root: HTMLDivElement) {
-    root.innerHTML = `<header><a class="brand" href="#">SEM<span>NOME</span><small>FIGHTING PROJECT</small></a><span class="build">SAMURAI <b>PLAYABLE 0.2</b></span></header><main><div class="topline"><span><i></i> DOMINE O ESPAÇO. CONFIRME O CORTE.</span><span id="mode-label">ESCOLHA SEU CONFRONTO</span></div><div class="stage"><canvas width="1280" height="720" tabindex="0" aria-label="Arena de combate Samurai contra Samurai"></canvas><section id="overlay"></section></div><div class="toolbar"><span id="status" role="status">Selecione um modo para começar</span><div><a class="art-link" href="${assetBase}art/samurai.html" target="_blank" rel="noopener">Animações</a><button id="sound">Som: ligado</button><label class="volume-label">Volume <input id="volume" aria-label="Volume dos efeitos" type="range" min="0" max="60" value="25"></label><button id="boxes">Caixas: desligadas</button><button id="restart" disabled>Reiniciar</button><button id="pause" disabled>Pausar · Esc</button><button id="menu">Menu</button></div></div>${trainingPanel()}<footer><div><kbd>A</kbd><kbd>D</kbd> mover <kbd>W</kbd> pular <kbd>S</kbd> agachar</div><div><kbd>J</kbd> leve <kbd>K</kbd> médio <kbd>L</kbd> forte <kbd>U</kbd> agarrar <kbd>R</kbd> Mil Cortes <kbd>T</kbd> provocar</div><div><kbd>Shift</kbd> + direção: dash <span>• Para trás: defender • Esc: pausar</span></div></footer></main>`;
+    root.innerHTML = `<header><a class="brand" href="#">SEM<span>NOME</span><small>FIGHTING PROJECT</small></a><span class="build">SAMURAI <b>PLAYABLE 0.2</b></span></header><main><div class="topline"><span><i></i> DOMINE O ESPAÇO. CONFIRME O CORTE.</span><span id="mode-label">ESCOLHA SEU CONFRONTO</span></div><div class="stage"><canvas width="1280" height="720" tabindex="0" aria-label="Arena de combate Samurai contra Samurai"></canvas><section id="overlay"></section></div><div class="toolbar"><span id="status" role="status">Selecione um modo para começar</span><div><a class="art-link" href="${assetBase}art/samurai.html" target="_blank" rel="noopener">Animações</a><button id="sound">Som: ligado</button><label class="volume-label">Volume <input id="volume" aria-label="Volume dos efeitos" type="range" min="0" max="60" value="25"></label><button id="boxes">Caixas: desligadas</button><button id="restart" disabled>Reiniciar</button><button id="pause" disabled>Pausar · Esc</button><button id="menu">Menu</button></div></div>${trainingPanel()}<footer><div><kbd>A</kbd><kbd>D</kbd> mover <kbd>W</kbd> pular <kbd>S</kbd> agachar</div><div><kbd>J</kbd> leve <kbd>K</kbd> médio <kbd>L</kbd> forte <kbd>U</kbd> agarrar <kbd>R</kbd> Super <kbd>T</kbd> provocar</div><div><kbd>Shift</kbd> + direção: dash <span>• Para trás: defender • Esc: pausar</span></div></footer></main>`;
     this.canvas = this.el<HTMLCanvasElement>("canvas", true);
     this.samuraiControls = this.root.querySelector("footer")!.innerHTML;
     this.overlay = this.el("overlay");
@@ -149,6 +151,12 @@ export class GameApp {
     dioPreview.href = `${assetBase}art/dio.html`;
     dioPreview.textContent = "Dio + The World · teste de movimentação";
     this.overlay.querySelector(".note")!.before(dioPreview);
+    const luffyPreview = document.createElement("a");
+    luffyPreview.className = "art-link";
+    luffyPreview.href = `${assetBase}art/luffy.html`;
+    luffyPreview.textContent =
+      "Luffy · modelo pixel art e bancada elástica (etapa inicial)";
+    this.overlay.querySelector(".note")!.before(luffyPreview);
     const specialsPreview = document.createElement("a");
     specialsPreview.className = "art-link";
     specialsPreview.href = `${assetBase}art/dio-specials.html`;
@@ -213,6 +221,7 @@ export class GameApp {
       this.el("samurai-commands").hidden = id !== "samurai";
       this.el("dio-commands").hidden = id !== "dio";
       this.el("goku-commands").hidden = id !== "goku";
+      this.el("luffy-commands").hidden = id !== "luffy";
       this.root
         .querySelectorAll<HTMLInputElement>('input[name="character"]')
         .forEach((input) =>
@@ -229,27 +238,34 @@ export class GameApp {
     );
     if (opponentPicker)
       opponentPicker.onchange = () => {
-        const dio = opponentPicker.value === "dio",
+        const luffy = opponentPicker.value === "luffy",
+          dio = opponentPicker.value === "dio",
           goku = opponentPicker.value === "goku",
           card = this.el("opponent-card");
-        card.querySelector("strong")!.textContent = dio
-          ? "DIO BRANDO"
-          : goku
-            ? "GOKU"
-            : "SAMURAI";
+        card.querySelector("strong")!.textContent = luffy
+          ? "LUFFY · PROTÓTIPO"
+          : dio
+            ? "DIO BRANDO"
+            : goku
+              ? "GOKU"
+              : "SAMURAI";
         const image = card.querySelector("img")!;
         image.src =
           assetBase +
-          (dio
-            ? "sprites/dio/base.png"
+          (luffy
+            ? "sprites/luffy/base-p2.png"
+            : dio
+              ? "sprites/dio/base.png"
+              : goku
+                ? "sprites/goku/base.png"
+                : "sprites/samurai/base-p2.png");
+        image.alt = luffy
+          ? "Luffy, paleta alternativa, protótipo sem golpes"
+          : dio
+            ? "Dio Brando, paleta alternativa"
             : goku
-              ? "sprites/goku/base.png"
-              : "sprites/samurai/base-p2.png");
-        image.alt = dio
-          ? "Dio Brando, paleta alternativa"
-          : goku
-            ? "Goku, paleta alternativa"
-            : "Samurai, paleta ciano";
+              ? "Goku, paleta alternativa"
+              : "Samurai, paleta ciano";
         image.style.filter = dio || goku ? "hue-rotate(145deg)" : "";
       };
     this.el("back").onclick = () => this.menu();
@@ -306,15 +322,16 @@ export class GameApp {
         `Arena: ${session.match.fighters[0].data.name} contra ${session.match.fighters[1].data.name}`,
       );
       this.root.querySelector<HTMLAnchorElement>(".toolbar .art-link")!.href =
-        `${assetBase}art/${session.characterId === "goku" ? "goku-combat" : session.characterId === "dio" ? "dio-combat" : "samurai"}.html`;
-      this.keyboardOptions.dashOnDirection =
-        session.characterId === "dio" || session.characterId === "goku";
+        `${assetBase}art/${session.characterId === "luffy" ? "luffy" : session.characterId === "goku" ? "goku-combat" : session.characterId === "dio" ? "dio-combat" : "samurai"}.html`;
+      this.keyboardOptions.dashOnDirection = session.characterId !== "samurai";
       this.root.querySelector("footer")!.innerHTML =
-        session.characterId === "goku"
-          ? "<div><kbd>A</kbd><kbd>D</kbd> mover · <kbd>W</kbd> pular · <kbd>S</kbd> agachar · Shift + direção dash</div><div><kbd>J</kbd> leve · <kbd>K</kbd> médio · <kbd>L</kbd> forte · <kbd>U</kbd> agarrar</div><div>J → K → L · S+L → W → J → K → L · Segure para trás para defender. Ki ↓ → · Kamehameha ↓ ← · Teletransporte ↓ ↓ + J/K/L. Sem custo de Super. Fúria Saiyajin: ↓ → ↓ → + L, custa a barra completa.</div>"
-          : session.characterId === "dio"
-            ? "<div><kbd>A</kbd><kbd>D</kbd> mover <kbd>W</kbd> pular <kbd>S</kbd> agachar · Shift + direção dash</div><div><kbd>J</kbd> leve <kbd>K</kbd> médio <kbd>L</kbd> forte · The World sincronizado</div><div>Facas ↓ → + J/K/L · Muda ↓ ← + J/K/L · Tempo → ↓ + L · <kbd>R</kbd> Road Roller (2 barras) · <kbd>T</kbd> provocar</div>"
-            : this.samuraiControls;
+        session.characterId === "luffy"
+          ? "<div>A/D mover · W pular · S agachar · Shift + direção dash</div><div>LUFFY · MODELO INICIAL · SEM GOLPES</div><div>Pose-base estática. Animações de movimento, defesa, dano, normais, especiais e Super pendentes.</div>"
+          : session.characterId === "goku"
+            ? "<div><kbd>A</kbd><kbd>D</kbd> mover · <kbd>W</kbd> pular · <kbd>S</kbd> agachar · Shift + direção dash</div><div><kbd>J</kbd> leve · <kbd>K</kbd> médio · <kbd>L</kbd> forte · <kbd>U</kbd> agarrar</div><div>J → K → L · S+L → W → J → K → L · Segure para trás para defender. Ki ↓ → · Kamehameha ↓ ← · Teletransporte ↓ ↓ + J/K/L. Sem custo de Super. Fúria Saiyajin: R, custa a barra completa.</div>"
+            : session.characterId === "dio"
+              ? "<div><kbd>A</kbd><kbd>D</kbd> mover <kbd>W</kbd> pular <kbd>S</kbd> agachar · Shift + direção dash</div><div><kbd>J</kbd> leve <kbd>K</kbd> médio <kbd>L</kbd> forte · The World sincronizado</div><div>Facas ↓ → + J/K/L · Muda ↓ ← + J/K/L · Tempo → ↓ + L · <kbd>R</kbd> Road Roller (2 barras) · <kbd>T</kbd> provocar</div>"
+              : this.samuraiControls;
       this.el("mode-label").textContent =
         session.mode === "arcade"
           ? `ARCADE / CONFRONTO ${session.stage + 1} DE 3`
@@ -456,6 +473,11 @@ export class GameApp {
         this.renderer.localSeat = client.seat;
         this.renderer.resetAnimations();
         if (client.match) this.renderer.tick(client.match);
+        const prototype =
+          client.match?.fighters[client.seat]?.data.id === "luffy";
+        this.root.querySelector("footer")!.innerHTML = prototype
+          ? "<div>LUFFY · PROTÓTIPO DE MODELO</div><div>A/D mover · W pular · S agachar · Shift + direção dash</div><div>Pose-base estática. Animações, golpes, especiais e Super pendentes.</div>"
+          : this.samuraiControls;
         this.canvas.focus({ preventScroll: true });
       };
       client.onStep = (match, frozen) => {
@@ -517,7 +539,7 @@ export class GameApp {
       this.el("copy-code").onclick = () => {
         void this.copyRoomCode(client);
       };
-      for (const character of ["samurai", "dio", "goku"] as const)
+      for (const character of ONLINE_CHARACTERS)
         this.el(`online-${character}`).onchange = () =>
           void this.onlineAction(() => client.select(character));
       this.el("online-confirm").onclick = () =>
@@ -654,7 +676,7 @@ export class GameApp {
     }
     session.match.fighters.forEach((f, i) => {
       this.el(i === 0 ? "player-state" : "dummy-state").textContent =
-        `${f.state} · ${f.moveId || "—"} · ${f.attackPhase || "—"} · tick ${f.stateFrame}`;
+        `${f.state} · ${f.moveId || "—"} · ${f.attackPhase || "—"} · tick ${f.stateFrame}${f.data.id === "goku" ? ` · TP aéreo: ${f.gokuAirTeleportsUsed}/${combatPace.airTeleport.maximumPerJumpOrCombo} usado` : ""}`;
     });
     this.el("ai-decision").textContent =
       session.training.dummy === "bot" ? session.bot.lastDecision : "desligada";

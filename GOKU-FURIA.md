@@ -1,6 +1,6 @@
 # Fúria Saiyajin — Super cinematográfica
 
-Comando **↓ → ↓ → + L**, relativo ao lado do Goku. Aceita diagonais intermediárias. Custa **100/100**, uma barra completa. R continua reservado às habilidades dos personagens anteriores. Os três especiais comuns do Goku continuam gratuitos.
+Comando **R**, independente dos direcionais. Custa **100/100**, uma barra completa. R é o comando universal de Super para todos os personagens. Os três especiais comuns do Goku continuam gratuitos. A revisão de ritmo e os cancelamentos confirmados estão em [COMBATE-FRENETICO.md](COMBATE-FRENETICO.md).
 
 Goku começa na forma base, transforma o cabelo e os olhos por desenhos próprios, avança e tenta um soco de alcance finito. A preparação é vulnerável. Somente um acerto sem defesa confirma a cinematografia. Defesa ou erro levam a recuperação e perda gradual da transformação, sem capturar o adversário.
 
@@ -15,14 +15,14 @@ npm run dev
 
 Abra `http://127.0.0.1:5173/art/goku-fury.html`. O laboratório usa o `Match` e o `Renderer` reais. Permite controlar Goku pelo teclado, executar cenários de acerto/defesa/erro/sem barra/interrupção/canto/KO, escolher Samurai/Dio/Goku, inverter lado, pausar, avançar ticks ou desenhos, variar velocidade, ampliar sem suavização e visualizar pivô, chão, limites e caixas do golpe inicial. A energia é preenchida ao reiniciar o laboratório; ela não é recarregada automaticamente durante a sequência.
 
-Para a versão compilada:
+Para a versão compilada no XAMPP, mantenha Apache iniciado. Pare o backend antes de atualizar e execute:
 
 ```sh
-npm run build
-npm start
+npm run build:lan
+npm run start:lan
 ```
 
-Abra `http://127.0.0.1:3001/art/goku-fury.html`. O mesmo personagem está no Contra BOT, Arcade e Treinamento. Energia infinita do treinamento é uma opção explícita do treino.
+Abra `http://localhost/jogo-luta/art/goku-fury.html`. O mesmo personagem está no Contra BOT, Arcade e Treinamento. Energia infinita do treinamento é uma opção explícita do treino.
 
 ## Arquivos e arquitetura
 

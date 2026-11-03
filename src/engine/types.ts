@@ -66,6 +66,8 @@ export interface CombatPose {
   hurtboxes: Rect[];
 }
 export interface Move {
+  visualTiming?: { startup: number; active: number; recovery: number };
+  airTeleport?: boolean;
   super?: boolean;
   special?: "knives" | "rush" | "timeStop" | "ki" | "kamehameha" | "teleport";
   gokuStrength?: "light" | "medium" | "heavy";

@@ -1,6 +1,7 @@
 import type { AttackShape, CompanionData, Move, StandTimeline } from "./types";
 import { worldRect, worldCapsule, shapeBounds } from "./geometry";
 import { poseAt } from "./moves";
+import { animationTick } from "./pace";
 
 interface Owner {
   x: number;
@@ -330,7 +331,9 @@ export class CombatStand {
       if (owner.state !== "attack" || owner.moveId !== s.moveId) {
         this.cancel(owner);
       } else {
-        const t = owner.stateFrame,
+        const t = owner.move
+            ? animationTick(owner.move, owner.stateFrame)
+            : owner.stateFrame,
           move = s.timeline!;
         if (
           (owner.move?.special === "rush" || owner.move?.super) &&
@@ -512,10 +515,13 @@ export class CombatStand {
     )
       return [];
     if (this.s.clip !== this.s.timeline.clip) return [];
-    if (owner.stateFrame < this.s.timeline.punchAt) return [];
+    const tick = owner.move
+      ? animationTick(owner.move, owner.stateFrame)
+      : owner.stateFrame;
+    if (tick < this.s.timeline.punchAt) return [];
     const pose = poseAt(
       { poses: definition.poses } as Move,
-      owner.stateFrame - this.s.timeline.punchAt,
+      tick - this.s.timeline.punchAt,
     );
     const t = this.transform;
     return (pose?.hitboxes ?? []).map((shape) =>

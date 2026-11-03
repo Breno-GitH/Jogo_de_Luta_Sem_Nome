@@ -2,6 +2,7 @@ import balance from "../data/goku-specials.json";
 import type { Fighter } from "./combat";
 import type { Rect } from "./types";
 import { poseAt } from "./moves";
+import { combatPace } from "./pace";
 export { balance as gokuBalance };
 export interface KiProjectile {
   id: number;
@@ -59,24 +60,26 @@ export function gokuInvisible(f: Fighter) {
   );
 }
 export function canCancelGokuSpecial(f: Fighter) {
-  const w = f.move?.cancelWindow;
+  return !f.move?.special && !f.move?.super && f.canCancel("special");
+}
+export function validAirChase(f: Fighter) {
+  const o = f.opponent;
   return (
-    f.state === "attack" &&
-    !f.airborne &&
-    f.connected &&
-    !f.move?.special &&
-    !f.move?.super &&
-    !!w &&
-    f.stateFrame >= w.fromTick &&
-    f.stateFrame < w.toTick
+    !!o &&
+    o.health > 0 &&
+    o.airborne &&
+    o.state === "hitstun" &&
+    o.combo > 0 &&
+    !o.knockedDown &&
+    Math.abs(o.x - f.x) <= combatPace.airTeleport.chaseRange
   );
 }
 export function canStartGokuSpecial(f: Fighter, id: string) {
   const move = f.data.specialMoves?.[id];
   if (!move || !f.match) return false;
-  const airAllowed =
-    move.special === "teleport" && move.gokuStrength === "heavy";
+  const airAllowed = move.airTeleport === true;
   if (f.airborne && !airAllowed) return false;
+  if (!f.airborne && airAllowed) return false;
   const free = [
     "idle",
     "walk",
@@ -87,9 +90,12 @@ export function canStartGokuSpecial(f: Fighter, id: string) {
   ].includes(f.state);
   if (move.special === "teleport")
     return (
-      free &&
-      f.gokuTeleportLock === 0 &&
-      (!airAllowed || !f.gokuAirTeleportUsed)
+      (free || (airAllowed && f.hitConfirmed && canCancelGokuSpecial(f))) &&
+      (airAllowed || f.gokuTeleportLock === 0) &&
+      (!airAllowed ||
+        (f.gokuAirTeleportsUsed <
+          combatPace.airTeleport.maximumPerJumpOrCombo &&
+          (move.gokuStrength !== "heavy" || validAirChase(f))))
     );
   if (!free && !canCancelGokuSpecial(f)) return false;
   if (
@@ -109,6 +115,35 @@ export function teleportDestination(f: Fighter) {
   const strength = f.move?.gokuStrength ?? "light",
     c = balance.teleport[strength],
     other = f.opponent!;
+  if (f.move?.airTeleport) {
+    const cfg = combatPace.airTeleport;
+    if (strength === "heavy" && !validAirChase(f)) return;
+    let x = f.x + f.facing * cfg[strength].distance;
+    let y = f.y;
+    if (
+      strength === "medium" &&
+      Math.abs(other.x - f.x) <= balance.teleport.medium.targetRange
+    ) {
+      x = other.x + f.facing * cfg.medium.distance;
+      if (other.airborne) y = other.y;
+    }
+    if (strength === "heavy") {
+      x = other.x - f.facing * cfg.chaseSeparation;
+      y = other.y - 6;
+    }
+    y = Math.max(cfg.minimumY, Math.min(580 - cfg.floorClearance, y));
+    x = clamp(x);
+    if (Math.abs(y - other.y) < 100 && Math.abs(x - other.x) < cfg.separation) {
+      let side = x < other.x ? -1 : 1;
+      if (
+        other.x + side * cfg.separation < 40 ||
+        other.x + side * cfg.separation > 1240
+      )
+        side *= -1;
+      x = clamp(other.x + side * cfg.separation);
+    }
+    return { x, y };
+  }
   let x = f.x + f.facing * c.distance,
     y = f.y;
   if (strength === "medium") {
@@ -149,13 +184,24 @@ export function tickGokuMove(f: Fighter) {
   )
     return;
   const move = f.move;
+  if (move.airTeleport && f.stateFrame < move.startup + move.active) {
+    f.vx = 0;
+    f.vy = 0;
+  }
   if (f.stateFrame === move.startup + move.active) {
     const destination = teleportDestination(f);
+    if (!destination) return;
     f.x = destination.x;
     f.y = destination.y;
     f.vx = 0;
     f.airChaseTicks = 0;
-    f.vy = move.gokuStrength === "heavy" ? -3 : 0;
+    f.vy = move.airTeleport
+      ? move.gokuStrength === "heavy"
+        ? f.opponent!.vy
+        : -1
+      : move.gokuStrength === "heavy"
+        ? -3
+        : 0;
     f.facing = f.opponent!.x >= f.x ? 1 : -1;
   }
 }

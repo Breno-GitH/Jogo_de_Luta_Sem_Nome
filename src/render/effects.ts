@@ -1,5 +1,6 @@
 import fxData from "../data/fx.json";
 import type { HitEvent } from "../engine/combat";
+import { combatPace } from "../engine/pace";
 
 export function drawEffects(
   context: CanvasRenderingContext2D,
@@ -16,16 +17,24 @@ export function drawEffects(
       data.frames - 1,
       Math.floor(((event.total ?? 16) - event.life) / data.ticks),
     );
+    const size = Math.round(
+      128 *
+        (event.strength === 1
+          ? combatPace.feedback.lightSparkScale
+          : event.strength === 3
+            ? combatPace.feedback.heavySparkScale
+            : combatPace.feedback.mediumSparkScale),
+    );
     context.drawImage(
       image,
       frame * 64,
       data.row * 64,
       64,
       64,
-      Math.round(event.x) - 64,
-      Math.round(event.y) - 64,
-      128,
-      128,
+      Math.round(event.x) - size / 2,
+      Math.round(event.y) - size / 2,
+      size,
+      size,
     );
   }
 }

@@ -1,3 +1,4 @@
+import { combatPace } from "../src/engine/pace";
 import { describe, it, expect } from "vitest";
 import { Match, FLOOR, character } from "../src/engine/combat";
 import { neutral, type InputFrame } from "../src/engine/types";
@@ -43,7 +44,7 @@ describe("nine playable normal attacks", () => {
     m.step([neutral(), neutral()]);
     expect(a.health).toBe(955);
     expect(b.health).toBe(885);
-    expect(m.hitstop).toBe(12);
+    expect(m.hitstop).toBe(combatPace.normals.hitstop[2]);
   });
   it.each(normals)(
     "%s selects its posture, hits exactly once, freezes and recovers",
@@ -63,7 +64,7 @@ describe("nine playable normal attacks", () => {
         m.step([neutral(), neutral()]);
       expect(b.health).toBe(1000 - move.damage);
       expect(m.hitstop).toBe(move.hitstop);
-      expect(b.stun).toBe(move.stun);
+      expect(b.stun).toBe(move.stun + (name.startsWith("air_") && !move.knockdown ? combatPace.combo.airExtensionStun : 0));
       const tick = a.stateFrame,
         y = a.y;
       for (let i = 0; i < 3; i++) m.step([neutral(), neutral()]);
@@ -132,7 +133,7 @@ describe("nine playable normal attacks", () => {
       max = Math.max(max, m.fighters[1].combo);
     }
     expect(max).toBe(3);
-    expect(m.fighters[1].health).toBe(795);
+    expect(m.fighters[1].health).toBe(1000 - ["stand_light","stand_medium","stand_heavy"].reduce((sum,id,i)=>sum+Math.round(character.moves[id].damage*(1-i*combatPace.combo.damageStep)),0));
     expect(m.fighters[0].state).toBe("idle");
   });
   it("launches, chases, chains all three air attacks and finishes in hard knockdown", () => {
@@ -182,7 +183,7 @@ describe("nine playable normal attacks", () => {
     );
     expect(max).toBe(4);
     expect(knockdown).toBe(true);
-    expect(m.fighters[1].health).toBe(743);
+    expect(m.fighters[1].health).toBe(1000 - ["crouch_heavy","air_light","air_medium","air_heavy"].reduce((sum,id,i)=>sum+Math.round(character.moves[id].damage*(1-i*combatPace.combo.damageStep)),0));
     expect(m.fighters[0].state).toBe("idle");
   });
   it("distinguishes ground heavy from launcher and disallows cancels on whiff", () => {
@@ -198,7 +199,7 @@ describe("nine playable normal attacks", () => {
     for (const name of ["stand_light", "crouch_light"])
       for (const crouching of [false, true]) {
         const m = fixture();
-        m.fighters[1].data = { ...character, speed: 0 };
+        m.fighters[1].data = { ...character, speed: 0, locomotion: { ...character.locomotion!, backSpeed: 0 } };
         m.fighters[0].attack(name);
         for (let i = 0; i < 12; i++)
           m.step([neutral(), { ...input([], crouching), direction: 1 }]);

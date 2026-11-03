@@ -3,7 +3,7 @@
   "meterMaximum": 100,
   "cost": 100,
   "meterGainScale": 0.35,
-  "command": { "motionTicks": 36, "finishTicks": 6 },
+  "command": { "button": "ultimate", "key": "R" },
   "startup": 106,
   "active": 5,
   "recovery": 58,

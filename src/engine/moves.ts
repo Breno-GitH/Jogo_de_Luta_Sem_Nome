@@ -1,6 +1,8 @@
 import type { CombatPose, Move } from "./types";
+import { animationTick } from "./pace";
 
 export function poseAt(move: Move, tick: number): CombatPose | undefined {
+  tick = animationTick(move, tick);
   let time = 0;
   for (const pose of move.poses ?? []) {
     time += pose.ticks;
@@ -9,6 +11,7 @@ export function poseAt(move: Move, tick: number): CombatPose | undefined {
   return move.poses?.at(-1);
 }
 export function poseIndexAt(move: Move, tick: number): number {
+  tick = animationTick(move, tick);
   let time = 0;
   for (let i = 0; i < (move.poses?.length ?? 0); i++) {
     time += move.poses![i].ticks;

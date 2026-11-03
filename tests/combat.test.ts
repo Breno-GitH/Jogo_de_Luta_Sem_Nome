@@ -39,8 +39,8 @@ describe("combat simulation", () => {
       backward = match();
     forward.step([input(1, false, ["dash"]), neutral()]);
     backward.step([input(-1, false, ["dash"]), neutral()]);
-    expect(forward.fighters[0].x).toBe(514);
-    expect(backward.fighters[0].x).toBe(489);
+    expect(forward.fighters[0].x).toBe(500 + forward.fighters[0].data.locomotion!.dashForward[0]);
+    expect(backward.fighters[0].x).toBe(500 - backward.fighters[0].data.locomotion!.backdash[0]);
   });
   it("a launcher followed by jump and air light produces a real aerial combo", () => {
     const m = match();
@@ -66,7 +66,7 @@ describe("combat simulation", () => {
   });
   it("standing defense blocks mid attacks without damage", () => {
     const m = match();
-    m.fighters[1].data = { ...m.fighters[1].data, speed: 0 };
+    m.fighters[1].data = { ...m.fighters[1].data, speed: 0, locomotion: { ...m.fighters[1].data.locomotion!, backSpeed: 0 } };
     m.step([input(0, false, ["light"]), input(1)]);
     advance(m, 5, neutral(), input(1));
     expect(m.fighters[1].health).toBe(1000);
@@ -83,7 +83,7 @@ describe("combat simulation", () => {
   it("throws bypass defense", () => {
     const m = match();
     m.fighters[1].x = 565;
-    m.fighters[1].data = { ...m.fighters[1].data, speed: 0 };
+    m.fighters[1].data = { ...m.fighters[1].data, speed: 0, locomotion: { ...m.fighters[1].data.locomotion!, backSpeed: 0 } };
     m.step([input(0, false, ["throw"]), input(1)]);
     advance(m, 5, neutral(), input(1));
     advance(m, 55);

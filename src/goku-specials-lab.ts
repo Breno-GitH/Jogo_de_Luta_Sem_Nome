@@ -54,6 +54,9 @@ Object.assign(scenarios, {
   blockBeam: "Defesa contra Kamehameha",
   interrupt: "Interromper preparação",
   wallTeleport: "Teletransporte no canto",
+  airTeleportLight: "No ar: ↓ ↓ + J · avanço",
+  airTeleportBehind: "No ar: ↓ ↓ + K · atrás do alvo",
+  airChaseCombo: "Launcher → J → K → ↓ ↓ + L → J → K → L",
 });
 const inspecting = () => sel("mode").value === "inspect";
 function sync() {
@@ -75,6 +78,7 @@ function reset() {
     "mediumHeavyBeam",
     "crouchKi",
     "interrupt",
+    "airChaseCombo",
   ].includes(scene);
   a.x = facing === 1 ? 350 : 930;
   b.x = a.x + facing * (close ? 70 : 330);
@@ -87,6 +91,21 @@ function reset() {
   if (scene === "wallTeleport") {
     a.x = facing === 1 ? 1150 : 130;
     b.x = facing === 1 ? 1210 : 70;
+  }
+  if (scene === "airTeleportLight" || scene === "airTeleportBehind") {
+    a.y = 380;
+    a.vy = -1;
+    a.setState("air");
+    b.y = 380;
+    b.vy = -1;
+    b.setState("air");
+  }
+  if (scene === "teleport_air") {
+    b.y = 350;
+    b.vy = -1;
+    b.setState("hitstun");
+    b.stun = 90;
+    b.combo = 1;
   }
   t = stage = acc = 0;
   queue = [];
@@ -125,6 +144,53 @@ function programmed(): [InputFrame, InputFrame] {
     other = neutral();
   if (scene.startsWith("block")) other.direction = -b.facing as -1 | 1;
   if (scene === "interrupt" && t === 12) other.pressed = ["light"];
+  if (scene === "airTeleportLight" || scene === "airTeleportBehind") {
+    if (stage === 0) {
+      command("teleport", scene === "airTeleportLight" ? "light" : "medium");
+      stage = 1;
+    }
+    return [queue.shift() ?? neutral(), other];
+  }
+  if (scene === "airChaseCombo") {
+    if (stage === 0) {
+      stage++;
+      return [{ ...neutral(), down: true, pressed: ["heavy"] }, other];
+    }
+    if (stage === 1 && a.canCancel("jump")) {
+      stage++;
+      return [{ ...neutral(), pressed: ["jump"] }, other];
+    }
+    if (stage === 2 && a.state === "air") {
+      stage++;
+      return [{ ...neutral(), pressed: ["light"] }, other];
+    }
+    if (stage === 3 && a.canCancel("medium")) {
+      stage++;
+      return [{ ...neutral(), pressed: ["medium"] }, other];
+    }
+    if (
+      stage === 4 &&
+      a.hitConfirmed &&
+      a.moveId === "air_medium" &&
+      match.hitstop === 0
+    ) {
+      stage++;
+      command("teleport", "heavy");
+    }
+    if (stage === 5 && a.state === "air" && a.gokuAirTeleportsUsed === 1) {
+      stage++;
+      return [{ ...neutral(), pressed: ["light"] }, other];
+    }
+    if (stage === 6 && a.canCancel("medium")) {
+      stage++;
+      return [{ ...neutral(), pressed: ["medium"] }, other];
+    }
+    if (stage === 7 && a.canCancel("heavy")) {
+      stage++;
+      return [{ ...neutral(), pressed: ["heavy"] }, other];
+    }
+    return [queue.shift() ?? neutral(), other];
+  }
   if (scene === "teleport_air" && t === 0)
     return [{ ...neutral(), pressed: ["jump"] }, other];
   if (stage === 0 && (scene !== "teleport_air" || t >= 12)) {

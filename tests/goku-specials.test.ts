@@ -170,7 +170,7 @@ describe("Goku common specials with fixed-tick commands", () => {
         a.x = mirror ? 45 : 1235;
         b.x = mirror ? 100 : 1180;
         a.attack("teleport_" + s);
-        const p = teleportDestination(a);
+        const p = teleportDestination(a)!;
         expect(p.x).toBeGreaterThanOrEqual(40);
         expect(p.x).toBeLessThanOrEqual(1240);
         if (Math.abs(p.y - b.y) < 90)
@@ -181,7 +181,7 @@ describe("Goku common specials with fixed-tick commands", () => {
     const far = setup("dio", false, 700),
       a = far.fighters[0];
     a.attack("teleport_medium");
-    expect(teleportDestination(a).x - a.x).toBe(
+    expect(teleportDestination(a)!.x - a.x).toBe(
       gokuBalance.teleport.medium.fallbackDistance,
     );
   });
@@ -357,13 +357,13 @@ describe("Goku common specials with fixed-tick commands", () => {
         }
     },
   );
-  it("permits the heavy airborne teleport once and rejects Ki or beam in the air", () => {
+  it("permits a light airborne teleport once and rejects Ki or beam in the air", () => {
     const m = setup(),
       a = m.fighters[0];
     step(m, { ...neutral(), pressed: ["jump"] });
     run(m, 10);
-    motion(m, "teleport", "heavy");
-    expect(a.moveId).toBe("teleport_air");
+    motion(m, "teleport", "light");
+    expect(a.moveId).toBe("teleport_air_light");
     run(m, 60);
     expect(m.capture).toBeUndefined();
     expect(a.y).toBeGreaterThan(100);

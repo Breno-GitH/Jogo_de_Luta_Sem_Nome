@@ -254,7 +254,11 @@ export class GokuMotionPresentation {
     if (a.state === "jumpStart" || a.state === "landing") {
       if (a.state === "jumpStart") this.airDirection = "";
       clip = a.state === "landing" ? "landing" + this.airDirection : a.state;
-      sync = a.stateFrame;
+      sync =
+        (a.stateFrame * clipTicks(clip)) /
+        (a.state === "jumpStart"
+          ? a.data.locomotion!.jumpStartup
+          : a.data.locomotion!.landingTicks);
       this.crouch = 0;
     } else if (a.airborne) {
       const phase = a.vy < -3 ? "jumpRise" : a.vy > 3 ? "jumpFall" : "jumpApex";

@@ -1,6 +1,6 @@
 {
-  "tick": "28",
-  "hash": "edf164cb",
+  "tick": "27",
+  "hash": "79cdea56",
   "clients": [
     {
       "animation": "ultimateRush",
@@ -51,6 +51,10 @@
       "beamHits": "0",
       "invisible": "false",
       "teleportLock": "0",
+      "airTeleportsUsed": "0",
+      "airTeleportAvailable": "false",
+      "hitConfirmed": "false",
+      "comboAirHits": "0",
       "projectiles": "0",
       "playerFrozen": "false",
       "roadTick": "-1",
@@ -63,7 +67,8 @@
       "furyHidden": "false",
       "transformed": "false",
       "cameraZoom": "1",
-      "cameraShake": "0"
+      "cameraShake": "0",
+      "impactShake": "0"
     },
     {
       "animation": "damageMedium",
@@ -114,6 +119,10 @@
       "beamHits": "0",
       "invisible": "false",
       "teleportLock": "0",
+      "airTeleportsUsed": "0",
+      "airTeleportAvailable": "false",
+      "hitConfirmed": "false",
+      "comboAirHits": "0",
       "projectiles": "0",
       "playerFrozen": "false",
       "roadTick": "-1",
@@ -126,7 +135,8 @@
       "furyHidden": "false",
       "transformed": "false",
       "cameraZoom": "1",
-      "cameraShake": "0"
+      "cameraShake": "0",
+      "impactShake": "0"
     }
   ]
 }

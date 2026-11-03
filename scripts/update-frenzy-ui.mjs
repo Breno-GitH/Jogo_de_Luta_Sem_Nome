@@ -1,0 +1,9 @@
+import { readFileSync, writeFileSync } from "node:fs";
+const files=["src/ui/screens.ts","src/game/app.ts","src/render/renderer.ts","src/goku-lab.ts","art/goku-fury.html","README.md","README_LAN.md","GOKU-FURIA.md"];
+for(const p of files){let s=readFileSync(p,"utf8");s=s.replaceAll("↓ → ↓ → + L","R").replaceAll("R continua reservado às habilidades dos personagens anteriores.","R é o comando universal de Super para todos os personagens.");writeFileSync(p,s);}
+const edit=(p,fn)=>writeFileSync(p,fn(readFileSync(p,"utf8")));
+edit("src/game/app.ts",s=>s.replace('<kbd>R</kbd> Mil Cortes <kbd>T</kbd> provocar','<kbd>R</kbd> Super <kbd>T</kbd> provocar'));
+edit("src/ui/screens.ts",s=>s.replace('Dois toques de S exigem soltar a tecla entre eles.','No ar: ↓ ↓ + J avança; K aparece atrás; L persegue um alvo em combo aéreo. Um uso por salto/combo, restaurado no chão em neutro. Dois toques de S exigem soltar a tecla entre eles.').replace('Os golpes mantêm dano, stun e colisões com vida infinita.','R ativa a Super de qualquer personagem; requer a energia configurada. Goku: ↓ ↓ + J/K/L também funciona no ar, uma vez por salto/combo. Os golpes mantêm dano, stun e colisões com vida infinita.'));
+edit("src/ui/online-lobby.ts",s=>s.replace('O segundo jogador usa uma paleta diferente, mesmo escolhendo o mesmo personagem.','O segundo jogador usa uma paleta diferente. R ativa a Super do seu personagem; especiais mantêm seus comandos.'));
+edit("src/goku-fury-lab.ts",s=>s.replace('Normal → Super (preparação vulnerável)','Normal → R (confirmação de combo)').replace('Preparação vulnerável: o normal pode cancelar para a Super, mas não garante o primeiro soco após a transformação.','R é universal. Em neutro, a preparação pode ser interrompida. Um cancelamento confirmado de normal prolonga o hitstun até o primeiro golpe, que continua usando colisão real.'));
+edit("e2e/lan/game.pw.ts",s=>s.replace('await motion(a, [2, 3, 6, 2, 3, 6], "l");','await press(a, "r");'));

@@ -363,7 +363,7 @@ function draw() {
     bounds: b.join(","),
   });
   el("readout").textContent =
-    `GOKU / ${live() ? a.state : "inspeção"} · ${actual} · desenho ${frame + 1}/${meta.count}\nTick da animação ${elapsed}/${total} · este desenho dura ${meta.durations[frame]} ticks · simulação ${match.frame} ticks\nRaiz (${a.x.toFixed(1)}, ${a.y.toFixed(1)}) · velocidade (${a.vx.toFixed(2)}, ${a.vy.toFixed(2)})\nLimites do desenho [${b.join(", ")}] · pivô (128,224) · ampliação ${zoom}× · 60 Hz · suavização desativada\n${!live() && check("compare") ? "Comparação por fase normalizada: a versão anterior tem contagem e tempos diferentes.\n" : ""}Este laboratório isola a movimentação. Os normais, defesas e agarrões estão no laboratório de combate e nos modos locais. Especiais comuns disponíveis no laboratório de especiais; Fúria Saiyajin: ↓ → ↓ → + L, custa a barra completa.`;
+    `GOKU / ${live() ? a.state : "inspeção"} · ${actual} · desenho ${frame + 1}/${meta.count}\nTick da animação ${elapsed}/${total} · este desenho dura ${meta.durations[frame]} ticks · simulação ${match.frame} ticks\nRaiz (${a.x.toFixed(1)}, ${a.y.toFixed(1)}) · velocidade (${a.vx.toFixed(2)}, ${a.vy.toFixed(2)})\nLimites do desenho [${b.join(", ")}] · pivô (128,224) · ampliação ${zoom}× · 60 Hz · suavização desativada\n${!live() && check("compare") ? "Comparação por fase normalizada: a versão anterior tem contagem e tempos diferentes.\n" : ""}Este laboratório isola a movimentação. Os normais, defesas e agarrões estão no laboratório de combate e nos modos locais. Especiais comuns disponíveis no laboratório de especiais; Fúria Saiyajin: R, custa a barra completa.`;
   thumbnails();
 }
 async function start() {

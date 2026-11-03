@@ -1,0 +1,21 @@
+{
+  "date": "2026-11-03T01:23:42.100Z",
+  "build": {
+    "version": "d20e8f99c1c5aed2a1d9d99d",
+    "builtAt": "2026-11-03T01:13:01.590Z",
+    "base": "relative",
+    "aliases": [
+      "/jogo-luta/",
+      "/2025/Jogo_de_Luta_Sem_Nome/"
+    ]
+  },
+  "logicTests": 527,
+  "artTests": 123,
+  "apacheBrowserScenarios": 12,
+  "productionBrowserScenarios": 4,
+  "actualSecondComputer": false,
+  "preservedSpriteFiles": 3915,
+  "changedSpriteFiles": [],
+  "netcode": "authoritative fixed-tick input delay; no rollback",
+  "outageTest": "Previously executed with real Apache stop/restart; optional/manual test skipped in the final gameplay suite"
+}

@@ -1,0 +1,22 @@
+{
+  "mobility": {
+    "samurai": { "speed": 6.6, "backSpeed": 5.8, "airSpeed": 6.6, "jumpStartup": 3, "landingTicks": 4, "dashScale": 1.12, "chaseSpeed": 6.5, "chaseTicks": 10 },
+    "dio": { "speed": 3.2, "backSpeed": 2.6, "airSpeed": 5.0, "jumpStartup": 4, "landingTicks": 5, "dashScale": 1.16, "chaseSpeed": 5.7, "chaseTicks": 10 },
+    "goku": { "speed": 7.2, "backSpeed": 6.1, "airSpeed": 7.6, "jumpStartup": 3, "landingTicks": 4, "dashScale": 1.10, "chaseSpeed": 7.2, "chaseTicks": 10 }
+  },
+  "normals": {
+    "samurai": { "startupReduction": [1, 2, 2], "recoveryReduction": [2, 3, 4] },
+    "dio": { "startupReduction": [1, 2, 3], "recoveryReduction": [2, 3, 3] },
+    "goku": { "startupReduction": [0, 1, 1], "recoveryReduction": [1, 2, 2] },
+    "hitstop": [4, 6, 9], "stunBonus": [1, 2, 3], "pushScale": [0.95, 0.90, 0.80], "followAirLaunchVelocity": ["goku"]
+  },
+  "cancel": { "hitRecoveryTail": 2, "blockTailTicks": 1, "reverseBeatOnHit": true, "gokuSuperLink": true, "chaseSpacing": 64, "chaseCatchTicks": 6, "maximumChaseJumpSpeed": 30, "chaseExitUpSpeed": 7 },
+  "combo": { "maxHits": 22, "maxAirHits": 14, "maxTicks": 480, "damageStep": 0.075, "minimumDamageScale": 0.20, "pushGrowthAfter": 10, "pushGrowth": 0.06, "airExtensionStun": 4 },
+  "airTeleport": {
+    "maximumPerJumpOrCombo": 1, "minimumY": 180, "floorClearance": 72, "separation": 66, "chaseSeparation": 72, "chaseRange": 460,
+    "light": { "startup": 5, "vanishTicks": 3, "recovery": 6, "distance": 130 },
+    "medium": { "startup": 6, "vanishTicks": 4, "recovery": 8, "distance": 80 },
+    "heavy": { "startup": 5, "vanishTicks": 3, "recovery": 3, "distance": 72 }
+  },
+  "feedback": { "lightSparkScale": 0.5, "mediumSparkScale": 1, "heavySparkScale": 1.5, "heavyShakePixels": 3, "heavyShakeTicks": 6, "dashTrails": true }
+}

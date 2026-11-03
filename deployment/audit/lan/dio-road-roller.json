@@ -1,6 +1,6 @@
 {
   "tick": "169",
-  "hash": "097129ae",
+  "hash": "12a458e8",
   "clients": [
     {
       "animation": "roadRollerPose",
@@ -51,6 +51,10 @@
       "beamHits": "0",
       "invisible": "false",
       "teleportLock": "0",
+      "airTeleportsUsed": "0",
+      "airTeleportAvailable": "false",
+      "hitConfirmed": "false",
+      "comboAirHits": "0",
       "projectiles": "0",
       "playerFrozen": "false",
       "roadTick": "134",
@@ -63,7 +67,8 @@
       "furyHidden": "false",
       "transformed": "false",
       "cameraZoom": "2",
-      "cameraShake": "0"
+      "cameraShake": "0",
+      "impactShake": "0"
     },
     {
       "animation": "secondaryDowned",
@@ -114,6 +119,10 @@
       "beamHits": "0",
       "invisible": "false",
       "teleportLock": "0",
+      "airTeleportsUsed": "0",
+      "airTeleportAvailable": "false",
+      "hitConfirmed": "false",
+      "comboAirHits": "0",
       "projectiles": "0",
       "playerFrozen": "false",
       "roadTick": "134",
@@ -126,7 +135,8 @@
       "furyHidden": "false",
       "transformed": "false",
       "cameraZoom": "2",
-      "cameraShake": "0"
+      "cameraShake": "0",
+      "impactShake": "0"
     }
   ]
 }

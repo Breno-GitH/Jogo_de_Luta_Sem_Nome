@@ -23,6 +23,7 @@ import {
 } from "./goku-fury";
 import { CommandBuffer } from "./input";
 import { MOVEMENT_TIMING } from "./movement";
+import { combatPace, pacedCharacter } from "./pace";
 import cinematics from "../data/cinematics.json";
 import { reactionBoxes, reactionFor } from "./lifecycle";
 import { poseAt, phaseAt } from "./moves";
@@ -43,7 +44,7 @@ import {
   type State,
   type AttackShape,
 } from "./types";
-export const character: CharacterData = samurai;
+export const character: CharacterData = pacedCharacter(samurai);
 export const FLOOR = 580;
 export class Fighter {
   x = 0;
@@ -58,6 +59,8 @@ export class Fighter {
   stun = 0;
   moveId = "";
   connected = false;
+  hitConfirmed = false;
+  reverseBeatUsed = false;
   hitIds: number[] = [];
   comboAge = 0;
   comboAirHits = 0;
@@ -68,6 +71,7 @@ export class Fighter {
   airChaseTicks = 0;
   gokuTeleportLock = 0;
   gokuAirTeleportUsed = false;
+  gokuAirTeleportsUsed = 0;
   gokuCastSerial = 0;
   homeX: number;
   guardIntent = false;
@@ -130,13 +134,10 @@ export class Fighter {
   canSpecialCancel() {
     if (this.data.id === "goku") return canCancelGokuSpecial(this);
     return (
-      this.state === "attack" &&
       !this.airborne &&
-      this.connected &&
       !this.move?.special &&
       !this.move?.super &&
-      this.stateFrame > (this.move?.startup ?? 0) &&
-      this.stateFrame < (this.move?.startup ?? 0) + (this.move?.active ?? 0)
+      this.canCancel("special")
     );
   }
   canStartSpecial(id: string) {
@@ -207,6 +208,21 @@ export class Fighter {
     return this.canSpecialCancel();
   }
   canStartSuper() {
+    if (this.data.id === "samurai") {
+      const m = this.data.moves.ultimate_start;
+      return (
+        !!m &&
+        this.meter >= (m.cost ?? 100) &&
+        !this.airborne &&
+        !this.match?.capture &&
+        !this.match?.roadRoller &&
+        !this.match?.fury &&
+        (["idle", "walk", "crouch", "dash", "landing", "jumpStart"].includes(
+          this.state,
+        ) ||
+          this.canSuperCancel())
+      );
+    }
     if (this.data.id === "goku") return canStartFury(this);
     return (
       !!this.data.superMoves?.road_roller &&
@@ -301,10 +317,28 @@ export class Fighter {
   }
   canCancel(name: string) {
     const window = this.move?.cancelWindow;
+    const reverse =
+      name === "light" &&
+      combatPace.cancel.reverseBeatOnHit &&
+      this.hitConfirmed &&
+      !this.reverseBeatUsed &&
+      !this.airborne &&
+      this.move?.rank === 2 &&
+      !this.move?.special;
+    if (
+      !this.hitConfirmed &&
+      (name === "jump" || (name === "special" && (this.move?.rank ?? 0) >= 3))
+    )
+      return false;
     return (
       this.state === "attack" &&
       this.connected &&
-      !!this.move?.cancels.includes(name) &&
+      (!!this.move?.cancels.includes(name) || reverse) &&
+      (this.hitConfirmed ||
+        this.stateFrame <=
+          (this.move?.startup ?? 0) +
+            (this.move?.active ?? 0) +
+            combatPace.cancel.blockTailTicks) &&
       (!window ||
         (this.stateFrame >= window.fromTick &&
           this.stateFrame <= window.toTick))
@@ -313,7 +347,9 @@ export class Fighter {
   canCancelMove(id: string) {
     return (
       this.canCancel(id.split("_").at(-1)!) &&
-      (!this.move?.cancelMoves || this.move.cancelMoves.includes(id))
+      (id.endsWith("_light") ||
+        !this.move?.cancelMoves ||
+        this.move.cancelMoves.includes(id))
     );
   }
   pushbox(): Rect {
@@ -367,6 +403,7 @@ export class Fighter {
     if (s !== "attack") {
       this.moveId = "";
       this.connected = false;
+      this.hitConfirmed = false;
       this.hitIds = [];
     }
   }
@@ -376,6 +413,7 @@ export class Fighter {
       this.data.specialMoves?.[id] ??
       this.data.superMoves?.[id];
     if (!m || this.meter < (m.cost ?? 0)) return false;
+    if (m.kind === "ultimate" && !this.canStartSuper()) return false;
     if (m.super && !this.canStartSuper()) return false;
     if (m.special && !this.canStartSpecial(id)) return false;
     const chain =
@@ -391,6 +429,18 @@ export class Fighter {
     )
       return false;
     if (m.stand && this.state === "attack" && !chain) return false;
+    if (
+      this.state === "attack" &&
+      this.move?.rank === 2 &&
+      id.endsWith("_light")
+    )
+      this.reverseBeatUsed = true;
+    const superLink =
+      m.kind === "gokuFury" &&
+      combatPace.cancel.gokuSuperLink &&
+      this.canSuperCancel() &&
+      this.hitConfirmed &&
+      this.opponent?.state === "hitstun";
     this.meter -= m.cost ?? 0;
     this.setState("attack", chain);
     this.moveId = id;
@@ -399,22 +449,38 @@ export class Fighter {
       this.airChaseTicks = 0;
       if (m.special === "teleport") {
         this.gokuTeleportLock = gokuBalance.teleport[m.gokuStrength!].lockTicks;
-        if (m.gokuStrength === "heavy") this.gokuAirTeleportUsed = true;
+        if (m.airTeleport || m.gokuStrength === "heavy") {
+          this.gokuAirTeleportUsed = true;
+          this.gokuAirTeleportsUsed++;
+        }
       }
     }
     this.connected = false;
+    this.hitConfirmed = false;
     this.hitIds = [];
     if (!this.airChaseTicks) this.vx = 0;
     if (m.stand) this.stand?.begin(id, m.stand, this, this.opponent?.x, chain);
+    if (superLink && this.opponent) {
+      this.opponent.stun = Math.max(this.opponent.stun, m.startup + 4);
+      this.opponent.vx = 0;
+    }
     return true;
   }
   tick(input: InputFrame, frame: number, opponent: Fighter) {
     if (this.data.id === "goku") {
       this.gokuTeleportLock = Math.max(0, this.gokuTeleportLock - 1);
-      if (!this.airborne && this.state !== "attack")
+      if (
+        !this.airborne &&
+        ["idle", "walk", "crouch"].includes(this.state) &&
+        !opponent.combo
+      ) {
         this.gokuAirTeleportUsed = false;
+        this.gokuAirTeleportsUsed = 0;
+      }
     }
     this.input = input;
+    if (!opponent.combo && this.state !== "attack")
+      this.reverseBeatUsed = false;
     this.buffer.push(input, frame, this.facing);
     this.stateFrame++;
     if (this.combo > 0) this.comboAge++;
@@ -505,29 +571,25 @@ export class Fighter {
       if (free && this.state !== "dash" && !this.airborne)
         this.facing = opponent.x >= this.x ? 1 : -1;
       const canCancel = (name: string) => this.canCancel(name);
-      const superRequested =
-        this.data.id === "dio" &&
-        !!this.data.superMoves &&
-        !this.airborne &&
-        this.buffer.actions.some((action) => action.button === "ultimate");
-      if (
-        superRequested &&
-        (this.meter < roadConfig.cost || this.canStartSuper())
-      ) {
-        if (this.canStartSuper()) this.attack("road_roller");
-        this.buffer.consume("ultimate");
-        return;
-      }
-      if (
-        this.data.id === "goku" &&
-        this.buffer.gokuSuper(
-          furyConfig.command.motionTicks,
-          furyConfig.command.finishTicks,
-        )
-      ) {
-        if (this.canStartSuper()) this.attack("ssj1_fury");
-        this.buffer.consumeSpecial("heavy");
-        return;
+      const superRequested = this.buffer.actions.some(
+        (action) => action.button === "ultimate",
+      );
+      if (superRequested) {
+        const id =
+          this.data.id === "goku"
+            ? "ssj1_fury"
+            : this.data.id === "dio"
+              ? "road_roller"
+              : "ultimate_start";
+        const move = this.data.moves[id] ?? this.data.superMoves?.[id];
+        if (this.canStartSuper()) {
+          this.attack(id);
+          this.buffer.consume("ultimate");
+          this.buffer.consumeMotion();
+          return;
+        }
+        if (!move || this.meter < (move.cost ?? 100))
+          this.buffer.consume("ultimate");
       }
       if (this.data.id === "goku" && this.data.specialMoves) {
         for (const button of ["heavy", "medium", "light"] as const) {
@@ -541,8 +603,10 @@ export class Fighter {
             );
           if (!special) continue;
           const id =
-            special === "teleport" && button === "heavy" && this.airborne
-              ? "teleport_air"
+            special === "teleport" && this.airborne
+              ? button === "heavy"
+                ? "teleport_air"
+                : `teleport_air_${button}`
               : `${special}_${button}`;
           if (this.canStartSpecial(id)) {
             this.attack(id);
@@ -557,12 +621,7 @@ export class Fighter {
           }
         }
       }
-      if (
-        this.data.id === "dio" &&
-        this.data.specialMoves &&
-        !this.airborne &&
-        !superRequested
-      ) {
+      if (this.data.id === "dio" && this.data.specialMoves && !this.airborne) {
         // Supplied L has time-stop priority; recognised unavailable commands
         // are consumed rather than silently becoming a heavy normal.
         for (const button of ["heavy", "medium", "light"] as const) {
@@ -586,17 +645,6 @@ export class Fighter {
         }
       }
       if (
-        !this.airborne &&
-        (free || canCancel("special")) &&
-        this.buffer.consume("ultimate") &&
-        this.meter >= 100 &&
-        this.data.moves.ultimate_start
-      ) {
-        this.attack("ultimate_start");
-        this.buffer.consumeMotion();
-        return;
-      }
-      if (
         free &&
         !this.airborne &&
         this.state !== "attack" &&
@@ -615,7 +663,14 @@ export class Fighter {
       ) {
         if (canCancel("jump")) {
           // Preserve the immediate launcher chase used by aerial combos.
-          this.vy = this.data.jump;
+          this.vy = Math.min(
+            this.data.jump,
+            Math.max(
+              -combatPace.cancel.maximumChaseJumpSpeed,
+              opponent.vy +
+                (opponent.y - this.y) / combatPace.cancel.chaseCatchTicks,
+            ),
+          );
           this.airChaseTicks = this.data.airChaseTicks ?? 8;
           if (this.stand) {
             this.stand.holdCombo(this);
@@ -629,7 +684,6 @@ export class Fighter {
       }
       if (free || this.state === "attack") {
         for (const b of ["throw", "light", "medium", "heavy"] as const) {
-          if (b === "heavy" && superRequested) continue;
           if (
             this.data.id === "dio" &&
             this.data.specialMoves &&
@@ -665,6 +719,7 @@ export class Fighter {
             this.state === "attack" &&
             this.move?.cancelMoves &&
             !special &&
+            !candidate.endsWith("_light") &&
             !this.move.cancelMoves.includes(candidate)
           )
             continue;
@@ -753,13 +808,29 @@ export class Fighter {
     // closes the space opened by launch knockback without inflating the blade.
     if (this.airChaseTicks > 0) {
       if (this.airborne && (this.state === "air" || this.state === "attack")) {
-        this.vx = this.facing * (this.data.airChaseSpeed ?? this.data.speed);
-        if (--this.airChaseTicks === 0) this.vx = 0;
+        const speed = this.data.airChaseSpeed ?? this.data.speed;
+        const gap =
+          (opponent.x - this.x) * this.facing - combatPace.cancel.chaseSpacing;
+        this.vx = this.facing * Math.max(-speed, Math.min(speed, gap));
+        if (--this.airChaseTicks === 0) {
+          this.vx = 0;
+          // A missed pursuit must not retain the boosted launch velocity and
+          // carry the fighter offscreen; confirmed air hits use their own hold.
+          if (this.vy < this.data.jump)
+            this.vy = -combatPace.cancel.chaseExitUpSpeed;
+        }
       } else this.airChaseTicks = 0;
     }
     tickGokuMove(this);
     const wasAirborne = this.airborne;
-    if (wasAirborne) {
+    if (
+      wasAirborne &&
+      !(
+        this.state === "attack" &&
+        this.move?.airTeleport &&
+        this.stateFrame < this.move.startup + this.move.active
+      )
+    ) {
       this.vy += this.data.gravity;
     }
     this.x = Math.max(40, Math.min(1240, this.x + this.vx));
@@ -800,6 +871,7 @@ export class Fighter {
   }
 }
 export interface HitEvent {
+  strength?: number;
   audioOnly?: boolean;
   x: number;
   y: number;
@@ -1123,7 +1195,13 @@ export class Match {
       (m.level !== "high" || !target.input.down);
     let damage = blocked
       ? 0
-      : Math.round(m.damage * Math.max(0.35, 1 - target.combo * 0.1));
+      : Math.round(
+          m.damage *
+            Math.max(
+              combatPace.combo.minimumDamageScale,
+              1 - target.combo * combatPace.combo.damageStep,
+            ),
+        );
     if (frozen && !blocked && !m.super) {
       damage = this.temporal.budget(damage);
       if (!damage) return;
@@ -1138,7 +1216,14 @@ export class Match {
     const reaction: DeferredReaction = {
       blocked,
       stun: blocked ? m.blockstun : m.stun,
-      vx: direction * m.push,
+      vx:
+        direction *
+        m.push *
+        (blocked
+          ? 1
+          : 1 +
+            Math.max(0, target.combo - combatPace.combo.pushGrowthAfter) *
+              combatPace.combo.pushGrowth),
       vy: blocked ? 0 : m.launch,
       knockdown: !blocked && !!m.knockdown,
       strength: m.damage <= 50 ? 1 : m.damage <= 90 ? 2 : 3,
@@ -1146,9 +1231,12 @@ export class Match {
       crouched: target.crouching,
     };
     if (!blocked) {
+      if (f.state === "attack" && f.moveId === moveId) f.hitConfirmed = true;
       if (!target.combo) target.comboAge = target.comboAirHits = 0;
       target.combo++;
       if (target.airborne || m.launch < 0) target.comboAirHits++;
+      if (target.airborne && !m.knockdown && !m.super)
+        reaction.stun += combatPace.combo.airExtensionStun;
       const limit = f.data.combatLimits;
       if (
         limit &&
@@ -1173,6 +1261,7 @@ export class Match {
         ? Math.max(3, Math.floor((m.hitstop ?? 8) * 0.6))
         : (m.hitstop ?? 8),
     );
+    const eventCount = this.events.length;
     this.effect(
       blocked
         ? "guard"
@@ -1186,6 +1275,21 @@ export class Match {
       16,
       blocked,
     );
+    const event = this.events[eventCount];
+    if (event) {
+      event.strength =
+        m.super ||
+        m.kind === "ultimate" ||
+        m.rank === 3 ||
+        m.knockdown ||
+        m.damage >= 90
+          ? 3
+          : m.rank === 2 || m.damage >= 55
+            ? 2
+            : 1;
+      event.total = event.life =
+        event.strength === 1 ? 10 : event.strength === 2 ? 13 : 16;
+    }
     if (m.kind === "ultimate" && !blocked)
       this.beginCapture("ultimate", f, target);
     if (m.kind === "roadRoller" && !blocked) this.beginRoadRoller(f, target);

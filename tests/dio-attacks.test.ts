@@ -30,7 +30,7 @@ function command(m: Match, pressed: InputFrame["pressed"], down = false) {
   step(m, { ...neutral(), pressed, down });
 }
 const expectedDamage = (id: string) =>
-  id === "air_medium" ? 66 : characters.dio.moves[id].damage;
+  id === "air_medium" ? 67 : characters.dio.moves[id].damage;
 
 describe("Dio commands; The World alone fights", () => {
   it('withdraws the Stand during a Samurai grab and recovers after the capture',()=>{
@@ -155,7 +155,7 @@ describe("Dio commands; The World alone fights", () => {
         events.push({ tick: a.stateFrame, damage: h.damage });
     }
     expect(events).toHaveLength(2);
-    expect(events.map((e) => e.damage)).toEqual([32, 34]);
+    expect(events.map((e) => e.damage)).toEqual([32, 35]);
     expect(events[1].tick - events[0].tick).toBeGreaterThanOrEqual(4);
   });
   it("restores a checkpoint between the two aerial impacts without repeating the first", () => {
@@ -176,7 +176,7 @@ describe("Dio commands; The World alone fights", () => {
       expect(hashState(snapshot(restored))).toBe(hashState(snapshot(m)));
     }
     expect(extra).toBe(1);
-    expect(b.health).toBe(934);
+    expect(b.health).toBe(933);
   });
   it("even accidental owner attack boxes cannot replace the real Stand fist", () => {
     const m = fixture(),
@@ -248,7 +248,7 @@ describe("Dio commands; The World alone fights", () => {
     }
     const n = fixture(),
       [a, b] = n.fighters;
-    b.combo = 11;
+    b.combo = characters.dio.combatLimits!.maxHits - 1;
     b.comboAge = 100;
     b.setState("hitstun");
     b.stun = 40;

@@ -243,7 +243,7 @@ describe("Mil Cortes", () => {
     for (const blocked of [false, true]) {
       const m = fixture(blocked ? 130 : 500);
       m.fighters[0].meter = 100;
-      m.fighters[1].data = { ...character, speed: 0 };
+      m.fighters[1].data = { ...character, speed: 0, locomotion: { ...character.locomotion!, backSpeed: 0 } };
       let captured = false;
       m.step([input(0, false, ["ultimate"]), blocked ? input(1) : neutral()]);
       for (let i = 0; i < 130; i++) {

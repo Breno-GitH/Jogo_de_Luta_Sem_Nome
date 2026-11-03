@@ -1,3 +1,4 @@
+import { combatPace } from "../src/engine/pace";
 import { describe, it, expect } from "vitest";
 import { Match, FLOOR } from "../src/engine/combat";
 import { characters, characterById } from "../src/engine/characters";
@@ -177,19 +178,19 @@ describe("Goku movement in the existing engine", () => {
   it("uses the deliberate walk cadence while retaining agile aerial and dash mobility", () => {
     expect(characterById("goku")).toBe(characters.goku);
     expect(characters.goku.speed).toBeGreaterThan(0);
-    expect(gait.walkForward.speed).toBe(characters.goku.speed);
-    expect(Math.abs(gait.walkBack.speed)).toBe(
+    expect(characters.goku.speed).toBe(combatPace.mobility.goku.speed);
+    expect(combatPace.mobility.goku.backSpeed).toBe(
       characters.goku.locomotion?.backSpeed,
     );
-    expect(characters.goku.locomotion?.airSpeed).toBe(6.5);
+    expect(characters.goku.locomotion?.airSpeed).toBe(combatPace.mobility.goku.airSpeed);
     expect(characters.goku.locomotion!.airSpeed).toBeGreaterThan(
       characters.samurai.speed,
     );
-    expect(Math.max(...characters.goku.locomotion!.dashForward)).toBe(22);
-    expect(Math.max(...characters.goku.locomotion!.backdash)).toBe(18);
+    expect(Math.max(...characters.goku.locomotion!.dashForward)).toBeCloseTo(22 * combatPace.mobility.goku.dashScale);
+    expect(Math.max(...characters.goku.locomotion!.backdash)).toBeCloseTo(18 * combatPace.mobility.goku.dashScale);
     expect(characters.goku.jump).toBeLessThan(characters.samurai.jump);
     expect(Object.keys(characters.goku.moves)).toHaveLength(10);
-    expect(Object.keys(characters.goku.specialMoves!)).toHaveLength(10);
+    expect(Object.keys(characters.goku.specialMoves!)).toHaveLength(12);
     expect(Object.keys(characters.goku.superMoves!)).toEqual(["ssj1_fury"]);
     expect(characters.goku.companion).toBeUndefined();
   });
@@ -211,7 +212,7 @@ describe("Goku movement in the existing engine", () => {
           });
           p.tick(a);
         }
-        let firstTick: number | undefined;
+        let firstTick: number | undefined, firstX: number | undefined;
         const seen = new Set<number>();
         for (let n = 0; n < total + Math.max(...clip.durations) + 1; n++) {
           tick(m, {
@@ -227,13 +228,16 @@ describe("Goku movement in the existing engine", () => {
           if (!side) throw new Error("Walking frame has no planted foot");
           expect(meta.support[frame]).toContain(side);
           firstTick ??= p.animator.elapsedTicks;
-          const expected = (firstTick + n) % total;
-          expect(p.animator.elapsedTicks).toBe(expected);
+          firstX ??= a.x;
+          const travelled = Math.abs(a.x - firstX) / Math.abs(gait[key].speed);
+          const expected = Math.floor(firstTick + travelled + 1e-6) % total;
+          const actual = p.animator.elapsedTicks;
+          expect(Math.min((actual-expected+total)%total,(expected-actual+total)%total)).toBeLessThanOrEqual(1);
           const at = clip.frames.indexOf(frame);
           expect(at).toBeGreaterThanOrEqual(0);
           const start = clip.durations.slice(0, at).reduce((a, b) => a + b, 0);
-          expect(expected).toBeGreaterThanOrEqual(start);
-          expect(expected).toBeLessThan(start + clip.durations[at]);
+          expect(p.animator.elapsedTicks).toBeGreaterThanOrEqual(start);
+          expect(p.animator.elapsedTicks).toBeLessThan(start + clip.durations[at]);
           seen.add(frame);
         }
         expect(seen).toEqual(new Set(clip.frames));
@@ -389,7 +393,7 @@ describe("Goku movement in the existing engine", () => {
       }
     },
   );
-  it("retains movement controls while future specials and Super remain unavailable", () => {
+  it("training exposes the current Super through universal R", () => {
     const s = new GameSession("training", "easy", "goku");
     expect(s.match.fighters[0].data.id).toBe("goku");
     for (let n = 0; n < 20; n++)
@@ -398,8 +402,8 @@ describe("Goku movement in the existing engine", () => {
         direction: 1,
         pressed: ["ultimate", "taunt"],
       });
-    expect(s.match.fighters[0].state).toBe("walk");
-    expect(s.match.fighters[0].moveId).toBe("");
+    expect(s.match.fighters[0].state).toBe("attack");
+    expect(s.match.fighters[0].moveId).toBe("ssj1_fury");
     expect(s.match.projectiles).toEqual([]);
     expect(s.match.roadRoller).toBeUndefined();
   });

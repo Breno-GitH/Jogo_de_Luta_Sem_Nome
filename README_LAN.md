@@ -1,5 +1,7 @@
 # Jogo de luta no XAMPP e multiplayer LAN
 
+**Combate atualizado:** R ativa as três Supers; Goku possui teletransporte aéreo J/K/L e perseguição de combos. Regras e verificação da revisão atual: [COMBATE-FRENETICO.md](COMBATE-FRENETICO.md). Os números de testes da seção de migração abaixo são o registro daquela implantação.
+
 O projeto existente foi adaptado. O Apache serve o frontend de produção; o Node.js executa o combate e o Socket.IO por trás do proxy. Vite não é necessário para jogar. Samurai, Dio/The World e Goku usam o mesmo motor e os mesmos recursos dos modos locais.
 
 ## Endereços e arquivos
@@ -79,7 +81,7 @@ Ambos devem estar na mesma rede privada, sem isolamento de clientes Wi-Fi. Não 
 2. Compartilhe esse código. O amigo abre **Entrar em sala**, informa o código e confirma.
 3. Cada jogador escolhe Samurai, Dio ou Goku, clica **Confirmar personagem** e depois **Pronto**. Trocar a escolha remove confirmação e prontidão anteriores. Personagens iguais usam paletas diferentes.
 4. Quando os dois estiverem conectados, confirmados e prontos, o anfitrião usa **Iniciar partida**. O convidado não pode iniciar à força.
-5. Joguem com os controles normais. Cada navegador controla seu próprio jogador com A/D, W, S, J/K/L, Shift, U, R e os comandos direcionais dos personagens. Goku usa ↓ → ↓ → + L para Fúria Saiyajin; R mantém a função existente de Samurai/Dio.
+5. Joguem com os controles normais. Cada navegador controla seu próprio jogador com A/D, W, S, J/K/L, Shift, U, R e os comandos direcionais dos personagens. Goku usa R para Fúria Saiyajin; R mantém a função existente de Samurai/Dio.
 6. Ao terminar, ambos podem pedir **Revanche**. **Voltar ao lobby** permite selecionar novamente e reutilizar o código. **Sair** libera a vaga ou encerra a sala vazia.
 
 Código inválido, sala inexistente, sala recentemente encerrada e sala cheia têm erros distintos. Há no máximo dois jogadores, identificação de conexão e token de recuperação por sessão. Salas não compartilham inputs nem eventos de combate.

@@ -6,7 +6,11 @@ import gait from "../data/dio-gait.json";
 interface MotionActor {
   moveId?: string;
   crouching?: boolean;
-  data?: { jump: number; gravity: number };
+  data?: {
+    jump: number;
+    gravity: number;
+    locomotion?: { jumpStartup: number; landingTicks: number };
+  };
   x: number;
   y: number;
   vx: number;
@@ -60,7 +64,15 @@ export class DioMotionPresentation {
       sync: number | undefined;
     if (a.state === "jumpStart" || a.state === "landing") {
       clip = a.state;
-      sync = a.stateFrame;
+      sync =
+        (a.stateFrame *
+          animation.clips[clip as "jumpStart" | "landing"].durations.reduce(
+            (s, v) => s + v,
+            0,
+          )) /
+        (a.state === "jumpStart"
+          ? (a.data?.locomotion?.jumpStartup ?? 8)
+          : (a.data?.locomotion?.landingTicks ?? 8));
       this.crouch = 0;
     } else if (a.airborne) {
       const phase = a.vy < -3 ? "jumpRise" : a.vy > 3 ? "jumpFall" : "jumpApex";

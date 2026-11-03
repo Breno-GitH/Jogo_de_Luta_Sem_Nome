@@ -34,6 +34,7 @@ let app: ReturnType<typeof createGameServer>,
   a: Page,
   b: Page;
 const hashes = new Map<string, string>();
+let trace: unknown[] = [];
 let graceMs = 6500;
 async function startServer() {
   app = createGameServer({
@@ -47,7 +48,34 @@ async function startServer() {
   });
   app.io.on("connection", (s) =>
     s.onAnyOutgoing((event, p) => {
-      if (event === "match:step") hashes.set(p.matchId + ":" + p.tick, p.hash);
+      if (event === "match:step") {
+        hashes.set(p.matchId + ":" + p.tick, p.hash);
+        const r = [...app.rooms.rooms.values()].find(
+          (r) => r.matchId === p.matchId,
+        );
+        if (r?.players[0]?.socketId === s.id && r.match) {
+          const f = r.match.fighters[0],
+            v = r.match.fighters[1];
+          trace.push({
+            tick: p.tick,
+            epoch: p.matchId,
+            input: p.inputs[0],
+            f: [
+              f.state,
+              f.moveId,
+              f.stateFrame,
+              f.x,
+              f.y,
+              f.vy,
+              f.hitConfirmed,
+              f.gokuAirTeleportsUsed,
+            ],
+            v: [v.state, v.combo, v.x, v.y, v.vy, v.stun],
+            stop: r.match.hitstop,
+          });
+          if (trace.length > 800) trace.shift();
+        }
+      }
     }),
   );
   await new Promise<void>((r) => app.http.listen(3001, "127.0.0.1", r));
@@ -57,6 +85,7 @@ test.afterAll(async () => {
   await app.close();
 });
 test.beforeEach(async () => {
+  trace = [];
   browsers = await Promise.all([
     chromium.launch({ channel: "chrome", headless: true }),
     chromium.launch({ channel: "chrome", headless: true }),
@@ -64,7 +93,12 @@ test.beforeEach(async () => {
   a = await browsers[0].newPage({ viewport: { width: 1440, height: 1100 } });
   b = await browsers[1].newPage({ viewport: { width: 1440, height: 1100 } });
 });
-test.afterEach(async () => {
+test.afterEach(async ({}, info) => {
+  if (info.status !== info.expectedStatus)
+    writeFileSync(
+      `${audit}/failure-${info.title.replace(/[^a-z0-9]/gi, "-").slice(0, 90)}.json`,
+      JSON.stringify(trace, null, 2),
+    );
   await Promise.all(browsers.map((x) => x.close()));
 });
 async function entry(p: Page, url: string) {
@@ -170,12 +204,12 @@ async function seed(code: string, distance = 90, meter = 0) {
     );
   return r;
 }
-async function press(p: Page, key: string) {
+async function press(p: Page, key: string, hold = 70) {
   await p.keyboard.down(key);
-  await p.waitForTimeout(70);
+  await p.waitForTimeout(hold);
   await p.keyboard.up(key);
 }
-async function motion(p: Page, pattern: number[], button: string) {
+async function motion(p: Page, pattern: number[], button: string, hold = 65) {
   for (let i = 0; i < pattern.length; i++) {
     for (const key of ["a", "d", "s"]) await p.keyboard.up(key);
     const v = pattern[i];
@@ -183,7 +217,7 @@ async function motion(p: Page, pattern: number[], button: string) {
     if ([3, 6].includes(v)) await p.keyboard.down("d");
     if ([1, 4].includes(v)) await p.keyboard.down("a");
     if (i === pattern.length - 1) await p.keyboard.down(button);
-    await p.waitForTimeout(65);
+    await p.waitForTimeout(hold);
   }
   for (const key of ["a", "d", "s", button]) await p.keyboard.up(key);
 }
@@ -438,7 +472,7 @@ for (const character of ["samurai", "dio", "goku"] as const)
         .poll(() => tele.match!.fighters[0].x)
         .toBeGreaterThan(tele.match!.fighters[1].x);
       const fury = await seed(code, 240, 100);
-      await motion(a, [2, 3, 6, 2, 3, 6], "l");
+      await press(a, "r");
       await expect.poll(() => !!fury.match!.fury, { timeout: 6000 }).toBe(true);
       await expect(a.locator("canvas")).toHaveAttribute(
         "data-fury-phase",
@@ -459,6 +493,126 @@ for (const character of ["samurai", "dio", "goku"] as const)
         "1",
       );
   });
+
+test("Goku real keyboard launcher and air teleport combo is identical on both clients", async () => {
+  const code = await pair("goku", "goku"),
+    r = await seed(code, 70),
+    f = () => r.match!.fighters[0];
+  const hits: string[] = [];
+  const hitListener = (event: string, packet: any) => {
+    if (event === "match:step" && packet.matchId === r.matchId)
+      for (const hit of r.match!.hits)
+        if (hit.attacker === 0 && !hit.blocked) hits.push(hit.move);
+  };
+  // One observer on one server socket: never double-count broadcasts to P2.
+  const socket = app.io.sockets.sockets.get(r.players[0]!.socketId)!;
+  socket.onAnyOutgoing(hitListener);
+  const wait = async (p: () => boolean) =>
+    expect.poll(p, { timeout: 5000, intervals: [10] }).toBe(true);
+  await a.keyboard.down("s");
+  await press(a, "l", 20);
+  await a.keyboard.up("s");
+  await wait(() => f().canCancel("jump"));
+  await a.keyboard.down("w");
+  await press(a, "j", 20);
+  await a.keyboard.up("w");
+  await wait(() => f().moveId === "air_light" && f().hitConfirmed);
+  await press(a, "k", 20);
+  await wait(() => f().moveId === "air_medium" && f().hitConfirmed);
+  await motion(a, [2, 5, 2], "l", 20);
+  await wait(() => f().gokuAirTeleportsUsed === 1);
+  await press(a, "j", 20);
+  await wait(() => f().moveId === "air_light" && f().hitConfirmed);
+  await press(a, "k", 20);
+  await wait(() => f().moveId === "air_medium" && f().hitConfirmed);
+  await press(a, "l", 20);
+  await wait(() => hits.includes("air_heavy"));
+  socket.offAnyOutgoing(hitListener);
+  expect(hits).toEqual([
+    "crouch_heavy",
+    "air_light",
+    "air_medium",
+    "air_light",
+    "air_medium",
+    "air_heavy",
+  ]);
+  await capture(code, "goku-air-chase");
+  writeFileSync(
+    `${audit}/goku-air-chase-inputs.json`,
+    JSON.stringify({ actualSecondComputer: false, rows: trace }, null, 2),
+  );
+  await consistent();
+});
+
+test("Goku air J K L teleport positions are authoritative in both directions", async () => {
+  const code = await pair("goku", "samurai");
+  for (const facing of [1, -1])
+    for (const button of ["j", "k", "l"]) {
+      const r = await seed(code, 200),
+        [f, v] = r.match!.fighters;
+      f.facing = facing;
+      f.x = 640;
+      v.x = 640 + 200 * facing;
+      v.facing = -facing;
+      f.y = 350;
+      f.vy = -1;
+      f.setState("air");
+      v.y = 340;
+      v.vy = -10;
+      v.setState("hitstun");
+      v.stun = 120;
+      v.combo = 3;
+      r.syncs = [];
+      app.rooms.sync(r.players[0]!.socketId, r.matchId);
+      await expect(a.locator("#app")).toHaveAttribute(
+        "data-net-match",
+        r.matchId,
+      );
+      await motion(a, [2, 5, 2], button, 30);
+      await expect
+        .poll(() => f.gokuAirTeleportsUsed, { intervals: [20] })
+        .toBe(1);
+      await expect
+        .poll(() => f.state === "air", { intervals: [20] })
+        .toBe(true);
+      expect(f.x).toBeGreaterThanOrEqual(40);
+      expect(f.x).toBeLessThanOrEqual(1240);
+      expect(f.y).toBeLessThan(580);
+      expect(Math.abs(f.x - v.x)).toBeGreaterThanOrEqual(52);
+      await capture(code, `goku-air-${button}-${facing}`);
+      await consistent();
+    }
+});
+
+test("Apache laboratory executes the full air chase with real sprite frames and no visual errors", async () => {
+  const errors: string[] = [];
+  a.on("pageerror", (e) => errors.push(e.message));
+  const epoch = new Date("2026-11-02T12:00:00Z");
+  await a.clock.install({ time: epoch });
+  await a.clock.pauseAt(new Date(epoch.getTime() + 60000));
+  await a.goto(local + "art/goku-specials.html");
+  const c = a.locator("#arena");
+  await expect(c).toHaveAttribute("data-loaded", "true");
+  await a.clock.runFor(34);
+  await a.uncheck("#repeat");
+  for (const mirror of [false, true]) {
+    if (mirror) await a.click("#flip");
+    for (const scene of [
+      "airTeleportLight",
+      "airTeleportBehind",
+      "airChaseCombo",
+    ]) {
+      await a.selectOption("#scenario", scene);
+      await a.click("#execute");
+      await a.clock.runFor(3400);
+      if (scene === "airChaseCombo")
+        await expect(c).toHaveAttribute("data-hit-count", "6");
+      await expect(c).toHaveAttribute("data-physics-state", "idle");
+    }
+  }
+  expect(errors).toEqual([]);
+  await expect(a.locator("#error")).toHaveText("");
+});
 
 for (const [left, right] of [
   ["samurai", "dio"],

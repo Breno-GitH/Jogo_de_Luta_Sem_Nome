@@ -1,0 +1,20 @@
+{
+  "root": { "x": 17, "y": -85 },
+  "radius": 3,
+  "maximumLength": 420,
+  "hand": {
+    "sheet": "luffy/fist.png",
+    "player2Sheet": "luffy/fist-p2.png",
+    "width": 19,
+    "height": 18,
+    "anchor": { "x": 3, "y": 9 }
+  },
+  "colors": {
+    "outline": "#171b25",
+    "shadow": "#bf6c48",
+    "base": "#e89b65",
+    "light": "#ffc489",
+    "highlight": "#ffdfac"
+  },
+  "combatEnabled": false
+}

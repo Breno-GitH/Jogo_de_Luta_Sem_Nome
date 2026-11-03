@@ -29,17 +29,7 @@ function setup(
   return m;
 }
 function command(m: Match, diag = true) {
-  const f = m.fighters[0],
-    pat = diag ? [2, 3, 6, 2, 3, 6] : [2, 6, 2, 6];
-  for (let i = 0; i < pat.length; i++)
-    m.step([
-      {
-        direction: (pat[i] === 3 || pat[i] === 6 ? f.facing : 0) as -1 | 0 | 1,
-        down: pat[i] === 2 || pat[i] === 3,
-        pressed: i === pat.length - 1 ? ["heavy"] : [],
-      },
-      neutral(),
-    ]);
+  m.step([{ ...neutral(), pressed: ["ultimate"] }, neutral()]);
 }
 function advance(m: Match, n: number, b = neutral()) {
   for (let i = 0; i < n; i++) m.step([neutral(), b]);
@@ -116,7 +106,7 @@ describe("Fúria Saiyajin: only a confirmed cinematic owns SSJ1", () => {
     },
   );
   it.each([false, true])(
-    "recognises double QCF relative to facing, left=%s",
+    "R activates independent of facing, left=%s",
     (left) => {
       for (const diagonals of [false, true]) {
         const m = setup("samurai", left);
@@ -127,7 +117,7 @@ describe("Fúria Saiyajin: only a confirmed cinematic owns SSJ1", () => {
       }
     },
   );
-  it("has priority over Ki heavy and consumes an unavailable Super instead of firing Ki", () => {
+  it("consumes an unavailable R without spending meter or firing Ki", () => {
     const m = setup();
     m.fighters[0].meter = c.cost - 1;
     command(m);
@@ -136,39 +126,19 @@ describe("Fúria Saiyajin: only a confirmed cinematic owns SSJ1", () => {
     expect(m.kiProjectiles).toEqual([]);
     expect(m.fighters[0].meter).toBe(c.cost - 1);
   });
-  it("does not accept one quarter circle, held directions, stale motion, post-button input or R", () => {
-    const b = new CommandBuffer();
-    let t = 0;
-    const push = (d: number, press = false) =>
-      b.push(
+  it("the former directional Super command now stays an ordinary Ki command", () => {
+    const m = setup();
+    for (const [i, d] of [2, 3, 6, 2, 3, 6].entries())
+      m.step([
         {
           direction: d === 3 || d === 6 ? 1 : 0,
           down: d === 2 || d === 3,
-          pressed: press ? ["heavy"] : [],
+          pressed: i === 5 ? ["heavy"] : [],
         },
-        t++,
-        1,
-      );
-    push(2);
-    push(3);
-    push(6, true);
-    expect(b.gokuSuper()).toBe(false);
-    b.clear();
-    push(2, true);
-    push(6);
-    push(2);
-    push(6);
-    expect(b.gokuSuper()).toBe(false);
-    b.clear();
-    push(2);
-    push(6);
-    for (let i = 0; i < 40; i++) push(6);
-    push(2);
-    push(6, true);
-    expect(b.gokuSuper()).toBe(false);
-    const m = setup();
-    m.step([{ ...neutral(), pressed: ["ultimate"] }, neutral()]);
-    expect(m.fighters[0].moveId).toBe("");
+        neutral(),
+      ]);
+    expect(m.fighters[0].moveId).toBe("ki_heavy");
+    expect(m.fighters[0].meter).toBe(c.cost);
   });
   it("charges one full bar more slowly, and cannot use it twice without recharging", () => {
     const m = setup();

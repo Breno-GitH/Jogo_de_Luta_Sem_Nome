@@ -29,7 +29,7 @@ export class KeyboardInput {
         !(e.target instanceof HTMLSelectElement)
       )
         e.preventDefault();
-      if (e.repeat) return;
+      if (e.repeat || this.held.has(e.code)) return;
       this.held.add(e.code);
       const b: Record<string, Button> = {
         KeyW: "jump",
@@ -255,7 +255,8 @@ export class CommandBuffer {
       tail[1].value === 5 &&
       tail[2].value === 2 &&
       tail[2].frame - tail[0].frame <= doubleDownTicks &&
-      tail[2].frame - tail[1].frame >= minimumDownGapTicks &&
+      (tail[2].serial ?? tail[2].frame) - (tail[1].serial ?? tail[1].frame) >=
+        minimumDownGapTicks &&
       action.frame - tail[2].frame <= finishTicks
     )
       return "teleport";
@@ -292,33 +293,6 @@ export class CommandBuffer {
   }
   consumeMotion() {
     this.directions = [];
-  }
-  /** Double quarter-circle, sampled at L's edge. Optional diagonals do not
-   * permit a single QCF, a held direction, or directions entered after L. */
-  gokuSuper(window = 36, finish = 6) {
-    const a = this.actions.find((a) => a.button === "heavy");
-    if (!a) return false;
-    const h = this.directions.filter(
-      (d) =>
-        d.value !== 5 &&
-        d.frame <= a.frame &&
-        a.frame - d.frame <= window &&
-        (d.serial ?? 0) <= (a.serial ?? this.serial),
-    );
-    return [
-      [2, 3, 6, 2, 3, 6],
-      [2, 6, 2, 6],
-      [2, 3, 6, 2, 6],
-      [2, 6, 2, 3, 6],
-    ].some((p) => {
-      const tail = h.slice(-p.length);
-      return (
-        tail.length === p.length &&
-        tail.every((d, i) => d.value === p[i]) &&
-        a.frame - tail.at(-1)!.frame <= finish &&
-        tail[0].frame < tail.at(-1)!.frame
-      );
-    });
   }
   clear() {
     this.actions = [];

@@ -17861,8 +17861,164 @@ function shapeHitsRect(shape, r) {
   return distance <= shape.r;
 }
 
+// src/data/combat-pace.json
+var combat_pace_default = {
+  mobility: {
+    samurai: { speed: 6.6, backSpeed: 5.8, airSpeed: 6.6, jumpStartup: 3, landingTicks: 4, dashScale: 1.12, chaseSpeed: 6.5, chaseTicks: 10 },
+    dio: { speed: 3.2, backSpeed: 2.6, airSpeed: 5, jumpStartup: 4, landingTicks: 5, dashScale: 1.16, chaseSpeed: 5.7, chaseTicks: 10 },
+    goku: { speed: 7.2, backSpeed: 6.1, airSpeed: 7.6, jumpStartup: 3, landingTicks: 4, dashScale: 1.1, chaseSpeed: 7.2, chaseTicks: 10 }
+  },
+  normals: {
+    samurai: { startupReduction: [1, 2, 2], recoveryReduction: [2, 3, 4] },
+    dio: { startupReduction: [1, 2, 3], recoveryReduction: [2, 3, 3] },
+    goku: { startupReduction: [0, 1, 1], recoveryReduction: [1, 2, 2] },
+    hitstop: [4, 6, 9],
+    stunBonus: [1, 2, 3],
+    pushScale: [0.95, 0.9, 0.8],
+    followAirLaunchVelocity: ["goku"]
+  },
+  cancel: { hitRecoveryTail: 2, blockTailTicks: 1, reverseBeatOnHit: true, gokuSuperLink: true, chaseSpacing: 64, chaseCatchTicks: 6, maximumChaseJumpSpeed: 30, chaseExitUpSpeed: 7 },
+  combo: { maxHits: 22, maxAirHits: 14, maxTicks: 480, damageStep: 0.075, minimumDamageScale: 0.2, pushGrowthAfter: 10, pushGrowth: 0.06, airExtensionStun: 4 },
+  airTeleport: {
+    maximumPerJumpOrCombo: 1,
+    minimumY: 180,
+    floorClearance: 72,
+    separation: 66,
+    chaseSeparation: 72,
+    chaseRange: 460,
+    light: { startup: 5, vanishTicks: 3, recovery: 6, distance: 130 },
+    medium: { startup: 6, vanishTicks: 4, recovery: 8, distance: 80 },
+    heavy: { startup: 5, vanishTicks: 3, recovery: 3, distance: 72 }
+  },
+  feedback: { lightSparkScale: 0.5, mediumSparkScale: 1, heavySparkScale: 1.5, heavyShakePixels: 3, heavyShakeTicks: 6, dashTrails: true }
+};
+
+// src/engine/pace.ts
+var cache = /* @__PURE__ */ new WeakMap();
+function animationTick(move, tick) {
+  const old = move.visualTiming;
+  if (!old) return tick;
+  if (tick < move.startup) return tick * old.startup / move.startup;
+  if (tick < move.startup + move.active)
+    return old.startup + (tick - move.startup) * old.active / move.active;
+  return old.startup + old.active + (tick - move.startup - move.active) * old.recovery / move.recovery;
+}
+function retime(move, startup, active, recovery) {
+  const out = {
+    ...move,
+    startup,
+    active,
+    recovery,
+    visualTiming: {
+      startup: move.startup,
+      active: move.active,
+      recovery: move.recovery
+    }
+  };
+  const tick = (t) => Math.round(
+    t < move.startup ? t * startup / move.startup : t < move.startup + move.active ? startup + (t - move.startup) * active / move.active : startup + active + (t - move.startup - move.active) * recovery / move.recovery
+  );
+  if (move.hitWindows)
+    out.hitWindows = move.hitWindows.map((w) => ({
+      ...w,
+      fromTick: tick(w.fromTick),
+      toTick: Math.max(tick(w.fromTick) + 1, tick(w.toTick))
+    }));
+  if (move.drive)
+    out.drive = {
+      ...move.drive,
+      from: tick(move.drive.from),
+      to: tick(move.drive.to)
+    };
+  if (move.hopAt !== void 0) out.hopAt = tick(move.hopAt);
+  if (move.invulnerable)
+    out.invulnerable = {
+      ...move.invulnerable,
+      from: tick(move.invulnerable.from),
+      to: tick(move.invulnerable.to)
+    };
+  return out;
+}
+function pacedCharacter(source) {
+  const cached = cache.get(source);
+  if (cached) return cached;
+  const id = source.id, mobility = combat_pace_default.mobility[id];
+  if (!mobility) return source;
+  const tuning = combat_pace_default.normals[id];
+  const moves = Object.fromEntries(
+    Object.entries(source.moves).map(([key, m]) => {
+      if (!/^(stand|crouch|air)_(light|medium|heavy)$/.test(key))
+        return [key, m];
+      const rank = Math.min(2, m.rank - 1), air = key.startsWith("air_");
+      const n = retime(
+        m,
+        Math.max(2, m.startup - tuning.startupReduction[rank]),
+        m.active,
+        Math.max(5, m.recovery - tuning.recoveryReduction[rank])
+      );
+      n.stun += combat_pace_default.normals.stunBonus[rank];
+      n.push *= combat_pace_default.normals.pushScale[rank];
+      n.hitstop = combat_pace_default.normals.hitstop[rank];
+      if (air && !n.knockdown && n.launch < 0 && combat_pace_default.normals.followAirLaunchVelocity.includes(id))
+        n.airHold = Math.min(n.airHold ?? 0, n.launch);
+      n.cancelWindow = {
+        fromTick: n.startup + 1,
+        toTick: n.startup + n.active + n.recovery - combat_pace_default.cancel.hitRecoveryTail
+      };
+      n.cancels = [
+        .../* @__PURE__ */ new Set([
+          ...m.cancels,
+          ...!air || id === "goku" && !m.knockdown ? ["special"] : []
+        ])
+      ];
+      n.cancelMoves = air ? ["air_medium", "air_heavy"] : ["stand_medium", "crouch_medium", "stand_heavy", "crouch_heavy"];
+      return [key, n];
+    })
+  );
+  const locomotion = source.locomotion;
+  const scale = (values) => values.map((v) => Math.round(v * mobility.dashScale * 100) / 100);
+  const result = {
+    ...source,
+    speed: mobility.speed,
+    moves,
+    combatLimits: combat_pace_default.combo,
+    airChaseSpeed: mobility.chaseSpeed,
+    airChaseTicks: mobility.chaseTicks,
+    locomotion: {
+      backSpeed: mobility.backSpeed,
+      airSpeed: mobility.airSpeed,
+      jumpStartup: mobility.jumpStartup,
+      landingTicks: mobility.landingTicks,
+      dashForward: scale(
+        locomotion?.dashForward ?? [
+          14,
+          16,
+          17,
+          17,
+          16,
+          15,
+          14,
+          13,
+          11,
+          8,
+          5,
+          2,
+          0
+        ]
+      ),
+      backdash: scale(
+        locomotion?.backdash ?? [11, 13, 14, 14, 13, 12, 11, 10, 8, 6, 4, 2, 0]
+      )
+    }
+  };
+  cache.set(source, result);
+  cache.set(result, result);
+  return result;
+}
+
 // src/engine/moves.ts
 function poseAt(move, tick) {
+  tick = animationTick(move, tick);
   let time = 0;
   for (const pose of move.poses ?? []) {
     time += pose.ticks;
@@ -18106,7 +18262,7 @@ var CombatStand = class {
       if (owner.state !== "attack" || owner.moveId !== s.moveId) {
         this.cancel(owner);
       } else {
-        const t = owner.stateFrame, move = s.timeline;
+        const t = owner.move ? animationTick(owner.move, owner.stateFrame) : owner.stateFrame, move = s.timeline;
         if ((owner.move?.special === "rush" || owner.move?.super) && owner.opponent) {
           const centers = this.data.actions[move.clip].poses.flatMap(
             (p) => (p.hitboxes ?? []).map((shape) => {
@@ -18216,10 +18372,11 @@ var CombatStand = class {
     ))
       return [];
     if (this.s.clip !== this.s.timeline.clip) return [];
-    if (owner.stateFrame < this.s.timeline.punchAt) return [];
+    const tick = owner.move ? animationTick(owner.move, owner.stateFrame) : owner.stateFrame;
+    if (tick < this.s.timeline.punchAt) return [];
     const pose = poseAt(
       { poses: definition.poses },
-      owner.stateFrame - this.s.timeline.punchAt
+      tick - this.s.timeline.punchAt
     );
     const t = this.transform;
     return (pose?.hitboxes ?? []).map(
@@ -18495,14 +18652,18 @@ function gokuInvisible(f) {
   return f.data.id === "goku" && f.state === "attack" && f.move?.special === "teleport" && f.stateFrame >= f.move.startup && f.stateFrame < f.move.startup + f.move.active;
 }
 function canCancelGokuSpecial(f) {
-  const w = f.move?.cancelWindow;
-  return f.state === "attack" && !f.airborne && f.connected && !f.move?.special && !f.move?.super && !!w && f.stateFrame >= w.fromTick && f.stateFrame < w.toTick;
+  return !f.move?.special && !f.move?.super && f.canCancel("special");
+}
+function validAirChase(f) {
+  const o = f.opponent;
+  return !!o && o.health > 0 && o.airborne && o.state === "hitstun" && o.combo > 0 && !o.knockedDown && Math.abs(o.x - f.x) <= combat_pace_default.airTeleport.chaseRange;
 }
 function canStartGokuSpecial(f, id) {
   const move = f.data.specialMoves?.[id];
   if (!move || !f.match) return false;
-  const airAllowed = move.special === "teleport" && move.gokuStrength === "heavy";
+  const airAllowed = move.airTeleport === true;
   if (f.airborne && !airAllowed) return false;
+  if (!f.airborne && airAllowed) return false;
   const free = [
     "idle",
     "walk",
@@ -18512,7 +18673,7 @@ function canStartGokuSpecial(f, id) {
     ...airAllowed ? ["air"] : []
   ].includes(f.state);
   if (move.special === "teleport")
-    return free && f.gokuTeleportLock === 0 && (!airAllowed || !f.gokuAirTeleportUsed);
+    return (free || airAllowed && f.hitConfirmed && canCancelGokuSpecial(f)) && (airAllowed || f.gokuTeleportLock === 0) && (!airAllowed || f.gokuAirTeleportsUsed < combat_pace_default.airTeleport.maximumPerJumpOrCombo && (move.gokuStrength !== "heavy" || validAirChase(f)));
   if (!free && !canCancelGokuSpecial(f)) return false;
   if (move.projectile && f.match.kiProjectiles.filter(
     (p) => p.owner === f.id && p.state === "flight"
@@ -18523,6 +18684,29 @@ function canStartGokuSpecial(f, id) {
 var clamp = (x) => Math.max(40, Math.min(1240, x));
 function teleportDestination(f) {
   const strength = f.move?.gokuStrength ?? "light", c = goku_specials_default.teleport[strength], other = f.opponent;
+  if (f.move?.airTeleport) {
+    const cfg = combat_pace_default.airTeleport;
+    if (strength === "heavy" && !validAirChase(f)) return;
+    let x2 = f.x + f.facing * cfg[strength].distance;
+    let y2 = f.y;
+    if (strength === "medium" && Math.abs(other.x - f.x) <= goku_specials_default.teleport.medium.targetRange) {
+      x2 = other.x + f.facing * cfg.medium.distance;
+      if (other.airborne) y2 = other.y;
+    }
+    if (strength === "heavy") {
+      x2 = other.x - f.facing * cfg.chaseSeparation;
+      y2 = other.y - 6;
+    }
+    y2 = Math.max(cfg.minimumY, Math.min(580 - cfg.floorClearance, y2));
+    x2 = clamp(x2);
+    if (Math.abs(y2 - other.y) < 100 && Math.abs(x2 - other.x) < cfg.separation) {
+      let side = x2 < other.x ? -1 : 1;
+      if (other.x + side * cfg.separation < 40 || other.x + side * cfg.separation > 1240)
+        side *= -1;
+      x2 = clamp(other.x + side * cfg.separation);
+    }
+    return { x: x2, y: y2 };
+  }
   let x = f.x + f.facing * c.distance, y = f.y;
   if (strength === "medium") {
     const medium = goku_specials_default.teleport.medium, behind = other.x + f.facing * medium.distance;
@@ -18548,13 +18732,18 @@ function tickGokuMove(f) {
   if (f.data.id !== "goku" || f.state !== "attack" || f.move?.special !== "teleport")
     return;
   const move = f.move;
+  if (move.airTeleport && f.stateFrame < move.startup + move.active) {
+    f.vx = 0;
+    f.vy = 0;
+  }
   if (f.stateFrame === move.startup + move.active) {
     const destination = teleportDestination(f);
+    if (!destination) return;
     f.x = destination.x;
     f.y = destination.y;
     f.vx = 0;
     f.airChaseTicks = 0;
-    f.vy = move.gokuStrength === "heavy" ? -3 : 0;
+    f.vy = move.airTeleport ? move.gokuStrength === "heavy" ? f.opponent.vy : -1 : move.gokuStrength === "heavy" ? -3 : 0;
     f.facing = f.opponent.x >= f.x ? 1 : -1;
   }
 }
@@ -18758,7 +18947,7 @@ var goku_fury_default = {
   meterMaximum: 100,
   cost: 100,
   meterGainScale: 0.35,
-  command: { motionTicks: 36, finishTicks: 6 },
+  command: { button: "ultimate", key: "R" },
   startup: 106,
   active: 5,
   recovery: 58,
@@ -19265,7 +19454,7 @@ var CommandBuffer = class {
       (d) => d.frame <= action.frame && action.frame - d.frame <= Math.max(motionTicks, doubleDownTicks) && (d.serial ?? 0) <= (action.serial ?? this.serial)
     );
     const tail = history.slice(-3);
-    if (tail.length === 3 && tail[0].value === 2 && tail[1].value === 5 && tail[2].value === 2 && tail[2].frame - tail[0].frame <= doubleDownTicks && tail[2].frame - tail[1].frame >= minimumDownGapTicks && action.frame - tail[2].frame <= finishTicks)
+    if (tail.length === 3 && tail[0].value === 2 && tail[1].value === 5 && tail[2].value === 2 && tail[2].frame - tail[0].frame <= doubleDownTicks && (tail[2].serial ?? tail[2].frame) - (tail[1].serial ?? tail[1].frame) >= minimumDownGapTicks && action.frame - tail[2].frame <= finishTicks)
       return "teleport";
     const directions = history.filter(
       (d) => d.value !== 5 && action.frame - d.frame <= motionTicks
@@ -19295,24 +19484,6 @@ var CommandBuffer = class {
   }
   consumeMotion() {
     this.directions = [];
-  }
-  /** Double quarter-circle, sampled at L's edge. Optional diagonals do not
-   * permit a single QCF, a held direction, or directions entered after L. */
-  gokuSuper(window2 = 36, finish = 6) {
-    const a = this.actions.find((a2) => a2.button === "heavy");
-    if (!a) return false;
-    const h = this.directions.filter(
-      (d) => d.value !== 5 && d.frame <= a.frame && a.frame - d.frame <= window2 && (d.serial ?? 0) <= (a.serial ?? this.serial)
-    );
-    return [
-      [2, 3, 6, 2, 3, 6],
-      [2, 6, 2, 6],
-      [2, 3, 6, 2, 6],
-      [2, 6, 2, 3, 6]
-    ].some((p) => {
-      const tail = h.slice(-p.length);
-      return tail.length === p.length && tail.every((d, i) => d.value === p[i]) && a.frame - tail.at(-1).frame <= finish && tail[0].frame < tail.at(-1).frame;
-    });
   }
   clear() {
     this.actions = [];
@@ -19464,7 +19635,7 @@ function reactionBoxes(f) {
 }
 
 // src/engine/combat.ts
-var character = samurai_default;
+var character = pacedCharacter(samurai_default);
 var FLOOR = 580;
 var Fighter = class {
   constructor(data, id, x) {
@@ -19498,6 +19669,8 @@ var Fighter = class {
   stun = 0;
   moveId = "";
   connected = false;
+  hitConfirmed = false;
+  reverseBeatUsed = false;
   hitIds = [];
   comboAge = 0;
   comboAirHits = 0;
@@ -19508,6 +19681,7 @@ var Fighter = class {
   airChaseTicks = 0;
   gokuTeleportLock = 0;
   gokuAirTeleportUsed = false;
+  gokuAirTeleportsUsed = 0;
   gokuCastSerial = 0;
   homeX;
   guardIntent = false;
@@ -19535,7 +19709,7 @@ var Fighter = class {
   }
   canSpecialCancel() {
     if (this.data.id === "goku") return canCancelGokuSpecial(this);
-    return this.state === "attack" && !this.airborne && this.connected && !this.move?.special && !this.move?.super && this.stateFrame > (this.move?.startup ?? 0) && this.stateFrame < (this.move?.startup ?? 0) + (this.move?.active ?? 0);
+    return !this.airborne && !this.move?.special && !this.move?.super && this.canCancel("special");
   }
   canStartSpecial(id) {
     if (this.data.id === "goku") return canStartGokuSpecial(this, id);
@@ -19574,6 +19748,12 @@ var Fighter = class {
     return this.canSpecialCancel();
   }
   canStartSuper() {
+    if (this.data.id === "samurai") {
+      const m = this.data.moves.ultimate_start;
+      return !!m && this.meter >= (m.cost ?? 100) && !this.airborne && !this.match?.capture && !this.match?.roadRoller && !this.match?.fury && (["idle", "walk", "crouch", "dash", "landing", "jumpStart"].includes(
+        this.state
+      ) || this.canSuperCancel());
+    }
     if (this.data.id === "goku") return canStartFury(this);
     return !!this.data.superMoves?.road_roller && this.meter >= road_roller_default.cost && !this.airborne && !this.match?.roadRoller && !this.match?.fury && !this.match?.capture && (["idle", "walk", "crouch", "dash", "landing", "jumpStart"].includes(
       this.state
@@ -19623,10 +19803,13 @@ var Fighter = class {
   }
   canCancel(name) {
     const window2 = this.move?.cancelWindow;
-    return this.state === "attack" && this.connected && !!this.move?.cancels.includes(name) && (!window2 || this.stateFrame >= window2.fromTick && this.stateFrame <= window2.toTick);
+    const reverse = name === "light" && combat_pace_default.cancel.reverseBeatOnHit && this.hitConfirmed && !this.reverseBeatUsed && !this.airborne && this.move?.rank === 2 && !this.move?.special;
+    if (!this.hitConfirmed && (name === "jump" || name === "special" && (this.move?.rank ?? 0) >= 3))
+      return false;
+    return this.state === "attack" && this.connected && (!!this.move?.cancels.includes(name) || reverse) && (this.hitConfirmed || this.stateFrame <= (this.move?.startup ?? 0) + (this.move?.active ?? 0) + combat_pace_default.cancel.blockTailTicks) && (!window2 || this.stateFrame >= window2.fromTick && this.stateFrame <= window2.toTick);
   }
   canCancelMove(id) {
-    return this.canCancel(id.split("_").at(-1)) && (!this.move?.cancelMoves || this.move.cancelMoves.includes(id));
+    return this.canCancel(id.split("_").at(-1)) && (id.endsWith("_light") || !this.move?.cancelMoves || this.move.cancelMoves.includes(id));
   }
   pushbox() {
     return { x: this.x - 26, y: this.y - 90, w: 52, h: 90 };
@@ -19663,18 +19846,23 @@ var Fighter = class {
     if (s !== "attack") {
       this.moveId = "";
       this.connected = false;
+      this.hitConfirmed = false;
       this.hitIds = [];
     }
   }
   attack(id) {
     const m = this.data.moves[id] ?? this.data.specialMoves?.[id] ?? this.data.superMoves?.[id];
     if (!m || this.meter < (m.cost ?? 0)) return false;
+    if (m.kind === "ultimate" && !this.canStartSuper()) return false;
     if (m.super && !this.canStartSuper()) return false;
     if (m.special && !this.canStartSpecial(id)) return false;
     const chain = !!m.stand && (this.canCancelMove(id) || m.super && this.canSuperCancel() || m.special && this.canSpecialCancel() || this.stand?.s.mode === "link");
     if (m.stand && (!this.stand?.canBegin(chain) || ["hitstun", "blockstun", "ko", "grabbed", "getup"].includes(this.state)))
       return false;
     if (m.stand && this.state === "attack" && !chain) return false;
+    if (this.state === "attack" && this.move?.rank === 2 && id.endsWith("_light"))
+      this.reverseBeatUsed = true;
+    const superLink = m.kind === "gokuFury" && combat_pace_default.cancel.gokuSuperLink && this.canSuperCancel() && this.hitConfirmed && this.opponent?.state === "hitstun";
     this.meter -= m.cost ?? 0;
     this.setState("attack", chain);
     this.moveId = id;
@@ -19683,22 +19871,34 @@ var Fighter = class {
       this.airChaseTicks = 0;
       if (m.special === "teleport") {
         this.gokuTeleportLock = goku_specials_default.teleport[m.gokuStrength].lockTicks;
-        if (m.gokuStrength === "heavy") this.gokuAirTeleportUsed = true;
+        if (m.airTeleport || m.gokuStrength === "heavy") {
+          this.gokuAirTeleportUsed = true;
+          this.gokuAirTeleportsUsed++;
+        }
       }
     }
     this.connected = false;
+    this.hitConfirmed = false;
     this.hitIds = [];
     if (!this.airChaseTicks) this.vx = 0;
     if (m.stand) this.stand?.begin(id, m.stand, this, this.opponent?.x, chain);
+    if (superLink && this.opponent) {
+      this.opponent.stun = Math.max(this.opponent.stun, m.startup + 4);
+      this.opponent.vx = 0;
+    }
     return true;
   }
   tick(input, frame, opponent) {
     if (this.data.id === "goku") {
       this.gokuTeleportLock = Math.max(0, this.gokuTeleportLock - 1);
-      if (!this.airborne && this.state !== "attack")
+      if (!this.airborne && ["idle", "walk", "crouch"].includes(this.state) && !opponent.combo) {
         this.gokuAirTeleportUsed = false;
+        this.gokuAirTeleportsUsed = 0;
+      }
     }
     this.input = input;
+    if (!opponent.combo && this.state !== "attack")
+      this.reverseBeatUsed = false;
     this.buffer.push(input, frame, this.facing);
     this.stateFrame++;
     if (this.combo > 0) this.comboAge++;
@@ -19763,19 +19963,20 @@ var Fighter = class {
       if (free && this.state !== "dash" && !this.airborne)
         this.facing = opponent.x >= this.x ? 1 : -1;
       const canCancel = (name) => this.canCancel(name);
-      const superRequested = this.data.id === "dio" && !!this.data.superMoves && !this.airborne && this.buffer.actions.some((action) => action.button === "ultimate");
-      if (superRequested && (this.meter < road_roller_default.cost || this.canStartSuper())) {
-        if (this.canStartSuper()) this.attack("road_roller");
-        this.buffer.consume("ultimate");
-        return;
-      }
-      if (this.data.id === "goku" && this.buffer.gokuSuper(
-        goku_fury_default.command.motionTicks,
-        goku_fury_default.command.finishTicks
-      )) {
-        if (this.canStartSuper()) this.attack("ssj1_fury");
-        this.buffer.consumeSpecial("heavy");
-        return;
+      const superRequested = this.buffer.actions.some(
+        (action) => action.button === "ultimate"
+      );
+      if (superRequested) {
+        const id = this.data.id === "goku" ? "ssj1_fury" : this.data.id === "dio" ? "road_roller" : "ultimate_start";
+        const move = this.data.moves[id] ?? this.data.superMoves?.[id];
+        if (this.canStartSuper()) {
+          this.attack(id);
+          this.buffer.consume("ultimate");
+          this.buffer.consumeMotion();
+          return;
+        }
+        if (!move || this.meter < (move.cost ?? 100))
+          this.buffer.consume("ultimate");
       }
       if (this.data.id === "goku" && this.data.specialMoves) {
         for (const button of ["heavy", "medium", "light"]) {
@@ -19787,7 +19988,7 @@ var Fighter = class {
             c.minimumDownGapTicks
           );
           if (!special) continue;
-          const id = special === "teleport" && button === "heavy" && this.airborne ? "teleport_air" : `${special}_${button}`;
+          const id = special === "teleport" && this.airborne ? button === "heavy" ? "teleport_air" : `teleport_air_${button}` : `${special}_${button}`;
           if (this.canStartSpecial(id)) {
             this.attack(id);
             this.buffer.consumeSpecial(button);
@@ -19799,7 +20000,7 @@ var Fighter = class {
           }
         }
       }
-      if (this.data.id === "dio" && this.data.specialMoves && !this.airborne && !superRequested) {
+      if (this.data.id === "dio" && this.data.specialMoves && !this.airborne) {
         for (const button of ["heavy", "medium", "light"]) {
           const special = this.buffer.dioSpecial(
             button,
@@ -19815,11 +20016,6 @@ var Fighter = class {
           }
         }
       }
-      if (!this.airborne && (free || canCancel("special")) && this.buffer.consume("ultimate") && this.meter >= 100 && this.data.moves.ultimate_start) {
-        this.attack("ultimate_start");
-        this.buffer.consumeMotion();
-        return;
-      }
       if (free && !this.airborne && this.state !== "attack" && this.buffer.consume("taunt") && (this.data.id === "samurai" || !!this.data.lifecycle)) {
         this.vx = 0;
         this.setState("taunt");
@@ -19827,7 +20023,13 @@ var Fighter = class {
       }
       if ((free || canCancel("jump")) && this.state !== "jumpStart" && !this.airborne && this.buffer.consume("jump")) {
         if (canCancel("jump")) {
-          this.vy = this.data.jump;
+          this.vy = Math.min(
+            this.data.jump,
+            Math.max(
+              -combat_pace_default.cancel.maximumChaseJumpSpeed,
+              opponent.vy + (opponent.y - this.y) / combat_pace_default.cancel.chaseCatchTicks
+            )
+          );
           this.airChaseTicks = this.data.airChaseTicks ?? 8;
           if (this.stand) {
             this.stand.holdCombo(this);
@@ -19841,7 +20043,6 @@ var Fighter = class {
       }
       if (free || this.state === "attack") {
         for (const b of ["throw", "light", "medium", "heavy"]) {
-          if (b === "heavy" && superRequested) continue;
           if (this.data.id === "dio" && this.data.specialMoves && !this.airborne && this.buffer.dioSpecial(b))
             continue;
           if (this.data.id === "goku" && this.data.specialMoves && this.buffer.gokuSpecial(
@@ -19857,7 +20058,7 @@ var Fighter = class {
           if (b === "throw" && this.airborne) continue;
           const candidate = special ? `${special}_${b}` : b === "throw" ? "throw" : `${this.airborne ? "air" : input.down ? "crouch" : "stand"}_${b}`;
           const candidateMove = this.data.moves[candidate];
-          if (this.state === "attack" && this.move?.cancelMoves && !special && !this.move.cancelMoves.includes(candidate))
+          if (this.state === "attack" && this.move?.cancelMoves && !special && !candidate.endsWith("_light") && !this.move.cancelMoves.includes(candidate))
             continue;
           if (!special && !candidateMove) continue;
           if (candidateMove?.stand && !this.stand?.canBegin(canCancel(b) || this.stand?.s.mode === "link"))
@@ -19906,13 +20107,19 @@ var Fighter = class {
     }
     if (this.airChaseTicks > 0) {
       if (this.airborne && (this.state === "air" || this.state === "attack")) {
-        this.vx = this.facing * (this.data.airChaseSpeed ?? this.data.speed);
-        if (--this.airChaseTicks === 0) this.vx = 0;
+        const speed = this.data.airChaseSpeed ?? this.data.speed;
+        const gap = (opponent.x - this.x) * this.facing - combat_pace_default.cancel.chaseSpacing;
+        this.vx = this.facing * Math.max(-speed, Math.min(speed, gap));
+        if (--this.airChaseTicks === 0) {
+          this.vx = 0;
+          if (this.vy < this.data.jump)
+            this.vy = -combat_pace_default.cancel.chaseExitUpSpeed;
+        }
       } else this.airChaseTicks = 0;
     }
     tickGokuMove(this);
     const wasAirborne = this.airborne;
-    if (wasAirborne) {
+    if (wasAirborne && !(this.state === "attack" && this.move?.airTeleport && this.stateFrame < this.move.startup + this.move.active)) {
       this.vy += this.data.gravity;
     }
     this.x = Math.max(40, Math.min(1240, this.x + this.vx));
@@ -20156,7 +20363,12 @@ var Match = class {
       target.state
     ) && (!["knives", "ki", "kamehameha"].includes(m.special ?? "") || direction === -target.facing);
     const blocked = guarding && m.level !== "throw" && (m.level !== "low" || target.input.down) && (m.level !== "high" || !target.input.down);
-    let damage = blocked ? 0 : Math.round(m.damage * Math.max(0.35, 1 - target.combo * 0.1));
+    let damage = blocked ? 0 : Math.round(
+      m.damage * Math.max(
+        combat_pace_default.combo.minimumDamageScale,
+        1 - target.combo * combat_pace_default.combo.damageStep
+      )
+    );
     if (frozen && !blocked && !m.super) {
       damage = this.temporal.budget(damage);
       if (!damage) return;
@@ -20169,7 +20381,7 @@ var Match = class {
     const reaction = {
       blocked,
       stun: blocked ? m.blockstun : m.stun,
-      vx: direction * m.push,
+      vx: direction * m.push * (blocked ? 1 : 1 + Math.max(0, target.combo - combat_pace_default.combo.pushGrowthAfter) * combat_pace_default.combo.pushGrowth),
       vy: blocked ? 0 : m.launch,
       knockdown: !blocked && !!m.knockdown,
       strength: m.damage <= 50 ? 1 : m.damage <= 90 ? 2 : 3,
@@ -20177,9 +20389,12 @@ var Match = class {
       crouched: target.crouching
     };
     if (!blocked) {
+      if (f.state === "attack" && f.moveId === moveId) f.hitConfirmed = true;
       if (!target.combo) target.comboAge = target.comboAirHits = 0;
       target.combo++;
       if (target.airborne || m.launch < 0) target.comboAirHits++;
+      if (target.airborne && !m.knockdown && !m.super)
+        reaction.stun += combat_pace_default.combo.airExtensionStun;
       const limit = f.data.combatLimits;
       if (limit && (target.combo >= (m.comboHitLimit ?? limit.maxHits) || target.comboAirHits >= limit.maxAirHits || target.comboAge >= limit.maxTicks)) {
         reaction.knockdown = true;
@@ -20197,6 +20412,7 @@ var Match = class {
       this.hitstop,
       blocked ? Math.max(3, Math.floor((m.hitstop ?? 8) * 0.6)) : m.hitstop ?? 8
     );
+    const eventCount = this.events.length;
     this.effect(
       blocked ? "guard" : m.kind === "draw" ? "draw" : m.kind === "crescent" ? "crescent" : "hit",
       impact ? impact.x + impact.w / 2 : target.x,
@@ -20204,6 +20420,11 @@ var Match = class {
       16,
       blocked
     );
+    const event = this.events[eventCount];
+    if (event) {
+      event.strength = m.super || m.kind === "ultimate" || m.rank === 3 || m.knockdown || m.damage >= 90 ? 3 : m.rank === 2 || m.damage >= 55 ? 2 : 1;
+      event.total = event.life = event.strength === 1 ? 10 : event.strength === 2 ? 13 : 16;
+    }
     if (m.kind === "ultimate" && !blocked)
       this.beginCapture("ultimate", f, target);
     if (m.kind === "roadRoller" && !blocked) this.beginRoadRoller(f, target);
@@ -125001,12 +125222,26 @@ var furyMove = {
 };
 
 // src/engine/goku-data.ts
+var airTeleports = Object.fromEntries(
+  ["light", "medium", "heavy"].map((strength) => {
+    const c = combat_pace_default.airTeleport[strength], source = goku_special_moves_default.teleport_air;
+    return [
+      strength === "heavy" ? "teleport_air" : `teleport_air_${strength}`,
+      {
+        ...retime(source, c.startup, c.vanishTicks, c.recovery),
+        gokuStrength: strength,
+        airTeleport: true,
+        commandClip: "teleport_air"
+      }
+    ];
+  })
+);
 var secondary = goku_combat_default;
 var goku = {
   ...goku_default,
   ...secondary,
   moves: goku_normals_default,
-  specialMoves: goku_special_moves_default,
+  specialMoves: { ...goku_special_moves_default, ...airTeleports },
   superMoves: { ssj1_fury: furyMove },
   meterMaximum: goku_fury_default.meterMaximum,
   meterGainScale: goku_fury_default.meterGainScale,
@@ -238994,9 +239229,9 @@ var the_world_secondary_default = {
 
 // src/engine/characters.ts
 var characters = {
-  samurai: samurai_default,
-  goku,
-  dio: {
+  samurai: pacedCharacter(samurai_default),
+  goku: pacedCharacter(goku),
+  dio: pacedCharacter({
     ...dio_default,
     ...dio_secondary_default,
     specialMoves: dio_special_moves_default,
@@ -239011,7 +239246,7 @@ var characters = {
         ...the_world_secondary_default
       }
     }
-  }
+  })
 };
 
 // src/engine/state.ts
@@ -239028,6 +239263,8 @@ var fighterKeys = [
   "stun",
   "moveId",
   "connected",
+  "hitConfirmed",
+  "reverseBeatUsed",
   "hitIds",
   "comboAge",
   "comboAirHits",
@@ -239038,6 +239275,7 @@ var fighterKeys = [
   "airChaseTicks",
   "gokuTeleportLock",
   "gokuAirTeleportUsed",
+  "gokuAirTeleportsUsed",
   "gokuCastSerial",
   "homeX",
   "guardIntent",
