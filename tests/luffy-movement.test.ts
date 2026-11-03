@@ -1,0 +1,213 @@
+import { describe, expect, it } from "vitest";
+import animation from "../src/data/luffy-animations.json";
+import { characters } from "../src/engine/characters";
+import { FLOOR, Match } from "../src/engine/combat";
+import { hashState, restore, snapshot } from "../src/engine/state";
+import { neutral, type InputFrame } from "../src/engine/types";
+import { Animator, type AnimationData } from "../src/render/animator";
+import { FighterPresentation } from "../src/render/presentation";
+
+const celCounts = {
+  idle: 6,
+  walkForward: 6,
+  walkBack: 6,
+  dashForward: 5,
+  backdash: 5,
+  crouchStart: 2,
+  crouchIdle: 2,
+  crouchEnd: 2,
+  jumpStart: 3,
+  jumpRise: 2,
+  jumpApex: 1,
+  jumpFall: 2,
+  landing: 3,
+} as const;
+
+type Clip = keyof typeof celCounts;
+type Facing = -1 | 1;
+const clips = (animation as AnimationData).clips;
+
+function movementFixture(facing: Facing) {
+  const match = new Match(
+    characters.luffy,
+    { training: true },
+    characters.samurai,
+  );
+  match.phase = "fight";
+  const [luffy, partner] = match.fighters;
+  luffy.x = facing === 1 ? 550 : 730;
+  partner.x = facing === 1 ? 1210 : 70;
+  luffy.facing = facing;
+  partner.facing = facing === 1 ? -1 : 1;
+  const presentation = new FighterPresentation(animation);
+  const { animator } = presentation;
+
+  function step(input: Partial<InputFrame> = {}) {
+    match.step([{ ...neutral(), ...input }, neutral()]);
+    presentation.tick(luffy);
+    expect(luffy.facing).toBe(facing);
+    return animator.clipName;
+  }
+  return { match, luffy, animator, step };
+}
+
+describe("Luffy locomotion clips", () => {
+  it("clamps travel at the arena and updates the walk after a side change", () => {
+    const match = new Match(characters.luffy, { training: true }, characters.samurai);
+    match.phase = "fight";
+    const [luffy, rival] = match.fighters;
+    const presentation = new FighterPresentation(animation);
+    const advance = (direction: -1 | 1, ticks: number) => {
+      for (let i = 0; i < ticks; i++) {
+        match.step([{ ...neutral(), direction }, neutral()]);
+        presentation.tick(luffy);
+      }
+    };
+    advance(-1, 400);
+    const left = luffy.x;
+    advance(-1, 20);
+    expect(luffy.x).toBe(left);
+    expect(luffy.facing).toBe(1);
+    expect(presentation.animator.clipName).toBe("walkBack");
+    luffy.x = rival.x + 100;
+    advance(1, 400);
+    const right = luffy.x;
+    advance(1, 20);
+    expect(luffy.x).toBe(right);
+    expect(right).toBeGreaterThan(left);
+    expect(luffy.facing).toBe(-1);
+    expect(presentation.animator.clipName).toBe("walkBack");
+    advance(-1, 1);
+    expect(presentation.animator.clipName).toBe("walkForward");
+  });
+
+  it("packs the 45 authored drawings in order with a shared cell and pivot", () => {
+    const animator = new Animator(animation);
+    let index = 0;
+    for (const [name, count] of Object.entries(celCounts)) {
+      expect(clips[name].frames).toHaveLength(count);
+      animator.update(name);
+      for (let cel = 0; cel < count; cel++, index++) {
+        animator.seekFrame(cel);
+        expect(animator.frame()).toBe(index);
+        expect(animator.sprite()).toMatchObject({
+          sheet: "luffy/movement-polished.png",
+          x: (index % 8) * 256,
+          y: Math.floor(index / 8) * 256,
+          width: 256,
+          height: 256,
+          pivot: { x: 128, y: 224 },
+          scale: 1,
+        });
+      }
+    }
+    expect(index).toBe(45);
+  });
+
+  it.each([-1, 1] as const)("loops idle and both walks facing %s", (facing) => {
+    const { luffy, animator, step } = movementFixture(facing);
+    for (const clip of ["idle", "walkForward", "walkBack"] as const) {
+      const direction: InputFrame["direction"] =
+        clip === "idle"
+          ? 0
+          : clip === "walkForward"
+            ? facing
+            : facing === 1
+              ? -1
+              : 1;
+      const startX = luffy.x;
+      const seen = new Set<number>();
+      const duration = clips[clip].frames.reduce(
+        (sum, _, i) => sum + (clips[clip].durations?.[i] ?? clips[clip].ticks),
+        0,
+      );
+      const first = step({ direction });
+      expect(first).toBe(clip);
+      const firstCel = animator.frame();
+      seen.add(firstCel);
+      for (let tick = 1; tick <= duration; tick++) {
+        expect(step({ direction })).toBe(clip);
+        expect(luffy.y).toBe(FLOOR);
+        seen.add(animator.frame());
+      }
+      expect(animator.frame()).toBe(firstCel);
+      expect(seen).toEqual(new Set(clips[clip].frames));
+      if (direction) expect((luffy.x - startX) * direction).toBeGreaterThan(0);
+      else expect(luffy.x).toBe(startX);
+    }
+    expect(step()).toBe("idle");
+  });
+
+  it.each([-1, 1] as const)(
+    "runs both dashes and all crouch phases facing %s",
+    (facing) => {
+      const { luffy, animator, step } = movementFixture(facing);
+      for (const clip of ["dashForward", "backdash"] as const) {
+        const direction =
+          clip === "dashForward" ? facing : facing === 1 ? -1 : 1;
+        const start = luffy.x;
+        expect(step({ direction, pressed: ["dash"] })).toBe(clip);
+        const seen = new Set([animator.frame()]);
+        for (let tick = 0; tick < 25 && animator.clipName === clip; tick++) {
+          expect(luffy.y).toBe(FLOOR);
+          if (step() === clip) seen.add(animator.frame());
+        }
+        expect(seen).toEqual(new Set(clips[clip].frames));
+        expect(animator.clipName).toBe("idle");
+        expect((luffy.x - start) * direction).toBeGreaterThan(0);
+      }
+
+      const observed = new Map<string, Set<number>>();
+      const crouchX = luffy.x;
+      for (let i = 0; i < 60; i++) {
+        const clip = step({ down: i < 30 });
+        if (!observed.has(clip)) observed.set(clip, new Set());
+        observed.get(clip)!.add(animator.frame());
+        expect(luffy.y).toBe(FLOOR);
+        expect(luffy.x).toBe(crouchX);
+      }
+      for (const clip of ["crouchStart", "crouchIdle", "crouchEnd"] as const)
+        expect(observed.get(clip)).toEqual(new Set(clips[clip].frames));
+      expect(animator.clipName).toBe("idle");
+    },
+  );
+
+  it.each([-1, 1] as const)(
+    "selects every jump cel with a deterministic checkpoint facing %s",
+    (facing) => {
+      for (const relative of [-1, 0, 1] as const) {
+        const { match, luffy, animator, step } = movementFixture(facing);
+        const direction = (relative * facing) as InputFrame["direction"];
+        const start = luffy.x;
+        expect(step({ direction, pressed: ["jump"] })).toBe("jumpStart");
+        const replay = restore(snapshot(match));
+        const observed = new Map<string, Set<number>>([
+          ["jumpStart", new Set([animator.frame()])],
+        ]);
+
+        for (let tick = 0; tick < 75; tick++) {
+          const clip = step({ direction: luffy.airborne ? direction : 0 });
+          replay.step([luffy.input, neutral()]);
+          expect(hashState(snapshot(replay))).toBe(hashState(snapshot(match)));
+          if (!observed.has(clip)) observed.set(clip, new Set());
+          observed.get(clip)!.add(animator.frame());
+          if (clip === "jumpStart" || clip === "landing")
+            expect(luffy.y).toBe(FLOOR);
+          if (clip === "jumpRise" || clip === "jumpApex" || clip === "jumpFall")
+            expect(luffy.y).toBeLessThan(FLOOR);
+        }
+        for (const clip of [
+          "jumpStart",
+          "jumpRise",
+          "jumpApex",
+          "jumpFall",
+          "landing",
+        ] as Clip[])
+          expect(observed.get(clip)).toEqual(new Set(clips[clip].frames));
+        expect(animator.clipName).toBe("idle");
+        if (direction) expect((luffy.x - start) * direction).toBeGreaterThan(0);
+        else expect(luffy.x).toBe(start);
+      }
+    },
+  );
+});

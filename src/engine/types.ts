@@ -69,7 +69,7 @@ export interface Move {
   visualTiming?: { startup: number; active: number; recovery: number };
   airTeleport?: boolean;
   super?: boolean;
-  special?: "knives" | "rush" | "timeStop" | "ki" | "kamehameha" | "teleport";
+  special?: "knives" | "rush" | "timeStop" | "ki" | "kamehameha" | "teleport" | "pistol" | "gatling" | "bazooka";
   gokuStrength?: "light" | "medium" | "heavy";
   beam?: { range: number; radius: number; interval: number; hits: number };
   projectile?: {

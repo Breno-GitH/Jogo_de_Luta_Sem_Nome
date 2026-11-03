@@ -1,0 +1,116 @@
+{
+  "pivot": {
+    "x": 128,
+    "y": 224
+  },
+  "ground": 224,
+  "cell": [
+    256,
+    256
+  ],
+  "facing": "right",
+  "height": 130,
+  "points": {
+    "head": [
+      141,
+      114
+    ],
+    "neck": [
+      137,
+      130
+    ],
+    "center": [
+      130,
+      154
+    ],
+    "shoulderBack": [
+      121,
+      138
+    ],
+    "elbowBack": [
+      114,
+      152
+    ],
+    "wristBack": [
+      125,
+      155
+    ],
+    "handBack": [
+      130,
+      155
+    ],
+    "shoulderFront": [
+      145,
+      139
+    ],
+    "elbowFront": [
+      156,
+      157
+    ],
+    "wristFront": [
+      168,
+      152
+    ],
+    "handFront": [
+      175,
+      149
+    ],
+    "hip": [
+      130,
+      164
+    ],
+    "hipBack": [
+      121,
+      167
+    ],
+    "hipFront": [
+      137,
+      168
+    ],
+    "kneeBack": [
+      114,
+      192
+    ],
+    "kneeFront": [
+      153,
+      191
+    ],
+    "ankleBack": [
+      106,
+      215
+    ],
+    "ankleFront": [
+      150,
+      215
+    ],
+    "footBack": [
+      106,
+      223
+    ],
+    "footFront": [
+      157,
+      223
+    ]
+  },
+  "layers": [
+    "backHat",
+    "legs",
+    "shorts",
+    "torso",
+    "sash",
+    "armBack",
+    "armFront",
+    "head"
+  ],
+  "elastic": {
+    "root": "shoulderFront",
+    "tip": "handFront",
+    "nativeRadius": 3,
+    "maximumLength": 420,
+    "components": [
+      "body.png",
+      "fist.png"
+    ],
+    "activeInGameplay": false
+  }
+}

@@ -2,6 +2,12 @@ import { createHash } from "node:crypto";
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
 const files = [
   "src/data/luffy.json",
+  "src/data/luffy-normals.json",
+  "src/data/luffy-normal-joints.json",
+  "src/data/luffy-specials.json",
+  "src/data/luffy-special-poses.json",
+  "src/engine/luffy-specials.ts",
+  "src/engine/luffy-normals.ts",
   "src/data/luffy-elastic.json",
   "src/engine/elastic.ts",
   "src/engine/pace.ts",

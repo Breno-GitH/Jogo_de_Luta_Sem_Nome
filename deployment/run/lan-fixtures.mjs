@@ -18032,11 +18032,11 @@ function phaseAt(move, tick) {
 
 // src/engine/stand-combat.ts
 var CombatStand = class {
-  constructor(data, owner) {
-    this.data = data;
+  constructor(data2, owner) {
+    this.data = data2;
     this.s = {
-      x: owner.x + data.neutral.x * owner.facing,
-      y: owner.y + data.neutral.y,
+      x: owner.x + data2.neutral.x * owner.facing,
+      y: owner.y + data2.neutral.y,
       facing: owner.facing,
       depth: 0,
       mode: "follow",
@@ -18047,7 +18047,7 @@ var CombatStand = class {
       fromX: 0,
       fromY: 0,
       returnFrame: 0,
-      returnDuration: data.returnTicks,
+      returnDuration: data2.returnTicks,
       turnLeft: 0,
       settleLeft: 0,
       previousMotion: "idle",
@@ -19634,16 +19634,658 @@ function reactionBoxes(f) {
   }
 }
 
+// src/data/luffy-specials.json
+var luffy_specials_default = {
+  pistol: {
+    startup: [
+      7,
+      10,
+      14
+    ],
+    active: [
+      8,
+      9,
+      10
+    ],
+    recovery: [
+      17,
+      22,
+      29
+    ],
+    reach: [
+      370,
+      425,
+      480
+    ],
+    damage: [
+      59,
+      74,
+      91
+    ],
+    push: [
+      2,
+      3,
+      4
+    ],
+    stun: [
+      26,
+      30,
+      33
+    ],
+    blockstun: [
+      11,
+      14,
+      16
+    ]
+  },
+  gatling: {
+    startup: [
+      7,
+      10,
+      13
+    ],
+    active: [
+      18,
+      30,
+      42
+    ],
+    recovery: [
+      16,
+      23,
+      31
+    ],
+    reach: [
+      169,
+      207,
+      241
+    ],
+    damage: [
+      17,
+      19,
+      22
+    ],
+    push: [
+      0.5,
+      0.6,
+      0.65
+    ],
+    stun: [
+      13,
+      14,
+      15
+    ],
+    blockstun: [
+      9,
+      10,
+      11
+    ]
+  },
+  bazooka: {
+    startup: [
+      8,
+      11,
+      15
+    ],
+    active: [
+      7,
+      8,
+      9
+    ],
+    recovery: [
+      20,
+      25,
+      33
+    ],
+    reach: [
+      155,
+      208,
+      259
+    ],
+    damage: [
+      73,
+      91,
+      113
+    ],
+    push: [
+      5,
+      7.5,
+      10
+    ],
+    stun: [
+      27,
+      32,
+      38
+    ],
+    blockstun: [
+      13,
+      16,
+      19
+    ]
+  }
+};
+
+// src/data/luffy-special-poses.json
+var luffy_special_poses_default = { pistol: [{ joints: [[-23, -91], [-3, -90]], hurtboxes: [{ x: -36, y: -125, w: 28, h: 27 }, { x: -42, y: -98, w: 62, h: 33 }, { x: -22, y: -65, w: 58, h: 29 }, { x: -36, y: -36, w: 77, h: 35 }] }, { joints: [[5, -88], [21, -86]], hurtboxes: [{ x: -16, y: -119, w: 53, h: 26 }, { x: -16, y: -93, w: 45, h: 31 }, { x: -26, y: -62, w: 64, h: 28 }, { x: -44, y: -34, w: 84, h: 33 }] }, { joints: [[16, -70], [23, -72]], hurtboxes: [{ x: -5, y: -98, w: 55, h: 21 }, { x: -16, y: -77, w: 61, h: 26 }, { x: -32, y: -51, w: 71, h: 23 }, { x: -61, y: -28, w: 102, h: 27 }] }, { joints: [[-4, -96], [13, -89]], hurtboxes: [{ x: -22, y: -127, w: 47, h: 28 }, { x: -24, y: -99, w: 45, h: 32 }, { x: -27, y: -67, w: 60, h: 31 }, { x: -37, y: -36, w: 78, h: 35 }] }], gatling: [{ joints: [[-8, -72], [8, -67]], hurtboxes: [{ x: -22, y: -91, w: 49, h: 20 }, { x: -19, y: -71, w: 41, h: 23 }, { x: -33, y: -48, w: 68, h: 22 }, { x: -38, y: -26, w: 74, h: 25 }] }, { joints: [[4, -78], [18, -81]], hurtboxes: [{ x: -15, y: -114, w: 53, h: 25 }, { x: -15, y: -89, w: 46, h: 29 }, { x: -30, y: -60, w: 66, h: 27 }, { x: -47, y: -33, w: 84, h: 32 }] }, { joints: [[16, -78], [23, -84]], hurtboxes: [{ x: -11, y: -112, w: 51, h: 24 }, { x: -16, y: -88, w: 50, h: 29 }, { x: -32, y: -59, w: 67, h: 27 }, { x: -51, y: -32, w: 87, h: 31 }] }, { joints: [[2, -77], [16, -72]], hurtboxes: [{ x: -17, y: -105, w: 48, h: 23 }, { x: -20, y: -82, w: 47, h: 27 }, { x: -30, y: -55, w: 68, h: 25 }, { x: -36, y: -30, w: 79, h: 29 }] }], bazooka: [{ joints: [[-23, -85], [-6, -83]], hurtboxes: [{ x: -40, y: -121, w: 28, h: 27 }, { x: -42, y: -94, w: 62, h: 31 }, { x: -35, y: -63, w: 78, h: 29 }, { x: -51, y: -34, w: 99, h: 34 }] }, { joints: [[2, -74], [15, -76]], hurtboxes: [{ x: -18, y: -108, w: 53, h: 24 }, { x: -25, y: -84, w: 53, h: 28 }, { x: -32, y: -56, w: 64, h: 26 }, { x: -45, y: -30, w: 87, h: 30 }] }, { joints: [[-1, -66], [10, -70]], hurtboxes: [{ x: -27, y: -94, w: 62, h: 21 }, { x: -30, y: -73, w: 60, h: 24 }, { x: -46, y: -49, w: 85, h: 23 }, { x: -62, y: -26, w: 110, h: 26 }] }, { joints: [[-2, -79], [13, -74]], hurtboxes: [{ x: -19, y: -118, w: 42, h: 26 }, { x: -24, y: -92, w: 47, h: 31 }, { x: -29, y: -61, w: 67, h: 28 }, { x: -41, y: -33, w: 90, h: 33 }] }] };
+
+// src/data/luffy-normals.json
+var luffy_normals_default = {
+  stand_light: {
+    holds: [4, 4, 4, 5],
+    active: [1, 2],
+    damage: 37,
+    stun: 23,
+    blockstun: 10,
+    push: 1.1,
+    hitstop: 4,
+    level: "mid",
+    kind: "fist",
+    track: [
+      [26, -86, 8],
+      [71, -91, 2],
+      [54, -90, 5],
+      [29, -84, 8]
+    ],
+    cancels: [
+      "medium",
+      "heavy"
+    ]
+  },
+  stand_medium: {
+    holds: [4, 3, 2, 5, 7, 9],
+    active: [2, 4],
+    damage: 62,
+    stun: 29,
+    blockstun: 13,
+    push: 1.7,
+    hitstop: 6,
+    level: "mid",
+    kind: "foot",
+    track: [
+      [29, -48, 8],
+      [37, -68, 10],
+      [68, -76, 6],
+      [198, -74, 3],
+      [120, -70, 11],
+      [36, -53, 8]
+    ],
+    cancels: [
+      "heavy"
+    ]
+  },
+  stand_heavy: {
+    holds: [5, 4, 2, 3, 5, 9, 12],
+    active: [2, 5],
+    damage: 84,
+    stun: 32,
+    blockstun: 16,
+    push: 3.1,
+    hitstop: 8,
+    level: "mid",
+    kind: "fist",
+    track: [
+      [31, -86, 10],
+      [42, -89, 9],
+      [82, -92, 6],
+      [260, -93, 2],
+      [344, -91, 1],
+      [245, -90, 9],
+      [43, -85, 10]
+    ],
+    cancels: []
+  },
+  crouch_light: {
+    holds: [4, 4, 4, 5],
+    active: [1, 2],
+    damage: 34,
+    stun: 23,
+    blockstun: 9,
+    push: 1,
+    hitstop: 4,
+    level: "low",
+    kind: "fist",
+    track: [
+      [30, -51, 7],
+      [72, -40, 3],
+      [55, -43, 5],
+      [30, -51, 7]
+    ],
+    cancels: [
+      "medium",
+      "heavy"
+    ]
+  },
+  crouch_medium: {
+    holds: [4, 3, 2, 5, 8, 9],
+    active: [2, 4],
+    damage: 56,
+    stun: 28,
+    blockstun: 13,
+    push: 1.6,
+    hitstop: 6,
+    level: "low",
+    kind: "foot",
+    track: [
+      [28, -23, 6],
+      [41, -26, 7],
+      [67, -15, 3],
+      [234, -15, 3],
+      [142, -18, 8],
+      [31, -22, 8]
+    ],
+    cancels: [
+      "heavy"
+    ]
+  },
+  crouch_heavy: {
+    holds: [4, 4, 2, 3, 4, 7, 10],
+    active: [2, 5],
+    damage: 71,
+    stun: 39,
+    blockstun: 15,
+    push: 1.8,
+    hitstop: 8,
+    level: "mid",
+    launch: -16,
+    kind: "foot",
+    track: [
+      [30, -25, 8],
+      [41, -43, 9],
+      [62, -51, 5],
+      [126, -112, 5],
+      [166, -168, -4],
+      [105, -112, 8],
+      [30, -33, 8]
+    ],
+    cancels: [
+      "jump"
+    ]
+  },
+  air_light: {
+    holds: [4, 4, 4, 5],
+    active: [1, 2],
+    damage: 36,
+    stun: 25,
+    blockstun: 10,
+    push: 1.2,
+    hitstop: 4,
+    level: "high",
+    launch: -3.7,
+    airHold: -3.7,
+    kind: "fist",
+    track: [
+      [27, -82, 8],
+      [70, -88, 2],
+      [56, -87, 4],
+      [29, -82, 8]
+    ],
+    cancels: [
+      "medium",
+      "heavy"
+    ]
+  },
+  air_medium: {
+    holds: [4, 3, 2, 5, 7, 8],
+    active: [2, 4],
+    damage: 61,
+    stun: 29,
+    blockstun: 13,
+    push: 1.6,
+    hitstop: 6,
+    level: "high",
+    launch: -2.8,
+    airHold: -2.8,
+    kind: "foot",
+    track: [
+      [32, -40, 7],
+      [40, -59, 8],
+      [68, -68, 5],
+      [218, -65, 4],
+      [127, -59, 9],
+      [34, -41, 8]
+    ],
+    cancels: [
+      "heavy"
+    ]
+  },
+  air_heavy: {
+    holds: [5, 4, 2, 4, 5, 8, 11],
+    active: [2, 5],
+    damage: 82,
+    stun: 37,
+    blockstun: 15,
+    push: 2.4,
+    hitstop: 8,
+    level: "high",
+    launch: 10,
+    knockdown: true,
+    kind: "foot",
+    track: [
+      [30, -43, 7],
+      [41, -57, 8],
+      [68, -57, 5],
+      [153, 8, 11],
+      [208, 76, 14],
+      [120, 16, 15],
+      [32, -42, 8]
+    ],
+    cancels: []
+  }
+};
+
+// src/data/luffy-normal-joints.json
+var luffy_normal_joints_default = { stand_light: [{ joint: [-4, -91], hurtboxes: [{ x: -21, y: -130, w: 52, h: 28 }, { x: -23, y: -102, w: 45, h: 34 }, { x: -24, y: -68, w: 54, h: 31 }, { x: -35, y: -37, w: 69, h: 36 }] }, { joint: [7, -88], hurtboxes: [{ x: -16, y: -120, w: 51, h: 26 }, { x: -26, y: -94, w: 55, h: 31 }, { x: -25, y: -63, w: 66, h: 29 }, { x: -48, y: -34, w: 88, h: 33 }] }, { joint: [7, -88], hurtboxes: [{ x: -16, y: -120, w: 51, h: 26 }, { x: -26, y: -94, w: 55, h: 31 }, { x: -25, y: -63, w: 66, h: 29 }, { x: -48, y: -34, w: 88, h: 33 }] }, { joint: [-7, -89], hurtboxes: [{ x: -20, y: -129, w: 48, h: 28 }, { x: -23, y: -101, w: 46, h: 33 }, { x: -21, y: -68, w: 53, h: 31 }, { x: -34, y: -37, w: 70, h: 36 }] }], stand_medium: [{ joint: [29, -70], hurtboxes: [{ x: -24, y: -138, w: 51, h: 30 }, { x: -26, y: -108, w: 64, h: 36 }, { x: -19, y: -72, w: 53, h: 33 }, { x: -11, y: -39, w: 23, h: 39 }] }, { joint: [29, -70], hurtboxes: [{ x: -24, y: -138, w: 51, h: 30 }, { x: -26, y: -108, w: 64, h: 36 }, { x: -19, y: -72, w: 53, h: 33 }, { x: -11, y: -39, w: 23, h: 39 }] }, { joint: [24, -84], hurtboxes: [{ x: -26, y: -137, w: 54, h: 30 }, { x: -26, y: -107, w: 58, h: 36 }, { x: -15, y: -71, w: 34, h: 33 }, { x: -8, y: -38, w: 22, h: 38 }] }, { joint: [24, -84], hurtboxes: [{ x: -26, y: -137, w: 54, h: 30 }, { x: -26, y: -107, w: 58, h: 36 }, { x: -15, y: -71, w: 34, h: 33 }, { x: -8, y: -38, w: 22, h: 38 }] }, { joint: [34, -61], hurtboxes: [{ x: -13, y: -138, w: 48, h: 30 }, { x: -16, y: -108, w: 51, h: 36 }, { x: -10, y: -72, w: 52, h: 33 }, { x: -7, y: -39, w: 22, h: 39 }] }, { joint: [34, -61], hurtboxes: [{ x: -13, y: -138, w: 48, h: 30 }, { x: -16, y: -108, w: 51, h: 36 }, { x: -10, y: -72, w: 52, h: 33 }, { x: -7, y: -39, w: 22, h: 39 }] }], stand_heavy: [{ joint: [-2, -75], hurtboxes: [{ x: -9, y: -115, w: 53, h: 25 }, { x: -10, y: -90, w: 50, h: 30 }, { x: -25, y: -60, w: 64, h: 27 }, { x: -52, y: -33, w: 88, h: 32 }] }, { joint: [-2, -75], hurtboxes: [{ x: -9, y: -115, w: 53, h: 25 }, { x: -10, y: -90, w: 50, h: 30 }, { x: -25, y: -60, w: 64, h: 27 }, { x: -52, y: -33, w: 88, h: 32 }] }, { joint: [18, -77], hurtboxes: [{ x: 3, y: -108, w: 59, h: 24 }, { x: -19, y: -84, w: 75, h: 28 }, { x: -34, y: -56, w: 89, h: 26 }, { x: -61, y: -30, w: 112, h: 30 }] }, { joint: [18, -77], hurtboxes: [{ x: 3, y: -108, w: 59, h: 24 }, { x: -19, y: -84, w: 75, h: 28 }, { x: -34, y: -56, w: 89, h: 26 }, { x: -61, y: -30, w: 112, h: 30 }] }, { joint: [18, -77], hurtboxes: [{ x: 3, y: -108, w: 59, h: 24 }, { x: -19, y: -84, w: 75, h: 28 }, { x: -34, y: -56, w: 89, h: 26 }, { x: -61, y: -30, w: 112, h: 30 }] }, { joint: [4, -81], hurtboxes: [{ x: -7, y: -123, w: 54, h: 27 }, { x: -11, y: -96, w: 49, h: 32 }, { x: -22, y: -64, w: 68, h: 30 }, { x: -45, y: -34, w: 91, h: 34 }] }, { joint: [4, -81], hurtboxes: [{ x: -7, y: -123, w: 54, h: 27 }, { x: -11, y: -96, w: 49, h: 32 }, { x: -22, y: -64, w: 68, h: 30 }, { x: -45, y: -34, w: 91, h: 34 }] }], crouch_light: [{ joint: [-2, -72], hurtboxes: [{ x: -14, y: -104, w: 54, h: 23 }, { x: -9, y: -81, w: 44, h: 27 }, { x: -26, y: -54, w: 65, h: 25 }, { x: -42, y: -29, w: 79, h: 29 }] }, { joint: [-4, -63], hurtboxes: [{ x: -18, y: -92, w: 61, h: 20 }, { x: -14, y: -72, w: 55, h: 24 }, { x: -36, y: -48, w: 72, h: 22 }, { x: -49, y: -26, w: 87, h: 25 }] }, { joint: [-4, -63], hurtboxes: [{ x: -18, y: -92, w: 61, h: 20 }, { x: -14, y: -72, w: 55, h: 24 }, { x: -36, y: -48, w: 72, h: 22 }, { x: -49, y: -26, w: 87, h: 25 }] }, { joint: [-5, -79], hurtboxes: [{ x: -15, y: -107, w: 53, h: 23 }, { x: -15, y: -84, w: 49, h: 28 }, { x: -24, y: -56, w: 65, h: 25 }, { x: -40, y: -31, w: 80, h: 30 }] }], crouch_medium: [{ joint: [28, -54], hurtboxes: [{ x: -16, y: -117, w: 56, h: 26 }, { x: -22, y: -91, w: 58, h: 30 }, { x: -21, y: -61, w: 64, h: 28 }, { x: -25, y: -33, w: 40, h: 32 }] }, { joint: [28, -54], hurtboxes: [{ x: -16, y: -117, w: 56, h: 26 }, { x: -22, y: -91, w: 58, h: 30 }, { x: -21, y: -61, w: 64, h: 28 }, { x: -25, y: -33, w: 40, h: 32 }] }, { joint: [25, -39], hurtboxes: [{ x: -23, y: -92, w: 77, h: 25 }, { x: -33, y: -67, w: 83, h: 29 }, { x: -28, y: -38, w: 55, h: 27 }, { x: -32, y: -11, w: 39, h: 32 }] }, { joint: [25, -39], hurtboxes: [{ x: -23, y: -92, w: 77, h: 25 }, { x: -33, y: -67, w: 83, h: 29 }, { x: -28, y: -38, w: 55, h: 27 }, { x: -32, y: -11, w: 39, h: 32 }] }, { joint: [25, -53], hurtboxes: [{ x: -19, y: -120, w: 54, h: 26 }, { x: -25, y: -94, w: 54, h: 31 }, { x: -24, y: -63, w: 61, h: 29 }, { x: -25, y: -34, w: 36, h: 33 }] }, { joint: [25, -53], hurtboxes: [{ x: -19, y: -120, w: 54, h: 26 }, { x: -25, y: -94, w: 54, h: 31 }, { x: -24, y: -63, w: 61, h: 29 }, { x: -25, y: -34, w: 36, h: 33 }] }], crouch_heavy: [{ joint: [-1, -31], hurtboxes: [{ x: -20, y: -93, w: 60, h: 20 }, { x: -33, y: -73, w: 72, h: 25 }, { x: -36, y: -48, w: 65, h: 22 }, { x: -23, y: -26, w: 52, h: 26 }] }, { joint: [-1, -31], hurtboxes: [{ x: -20, y: -93, w: 60, h: 20 }, { x: -33, y: -73, w: 72, h: 25 }, { x: -36, y: -48, w: 65, h: 22 }, { x: -23, y: -26, w: 52, h: 26 }] }, { joint: [26, -74], hurtboxes: [{ x: -19, y: -134, w: 40, h: 29 }, { x: -26, y: -105, w: 69, h: 35 }, { x: -17, y: -70, w: 43, h: 32 }, { x: -24, y: -38, w: 32, h: 38 }] }, { joint: [26, -74], hurtboxes: [{ x: -19, y: -134, w: 40, h: 29 }, { x: -26, y: -105, w: 69, h: 35 }, { x: -17, y: -70, w: 43, h: 32 }, { x: -24, y: -38, w: 32, h: 38 }] }, { joint: [26, -74], hurtboxes: [{ x: -19, y: -134, w: 40, h: 29 }, { x: -26, y: -105, w: 69, h: 35 }, { x: -17, y: -70, w: 43, h: 32 }, { x: -24, y: -38, w: 32, h: 38 }] }, { joint: [23, -58], hurtboxes: [{ x: -27, y: -126, w: 54, h: 28 }, { x: -32, y: -98, w: 61, h: 32 }, { x: -28, y: -66, w: 63, h: 31 }, { x: -31, y: -35, w: 40, h: 35 }] }, { joint: [23, -58], hurtboxes: [{ x: -27, y: -126, w: 54, h: 28 }, { x: -32, y: -98, w: 61, h: 32 }, { x: -28, y: -66, w: 63, h: 31 }, { x: -31, y: -35, w: 40, h: 35 }] }], air_light: [{ joint: [-2, -90], hurtboxes: [{ x: -19, y: -125, w: 46, h: 29 }, { x: -22, y: -96, w: 55, h: 34 }, { x: -17, y: -62, w: 52, h: 32 }, { x: -15, y: -30, w: 31, h: 37 }] }, { joint: [-5, -77], hurtboxes: [{ x: -16, y: -108, w: 48, h: 20 }, { x: -22, y: -88, w: 51, h: 24 }, { x: -28, y: -64, w: 55, h: 22 }, { x: -17, y: -42, w: 42, h: 26 }] }, { joint: [-5, -77], hurtboxes: [{ x: -16, y: -108, w: 48, h: 20 }, { x: -22, y: -88, w: 51, h: 24 }, { x: -28, y: -64, w: 55, h: 22 }, { x: -17, y: -42, w: 42, h: 26 }] }, { joint: [-5, -85], hurtboxes: [{ x: -20, y: -117, w: 51, h: 27 }, { x: -20, y: -90, w: 43, h: 32 }, { x: -12, y: -58, w: 43, h: 30 }, { x: -13, y: -28, w: 34, h: 34 }] }], air_medium: [{ joint: [24, -56], hurtboxes: [{ x: -22, y: -115, w: 46, h: 28 }, { x: -46, y: -87, w: 84, h: 32 }, { x: -46, y: -55, w: 72, h: 31 }, { x: -13, y: -24, w: 29, h: 35 }] }, { joint: [24, -56], hurtboxes: [{ x: -22, y: -115, w: 46, h: 28 }, { x: -46, y: -87, w: 84, h: 32 }, { x: -46, y: -55, w: 72, h: 31 }, { x: -13, y: -24, w: 29, h: 35 }] }, { joint: [30, -53], hurtboxes: [{ x: -12, y: -110, w: 32, h: 19 }, { x: -30, y: -91, w: 53, h: 22 }, { x: -53, y: -69, w: 87, h: 21 }, { x: -53, y: -48, w: 85, h: 24 }] }, { joint: [30, -53], hurtboxes: [{ x: -12, y: -110, w: 32, h: 19 }, { x: -30, y: -91, w: 53, h: 22 }, { x: -53, y: -69, w: 87, h: 21 }, { x: -53, y: -48, w: 85, h: 24 }] }, { joint: [20, -56], hurtboxes: [{ x: -21, y: -117, w: 51, h: 28 }, { x: -40, y: -89, w: 74, h: 33 }, { x: -40, y: -56, w: 63, h: 30 }, { x: -8, y: -26, w: 24, h: 36 }] }, { joint: [20, -56], hurtboxes: [{ x: -21, y: -117, w: 51, h: 28 }, { x: -40, y: -89, w: 74, h: 33 }, { x: -40, y: -56, w: 63, h: 30 }, { x: -8, y: -26, w: 24, h: 36 }] }], air_heavy: [{ joint: [25, -55], hurtboxes: [{ x: -20, y: -112, w: 50, h: 27 }, { x: -41, y: -85, w: 77, h: 31 }, { x: -44, y: -54, w: 71, h: 29 }, { x: -9, y: -22, w: 42, h: 31 }] }, { joint: [25, -55], hurtboxes: [{ x: -20, y: -112, w: 50, h: 27 }, { x: -41, y: -85, w: 77, h: 31 }, { x: -44, y: -54, w: 71, h: 29 }, { x: -9, y: -22, w: 42, h: 31 }] }, { joint: [27, -51], hurtboxes: [{ x: -20, y: -129, w: 54, h: 21 }, { x: -51, y: -108, w: 83, h: 26 }, { x: -49, y: -82, w: 78, h: 23 }, { x: -14, y: -59, w: 51, h: 27 }] }, { joint: [27, -51], hurtboxes: [{ x: -20, y: -129, w: 54, h: 21 }, { x: -51, y: -108, w: 83, h: 26 }, { x: -49, y: -82, w: 78, h: 23 }, { x: -14, y: -59, w: 51, h: 27 }] }, { joint: [27, -51], hurtboxes: [{ x: -20, y: -129, w: 54, h: 21 }, { x: -51, y: -108, w: 83, h: 26 }, { x: -49, y: -82, w: 78, h: 23 }, { x: -14, y: -59, w: 51, h: 27 }] }, { joint: [24, -53], hurtboxes: [{ x: -17, y: -111, w: 48, h: 26 }, { x: -39, y: -85, w: 76, h: 30 }, { x: -40, y: -55, w: 71, h: 28 }, { x: -7, y: -27, w: 40, h: 33 }] }, { joint: [24, -53], hurtboxes: [{ x: -17, y: -111, w: 48, h: 26 }, { x: -39, y: -85, w: 76, h: 30 }, { x: -40, y: -55, w: 71, h: 28 }, { x: -7, y: -27, w: 40, h: 33 }] }] };
+
+// src/engine/elastic.ts
+var pixel = (p) => ({ x: Math.round(p.x), y: Math.round(p.y) });
+function elasticGeometry(pose) {
+  const finite = [
+    pose.root.x,
+    pose.root.y,
+    pose.tip.x,
+    pose.tip.y,
+    pose.radius,
+    pose.bend,
+    pose.maximumLength
+  ].every(Number.isFinite);
+  if (!finite || pose.radius < 2 || pose.radius > 12 || pose.maximumLength < 0 || pose.maximumLength > 1024)
+    throw new RangeError("Invalid elastic limb geometry");
+  const dx = pose.tip.x - pose.root.x, dy = pose.tip.y - pose.root.y;
+  const length = Math.hypot(dx, dy), factor = Math.min(1, pose.maximumLength / (length || 1));
+  const tip = pixel({
+    x: pose.root.x + dx * factor,
+    y: pose.root.y + dy * factor
+  });
+  const distance = Math.hypot(tip.x - pose.root.x, tip.y - pose.root.y);
+  const nx = -(tip.y - pose.root.y) / (distance || 1), ny = (tip.x - pose.root.x) / (distance || 1);
+  const bend = Math.max(-distance / 4, Math.min(distance / 4, pose.bend));
+  const count = Math.max(1, Math.ceil(distance / 8));
+  const centers = Array.from({ length: count + 1 }, (_, i) => {
+    const t = i / count, bow = 4 * t * (1 - t) * bend;
+    return pixel({
+      x: pose.root.x + (tip.x - pose.root.x) * t + nx * bow,
+      y: pose.root.y + (tip.y - pose.root.y) * t + ny * bow
+    });
+  });
+  const radii = centers.map((_, i) => {
+    const t = i / count;
+    if (!pose.profile)
+      return Math.max(2, Math.round(pose.radius * (1 - 0.18 * t)));
+    const muscle = Math.sin(Math.PI * t) * (pose.profile === "leg" ? 2.1 : 1.6);
+    const joint = 1.25 * Math.max(0, 1 - 7 * Math.abs(t - 0.53));
+    return Math.round(pose.radius * (1 - 0.33 * t) + muscle - joint);
+  });
+  return {
+    centers,
+    radii,
+    tip,
+    limbHurtboxes: centers.slice(1).map((b, i) => ({ a: centers[i], b, r: Math.max(radii[i], radii[i + 1]) })),
+    hitboxes: pose.active ? [{ a: tip, b: { x: tip.x + 11, y: tip.y }, r: 6 }] : []
+  };
+}
+
+// src/engine/luffy-normals.ts
+var luffyNormals = luffy_normals_default;
+var normalPoses = luffy_normal_joints_default;
+function buildMove(id, spec) {
+  const {
+    holds,
+    active: [first, end],
+    cancels
+  } = spec;
+  const total = (from, to) => holds.slice(from, to).reduce((sum, ticks) => sum + ticks, 0);
+  const startup = total(0, first);
+  const active = total(first, end);
+  const recovery = total(end, holds.length);
+  return {
+    ...spec,
+    startup,
+    active,
+    recovery,
+    rank: id.endsWith("_light") ? 1 : id.endsWith("_medium") ? 2 : 3,
+    launch: "launch" in spec ? spec.launch : 0,
+    kind: "strike",
+    box: { x: 0, y: 0, w: 0, h: 0 },
+    poses: holds.map((ticks, index) => ({
+      ticks,
+      phase: index < first ? "startup" : index < end ? "active" : "recovery",
+      hurtboxes: normalPoses[id][index].hurtboxes
+    })),
+    cancelWindow: {
+      fromTick: startup,
+      toTick: startup + active + Math.min(8, recovery - 1)
+    },
+    cancels: [...cancels, ...!id.startsWith("air_") ? ["special"] : []],
+    cancelMoves: cancels.map((button) => id.replace(/_[^_]+$/, "_" + button))
+  };
+}
+var luffyMoves = Object.fromEntries(
+  Object.entries(luffyNormals).map(([id, spec]) => [id, buildMove(id, spec)])
+);
+function limbAt(actor, spec, tick) {
+  let remaining = tick;
+  let frame = 0;
+  while (frame < spec.holds.length - 1 && remaining >= spec.holds[frame]) {
+    remaining -= spec.holds[frame++];
+  }
+  const t = Math.min(1, remaining / spec.holds[frame]);
+  const end = spec.active[1];
+  const atPeak = frame === end - 1 && spec.holds[frame] >= 4;
+  const firstRecovery = frame === end && spec.holds[frame - 1] >= 4;
+  const startIndex = firstRecovery && t < 0.5 ? frame - 1 : frame;
+  const [x, y, bend] = spec.track[startIndex];
+  const next = spec.track[Math.min(startIndex + 1, spec.track.length - 1)];
+  const release = firstRecovery ? t < 0.5 ? t * 2 : t * 2 - 1 : t;
+  const fraction = atPeak ? 0 : frame >= end ? release * (2 - release) : t;
+  const tip = {
+    x: x + (next[0] - x) * fraction,
+    y: y + (next[1] - y) * fraction
+  };
+  const foot = spec.kind === "foot";
+  const [jointX, jointY] = normalPoses[actor.moveId][frame].joint;
+  const root = { x: jointX, y: jointY };
+  return {
+    ...buildLuffyLimb(
+      actor,
+      root,
+      tip,
+      bend + (next[2] - bend) * fraction,
+      foot,
+      Math.max(
+        ...spec.track.map(([px, py]) => Math.hypot(px - root.x, py - root.y))
+      )
+    ),
+    frame
+  };
+}
+function buildLuffyLimb(actor, root, desiredTip, bend, foot = false, maximumLength = 540) {
+  const left = actor.facing === 1 ? 16 - actor.x : actor.x - 1264;
+  const right = actor.facing === 1 ? 1264 - actor.x : actor.x - 16;
+  const tip = {
+    x: Math.max(left, Math.min(right, desiredTip.x)),
+    y: Math.max(16 - actor.y, Math.min(564 - actor.y, desiredTip.y))
+  };
+  const geometry = elasticGeometry({
+    root,
+    tip,
+    bend,
+    radius: foot ? 9 : 7,
+    profile: foot ? "leg" : "arm",
+    maximumLength,
+    active: false
+  });
+  const prior = geometry.centers.at(-2);
+  const dx = geometry.tip.x - prior.x;
+  const dy = geometry.tip.y - prior.y;
+  const length = Math.hypot(dx, dy);
+  const axis = length ? { x: dx / length, y: dy / length } : { x: 1, y: 0 };
+  const nose = {
+    x: Math.round(geometry.tip.x + (foot ? 9 : 6) * axis.x),
+    y: Math.round(geometry.tip.y + (foot ? 9 : 6) * axis.y)
+  };
+  const terminal = { a: geometry.tip, b: nose, r: 7 };
+  return {
+    ...geometry,
+    foot,
+    axis,
+    limbHurtboxes: [...geometry.limbHurtboxes, terminal],
+    terminal
+  };
+}
+function luffyLimb(actor) {
+  if (actor.data.id !== "luffy" || actor.state !== "attack" || !actor.move)
+    return;
+  const spec = luffyNormals[actor.moveId];
+  if (!spec) return;
+  const limb = limbAt(actor, spec, actor.stateFrame);
+  const { terminal } = limb;
+  const hitboxes = [];
+  if (phaseAt(actor.move, actor.stateFrame) === "active") {
+    hitboxes.push(terminal);
+    if (actor.stateFrame > 0) {
+      const previous = limbAt(actor, spec, actor.stateFrame - 1).terminal;
+      if (previous.a.x !== terminal.a.x || previous.a.y !== terminal.a.y)
+        hitboxes.push({ a: previous.a, b: terminal.a, r: terminal.r });
+      if (previous.b.x !== terminal.b.x || previous.b.y !== terminal.b.y)
+        hitboxes.push({ a: previous.b, b: terminal.b, r: terminal.r });
+    }
+  }
+  return { ...limb, hitboxes };
+}
+
+// src/engine/luffy-specials.ts
+var luffySpecialNames = Object.keys(luffy_specials_default);
+var strengths = ["light", "medium", "heavy"];
+var pulseTicks = 6;
+var data = luffy_special_poses_default;
+var specByMove = /* @__PURE__ */ new Map();
+function luffySpecialCommand(buffer, button) {
+  const motion = buffer.gokuSpecial(button);
+  return motion === "ki" ? "pistol" : motion === "kamehameha" ? "gatling" : motion === "teleport" ? "bazooka" : void 0;
+}
+function bodyFrame(name, tick, startup, active) {
+  if (tick < startup) return tick < Math.ceil(startup * 0.55) ? 0 : 1;
+  if (tick >= startup + active) return 3;
+  if (name === "gatling")
+    return 1 + Math.floor((tick - startup) / pulseTicks) % 2;
+  return tick - startup < 2 ? 1 : 2;
+}
+var luffySpecialMoves = {};
+for (const name of luffySpecialNames) {
+  const spec = luffy_specials_default[name];
+  for (const [index, strength] of strengths.entries()) {
+    const id = name + "_" + strength;
+    const startup = spec.startup[index], active = spec.active[index], recovery = spec.recovery[index];
+    specByMove.set(id, { name, rank: index });
+    luffySpecialMoves[id] = {
+      special: name,
+      kind: "strike",
+      startup,
+      active,
+      recovery,
+      damage: spec.damage[index],
+      stun: spec.stun[index],
+      blockstun: spec.blockstun[index],
+      push: spec.push[index],
+      launch: name === "bazooka" && index === 2 ? -6 : 0,
+      knockdown: name === "bazooka" && index === 2,
+      hitstop: name === "gatling" ? 3 : 5 + index,
+      rank: index + 1,
+      level: "mid",
+      cancels: [],
+      box: { x: 0, y: 0, w: 0, h: 0 },
+      poses: Array.from({ length: startup + active + recovery }, (_, tick) => ({
+        ticks: 1,
+        phase: tick < startup ? "startup" : tick < startup + active ? "active" : "recovery",
+        hurtboxes: data[name][bodyFrame(name, tick, startup, active)].hurtboxes
+      })),
+      ...name === "gatling" ? {
+        hitWindows: Array.from(
+          { length: active / pulseTicks },
+          (_, pulse) => ({
+            id: pulse,
+            fromTick: startup + pulse * pulseTicks + 1,
+            toTick: startup + pulse * pulseTicks + 5
+          })
+        )
+      } : {}
+    };
+  }
+}
+function limbsAt(actor, name, rank, tick) {
+  const move = actor.move;
+  const frame = bodyFrame(name, tick, move.startup, move.active);
+  const after = tick - move.startup;
+  const range = luffy_specials_default[name].reach[rank];
+  const pulse = Math.max(0, Math.floor(after / pulseTicks));
+  const within = after % pulseTicks;
+  const live = after >= 0 && after < move.active;
+  const recoil = Math.max(
+    0,
+    Math.min(1, (after - move.active) / (move.recovery * 0.77))
+  );
+  const progress2 = name === "gatling" ? live ? [0, 0.33, 0.67, 0.91, 1, 0.48][within] : after >= move.active ? 0.38 * (1 - recoil) : 0 : after < 0 ? 0 : live ? Math.min(1, (after + 1) / (name === "pistol" ? 6 : 4)) : (1 - recoil) ** 2;
+  const front = name === "gatling" ? pulse % 2 : 0;
+  const depth = name === "bazooka" || name === "gatling" ? 2 : 1;
+  return Array.from({ length: depth }, (_, side) => {
+    const [x, y] = data[name][frame].joints[side];
+    const driving = name !== "gatling" || side === front;
+    const extent = driving ? progress2 : 0;
+    const tucked = x + (after < 0 ? 5 - 20 * (tick / move.startup) : 12);
+    const punchHeight = name === "gatling" ? -88 + (pulse % 3 - 1) * 7 : name === "bazooka" ? -80 + side * 10 : -88;
+    const length = range - (name === "gatling" ? pulse % 3 * 5 : side * 4);
+    const tip = {
+      x: tucked + (length - tucked) * extent,
+      y: y + 11 + (punchHeight - y - 11) * extent
+    };
+    const limb = buildLuffyLimb(
+      actor,
+      { x, y },
+      tip,
+      (1 - extent) * (side ? -10 : 10)
+    );
+    return {
+      ...limb,
+      rear: side === 1,
+      driving,
+      palm: name === "bazooka",
+      trail: live && extent > 0.3
+    };
+  });
+}
+function luffyAttackLimbs(actor) {
+  if (actor.data.id !== "luffy" || actor.state !== "attack" || !actor.move)
+    return [];
+  const spec = specByMove.get(actor.moveId);
+  if (!spec) {
+    const limb = luffyLimb(actor);
+    return limb ? [{ ...limb, rear: false, trail: false, driving: false }] : [];
+  }
+  const current = limbsAt(actor, spec.name, spec.rank, actor.stateFrame);
+  const active = actor.stateFrame >= actor.move.startup && actor.stateFrame < actor.move.startup + actor.move.active && (!actor.move.hitWindows || actor.move.hitWindows.some(
+    (w) => actor.stateFrame >= w.fromTick && actor.stateFrame < w.toTick
+  ));
+  const previous = active && actor.stateFrame ? limbsAt(actor, spec.name, spec.rank, actor.stateFrame - 1) : [];
+  return current.map((limb, i) => {
+    const hitboxes = active && limb.driving ? [limb.terminal] : [];
+    const prev = previous[i]?.terminal;
+    if (prev && hitboxes.length && prev.b.x < limb.terminal.b.x) {
+      hitboxes.push({ a: prev.a, b: limb.terminal.a, r: limb.terminal.r });
+      hitboxes.push({ a: prev.b, b: limb.terminal.b, r: limb.terminal.r });
+    }
+    return { ...limb, hitboxes };
+  });
+}
+
 // src/engine/combat.ts
 var character = pacedCharacter(samurai_default);
 var FLOOR = 580;
 var Fighter = class {
-  constructor(data, id, x) {
-    this.data = data;
+  constructor(data2, id, x) {
+    this.data = data2;
     this.id = id;
     this.x = x;
     this.homeX = x;
-    this.health = data.health;
+    this.health = data2.health;
     this.facing = id === 0 ? 1 : -1;
     Object.defineProperty(this, "opponent", {
       value: void 0,
@@ -19655,7 +20297,7 @@ var Fighter = class {
       writable: true,
       configurable: true
     });
-    if (data.companion) this.stand = new CombatStand(data.companion, this);
+    if (data2.companion) this.stand = new CombatStand(data2.companion, this);
   }
   x = 0;
   y = FLOOR;
@@ -19709,7 +20351,7 @@ var Fighter = class {
   }
   canSpecialCancel() {
     if (this.data.id === "goku") return canCancelGokuSpecial(this);
-    return !this.airborne && !this.move?.special && !this.move?.super && this.canCancel("special");
+    return !this.airborne && !this.move?.special && !this.move?.super && (this.data.id !== "luffy" || this.hitConfirmed) && this.canCancel("special");
   }
   canStartSpecial(id) {
     if (this.data.id === "goku") return canStartGokuSpecial(this, id);
@@ -19778,6 +20420,9 @@ var Fighter = class {
       }
     ];
     if (this.invulnerability?.upperOnly) boxes = boxes.slice(2, 4);
+    const limbs = luffyAttackLimbs(this);
+    if (limbs.length)
+      boxes = [...boxes, ...limbs.flatMap((limb) => limb.limbHurtboxes.map(shapeBounds))];
     return boxes.map((box) => worldRect(box, this.x, this.y, this.facing));
   }
   get invulnerability() {
@@ -19825,6 +20470,9 @@ var Fighter = class {
     const pose = poseAt(m, this.stateFrame);
     if (m.hitWindows && !this.hitWindow) return [];
     if (m.stand) return this.stand?.hitboxes(this) ?? [];
+    const limbs = luffyAttackLimbs(this);
+    if (limbs.length)
+      return limbs.flatMap((limb) => limb.hitboxes.map((shape) => worldCapsule(shape, this.x, this.y, this.facing)));
     if (m.kind === "grab")
       return [worldRect(m.box, this.x, this.y, this.facing)];
     const body = pose?.hitboxes ? pose.hitboxes.map(
@@ -20000,6 +20648,18 @@ var Fighter = class {
           }
         }
       }
+      if (this.data.id === "luffy" && !this.airborne) {
+        for (const button of ["heavy", "medium", "light"]) {
+          const special = luffySpecialCommand(this.buffer, button);
+          if (!special) continue;
+          if (this.attack(`${special}_${button}`)) {
+            this.buffer.consumeSpecial(button);
+            return;
+          }
+          if (free || this.move?.special) this.buffer.consumeSpecial(button);
+          break;
+        }
+      }
       if (this.data.id === "dio" && this.data.specialMoves && !this.airborne) {
         for (const button of ["heavy", "medium", "light"]) {
           const special = this.buffer.dioSpecial(
@@ -20043,6 +20703,8 @@ var Fighter = class {
       }
       if (free || this.state === "attack") {
         for (const b of ["throw", "light", "medium", "heavy"]) {
+          if (this.data.id === "luffy" && !this.airborne && luffySpecialCommand(this.buffer, b))
+            continue;
           if (this.data.id === "dio" && this.data.specialMoves && !this.airborne && this.buffer.dioSpecial(b))
             continue;
           if (this.data.id === "goku" && this.data.specialMoves && this.buffer.gokuSpecial(
@@ -20149,12 +20811,12 @@ var Fighter = class {
   }
 };
 var Match = class {
-  constructor(data = character, rules = {}, opponentData = data) {
-    this.data = data;
+  constructor(data2 = character, rules = {}, opponentData = data2) {
+    this.data = data2;
     this.rules = rules;
     this.opponentData = opponentData;
     this.fighters = [
-      new Fighter(data, 0, 400),
+      new Fighter(data2, 0, 400),
       new Fighter(opponentData, 1, 880)
     ];
     this.linkOpponents();
@@ -20307,16 +20969,34 @@ var Match = class {
       if (this.temporal.isFrozen(i)) return null;
       const shapes = f.attackShapes();
       const target = this.fighters[1 - i];
-      return shapes.length && f.canConnect && !target.knockedDown && !target.invulnerable && shapes.some(
-        (shape) => (f.move?.kind === "grab" ? target.hurtboxes().slice(0, 2) : target.hurtboxes()).some((hurt) => shapeHitsRect(shape, hurt))
-      ) && !(f.move?.level === "throw" && (target.airborne || target.state === "hitstun" || target.state === "blockstun")) ? {
-        f,
-        target,
-        move: { ...f.move, ...f.hitWindow },
-        moveId: f.moveId,
-        hitId: f.hitWindow?.id ?? 0,
-        impact: f.move?.stand ? shapeBounds(shapes[0]) : void 0
-      } : null;
+      if (!shapes.length || !f.canConnect || target.knockedDown || target.invulnerable || f.move?.level === "throw" && (target.airborne || target.state === "hitstun" || target.state === "blockstun"))
+        return null;
+      const boxes = target.hurtboxes();
+      const hurtboxes = f.move?.kind === "grab" ? boxes.slice(0, 2) : boxes;
+      for (const shape of shapes) {
+        const hurt = hurtboxes.find((box) => shapeHitsRect(shape, box));
+        if (!hurt) continue;
+        let impact = f.move?.stand ? shapeBounds(shapes[0]) : void 0;
+        if (f.data.id === "luffy") {
+          const bounds = shapeBounds(shape);
+          const x = Math.max(hurt.x, bounds.x), y = Math.max(hurt.y, bounds.y);
+          impact = {
+            x,
+            y,
+            w: Math.min(hurt.x + hurt.w, bounds.x + bounds.w) - x,
+            h: Math.min(hurt.y + hurt.h, bounds.y + bounds.h) - y
+          };
+        }
+        return {
+          f,
+          target,
+          move: { ...f.move, ...f.hitWindow },
+          moveId: f.moveId,
+          hitId: f.hitWindow?.id ?? 0,
+          impact
+        };
+      }
+      return null;
     });
     for (const c of contacts) {
       if (!c) continue;
@@ -125247,6 +125927,131 @@ var goku = {
   meterGainScale: goku_fury_default.meterGainScale,
   reactions: { ...goku_default.reactions, ...secondary.reactions },
   reactionClips: { ...goku_default.reactionClips, ...secondary.reactionClips }
+};
+
+// src/data/luffy.json
+var luffy_default = {
+  id: "luffy",
+  name: "Luffy \xB7 Enies Lobby",
+  health: 1e3,
+  speed: 4.3,
+  jump: -17.5,
+  gravity: 0.74,
+  meterGainScale: 0,
+  locomotion: {
+    backSpeed: 3.5,
+    airSpeed: 6.4,
+    jumpStartup: 4,
+    landingTicks: 6,
+    dashForward: [
+      3,
+      8,
+      15,
+      19,
+      20,
+      19,
+      17,
+      14,
+      10,
+      6,
+      2,
+      0
+    ],
+    backdash: [
+      3,
+      7,
+      12,
+      16,
+      17,
+      16,
+      14,
+      11,
+      7,
+      3,
+      0,
+      0
+    ]
+  },
+  moves: {},
+  hurtboxes: {
+    standing: [
+      {
+        x: -11,
+        y: -117,
+        w: 30,
+        h: 27
+      },
+      {
+        x: -40,
+        y: -95,
+        w: 89,
+        h: 33
+      },
+      {
+        x: -24,
+        y: -62,
+        w: 50,
+        h: 26
+      },
+      {
+        x: -35,
+        y: -36,
+        w: 89,
+        h: 36
+      }
+    ],
+    crouching: [
+      {
+        x: 0,
+        y: -96,
+        w: 32,
+        h: 24
+      },
+      {
+        x: -25,
+        y: -75,
+        w: 68,
+        h: 38
+      },
+      {
+        x: -39,
+        y: -37,
+        w: 83,
+        h: 37
+      }
+    ],
+    air: [
+      {
+        x: -11,
+        y: -117,
+        w: 30,
+        h: 27
+      },
+      {
+        x: -40,
+        y: -95,
+        w: 89,
+        h: 33
+      },
+      {
+        x: -24,
+        y: -62,
+        w: 50,
+        h: 26
+      },
+      {
+        x: -35,
+        y: -36,
+        w: 89,
+        h: 36
+      }
+    ]
+  },
+  combatLimits: {
+    maxHits: 14,
+    maxAirHits: 8,
+    maxTicks: 390
+  }
 };
 
 // src/data/dio-special-moves.json
@@ -239231,6 +240036,7 @@ var the_world_secondary_default = {
 var characters = {
   samurai: pacedCharacter(samurai_default),
   goku: pacedCharacter(goku),
+  luffy: { ...luffy_default, moves: luffyMoves, specialMoves: luffySpecialMoves },
   dio: pacedCharacter({
     ...dio_default,
     ...dio_secondary_default,

@@ -155,7 +155,7 @@ export class GameApp {
     luffyPreview.className = "art-link";
     luffyPreview.href = `${assetBase}art/luffy.html`;
     luffyPreview.textContent =
-      "Luffy · modelo pixel art e bancada elástica (etapa inicial)";
+      "Luffy · normais e especiais";
     this.overlay.querySelector(".note")!.before(luffyPreview);
     const specialsPreview = document.createElement("a");
     specialsPreview.className = "art-link";
@@ -221,7 +221,6 @@ export class GameApp {
       this.el("samurai-commands").hidden = id !== "samurai";
       this.el("dio-commands").hidden = id !== "dio";
       this.el("goku-commands").hidden = id !== "goku";
-      this.el("luffy-commands").hidden = id !== "luffy";
       this.root
         .querySelectorAll<HTMLInputElement>('input[name="character"]')
         .forEach((input) =>
@@ -243,7 +242,7 @@ export class GameApp {
           goku = opponentPicker.value === "goku",
           card = this.el("opponent-card");
         card.querySelector("strong")!.textContent = luffy
-          ? "LUFFY · PROTÓTIPO"
+          ? "LUFFY · ELASTICIDADE"
           : dio
             ? "DIO BRANDO"
             : goku
@@ -253,14 +252,14 @@ export class GameApp {
         image.src =
           assetBase +
           (luffy
-            ? "sprites/luffy/base-p2.png"
+            ? "sprites/luffy/base-polished.png"
             : dio
               ? "sprites/dio/base.png"
               : goku
                 ? "sprites/goku/base.png"
                 : "sprites/samurai/base-p2.png");
         image.alt = luffy
-          ? "Luffy, paleta alternativa, protótipo sem golpes"
+          ? "Luffy, lutador elástico"
           : dio
             ? "Dio Brando, paleta alternativa"
             : goku
@@ -326,7 +325,7 @@ export class GameApp {
       this.keyboardOptions.dashOnDirection = session.characterId !== "samurai";
       this.root.querySelector("footer")!.innerHTML =
         session.characterId === "luffy"
-          ? "<div>A/D mover · W pular · S agachar · Shift + direção dash</div><div>LUFFY · MODELO INICIAL · SEM GOLPES</div><div>Pose-base estática. Animações de movimento, defesa, dano, normais, especiais e Super pendentes.</div>"
+          ? "<div>A/D mover · W pular · S agachar · Shift + direção dash</div><div>LUFFY · J/K/L ataques em pé, agachados ou aéreos</div><div>Pistol ↓ → · Gatling ↓ ← · Bazooka ↓ ↓ + J/K/L no chão · R reservado.</div>"
           : session.characterId === "goku"
             ? "<div><kbd>A</kbd><kbd>D</kbd> mover · <kbd>W</kbd> pular · <kbd>S</kbd> agachar · Shift + direção dash</div><div><kbd>J</kbd> leve · <kbd>K</kbd> médio · <kbd>L</kbd> forte · <kbd>U</kbd> agarrar</div><div>J → K → L · S+L → W → J → K → L · Segure para trás para defender. Ki ↓ → · Kamehameha ↓ ← · Teletransporte ↓ ↓ + J/K/L. Sem custo de Super. Fúria Saiyajin: R, custa a barra completa.</div>"
             : session.characterId === "dio"
@@ -473,10 +472,10 @@ export class GameApp {
         this.renderer.localSeat = client.seat;
         this.renderer.resetAnimations();
         if (client.match) this.renderer.tick(client.match);
-        const prototype =
+        const isLuffy =
           client.match?.fighters[client.seat]?.data.id === "luffy";
-        this.root.querySelector("footer")!.innerHTML = prototype
-          ? "<div>LUFFY · PROTÓTIPO DE MODELO</div><div>A/D mover · W pular · S agachar · Shift + direção dash</div><div>Pose-base estática. Animações, golpes, especiais e Super pendentes.</div>"
+        this.root.querySelector("footer")!.innerHTML = isLuffy
+          ? "<div>LUFFY · NORMAIS ELÁSTICOS</div><div>J/K/L em pé, agachado ou no ar · W pular · Shift + direção dash</div><div>Pistol ↓ → · Gatling ↓ ← · Bazooka ↓ ↓ + J/K/L no chão · R reservado.</div>"
           : this.samuraiControls;
         this.canvas.focus({ preventScroll: true });
       };

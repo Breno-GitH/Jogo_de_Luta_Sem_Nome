@@ -7,6 +7,7 @@ export interface ElasticPose {
   bend: number;
   maximumLength: number;
   active: boolean;
+  profile?: "arm" | "leg";
 }
 export interface ElasticGeometry {
   centers: Point[];
@@ -60,16 +61,21 @@ export function elasticGeometry(pose: ElasticPose): ElasticGeometry {
       y: pose.root.y + (tip.y - pose.root.y) * t + ny * bow,
     });
   });
-  const radii = centers.map((_, i) =>
-    Math.max(2, Math.round(pose.radius * (1 - (0.18 * i) / count))),
-  );
+  const radii = centers.map((_, i) => {
+    const t = i / count;
+    if (!pose.profile)
+      return Math.max(2, Math.round(pose.radius * (1 - 0.18 * t)));
+    const muscle = Math.sin(Math.PI * t) * (pose.profile === "leg" ? 2.1 : 1.6);
+    const joint = 1.25 * Math.max(0, 1 - 7 * Math.abs(t - 0.53));
+    return Math.round(pose.radius * (1 - 0.33 * t) + muscle - joint);
+  });
   return {
     centers,
     radii,
     tip,
     limbHurtboxes: centers
       .slice(1)
-      .map((b, i) => ({ a: centers[i], b, r: radii[i] })),
+      .map((b, i) => ({ a: centers[i], b, r: Math.max(radii[i], radii[i + 1]) })),
     hitboxes: pose.active
       ? [{ a: tip, b: { x: tip.x + 11, y: tip.y }, r: 6 }]
       : [],

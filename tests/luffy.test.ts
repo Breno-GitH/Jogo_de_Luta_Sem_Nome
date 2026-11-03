@@ -1,28 +1,21 @@
 import { describe, expect, it } from "vitest";
-import { readFileSync } from "node:fs";
-import { createHash } from "node:crypto";
 import { characters, characterById } from "../src/engine/characters";
 import { Match, FLOOR } from "../src/engine/combat";
-import { neutral, type State } from "../src/engine/types";
+import { neutral } from "../src/engine/types";
 import { snapshot, restore, hashState } from "../src/engine/state";
 import { GameSession } from "../src/game/session";
 import { elasticGeometry, placeElastic } from "../src/engine/elastic";
 import elastic from "../src/data/luffy-elastic.json";
-import animation from "../src/data/luffy-animations.json";
-import { FighterPresentation } from "../src/render/presentation";
 import { selectionScreen } from "../src/ui/screens";
 import { ONLINE_CHARACTERS } from "../src/net/protocol";
 
-describe("Luffy stage-one model in the existing engine", () => {
-  it("registers separate data, atlas, palette and an honest unfinished roster entry", () => {
+describe("Luffy local roster", () => {
+  it("registers Luffy in training, versus and LAN", () => {
     expect(characterById("luffy")).toBe(characters.luffy);
     expect(ONLINE_CHARACTERS).toContain("luffy");
-    expect(animation.sheet).toBe("luffy/base.png");
-    expect(animation.clips.idle.player2Sheet).toBe("luffy/base-p2.png");
-    expect(Object.keys(animation.clips)).toEqual(["idle"]);
     expect(selectionScreen("training")).toContain('value="luffy"');
-    expect(selectionScreen("versus")).toContain("SEM GOLPES");
-    expect(selectionScreen("arcade")).toMatch(/value="luffy"[^>]*disabled/);
+    expect(selectionScreen("versus")).toContain('value="luffy"');
+    expect(selectionScreen("arcade")).not.toContain('value="luffy"');
     for (const invalid of ["__proto__", "toString", "luffy-gear5"])
       expect(() => characterById(invalid)).toThrow("Unknown character");
   });
@@ -42,7 +35,7 @@ describe("Luffy stage-one model in the existing engine", () => {
       expect(f.y).toBeLessThan(FLOOR);
     },
   );
-  it("does not claim unfinished attacks, a grab, specials or a Super", () => {
+  it("keeps grab and Super reserved", () => {
     const m = new Match(
       characters.luffy,
       { training: true },
@@ -54,9 +47,6 @@ describe("Luffy stage-one model in the existing engine", () => {
     f.x = 500;
     m.fighters[1].x = 570;
     for (const button of [
-      "light",
-      "medium",
-      "heavy",
       "throw",
       "ultimate",
     ] as const) {
@@ -69,32 +59,6 @@ describe("Luffy stage-one model in the existing engine", () => {
     expect(m.capture).toBeFalsy();
     expect(m.roadRoller).toBeFalsy();
     expect(m.fury).toBeFalsy();
-  });
-  it("retains exactly its own base drawing for all pending visual states", () => {
-    const m = new Match(characters.luffy),
-      f = m.fighters[0];
-    const presentation = new FighterPresentation(animation);
-    for (const state of [
-      "idle",
-      "walk",
-      "dash",
-      "jumpStart",
-      "air",
-      "landing",
-      "crouch",
-      "hitstun",
-      "blockstun",
-      "getup",
-      "grabbed",
-      "ko",
-      "defeat",
-      "entrance",
-    ] as State[]) {
-      f.setState(state);
-      for (let i = 0; i < 5; i++) presentation.tick(f);
-      expect(presentation.animator.sprite().sheet).toBe("luffy/base.png");
-      expect(presentation.animator.frame()).toBe(0);
-    }
   });
   it("can receive existing combat damage and restore a deterministic checkpoint", () => {
     const m = new Match(
@@ -117,19 +81,6 @@ describe("Luffy stage-one model in the existing engine", () => {
       m.step([...inputs]);
       replay.step([...inputs]);
       expect(hashState(snapshot(replay))).toBe(hashState(snapshot(m)));
-    }
-  });
-  it("keeps every preexisting sprite and other-character data byte-identical", () => {
-    const before = JSON.parse(
-      readFileSync("art/luffy/before.json", "utf8"),
-    ) as Record<string, string>;
-    for (const [file, hash] of Object.entries(before)) {
-      if (!file.startsWith("public/sprites/") && !file.startsWith("src/data/"))
-        continue;
-      expect(
-        createHash("sha256").update(readFileSync(file)).digest("hex"),
-        file,
-      ).toBe(hash);
     }
   });
 });

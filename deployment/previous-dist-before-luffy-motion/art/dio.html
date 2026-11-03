@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Dio + The World · Movimentação</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        font: 15px system-ui;
+        background: #0d141d;
+        color: #e9e4d7;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        max-width: 1360px;
+        margin: 28px auto;
+        padding: 0 24px;
+      }
+      a {
+        color: #e5bc69;
+      }
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+      }
+      h1 {
+        font-size: 30px;
+        margin: 8px 0;
+      }
+      p,
+      small {
+        color: #b5c0c5;
+        line-height: 1.6;
+      }
+      .eyebrow {
+        font: 11px monospace;
+        letter-spacing: 2px;
+        color: #dbb769;
+      }
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+        margin: 20px 0;
+      }
+      button,
+      select {
+        font: inherit;
+        color: #eee5cf;
+        background: #243440;
+        border: 1px solid #536571;
+        padding: 10px 14px;
+        cursor: pointer;
+      }
+      button:disabled {
+        opacity: 0.45;
+        cursor: default;
+      }
+      label {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+      #viewer {
+        overflow: auto;
+        border: 1px solid #455765;
+      }
+      canvas {
+        display: block;
+        width: 100%;
+        height: auto;
+        image-rendering: pixelated;
+      }
+      canvas:focus-visible {
+        outline: 2px solid #e5bc69;
+        outline-offset: -3px;
+      }
+      #status {
+        padding: 14px 0;
+        font: 13px monospace;
+        min-height: 44px;
+      }
+      .downloads {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 18px;
+        margin: 24px 0;
+      }
+      .notes {
+        border-top: 1px solid #455765;
+        padding-top: 16px;
+      }
+      #error {
+        color: #ffb39d;
+      }
+      kbd {
+        font: 12px monospace;
+        border: 1px solid #536571;
+        padding: 2px 5px;
+      }
+      #strip {
+        display: flex;
+        gap: 6px;
+        overflow: auto;
+        padding: 8px 0;
+        min-height: 108px;
+      }
+      #strip button {
+        padding: 0;
+        min-width: 96px;
+        background: #46535d;
+      }
+      #strip button[aria-pressed="true"] {
+        border: 2px solid #e5bc69;
+      }
+      #strip canvas {
+        width: 96px;
+        height: 96px;
+      }
+      #frame {
+        width: 220px;
+        max-width: 45vw;
+      }
+      #debug-info {
+        padding: 12px;
+        background: #1b2c38;
+        font: 12px monospace;
+        line-height: 1.7;
+      }
+    </style>
+    <script type="module" crossorigin src="../assets/dio-CwUAN7wW.js"></script>
+    <link rel="modulepreload" crossorigin href="../assets/dio-motion-CYf0muRB.js">
+    <link rel="modulepreload" crossorigin href="../assets/loop-LRiz5Snv.js">
+  </head>
+  <body>
+    <header>
+      <div>
+        <span class="eyebrow"
+          >PERSONAGEM EM DESENVOLVIMENTO / MOVIMENTAÇÃO</span
+        >
+        <h1>DIO BRANDO <span style="color: #d9bb6c">+ THE WORLD</span></h1>
+      </div>
+      <a href="../">Voltar ao jogo</a>
+    </header>
+    <p>
+      Controle Dio enquanto The World acompanha seus passos e saltos. São 13
+      animações básicas de Dio, seis variações direcionais e sete do Stand, com
+      spritesheets e relógios independentes.
+      Revisão de movimento: passos completos, agachamento anatômico e poses de salto direcionais.
+      <a href="./dio-combat.html">Testar os ataques normais no combate</a>.
+      <a href="./dio-specials.html">Testar facas, Rush e Parada do Tempo</a>.
+      <a href="./road-roller.html">Testar a Super Road Roller · R</a> ·
+      <a href="./dio-secondary.html">Reações, entrada, provocação e vitória</a>.
+    </p>
+    <div class="controls">
+      <label
+        >Modo
+        <select id="mode">
+          <option value="live">Controlar Dio</option>
+          <option value="inspect">Inspecionar animações</option>
+        </select></label
+      >
+      <label
+        >Entidade
+        <select id="entity">
+          <option value="dio">Dio</option>
+          <option value="the-world">The World</option>
+        </select></label
+      >
+      <label
+        >Animação
+        <select id="animation" aria-label="Escolher animação"></select
+      ></label>
+    </div>
+    <div class="controls">
+      <button id="deploy">Testar avanço do Stand · Espaço</button
+      ><button id="flip">Virar direção</button><button id="pause">Pausar</button
+      ><button id="next" disabled>Avançar 1 tick</button
+      ><button id="reset">Restaurar posições</button
+      ><label
+        >Zoom
+        <select id="zoom">
+          <option value="1">1×</option>
+          <option value="2" selected>2×</option>
+          <option value="3">3×</option>
+        </select></label
+      ><label><input id="compare" type="checkbox" />Comparar Samurai</label
+      ><label><input id="previous" type="checkbox" />Antes / depois</label
+      ><label><input id="hide-dio" type="checkbox" />Ocultar Dio</label
+      ><label><input id="hide-world" type="checkbox" />Ocultar The World</label
+      ><label><input id="repeat" type="checkbox" checked />Repetir clipe na inspeção</label
+      ><label
+        ><input id="freeze-stand" type="checkbox" />Pausar só o Stand</label
+      ><label
+        ><input id="guides" type="checkbox" />Depuração de posições e
+        referências</label
+      >
+      <label
+        >Velocidade
+        <select id="speed">
+          <option value="0.25">0,25×</option>
+          <option value="0.5">0,5×</option>
+          <option value="1" selected>1×</option>
+          <option value="2">2×</option>
+        </select></label
+      >
+    </div>
+    <div class="controls">
+      <button id="frame-previous">Quadro anterior</button
+      ><button id="frame-next">Próximo quadro</button>
+      <input
+        id="frame"
+        type="range"
+        min="0"
+        max="5"
+        value="0"
+        aria-label="Quadro da animação"
+      /><output id="frame-number"></output>
+      <a id="download" href="../sprites/dio/idle.png" download
+        >Baixar spritesheet selecionada</a
+      >
+    </div>
+    <div id="viewer">
+      <canvas
+        id="preview"
+        width="1280"
+        height="720"
+        tabindex="0"
+        aria-label="Dio e The World na arena de teste"
+      ></canvas>
+    </div>
+    <div id="strip" aria-label="Quadros da animação"></div>
+    <div id="status" role="status">Carregando animações…</div>
+    <div id="debug-info" hidden></div>
+    <div id="error" role="alert"></div>
+    <p>
+      <kbd>A</kbd>/<kbd>D</kbd> andar · <kbd>W</kbd> pular ·
+      <kbd>S</kbd> agachar · <kbd>Shift</kbd> + direção: dash/backdash ·
+      <kbd>F</kbd> inverter a direção. Dio mantém a guarda ao andar para trás.
+      <kbd>Espaço</kbd> testa o avanço e retorno do Stand, sem dano. Clique na
+      arena para usar o teclado. Os botões de quadro abrem a inspeção da
+      animação selecionada.
+    </p>
+    <div class="downloads">
+      <a href="../sprites/dio/base.png" download>Dio · PNG transparente</a
+      ><a href="../sprites/the-world/base.png" download
+        >The World · PNG transparente</a
+      ><a href="../sprites/dio/palette.json" download>Paleta de Dio</a
+      ><a href="../sprites/the-world/palette.json" download>Paleta do Stand</a
+      ><a href="../sprites/dio/animations.json" download>Atlas de Dio</a
+      ><a href="../sprites/the-world/animations.json" download
+        >Atlas do Stand</a
+      >
+    </div>
+    <div class="notes">
+      <p>
+        <strong>Revisão 2:</strong> 140 desenhos de Dio (124 básicos + 16 variações
+        direcionais de salto) e 38 do Stand. Cada caminhada contém 8 poses-chave e
+        40 desenhos com intermediários a 60 Hz para reduzir o deslizamento dos pés.
+        Nenhum corpo foi comprimido. A identidade usa as bases pintadas aprovadas.
+        Antes/depois mostra a versão antiga à esquerda e a nova à direita sob a mesma física.
+      </p>
+      <p>
+        Os arquivos usam células 256×256, transparência e o mesmo pivô do
+        Samurai. As bases foram geradas e importadas na grade de pixels, com
+        paleta limitada e sem suavização. O Samurai continua usando seus
+        próprios arquivos.
+      </p>
+    </div>
+    <p>
+      <a href="../downloads/dio-the-world-movement.zip" download
+        >Baixar as 26 spritesheets, 178 desenhos, paletas e metadados · ZIP</a
+      >
+    </p>
+  </body>
+</html>

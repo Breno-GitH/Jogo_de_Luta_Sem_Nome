@@ -1,0 +1,203 @@
+{
+  "stand_light": {
+    "holds": [4, 4, 4, 5],
+    "active": [1, 2],
+    "damage": 37,
+    "stun": 23,
+    "blockstun": 10,
+    "push": 1.1,
+    "hitstop": 4,
+    "level": "mid",
+    "kind": "fist",
+    "track": [
+      [26, -86, 8],
+      [71, -91, 2],
+      [54, -90, 5],
+      [29, -84, 8]
+    ],
+    "cancels": [
+      "medium",
+      "heavy"
+    ]
+  },
+  "stand_medium": {
+    "holds": [4, 3, 2, 5, 7, 9],
+    "active": [2, 4],
+    "damage": 62,
+    "stun": 29,
+    "blockstun": 13,
+    "push": 1.7,
+    "hitstop": 6,
+    "level": "mid",
+    "kind": "foot",
+    "track": [
+      [29, -48, 8],
+      [37, -68, 10],
+      [68, -76, 6],
+      [198, -74, 3],
+      [120, -70, 11],
+      [36, -53, 8]
+    ],
+    "cancels": [
+      "heavy"
+    ]
+  },
+  "stand_heavy": {
+    "holds": [5, 4, 2, 3, 5, 9, 12],
+    "active": [2, 5],
+    "damage": 84,
+    "stun": 32,
+    "blockstun": 16,
+    "push": 3.1,
+    "hitstop": 8,
+    "level": "mid",
+    "kind": "fist",
+    "track": [
+      [31, -86, 10],
+      [42, -89, 9],
+      [82, -92, 6],
+      [260, -93, 2],
+      [344, -91, 1],
+      [245, -90, 9],
+      [43, -85, 10]
+    ],
+    "cancels": []
+  },
+  "crouch_light": {
+    "holds": [4, 4, 4, 5],
+    "active": [1, 2],
+    "damage": 34,
+    "stun": 23,
+    "blockstun": 9,
+    "push": 1,
+    "hitstop": 4,
+    "level": "low",
+    "kind": "fist",
+    "track": [
+      [30, -51, 7],
+      [72, -40, 3],
+      [55, -43, 5],
+      [30, -51, 7]
+    ],
+    "cancels": [
+      "medium",
+      "heavy"
+    ]
+  },
+  "crouch_medium": {
+    "holds": [4, 3, 2, 5, 8, 9],
+    "active": [2, 4],
+    "damage": 56,
+    "stun": 28,
+    "blockstun": 13,
+    "push": 1.6,
+    "hitstop": 6,
+    "level": "low",
+    "kind": "foot",
+    "track": [
+      [28, -23, 6],
+      [41, -26, 7],
+      [67, -15, 3],
+      [234, -15, 3],
+      [142, -18, 8],
+      [31, -22, 8]
+    ],
+    "cancels": [
+      "heavy"
+    ]
+  },
+  "crouch_heavy": {
+    "holds": [4, 4, 2, 3, 4, 7, 10],
+    "active": [2, 5],
+    "damage": 71,
+    "stun": 39,
+    "blockstun": 15,
+    "push": 1.8,
+    "hitstop": 8,
+    "level": "mid",
+    "launch": -16,
+    "kind": "foot",
+    "track": [
+      [30, -25, 8],
+      [41, -43, 9],
+      [62, -51, 5],
+      [126, -112, 5],
+      [166, -168, -4],
+      [105, -112, 8],
+      [30, -33, 8]
+    ],
+    "cancels": [
+      "jump"
+    ]
+  },
+  "air_light": {
+    "holds": [4, 4, 4, 5],
+    "active": [1, 2],
+    "damage": 36,
+    "stun": 25,
+    "blockstun": 10,
+    "push": 1.2,
+    "hitstop": 4,
+    "level": "high",
+    "launch": -3.7,
+    "airHold": -3.7,
+    "kind": "fist",
+    "track": [
+      [27, -82, 8],
+      [70, -88, 2],
+      [56, -87, 4],
+      [29, -82, 8]
+    ],
+    "cancels": [
+      "medium",
+      "heavy"
+    ]
+  },
+  "air_medium": {
+    "holds": [4, 3, 2, 5, 7, 8],
+    "active": [2, 4],
+    "damage": 61,
+    "stun": 29,
+    "blockstun": 13,
+    "push": 1.6,
+    "hitstop": 6,
+    "level": "high",
+    "launch": -2.8,
+    "airHold": -2.8,
+    "kind": "foot",
+    "track": [
+      [32, -40, 7],
+      [40, -59, 8],
+      [68, -68, 5],
+      [218, -65, 4],
+      [127, -59, 9],
+      [34, -41, 8]
+    ],
+    "cancels": [
+      "heavy"
+    ]
+  },
+  "air_heavy": {
+    "holds": [5, 4, 2, 4, 5, 8, 11],
+    "active": [2, 5],
+    "damage": 82,
+    "stun": 37,
+    "blockstun": 15,
+    "push": 2.4,
+    "hitstop": 8,
+    "level": "high",
+    "launch": 10,
+    "knockdown": true,
+    "kind": "foot",
+    "track": [
+      [30, -43, 7],
+      [41, -57, 8],
+      [68, -57, 5],
+      [153, 8, 11],
+      [208, 76, 14],
+      [120, 16, 15],
+      [32, -42, 8]
+    ],
+    "cancels": []
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "stage": "movement",
+  "drawings": 45,
+  "cell": [
+    256,
+    256
+  ],
+  "pivot": {
+    "x": 128,
+    "y": 224
+  },
+  "bounds": [
+    96,
+    94,
+    185,
+    224
+  ],
+  "visibleHeight": 130,
+  "facing": "right",
+  "scale": 1,
+  "paletteColors": 36,
+  "alpha": "binary",
+  "source": "scripts/build_luffy.py",
+  "drawingsSource": "scripts/luffy_drawing.py",
+  "sourceImages": [],
+  "revision": 6,
+  "direction": "Enies Lobby open guard, straw hat on back",
+  "pending": [
+    "normals",
+    "defense",
+    "damage reactions",
+    "throws",
+    "specials",
+    "cinematic Super"
+  ],
+  "sha256": "21949b1e84a879f4c3b7572297ea2c9e085af38a6250e25a0840df167b606b4c"
+}

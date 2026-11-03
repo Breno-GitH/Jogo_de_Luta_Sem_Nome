@@ -2,232 +2,61 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Luffy · Modelo pixel art e elasticidade</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Luffy · revisão da pose-base</title>
     <style>
-      :root {
-        color-scheme: dark;
-        font: 15px system-ui;
-        background: #101a24;
-        color: #eee4d3;
-      }
-      * {
-        box-sizing: border-box;
-      }
-      body {
-        max-width: 1360px;
-        margin: 28px auto;
-        padding: 0 24px;
-      }
-      header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 24px;
-      }
-      h1 {
-        font-size: 36px;
-        margin: 8px 0;
-      }
-      h2 {
-        font-size: 20px;
-      }
-      p {
-        line-height: 1.6;
-        color: #bfcbd6;
-      }
-      a {
-        color: #f8ca70;
-      }
-      small,
-      .eyebrow {
-        color: #f5bc60;
-      }
-      .eyebrow {
-        letter-spacing: 0.18em;
-        font-size: 12px;
-      }
-      .controls {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 16px;
-        padding: 16px;
-        background: #1b2a37;
-        align-items: center;
-      }
-      label {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-      select,
-      button {
-        background: #263b4a;
-        color: #f4eadb;
-        border: 1px solid #526674;
-        padding: 8px;
-        border-radius: 4px;
-      }
-      canvas {
-        display: block;
-        width: 100%;
-        height: auto;
-        image-rendering: pixelated;
-        outline: 1px solid #394c59;
-        margin: 16px 0;
-      }
-      .warning {
-        border-left: 3px solid #f5bc60;
-        padding: 12px 16px;
-        background: #212c36;
-      }
-      .palette {
-        display: flex;
-        gap: 3px;
-        flex-wrap: wrap;
-      }
-      .palette span {
-        width: 26px;
-        height: 26px;
-        border: 1px solid #68737d;
-      }
-      .links {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 18px;
-      }
-      #status {
-        font-family: monospace;
-        min-height: 24px;
-        color: #8ed7cb;
-      }
-      #game {
-        max-width: 960px;
-      }
-      details {
-        padding: 12px;
-        background: #1b2a37;
-        margin-top: 12px;
-      }
+      :root { color-scheme: dark; font: 16px system-ui; background: #141f2a; color: #f1e5d7; }
+      body { max-width: 1100px; margin: 36px auto; padding: 0 24px; }
+      a { color: #ffd486; }
+      img { display: block; max-width: 100%; height: auto; image-rendering: pixelated; }
+      section { margin-top: 32px; }
+      canvas { max-width: 100%; image-rendering: pixelated; }
+      #normal-gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 8px; }
+      #elastic-stages { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 450px), 1fr)); gap: 12px; margin-bottom: 24px; }
+      figure { margin: 0; }
     </style>
   </head>
   <body>
-    <header>
-      <div>
-        <span class="eyebrow">MODELO / PRÉ-TIMESKIP / ETAPA 1</span>
-        <h1>MONKEY D. LUFFY</h1>
-      </div>
-      <a id="home" href="../">Voltar ao jogo</a>
-    </header>
-    <p>
-      Desenho por código em resolução nativa. Chapéu de palha, colete aberto,
-      faixa amarela, shorts e sandálias. Um modelo de combate, três estudos
-      faciais e um modelo lateral.
-    </p>
-    <p class="warning">
-      <strong>Protótipo de sprite-base.</strong> Idle animado, caminhada, salto,
-      defesa, dano e golpes ainda não possuem desenhos. A arena abaixo usa a
-      física real e mantém a pose-base para inspeção; isso não representa
-      animação concluída. Elasticidade é uma bancada técnica, sem ataque nem
-      dano.
-    </p>
-    <div class="controls">
-      <label
-        >Estudo
-        <select id="expression">
-          <option value="0">Sorriso confiante</option>
-          <option value="1">Determinado</option>
-          <option value="2">Surpresa</option>
-          <option value="side">Modelo lateral</option>
-        </select></label
-      >
-      <label
-        >Direção
-        <select id="facing">
-          <option value="1">Direita</option>
-          <option value="-1">Esquerda</option>
-        </select></label
-      >
-      <label
-        >Ampliação
-        <select id="zoom">
-          <option value="2">2×</option>
-          <option value="3">3×</option>
-          <option value="4" selected>4×</option>
-        </select></label
-      >
-      <label
-        ><input id="rig" type="checkbox" checked />Articulações e pivô</label
-      >
-      <label
-        ><input id="bounds" type="checkbox" checked />Limites do desenho</label
-      >
-      <label
-        ><input id="compare" type="checkbox" />Comparar escala: Samurai / Dio /
-        Goku</label
-      >
-    </div>
-    <canvas
-      id="model"
-      width="1280"
-      height="620"
-      aria-label="Modelo do Luffy, pivô e escala"
-    ></canvas>
-    <div class="controls">
-      <label
-        ><input id="elastic" type="checkbox" />Demonstrar braço elástico (sem
-        dano)</label
-      >
-      <label
-        >Comprimento
-        <input id="length" type="range" min="40" max="420" value="180"
-      /></label>
-      <label
-        >Curvatura <input id="bend" type="range" min="-18" max="18" value="4"
-      /></label>
-      <label
-        ><input id="geometry" type="checkbox" checked />Geometria potencial de
-        colisão</label
-      >
-    </div>
-    <canvas
-      id="limb"
-      width="1280"
-      height="380"
-      aria-label="Infraestrutura elástica, sem hitbox ativa"
-    ></canvas>
-    <h2>Paleta nativa · 35 cores</h2>
-    <div id="palette" class="palette"></div>
-    <h2>Dentro do motor existente</h2>
-    <p>
-      A/D mover · W pular · S agachar · Shift + direção dash. Clique na arena.
-      Nenhum golpe está habilitado.
-      <button id="reset">Reiniciar posições</button>
-      <label style="display: inline-flex"
-        ><input id="game-debug" type="checkbox" checked />Caixas do motor</label
-      >
-    </p>
-    <canvas
-      id="game"
-      width="1280"
-      height="720"
-      tabindex="0"
-      aria-label="Teste do Luffy contra Samurai no motor existente"
-    ></canvas>
-    <output id="status">Carregando recursos…</output>
-    <details>
-      <summary>O que esta etapa entrega</summary>
-      <p>
-        Atlas transparente 256×256, altura 130 px, pivô (128,224), direção
-        direita, paleta alternativa para espelhos, pontos anatômicos e
-        componentes independentes. O chapéu não acrescenta uma área vulnerável
-        artificial. As hurtboxes de baixo/ar ainda mantêm a geometria da
-        pose-base. A elasticidade não está ligada a um golpe e não gera dano.
-        Sem Haki, Gear ou Super nesta etapa.
+    <a href="../">Voltar ao jogo</a>
+    <h1>Luffy · revisão da pose-base</h1>
+    <p>Pré-timeskip, Enies Lobby. O sprite tem 130 pixels de altura em uma célula transparente de 256 × 256, com pivô em (128, 224).</p>
+    <p>Polimento da pose de combate e do rosto. A escala e o pivô são iguais nas duas versões.</p>
+    <p><a href="../sprites/luffy/base-polished.png" download>Baixar o sprite corrigido</a> · <a href="../sprites/luffy/base-review.png" download>Baixar o sprite anterior</a></p>
+    <section>
+      <h2>Antes e depois, ampliados em 3×</h2>
+      <img src="../sprites/luffy/before-after-polish.png" width="870" height="468" alt="Luffy anterior e Luffy com guarda mais firme e rosto simplificado" />
+    </section>
+    <section>
+      <h2>Comparação com o elenco na mesma escala</h2>
+      <img src="../sprites/luffy/lineup-polished.png" width="1740" height="468" alt="Samurai, Dio, Goku e Luffy corrigido na mesma linha de chão" />
+    </section>
+    <section id="normais">
+      <h2>Ataques normais</h2>
+      <p>Reproduza em câmera lenta, inspecione os ticks e espelhe o golpe. Verde indica região vulnerável e vermelho indica contato ativo.</p>
+      <p><select id="normal" aria-label="Golpe"></select>
+        <button id="normal-play">Reproduzir</button>
+        <input type="range" id="normal-tick" min="0" value="0" aria-label="Tick">
+        <label><input id="normal-boxes" type="checkbox"> Caixas</label>
+        <label><input id="normal-mirror" type="checkbox"> Espelhar</label>
       </p>
-    </details>
-    <h2>Arquivos reais</h2>
-    <nav class="links" id="exports"></nav>
-    <script type="module" src="../src/luffy-lab.ts"></script>
+      <canvas id="normal-preview" width="630" height="195" style="width: 1100px"></canvas>
+      <output id="normal-readout"></output>
+      <p>Régua a cada 50 px. Laranja marca o alcance anterior do punho ou pé e ciano marca o novo.</p>
+      <div id="elastic-stages"></div>
+      <div id="normal-gallery"></div>
+    </section>
+    <section id="especiais">
+      <h2>Especiais terrestres</h2>
+      <p>Pistol ↓ → · Gatling ↓ ← · Bazooka ↓ ↓. Termine com J/K/L. Use o seletor acima para reproduzir e inspecionar cada versão.</p>
+      <div id="special-gallery"></div>
+      <p><a href="../sprites/luffy/specials.png" download>Baixar atlas dos corpos</a></p>
+    </section>
+    <section>
+      <h2>Movimentação</h2>
+      <p>Para controlar Luffy, volte ao jogo e escolha Treinamento. Use A/D para andar, W para pular, S para agachar e Shift + direção para o dash.</p>
+      <img src="../sprites/luffy/movement-preview-polished.gif" width="320" height="310" alt="Prévia animada dos treze movimentos de Luffy" />
+      <p><a href="../sprites/luffy/movement-polished.png" download>Baixar spritesheet</a> · <a href="../sprites/luffy/movement-contact-polished.png">Ver os 45 quadros</a></p>
+    </section>
+    <script type="module" src="/src/luffy-normals-lab.ts"></script>
   </body>
 </html>

@@ -402,6 +402,27 @@ test("rooms validate codes, enforce two seats, confirmation/host start, isolate 
   third.disconnect();
 });
 
+test("Luffy specials keep each Gatling hit authoritative on two LAN clients", async () => {
+  const code = await pair("luffy", "dio");
+  const room = await seed(code, 110);
+  await motion(a, [2, 1, 4], "l");
+  await expect.poll(() => room.match!.fighters[0].moveId).toBe("gatling_heavy");
+  await expect.poll(() => room.match!.fighters[1].health).toBeLessThan(1000);
+  await capture(code, "luffy-gatling-lan");
+  await expect.poll(() => room.match!.fighters[1].health).toBe(881);
+  await consistent();
+});
+
+test("Luffy long normal stays authoritative on two LAN clients", async () => {
+  const code = await pair("luffy", "samurai");
+  const r = await seed(code, 324);
+  await press(a, "l");
+  await expect.poll(() => r.match!.fighters[1].health).toBe(916);
+  await capture(code, "luffy-stand-heavy-long");
+  await consistent();
+  await expect.poll(() => r.match!.fighters[0].moveId).toBe("");
+});
+
 for (const character of ["samurai", "dio", "goku"] as const)
   test(`${character}: real attacks and special cinematic stay authoritative on both clients`, async () => {
     const code = await pair(character, character),

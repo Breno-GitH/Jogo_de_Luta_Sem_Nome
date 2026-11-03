@@ -1,18 +1,44 @@
 {
   "id": "luffy",
-  "name": "Luffy · Protótipo base",
+  "name": "Luffy · Enies Lobby",
   "health": 1000,
-  "speed": 6.3,
+  "speed": 4.3,
   "jump": -17.5,
   "gravity": 0.74,
   "meterGainScale": 0,
   "locomotion": {
-    "backSpeed": 5.2,
+    "backSpeed": 3.5,
     "airSpeed": 6.4,
     "jumpStartup": 4,
     "landingTicks": 6,
-    "dashForward": [3, 8, 15, 19, 20, 19, 17, 14, 10, 6, 2, 0],
-    "backdash": [3, 7, 12, 16, 17, 16, 14, 11, 7, 3, 0, 0]
+    "dashForward": [
+      3,
+      8,
+      15,
+      19,
+      20,
+      19,
+      17,
+      14,
+      10,
+      6,
+      2,
+      0
+    ],
+    "backdash": [
+      3,
+      7,
+      12,
+      16,
+      17,
+      16,
+      14,
+      11,
+      7,
+      3,
+      0,
+      0
+    ]
   },
   "moves": {},
   "hurtboxes": {
@@ -44,28 +70,22 @@
     ],
     "crouching": [
       {
-        "x": -11,
-        "y": -117,
-        "w": 30,
-        "h": 27
+        "x": 0,
+        "y": -96,
+        "w": 32,
+        "h": 24
       },
       {
-        "x": -40,
-        "y": -95,
-        "w": 89,
-        "h": 33
+        "x": -25,
+        "y": -75,
+        "w": 68,
+        "h": 38
       },
       {
-        "x": -24,
-        "y": -62,
-        "w": 50,
-        "h": 26
-      },
-      {
-        "x": -35,
-        "y": -36,
-        "w": 89,
-        "h": 36
+        "x": -39,
+        "y": -37,
+        "w": 83,
+        "h": 37
       }
     ],
     "air": [
@@ -94,5 +114,10 @@
         "h": 36
       }
     ]
+  },
+  "combatLimits": {
+    "maxHits": 14,
+    "maxAirHits": 8,
+    "maxTicks": 390
   }
 }

@@ -38,6 +38,8 @@ def protect():
  # require a separately recorded, reasoned hash for each authorised revision.
  frenzy=ROOT/'deployment/audit/frenzy-shared-engine-revisions.json'
  if frenzy.exists():revisions.update(read(frenzy)['files'])
+ luffy=ROOT/'deployment/audit/luffy-normals-shared-engine-revisions.json'
+ if luffy.exists():revisions.update(read(luffy)['files'])
  allowed={'src/engine/bot.ts','src/engine/characters.ts','src/engine/combat.ts','src/engine/types.ts','src/engine/input.ts','src/engine/state.ts'}
  allowed.update({'src/engine/moves.ts','src/engine/stand-combat.ts','src/render/dio-motion.ts'})
  assert set(revisions)<=allowed,'unreviewed shared-engine exemption'

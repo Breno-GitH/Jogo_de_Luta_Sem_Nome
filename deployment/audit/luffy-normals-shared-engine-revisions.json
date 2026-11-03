@@ -1,0 +1,21 @@
+{
+  "files": {
+    "src/engine/characters.ts": {
+      "baseline": "49a870d85ddd10eb2d68332996192b3a1950b3ab549e8a4f33abd43c924be77a",
+      "previous": "f9ec8d20d113dc89c3419873892bf76e97e476f7ae1c55cc924b16a5213f627e",
+      "current": "8ed39f96d6ebf14a26f2df0c43ac8f03e0a32956c8986266fb5e1fcc6f431fd5",
+      "reason": "Attach the nine ground specials to Luffy only."
+    },
+    "src/engine/combat.ts": {
+      "baseline": "ed1676686f0e2b68ab9e730a4f1e58a5d99c6d0b4146e956b2aaaf6d02eb5f7b",
+      "previous": "d3b613b46b9f9ba6a6dd2d1af9a1dc2f70d2a9a56547ab68661f22a2780bd210",
+      "current": "740be301aff642cf5536dfb6101dc99e3bc97c0a41af0ca7a70d5b9d013184ec",
+      "reason": "Resolve Luffy-only motion commands, confirmed cancels and multiple elastic terminal capsules in the existing fixed tick pipeline."
+    },
+    "src/engine/types.ts": {
+      "baseline": "f11f713bbf8e86186d53542d53ed343fc3d8e3ded8a3d4d1b6971cbc56c95c96",
+      "current": "a666cae09d5881aa750ee2a7099b1204c75b753e735d58f1a2e68ba7dbe8e6e0",
+      "reason": "Add the three Luffy special identifiers to the move type."
+    }
+  }
+}

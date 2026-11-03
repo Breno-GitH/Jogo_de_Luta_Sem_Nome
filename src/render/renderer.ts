@@ -7,8 +7,11 @@ import { drawFury, furyFxSheets } from "./goku-fury-fx";
 import { FLOOR, type Match } from "../engine/combat";
 import { Animator, metadata, type AnimationData } from "./animator";
 import dioAnimations from "../data/dio-animations.json";
-import luffyAnimations from "../data/luffy-animations.json";
 import { gokuAnimations } from "./goku-animations";
+import { luffyAnimations } from "./luffy-animations";
+import { luffyAttackLimbs } from "../engine/luffy-specials";
+import { paintElastic } from "./elastic";
+import { paintLuffyTrails } from "./luffy-special-fx";
 import worldAnimations from "../data/the-world-animations.json";
 import { FighterPresentation } from "./presentation";
 import { drawCombatDebug } from "./debug";
@@ -458,6 +461,10 @@ export class Renderer {
           ? (this.variants.get(`${this.opponentPalette}:${sprite.sheet}`) ??
             original)
           : original;
+      const limbs = luffyAttackLimbs(f);
+      if (this.effects && f.data.id === "luffy" && f.move?.special)
+        paintLuffyTrails(c, limbs, f.stateFrame, f.move);
+      for (const limb of limbs) if (limb.rear) paintElastic(c, limb, limb);
       if (
         image &&
         (image instanceof HTMLCanvasElement ||
@@ -500,6 +507,7 @@ export class Renderer {
           sprite.height,
         );
       }
+      for (const limb of limbs) if (!limb.rear) paintElastic(c, limb, limb);
       c.restore();
       if (this.debug) {
         c.fillStyle = "#e7c56e";
@@ -648,7 +656,7 @@ export class Renderer {
       c.fillStyle = i === 0 ? "#e5b16b" : "#73cbd5";
       c.fillText(
         f.data.id === "luffy"
-          ? "LUFFY · SPRITE-BASE · GOLPES E ANIMAÇÕES PENDENTES"
+          ? "LUFFY · NORMAIS ELÁSTICOS"
           : f.data.id === "goku"
             ? `FÚRIA SAIYAJIN · ${f.meter >= f.meterMaximum ? "PRONTA · R" : Math.floor((100 * f.meter) / f.meterMaximum) + "%"}`
             : f.data.id === "samurai"

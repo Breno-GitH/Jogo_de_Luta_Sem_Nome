@@ -1,6 +1,7 @@
 import type { Fighter } from "../engine/combat";
 import { reactionFor } from "../engine/lifecycle";
 import { Animator, metadata, type AnimationData } from "./animator";
+import { LuffyMotionPresentation } from "./luffy-motion";
 import { DioMotionPresentation } from "./dio-motion";
 import { GokuMotionPresentation } from "./goku-motion";
 import gokuCombatAnimation from "../data/goku-combat-animations.json";
@@ -12,6 +13,7 @@ import { animationTick } from "../engine/pace";
 /** Selects visual phases without driving physics from animation frames. */
 export class FighterPresentation {
   readonly animator: Animator;
+  private luffyMotion?: LuffyMotionPresentation;
   private dioMotion?: DioMotionPresentation;
   private gokuMotion?: GokuMotionPresentation;
   private gokuCombat?: GokuCombatPresentation;
@@ -29,6 +31,8 @@ export class FighterPresentation {
           }
         : data,
     );
+    if (data.sheet.startsWith("luffy/"))
+      this.luffyMotion = new LuffyMotionPresentation(this.animator);
     if (data.sheet.startsWith("dio/"))
       this.dioMotion = new DioMotionPresentation(this.animator);
     if (data.sheet.startsWith("goku/"))
@@ -47,11 +51,8 @@ export class FighterPresentation {
     return this.gokuMotion?.renderRootX(fighter) ?? Math.round(fighter.x);
   }
   tick(fighter: Fighter) {
-    // Stage-one model has exactly one authored drawing. Do not silently
-    // borrow Samurai clips or manufacture movement/reactions from this pose.
-    if (fighter.data.id === "luffy") {
-      this.animator.update("idle");
-      this.animator.seekTick(0);
+    if (this.luffyMotion) {
+      this.luffyMotion.tick(fighter);
       return;
     }
     // A guard is also an idle/crouch physics state. Give its explicit reaction

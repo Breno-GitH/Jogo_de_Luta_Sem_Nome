@@ -27,6 +27,7 @@ import { combatPace, pacedCharacter } from "./pace";
 import cinematics from "../data/cinematics.json";
 import { reactionBoxes, reactionFor } from "./lifecycle";
 import { poseAt, phaseAt } from "./moves";
+import { luffyAttackLimbs, luffySpecialCommand } from "./luffy-specials";
 import {
   shapeBounds,
   shapeHitsRect,
@@ -137,6 +138,7 @@ export class Fighter {
       !this.airborne &&
       !this.move?.special &&
       !this.move?.super &&
+      (this.data.id !== "luffy" || this.hitConfirmed) &&
       this.canCancel("special")
     );
   }
@@ -275,6 +277,9 @@ export class Fighter {
         },
       ];
     if (this.invulnerability?.upperOnly) boxes = boxes.slice(2, 4);
+    const limbs = luffyAttackLimbs(this);
+    if (limbs.length)
+      boxes = [...boxes, ...limbs.flatMap(limb => limb.limbHurtboxes.map(shapeBounds))];
     return boxes.map((box) => worldRect(box, this.x, this.y, this.facing));
   }
   get invulnerability() {
@@ -371,6 +376,9 @@ export class Fighter {
     const pose = poseAt(m, this.stateFrame);
     if (m.hitWindows && !this.hitWindow) return [];
     if (m.stand) return this.stand?.hitboxes(this) ?? [];
+    const limbs = luffyAttackLimbs(this);
+    if (limbs.length)
+      return limbs.flatMap(limb => limb.hitboxes.map(shape => worldCapsule(shape, this.x, this.y, this.facing)));
     if (m.kind === "grab")
       return [worldRect(m.box, this.x, this.y, this.facing)];
     const body = pose?.hitboxes
@@ -621,6 +629,18 @@ export class Fighter {
           }
         }
       }
+      if (this.data.id === "luffy" && !this.airborne) {
+        for (const button of ["heavy", "medium", "light"] as const) {
+          const special = luffySpecialCommand(this.buffer, button);
+          if (!special) continue;
+          if (this.attack(`${special}_${button}`)) {
+            this.buffer.consumeSpecial(button);
+            return;
+          }
+          if (free || this.move?.special) this.buffer.consumeSpecial(button);
+          break;
+        }
+      }
       if (this.data.id === "dio" && this.data.specialMoves && !this.airborne) {
         // Supplied L has time-stop priority; recognised unavailable commands
         // are consumed rather than silently becoming a heavy normal.
@@ -684,6 +704,8 @@ export class Fighter {
       }
       if (free || this.state === "attack") {
         for (const b of ["throw", "light", "medium", "heavy"] as const) {
+          if (this.data.id === "luffy" && !this.airborne && luffySpecialCommand(this.buffer, b))
+            continue;
           if (
             this.data.id === "dio" &&
             this.data.specialMoves &&
@@ -1093,31 +1115,31 @@ export class Match {
       if (this.temporal.isFrozen(i)) return null;
       const shapes = f.attackShapes();
       const target = this.fighters[1 - i];
-      return shapes.length &&
-        f.canConnect &&
-        !target.knockedDown &&
-        !target.invulnerable &&
-        shapes.some((shape) =>
-          (f.move?.kind === "grab"
-            ? target.hurtboxes().slice(0, 2)
-            : target.hurtboxes()
-          ).some((hurt) => shapeHitsRect(shape, hurt)),
-        ) &&
-        !(
-          f.move?.level === "throw" &&
-          (target.airborne ||
-            target.state === "hitstun" ||
-            target.state === "blockstun")
-        )
-        ? {
-            f,
-            target,
-            move: { ...f.move!, ...f.hitWindow },
-            moveId: f.moveId,
-            hitId: f.hitWindow?.id ?? 0,
-            impact: f.move?.stand ? shapeBounds(shapes[0]) : undefined,
-          }
-        : null;
+      if (!shapes.length || !f.canConnect || target.knockedDown || target.invulnerable ||
+          (f.move?.level === "throw" &&
+            (target.airborne || target.state === "hitstun" || target.state === "blockstun")))
+        return null;
+      const boxes = target.hurtboxes();
+      const hurtboxes = f.move?.kind === "grab" ? boxes.slice(0, 2) : boxes;
+      for (const shape of shapes) {
+        const hurt = hurtboxes.find(box => shapeHitsRect(shape, box));
+        if (!hurt) continue;
+        let impact = f.move?.stand ? shapeBounds(shapes[0]) : undefined;
+        if (f.data.id === "luffy") {
+          const bounds = shapeBounds(shape);
+          const x = Math.max(hurt.x, bounds.x), y = Math.max(hurt.y, bounds.y);
+          impact = {
+            x, y,
+            w: Math.min(hurt.x + hurt.w, bounds.x + bounds.w) - x,
+            h: Math.min(hurt.y + hurt.h, bounds.y + bounds.h) - y,
+          };
+        }
+        return {
+          f, target, move: { ...f.move!, ...f.hitWindow },
+          moveId: f.moveId, hitId: f.hitWindow?.id ?? 0, impact,
+        };
+      }
+      return null;
     });
     for (const c of contacts) {
       if (!c) continue;

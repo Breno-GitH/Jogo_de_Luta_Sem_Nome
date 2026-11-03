@@ -2,6 +2,8 @@ import samurai from "../data/samurai.json";
 import dio from "../data/dio.json";
 import { goku } from "./goku-data";
 import luffy from "../data/luffy.json";
+import { luffyMoves } from "./luffy-normals";
+import { luffySpecialMoves } from "./luffy-specials";
 import specialMoves from "../data/dio-special-moves.json";
 import specialActions from "../data/the-world-special-actions.json";
 import superMoves from "../data/dio-super-moves.json";
@@ -15,7 +17,7 @@ export type CharacterId = "samurai" | "dio" | "goku" | "luffy";
 export const characters: Record<CharacterId, CharacterData> = {
   samurai: pacedCharacter(samurai),
   goku: pacedCharacter(goku),
-  luffy,
+  luffy: { ...luffy, moves: luffyMoves, specialMoves: luffySpecialMoves },
   dio: pacedCharacter({
     ...dio,
     ...secondary,
