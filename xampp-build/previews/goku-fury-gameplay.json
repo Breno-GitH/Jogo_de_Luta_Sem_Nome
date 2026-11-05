@@ -1,0 +1,13 @@
+{
+  "source": "real Match + Renderer Canvas, real directional InputFrames",
+  "simulationHz": 60,
+  "sourceFPS": 20,
+  "previewFPS": 10,
+  "sourceCaptures": 200,
+  "previewSize": [
+    640,
+    360
+  ],
+  "silent": true,
+  "resize": "nearest-neighbor"
+}

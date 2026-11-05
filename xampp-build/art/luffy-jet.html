@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Luffy · Gomu Gomu no Jet Gigant</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        font: 16px system-ui;
+        background: #101922;
+        color: #f4eadc;
+      }
+      body {
+        max-width: 1280px;
+        padding: 0 20px;
+        margin: 24px auto;
+      }
+      a {
+        color: #ffd086;
+      }
+      p,
+      output {
+        color: #bcd1d4;
+      }
+      .controls {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin: 16px 0;
+      }
+      button,
+      select {
+        font: inherit;
+        padding: 7px 10px;
+        color: inherit;
+        background: #253943;
+        border: 1px solid #607780;
+      }
+      canvas {
+        display: block;
+        width: 100%;
+        height: auto;
+        image-rendering: pixelated;
+        outline: 1px solid #455b68;
+      }
+      input[type="range"] {
+        flex: 1 1 210px;
+      }
+    </style>
+    <script type="module" crossorigin src="../assets/luffyJet-D5H09whV.js"></script>
+    <link rel="modulepreload" crossorigin href="../assets/animator-DnpDgivx.js">
+    <link rel="modulepreload" crossorigin href="../assets/debug-RiSxDbA-.js">
+    <link rel="modulepreload" crossorigin href="../assets/characters-Btweb1QT.js">
+    <link rel="modulepreload" crossorigin href="../assets/loop-LRiz5Snv.js">
+    <link rel="modulepreload" crossorigin href="../assets/dio-motion-DyGKoyUx.js">
+    <link rel="modulepreload" crossorigin href="../assets/renderer-DA57KKQI.js">
+  </head>
+  <body>
+    <nav>
+      <a href="../">Voltar ao jogo</a> ·
+      <a href="luffy-secondary.html">Outras animações do Luffy</a>
+    </nav>
+    <h1>Gomu Gomu no Jet Gigant</h1>
+    <p>
+      Prévia no motor do jogo. Em combate livre, pressione R com a barra
+      completa para tentar o Jet Pistol.
+    </p>
+    <div class="controls">
+      <label
+        >Ensaio
+        <select id="scenario">
+          <option value="hit">Acerto</option>
+          <option value="ko">KO</option>
+          <option value="guard">Defesa</option>
+          <option value="whiff">Fora de alcance</option>
+          <option value="empty">Sem barra</option>
+          <option value="free">Combate livre</option>
+        </select></label
+      >
+      <label
+        >Adversário
+        <select id="rival">
+          <option value="samurai">Samurai</option>
+          <option value="dio">Dio</option>
+          <option value="goku">Goku</option>
+          <option value="luffy">Luffy</option>
+        </select></label
+      >
+      <label
+        >Velocidade
+        <select id="speed">
+          <option value="0.25">¼×</option>
+          <option value="0.5">½×</option>
+          <option value="1" selected>1×</option>
+        </select></label
+      >
+      <label><input type="checkbox" id="mirror" /> Espelhar</label>
+      <label><input type="checkbox" id="debug" /> Caixas</label>
+      <button id="reset">Repetir</button><button id="play">Pausar</button>
+      <button id="step">Avançar um tick</button>
+    </div>
+    <canvas id="arena" width="1280" height="720" tabindex="0"></canvas>
+    <div class="controls">
+      <label for="seek">Linha do tempo</label
+      ><input id="seek" type="range" min="0" max="540" value="0" />
+      <output id="status" aria-live="off">Carregando sprites…</output>
+    </div>
+    <p>
+      <a href="../sprites/luffy/jet/body.png">Corpo</a> ·
+      <a href="../sprites/luffy/jet/fists.png">Punho gigante</a> ·
+      <a href="../sprites/luffy/jet/effects.png">Efeitos</a>
+    </p>
+  </body>
+</html>

@@ -1,0 +1,29 @@
+{
+  "source": "actual fixed-tick game Canvas, captured every second simulation tick",
+  "simulationTicks": 350,
+  "ticksPerSecond": 60,
+  "capturedFrames": 175,
+  "captureFPS": 30,
+  "apngFrames": 169,
+  "durationMs": 5833.333333333334,
+  "hits": 15,
+  "damage": 350,
+  "cost": 200,
+  "cameraRestored": true,
+  "ownerAndStandReturned": true,
+  "phases": [
+    "activation",
+    "ascent",
+    "barrage",
+    "descent",
+    "explosion",
+    "finish",
+    "finisher",
+    "impact",
+    "landing",
+    "offscreen",
+    "preparation",
+    "smoke"
+  ],
+  "trace": "art/dio/qa/road-roller/trace.json"
+}

@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Luffy · revisão da pose-base</title>
+    <style>
+      :root { color-scheme: dark; font: 16px system-ui; background: #141f2a; color: #f1e5d7; }
+      body { max-width: 1100px; margin: 36px auto; padding: 0 24px; }
+      a { color: #ffd486; }
+      img { display: block; max-width: 100%; height: auto; image-rendering: pixelated; }
+      section { margin-top: 32px; }
+      canvas { max-width: 100%; image-rendering: pixelated; }
+      #normal-gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 8px; }
+      #elastic-stages { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 450px), 1fr)); gap: 12px; margin-bottom: 24px; }
+      figure { margin: 0; }
+    </style>
+    <script type="module" crossorigin src="../assets/luffy-BqdL1WOK.js"></script>
+    <link rel="modulepreload" crossorigin href="../assets/animator-DnpDgivx.js">
+    <link rel="modulepreload" crossorigin href="../assets/debug-RiSxDbA-.js">
+    <link rel="modulepreload" crossorigin href="../assets/characters-Btweb1QT.js">
+  </head>
+  <body>
+    <a href="../">Voltar ao jogo</a>
+    · <a href="luffy-secondary.html">Defesa, reações e agarrão</a> · <a href="luffy-jet.html">Super Jet Gigant</a>
+    <h1>Luffy · revisão da pose-base</h1>
+    <p>Pré-timeskip, Enies Lobby. O sprite tem 130 pixels de altura em uma célula transparente de 256 × 256, com pivô em (128, 224).</p>
+    <p>Polimento da pose de combate e do rosto. A escala e o pivô são iguais nas duas versões.</p>
+    <p><a href="../sprites/luffy/base-polished.png" download>Baixar o sprite corrigido</a> · <a href="../sprites/luffy/base-review.png" download>Baixar o sprite anterior</a></p>
+    <section>
+      <h2>Antes e depois, ampliados em 3×</h2>
+      <img src="../sprites/luffy/before-after-polish.png" width="870" height="468" alt="Luffy anterior e Luffy com guarda mais firme e rosto simplificado" />
+    </section>
+    <section>
+      <h2>Comparação com o elenco na mesma escala</h2>
+      <img src="../sprites/luffy/lineup-polished.png" width="1740" height="468" alt="Samurai, Dio, Goku e Luffy corrigido na mesma linha de chão" />
+    </section>
+    <section id="normais">
+      <h2>Ataques normais</h2>
+      <p>Reproduza em câmera lenta, inspecione os ticks e espelhe o golpe. Verde indica região vulnerável e vermelho indica contato ativo.</p>
+      <p><select id="normal" aria-label="Golpe"></select>
+        <button id="normal-play">Reproduzir</button>
+        <button id="normal-impact">Ver contato confirmado</button>
+        <input type="range" id="normal-tick" min="0" value="0" aria-label="Tick">
+        <label><input id="normal-boxes" type="checkbox"> Caixas</label>
+        <label><input id="normal-mirror" type="checkbox"> Espelhar</label>
+      </p>
+      <canvas id="normal-preview" width="630" height="195" style="width: 1100px"></canvas>
+      <output id="normal-readout"></output>
+      <p>Régua a cada 50 px. Laranja marca o alcance anterior do punho ou pé e ciano marca o novo.</p>
+      <div id="elastic-stages"></div>
+      <div id="normal-gallery"></div>
+    </section>
+    <section id="especiais">
+      <h2>Especiais terrestres</h2>
+      <p>Pistol ↓ → · Gatling ↓ ← · Bazooka ↓ ↓. Termine com J/K/L. Use o seletor acima para reproduzir e inspecionar cada versão.</p>
+      <div id="special-gallery"></div>
+      <p><a href="../sprites/luffy/specials.png" download>Baixar atlas dos corpos</a></p>
+    </section>
+    <section>
+      <h2>Movimentação</h2>
+      <p>Para controlar Luffy, volte ao jogo e escolha Treinamento. Use A/D para andar, W para pular, S para agachar e Shift + direção para o dash.</p>
+      <img src="../sprites/luffy/movement-preview-polished.gif" width="320" height="310" alt="Prévia animada dos treze movimentos de Luffy" />
+      <p><a href="../sprites/luffy/movement-polished.png" download>Baixar spritesheet</a> · <a href="../sprites/luffy/movement-contact-polished.png">Ver os 45 quadros</a></p>
+    </section>
+  </body>
+</html>

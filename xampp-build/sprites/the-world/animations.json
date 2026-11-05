@@ -1,0 +1,4187 @@
+{
+  "sheet": "the-world/base.png",
+  "frameWidth": 256,
+  "frameHeight": 256,
+  "columns": 1,
+  "pivot": {
+    "x": 128,
+    "y": 224
+  },
+  "scale": 1,
+  "clips": {
+    "standIdle": {
+      "sheet": "the-world/standIdle.png",
+      "columns": 6,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "ticks": 10,
+      "durations": [
+        10,
+        10,
+        10,
+        10,
+        10,
+        10
+      ],
+      "loop": true
+    },
+    "floating": {
+      "sheet": "the-world/floating.png",
+      "columns": 6,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "ticks": 9,
+      "durations": [
+        9,
+        9,
+        9,
+        9,
+        9,
+        9
+      ],
+      "loop": true
+    },
+    "followForward": {
+      "sheet": "the-world/followForward.png",
+      "columns": 6,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "ticks": 5,
+      "durations": [
+        5,
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "loop": true
+    },
+    "followBackward": {
+      "sheet": "the-world/followBackward.png",
+      "columns": 6,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "ticks": 5,
+      "durations": [
+        5,
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "loop": true
+    },
+    "dashFollow": {
+      "sheet": "the-world/dashFollow.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 2,
+      "durations": [
+        2,
+        3,
+        4,
+        4,
+        3
+      ],
+      "loop": false
+    },
+    "jumpFollow": {
+      "sheet": "the-world/jumpFollow.png",
+      "columns": 4,
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "ticks": 5,
+      "durations": [
+        5,
+        8,
+        8,
+        6
+      ],
+      "loop": false
+    },
+    "returnPosition": {
+      "sheet": "the-world/returnPosition.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 3,
+      "durations": [
+        3,
+        3,
+        3,
+        4,
+        5
+      ],
+      "loop": false
+    },
+    "base": {
+      "sheet": "the-world/base.png",
+      "columns": 1,
+      "frames": [
+        0
+      ],
+      "ticks": 60,
+      "durations": [
+        60
+      ],
+      "loop": true
+    },
+    "hover": {
+      "sheet": "the-world/floating.png",
+      "columns": 6,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "ticks": 9,
+      "durations": [
+        9,
+        9,
+        9,
+        9,
+        9,
+        9
+      ],
+      "loop": true
+    },
+    "forwardAttackMovement": {
+      "sheet": "the-world/forwardAttackMovement.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "quickPunch": {
+      "sheet": "the-world/quickPunch.png",
+      "columns": 6,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "ticks": 2,
+      "durations": [
+        2,
+        2,
+        2,
+        3,
+        4,
+        4
+      ],
+      "loop": false
+    },
+    "heavyPunch": {
+      "sheet": "the-world/heavyPunch.png",
+      "columns": 8,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "ticks": 3,
+      "durations": [
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        6,
+        7
+      ],
+      "loop": false
+    },
+    "uppercut": {
+      "sheet": "the-world/uppercut.png",
+      "columns": 8,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "ticks": 3,
+      "durations": [
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        5,
+        6
+      ],
+      "loop": false
+    },
+    "downwardPunch": {
+      "sheet": "the-world/downwardPunch.png",
+      "columns": 6,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "ticks": 3,
+      "durations": [
+        3,
+        2,
+        3,
+        3,
+        4,
+        5
+      ],
+      "loop": false
+    },
+    "attackRecovery": {
+      "sheet": "the-world/attackRecovery.png",
+      "columns": 4,
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "returnBehind": {
+      "sheet": "the-world/returnBehind.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 2,
+      "durations": [
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "loop": false
+    },
+    "straightPunch": {
+      "sheet": "the-world/straightPunch.png",
+      "columns": 7,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "ticks": 2,
+      "durations": [
+        2,
+        2,
+        3,
+        3,
+        3,
+        4,
+        5
+      ],
+      "loop": false
+    },
+    "lowPunch": {
+      "sheet": "the-world/lowPunch.png",
+      "columns": 6,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "ticks": 2,
+      "durations": [
+        2,
+        2,
+        2,
+        3,
+        4,
+        4
+      ],
+      "loop": false
+    },
+    "lowSweep": {
+      "sheet": "the-world/lowSweep.png",
+      "columns": 7,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "ticks": 3,
+      "durations": [
+        3,
+        3,
+        3,
+        3,
+        3,
+        5,
+        6
+      ],
+      "loop": false
+    },
+    "airQuickPunch": {
+      "sheet": "the-world/airQuickPunch.png",
+      "columns": 6,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        2,
+        2,
+        3,
+        4,
+        4
+      ],
+      "loop": false
+    },
+    "airDoublePunch": {
+      "sheet": "the-world/airDoublePunch.png",
+      "columns": 7,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "ticks": 3,
+      "durations": [
+        3,
+        2,
+        2,
+        2,
+        3,
+        4,
+        4
+      ],
+      "loop": false
+    },
+    "airDownwardSmash": {
+      "sheet": "the-world/airDownwardSmash.png",
+      "columns": 8,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "ticks": 3,
+      "durations": [
+        3,
+        3,
+        3,
+        2,
+        3,
+        3,
+        5,
+        6
+      ],
+      "loop": false
+    },
+    "comboTransition": {
+      "sheet": "the-world/comboTransition.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "interruptRecoil": {
+      "sheet": "the-world/interruptRecoil.png",
+      "columns": 3,
+      "frames": [
+        0,
+        1,
+        2
+      ],
+      "ticks": 2,
+      "durations": [
+        2,
+        2,
+        2
+      ],
+      "loop": false
+    },
+    "bridge_quickPunch_0_straightPunch": {
+      "sheet": "the-world/bridge_quickPunch_0_straightPunch.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_quickPunch_0_heavyPunch": {
+      "sheet": "the-world/bridge_quickPunch_0_heavyPunch.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_quickPunch_1_straightPunch": {
+      "sheet": "the-world/bridge_quickPunch_1_straightPunch.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_quickPunch_1_heavyPunch": {
+      "sheet": "the-world/bridge_quickPunch_1_heavyPunch.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_quickPunch_2_straightPunch": {
+      "sheet": "the-world/bridge_quickPunch_2_straightPunch.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_quickPunch_2_heavyPunch": {
+      "sheet": "the-world/bridge_quickPunch_2_heavyPunch.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_quickPunch_3_straightPunch": {
+      "sheet": "the-world/bridge_quickPunch_3_straightPunch.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_quickPunch_3_heavyPunch": {
+      "sheet": "the-world/bridge_quickPunch_3_heavyPunch.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_quickPunch_4_straightPunch": {
+      "sheet": "the-world/bridge_quickPunch_4_straightPunch.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_quickPunch_4_heavyPunch": {
+      "sheet": "the-world/bridge_quickPunch_4_heavyPunch.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_quickPunch_5_straightPunch": {
+      "sheet": "the-world/bridge_quickPunch_5_straightPunch.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_quickPunch_5_heavyPunch": {
+      "sheet": "the-world/bridge_quickPunch_5_heavyPunch.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_straightPunch_0_heavyPunch": {
+      "sheet": "the-world/bridge_straightPunch_0_heavyPunch.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_straightPunch_1_heavyPunch": {
+      "sheet": "the-world/bridge_straightPunch_1_heavyPunch.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_straightPunch_2_heavyPunch": {
+      "sheet": "the-world/bridge_straightPunch_2_heavyPunch.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_straightPunch_3_heavyPunch": {
+      "sheet": "the-world/bridge_straightPunch_3_heavyPunch.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_straightPunch_4_heavyPunch": {
+      "sheet": "the-world/bridge_straightPunch_4_heavyPunch.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_straightPunch_5_heavyPunch": {
+      "sheet": "the-world/bridge_straightPunch_5_heavyPunch.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_straightPunch_6_heavyPunch": {
+      "sheet": "the-world/bridge_straightPunch_6_heavyPunch.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_lowPunch_0_lowSweep": {
+      "sheet": "the-world/bridge_lowPunch_0_lowSweep.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_lowPunch_0_uppercut": {
+      "sheet": "the-world/bridge_lowPunch_0_uppercut.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_lowPunch_1_lowSweep": {
+      "sheet": "the-world/bridge_lowPunch_1_lowSweep.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_lowPunch_1_uppercut": {
+      "sheet": "the-world/bridge_lowPunch_1_uppercut.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_lowPunch_2_lowSweep": {
+      "sheet": "the-world/bridge_lowPunch_2_lowSweep.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_lowPunch_2_uppercut": {
+      "sheet": "the-world/bridge_lowPunch_2_uppercut.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_lowPunch_3_lowSweep": {
+      "sheet": "the-world/bridge_lowPunch_3_lowSweep.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_lowPunch_3_uppercut": {
+      "sheet": "the-world/bridge_lowPunch_3_uppercut.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_lowPunch_4_lowSweep": {
+      "sheet": "the-world/bridge_lowPunch_4_lowSweep.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_lowPunch_4_uppercut": {
+      "sheet": "the-world/bridge_lowPunch_4_uppercut.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_lowPunch_5_lowSweep": {
+      "sheet": "the-world/bridge_lowPunch_5_lowSweep.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_lowPunch_5_uppercut": {
+      "sheet": "the-world/bridge_lowPunch_5_uppercut.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_lowSweep_0_uppercut": {
+      "sheet": "the-world/bridge_lowSweep_0_uppercut.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_lowSweep_1_uppercut": {
+      "sheet": "the-world/bridge_lowSweep_1_uppercut.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_lowSweep_2_uppercut": {
+      "sheet": "the-world/bridge_lowSweep_2_uppercut.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_lowSweep_3_uppercut": {
+      "sheet": "the-world/bridge_lowSweep_3_uppercut.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_lowSweep_4_uppercut": {
+      "sheet": "the-world/bridge_lowSweep_4_uppercut.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_lowSweep_5_uppercut": {
+      "sheet": "the-world/bridge_lowSweep_5_uppercut.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_lowSweep_6_uppercut": {
+      "sheet": "the-world/bridge_lowSweep_6_uppercut.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_uppercut_0_airQuickPunch": {
+      "sheet": "the-world/bridge_uppercut_0_airQuickPunch.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_uppercut_1_airQuickPunch": {
+      "sheet": "the-world/bridge_uppercut_1_airQuickPunch.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_uppercut_2_airQuickPunch": {
+      "sheet": "the-world/bridge_uppercut_2_airQuickPunch.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_uppercut_3_airQuickPunch": {
+      "sheet": "the-world/bridge_uppercut_3_airQuickPunch.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_uppercut_4_airQuickPunch": {
+      "sheet": "the-world/bridge_uppercut_4_airQuickPunch.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_uppercut_5_airQuickPunch": {
+      "sheet": "the-world/bridge_uppercut_5_airQuickPunch.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_uppercut_6_airQuickPunch": {
+      "sheet": "the-world/bridge_uppercut_6_airQuickPunch.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_uppercut_7_airQuickPunch": {
+      "sheet": "the-world/bridge_uppercut_7_airQuickPunch.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_airQuickPunch_0_airDoublePunch": {
+      "sheet": "the-world/bridge_airQuickPunch_0_airDoublePunch.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_airQuickPunch_0_airDownwardSmash": {
+      "sheet": "the-world/bridge_airQuickPunch_0_airDownwardSmash.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_airQuickPunch_1_airDoublePunch": {
+      "sheet": "the-world/bridge_airQuickPunch_1_airDoublePunch.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_airQuickPunch_1_airDownwardSmash": {
+      "sheet": "the-world/bridge_airQuickPunch_1_airDownwardSmash.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_airQuickPunch_2_airDoublePunch": {
+      "sheet": "the-world/bridge_airQuickPunch_2_airDoublePunch.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_airQuickPunch_2_airDownwardSmash": {
+      "sheet": "the-world/bridge_airQuickPunch_2_airDownwardSmash.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_airQuickPunch_3_airDoublePunch": {
+      "sheet": "the-world/bridge_airQuickPunch_3_airDoublePunch.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_airQuickPunch_3_airDownwardSmash": {
+      "sheet": "the-world/bridge_airQuickPunch_3_airDownwardSmash.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_airQuickPunch_4_airDoublePunch": {
+      "sheet": "the-world/bridge_airQuickPunch_4_airDoublePunch.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_airQuickPunch_4_airDownwardSmash": {
+      "sheet": "the-world/bridge_airQuickPunch_4_airDownwardSmash.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_airQuickPunch_5_airDoublePunch": {
+      "sheet": "the-world/bridge_airQuickPunch_5_airDoublePunch.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_airQuickPunch_5_airDownwardSmash": {
+      "sheet": "the-world/bridge_airQuickPunch_5_airDownwardSmash.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_airDoublePunch_0_airDownwardSmash": {
+      "sheet": "the-world/bridge_airDoublePunch_0_airDownwardSmash.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_airDoublePunch_1_airDownwardSmash": {
+      "sheet": "the-world/bridge_airDoublePunch_1_airDownwardSmash.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_airDoublePunch_2_airDownwardSmash": {
+      "sheet": "the-world/bridge_airDoublePunch_2_airDownwardSmash.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_airDoublePunch_3_airDownwardSmash": {
+      "sheet": "the-world/bridge_airDoublePunch_3_airDownwardSmash.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_airDoublePunch_4_airDownwardSmash": {
+      "sheet": "the-world/bridge_airDoublePunch_4_airDownwardSmash.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_airDoublePunch_5_airDownwardSmash": {
+      "sheet": "the-world/bridge_airDoublePunch_5_airDownwardSmash.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_airDoublePunch_6_airDownwardSmash": {
+      "sheet": "the-world/bridge_airDoublePunch_6_airDownwardSmash.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "recover_quickPunch": {
+      "sheet": "the-world/recover_quickPunch.png",
+      "columns": 4,
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "recover_straightPunch": {
+      "sheet": "the-world/recover_straightPunch.png",
+      "columns": 4,
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "recover_heavyPunch": {
+      "sheet": "the-world/recover_heavyPunch.png",
+      "columns": 4,
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "recover_lowPunch": {
+      "sheet": "the-world/recover_lowPunch.png",
+      "columns": 8,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "recover_lowSweep": {
+      "sheet": "the-world/recover_lowSweep.png",
+      "columns": 8,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "recover_uppercut": {
+      "sheet": "the-world/recover_uppercut.png",
+      "columns": 4,
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "recover_airQuickPunch": {
+      "sheet": "the-world/recover_airQuickPunch.png",
+      "columns": 4,
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "recover_airDoublePunch": {
+      "sheet": "the-world/recover_airDoublePunch.png",
+      "columns": 4,
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "recover_airDownwardSmash": {
+      "sheet": "the-world/recover_airDownwardSmash.png",
+      "columns": 4,
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_uppercut_0_airDoublePunch": {
+      "sheet": "the-world/bridge_uppercut_0_airDoublePunch.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_uppercut_0_airDownwardSmash": {
+      "sheet": "the-world/bridge_uppercut_0_airDownwardSmash.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_uppercut_1_airDoublePunch": {
+      "sheet": "the-world/bridge_uppercut_1_airDoublePunch.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_uppercut_1_airDownwardSmash": {
+      "sheet": "the-world/bridge_uppercut_1_airDownwardSmash.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_uppercut_2_airDoublePunch": {
+      "sheet": "the-world/bridge_uppercut_2_airDoublePunch.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_uppercut_2_airDownwardSmash": {
+      "sheet": "the-world/bridge_uppercut_2_airDownwardSmash.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_uppercut_3_airDoublePunch": {
+      "sheet": "the-world/bridge_uppercut_3_airDoublePunch.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_uppercut_3_airDownwardSmash": {
+      "sheet": "the-world/bridge_uppercut_3_airDownwardSmash.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_uppercut_4_airDoublePunch": {
+      "sheet": "the-world/bridge_uppercut_4_airDoublePunch.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_uppercut_4_airDownwardSmash": {
+      "sheet": "the-world/bridge_uppercut_4_airDownwardSmash.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_uppercut_5_airDoublePunch": {
+      "sheet": "the-world/bridge_uppercut_5_airDoublePunch.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_uppercut_5_airDownwardSmash": {
+      "sheet": "the-world/bridge_uppercut_5_airDownwardSmash.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_uppercut_6_airDoublePunch": {
+      "sheet": "the-world/bridge_uppercut_6_airDoublePunch.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_uppercut_6_airDownwardSmash": {
+      "sheet": "the-world/bridge_uppercut_6_airDownwardSmash.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_uppercut_7_airDoublePunch": {
+      "sheet": "the-world/bridge_uppercut_7_airDoublePunch.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_uppercut_7_airDownwardSmash": {
+      "sheet": "the-world/bridge_uppercut_7_airDownwardSmash.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "rushPrepare": {
+      "sheet": "the-world/rushPrepare.png",
+      "columns": 4,
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "ticks": 2,
+      "durations": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "loop": false
+    },
+    "rushAdvance": {
+      "sheet": "the-world/rushAdvance.png",
+      "columns": 4,
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "rushFirst": {
+      "sheet": "the-world/rushFirst.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        2,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "rushLeft": {
+      "sheet": "the-world/rushLeft.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        2,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "rushRight": {
+      "sheet": "the-world/rushRight.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        2,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "rushAlternation": {
+      "sheet": "the-world/rushAlternation.png",
+      "columns": 6,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "rushFinisher": {
+      "sheet": "the-world/rushFinisher.png",
+      "columns": 6,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "ticks": 2,
+      "durations": [
+        2,
+        1,
+        2,
+        2,
+        3,
+        3
+      ],
+      "loop": false
+    },
+    "rushRecovery": {
+      "sheet": "the-world/rushRecovery.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 2,
+      "durations": [
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "loop": false
+    },
+    "rushReturn": {
+      "sheet": "the-world/rushReturn.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 2,
+      "durations": [
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "loop": false
+    },
+    "timePrepare": {
+      "sheet": "the-world/timePrepare.png",
+      "columns": 4,
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "ticks": 4,
+      "durations": [
+        4,
+        4,
+        4,
+        4
+      ],
+      "loop": false
+    },
+    "timeActivate": {
+      "sheet": "the-world/timeActivate.png",
+      "columns": 4,
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "ticks": 2,
+      "durations": [
+        2,
+        2,
+        3,
+        2
+      ],
+      "loop": false
+    },
+    "timeMaintain": {
+      "sheet": "the-world/timeMaintain.png",
+      "columns": 4,
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "ticks": 6,
+      "durations": [
+        6,
+        6,
+        6,
+        6
+      ],
+      "loop": true
+    },
+    "timeFinish": {
+      "sheet": "the-world/timeFinish.png",
+      "columns": 4,
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "ticks": 2,
+      "durations": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "loop": false
+    },
+    "mudaLight": {
+      "sheet": "the-world/mudaLight.png",
+      "columns": 16,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "ticks": 3,
+      "durations": [
+        3,
+        3,
+        2,
+        2,
+        2,
+        3,
+        2,
+        3,
+        2,
+        3,
+        2,
+        4,
+        3,
+        3,
+        3,
+        3
+      ],
+      "loop": false
+    },
+    "mudaMedium": {
+      "sheet": "the-world/mudaMedium.png",
+      "columns": 22,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21
+      ],
+      "ticks": 3,
+      "durations": [
+        3,
+        3,
+        2,
+        5,
+        2,
+        3,
+        2,
+        3,
+        2,
+        3,
+        2,
+        3,
+        2,
+        3,
+        2,
+        3,
+        2,
+        5,
+        5,
+        4,
+        4,
+        4
+      ],
+      "loop": false
+    },
+    "mudaHeavy": {
+      "sheet": "the-world/mudaHeavy.png",
+      "columns": 28,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27
+      ],
+      "ticks": 3,
+      "durations": [
+        3,
+        3,
+        2,
+        9,
+        2,
+        3,
+        2,
+        3,
+        2,
+        3,
+        2,
+        3,
+        2,
+        3,
+        2,
+        3,
+        2,
+        3,
+        2,
+        3,
+        2,
+        3,
+        2,
+        6,
+        6,
+        6,
+        5,
+        5
+      ],
+      "loop": false
+    },
+    "bridge_quickPunch_3_mudaLight": {
+      "sheet": "the-world/bridge_quickPunch_3_mudaLight.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_quickPunch_3_mudaMedium": {
+      "sheet": "the-world/bridge_quickPunch_3_mudaMedium.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_quickPunch_3_mudaHeavy": {
+      "sheet": "the-world/bridge_quickPunch_3_mudaHeavy.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_straightPunch_3_mudaLight": {
+      "sheet": "the-world/bridge_straightPunch_3_mudaLight.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_straightPunch_3_mudaMedium": {
+      "sheet": "the-world/bridge_straightPunch_3_mudaMedium.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_straightPunch_3_mudaHeavy": {
+      "sheet": "the-world/bridge_straightPunch_3_mudaHeavy.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_straightPunch_4_mudaLight": {
+      "sheet": "the-world/bridge_straightPunch_4_mudaLight.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_straightPunch_4_mudaMedium": {
+      "sheet": "the-world/bridge_straightPunch_4_mudaMedium.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_straightPunch_4_mudaHeavy": {
+      "sheet": "the-world/bridge_straightPunch_4_mudaHeavy.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_heavyPunch_4_mudaLight": {
+      "sheet": "the-world/bridge_heavyPunch_4_mudaLight.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_heavyPunch_4_mudaMedium": {
+      "sheet": "the-world/bridge_heavyPunch_4_mudaMedium.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_heavyPunch_4_mudaHeavy": {
+      "sheet": "the-world/bridge_heavyPunch_4_mudaHeavy.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_heavyPunch_5_mudaLight": {
+      "sheet": "the-world/bridge_heavyPunch_5_mudaLight.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_heavyPunch_5_mudaMedium": {
+      "sheet": "the-world/bridge_heavyPunch_5_mudaMedium.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_heavyPunch_5_mudaHeavy": {
+      "sheet": "the-world/bridge_heavyPunch_5_mudaHeavy.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_lowPunch_3_mudaLight": {
+      "sheet": "the-world/bridge_lowPunch_3_mudaLight.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_lowPunch_3_mudaMedium": {
+      "sheet": "the-world/bridge_lowPunch_3_mudaMedium.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_lowPunch_3_mudaHeavy": {
+      "sheet": "the-world/bridge_lowPunch_3_mudaHeavy.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_lowSweep_3_mudaLight": {
+      "sheet": "the-world/bridge_lowSweep_3_mudaLight.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_lowSweep_3_mudaMedium": {
+      "sheet": "the-world/bridge_lowSweep_3_mudaMedium.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_lowSweep_3_mudaHeavy": {
+      "sheet": "the-world/bridge_lowSweep_3_mudaHeavy.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_lowSweep_4_mudaLight": {
+      "sheet": "the-world/bridge_lowSweep_4_mudaLight.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_lowSweep_4_mudaMedium": {
+      "sheet": "the-world/bridge_lowSweep_4_mudaMedium.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_lowSweep_4_mudaHeavy": {
+      "sheet": "the-world/bridge_lowSweep_4_mudaHeavy.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_uppercut_3_mudaLight": {
+      "sheet": "the-world/bridge_uppercut_3_mudaLight.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_uppercut_3_mudaMedium": {
+      "sheet": "the-world/bridge_uppercut_3_mudaMedium.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_uppercut_3_mudaHeavy": {
+      "sheet": "the-world/bridge_uppercut_3_mudaHeavy.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_uppercut_4_mudaLight": {
+      "sheet": "the-world/bridge_uppercut_4_mudaLight.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_uppercut_4_mudaMedium": {
+      "sheet": "the-world/bridge_uppercut_4_mudaMedium.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_uppercut_4_mudaHeavy": {
+      "sheet": "the-world/bridge_uppercut_4_mudaHeavy.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_uppercut_5_mudaLight": {
+      "sheet": "the-world/bridge_uppercut_5_mudaLight.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_uppercut_5_mudaMedium": {
+      "sheet": "the-world/bridge_uppercut_5_mudaMedium.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_uppercut_5_mudaHeavy": {
+      "sheet": "the-world/bridge_uppercut_5_mudaHeavy.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "roadUltimateStart": {
+      "sheet": "the-world/roadUltimateStart.png",
+      "columns": 6,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "ticks": 4,
+      "durations": [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "loop": false
+    },
+    "roadStrike": {
+      "sheet": "the-world/roadStrike.png",
+      "columns": 9,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "ticks": 6,
+      "durations": [
+        6,
+        5,
+        5,
+        5,
+        5,
+        2,
+        2,
+        4,
+        6
+      ],
+      "loop": false
+    },
+    "roadFlyingPreparation": {
+      "sheet": "the-world/roadFlyingPreparation.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 3,
+      "durations": [
+        3,
+        3,
+        3,
+        3,
+        4
+      ],
+      "loop": false
+    },
+    "roadFlyingUp": {
+      "sheet": "the-world/roadFlyingUp.png",
+      "columns": 8,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "ticks": 3,
+      "durations": [
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "loop": true
+    },
+    "roadCarrying": {
+      "sheet": "the-world/roadCarrying.png",
+      "columns": 6,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "ticks": 5,
+      "durations": [
+        5,
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "loop": true
+    },
+    "roadFirstPunch": {
+      "sheet": "the-world/roadFirstPunch.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 5,
+      "durations": [
+        5,
+        5,
+        2,
+        4,
+        4
+      ],
+      "loop": false
+    },
+    "roadAlternating": {
+      "sheet": "the-world/roadAlternating.png",
+      "columns": 8,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "ticks": 2,
+      "durations": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "loop": true
+    },
+    "roadBarrage": {
+      "sheet": "the-world/roadBarrage.png",
+      "columns": 25,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24
+      ],
+      "ticks": 10,
+      "durations": [
+        10,
+        2,
+        6,
+        2,
+        6,
+        2,
+        6,
+        2,
+        5,
+        2,
+        5,
+        2,
+        5,
+        2,
+        4,
+        2,
+        4,
+        2,
+        4,
+        2,
+        4,
+        2,
+        4,
+        2,
+        11
+      ],
+      "loop": false
+    },
+    "roadFinalHeavy": {
+      "sheet": "the-world/roadFinalHeavy.png",
+      "columns": 8,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1,
+        1,
+        2
+      ],
+      "loop": false
+    },
+    "roadUltimateRecovery": {
+      "sheet": "the-world/roadUltimateRecovery.png",
+      "columns": 6,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "ticks": 5,
+      "durations": [
+        5,
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "loop": false
+    },
+    "roadReturnBehind": {
+      "sheet": "the-world/roadReturnBehind.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 4,
+      "durations": [
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "loop": false
+    },
+    "bridge_quickPunch_3_roadStrike": {
+      "sheet": "the-world/bridge_quickPunch_3_roadStrike.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_straightPunch_3_roadStrike": {
+      "sheet": "the-world/bridge_straightPunch_3_roadStrike.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_straightPunch_4_roadStrike": {
+      "sheet": "the-world/bridge_straightPunch_4_roadStrike.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_heavyPunch_4_roadStrike": {
+      "sheet": "the-world/bridge_heavyPunch_4_roadStrike.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_heavyPunch_5_roadStrike": {
+      "sheet": "the-world/bridge_heavyPunch_5_roadStrike.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_lowPunch_3_roadStrike": {
+      "sheet": "the-world/bridge_lowPunch_3_roadStrike.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_lowSweep_3_roadStrike": {
+      "sheet": "the-world/bridge_lowSweep_3_roadStrike.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_lowSweep_4_roadStrike": {
+      "sheet": "the-world/bridge_lowSweep_4_roadStrike.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_uppercut_3_roadStrike": {
+      "sheet": "the-world/bridge_uppercut_3_roadStrike.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_uppercut_4_roadStrike": {
+      "sheet": "the-world/bridge_uppercut_4_roadStrike.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_uppercut_5_roadStrike": {
+      "sheet": "the-world/bridge_uppercut_5_roadStrike.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_mudaLight_10_roadStrike": {
+      "sheet": "the-world/bridge_mudaLight_10_roadStrike.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_mudaMedium_16_roadStrike": {
+      "sheet": "the-world/bridge_mudaMedium_16_roadStrike.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "bridge_mudaHeavy_22_roadStrike": {
+      "sheet": "the-world/bridge_mudaHeavy_22_roadStrike.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "loop": false
+    },
+    "roadReposition": {
+      "sheet": "the-world/roadReposition.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 3,
+      "durations": [
+        3,
+        3,
+        3,
+        3,
+        4
+      ],
+      "loop": false
+    },
+    "secondaryInterrupt": {
+      "sheet": "the-world/secondaryInterrupt.png",
+      "columns": 4,
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        2,
+        2,
+        1
+      ],
+      "loop": false
+    },
+    "secondaryRecoil": {
+      "sheet": "the-world/secondaryRecoil.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 2,
+      "durations": [
+        2,
+        2,
+        2,
+        3,
+        3
+      ],
+      "loop": false
+    },
+    "secondaryReturn": {
+      "sheet": "the-world/secondaryReturn.png",
+      "columns": 6,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "ticks": 3,
+      "durations": [
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "loop": false
+    },
+    "secondaryVanish": {
+      "sheet": "the-world/secondaryVanish.png",
+      "columns": 6,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "ticks": 2,
+      "durations": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "loop": false
+    },
+    "secondaryHidden": {
+      "sheet": "the-world/secondaryHidden.png",
+      "columns": 1,
+      "frames": [
+        0
+      ],
+      "ticks": 1,
+      "durations": [
+        1
+      ],
+      "loop": true
+    },
+    "secondaryAppear": {
+      "sheet": "the-world/secondaryAppear.png",
+      "columns": 8,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "ticks": 3,
+      "durations": [
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "loop": false
+    },
+    "secondaryDissipate": {
+      "sheet": "the-world/secondaryDissipate.png",
+      "columns": 10,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "ticks": 5,
+      "durations": [
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "loop": false
+    },
+    "secondaryThreat": {
+      "sheet": "the-world/secondaryThreat.png",
+      "columns": 6,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "ticks": 10,
+      "durations": [
+        10,
+        10,
+        10,
+        10,
+        10,
+        10
+      ],
+      "loop": true
+    },
+    "secondaryVictory": {
+      "sheet": "the-world/secondaryVictory.png",
+      "columns": 8,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "ticks": 5,
+      "durations": [
+        5,
+        5,
+        6,
+        6,
+        8,
+        10,
+        10,
+        12
+      ],
+      "loop": false
+    }
+  }
+}
