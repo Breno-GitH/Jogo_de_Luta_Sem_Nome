@@ -1,8 +1,12 @@
 # Sem Nome — luta 2D
 
+**Menu e modos atualizados:** [Guia da interface, opções, controles, arquivos e testes](MENUS.md). Seleção compartilhada de Samurai, Dio, Goku, Luffy e Sasuke Hebi; Arcade com três adversários do elenco; Versus BOT; treinamento configurável; salas LAN reais; pausa, resultados, áudio, vídeo e remapeamento persistente.
+
 **Revisão de combate:** R agora ativa a Super de qualquer personagem. Mobilidade e normais mais rápidos, cancelamentos por confirmação, um reverse beat terrestre, combos aéreos e teletransporte aéreo J/K/L do Goku. [Regras, parâmetros, laboratório e testes](COMBATE-FRENETICO.md). Os PNGs aprovados e as três cinematografias foram preservados.
 
-**XAMPP + LAN:** abra [o jogo no Apache](http://localhost/jogo-luta/), ou [o caminho completo](http://localhost/2025/Jogo_de_Luta_Sem_Nome/). Inicie Apache no XAMPP e execute `iniciar-multiplayer.bat`. Atualize com `atualizar-xampp.bat`. [Instalação, rede, proxy, testes e limites](README_LAN.md). Samurai, Dio/The World e Goku estão disponíveis em salas reais com seleção, confirmação, prontidão e início pelo anfitrião. Não é necessário Vite para jogar.
+**Sasuke Hebi:** [movimentos, combos, sprites e laboratório](SASUKE-HEBI.md).
+
+**XAMPP + LAN:** abra [o jogo no Apache](http://localhost/jogo-luta/), ou [o caminho completo](http://localhost/2025/Jogo_de_Luta_Sem_Nome/). Inicie Apache no XAMPP e execute `iniciar-multiplayer.bat`. Atualize com `atualizar-xampp.bat`. [Instalação, rede, proxy, testes e limites](README_LAN.md). Samurai, Dio/The World, Goku, Luffy e Sasuke Hebi estão disponíveis em salas reais com seleção, confirmação, prontidão e início pelo anfitrião. Não é necessário Vite para jogar.
 
 **Goku — Fúria Saiyajin:** Super cinematográfica, **R**, uma barra completa com ganho mais lento. Transformação, primeiro soco com confirmação, combo terrestre/aéreo, teletransportes, Kamehameha descendente e retorno gradual à forma base. SSJ1 existe somente nessa sequência. [Executar e inspecionar](http://localhost/jogo-luta/art/goku-fury.html), [PNG/APNG/JSON](http://localhost/jogo-luta/downloads/goku-fury.zip), [gravação real](http://localhost/jogo-luta/previews/goku-fury-gameplay.png), [arquivos, regras, testes e limitações](GOKU-FURIA.md).
 
@@ -50,17 +54,17 @@ Os testes de navegador usam o Chrome instalado. O build fica em `dist/` e inclui
 
 Contra BOT disputa dois rounds para vencer. A IA aproxima, recua, defende, pula, tenta punir recuperações, agarra, confirma combos terrestres/aéreos, usa especiais e gasta energia. Sua percepção do adversário tem atraso de 26/17/10 ticks nas dificuldades Fácil/Normal/Difícil, além de intervalos de decisão e variação probabilística. Ela lê poses públicas passadas, sem consultar teclado ou buffer do jogador. Não existe defesa perfeita. As regras, perfis e limites estão em [PLAYABLE.md](PLAYABLE.md).
 
-Arcade tem três confrontos completos de melhor de três rounds: Samurai Ciano/Fácil, Âmbar/Normal e Violeta/Difícil. Após vencer, use **Próximo confronto**; derrota permite repetir o adversário atual. Concluir a sequência abre a vitória do Arcade. Reiniciar combate restaura o confronto atual; jogar novamente após a conclusão começa a rota do início. O progresso existe apenas na sessão aberta.
+Arcade tem três confrontos completos de melhor de três rounds contra os outros três personagens do elenco, sem espelho, em dificuldade Fácil, Normal e Difícil. Após vencer, use **Próximo confronto**; derrota permite repetir o adversário atual. Concluir a sequência abre a vitória do Arcade. Reiniciar combate restaura o confronto atual; jogar novamente após a conclusão começa a rota do início. O progresso existe apenas na sessão aberta.
 
-Treinamento tem vida infinita opcional para ambos, energia infinita independente, cronômetro parado e parceiro parado, defendendo em pé/agachado, pulando ou controlado por BOT. Mostra último dano, dano de combo, maior dano, maior combo, dano total e estados dos dois lutadores. Desativar vida infinita permite KO, seguido de restauração automática. Zerar medidores não reposiciona os lutadores; Reiniciar restaura o treino e mantém suas opções.
+Treinamento tem vida infinita opcional para ambos, energia infinita independente, cronômetro parado e parceiro parado, defendendo em pé/agachado, pulando ou controlado por BOT. Mostra último dano, dano de combo, maior dano, maior combo, dano total e estados dos dois lutadores. Desativar vida infinita permite KO, seguido de restauração automática. Reiniciar combo limpa ataques e medidores, devolvendo os lutadores a estados neutros nas mesmas posições horizontais. Reiniciar posições restaura o treino e mantém suas opções. Vida e Super também podem ser definidas por porcentagens individuais.
 
-Há barras de vida com animação e rastro de dano, energia, rounds, anúncios de início/KO, feedback de combo/dano, efeitos pixelados e transições de menu. Sons originais são sintetizados por Web Audio, com volume e mute. O áudio é desbloqueado após uma interação; a ausência de áudio não impede jogar. Não há música nem vozes.
+Há barras de vida com animação e rastro de dano, energia, rounds, anúncios de início/KO, feedback de combo/dano, efeitos pixelados e transições de menu. Sons originais são sintetizados por Web Audio, com volume e mute. O áudio é desbloqueado após uma interação; a ausência de áudio não impede jogar. Há uma trilha original sintetizada em canal separado; não há vozes.
 
 ## Contra Amigo online
 
 Na instalação final, execute Apache e `iniciar-multiplayer.bat`, abrindo `http://localhost/jogo-luta/`. O backend escuta apenas em 127.0.0.1:3001 e o Apache encaminha HTTP/WebSocket pela mesma origem dos jogadores. Amigos usam o IP local do servidor. Não há necessidade de abrir a porta interna no navegador.
 
-Crie/entre pelo código, escolha Samurai, Dio ou Goku, confirme o personagem e marque pronto. O anfitrião inicia quando ambos estiverem prontos. O servidor executa o combate a 60 Hz, publica inputs numerados e hashes, controla dano e resultado e permite recuperação por checkpoint e revanche. [Instruções LAN, testes e limitações](README_LAN.md); [arquitetura do netcode](ONLINE.md). `npm run test:lan` testa o build por Apache com dois Chromes independentes.
+Crie/entre pelo código, escolha Samurai, Dio, Goku, Luffy ou Sasuke Hebi, confirme o personagem e marque pronto. O anfitrião inicia quando ambos estiverem prontos. O servidor executa o combate a 60 Hz, publica inputs numerados e hashes, controla dano e resultado e permite recuperação por checkpoint e revanche. [Instruções LAN, testes e limitações](README_LAN.md); [arquitetura do netcode](ONLINE.md). `npm run test:lan` testa o build por Apache com dois Chromes independentes.
 
 ## Controles
 

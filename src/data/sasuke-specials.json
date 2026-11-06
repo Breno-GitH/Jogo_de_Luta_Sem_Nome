@@ -1,0 +1,111 @@
+{
+  "commands": {
+    "motionTicks": 24,
+    "finishTicks": 7,
+    "doubleDownTicks": 20,
+    "minimumDownGapTicks": 1
+  },
+  "maximumProjectiles": 8,
+  "stormTicks": 250,
+  "techniques": {
+    "senbon": {
+      "holds": [4, 4, 8, 16],
+      "damage": 17,
+      "stun": 20,
+      "blockstun": 8,
+      "push": 0.9,
+      "launch": 0,
+      "hitstop": 3,
+      "meterGain": 4,
+      "shots": [
+        { "at": 0, "speed": 22, "rise": -0.35, "radius": 4, "life": 34 },
+        { "at": 3, "speed": 25, "rise": 0.1, "radius": 4, "life": 32 },
+        { "at": 6, "speed": 23, "rise": 0.55, "radius": 4, "life": 35 }
+      ]
+    },
+    "eiso": {
+      "holds": [5, 5, 7, 29],
+      "damage": 89,
+      "stun": 24,
+      "blockstun": 14,
+      "push": 5.2,
+      "launch": 0,
+      "hitstop": 8,
+      "meterGain": 15,
+      "reach": 196
+    },
+    "chidori": {
+      "holds": [5, 6, 7, 22],
+      "damage": 105,
+      "stun": 31,
+      "blockstun": 16,
+      "push": 7.2,
+      "launch": 0,
+      "hitstop": 10,
+      "meterGain": 18,
+      "drive": { "from": 6, "to": 17, "speed": 10.5 }
+    },
+    "gokakyu": {
+      "holds": [5, 5, 8, 20],
+      "damage": 66,
+      "stun": 27,
+      "blockstun": 14,
+      "push": 3.6,
+      "launch": 0,
+      "hitstop": 6,
+      "meterGain": 12,
+      "shots": [
+        { "at": 0, "speed": 12, "rise": 0.45, "radius": 23, "life": 83 }
+      ]
+    },
+    "hosenka": {
+      "holds": [5, 7, 15, 23],
+      "damage": 25,
+      "stun": 22,
+      "blockstun": 10,
+      "push": 1.25,
+      "launch": 0,
+      "hitstop": 4,
+      "meterGain": 5,
+      "shots": [
+        { "at": 0, "speed": 12, "rise": -2.1, "radius": 12, "life": 60 },
+        { "at": 5, "speed": 15, "rise": 0.25, "radius": 13, "life": 56 },
+        { "at": 10, "speed": 13, "rise": 1.45, "radius": 12, "life": 58 }
+      ]
+    },
+    "goryuka": {
+      "holds": [7, 9, 9, 29],
+      "damage": 103,
+      "stun": 31,
+      "blockstun": 17,
+      "push": 5.6,
+      "launch": -6.6,
+      "hitstop": 9,
+      "meterGain": 18,
+      "shots": [
+        { "at": 0, "speed": 15, "rise": -4.2, "radius": 31, "life": 67 }
+      ]
+    },
+    "serpents": {
+      "holds": [5, 6, 9, 21],
+      "damage": 44,
+      "stun": 44,
+      "blockstun": 12,
+      "push": 0.24,
+      "launch": 0,
+      "hitstop": 5,
+      "meterGain": 11,
+      "shots": [{ "at": 0, "speed": 13, "rise": 0.6, "radius": 15, "life": 15 }]
+    },
+    "nagashi": {
+      "holds": [4, 4, 5, 23],
+      "damage": 60,
+      "stun": 40,
+      "blockstun": 13,
+      "push": 0.95,
+      "launch": 0,
+      "hitstop": 6,
+      "meterGain": 13
+    }
+  }
+}

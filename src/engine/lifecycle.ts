@@ -26,7 +26,9 @@ function logicalReactionFor(
       tick: time < 6 ? time : time - 6,
     };
   if (f.state === "counterRecover") return { clip: "counterFail", tick: time };
-  if (f.state === "blockstun")
+  if (f.state === "blockstun") {
+    if (f.data.id === "luffy" && time >= 6 && f.stun <= 4 && !f.guardIntent)
+      return { clip: "guardRecovery", tick: Math.max(0, 4 - f.stun) };
     return {
       clip:
         time < 6
@@ -38,6 +40,7 @@ function logicalReactionFor(
             : "guardStand",
       tick: time < 6 ? time : time - 6,
     };
+  }
   if (f.state === "hitstun") {
     const clip =
       f.knockedDown && !f.airborne
@@ -45,6 +48,9 @@ function logicalReactionFor(
         : f.airborne
           ? f.hitLaunch && f.vy < 0
             ? "launched"
+            : f.data.id === "luffy" && !f.hitLaunch && time < 9 &&
+                (f.knockedDown || f.reactionStrength >= 3)
+              ? "airKnockback"
             : f.knockedDown || f.hitLaunch
               ? "falling"
               : "damageAir"
@@ -67,7 +73,9 @@ function logicalReactionFor(
     f.guardIntent &&
     !f.airborne &&
     (["idle", "crouch", "landing"].includes(f.state) ||
-      (f.data.id === "dio" && f.state === "walk" && Math.abs(f.vx) < 0.01))
+      (f.state === "walk" &&
+        (f.data.id === "luffy" ||
+          (f.data.id === "dio" && Math.abs(f.vx) < 0.01))))
   )
     return { clip: f.crouching ? "guardCrouch" : "guardStand", tick: time };
 }

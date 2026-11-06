@@ -5,7 +5,6 @@
   "speed": 4.3,
   "jump": -17.5,
   "gravity": 0.74,
-  "meterGainScale": 0,
   "locomotion": {
     "backSpeed": 3.5,
     "airSpeed": 6.4,
@@ -116,8 +115,8 @@
     ]
   },
   "combatLimits": {
-    "maxHits": 14,
-    "maxAirHits": 8,
-    "maxTicks": 390
+    "maxHits": 12,
+    "maxAirHits": 6,
+    "maxTicks": 300
   }
 }

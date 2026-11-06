@@ -1,37 +1,89 @@
-import { assetBase } from "../asset-base";
-import opponents from "../data/arcade.json";
-import type { Mode, GameSession } from "../game/session";
+import { arcadeRoute, type Mode, type GameSession } from "../game/session";
+import type { CharacterId } from "../engine/characters";
+import type { Preferences } from "../game/preferences";
+import { keyLabel } from "../game/preferences";
+import {
+  roster,
+  characterCards,
+  fighterHero,
+  fighterInfo,
+  fighterImage,
+  actionNames,
+} from "./catalog";
 export const difficultyName = {
   easy: "Fácil",
   normal: "Normal",
   hard: "Difícil",
 };
 export const modeName: Record<Mode, string> = {
-  versus: "Contra BOT",
+  versus: "Versus BOT",
   arcade: "Arcade",
   training: "Treinamento",
 };
-const sprites = `${assetBase}sprites/samurai/`;
 export const menuScreen = () =>
-  `<div class="menu"><span class="eyebrow">SAMURAI / ESCOLHA SEU MODO</span><h1>Entre na<br><em>luta.</em></h1><p>Uma lâmina. Todas as possibilidades.<br>Domine o espaço, confirme o golpe e avance.</p><button class="primary" id="versus">01 <strong>CONTRA BOT</strong> <span>↗</span></button><button class="mode available" id="arcade">02 <strong>ARCADE</strong> <small>3 CONFRONTOS</small></button><button class="mode available" id="training">03 <strong>TREINAMENTO</strong> <small>PRATIQUE LIVREMENTE</small></button><button class="mode available" id="online">04 <strong>CONTRA AMIGO</strong> <small>SALA PRIVADA ONLINE</small></button><div class="note">TECLADO / SAMURAI ORIGINAL / COMBATE A 60 Hz</div></div>`;
-export function selectionScreen(mode: Mode) {
-  const opponentPicker =
-    mode === "arcade"
-      ? ""
-      : `<label>Adversário<select id="opponent-character"><option value="samurai">Samurai</option><option value="dio">Dio Brando + The World</option><option value="goku">Goku · Base</option><option value="luffy">Luffy · Enies Lobby</option></select></label>`;
-  return `<div class="panel selection"><span class="eyebrow">${modeName[mode].toUpperCase()} / SELEÇÃO</span><h2>Escolha sua <em>guarda.</em></h2><div class="roster"><label class="fighter gold selected"><input type="radio" name="character" value="samurai" checked aria-label="Selecionar Samurai"><div class="portrait"><img src="${sprites}base.png" alt="Samurai, cabelo preto, roupa vermelha e katana"></div><small>SEU PERSONAGEM</small><strong>SAMURAI</strong></label><label class="fighter gold"><input type="radio" name="character" value="dio" aria-label="Selecionar Dio Brando"><div class="portrait"><img src="${assetBase}sprites/dio/base.png" alt="Dio Brando, roupa dourada, sem espada"></div><small>NORMAIS + THE WORLD</small><strong>DIO BRANDO</strong></label><label class="fighter gold"><input type="radio" name="character" value="goku" aria-label="Selecionar Goku"><div class="portrait"><img src="${assetBase}sprites/goku/base.png" alt="Goku, cabelo preto, gi laranja e botas azuis"></div><small>NORMAIS + ESPECIAIS + SUPER</small><strong>GOKU</strong></label>${mode !== "arcade" ? `<label class="fighter gold"><input type="radio" name="character" value="luffy" aria-label="Selecionar Luffy"><div class="portrait"><img src="${assetBase}sprites/luffy/base-polished.png" alt="Luffy pré-timeskip"></div><small>NORMAIS + ESPECIAIS</small><strong>LUFFY</strong></label>` : ""}<span>VS</span><div class="fighter cyan" id="opponent-card"><div class="portrait"><img src="${sprites}base-p2.png" alt="Samurai com paleta ciano"></div><small>${mode === "training" ? "PARCEIRO DE TREINO" : mode === "arcade" ? "PRIMEIRO OPONENTE" : "OPONENTE"}</small><strong>SAMURAI</strong></div></div><p class="roster-note">Samurai, Dio e Goku disponíveis nos modos locais. Goku tem nove normais, combos, defesas e agarrão; Rajada de Ki, Kamehameha e Teletransporte estão disponíveis, sem custo de Super. Fúria Saiyajin: Super cinematográfica com confirmação de acerto e retorno à forma base. Todos os nove normais de Dio são executados por The World; Facas, Muda Muda e Parada do Tempo estão disponíveis. Road Roller usa duas barras; o agarrão próprio de Dio ainda não foi implementado.</p><p class="hint">Luffy está disponível no Treinamento e Contra BOT. J/K/L acionam normais. No chão: Pistol ↓ → · Gatling ↓ ← · Bazooka ↓ ↓ + J/K/L. <a href="${assetBase}art/luffy.html">Ver as animações e o alcance</a>.</p>${opponentPicker}${mode === "arcade" ? `<ol class="route">${opponents.map((opponent, i) => `<li><span class="swatch ${opponent.palette}"></span>${i + 1}. ${opponent.name.split(" · ")[1]} <small>${difficultyName[opponent.difficulty as keyof typeof difficultyName]}</small></li>`).join("")}</ol><p class="hint">Arcade de teste: três versões do Samurai, dificuldade crescente, dois rounds para vencer cada confronto.</p>` : `<label>Dificuldade ${mode === "training" ? "do BOT no treino" : "do BOT"}<select id="difficulty"><option value="easy">Fácil</option><option value="normal" selected>Normal</option><option value="hard">Difícil</option></select></label><p class="hint">${mode === "training" ? "Configure vida, energia e comportamento do parceiro durante o treino." : "Fácil: espaço para aprender · Normal: pressão e combos · Difícil: decisões mais rápidas e maior consistência."}</p>`}<details id="samurai-commands" class="commands"><summary>Controles e especiais</summary><p>A/D mover · W pular · S agachar · J/K/L ataques · Shift + direção dash · U agarrar · T provocar.<br>Saque: ↓ ↘ → · Contra: ↓ ↙ ← · Crescente: → ↓ ↘ + J/K/L.<br>R: Mil Cortes com 100 de energia. S+L → W → J → K → L: combo aéreo.<br>Comandos relativos ao lado do personagem. Segure para trás para defender.</p></details><details id="dio-commands" class="commands" hidden><summary>Controles de Dio</summary><p>A/D mover · W pular · S agachar · J/K/L leve, médio e forte · Shift + direção dash.<br>J → K → L: combo terrestre. S+J → S+K → S+L: combo baixo. No ar, K tem dois impactos. S+L → W → J → K → L: launcher e combo aéreo.<br>The World avança e retorna com seus próprios golpes. Facas: ↓ → + J/K/L. Muda: ↓ ← + J/K/L. Tempo: → ↓ + L.<br>Road Roller: R, custa 2 barras.<br>Os especiais comuns não gastam Super. A recarga do tempo cresce entre usos e persiste entre rounds. T: provocar. U não está habilitado para Dio.</p></details><details id="goku-commands" class="commands" hidden><summary>Controles de Goku</summary><p>A/D mover · W pular · S agachar · Shift + direção dash ou backdash · U agarrar.<br>J/K/L: leve, médio e forte. S+J/K/L: normais baixos. No ar: normais aéreos.<br>J → K → L e S+J → S+K → S+L: combos. S+L → W → J → K → L: launcher e finalização aérea.<br>Segure para trás para defender; baixo + trás protege contra ataques baixos. O agarrão pode ser evitado saindo do alcance ou pulando.<br>Ki: ↓ → + J/K/L · Kamehameha: ↓ ← + J/K/L · Teletransporte: ↓ ↓ + J/K/L. No ar: ↓ ↓ + J avança; K aparece atrás; L persegue um alvo em combo aéreo. Um uso por salto/combo, restaurado no chão em neutro. Dois toques de S exigem soltar a tecla entre eles. Nenhum gasta Super. Fúria Saiyajin: R, custa uma barra completa e só confirma se o primeiro soco conectar. SSJ1 é exclusivo da cinematografia. <a href="art/goku-fury.html">Testar Super</a>. <a href="art/goku-specials.html">Testar especiais</a>. <a href="art/goku-combat.html">Inspecionar golpes e combos</a>.</p></details><button class="primary" id="fight">${mode === "training" ? "INICIAR TREINAMENTO" : "ENTRAR NA ARENA"}<span>→</span></button><button class="text" id="back">Voltar</button></div>`;
+  `<div class="main-menu"><div class="menu-copy"><span class="eyebrow">FIGHTING PROJECT / 60 Hz</span><h1>SEM<span>NOME</span></h1><p class="tagline">${roster.length} ESTILOS.<br>UMA ARENA.</p><nav aria-label="Menu principal">${[
+    ["arcade", "01", "ARCADE", "Três adversários. Um caminho até o topo."],
+    ["versus", "02", "VERSUS BOT", "Seu rival. Sua dificuldade."],
+    ["training", "03", "TREINAMENTO", "Explore golpes, alcance e combos."],
+    ["online", "04", "MULTIPLAYER LAN", "Dois jogadores. Uma sala privada."],
+    ["settings", "05", "OPÇÕES", "Áudio, vídeo e controles."],
+  ]
+    .map(
+      ([id, n, label, hint]) =>
+        `<button class="menu-option" id="${id}"><span class="menu-index">${n}</span><span><strong>${label}</strong><small>${hint}</small></span><b>›</b></button>`,
+    )
+    .join(
+      "",
+    )}</nav><div class="nav-help"><kbd>W</kbd><kbd>S</kbd> navegar <kbd>Enter</kbd> confirmar <kbd>Esc</kbd> voltar</div></div><div class="menu-cast" aria-label="Elenco atual">${roster.map((c) => `<div class="cast-member cast-${c.id}"><img src="${fighterImage(c.id)}" alt="${c.name}"><strong>${c.name}</strong></div>`).join("")}<span class="cast-caption">ESCOLHA SEU ESTILO DE COMBATE</span></div></div>`;
+export type SelectStep = "player" | "opponent" | "ready";
+export function selectionScreen(
+  mode: Mode,
+  selected: CharacterId = "samurai",
+  enemy: CharacterId = "dio",
+  step: SelectStep = "player",
+) {
+  const choosing = step !== "ready",
+    current = step === "opponent" ? enemy : selected;
+  const route = arcadeRoute(selected).map(fighterInfo);
+  return `<div class="panel selection"><div class="screen-heading"><div><span class="eyebrow">${modeName[mode].toUpperCase()}</span><h2>${step === "player" ? "Escolha seu lutador" : step === "opponent" ? (mode === "training" ? "Parceiro de treino" : "Escolha seu rival") : "Prepare o confronto"}</h2></div><span class="step-indicator">${step === "player" ? "01 / LUTADOR" : step === "opponent" ? "02 / ADVERSÁRIO" : "03 / CONFIRMAÇÃO"}</span></div>${choosing ? `<div class="selection-layout"><div id="fighter-hero" class="fighter-hero">${fighterHero(current)}</div><div class="selection-choices">${characterCards(step === "player" ? "character" : "opponent", current)}<button class="primary" id="confirm-character">CONFIRMAR ${step === "player" ? "LUTADOR" : "ADVERSÁRIO"}<span>→</span></button></div></div>` : `<div class="versus-line"><div><img src="${fighterImage(selected)}" alt="${fighterInfo(selected).name}"><strong>${fighterInfo(selected).name}</strong></div><b>VS</b><div><img src="${fighterImage(mode === "arcade" ? route[0].id : enemy)}" alt="Adversário"><strong>${fighterInfo(mode === "arcade" ? route[0].id : enemy).name}</strong></div></div>${mode === "arcade" ? `<ol class="route">${route.map((c, i) => `<li>${i + 1}. ${c.name}<small>${["Fácil", "Normal", "Difícil"][i]}</small></li>`).join("")}</ol><p>Vença dois rounds por confronto para avançar. O elenco adversário é diferente do seu personagem.</p>` : `<label class="difficulty-label">Dificuldade do BOT <select id="difficulty"><option value="easy">Fácil</option><option value="normal" selected>Normal</option><option value="hard">Difícil</option></select></label><p class="hint">Fácil: espaço para aprender. Normal: pressão equilibrada e combos. Difícil: reage mais rápido, defende melhor e pune aberturas. ${mode === "training" ? "O treino começa com o parceiro parado; você pode ativar a IA na arena." : ""}</p>`}<button class="primary" id="fight">${mode === "training" ? "INICIAR TREINAMENTO" : "ENTRAR NA ARENA"}<span>→</span></button>`}<button class="text" id="back">Voltar</button></div>`;
 }
 export function resultScreen(session: GameSession) {
   const won = session.status !== "defeat",
     between = session.status === "stageClear";
+  const [self, enemy] = session.match.fighters;
   const title = between
-    ? `Confronto ${session.stage + 1} vencido.`
+    ? `Confronto ${session.stage + 1} vencido`
     : session.mode === "arcade" && won
-      ? "Arcade concluído."
+      ? "Arcade concluído"
       : won
-        ? "Vitória."
-        : "Derrota.";
-  return `<div class="panel result"><span class="eyebrow">${modeName[session.mode].toUpperCase()} / ${between ? "PRÓXIMO DESAFIO" : "RESULTADO"}</span><h2>${title}</h2><p>${between ? `Você venceu ${session.opponentName}. O próximo Samurai luta em dificuldade ${difficultyName[opponents[session.stage + 1].difficulty as keyof typeof difficultyName]}.` : won ? "Boa leitura. Cortes precisos." : "Cada erro revela uma abertura. Tente outra abordagem."}</p><div class="score"><strong>${session.match.wins[0]}</strong><span>ROUNDS</span><strong>${session.match.wins[1]}</strong></div>${session.mode === "arcade" ? `<ol class="route">${opponents.map((opponent, i) => `<li class="${session.results[i] ? "cleared" : ""}"><span class="swatch ${opponent.palette}"></span>${i + 1}. ${opponent.name.split(" · ")[1]} <small>${session.results[i] ? "VENCIDO" : i === session.stage ? "ATUAL" : "A SEGUIR"}</small></li>`).join("")}</ol>` : ""}${between ? `<button class="primary" id="next-opponent">PRÓXIMO CONFRONTO <span>→</span></button>` : `<button class="primary" id="again">${session.mode === "arcade" && won ? "JOGAR ARCADE NOVAMENTE" : "REINICIAR COMBATE"}</button>`}<button class="text" id="return">Retornar ao menu</button></div>`;
+        ? "Vitória"
+        : "Derrota";
+  return `<div class="panel result"><span class="eyebrow">${modeName[session.mode].toUpperCase()} / RESULTADO</span><h2>${title}</h2><div class="result-winner"><img src="${fighterImage((won ? self : enemy).data.id as CharacterId)}" alt="Vencedor"><div><small>VENCEDOR</small><strong>${(won ? self : enemy).data.name}</strong><p>Derrotado: ${(won ? enemy : self).data.name}</p></div></div><div class="score"><strong>${session.match.wins[0]}</strong><span>ROUNDS</span><strong>${session.match.wins[1]}</strong></div>${session.mode === "arcade" ? `<ol class="route">${session.route.map((id, i) => `<li class="${session.results[i] ? "cleared" : ""}">${i + 1}. ${fighterInfo(id).name}<small>${session.results[i] ? "VENCIDO" : "A SEGUIR"}</small></li>`).join("")}</ol>` : ""}${between ? `<button class="primary" id="next-opponent">PRÓXIMO ADVERSÁRIO <span>→</span></button>` : `<button class="primary" id="again">${session.mode === "arcade" ? (won ? "JOGAR ARCADE NOVAMENTE" : "TENTAR NOVAMENTE") : "REVANCHE"}</button>`}<button id="change-character">Trocar personagem</button><button class="text" id="return">Menu principal</button></div>`;
+}
+export function settingsScreen(p: Preferences) {
+  return `<div class="panel settings"><span class="eyebrow">CONFIGURAÇÕES LOCAIS</span><h2>Opções</h2><div class="settings-columns"><section><h3>ÁUDIO</h3>${(
+    [
+      ["master", "Volume geral"],
+      ["effects", "Efeitos"],
+      ["music", "Música"],
+    ] as const
+  )
+    .map(
+      ([id, label]) =>
+        `<label>${label}<span><input type="range" id="opt-${id}" aria-label="${label}" min="0" max="100" value="${Math.round(p[id] * 100)}"><output id="value-${id}">${Math.round(p[id] * 100)}%</output></span></label>`,
+    )
+    .join(
+      "",
+    )}<label>Silenciar<input type="checkbox" id="opt-muted" ${p.muted ? "checked" : ""}></label><button id="test-sound">Testar som</button><p class="hint">Trilha original sintetizada e efeitos do combate. O áudio começa após sua primeira interação.</p><h3>VÍDEO</h3><button id="fullscreen">${document.fullscreenElement ? "Sair da tela cheia" : "Tela cheia"}</button><label>Escala máxima<select id="opt-scale"><option value="fit" ${p.scale === "fit" ? "selected" : ""}>Ajustar à janela</option><option value="1" ${p.scale === "1" ? "selected" : ""}>1× · 1280 × 720</option><option value="2" ${p.scale === "2" ? "selected" : ""}>2× · 2560 × 1440</option></select></label><label>Escala inteira pixel-perfect<input type="checkbox" id="opt-pixelPerfect" ${p.pixelPerfect ? "checked" : ""}></label><label>Tremor de câmera<input type="checkbox" id="opt-shake" ${p.shake ? "checked" : ""}></label><label>Mostrar FPS<input type="checkbox" id="opt-fps" ${p.fps ? "checked" : ""}></label><p class="hint">A simulação continua em 1280 × 720, a 60 Hz. Em janelas menores, o jogo reduz proporcionalmente. Suavização de imagens sempre desativada.</p></section><section><h3>CONTROLES</h3><p class="hint">Clique em uma tecla e pressione a nova. W/S, Enter e Esc continuam navegando os menus.</p><div class="binding-grid">${Object.entries(
+    p.bindings,
+  )
+    .map(
+      ([action, key]) =>
+        `<span>${actionNames[action as keyof typeof p.bindings]}</span><button data-bind="${action}" aria-label="Remapear ${actionNames[action as keyof typeof p.bindings]}">${keyLabel(key)}</button>`,
+    )
+    .join(
+      "",
+    )}</div><p class="hint">Shift + direção: dash ou backdash. Para defender, segure para trás. Os comandos de especiais acompanham o remapeamento.</p></section></div><p id="settings-message" role="status">Preferências salvas automaticamente neste navegador.</p><div class="button-row"><button id="reset-options">Restaurar padrões</button><button class="primary" id="back">Voltar</button></div></div>`;
 }
 export const trainingPanel = () =>
-  `<section class="training-panel" id="training-panel" hidden aria-label="Configurações de treinamento"><div class="training-head"><div><span class="eyebrow">TREINAMENTO LIVRE</span><h2>Repita. Ajuste. Acerte.</h2></div><button id="clear-damage">Zerar medidores</button></div><div class="training-controls"><label><input type="checkbox" id="infinite-health" checked>Vida infinita para ambos</label><label><input type="checkbox" id="unlimited-meter" checked>Energia infinita</label><label>Parceiro <select id="dummy"><option value="idle">Parado</option><option value="guard">Defesa em pé</option><option value="crouchGuard">Defesa agachada</option><option value="jump">Pular</option><option value="bot">BOT ativo</option></select></label><label id="training-difficulty-label" hidden>Dificuldade <select id="training-difficulty"><option value="easy">Fácil</option><option value="normal" selected>Normal</option><option value="hard">Difícil</option></select></label></div><div class="training-metrics"><div>Último golpe<output id="last-damage">0</output></div><div>Combo atual / último<output id="combo-damage">0</output></div><div>Maior dano de combo<output id="best-damage">0</output></div><div>Maior combo<output id="best-hits">0</output></div><div>Dano total<output id="total-damage">0</output></div></div><div class="training-states"><p>VOCÊ <output id="player-state">idle</output></p><p>PARCEIRO <output id="dummy-state">idle</output></p><p>IA <output id="ai-decision">desligada</output></p></div><small>R ativa a Super de qualquer personagem; requer a energia configurada. Goku: ↓ ↓ + J/K/L também funciona no ar, uma vez por salto/combo. Os golpes mantêm dano, stun e colisões com vida infinita. Clique na arena para usar os controles de luta. Reiniciar restaura posições e medidores.</small></section>`;
+  `<section class="training-panel" id="training-panel" hidden aria-label="Configurações de treinamento"><div class="training-head"><div><span class="eyebrow">LABORATÓRIO DE COMBATE</span><h2>Treinamento</h2></div><div class="button-row"><button id="training-moves">Lista de golpes</button><button id="reset-positions">Reiniciar posições</button><button id="clear-damage">Reiniciar combo</button></div></div><div class="training-controls"><label><input type="checkbox" id="infinite-health" checked>Vida infinita para ambos</label><label><input type="checkbox" id="unlimited-meter" checked>Super infinita</label><button id="refill-health">Restaurar vida</button><button id="fill-meter">Encher Super</button><button id="empty-meter">Zerar Super</button><label>Parceiro<select id="dummy"><option value="idle">Parado</option><option value="guard">Defesa em pé</option><option value="crouchGuard">Defesa agachada</option><option value="jump">Pular</option><option value="bot">BOT atacando</option></select></label><label id="training-difficulty-label" hidden>Dificuldade<select id="training-difficulty"><option value="easy">Fácil</option><option value="normal" selected>Normal</option><option value="hard">Difícil</option></select></label></div><div class="training-values">${[0, 1].map((i) => `<label>Vida P${i + 1} (%) <input type="number" id="health-${i}" min="1" max="100" value="100"></label><label>Super P${i + 1} (%) <input type="number" id="meter-${i}" min="0" max="100" value="100"></label>`).join("")}</div><div class="training-metrics"><div>Último golpe<output id="last-damage">0</output></div><div>Dano de combo<output id="combo-damage">0</output></div><div>Hits<output id="combo-hits">0</output></div><div>Melhor combo<output id="best-hits">0</output></div><div>Dano total<output id="total-damage">0</output></div></div><div class="training-states"><p>VOCÊ <output id="player-state"></output></p><p>PARCEIRO <output id="dummy-state"></output></p><p>IA <output id="ai-decision"></output></p><p>COMANDOS <output id="input-history">—</output></p></div><small>Caixas: vermelho = hitbox, verde = hurtbox, azul = pushbox. Esc pausa o treino. A Super usa a tecla configurada (padrão R).</small></section>`;

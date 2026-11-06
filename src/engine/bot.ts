@@ -95,8 +95,7 @@ export class Bot {
     if (
       match.phase !== "fight" ||
       match.capture ||
-      match.roadRoller ||
-      match.fury
+      match.cinematicActive
     ) {
       this.queue = [];
       this.plan = neutral();
@@ -314,6 +313,9 @@ export class Bot {
         { ...neutral(), pressed: ["ultimate"] },
         "usar Mil Cortes",
       );
+    if (self.data.id === "luffy" && self.canStartSuper() && !enemy.airborne &&
+        distance > 95 && distance < 235 && this.chance(this.profile.ultimate))
+      return this.choose({ ...neutral(), pressed: ["ultimate"] }, "Jet Gigant");
     const closing = enemy.vx * toward < 0;
     const lowHealth = self.health / self.data.health < 0.3;
     if (self.data.id === "goku" && self.data.specialMoves && !self.airborne) {

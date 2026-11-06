@@ -9,6 +9,7 @@ export interface KiProjectile {
   owner: number;
   move: string;
   cast: number;
+  curse?: boolean;
   x: number;
   y: number;
   previousX: number;

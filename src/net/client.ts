@@ -359,7 +359,7 @@ export class OnlineClient {
       const packet = this.queue.get(this.tick + 1);
       if (!packet) break;
       this.queue.delete(packet.tick);
-      const frozen = this.match.hitstop > 0;
+      const frozen = this.match.phase === "fight" && this.match.hitstop > 0;
       this.match.step(packet.inputs);
       this.tick = packet.tick;
       const hash = hashState(snapshot(this.match));

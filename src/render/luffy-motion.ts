@@ -2,6 +2,8 @@ import animation from "../data/luffy-animations.json";
 import { FLOOR, type Fighter } from "../engine/combat";
 import { luffyLimb } from "../engine/luffy-normals";
 import { luffySpecialFrame } from "../engine/luffy-specials";
+import { jetId } from "../engine/luffy-jet-gigant";
+import { reactionFor } from "../engine/lifecycle";
 import type { Animator } from "./animator";
 
 type Clip = keyof typeof animation.clips;
@@ -31,6 +33,41 @@ export class LuffyMotionPresentation {
     this.previousX = x;
     this.previousFacing = facing;
 
+    if (
+      state === "attack" &&
+      ["throw", jetId].includes(fighter.moveId) &&
+      this.animator.hasClip(fighter.moveId)
+    ) {
+      this.crouchDepth = 0;
+      this.animator.update(fighter.moveId);
+      this.animator.seekTick(stateFrame);
+      return;
+    }
+    const entryWalk = data.lifecycle?.entranceWalkTicks ?? 0;
+    if (state === "entrance" && stateFrame <= entryWalk) {
+      this.animator.update("walkForward");
+      this.animator.seekTick(stateFrame - 1);
+      return;
+    }
+    const reaction = reactionFor(fighter);
+    if (
+      reaction &&
+      (this.animator.hasClip(reaction.clip) ||
+        this.animator.hasClip("damageHeavy"))
+    ) {
+      this.crouchDepth = 0;
+      const clip = this.animator.hasClip(reaction.clip)
+        ? reaction.clip
+        : fighter.airborne
+          ? "damageAir"
+          : "damageHeavy";
+      this.animator.update(clip);
+      this.animator.seekTick(
+        reaction.tick - (state === "entrance" ? entryWalk : 0),
+      );
+      return;
+    }
+
     const specialFrame = luffySpecialFrame(fighter);
     if (specialFrame !== undefined && this.animator.hasClip(fighter.moveId)) {
       this.crouchDepth = 0;
@@ -54,7 +91,9 @@ export class LuffyMotionPresentation {
     if (state === "jumpStart" || state === "landing") {
       clip = state;
       const physicalDuration =
-        state === "jumpStart" ? data.locomotion!.jumpStartup : data.locomotion!.landingTicks;
+        state === "jumpStart"
+          ? data.locomotion!.jumpStartup
+          : data.locomotion!.landingTicks;
       seek = progressTick(clip, stateFrame / physicalDuration);
     } else if (state === "air") {
       if (vy < -3) {
@@ -62,13 +101,17 @@ export class LuffyMotionPresentation {
         seek = progressTick(clip, (vy - data.jump) / (-3 - data.jump));
       } else if (vy > 3) {
         clip = "jumpFall";
-        const terminal = Math.sqrt(vy * vy + 2 * data.gravity * Math.max(0, FLOOR - fighter.y));
+        const terminal = Math.sqrt(
+          vy * vy + 2 * data.gravity * Math.max(0, FLOOR - fighter.y),
+        );
         seek = progressTick(clip, (vy - 3) / Math.max(1, terminal - 3));
       } else clip = "jumpApex";
     } else if (state === "dash") {
       const forward = fighter.dashDirection === facing;
       clip = forward ? "dashForward" : "backdash";
-      const profile = forward ? data.locomotion!.dashForward : data.locomotion!.backdash;
+      const profile = forward
+        ? data.locomotion!.dashForward
+        : data.locomotion!.backdash;
       seek = progressTick(clip, stateFrame / profile.length);
     } else if (state === "crouch") {
       const duration = ticks("crouchStart");
@@ -81,9 +124,10 @@ export class LuffyMotionPresentation {
       const forward = vx * facing > 0;
       clip = forward ? "walkForward" : "walkBack";
       const speed = forward ? data.speed : data.locomotion!.backSpeed;
-      this.walkPhase = walk && sameFacing
-        ? (this.walkPhase + Math.min(1, Math.abs(dx) / speed)) % ticks(clip)
-        : 0;
+      this.walkPhase =
+        walk && sameFacing
+          ? (this.walkPhase + Math.min(1, Math.abs(dx) / speed)) % ticks(clip)
+          : 0;
       seek = Math.floor(this.walkPhase + 1e-6) % ticks(clip);
     } else if (state === "idle") {
       clip = "idle";

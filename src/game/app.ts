@@ -1,5 +1,4 @@
 import { assetBase } from "../asset-base";
-import { combatPace } from "../engine/pace";
 import { Match } from "../engine/combat";
 import { KeyboardInput } from "../engine/input";
 import { Bot, type Difficulty } from "../engine/bot";
@@ -9,7 +8,7 @@ import { Sound } from "../audio/sound";
 import { GameSession, type Mode } from "./session";
 import { OnlineClient } from "../net/client";
 import { onlineEntry, lobby, onlineResult, escapeText } from "../ui/online";
-import { neutral } from "../engine/types";
+import { neutral, type InputFrame } from "../engine/types";
 import type { DummyBehavior } from "./training";
 import type { CharacterId } from "../engine/characters";
 import { ONLINE_CHARACTERS } from "../net/protocol";
@@ -18,16 +17,38 @@ import {
   selectionScreen,
   resultScreen,
   trainingPanel,
+  settingsScreen,
   modeName,
   difficultyName,
+  type SelectStep,
 } from "../ui/screens";
+import {
+  fighterHero,
+  roster,
+  fighterInfo,
+  movesContent,
+  controlsContent,
+} from "../ui/catalog";
+import { MenuNavigation } from "../ui/navigation";
+import {
+  readPreferences,
+  savePreferences,
+  defaults,
+  bindingError,
+  keyLabel,
+  type Bindings,
+} from "./preferences";
 
 type Screen =
   | "menu"
   | "selection"
+  | "settings"
+  | "info"
   | "online"
   | "onlineLobby"
   | "onlineFight"
+  | "onlinePause"
+  | "leaveConfirm"
   | "onlineResult"
   | "loading"
   | "fight"
@@ -35,72 +56,118 @@ type Screen =
   | "result";
 export class GameApp {
   private renderer: Renderer;
-  private keyboardOptions = { dashOnDirection: false };
+  private preferences = readPreferences();
+  private screen: Screen = "menu";
+  private keyboardOptions = {
+    dashOnDirection: true,
+    bindings: this.preferences.bindings,
+    active: () =>
+      ["fight", "onlineFight"].includes(this.screen) && this.overlay.hidden,
+  };
   private keyboard = new KeyboardInput(this.keyboardOptions);
   private sound = new Sound();
   private demo = new Match();
   private session?: GameSession;
   private online?: OnlineClient;
-  private screen: Screen = "menu";
   private operation = 0;
   private selectedMode: Mode = "versus";
+  private selected: CharacterId = "samurai";
+  private enemy: CharacterId = "dio";
+  private selectStep: SelectStep = "player";
   private canvas: HTMLCanvasElement;
   private overlay: HTMLElement;
   private loop: FixedLoop;
-  private samuraiControls = "";
+  private navigation: MenuNavigation;
+  private returnInfo = () => this.menu();
+  private settingsBack = () => this.menu();
+  private leaveBack: Screen = "onlineFight";
+  private remapping?: keyof Bindings;
+  private onlineBusy = false;
+  private lastInput = "";
+  private inputHistory: string[] = [];
+  private fpsAt = performance.now();
+  private fpsFrames = 0;
   constructor(private root: HTMLDivElement) {
-    root.innerHTML = `<header><a class="brand" href="#">SEM<span>NOME</span><small>FIGHTING PROJECT</small></a><span class="build">SAMURAI <b>PLAYABLE 0.2</b></span></header><main><div class="topline"><span><i></i> DOMINE O ESPAÇO. CONFIRME O CORTE.</span><span id="mode-label">ESCOLHA SEU CONFRONTO</span></div><div class="stage"><canvas width="1280" height="720" tabindex="0" aria-label="Arena de combate Samurai contra Samurai"></canvas><section id="overlay"></section></div><div class="toolbar"><span id="status" role="status">Selecione um modo para começar</span><div><a class="art-link" href="${assetBase}art/samurai.html" target="_blank" rel="noopener">Animações</a><button id="sound">Som: ligado</button><label class="volume-label">Volume <input id="volume" aria-label="Volume dos efeitos" type="range" min="0" max="60" value="25"></label><button id="boxes">Caixas: desligadas</button><button id="restart" disabled>Reiniciar</button><button id="pause" disabled>Pausar · Esc</button><button id="menu">Menu</button></div></div>${trainingPanel()}<footer><div><kbd>A</kbd><kbd>D</kbd> mover <kbd>W</kbd> pular <kbd>S</kbd> agachar</div><div><kbd>J</kbd> leve <kbd>K</kbd> médio <kbd>L</kbd> forte <kbd>U</kbd> agarrar <kbd>R</kbd> Super <kbd>T</kbd> provocar</div><div><kbd>Shift</kbd> + direção: dash <span>• Para trás: defender • Esc: pausar</span></div></footer></main>`;
+    root.innerHTML = `<header><a class="brand" href="#">SEM<span>NOME</span><small>FIGHTING PROJECT</small></a><span class="build">${roster.length} LUTADORES <b>ARCADE / LAN</b></span></header><main><div class="topline"><span><i></i> ESCOLHA SEU ESTILO. ENCONTRE SUA ABERTURA.</span><span id="mode-label">PRONTO PARA O PRÓXIMO ROUND</span></div><div class="stage"><canvas width="1280" height="720" tabindex="0" aria-label="Arena de combate"></canvas><output id="fps" hidden>60 FPS</output><section id="overlay" aria-label="Interface do jogo"></section></div><div class="toolbar"><span id="status" role="status">Selecione um modo</span><div><button id="sound">Som</button><button id="boxes">Caixas: desligadas</button><button id="restart" disabled>Reiniciar</button><button id="pause" disabled>Pausar · Esc</button><button id="menu">Menu</button></div></div><div id="network-info" class="network-info" hidden role="status"></div>${trainingPanel()}<footer></footer></main>`;
     this.canvas = this.el<HTMLCanvasElement>("canvas", true);
-    this.samuraiControls = this.root.querySelector("footer")!.innerHTML;
     this.overlay = this.el("overlay");
-    const networkInfo = document.createElement("div");
-    networkInfo.id = "network-info";
-    networkInfo.className = "network-info";
-    networkInfo.hidden = true;
-    networkInfo.setAttribute("role", "status");
-    this.el("status").closest(".toolbar")!.after(networkInfo);
     this.renderer = new Renderer(this.canvas);
-    this.el("menu").onclick = () => this.menu();
-    root.querySelector<HTMLAnchorElement>(".brand")!.onclick = (event) => {
-      event.preventDefault();
-      this.menu();
+    this.navigation = new MenuNavigation(
+      this.overlay,
+      () => !this.overlay.hidden && !this.remapping,
+      () => this.back(),
+      () => this.sound.play("menu"),
+    );
+    window.addEventListener(
+      "keydown",
+      (e) => {
+        if (this.remapping) {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          if (e.repeat) return;
+          if (e.code === "Escape") {
+            this.remapping = undefined;
+            this.settings(false);
+            return;
+          }
+          const error = bindingError(
+            this.preferences.bindings,
+            this.remapping,
+            e.code,
+          );
+          if (error) {
+            this.el("settings-message").textContent = error;
+            return;
+          }
+          this.preferences.bindings[this.remapping] = e.code;
+          this.remapping = undefined;
+          this.persist();
+          this.settings(false);
+          return;
+        }
+        if (e.code === "Escape" && !e.repeat && this.overlay.hidden) {
+          e.preventDefault();
+          this.togglePause();
+        }
+      },
+      true,
+    );
+    this.el("menu").onclick = () =>
+      this.online?.room ? this.confirmLeave() : this.menu();
+    root.querySelector<HTMLAnchorElement>(".brand")!.onclick = (e) => {
+      e.preventDefault();
+      if (this.online?.room) this.confirmLeave();
+      else this.menu();
     };
     this.el("pause").onclick = () => this.togglePause();
-    this.el("restart").onclick = () => {
-      if (this.session) {
-        this.session.restart();
-        void this.enter();
-      }
-    };
+    this.el("restart").onclick = () => this.restart();
     this.el("boxes").onclick = () => {
       this.renderer.debug = !this.renderer.debug;
       this.el("boxes").textContent =
         `Caixas: ${this.renderer.debug ? "ligadas" : "desligadas"}`;
     };
     this.el("sound").onclick = () => {
-      this.sound.setEnabled(!this.sound.enabled);
-      this.soundLabel();
+      this.preferences.muted = !this.preferences.muted;
+      this.persist();
+      void this.sound.unlock();
       this.sound.play("menu");
     };
-    this.el<HTMLInputElement>("volume").oninput = () =>
-      this.sound.setVolume(
-        Number(this.el<HTMLInputElement>("volume").value) / 100,
-      );
-    if (!this.sound.available) {
-      this.el<HTMLButtonElement>("sound").disabled = true;
-      this.el<HTMLInputElement>("volume").disabled = true;
-    }
-    this.soundLabel();
     this.canvas.onpointerdown = () =>
       this.canvas.focus({ preventScroll: true });
-    window.addEventListener("keydown", (event) => {
-      if (event.code === "Escape" && !event.repeat) this.togglePause();
-    });
     window.addEventListener("blur", () => this.autoPause());
     document.addEventListener("visibilitychange", () => {
       if (document.hidden) this.autoPause();
     });
+    window.addEventListener("resize", () => this.applyScale());
+    document.addEventListener("fullscreenchange", () => {
+      this.applyScale();
+      if (this.screen === "settings")
+        this.el("fullscreen").textContent = document.fullscreenElement
+          ? "Sair da tela cheia"
+          : "Tela cheia";
+    });
     this.bindTraining();
+    this.applyPreferences();
     this.loop = new FixedLoop(
       () => this.tick(),
       () => this.draw(),
@@ -120,180 +187,150 @@ export class GameApp {
     this.keyboard.clear();
   }
   private show(html: string, screen: Screen) {
+    const previous =
+      this.screen === screen ? (document.activeElement as HTMLElement)?.id : "";
     this.setScreen(screen);
     this.overlay.hidden = false;
     this.overlay.innerHTML = html;
+    if (previous && this.root.querySelector(`#${CSS.escape(previous)}`))
+      this.el(previous).focus({ preventScroll: true });
+    else this.navigation.focus();
   }
-  private soundLabel() {
-    this.el("sound").textContent = !this.sound.available
-      ? "Som indisponível"
-      : `Som: ${this.sound.enabled ? "ligado" : "desligado"}`;
+  private bind(id: string, action: () => void) {
+    const el = this.root.querySelector<HTMLElement>(`#${id}`);
+    if (el) el.onclick = action;
+  }
+  private cue() {
+    void this.sound.unlock();
+    this.sound.play("menu");
+  }
+  private footer(id: CharacterId = this.selected) {
+    this.root.querySelector("footer")!.innerHTML =
+      `<div>${controlsContent(this.preferences.bindings)}</div><div class="footer-moves">${movesContent(id, this.preferences.bindings)}</div>`;
   }
   private menu() {
-    this.keyboardOptions.dashOnDirection = false;
-    this.root.querySelector("footer")!.innerHTML = this.samuraiControls;
     this.operation++;
     this.online?.dispose();
     this.online = undefined;
     this.session = undefined;
+    this.remapping = undefined;
     this.demo = new Match();
     this.demo.message = "";
     this.renderer.resetAnimations();
-    this.renderer.opponentPalette = "cyan";
     this.renderer.localSeat = 0;
     this.renderer.online = false;
+    this.renderer.opponentPalette = "cyan";
     this.renderer.opponentLabel = "02 / BOT";
     this.renderer.contextLabel = "MELHOR DE 3";
     this.show(menuScreen(), "menu");
-    const dioPreview = document.createElement("a");
-    dioPreview.id = "dio-preview-link";
-    dioPreview.className = "art-link";
-    dioPreview.href = `${assetBase}art/dio.html`;
-    dioPreview.textContent = "Dio + The World · teste de movimentação";
-    this.overlay.querySelector(".note")!.before(dioPreview);
-    const luffyPreview = document.createElement("a");
-    luffyPreview.className = "art-link";
-    luffyPreview.href = `${assetBase}art/luffy.html`;
-    luffyPreview.textContent =
-      "Luffy · normais e especiais";
-    this.overlay.querySelector(".note")!.before(luffyPreview);
-    const specialsPreview = document.createElement("a");
-    specialsPreview.className = "art-link";
-    specialsPreview.href = `${assetBase}art/dio-specials.html`;
-    specialsPreview.textContent = "Dio · especiais, projéteis e tempo parado";
-    this.overlay.querySelector(".note")!.before(specialsPreview);
-    const roadPreview = document.createElement("a");
-    roadPreview.className = "art-link";
-    roadPreview.href = `${assetBase}art/road-roller.html`;
-    roadPreview.textContent = "Road Roller · Super cinematográfica";
-    this.overlay.querySelector(".note")!.before(roadPreview);
-    const secondaryPreview = document.createElement("a");
-    secondaryPreview.className = "art-link";
-    secondaryPreview.href = `${assetBase}art/dio-secondary.html`;
-    secondaryPreview.textContent = "Dio · reações, entrada e vitória";
-    this.overlay.querySelector(".note")!.before(secondaryPreview);
-    const gokuPreview = document.createElement("a");
-    gokuPreview.className = "art-link";
-    gokuPreview.href = `${assetBase}art/goku-combat.html`;
-    gokuPreview.textContent = "Goku · normais, defesa e agarrão";
-    this.overlay.querySelector(".note")!.before(gokuPreview);
-    const gokuSpecials = document.createElement("a");
-    gokuSpecials.className = "art-link";
-    gokuSpecials.href = `${assetBase}art/goku-specials.html`;
-    gokuSpecials.textContent = "Goku · Ki, Kamehameha e Teletransporte";
-    this.overlay.querySelector(".note")!.before(gokuSpecials);
-    const furyPreview = document.createElement("a");
-    furyPreview.className = "art-link";
-    furyPreview.href = `${assetBase}art/goku-fury.html`;
-    furyPreview.textContent = "Goku · Fúria Saiyajin — Super cinematográfica";
-    this.overlay.querySelector(".note")!.before(furyPreview);
+    this.root.dataset.mode = "menu";
     this.el("training-panel").hidden = true;
     this.el("network-info").hidden = true;
     this.el("menu").textContent = "Menu";
     this.el<HTMLButtonElement>("pause").disabled = true;
     this.el<HTMLButtonElement>("restart").disabled = true;
-    this.el("status").textContent = "Selecione um modo para começar";
-    this.el("mode-label").textContent = "ESCOLHA SEU CONFRONTO";
-    this.root.dataset.mode = "menu";
+    this.el("status").textContent =
+      "W/S navegar · Enter confirmar · Esc voltar · Mouse para selecionar";
+    this.el("mode-label").textContent = "PRONTO PARA O PRÓXIMO ROUND";
     for (const [id, mode] of [
       ["versus", "versus"],
       ["arcade", "arcade"],
       ["training", "training"],
     ] as const)
-      this.el(id).onclick = () => {
-        void this.sound.unlock();
-        this.sound.play("menu");
+      this.bind(id, () => {
+        this.cue();
         this.selection(mode);
-      };
-    this.el("online").onclick = () => {
-      void this.sound.unlock();
+      });
+    this.bind("online", () => {
+      this.cue();
       void this.enterOnline();
-    };
+    });
+    this.bind("settings", () => {
+      this.cue();
+      this.settingsBack = () => this.menu();
+      this.settings();
+    });
+    this.footer();
   }
-  private selection(mode: Mode) {
+  private selection(mode: Mode, step: SelectStep = "player") {
     this.selectedMode = mode;
-    this.show(selectionScreen(mode), "selection");
-    this.root.dataset.mode = mode;
-    const syncSelection = () => {
-      const id = this.root.querySelector<HTMLInputElement>(
-        'input[name="character"]:checked',
-      )!.value;
-      this.el("samurai-commands").hidden = id !== "samurai";
-      this.el("dio-commands").hidden = id !== "dio";
-      this.el("goku-commands").hidden = id !== "goku";
-      this.root
-        .querySelectorAll<HTMLInputElement>('input[name="character"]')
-        .forEach((input) =>
-          input
-            .closest(".fighter")
-            ?.classList.toggle("selected", input.checked),
-        );
-    };
-    this.root
-      .querySelectorAll<HTMLInputElement>('input[name="character"]')
-      .forEach((input) => (input.onchange = syncSelection));
-    const opponentPicker = this.root.querySelector<HTMLSelectElement>(
-      "#opponent-character",
+    this.selectStep = step;
+    this.show(
+      selectionScreen(mode, this.selected, this.enemy, step),
+      "selection",
     );
-    if (opponentPicker)
-      opponentPicker.onchange = () => {
-        const luffy = opponentPicker.value === "luffy",
-          dio = opponentPicker.value === "dio",
-          goku = opponentPicker.value === "goku",
-          card = this.el("opponent-card");
-        card.querySelector("strong")!.textContent = luffy
-          ? "LUFFY · ELASTICIDADE"
-          : dio
-            ? "DIO BRANDO"
-            : goku
-              ? "GOKU"
-              : "SAMURAI";
-        const image = card.querySelector("img")!;
-        image.src =
-          assetBase +
-          (luffy
-            ? "sprites/luffy/base-polished.png"
-            : dio
-              ? "sprites/dio/base.png"
-              : goku
-                ? "sprites/goku/base.png"
-                : "sprites/samurai/base-p2.png");
-        image.alt = luffy
-          ? "Luffy, lutador elástico"
-          : dio
-            ? "Dio Brando, paleta alternativa"
-            : goku
-              ? "Goku, paleta alternativa"
-              : "Samurai, paleta ciano";
-        image.style.filter = dio || goku ? "hue-rotate(145deg)" : "";
-      };
-    this.el("back").onclick = () => this.menu();
-    this.el("fight").onclick = () => {
-      void this.sound.unlock();
-      this.sound.play("menu");
+    this.root.dataset.mode = mode;
+    this.root.dataset.selectStep = step;
+    this.el("mode-label").textContent =
+      `${modeName[mode].toUpperCase()} / SELEÇÃO`;
+    this.root
+      .querySelectorAll<HTMLInputElement>(".character-card input")
+      .forEach(
+        (input) =>
+          (input.onchange = () => {
+            const id = input.value as CharacterId;
+            if (step === "player") this.selected = id;
+            else this.enemy = id;
+            this.el("fighter-hero").innerHTML = fighterHero(id);
+            this.root
+              .querySelectorAll(".character-card")
+              .forEach((card) =>
+                card.classList.toggle(
+                  "selected",
+                  card.querySelector<HTMLInputElement>("input")!.checked,
+                ),
+              );
+            this.sound.play("menu");
+          }),
+      );
+    this.root
+      .querySelector<HTMLElement>(
+        step === "ready" ? "#fight" : ".character-card input:checked",
+      )
+      ?.focus({ preventScroll: true });
+    this.bind("confirm-character", () => {
+      this.cue();
+      this.selection(
+        mode,
+        step === "player" && mode !== "arcade" ? "opponent" : "ready",
+      );
+    });
+    this.bind("back", () => this.selectionBack());
+    this.bind("fight", () => {
+      if (this.screen !== "selection" || this.selectStep !== "ready") return;
+      this.cue();
       const difficulty =
         mode === "arcade"
           ? "easy"
           : (this.el<HTMLSelectElement>("difficulty").value as Difficulty);
-      const id = this.root.querySelector<HTMLInputElement>(
-        'input[name="character"]:checked',
-      )!.value as CharacterId;
-      const enemy = (this.root.querySelector<HTMLSelectElement>(
-        "#opponent-character",
-      )?.value ?? "samurai") as CharacterId;
-      this.session = new GameSession(mode, difficulty, id, enemy);
+      this.session = new GameSession(
+        mode,
+        difficulty,
+        this.selected,
+        this.enemy,
+      );
       void this.enter();
-    };
+    });
+  }
+  private selectionBack() {
+    this.selectStep === "player"
+      ? this.menu()
+      : this.selection(
+          this.selectedMode,
+          this.selectStep === "ready" && this.selectedMode !== "arcade"
+            ? "opponent"
+            : "player",
+        );
   }
   private async enter() {
     const session = this.session;
     if (!session) return;
     const token = ++this.operation;
     this.show(
-      `<div class="panel loading"><span class="eyebrow">${modeName[session.mode].toUpperCase()}</span><h2>Preparando a arena<span class="loading-dots">…</span></h2><p>${session.match.fighters[0].data.name} contra ${session.opponentName}.</p><button class="text" id="cancel-load">Retornar ao menu</button></div>`,
+      `<div class="panel loading"><span class="eyebrow">${modeName[session.mode].toUpperCase()}</span><h2>Preparando a arena…</h2><p>${session.match.fighters[0].data.name} × ${session.match.fighters[1].data.name}</p><button class="text" id="cancel-load">Retornar ao menu</button></div>`,
       "loading",
     );
-    this.el("cancel-load").onclick = () => this.menu();
+    this.bind("cancel-load", () => this.menu());
     this.el<HTMLButtonElement>("pause").disabled = true;
     this.el<HTMLButtonElement>("restart").disabled = true;
     try {
@@ -304,36 +341,32 @@ export class GameApp {
       this.renderer.opponentLabel = session.opponentName.toUpperCase();
       this.renderer.contextLabel =
         session.mode === "arcade"
-          ? `ARCADE ${session.stage + 1} / 3`
-          : "MELHOR DE 3";
+          ? `ARCADE ${session.stage + 1} / ${session.route.length}`
+          : session.mode === "training"
+            ? "TREINAMENTO"
+            : "MELHOR DE 3";
       this.setScreen("fight");
       this.overlay.hidden = true;
       this.el("training-panel").hidden = session.mode !== "training";
       this.el<HTMLButtonElement>("pause").disabled = false;
       this.el<HTMLButtonElement>("restart").disabled = false;
       this.el("pause").textContent = "Pausar · Esc";
-      this.root.dataset.mode = session.mode;
-      this.root.dataset.stage = String(session.stage + 1);
-      this.root.dataset.difficulty = session.currentDifficulty;
-      this.root.dataset.character = session.characterId;
+      Object.assign(this.root.dataset, {
+        mode: session.mode,
+        stage: String(session.stage + 1),
+        difficulty: session.currentDifficulty,
+        character: session.characterId,
+      });
       this.canvas.setAttribute(
         "aria-label",
         `Arena: ${session.match.fighters[0].data.name} contra ${session.match.fighters[1].data.name}`,
       );
-      this.root.querySelector<HTMLAnchorElement>(".toolbar .art-link")!.href =
-        `${assetBase}art/${session.characterId === "luffy" ? "luffy" : session.characterId === "goku" ? "goku-combat" : session.characterId === "dio" ? "dio-combat" : "samurai"}.html`;
-      this.keyboardOptions.dashOnDirection = session.characterId !== "samurai";
-      this.root.querySelector("footer")!.innerHTML =
-        session.characterId === "luffy"
-          ? "<div>A/D mover · W pular · S agachar · Shift + direção dash</div><div>LUFFY · J/K/L ataques em pé, agachados ou aéreos</div><div>Pistol ↓ → · Gatling ↓ ← · Bazooka ↓ ↓ + J/K/L no chão · R reservado.</div>"
-          : session.characterId === "goku"
-            ? "<div><kbd>A</kbd><kbd>D</kbd> mover · <kbd>W</kbd> pular · <kbd>S</kbd> agachar · Shift + direção dash</div><div><kbd>J</kbd> leve · <kbd>K</kbd> médio · <kbd>L</kbd> forte · <kbd>U</kbd> agarrar</div><div>J → K → L · S+L → W → J → K → L · Segure para trás para defender. Ki ↓ → · Kamehameha ↓ ← · Teletransporte ↓ ↓ + J/K/L. Sem custo de Super. Fúria Saiyajin: R, custa a barra completa.</div>"
-            : session.characterId === "dio"
-              ? "<div><kbd>A</kbd><kbd>D</kbd> mover <kbd>W</kbd> pular <kbd>S</kbd> agachar · Shift + direção dash</div><div><kbd>J</kbd> leve <kbd>K</kbd> médio <kbd>L</kbd> forte · The World sincronizado</div><div>Facas ↓ → + J/K/L · Muda ↓ ← + J/K/L · Tempo → ↓ + L · <kbd>R</kbd> Road Roller (2 barras) · <kbd>T</kbd> provocar</div>"
-              : this.samuraiControls;
+      this.footer(session.characterId);
+      this.inputHistory = [];
+      this.lastInput = "";
       this.el("mode-label").textContent =
         session.mode === "arcade"
-          ? `ARCADE / CONFRONTO ${session.stage + 1} DE 3`
+          ? `ARCADE / CONFRONTO ${session.stage + 1} DE ${session.route.length}`
           : modeName[session.mode].toUpperCase();
       this.el("status").textContent =
         `${modeName[session.mode].toUpperCase()} / ${session.opponentName.toUpperCase()} / ${difficultyName[session.currentDifficulty].toUpperCase()}`;
@@ -344,69 +377,223 @@ export class GameApp {
     } catch (error) {
       if (token !== this.operation) return;
       this.show(
-        `<div class="panel"><h2>A arena não carregou.</h2><p>Um arquivo de imagem não ficou disponível. Recarregue a tentativa.</p><button class="primary" id="retry-load">Tentar novamente</button><button class="text" id="return">Retornar ao menu</button></div>`,
+        `<div class="panel"><h2>A arena não carregou</h2><p>Não foi possível carregar um recurso do jogo.</p><button class="primary" id="retry-load">Tentar novamente</button><button class="text" id="return">Menu principal</button></div>`,
         "loading",
       );
-      this.el("retry-load").onclick = () => {
-        void this.enter();
-      };
-      this.el("return").onclick = () => this.menu();
+      this.bind("retry-load", () => void this.enter());
+      this.bind("return", () => this.menu());
       console.error(error);
     }
   }
+  private restart() {
+    if (!this.session) return;
+    this.session.restart();
+    void this.enter();
+  }
+  private resume() {
+    this.setScreen(this.online ? "onlineFight" : "fight");
+    this.overlay.hidden = true;
+    this.el("pause").textContent = this.online ? "Menu · Esc" : "Pausar · Esc";
+    this.canvas.focus({ preventScroll: true });
+    this.cue();
+  }
   private togglePause() {
-    if (!this.session || !["fight", "pause"].includes(this.screen)) return;
-    if (this.screen === "pause") {
-      this.setScreen("fight");
-      this.overlay.hidden = true;
-      this.el("pause").textContent = "Pausar · Esc";
-      this.canvas.focus({ preventScroll: true });
-      void this.sound.unlock();
-    } else {
-      this.show(
-        `<div class="panel"><span class="eyebrow">COMBATE PAUSADO</span><h2>Respire. Reaja.</h2><p>Reiniciar restaura o confronto atual.</p><button class="primary" id="resume">CONTINUAR</button><button class="text" id="pause-restart">Reiniciar combate</button><button class="text" id="pause-menu">Retornar ao menu</button></div>`,
-        "pause",
-      );
-      this.el("resume").onclick = () => this.togglePause();
-      this.el("pause-restart").onclick = () => {
-        this.session!.restart();
-        void this.enter();
-      };
-      this.el("pause-menu").onclick = () => this.menu();
-      this.el("pause").textContent = "Continuar · Esc";
+    if (this.screen === "pause" || this.screen === "onlinePause") {
+      this.resume();
+      return;
     }
+    if (!["fight", "onlineFight"].includes(this.screen)) return;
+    const net = !!this.online;
+    this.show(
+      `<div class="panel pause-panel"><span class="eyebrow">${net ? "MENU LOCAL / A LUTA CONTINUA" : "COMBATE PAUSADO"}</span><h2>${net ? "Seu adversário continua jogando" : "Próximo movimento?"}</h2>${net ? "<p>Este menu não pausa o servidor. Seus comandos ficam neutros enquanto ele estiver aberto.</p>" : ""}<button class="primary" id="resume">CONTINUAR</button><button id="pause-moves">Lista de golpes</button><button id="pause-controls">Controles</button>${net ? `<button id="pause-menu">Sair da partida</button>` : `<button id="pause-options">Opções</button><button id="pause-restart">Reiniciar partida</button><button id="pause-menu">Menu principal</button>`}</div>`,
+      net ? "onlinePause" : "pause",
+    );
+    this.bind("resume", () => this.resume());
+    this.bind("pause-moves", () => this.info("moves", () => this.pauseAgain()));
+    this.bind("pause-controls", () =>
+      this.info("controls", () => this.pauseAgain()),
+    );
+    this.bind("pause-options", () => {
+      this.settingsBack = () => this.pauseAgain();
+      this.settings();
+    });
+    this.bind("pause-restart", () => this.restart());
+    this.bind("pause-menu", () => (net ? this.confirmLeave() : this.menu()));
+    this.el("pause").textContent = "Continuar · Esc";
+  }
+  private pauseAgain() {
+    this.screen = this.online ? "onlineFight" : "fight";
+    this.togglePause();
   }
   private autoPause() {
     if (this.screen === "fight") this.togglePause();
+  }
+  private back() {
+    if (this.screen === "selection") this.selectionBack();
+    else if (this.screen === "settings") this.settingsBack();
+    else if (this.screen === "info") this.returnInfo();
+    else if (["pause", "onlinePause"].includes(this.screen)) this.resume();
+    else if (this.screen === "leaveConfirm") this.cancelLeave();
+    else if (this.screen === "onlineLobby" || this.screen === "onlineResult")
+      this.confirmLeave();
+    else if (this.screen !== "menu") this.menu();
+  }
+  private info(kind: "moves" | "controls", back: () => void) {
+    this.returnInfo = back;
+    const id = (this.online?.match?.fighters[this.online.seat].data.id ??
+      this.session?.characterId ??
+      this.selected) as CharacterId;
+    this.show(
+      `<div class="panel info-panel"><span class="eyebrow">${fighterInfo(id).name.toUpperCase()}</span><h2>${kind === "moves" ? "Lista de golpes" : "Controles"}</h2>${kind === "moves" ? movesContent(id, this.preferences.bindings) : controlsContent(this.preferences.bindings)}<button class="primary" id="back">Voltar</button></div>`,
+      "info",
+    );
+    this.bind("back", back);
+  }
+  private settings(refocus = true) {
+    this.show(settingsScreen(this.preferences), "settings");
+    for (const id of ["master", "effects", "music"] as const)
+      this.el<HTMLInputElement>(`opt-${id}`).oninput = (e) => {
+        this.preferences[id] =
+          Number((e.target as HTMLInputElement).value) / 100;
+        this.el(`value-${id}`).textContent =
+          `${Math.round(this.preferences[id] * 100)}%`;
+        this.persist();
+        void this.sound.unlock();
+      };
+    for (const id of ["muted", "pixelPerfect", "shake", "fps"] as const)
+      this.el<HTMLInputElement>(`opt-${id}`).onchange = (e) => {
+        this.preferences[id] = (e.target as HTMLInputElement).checked;
+        this.persist();
+      };
+    this.el<HTMLSelectElement>("opt-scale").onchange = (e) => {
+      this.preferences.scale = (e.target as HTMLSelectElement).value as
+        "fit" | "1" | "2";
+      this.persist();
+    };
+    this.bind("test-sound", () => {
+      void this.sound.unlock().then(() => this.sound.play("heavy"));
+    });
+    this.bind("fullscreen", () => {
+      void (
+        document.fullscreenElement
+          ? document.exitFullscreen()
+          : this.root.requestFullscreen()
+      ).catch(() => {
+        this.el("settings-message").textContent =
+          "O navegador recusou a tela cheia. Use F11 se necessário.";
+      });
+    });
+    this.root.querySelectorAll<HTMLButtonElement>("[data-bind]").forEach(
+      (button) =>
+        (button.onclick = () => {
+          this.remapping = button.dataset.bind as keyof Bindings;
+          button.textContent = "Pressione…";
+          this.el("settings-message").textContent =
+            "Pressione a nova tecla. Esc cancela. Teclas em conflito serão recusadas.";
+        }),
+    );
+    this.bind("reset-options", () => {
+      this.preferences = defaults();
+      this.persist();
+      this.settings();
+    });
+    this.bind("back", () => this.settingsBack());
+    if (refocus) this.navigation.focus();
+  }
+  private persist() {
+    const saved = savePreferences(this.preferences);
+    this.applyPreferences();
+    if (!saved && this.screen === "settings")
+      this.el("settings-message").textContent =
+        "Configurações aplicadas. O navegador bloqueou o armazenamento local.";
+  }
+  private applyPreferences() {
+    const p = this.preferences;
+    this.keyboardOptions.bindings = p.bindings;
+    this.keyboard.clear();
+    this.sound.configure(p.master, p.effects, p.music, p.muted);
+    this.renderer.cameraShake = p.shake;
+    this.renderer.superKey = keyLabel(p.bindings.ultimate);
+    this.el("sound").textContent = this.sound.available
+      ? `Som: ${p.muted ? "desligado" : "ligado"}`
+      : "Áudio indisponível";
+    this.el<HTMLButtonElement>("sound").disabled = !this.sound.available;
+    this.el("fps").hidden = !p.fps;
+    this.applyScale();
+    this.footer(
+      (this.online?.match?.fighters[this.online.seat].data.id ??
+        this.session?.characterId ??
+        this.selected) as CharacterId,
+    );
+  }
+  private applyScale() {
+    const width = Math.min(
+      this.root.querySelector("main")!.clientWidth -
+        (innerWidth < 800 ? 24 : 64),
+      (Math.max(320, innerHeight - 150) * 16) / 9,
+    );
+    let scale = Math.min(
+      width / 1280,
+      this.preferences.scale === "fit"
+        ? Infinity
+        : Number(this.preferences.scale),
+    );
+    if (this.preferences.pixelPerfect && scale >= 1) scale = Math.floor(scale);
+    this.root.style.setProperty(
+      "--stage-width",
+      `${Math.max(240, Math.floor(1280 * scale))}px`,
+    );
+    this.root.dataset.pixelPerfect = String(this.preferences.pixelPerfect);
   }
   private finish() {
     const session = this.session!;
     this.show(resultScreen(session), "result");
     this.el<HTMLButtonElement>("pause").disabled = true;
-    this.el("return").onclick = () => this.menu();
-    if (session.status === "stageClear")
-      this.el("next-opponent").onclick = () => {
-        void this.sound.unlock();
-        if (session.next()) void this.enter();
-      };
-    else
-      this.el("again").onclick = () => {
-        void this.sound.unlock();
-        if (session.mode === "arcade" && session.status === "victory")
-          this.session = new GameSession("arcade", "easy", session.characterId);
-        else session.restart();
-        void this.enter();
-      };
+    this.el<HTMLButtonElement>("restart").disabled = true;
+    this.bind("return", () => this.menu());
+    this.bind("change-character", () => this.selection(session.mode));
+    this.bind("next-opponent", () => {
+      this.cue();
+      if (session.next()) void this.enter();
+    });
+    this.bind("again", () => {
+      if (session.mode === "arcade" && session.status === "victory")
+        this.session = new GameSession("arcade", "easy", session.characterId);
+      else session.restart();
+      this.cue();
+      void this.enter();
+    });
+  }
+  private recordInput(input: InputFrame) {
+    const b = this.preferences.bindings;
+    const label =
+      [
+        input.down ? "↓" : "",
+        input.direction < 0 ? "←" : input.direction > 0 ? "→" : "",
+        ...input.pressed.map((a) => keyLabel(b[a === "jump" ? "jump" : a])),
+      ]
+        .filter(Boolean)
+        .join("+") || "·";
+    if (label !== this.lastInput) {
+      this.lastInput = label;
+      if (label !== "·")
+        this.inputHistory = [...this.inputHistory.slice(-8), label];
+    }
   }
   private tick() {
     if (this.online?.match) {
-      const canSend = this.online.canSend;
-      this.online.advance(canSend ? this.keyboard.sample() : neutral());
-      if (!canSend) this.keyboard.clear();
+      const active =
+        this.online.canSend &&
+        this.screen === "onlineFight" &&
+        this.overlay.hidden;
+      this.online.advance(active ? this.keyboard.sample() : neutral());
+      if (!active) this.keyboard.clear();
     } else if (this.screen === "fight" && this.session) {
       const match = this.session.match,
-        frozen = match.hitstop > 0;
-      this.session.step(this.keyboard.sample());
+        frozen = match.phase === "fight" && match.hitstop > 0,
+        input = this.keyboard.sample();
+      this.recordInput(input);
+      this.session.step(input);
       if (!frozen) this.renderer.tick(match);
       this.sound.tick(match);
       if (this.session.status !== "playing") this.finish();
@@ -420,49 +607,55 @@ export class GameApp {
   private draw() {
     this.renderer.draw(this.online?.match ?? this.session?.match ?? this.demo);
     if (this.online) {
-      const client = this.online;
-      this.root.dataset.connection = client.connected
-        ? client.syncing
-          ? "syncing"
-          : "connected"
-        : "disconnected";
-      this.root.dataset.netTick = String(client.tick);
-      this.root.dataset.netHash = client.stateHash;
-      this.root.dataset.netMatch = client.matchId;
-      this.root.dataset.resyncs = String(client.resyncs);
-      const info = this.el("network-info"),
-        text = `${client.connectionText} · Sala ${client.room?.code ?? "—"}${client.match ? ` · Jogador ${client.seat + 1} · Atraso de entradas ativo` : ""}`;
-      if (info.textContent !== text) info.textContent = text;
+      const c = this.online;
+      Object.assign(this.root.dataset, {
+        connection: c.connected
+          ? c.syncing
+            ? "syncing"
+            : "connected"
+          : "disconnected",
+        netTick: String(c.tick),
+        netHash: c.stateHash,
+        netMatch: c.matchId,
+        resyncs: String(c.resyncs),
+      });
+      this.el("network-info").textContent =
+        `${c.connectionText} · Sala ${c.room?.code ?? "—"}${c.match ? ` · Jogador ${c.seat + 1} · entradas com atraso controlado` : ""}`;
     }
     this.root.dataset.sessionStatus = this.session?.status ?? "none";
     this.root.dataset.audio = this.sound.state;
     this.root.dataset.lastSound = this.sound.lastCue;
+    this.fpsFrames++;
+    const now = performance.now();
+    if (now - this.fpsAt >= 500) {
+      this.el("fps").textContent =
+        `${Math.round((this.fpsFrames * 1000) / (now - this.fpsAt))} FPS · 60 Hz`;
+      this.fpsFrames = 0;
+      this.fpsAt = now;
+    }
   }
   private async enterOnline() {
     const token = ++this.operation;
     this.session = undefined;
+    this.online?.dispose();
+    this.online = undefined;
     this.root.dataset.mode = "online";
     this.el("training-panel").hidden = true;
     this.show(onlineEntry(), "online");
-    this.el("back").onclick = () => this.menu();
-    this.el("reconnect-online").onclick = () => {
-      void this.enterOnline();
-    };
+    this.bind("back", () => this.menu());
+    this.bind("reconnect-online", () => void this.enterOnline());
     this.el<HTMLButtonElement>("pause").disabled = true;
     this.el<HTMLButtonElement>("restart").disabled = true;
-    this.el("pause").textContent = "Online · sem pausa";
-    this.el("menu").textContent = "Sair da sala";
-    this.el("mode-label").textContent = "CONTRA AMIGO / ONLINE";
-    this.el("status").textContent = "CONTRA AMIGO / CONECTANDO AO SERVIDOR";
+    this.el("menu").textContent = "Sair de LAN";
+    this.el("mode-label").textContent = "MULTIPLAYER LAN / SALA PRIVADA";
     try {
       await this.renderer.preparePalette("cyan");
       if (token !== this.operation) return;
-      this.online?.dispose();
       const client = new OnlineClient();
       this.online = client;
       this.renderer.opponentPalette = "cyan";
       this.renderer.online = true;
-      this.renderer.contextLabel = "ONLINE · MELHOR DE 3";
+      this.renderer.contextLabel = "LAN · MELHOR DE 3";
       client.onChange = () => {
         if (this.online === client) this.onlineChanged();
       };
@@ -471,12 +664,12 @@ export class GameApp {
         this.keyboard.clear();
         this.renderer.localSeat = client.seat;
         this.renderer.resetAnimations();
-        if (client.match) this.renderer.tick(client.match);
-        const isLuffy =
-          client.match?.fighters[client.seat]?.data.id === "luffy";
-        this.root.querySelector("footer")!.innerHTML = isLuffy
-          ? "<div>LUFFY · NORMAIS ELÁSTICOS</div><div>J/K/L em pé, agachado ou no ar · W pular · Shift + direção dash</div><div>Pistol ↓ → · Gatling ↓ ← · Bazooka ↓ ↓ + J/K/L no chão · R reservado.</div>"
-          : this.samuraiControls;
+        if (client.match) {
+          this.renderer.tick(client.match);
+          this.footer(
+            client.match.fighters[client.seat].data.id as CharacterId,
+          );
+        }
         this.canvas.focus({ preventScroll: true });
       };
       client.onStep = (match, frozen) => {
@@ -485,118 +678,148 @@ export class GameApp {
       };
       this.el("network-info").hidden = false;
       this.onlineChanged();
-    } catch {
-      if (token === this.operation) {
-        this.show(
-          `<div class="panel"><h2>A arena não carregou.</h2><button class="primary" id="back">Retornar ao menu</button></div>`,
-          "online",
-        );
-        this.el("back").onclick = () => this.menu();
-      }
+    } catch (error) {
+      if (token !== this.operation) return;
+      this.show(
+        `<div class="panel"><h2>Não foi possível preparar a arena</h2><p>Recarregue os recursos do jogo e tente novamente.</p><button id="back">Menu principal</button></div>`,
+        "online",
+      );
+      this.bind("back", () => this.menu());
+      console.error(error);
     }
   }
   private onlineChanged() {
-    const client = this.online;
-    if (!client) return;
-    if (client.result) {
-      this.el("status").textContent =
-        "CONTRA AMIGO / RESULTADO CONFIRMADO PELO SERVIDOR";
-      this.show(onlineResult(client), "onlineResult");
-      this.el("leave-room").onclick = () => this.menu();
-      const button =
-        this.root.querySelector<HTMLButtonElement>("#online-rematch");
-      if (button)
-        button.onclick = () => {
-          void this.onlineAction(() => client.rematch());
-        };
-      this.el("online-lobby").onclick = () =>
-        void this.onlineAction(() => client.returnToLobby());
+    const c = this.online;
+    if (!c) return;
+    this.el<HTMLButtonElement>("pause").disabled = !c.match || !!c.result;
+    if (c.result) {
+      this.show(onlineResult(c), "onlineResult");
+      this.bind("leave-room", () => this.confirmLeave());
+      this.bind(
+        "online-rematch",
+        () => void this.onlineAction(() => c.rematch()),
+      );
+      this.bind(
+        "online-lobby",
+        () => void this.onlineAction(() => c.returnToLobby()),
+      );
       return;
     }
-    if (client.match && !client.fatal) {
-      if (this.screen !== "onlineFight") this.setScreen("onlineFight");
+    if (c.match && !c.fatal) {
       const blocked =
-        !client.connected ||
-        client.syncing ||
-        client.reconnecting ||
-        client.room?.status === "reconnecting";
-      this.overlay.hidden = !blocked;
+        !c.connected ||
+        c.syncing ||
+        c.reconnecting ||
+        c.room?.status === "reconnecting";
       if (blocked) {
-        this.overlay.innerHTML = `<div class="panel"><span class="eyebrow">LUTA EM ESPERA</span><h2>${client.syncing ? "Sincronizando…" : "Recuperando conexão…"}</h2><p>${escapeText(client.message || "Aguardando os dois jogadores voltarem. Os comandos pendentes serão limpos.")}</p><button class="text" id="leave-room">Sair da sala</button></div>`;
-        this.el("leave-room").onclick = () => this.menu();
-        this.keyboard.clear();
+        this.show(
+          `<div class="panel"><span class="eyebrow">LUTA EM ESPERA</span><h2>${c.syncing ? "Sincronizando…" : "Recuperando conexão…"}</h2><p>${escapeText(c.message)}</p><button id="leave-room">Sair da sala</button></div>`,
+          "onlineFight",
+        );
+        this.bind("leave-room", () => this.confirmLeave());
+      } else if (
+        !["onlinePause", "info", "leaveConfirm"].includes(this.screen)
+      ) {
+        const entering = this.screen !== "onlineFight" || !this.overlay.hidden;
+        if (this.screen !== "onlineFight") this.setScreen("onlineFight");
+        this.overlay.hidden = true;
+        if (entering) this.canvas.focus({ preventScroll: true });
       }
       this.el("status").textContent =
-        client.message || "CONTRA AMIGO / COMBATE ONLINE / SEM PAUSA LOCAL";
+        c.message || "MULTIPLAYER LAN / COMBATE CONFIRMADO PELO SERVIDOR";
+      this.el("pause").textContent = "Menu · Esc";
       return;
     }
-    if (client.room && !client.fatal) {
+    if (c.room && !c.fatal) {
+      if (this.screen === "leaveConfirm") return;
+      this.show(lobby(c), "onlineLobby");
       this.el("status").textContent =
-        `CONTRA AMIGO / SALA ${client.room.code} / JOGADOR ${client.seat + 1}`;
-      this.show(lobby(client), "onlineLobby");
-      this.el("leave-room").onclick = () => this.menu();
-      this.el("copy-code").onclick = () => {
-        void this.copyRoomCode(client);
-      };
+        `SALA ${c.room.code} / JOGADOR ${c.seat + 1}`;
+      this.bind("leave-room", () => this.confirmLeave());
+      this.bind("copy-code", () => void this.copyRoomCode(c));
       for (const character of ONLINE_CHARACTERS)
-        this.el(`online-${character}`).onchange = () =>
-          void this.onlineAction(() => client.select(character));
-      this.el("online-confirm").onclick = () =>
-        void this.onlineAction(() => client.confirm());
-      const start = this.root.querySelector<HTMLButtonElement>("#online-start");
-      if (start)
-        start.onclick = () => void this.onlineAction(() => client.startMatch());
-      this.el("online-error").textContent = client.message;
-      this.el("online-ready").onclick = () => {
-        void this.onlineAction(() =>
-          client.ready(!client.room!.players[client.seat]?.ready),
-        );
-      };
+        this.el<HTMLInputElement>(`online-${character}`).onchange = () =>
+          void this.onlineAction(() => c.select(character));
+      this.bind(
+        "online-confirm",
+        () => void this.onlineAction(() => c.confirm()),
+      );
+      this.bind(
+        "online-start",
+        () => void this.onlineAction(() => c.startMatch()),
+      );
+      this.bind(
+        "online-ready",
+        () =>
+          void this.onlineAction(() =>
+            c.ready(!c.room!.players[c.seat]?.ready),
+          ),
+      );
+      this.el("online-error").textContent = c.message;
       return;
     }
-    this.show(onlineEntry(client), "online");
+    const code =
+      this.root.querySelector<HTMLInputElement>("#room-code")?.value ?? "";
+    this.show(onlineEntry(c), "online");
+    this.el<HTMLInputElement>("room-code").value = code;
     this.el("status").textContent =
-      `CONTRA AMIGO / ${client.connectionText.toUpperCase()}`;
-    this.el("back").onclick = () => this.menu();
-    this.el("reconnect-online").onclick = () => client.retry();
-    this.el("create-room").onclick = () => {
-      void this.onlineAction(() => client.create());
-    };
-    this.el<HTMLFormElement>("join-form").onsubmit = (event) => {
-      event.preventDefault();
-      const code = this.el<HTMLInputElement>("room-code").value;
-      void this.onlineAction(() => client.join(code));
+      `MULTIPLAYER LAN / ${c.connectionText.toUpperCase()}`;
+    this.bind("back", () => this.menu());
+    this.bind("reconnect-online", () => c.retry());
+    this.bind("create-room", () => void this.onlineAction(() => c.create()));
+    this.el<HTMLFormElement>("join-form").onsubmit = (e) => {
+      e.preventDefault();
+      const value = this.el<HTMLInputElement>("room-code").value;
+      void this.onlineAction(() => c.join(value));
     };
   }
   private async onlineAction(action: () => Promise<void>) {
-    const client = this.online;
-    if (!client) return;
+    const c = this.online;
+    if (!c || this.onlineBusy) return;
+    this.onlineBusy = true;
+    this.overlay.setAttribute("aria-busy", "true");
     try {
-      client.message = "";
+      c.message = "";
       await action();
     } catch (error) {
-      if (this.online !== client) return;
-      client.message = (error as Error).message;
-      this.onlineChanged();
+      if (this.online === c) {
+        c.message = (error as Error).message;
+        this.onlineChanged();
+      }
+    } finally {
+      this.onlineBusy = false;
+      this.overlay.removeAttribute("aria-busy");
     }
   }
-  private async copyRoomCode(client: OnlineClient) {
+  private confirmLeave() {
+    this.leaveBack = this.screen;
+    this.show(
+      `<div class="panel"><span class="eyebrow">SAIR DA SALA</span><h2>Encerrar sua participação?</h2><p>O servidor avisará o adversário. Uma luta em andamento será encerrada para você.</p><button class="primary" id="keep-playing">Permanecer</button><button id="confirm-leave">Sair da sala</button></div>`,
+      "leaveConfirm",
+    );
+    this.bind("keep-playing", () => this.cancelLeave());
+    this.bind("confirm-leave", () => this.menu());
+  }
+  private cancelLeave() {
+    const previous = this.leaveBack;
+    this.screen = previous;
+    if (["onlinePause", "info", "onlineFight"].includes(previous))
+      this.pauseAgain();
+    else this.onlineChanged();
+  }
+  private async copyRoomCode(c: OnlineClient) {
     try {
-      if (!navigator.clipboard) throw new Error("Clipboard unavailable");
-      await navigator.clipboard.writeText(client.room!.code);
-      const button = this.root.querySelector("#copy-code");
-      if (button) button.textContent = "Copiado";
+      if (!navigator.clipboard) throw Error();
+      await navigator.clipboard.writeText(c.room!.code);
+      this.el("copy-code").textContent = "Copiado";
     } catch {
-      const code = this.root.querySelector("#lobby-code"),
-        button = this.root.querySelector("#copy-code");
-      if (code) {
-        const range = document.createRange();
-        range.selectNodeContents(code);
-        const selection = getSelection();
-        selection?.removeAllRanges();
-        selection?.addRange(range);
-      }
-      if (button) button.textContent = "Selecionado · use Ctrl+C";
+      const node = this.el("lobby-code"),
+        range = document.createRange();
+      range.selectNodeContents(node);
+      const selection = getSelection();
+      selection?.removeAllRanges();
+      selection?.addRange(range);
+      this.el("copy-code").textContent = "Selecionado · Ctrl+C";
     }
   }
   private bindTraining() {
@@ -607,77 +830,145 @@ export class GameApp {
       "training-difficulty",
     ])
       this.el(id).onchange = () => {
-        const session = this.session;
-        if (!session || session.mode !== "training") return;
-        const previousDummy = session.training.dummy;
-        session.training.infiniteHealth =
+        const s = this.session;
+        if (!s || s.mode !== "training") return;
+        const previous = s.training.dummy;
+        s.training.infiniteHealth =
           this.el<HTMLInputElement>("infinite-health").checked;
-        session.training.unlimitedMeter =
+        s.training.unlimitedMeter =
           this.el<HTMLInputElement>("unlimited-meter").checked;
-        session.training.dummy = this.el<HTMLSelectElement>("dummy")
+        s.training.dummy = this.el<HTMLSelectElement>("dummy")
           .value as DummyBehavior;
         const difficulty = this.el<HTMLSelectElement>("training-difficulty")
           .value as Difficulty;
-        if (
-          session.difficulty !== difficulty ||
-          previousDummy !== session.training.dummy
-        ) {
-          session.difficulty = difficulty;
-          session.bot = new Bot(difficulty);
+        if (s.difficulty !== difficulty || previous !== s.training.dummy) {
+          s.difficulty = difficulty;
+          s.bot = new Bot(difficulty);
         }
         this.el("training-difficulty-label").hidden =
-          session.training.dummy !== "bot";
-        this.trainingStatus(session);
+          s.training.dummy !== "bot";
+        this.trainingStatus(s);
+        s.training.configure(s.match);
+        this.trainingValues();
         this.keyboard.clear();
         this.canvas.focus({ preventScroll: true });
       };
-    this.el("clear-damage").onclick = () => {
-      this.session?.training.damage.reset();
+    for (const i of [0, 1])
+      for (const kind of ["health", "meter"] as const)
+        this.el<HTMLInputElement>(kind + "-" + i).onchange = (e) => {
+          const s = this.session;
+          if (!s || s.mode !== "training") return;
+          const field = e.target as HTMLInputElement,
+            value = Math.max(
+              kind === "health" ? 1 : 0,
+              Math.min(100, Number(field.value) || 0),
+            );
+          field.value = String(value);
+          const f = s.match.fighters[i];
+          if (kind === "health") {
+            s.training.infiniteHealth = false;
+            this.el<HTMLInputElement>("infinite-health").checked = false;
+            f.health = Math.round((f.data.health * value) / 100);
+          } else {
+            s.training.unlimitedMeter = false;
+            this.el<HTMLInputElement>("unlimited-meter").checked = false;
+            f.meter = (f.meterMaximum * value) / 100;
+          }
+          this.keyboard.clear();
+          this.canvas.focus({ preventScroll: true });
+        };
+    this.bind("training-moves", () => {
+      if (this.screen !== "fight") return;
+      this.info("moves", () => this.resume());
+    });
+    this.bind("reset-positions", () => this.restart());
+    this.bind("clear-damage", () => {
+      const s = this.session;
+      if (!s || s.mode !== "training") return;
+      const values = s.match.fighters.map((f) => ({
+        x: f.x,
+        health: f.health,
+        meter: f.meter,
+      }));
+      s.restart();
+      s.match.fighters.forEach((f, i) => Object.assign(f, values[i]));
+      this.renderer.resetAnimations();
+      this.renderer.tick(s.match);
+      this.trainingValues();
       this.trainingReadout();
+      this.keyboard.clear();
       this.canvas.focus({ preventScroll: true });
-    };
+    });
+    for (const [id, type, value] of [
+      ["refill-health", "health", 1],
+      ["fill-meter", "meter", 1],
+      ["empty-meter", "meter", 0],
+    ] as const)
+      this.bind(id, () => {
+        const s = this.session;
+        if (!s || s.mode !== "training") return;
+        if (type === "meter" && value === 0) {
+          s.training.unlimitedMeter = false;
+          this.el<HTMLInputElement>("unlimited-meter").checked = false;
+        }
+        for (const f of s.match.fighters)
+          if (type === "health") f.health = f.data.health;
+          else f.meter = value * f.meterMaximum;
+        this.trainingValues();
+        this.canvas.focus({ preventScroll: true });
+      });
   }
   private syncTraining() {
-    const session = this.session!;
-    if (session.mode !== "training") return;
+    const s = this.session!;
+    if (s.mode !== "training") return;
     this.el<HTMLInputElement>("infinite-health").checked =
-      session.training.infiniteHealth;
+      s.training.infiniteHealth;
     this.el<HTMLInputElement>("unlimited-meter").checked =
-      session.training.unlimitedMeter;
-    this.el<HTMLSelectElement>("dummy").value = session.training.dummy;
-    this.el<HTMLSelectElement>("training-difficulty").value =
-      session.difficulty;
-    this.el("training-difficulty-label").hidden =
-      session.training.dummy !== "bot";
-    this.trainingStatus(session);
+      s.training.unlimitedMeter;
+    this.el<HTMLSelectElement>("dummy").value = s.training.dummy;
+    this.el<HTMLSelectElement>("training-difficulty").value = s.difficulty;
+    this.el("training-difficulty-label").hidden = s.training.dummy !== "bot";
+    this.trainingStatus(s);
+    this.trainingValues();
     this.trainingReadout();
   }
-  private trainingStatus(session: GameSession) {
-    const label =
-      this.el<HTMLSelectElement>("dummy").selectedOptions[0].textContent;
-    this.root.dataset.difficulty = session.currentDifficulty;
+  private trainingValues() {
+    const s = this.session;
+    if (!s || s.mode !== "training") return;
+    s.match.fighters.forEach((f, i) => {
+      this.el<HTMLInputElement>(`health-${i}`).value = String(
+        Math.round((100 * f.health) / f.data.health),
+      );
+      this.el<HTMLInputElement>(`meter-${i}`).value = String(
+        Math.round((100 * f.meter) / f.meterMaximum),
+      );
+    });
+  }
+  private trainingStatus(s: GameSession) {
+    this.root.dataset.difficulty = s.currentDifficulty;
     this.el("status").textContent =
-      `TREINAMENTO / ${label?.toUpperCase()}${session.training.dummy === "bot" ? ` / ${difficultyName[session.currentDifficulty].toUpperCase()}` : ""}`;
+      `TREINAMENTO / ${this.el<HTMLSelectElement>("dummy").selectedOptions[0].textContent?.toUpperCase()} / ${difficultyName[s.currentDifficulty]}`;
   }
   private trainingReadout() {
-    const session = this.session;
-    if (!session) return;
-    const stats = session.training.damage.fighters[0];
+    const s = this.session;
+    if (!s) return;
+    const stats = s.training.damage.fighters[0];
     for (const [id, value] of [
       ["last-damage", stats.lastHit],
       ["combo-damage", stats.comboDamage],
-      ["best-damage", stats.bestDamage],
+      ["combo-hits", stats.comboHits],
       ["best-hits", stats.bestHits],
       ["total-damage", stats.totalDamage],
-    ] as const) {
-      const node = this.el(id);
-      if (node.textContent !== String(value)) node.textContent = String(value);
-    }
-    session.match.fighters.forEach((f, i) => {
-      this.el(i === 0 ? "player-state" : "dummy-state").textContent =
-        `${f.state} · ${f.moveId || "—"} · ${f.attackPhase || "—"} · tick ${f.stateFrame}${f.data.id === "goku" ? ` · TP aéreo: ${f.gokuAirTeleportsUsed}/${combatPace.airTeleport.maximumPerJumpOrCombo} usado` : ""}`;
-    });
+    ] as const)
+      this.el(id).textContent = String(value);
+    s.match.fighters.forEach(
+      (f, i) =>
+        (this.el(i ? "dummy-state" : "player-state").textContent =
+          `${f.state} · ${f.moveId || "—"} · ${f.attackPhase || "—"} · tick ${f.stateFrame}`),
+    );
     this.el("ai-decision").textContent =
-      session.training.dummy === "bot" ? session.bot.lastDecision : "desligada";
+      s.training.dummy === "bot" ? s.bot.lastDecision : "desligada";
+    this.el("input-history").textContent =
+      this.inputHistory.join("  ›  ") || "—";
   }
 }

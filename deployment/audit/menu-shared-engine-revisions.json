@@ -1,0 +1,9 @@
+{
+  "files": {
+    "src/engine/input.ts": {
+      "baseline": "a03d90a5eec3424bd8372acd3a7947408e30d36136f9aa8092bd22c7ed96f127",
+      "current": "fd0f5eaf7d83cd8bac92c060efaf8d700a7d85aa9ebfc87a44f1a03058206fdb",
+      "reason": "User-requested persisted key remapping and menu/combat input isolation. CommandBuffer and combat action protocol unchanged."
+    }
+  }
+}

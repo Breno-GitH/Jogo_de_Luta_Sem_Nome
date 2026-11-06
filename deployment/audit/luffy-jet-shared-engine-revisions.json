@@ -1,0 +1,24 @@
+{
+  "files": {
+    "src/engine/bot.ts": {
+      "baseline": "0c3a5f1be8210a087fd11b16c6386887502a866835d440d3504effb4c20ac07b",
+      "current": "689f6b318c75294b7957fc6532e5e5413ce87887825c1a51bda3b62c231db283",
+      "reason": "Luffy-only Super decision and suspension during the confirmed cinematic."
+    },
+    "src/engine/characters.ts": {
+      "baseline": "49a870d85ddd10eb2d68332996192b3a1950b3ab549e8a4f33abd43c924be77a",
+      "current": "bef207d5efe77bc9465ae2784d343498491384ee5301a4bc017306c626de3a0b",
+      "reason": "Register Luffy’s Jet Gigant and enable meter gain."
+    },
+    "src/engine/combat.ts": {
+      "baseline": "ed1676686f0e2b68ab9e730a4f1e58a5d99c6d0b4146e956b2aaaf6d02eb5f7b",
+      "current": "c0de8441bdf4379f2b7e43aabeb931709a8c08a96b72a57edfc94a41c35412c1",
+      "reason": "Share the staged Super runner with the Luffy timeline, using the existing attack, damage, hit and round paths. Tag Luffy impacts for isolated rendering effects without changing damage or hitstop."
+    },
+    "src/engine/state.ts": {
+      "baseline": "1c97abf7a8f7b7ad163bf91b0f63a54292d51766803bd010f7e3a5f8b8328ac2",
+      "current": "79dbe799d64ab90d1dcdd392025bdefb72eff04c8aad494846c0f23eb1f08d44",
+      "reason": "Include the new cinematic clock, hitstop and capture in authoritative snapshots."
+    }
+  }
+}

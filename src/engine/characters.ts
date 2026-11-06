@@ -1,9 +1,12 @@
 import samurai from "../data/samurai.json";
 import dio from "../data/dio.json";
 import { goku } from "./goku-data";
+import { sasuke } from "./sasuke-data";
 import luffy from "../data/luffy.json";
 import { luffyMoves } from "./luffy-normals";
 import { luffySpecialMoves } from "./luffy-specials";
+import { luffySecondary, luffyThrow } from "./luffy-secondary";
+import { jetConfig, jetId, jetMove } from "./luffy-jet-gigant";
 import specialMoves from "../data/dio-special-moves.json";
 import specialActions from "../data/the-world-special-actions.json";
 import superMoves from "../data/dio-super-moves.json";
@@ -13,11 +16,20 @@ import secondary from "../data/dio-secondary.json";
 import secondaryActions from "../data/the-world-secondary.json";
 import type { CharacterData } from "./types";
 import { pacedCharacter } from "./pace";
-export type CharacterId = "samurai" | "dio" | "goku" | "luffy";
+export type CharacterId = "samurai" | "dio" | "goku" | "luffy" | "sasuke";
 export const characters: Record<CharacterId, CharacterData> = {
   samurai: pacedCharacter(samurai),
   goku: pacedCharacter(goku),
-  luffy: { ...luffy, moves: luffyMoves, specialMoves: luffySpecialMoves },
+  sasuke,
+  luffy: {
+    ...luffy,
+    ...luffySecondary,
+    moves: { ...luffyMoves, throw: luffyThrow },
+    specialMoves: luffySpecialMoves,
+    superMoves: { [jetId]: jetMove },
+    meterMaximum: jetConfig.cost,
+    meterGainScale: jetConfig.meterGainScale,
+  },
   dio: pacedCharacter({
     ...dio,
     ...secondary,

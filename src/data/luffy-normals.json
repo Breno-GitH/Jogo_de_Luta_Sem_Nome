@@ -21,13 +21,13 @@
     ]
   },
   "stand_medium": {
-    "holds": [4, 3, 2, 5, 7, 9],
+    "holds": [3, 3, 2, 5, 7, 9],
     "active": [2, 4],
     "damage": 62,
-    "stun": 29,
-    "blockstun": 13,
+    "stun": 30,
+    "blockstun": 12,
     "push": 1.7,
-    "hitstop": 6,
+    "hitstop": 5,
     "level": "mid",
     "kind": "foot",
     "track": [
@@ -48,8 +48,8 @@
     "damage": 84,
     "stun": 32,
     "blockstun": 16,
-    "push": 3.1,
-    "hitstop": 8,
+    "push": 2.7,
+    "hitstop": 7,
     "level": "mid",
     "kind": "fist",
     "track": [
@@ -85,13 +85,13 @@
     ]
   },
   "crouch_medium": {
-    "holds": [4, 3, 2, 5, 8, 9],
+    "holds": [3, 3, 2, 5, 8, 9],
     "active": [2, 4],
     "damage": 56,
     "stun": 28,
-    "blockstun": 13,
+    "blockstun": 12,
     "push": 1.6,
-    "hitstop": 6,
+    "hitstop": 5,
     "level": "low",
     "kind": "foot",
     "track": [
@@ -131,7 +131,7 @@
     ]
   },
   "air_light": {
-    "holds": [4, 4, 4, 5],
+    "holds": [4, 4, 4, 4],
     "active": [1, 2],
     "damage": 36,
     "stun": 25,

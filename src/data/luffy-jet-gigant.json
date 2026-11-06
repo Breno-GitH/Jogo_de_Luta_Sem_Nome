@@ -1,0 +1,26 @@
+{
+  "cost": 100,
+  "meterGainScale": 1,
+  "startup": 64,
+  "active": 4,
+  "recovery": 31,
+  "dash": { "from": 51, "to": 63, "speed": 8 },
+  "initialDamage": 50,
+  "minimumComboScale": 0.45,
+  "duration": 406,
+  "hits": [
+    { "tick": 16, "damage": 15, "kind": "jab", "hold": 1 },
+    { "tick": 32, "damage": 16, "kind": "cross", "hold": 2 },
+    { "tick": 60, "damage": 42, "kind": "bazooka", "hold": 5 },
+    { "tick": 92, "damage": 8, "kind": "gatling", "hold": 1 },
+    { "tick": 105, "damage": 8, "kind": "gatling", "hold": 1 },
+    { "tick": 116, "damage": 8, "kind": "gatling", "hold": 1 },
+    { "tick": 125, "damage": 8, "kind": "gatling", "hold": 1 },
+    { "tick": 133, "damage": 8, "kind": "gatling", "hold": 1 },
+    { "tick": 140, "damage": 8, "kind": "gatling", "hold": 1 },
+    { "tick": 146, "damage": 8, "kind": "gatling", "hold": 1 },
+    { "tick": 163, "damage": 27, "kind": "launcher", "hold": 4 },
+    { "tick": 272, "damage": 84, "kind": "gigant", "hold": 12 },
+    { "tick": 299, "damage": 42, "kind": "ground", "hold": 6 }
+  ]
+}

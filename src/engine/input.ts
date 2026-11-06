@@ -1,83 +1,37 @@
 import { neutral, type Button, type InputFrame } from "./types";
+import { defaultBindings, type Bindings } from "../game/preferences";
 export class KeyboardInput {
   private held = new Set<string>();
   private queued: Button[] = [];
   private actionContext?: { direction: -1 | 0 | 1; down: boolean };
-  constructor(options: { dashOnDirection?: boolean } = {}) {
-    window.addEventListener("keydown", (e) => {
-      if (
-        e.target instanceof HTMLElement &&
-        e.target.closest('input,select,textarea,[contenteditable="true"]')
-      )
-        return;
-      if (
-        [
-          "KeyA",
-          "KeyD",
-          "KeyW",
-          "KeyS",
-          "KeyJ",
-          "KeyK",
-          "KeyL",
-          "KeyU",
-          "KeyR",
-          "KeyT",
-          "ShiftLeft",
-          "ShiftRight",
-          "Space",
-        ].includes(e.code) &&
-        !(e.target instanceof HTMLSelectElement)
-      )
-        e.preventDefault();
-      if (e.repeat || this.held.has(e.code)) return;
-      this.held.add(e.code);
-      const b: Record<string, Button> = {
-        KeyW: "jump",
-        KeyJ: "light",
-        KeyK: "medium",
-        KeyL: "heavy",
-        KeyU: "throw",
-        KeyR: "ultimate",
-        KeyT: "taunt",
-        ShiftLeft: "dash",
-        ShiftRight: "dash",
-      };
-      const button =
-        b[e.code] ??
-        (options.dashOnDirection &&
-        (e.code === "KeyA" || e.code === "KeyD") &&
-        (this.held.has("ShiftLeft") || this.held.has("ShiftRight"))
-          ? "dash"
-          : undefined);
+  constructor(private options: { dashOnDirection?: boolean; bindings?: Bindings; active?: () => boolean } = {}) {
+    window.addEventListener("keydown", e => {
+      if (this.options.active && !this.options.active()) return;
+      if (e.target instanceof HTMLElement && e.target.closest('input,select,textarea,[contenteditable="true"]')) return;
+      const b = this.bindings;
+      const code = e.code === "ShiftRight" && b.dash === "ShiftLeft" ? "ShiftLeft" : e.code;
+      if (!Object.values(b).includes(code)) return;
+      e.preventDefault();
+      if (e.repeat || this.held.has(code)) return;
+      this.held.add(code);
+      const actions: [keyof Bindings, Button][] = [["jump","jump"],["light","light"],["medium","medium"],["heavy","heavy"],["throw","throw"],["ultimate","ultimate"],["taunt","taunt"],["dash","dash"]];
+      const button = actions.find(([key]) => b[key] === code)?.[1] ?? (this.options.dashOnDirection && [b.left,b.right].includes(code) && this.held.has(b.dash) ? "dash" : undefined);
       if (button) {
         this.queued.push(button);
-        // Preserve the posture at the button edge. A quick release between
-        // two fixed ticks must not turn a crouching cut into a standing cut.
-        this.actionContext = {
-          direction: (Number(this.held.has("KeyD")) -
-            Number(this.held.has("KeyA"))) as -1 | 0 | 1,
-          down: this.held.has("KeyS"),
-        };
+        this.actionContext = { direction: this.direction(), down: this.held.has(b.down) };
       }
     });
-    window.addEventListener("keyup", (e) => this.held.delete(e.code));
+    window.addEventListener("keyup", e => this.held.delete(e.code === "ShiftRight" && this.bindings.dash === "ShiftLeft" ? "ShiftLeft" : e.code));
     window.addEventListener("blur", () => this.clear());
   }
-  clear() {
-    this.held.clear();
-    this.queued = [];
-    this.actionContext = undefined;
-  }
+  private get bindings() { return this.options.bindings ?? defaultBindings; }
+  private direction() { return (Number(this.held.has(this.bindings.right)) - Number(this.held.has(this.bindings.left))) as -1 | 0 | 1; }
+  clear() { this.held.clear(); this.queued = []; this.actionContext = undefined; }
   sample(): InputFrame {
     const i = neutral();
-    i.direction = (Number(this.held.has("KeyD")) -
-      Number(this.held.has("KeyA"))) as -1 | 0 | 1;
-    i.down = this.held.has("KeyS");
+    i.direction = this.direction(); i.down = this.held.has(this.bindings.down);
     i.pressed = this.queued.splice(0);
-    if (i.pressed.length && this.actionContext) {
-      i.direction = this.actionContext.direction;
-      i.down = this.actionContext.down;
-    }
+    if (i.pressed.length && this.actionContext) { i.direction = this.actionContext.direction; i.down = this.actionContext.down; }
     this.actionContext = undefined;
     return i;
   }

@@ -15,13 +15,14 @@
       #elastic-stages { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 450px), 1fr)); gap: 12px; margin-bottom: 24px; }
       figure { margin: 0; }
     </style>
-    <script type="module" crossorigin src="../assets/luffy-nkc6_dYm.js"></script>
-    <link rel="modulepreload" crossorigin href="../assets/animator-JK9u4S7E.js">
-    <link rel="modulepreload" crossorigin href="../assets/debug-D8NTwJYq.js">
-    <link rel="modulepreload" crossorigin href="../assets/characters-oHuIP1es.js">
+    <script type="module" crossorigin src="../assets/luffy-CBFOzs8M.js"></script>
+    <link rel="modulepreload" crossorigin href="../assets/animator-DnpDgivx.js">
+    <link rel="modulepreload" crossorigin href="../assets/debug-CeA7nuDq.js">
+    <link rel="modulepreload" crossorigin href="../assets/characters-cnrGUtHl.js">
   </head>
   <body>
     <a href="../">Voltar ao jogo</a>
+    · <a href="luffy-secondary.html">Defesa, reações e agarrão</a> · <a href="luffy-jet.html">Super Jet Gigant</a>
     <h1>Luffy · revisão da pose-base</h1>
     <p>Pré-timeskip, Enies Lobby. O sprite tem 130 pixels de altura em uma célula transparente de 256 × 256, com pivô em (128, 224).</p>
     <p>Polimento da pose de combate e do rosto. A escala e o pivô são iguais nas duas versões.</p>
@@ -39,15 +40,22 @@
       <p>Reproduza em câmera lenta, inspecione os ticks e espelhe o golpe. Verde indica região vulnerável e vermelho indica contato ativo.</p>
       <p><select id="normal" aria-label="Golpe"></select>
         <button id="normal-play">Reproduzir</button>
+        <button id="normal-impact">Ver contato confirmado</button>
         <input type="range" id="normal-tick" min="0" value="0" aria-label="Tick">
         <label><input id="normal-boxes" type="checkbox"> Caixas</label>
         <label><input id="normal-mirror" type="checkbox"> Espelhar</label>
       </p>
-      <canvas id="normal-preview" width="460" height="195" style="width: 920px"></canvas>
+      <canvas id="normal-preview" width="630" height="195" style="width: 1100px"></canvas>
       <output id="normal-readout"></output>
       <p>Régua a cada 50 px. Laranja marca o alcance anterior do punho ou pé e ciano marca o novo.</p>
       <div id="elastic-stages"></div>
       <div id="normal-gallery"></div>
+    </section>
+    <section id="especiais">
+      <h2>Especiais terrestres</h2>
+      <p>Pistol ↓ → · Gatling ↓ ← · Bazooka ↓ ↓. Termine com J/K/L. Use o seletor acima para reproduzir e inspecionar cada versão.</p>
+      <div id="special-gallery"></div>
+      <p><a href="../sprites/luffy/specials.png" download>Baixar atlas dos corpos</a></p>
     </section>
     <section>
       <h2>Movimentação</h2>

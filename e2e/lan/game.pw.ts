@@ -235,6 +235,8 @@ async function capture(code: string, name: string) {
     );
     expect(ds[0].cameraZoom).toBe(ds[1].cameraZoom);
     expect(ds[0].furyTick).toBe(ds[1].furyTick);
+    expect(ds[0].jetTick).toBe(ds[1].jetTick);
+    expect(ds[0].jetFist).toBe(ds[1].jetFist);
     expect(ds[0].roadTick).toBe(ds[1].roadTick);
     for (let i = 0; i < 2; i++) {
       const data = await [a, b][i]
@@ -400,6 +402,58 @@ test("rooms validate codes, enforce two seats, confirmation/host start, isolate 
     )
     .toBeGreaterThanOrEqual(3);
   third.disconnect();
+});
+
+test("Sasuke fights with his own normals on both LAN clients", async () => {
+  const code = await pair("sasuke", "sasuke");
+  let room = await seed(code, 57);
+  await press(a, "l");
+  await expect.poll(() => room.match!.fighters[1].health).toBe(912);
+  await capture(code, "sasuke-kusanagi");
+  room = await seed(code, 57);
+  await press(b, "k");
+  await expect.poll(() => room.match!.fighters[0].health).toBe(941);
+  for (const client of [a, b]) {
+    await expect(client.locator("canvas")).toHaveAttribute("data-character", "sasuke");
+    await expect(client.locator("canvas")).toHaveAttribute("data-p1-health", "941");
+  }
+  await consistent();
+});
+
+test("Luffy Jet Gigant confirms with R and synchronizes the full Super over Apache", async () => {
+  const code = await pair("luffy", "goku");
+  const room = await seed(code, 175, 100);
+  await press(a, "r");
+  await expect.poll(() => room.match!.jetGigant?.attacker).toBe(0);
+  expect(room.match!.fighters[0].meter).toBe(0);
+  const timer = room.match!.timer;
+  await press(b, "j");
+  await expect(a.locator("canvas")).toHaveAttribute("data-jet-phase", "gigantPistol", { timeout: 12000 });
+  await expect(b.locator("canvas")).toHaveAttribute("data-jet-phase", "gigantPistol");
+  await expect(a.locator("canvas")).toHaveAttribute("data-jet-fist", "5");
+  await capture(code, "luffy-jet-gigant");
+  expect(room.match!.timer).toBe(timer);
+  await expect(a.locator("canvas")).toHaveAttribute("data-jet-cel", "small");
+  await expect(b.locator("canvas")).toHaveAttribute("data-jet-cel", "small");
+  await expect.poll(() => room.match!.jetGigant, { timeout: 6000 }).toBeUndefined();
+  for (const client of [a, b]) {
+    await expect(client.locator("canvas")).toHaveAttribute("data-p2-health", "668");
+    await expect(client.locator("canvas")).toHaveAttribute("data-camera-zoom", "1");
+    await expect(client.locator("canvas")).toHaveAttribute("data-capture", "none");
+  }
+  await consistent();
+});
+
+test("Luffy elastic throw resolves once on two LAN clients", async () => {
+  const code = await pair("luffy", "luffy");
+  const room = await seed(code, 82);
+  await press(a, "u");
+  await expect.poll(() => room.match!.capture?.kind).toBe("grab");
+  await capture(code, "luffy-elastic-throw");
+  await expect.poll(() => room.match!.fighters[1].health).toBe(888);
+  await expect.poll(() => room.match!.capture).toBeUndefined();
+  await expect.poll(() => room.match!.fighters[0].state).toBe("idle");
+  await consistent();
 });
 
 test("Luffy specials keep each Gatling hit authoritative on two LAN clients", async () => {
@@ -778,4 +832,41 @@ test("Apache outage pauses and resumes both real browser clients", async () => {
       2,
     ),
   );
+});
+
+test("Sasuke specials and the visual storm agree on both LAN clients", async () => {
+  const code = await pair("sasuke", "sasuke");
+  let room = await seed(code, 132);
+  await motion(a, [2, 1, 4], "l");
+  await expect.poll(() => room.match!.fighters[1].health).toBe(897);
+  expect(room.match!.sasukeStormUntil).toBeGreaterThan(room.match!.combatFrame);
+  for (const client of [a, b])
+    await expect(client.locator("canvas")).toHaveAttribute("data-p2-health", "897");
+  await capture(code, "sasuke-goryuka");
+  await consistent();
+
+  room = await seed(code, 161);
+  // P2 faces left, so its relative forward is the physical A key.
+  await motion(b, [2, 1, 4], "k");
+  await expect.poll(() => room.match!.fighters[0].health).toBe(911);
+  for (const client of [a, b])
+    await expect(client.locator("canvas")).toHaveAttribute("data-p1-health", "911");
+  await consistent();
+});
+
+test("Sasuke Curse Mark activates from keyboard and synchronizes through expiry", async () => {
+  const code = await pair("sasuke", "samurai");
+  const room = await seed(code, 58);
+  await motion(a, [2, 5, 2], "l", 72);
+  await expect.poll(() => room.match!.fighters[0].sasukeCurse?.phase).toBe("active");
+  for (const client of [a, b])
+    await expect(client.locator("canvas")).toHaveAttribute("data-p1-curse", "active");
+  await press(a, "j");
+  await expect.poll(() => room.match!.fighters[1].health).toBe(960);
+  await capture(code, "sasuke-curse-active");
+  await consistent();
+  await expect.poll(() => room.match!.fighters[0].sasukeCurse?.phase, { timeout: 22000 }).toBe("cooldown");
+  for (const client of [a, b])
+    await expect(client.locator("canvas")).toHaveAttribute("data-p1-curse", "cooldown");
+  await consistent();
 });

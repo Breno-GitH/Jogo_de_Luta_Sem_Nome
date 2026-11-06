@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sasuke Hebi · Laboratório</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        font: 16px system-ui;
+        color: #e7e9f1;
+        background: #131923;
+      }
+      body {
+        max-width: 1280px;
+        margin: 24px auto;
+        padding: 0 18px;
+      }
+      a {
+        color: #e1bbff;
+      }
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 12px;
+        margin: 12px 0;
+      }
+      button,
+      select {
+        font: inherit;
+        padding: 7px;
+        background: #283146;
+        color: inherit;
+        border: 1px solid #606b86;
+      }
+      canvas,
+      img {
+        display: block;
+        max-width: 100%;
+        height: auto;
+        image-rendering: pixelated;
+      }
+      canvas {
+        outline: 1px solid #455b6a;
+      }
+      input[type="range"] {
+        min-width: 160px;
+        flex: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <nav><a href="../">Voltar ao jogo</a></nav>
+    <h1>Sasuke Uchiha · Hebi</h1>
+    <p>
+      Prévia reproduzida pelo motor. No modo livre, use WASD, J/K/L e Shift. As
+      caixas são as mesmas usadas na luta.
+    </p>
+    <div class="controls">
+      <label
+        >Ensaio
+        <select id="scenario"></select
+      ></label>
+      <label
+        >Velocidade
+        <select id="speed">
+          <option value=".25">¼×</option>
+          <option value=".5">½×</option>
+          <option value="1" selected>1×</option>
+        </select></label
+      >
+      <label><input type="checkbox" id="mirror" /> Espelhar</label>
+      <label><input type="checkbox" id="boxes" /> Caixas</label>
+      <button id="reset">Repetir</button><button id="play">Pausar</button
+      ><button id="step">Avançar um tick</button>
+    </div>
+    <canvas id="arena" width="1280" height="720" tabindex="0"></canvas>
+    <div class="controls">
+      <label for="seek">Linha do tempo</label
+      ><input id="seek" type="range" min="0" max="135" value="0" />
+      <output id="status">Carregando sprites…</output>
+    </div>
+    <p>
+      <a href="../sprites/sasuke/base.png">Base</a> ·
+      <a href="../sprites/sasuke/movement.png">Atlas de movimentos</a> ·
+      <a href="../sprites/sasuke/normals.png">Atlas de ataques</a> ·
+      <a href="../sprites/sasuke/reactions.png">Atlas de reações</a> ·
+      <a href="../sprites/sasuke/specials.png">Atlas de especiais</a> ·
+      <a href="../sprites/sasuke/special-effects.png">Efeitos dos especiais</a> ·
+      <a href="../sprites/sasuke/curse.png">Atlas da Marca II</a> ·
+      <a href="../sprites/sasuke/curse-comparison.png">Comparação visual</a>
+    </p>
+    <p>
+      <a href="../sprites/sasuke/preview-movement.png"
+        >Todos os movimentos em PNG</a
+      >
+      ·
+      <a href="../sprites/sasuke/preview-normals.png"
+        >Todos os ataques em PNG</a
+      >
+      ·
+      <a href="../sprites/sasuke/preview-reactions.png"
+        >Guarda e reações em PNG</a
+      > · <a href="../sprites/sasuke/specials-contact.png">Poses e pontos de emissão dos especiais</a>
+    </p>
+    <script type="module" src="../src/sasuke-lab.ts"></script>
+  </body>
+</html>

@@ -15,7 +15,7 @@ describe("Luffy local roster", () => {
     expect(ONLINE_CHARACTERS).toContain("luffy");
     expect(selectionScreen("training")).toContain('value="luffy"');
     expect(selectionScreen("versus")).toContain('value="luffy"');
-    expect(selectionScreen("arcade")).not.toContain('value="luffy"');
+    expect(selectionScreen("arcade")).toContain('value="luffy"');
     for (const invalid of ["__proto__", "toString", "luffy-gear5"])
       expect(() => characterById(invalid)).toThrow("Unknown character");
   });
@@ -35,31 +35,6 @@ describe("Luffy local roster", () => {
       expect(f.y).toBeLessThan(FLOOR);
     },
   );
-  it("keeps grab and Super reserved", () => {
-    const m = new Match(
-      characters.luffy,
-      { training: true },
-      characters.samurai,
-    );
-    m.phase = "fight";
-    const f = m.fighters[0];
-    f.meter = 100;
-    f.x = 500;
-    m.fighters[1].x = 570;
-    for (const button of [
-      "throw",
-      "ultimate",
-    ] as const) {
-      m.step([{ ...neutral(), pressed: [button] }, neutral()]);
-      expect(f.moveId).toBe("");
-      expect(f.attackShapes()).toEqual([]);
-    }
-    expect(f.canStartSuper()).toBe(false);
-    expect(m.fighters[1].health).toBe(1000);
-    expect(m.capture).toBeFalsy();
-    expect(m.roadRoller).toBeFalsy();
-    expect(m.fury).toBeFalsy();
-  });
   it("can receive existing combat damage and restore a deterministic checkpoint", () => {
     const m = new Match(
       characters.samurai,

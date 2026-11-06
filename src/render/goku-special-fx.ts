@@ -83,6 +83,7 @@ export function drawGokuSpecials(
     }
   }
   for (const p of m.kiProjectiles) {
+    if (m.fighters[p.owner].data.id !== "goku") continue;
     c.save();
     c.translate(Math.round(p.x), Math.round(p.y));
     c.scale(p.facing, 1);

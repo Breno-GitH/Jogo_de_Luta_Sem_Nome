@@ -9,7 +9,7 @@ export function drawEffects(
 ) {
   if (!image.complete || !image.naturalWidth) return;
   for (const event of events) {
-    if (event.audioOnly) continue;
+    if (event.audioOnly || event.luffy) continue;
     const kind = event.kind ?? (event.blocked ? "guard" : "hit"),
       data = fxData[kind as keyof typeof fxData];
     if (!data) continue;

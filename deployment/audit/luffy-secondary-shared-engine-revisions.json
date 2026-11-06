@@ -1,0 +1,27 @@
+{
+  "files": {
+    "src/engine/characters.ts": {
+      "baseline": "49a870d85ddd10eb2d68332996192b3a1950b3ab549e8a4f33abd43c924be77a",
+      "previous": "8ed39f96d6ebf14a26f2df0c43ac8f03e0a32956c8986266fb5e1fcc6f431fd5",
+      "current": "04b985ccd60bf970d68bb01dcd9a3aab20ae3c9ecc98071dfb678b7add3c3848",
+      "reason": "Attach Luffy's authored reaction clips, lifecycle and universal grab move."
+    },
+    "src/engine/combat.ts": {
+      "baseline": "ed1676686f0e2b68ab9e730a4f1e58a5d99c6d0b4146e956b2aaaf6d02eb5f7b",
+      "previous": "740be301aff642cf5536dfb6101dc99e3bc97c0a41af0ca7a70d5b9d013184ec",
+      "current": "aa0a24c5ea300f6e6707790b60a1ab35b6f13d00f9ba5a5d92d46d0d724685f1",
+      "reason": "Reuse universal grab capture at the elastic contact position and select Luffy-only low hit reactions."
+    },
+    "src/engine/types.ts": {
+      "baseline": "f11f713bbf8e86186d53542d53ed343fc3d8e3ded8a3d4d1b6971cbc56c95c96",
+      "previous": "a666cae09d5881aa750ee2a7099b1204c75b753e735d58f1a2e68ba7dbe8e6e0",
+      "current": "7f82cec19c5d7992375c9163679c77adaa0652ae7635c1b1c658032c84f61a7d",
+      "reason": "Allow an authored universal grab trajectory to start from the actual contact position."
+    },
+    "src/engine/lifecycle.ts": {
+      "baseline": "ab76e858b33e5613daff0cfd00c48c7646be91a25f844aab6bc7a05cb2dc8b65",
+      "current": "249be6229ebb78b930c0f627e7edbd3daaba8b1bf3c6a9038b3c78aef662694a",
+      "reason": "Select guard recovery, airborne knockback and defensive walk poses only for Luffy."
+    }
+  }
+}

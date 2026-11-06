@@ -1,5 +1,6 @@
 import normals from "../data/luffy-normals.json";
 import joints from "../data/luffy-normal-joints.json";
+import { luffyFootPoint, luffyFootPose } from "./luffy-foot";
 import { elasticGeometry } from "./elastic";
 import { phaseAt } from "./moves";
 import type { CharacterData, Move, Point, Rect, State } from "./types";
@@ -129,11 +130,24 @@ export function buildLuffyLimb(
     x: Math.round(geometry.tip.x + (foot ? 9 : 6) * axis.x),
     y: Math.round(geometry.tip.y + (foot ? 9 : 6) * axis.y),
   };
-  const terminal = { a: geometry.tip, b: nose, r: 7 };
+  const footPose = foot
+    ? luffyFootPose(
+        actor.moveId,
+        Math.hypot(geometry.tip.x - root.x, geometry.tip.y - root.y),
+      )
+    : undefined;
+  const terminal = footPose
+    ? {
+        a: luffyFootPoint(geometry.tip, axis, footPose, -4, 3),
+        b: luffyFootPoint(geometry.tip, axis, footPose, footPose.contact, 2),
+        r: 5,
+      }
+    : { a: geometry.tip, b: nose, r: 7 };
   return {
     ...geometry,
     foot,
     axis,
+    footPose,
     limbHurtboxes: [...geometry.limbHurtboxes, terminal],
     terminal,
   };

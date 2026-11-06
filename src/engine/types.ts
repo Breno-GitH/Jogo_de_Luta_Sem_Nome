@@ -1,3 +1,5 @@
+import type { SasukeSpecialId } from "./sasuke-specials";
+
 export type Button =
   | "light"
   | "medium"
@@ -69,7 +71,7 @@ export interface Move {
   visualTiming?: { startup: number; active: number; recovery: number };
   airTeleport?: boolean;
   super?: boolean;
-  special?: "knives" | "rush" | "timeStop" | "ki" | "kamehameha" | "teleport" | "pistol" | "gatling" | "bazooka";
+  special?: "knives" | "rush" | "timeStop" | "ki" | "kamehameha" | "teleport" | "pistol" | "gatling" | "bazooka" | SasukeSpecialId;
   gokuStrength?: "light" | "medium" | "heavy";
   beam?: { range: number; radius: number; interval: number; hits: number };
   projectile?: {
@@ -133,6 +135,7 @@ export interface CompanionData {
 }
 export interface CharacterData {
   grabSequence?: {
+    startFromContact?: boolean;
     duration: number;
     hitTick: number;
     damage: number;

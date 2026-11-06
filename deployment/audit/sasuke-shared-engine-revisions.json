@@ -1,0 +1,24 @@
+{
+  "files": {
+    "src/engine/characters.ts": {
+      "baseline": "49a870d85ddd10eb2d68332996192b3a1950b3ab549e8a4f33abd43c924be77a",
+      "current": "3ff90eef91a1831beeefb3df462e6ac3b376d8e3a439fb5c6197c82dd692d58f",
+      "reason": "Register Sasuke Hebi as a separate character; existing entries retain their source and tuning."
+    },
+    "src/engine/combat.ts": {
+      "baseline": "ed1676686f0e2b68ab9e730a4f1e58a5d99c6d0b4146e956b2aaaf6d02eb5f7b",
+      "current": "0c4722c3dfb336962cd4d21bfdfaf66de29195ffd3b72002ea8ec99b61e32bde",
+      "reason": "Recognize Sasuke-only command branches and integrate deterministic releases, contacts and storm presentation with the shared combat pipeline."
+    },
+    "src/engine/types.ts": {
+      "baseline": "f11f713bbf8e86186d53542d53ed343fc3d8e3ded8a3d4d1b6971cbc56c95c96",
+      "current": "cc27450a9e6dc757781f91891436a3d1410b2ec056ffdb3018a4bdb4106bb377",
+      "reason": "Add the Sasuke special identifiers to the existing tagged Move union."
+    },
+    "src/engine/state.ts": {
+      "baseline": "1c97abf7a8f7b7ad163bf91b0f63a54292d51766803bd010f7e3a5f8b8328ac2",
+      "current": "ac31aee76bb08f31ac1d9a2a970f03091a1f7c351cd80141a25ad5d6583db7d6",
+      "reason": "Include deterministic Sasuke storm expiry in authoritative snapshots."
+    }
+  }
+}

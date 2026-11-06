@@ -6,6 +6,8 @@ import {
   existsSync,
   renameSync,
   rmSync,
+  cpSync,
+  readdirSync,
 } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -39,6 +41,34 @@ function clean(p) {
   confined(p);
   rmSync(p, { recursive: true, force: true });
 }
+function moveDirectory(from, to) {
+  confined(from);
+  confined(to);
+  try {
+    renameSync(from, to);
+  } catch (error) {
+    if (process.platform !== "win32" || error.code !== "EPERM") throw error;
+    // Windows can deny cross-directory rename. Copy only into a fresh target,
+    // publishing index.html last, so stale assets are never mixed into a build.
+    if (existsSync(to)) throw error;
+    mkdirSync(to);
+    try {
+      const entries = readdirSync(from).sort(
+        (a, b) => Number(a === "index.html") - Number(b === "index.html"),
+      );
+      for (const entry of entries)
+        cpSync(path.join(from, entry), path.join(to, entry), {
+          recursive: true,
+          errorOnExist: true,
+          force: false,
+        });
+    } catch (copyError) {
+      clean(to);
+      throw copyError;
+    }
+    clean(from);
+  }
+}
 function run(file, args) {
   const r = spawnSync(process.execPath, [file, ...args], {
     cwd: root,
@@ -71,11 +101,11 @@ try {
   );
   clean(previous);
   confined(dist);
-  if (existsSync(dist)) renameSync(dist, previous);
+  if (existsSync(dist)) moveDirectory(dist, previous);
   try {
-    renameSync(client, dist);
+    moveDirectory(client, dist);
   } catch (e) {
-    if (existsSync(previous)) renameSync(previous, dist);
+    if (existsSync(previous)) moveDirectory(previous, dist);
     throw e;
   }
   clean(stage);

@@ -7,7 +7,7 @@ import {
   luffySpecialFrame,
   luffySpecialMoves,
 } from "./engine/luffy-specials";
-import { paintLuffyTrails } from "./render/luffy-special-fx";
+import { paintLuffyTrails, luffyBurst } from "./render/luffy-special-fx";
 import previousReach from "./data/luffy-previous-reach.json";
 import { neutral } from "./engine/types";
 import { Animator } from "./render/animator";
@@ -21,6 +21,8 @@ const boxes = document.querySelector<HTMLInputElement>("#normal-boxes")!;
 const mirror = document.querySelector<HTMLInputElement>("#normal-mirror")!;
 const play = document.querySelector<HTMLButtonElement>("#normal-play")!;
 const preview = document.querySelector<HTMLCanvasElement>("#normal-preview")!;
+const impactButton =
+  document.querySelector<HTMLButtonElement>("#normal-impact")!;
 const gallery = document.querySelector("#normal-gallery")!;
 const readout = document.querySelector("#normal-readout")!;
 const image = new Image();
@@ -42,9 +44,14 @@ function draw(
   tick: number,
   facing: number,
   debug = false,
-  target?: { distance: number; hit: boolean },
+  target?: {
+    distance: number;
+    height?: number;
+    contact?: { x: number; y: number };
+  },
 ) {
   fighter.setState("idle");
+  fighter.y = id.startsWith("air_") ? FLOOR - 230 : FLOOR;
   if (tick >= 0) {
     fighter.attack(id);
     fighter.stateFrame = tick;
@@ -58,36 +65,37 @@ function draw(
   const sprite = animator.sprite();
   const ctx = canvas.getContext("2d")!;
   const x = facing === 1 ? 80 : canvas.width - 80;
-  const y = 174;
+  const y = id === "crouch_heavy" ? 196 : 174;
+  const floor = Math.min(canvas.height - 20, y + FLOOR - fighter.y);
   ctx.imageSmoothingEnabled = false;
   ctx.fillStyle = "#202d39";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   ctx.fillStyle = "#4f7e7a";
-  ctx.fillRect(0, y, canvas.width, 1);
+  ctx.fillRect(0, floor, canvas.width, 1);
   ctx.font = "9px monospace";
   for (let i = 0; i <= (special === undefined ? 350 : 500); i += 50) {
     const mark = x + i * facing;
-    ctx.fillRect(mark, y, 1, 4);
-    ctx.fillText(String(i), mark - 7, y + 14);
+    ctx.fillRect(mark, floor, 1, 4);
+    ctx.fillText(String(i), mark - 7, floor + 14);
   }
   if (oldReach[id] !== undefined) {
     ctx.fillStyle = "#eab263";
-    ctx.fillRect(x + oldReach[id] * facing, y - 8, 2, 8);
+    ctx.fillRect(x + oldReach[id] * facing, floor - 8, 2, 8);
     ctx.fillStyle = "#74d8ce";
-    ctx.fillRect(x + reach(id) * facing, y - 8, 2, 8);
+    ctx.fillRect(x + reach(id) * facing, floor - 8, 2, 8);
   }
   if (target) {
     ctx.save();
-    ctx.translate(x + target.distance, y);
-    ctx.scale(-1, 1);
+    ctx.translate(x + target.distance * facing, y + (target.height ?? 0));
+    ctx.scale(-facing, 1);
     ctx.drawImage(rivalImage, -128, -224);
     ctx.restore();
   }
   ctx.save();
   ctx.translate(x, y);
   ctx.scale(facing, 1);
-  const arms = special === undefined ? [] : luffyAttackLimbs(fighter);
-  if (special !== undefined) paintLuffyTrails(ctx, arms, tick, fighter.move!);
+  const arms = luffyAttackLimbs(fighter);
+  if (fighter.move) paintLuffyTrails(ctx, arms, tick, fighter.move);
   for (const arm of arms) if (arm.rear) paintElastic(ctx, arm, arm);
   ctx.drawImage(
     special !== undefined ? specialImage : limb ? image : base,
@@ -100,13 +108,18 @@ function draw(
     256,
     256,
   );
-  if (limb) paintElastic(ctx, limb, limb);
   for (const arm of arms) if (!arm.rear) paintElastic(ctx, arm, arm);
   ctx.restore();
-  if (target?.hit && limb) {
-    ctx.fillStyle = "#f9c46b";
-    ctx.fillRect(x + limb.tip.x - 1, y + limb.tip.y - 7, 3, 15);
-    ctx.fillRect(x + limb.tip.x - 7, y + limb.tip.y - 1, 15, 3);
+  if (target?.contact) {
+    luffyBurst(
+      ctx,
+      { x: x + target.contact.x * facing, y: y + target.contact.y },
+      0,
+      facing,
+      0.82,
+      ["#dd5542", "#ffba67", "#fff4cd"],
+      limb?.foot ? "kick" : "punch",
+    );
   }
   if (debug) {
     ctx.save();
@@ -127,13 +140,17 @@ function addStage(
   label: string,
   id: string,
   tick: number,
-  target?: { distance: number; hit: boolean },
+  target?: {
+    distance: number;
+    height?: number;
+    contact?: { x: number; y: number };
+  },
 ) {
   const panel = document.createElement("figure");
   const canvas = document.createElement("canvas");
   const caption = document.createElement("figcaption");
   canvas.width = 520;
-  canvas.height = 195;
+  canvas.height = id.startsWith("air_") || id === "crouch_heavy" ? 285 : 195;
   caption.textContent = label;
   panel.append(canvas, caption);
   stages.append(panel);
@@ -162,7 +179,7 @@ function addDemonstration(id: string, label: string) {
         label + " · contato confirmado no motor",
         id,
         attacker.stateFrame,
-        { distance, hit: true },
+        { distance, contact: { x: distance, y: -86 } },
       );
       break;
     }
@@ -170,17 +187,79 @@ function addDemonstration(id: string, label: string) {
   addStage(label + " · recolhimento", id, move.startup + move.active + 2);
 }
 
+/** Stage the rival at the leading foot or fist, then let Match resolve it. */
+function contactSample(id: string) {
+  const match = new Match(
+    characters.luffy,
+    { training: true },
+    characters.samurai,
+  );
+  match.phase = "fight";
+  const [a, b] = match.fighters;
+  a.x = 480;
+  a.y = id.startsWith("air_") ? FLOOR - 230 : FLOOR;
+  a.attack(id);
+  const move = a.move!;
+  const hitTick = luffyNormals[id]
+    ? peak(id)
+    : move.startup +
+      (move.special === "pistol" ? 5 : move.special === "gatling" ? 4 : 3);
+  a.stateFrame = hitTick;
+  const limb = luffyAttackLimbs(a).filter((l) => l.hitboxes.length)[0];
+  if (!limb) return;
+  b.x = a.x + Math.max(53, limb.terminal.b.x + 4);
+  b.y = Math.min(FLOOR, a.y + limb.terminal.b.y + 79);
+  if (b.y < FLOOR) b.setState("air");
+  a.stateFrame--;
+  match.step([neutral(), neutral()]);
+  const event = match.events.find((e) => !e.blocked && e.kind === "hit");
+  if (!event || !match.hits.some((h) => h.move === id && h.damage > 0)) return;
+  return {
+    tick: a.stateFrame,
+    target: {
+      distance: (b.x - a.x) * a.facing,
+      height: b.y - a.y,
+      contact: { x: (event.x - a.x) * a.facing, y: event.y - a.y },
+    },
+  };
+}
+
 let running = false;
 let last = 0;
+let showingContact = false;
 function refresh() {
   const id = list.value;
   const tick = Number(tickInput.value);
-  const frame = draw(preview, id, tick, mirror.checked ? -1 : 1, boxes.checked);
+  const sample = showingContact ? contactSample(id) : undefined;
+  const height = id.startsWith("air_")
+    ? sample
+      ? 425
+      : 285
+    : id === "crouch_heavy"
+      ? 285
+      : 195;
+  if (preview.height !== height) preview.height = height;
+  const frame = draw(
+    preview,
+    id,
+    sample?.tick ?? tick,
+    mirror.checked ? -1 : 1,
+    boxes.checked,
+    sample?.target,
+  );
+  preview.dataset.contact = String(Boolean(sample));
+  preview.dataset.move = id;
   readout.textContent =
-    `Tick ${tick} · pose ${(frame ?? 0) + 1} · ${fighter.attackPhase}` +
+    (sample
+      ? "Contato confirmado · "
+      : showingContact
+        ? "Sem contato · "
+        : "") +
+    `Tick ${sample?.tick ?? tick} · pose ${(frame ?? 0) + 1} · ${fighter.attackPhase}` +
     (oldReach[id] === undefined ? "" : ` · ${oldReach[id]} → ${reach(id)} px`);
 }
 function configure() {
+  showingContact = false;
   const m = luffyMoves[list.value] ?? luffySpecialMoves[list.value];
   tickInput.max = String(m.startup + m.active + m.recovery - 1);
   tickInput.value = "0";
@@ -209,7 +288,7 @@ Promise.all([
     const canvas = document.createElement("canvas");
     const name = document.createElement("figcaption");
     canvas.width = 460;
-    canvas.height = 195;
+    canvas.height = id.startsWith("air_") || id === "crouch_heavy" ? 285 : 195;
     name.textContent = label;
     panel.append(canvas, name);
     gallery.append(panel);
@@ -226,7 +305,7 @@ Promise.all([
     const canvas = document.createElement("canvas");
     const caption = document.createElement("figcaption");
     canvas.width = 630;
-    canvas.height = 195;
+    canvas.height = id.startsWith("air_") || id === "crouch_heavy" ? 285 : 195;
     caption.textContent = label;
     panel.append(canvas, caption);
     specialGallery.append(panel);
@@ -237,8 +316,19 @@ Promise.all([
   addDemonstration("stand_medium", "Perna");
   configure();
   list.onchange = configure;
-  boxes.onchange = mirror.onchange = tickInput.oninput = refresh;
+  boxes.onchange = mirror.onchange = refresh;
+  tickInput.oninput = () => {
+    showingContact = false;
+    refresh();
+  };
+  impactButton.onclick = () => {
+    running = false;
+    play.textContent = "Reproduzir";
+    showingContact = true;
+    refresh();
+  };
   play.onclick = () => {
+    showingContact = false;
     running = !running;
     play.textContent = running ? "Pausar" : "Reproduzir";
   };

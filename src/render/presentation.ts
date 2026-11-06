@@ -1,6 +1,7 @@
 import type { Fighter } from "../engine/combat";
 import { reactionFor } from "../engine/lifecycle";
 import { Animator, metadata, type AnimationData } from "./animator";
+import { SasukePresentation } from "./sasuke-presentation";
 import { LuffyMotionPresentation } from "./luffy-motion";
 import { DioMotionPresentation } from "./dio-motion";
 import { GokuMotionPresentation } from "./goku-motion";
@@ -13,6 +14,7 @@ import { animationTick } from "../engine/pace";
 /** Selects visual phases without driving physics from animation frames. */
 export class FighterPresentation {
   readonly animator: Animator;
+  private sasukeMotion?: SasukePresentation;
   private luffyMotion?: LuffyMotionPresentation;
   private dioMotion?: DioMotionPresentation;
   private gokuMotion?: GokuMotionPresentation;
@@ -31,6 +33,8 @@ export class FighterPresentation {
           }
         : data,
     );
+    if (data.sheet.startsWith("sasuke/"))
+      this.sasukeMotion = new SasukePresentation(this.animator);
     if (data.sheet.startsWith("luffy/"))
       this.luffyMotion = new LuffyMotionPresentation(this.animator);
     if (data.sheet.startsWith("dio/"))
@@ -51,6 +55,10 @@ export class FighterPresentation {
     return this.gokuMotion?.renderRootX(fighter) ?? Math.round(fighter.x);
   }
   tick(fighter: Fighter) {
+    if (this.sasukeMotion) {
+      this.sasukeMotion.tick(fighter);
+      return;
+    }
     if (this.luffyMotion) {
       this.luffyMotion.tick(fighter);
       return;

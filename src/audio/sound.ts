@@ -36,6 +36,11 @@ export class Sound {
   private owner?: Match;
   private moves = ["", ""];
   private message = "";
+  private musicGain?: GainNode;
+  private musicTimer?: ReturnType<typeof setInterval>;
+  private musicVolume = 0.18;
+  private masterVolume = 0.5;
+  private musicStep = 0;
   get available() {
     return typeof AudioContext !== "undefined";
   }
@@ -50,6 +55,9 @@ export class Sound {
         this.master = this.context.createGain();
         this.master.gain.value = this.volume;
         this.master.connect(this.context.destination);
+        this.musicGain = this.context.createGain();
+        this.musicGain.connect(this.context.destination);
+        this.applyVolume();
         this.noise = this.context.createBuffer(
           1,
           Math.floor(this.context.sampleRate * 0.22),
@@ -63,6 +71,9 @@ export class Sound {
         }
       }
       await this.context.resume();
+      if (!this.musicTimer) {
+        this.musicTimer = setInterval(() => this.musicNote(), 210);
+      }
     } catch {
       /* A browser without audio still runs the whole game. */
     }
@@ -83,6 +94,53 @@ export class Sound {
         this.context.currentTime,
         0.015,
       );
+    if (this.musicGain && this.context)
+      this.musicGain.gain.setTargetAtTime(
+        this.enabled ? this.masterVolume * this.musicVolume * 0.13 : 0,
+        this.context.currentTime,
+        0.02,
+      );
+  }
+  configure(master: number, effects: number, music: number, muted: boolean) {
+    this.masterVolume = master;
+    this.volume = master * effects;
+    this.musicVolume = music;
+    this.enabled = !muted;
+    this.applyVolume();
+  }
+  /** Original quiet arcade arpeggio, a separate bus from combat sounds. */
+  private musicNote() {
+    const ctx = this.context,
+      bus = this.musicGain;
+    if (
+      !ctx ||
+      !bus ||
+      ctx.state !== "running" ||
+      document.hidden ||
+      !this.enabled ||
+      !this.musicVolume
+    )
+      return;
+    const sequence = [
+      45, 52, 57, 60, 45, 52, 59, 64, 41, 48, 53, 57, 43, 50, 55, 59,
+    ];
+    const osc = ctx.createOscillator(),
+      env = ctx.createGain(),
+      at = ctx.currentTime;
+    osc.type = "triangle";
+    osc.frequency.value =
+      440 * 2 ** ((sequence[this.musicStep++ % sequence.length] - 69) / 12);
+    env.gain.setValueAtTime(0.0001, at);
+    env.gain.exponentialRampToValueAtTime(0.4, at + 0.01);
+    env.gain.exponentialRampToValueAtTime(0.0001, at + 0.18);
+    osc.connect(env);
+    env.connect(bus);
+    osc.start(at);
+    osc.stop(at + 0.2);
+    osc.onended = () => {
+      osc.disconnect();
+      env.disconnect();
+    };
   }
   play(cue: Cue) {
     const ctx = this.context,

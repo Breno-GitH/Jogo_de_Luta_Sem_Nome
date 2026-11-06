@@ -1,0 +1,49 @@
+{
+  "durationTicks": 780,
+  "cooldownTicks": 1080,
+  "damageMultiplier": 1.15,
+  "movementMultiplier": 1.1,
+  "activationHolds": [6, 6, 6, 5, 5, 5],
+  "reversionHolds": [6, 6, 5],
+  "airBurst": { "speeds": [8, 12, 14, 13, 10, 8, 6.82], "fallCap": 3.2 },
+  "normalTimings": {
+    "stand_light": [4, 4, 12], "stand_medium": [6, 5, 15], "stand_heavy": [10, 6, 23],
+    "crouch_light": [4, 4, 12], "crouch_medium": [7, 5, 16], "crouch_heavy": [10, 6, 22],
+    "air_light": [4, 4, 10], "air_medium": [6, 5, 12], "air_heavy": [9, 6, 16]
+  },
+  "specials": {
+    "senbon": {
+      "holds": [9, 11, 18],
+      "shots": [
+        { "at": 0, "speed": 25, "rise": -0.9, "radius": 5, "life": 31 },
+        { "at": 3, "speed": 27, "rise": -0.22, "radius": 5, "life": 31 },
+        { "at": 6, "speed": 28, "rise": 0.33, "radius": 5, "life": 31 },
+        { "at": 9, "speed": 26, "rise": 0.9, "radius": 5, "life": 31 }
+      ]
+    },
+    "eiso": { "holds": [11, 7, 32], "reach": 238, "push": 6.1 },
+    "chidori": { "holds": [11, 8, 25], "push": 8, "hitstop": 11, "drive": { "from": 6, "to": 18, "speed": 12.8 } },
+    "gokakyu": {
+      "holds": [11, 8, 23],
+      "shots": [{ "at": 0, "speed": 13.5, "rise": 0.35, "radius": 29, "life": 75 }]
+    },
+    "hosenka": {
+      "holds": [13, 17, 24],
+      "shots": [
+        { "at": 0, "speed": 13, "rise": -2.6, "radius": 13, "life": 60 },
+        { "at": 4, "speed": 16, "rise": -0.8, "radius": 14, "life": 57 },
+        { "at": 8, "speed": 15, "rise": 0.65, "radius": 14, "life": 57 },
+        { "at": 12, "speed": 13, "rise": 1.95, "radius": 13, "life": 60 }
+      ]
+    },
+    "goryuka": {
+      "holds": [17, 10, 32],
+      "shots": [{ "at": 0, "speed": 16, "rise": -5.2, "radius": 37, "life": 67 }]
+    },
+    "serpents": {
+      "holds": [12, 9, 21], "stun": 46,
+      "shots": [{ "at": 0, "speed": 15, "rise": 0.55, "radius": 17, "life": 18 }]
+    },
+    "nagashi": { "holds": [9, 6, 26], "stun": 43, "blockstun": 13 }
+  }
+}

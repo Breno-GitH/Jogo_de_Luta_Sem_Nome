@@ -8,10 +8,17 @@ import { FLOOR, type Match } from "../engine/combat";
 import { Animator, metadata, type AnimationData } from "./animator";
 import dioAnimations from "../data/dio-animations.json";
 import { gokuAnimations } from "./goku-animations";
+import { sasukeAnimations, sasukeCurseSheet } from "./sasuke-animations";
+import { drawSasukeClouds, drawSasukeProjectiles, drawSasukeTechnique, sasukeEffectsSheet } from "./sasuke-special-fx";
+import { drawCurseHud, drawSasukeCurseFX } from "./sasuke-curse-fx";
+import { drawSasukeCut } from "./sasuke-fx";
 import { luffyAnimations } from "./luffy-animations";
 import { luffyAttackLimbs } from "../engine/luffy-specials";
+import { jetId, jetScene } from "../engine/luffy-jet-gigant";
+import { drawJetActor, drawJetImpact, drawJetScreen, jetBodyRecoil, jetCamera, jetFxSheets } from "./luffy-jet-fx";
+import { luffyGrabLimb } from "../engine/luffy-secondary";
 import { paintElastic } from "./elastic";
-import { paintLuffyTrails } from "./luffy-special-fx";
+import { paintLuffyImpacts, paintLuffyTrails } from "./luffy-special-fx";
 import worldAnimations from "../data/the-world-animations.json";
 import { FighterPresentation } from "./presentation";
 import { drawCombatDebug } from "./debug";
@@ -46,6 +53,8 @@ export class Renderer {
   ];
   debug = false;
   effects = true;
+  cameraShake = true;
+  superKey = "R";
   inspectionZoom = 1;
   inspectionTarget?: 0 | 1;
   opponentPalette: "cyan" | AlternatePalette = "cyan";
@@ -71,13 +80,15 @@ export class Renderer {
     this.fxImage.src = `${spriteBase}fx/samurai-fx.png`;
     const sheets = new Set<string>();
     sheets.add("fx/dio-specials.png");
+    sheets.add(sasukeEffectsSheet);
     for (const sheet of gokuFxSheets) sheets.add(sheet);
-    for (const sheet of furyFxSheets) sheets.add(sheet);
+    for (const sheet of [...furyFxSheets, ...jetFxSheets]) sheets.add(sheet);
     for (const data of [
       metadata,
       dioAnimations,
       gokuAnimations,
       luffyAnimations,
+      sasukeAnimations,
       worldAnimations,
       objectData,
       fxData,
@@ -172,19 +183,20 @@ export class Renderer {
               ? gokuAnimations
               : f.data.id === "luffy"
                 ? luffyAnimations
-                : metadata,
+                : f.data.id === "sasuke"
+                  ? sasukeAnimations
+                  : metadata,
         );
         if (f.stand) this.standAnimations.set(f, new Animator(worldAnimations));
       }
       this.healthBars[i].tick(f.health / f.data.health);
       if (
-        !match.roadRoller &&
-        !match.fury &&
+        !match.cinematicActive &&
         match.temporal.isFrozen(i) &&
         this.frozenActors.has(f)
       )
         return;
-      if (!match.roadRoller && !match.fury && match.temporal.isFrozen(i))
+      if (!match.cinematicActive && match.temporal.isFrozen(i))
         this.frozenActors.add(f);
       else this.frozenActors.delete(f);
       this.presentations[i].tick(f);
@@ -201,6 +213,9 @@ export class Renderer {
       scene = road ? roadScene(road) : undefined;
     const fury = match.fury,
       furyStage = fury ? furyScene(fury) : undefined;
+    const jet = match.jetGigant,
+      jetStage = jet ? jetScene(jet) : undefined;
+    const stagedCamera = jet && jetStage ? jetCamera(jetStage, jet) : furyStage?.camera;
     const self = match.fighters[this.localSeat],
       other = match.fighters[1 - this.localSeat];
     this.canvas.dataset.animation =
@@ -218,7 +233,7 @@ export class Renderer {
     this.canvas.dataset.combo = String(other.combo);
     this.canvas.dataset.targetHealth = String(other.health);
     this.canvas.dataset.hitstop = String(match.hitstop);
-    this.canvas.dataset.capture = fury
+    this.canvas.dataset.capture = jet ? "jetGigant" : fury
       ? "gokuFury"
       : road
         ? "roadRoller"
@@ -226,6 +241,8 @@ export class Renderer {
     this.canvas.dataset.meter = String(self.meter);
     this.canvas.dataset.playerHealth = String(self.health);
     this.canvas.dataset.p1Health = String(match.fighters[0].health);
+    this.canvas.dataset.p1Curse = match.fighters[0].sasukeCurse?.phase ?? "ready";
+    this.canvas.dataset.p2Curse = match.fighters[1].sasukeCurse?.phase ?? "ready";
     this.canvas.dataset.p2Health = String(match.fighters[1].health);
     this.canvas.dataset.localSeat = String(this.localSeat);
     this.canvas.dataset.matchPhase = match.phase;
@@ -291,6 +308,11 @@ export class Renderer {
       rollerX: String(scene?.object.x ?? 0),
       rollerY: String(scene?.object.y ?? 0),
       rollerVisible: String(scene?.object.visible ?? false),
+      jetTick: String(jet?.tick ?? -1),
+      jetPhase: jetStage?.phase ?? "none",
+      jetCel: jetStage?.cel ?? "none",
+      jetFist: String(jetStage?.limbs.find(limb => limb.giant !== undefined)?.giant ?? -1),
+      jetHold: String(jet?.hold ?? 0),
       furyTick: String(fury?.tick ?? -1),
       furyPhase: furyStage?.phase ?? "none",
       furyHidden: String(furyStage?.attacker.hidden ?? false),
@@ -304,10 +326,10 @@ export class Renderer {
             self.stateFrame < 153),
       ),
       cameraZoom: String(
-        furyStage?.camera.scale ?? scene?.camera.scale ?? this.inspectionZoom,
+        stagedCamera?.scale ?? scene?.camera.scale ?? this.inspectionZoom,
       ),
       cameraShake: String(
-        furyStage?.camera.shakeX ?? scene?.camera.shakeX ?? 0,
+        stagedCamera?.shakeX ?? scene?.camera.shakeX ?? 0,
       ),
     });
     const c = this.ctx;
@@ -318,31 +340,32 @@ export class Renderer {
         (e.total ?? 16) - e.life < combatPace.feedback.heavyShakeTicks,
     );
     const ordinaryShake =
-      !road && !fury && heavy
+      this.cameraShake && !match.cinematicActive && heavy
         ? (match.frame % 2 ? 1 : -1) * combatPace.feedback.heavyShakePixels
         : 0;
     this.canvas.dataset.impactShake = String(this.effects ? ordinaryShake : 0);
     c.imageSmoothingEnabled = false;
-    if (this.inspectionZoom > 1 || road || fury) {
+    if (this.inspectionZoom > 1 || match.cinematicActive) {
       c.fillStyle = "#101b2b";
       c.fillRect(0, 0, 1280, 720);
     }
     c.save();
     if (this.effects && ordinaryShake) c.translate(ordinaryShake, 0);
-    if (furyStage) {
-      const cam = furyStage.camera;
-      c.translate(640 + cam.shakeX, 360 + cam.shakeY);
+    if (stagedCamera) {
+      const cam = stagedCamera;
+      c.translate(640 + (this.cameraShake ? cam.shakeX : 0), 360 + (this.cameraShake ? cam.shakeY : 0));
       c.scale(cam.scale, cam.scale);
       c.translate(-Math.round(cam.x), -Math.round(cam.y));
     } else if (scene) {
       const cam = scene.camera;
-      c.translate(640 + cam.shakeX, cam.anchorY + cam.shakeY);
+      c.translate(640 + (this.cameraShake ? cam.shakeX : 0), cam.anchorY + (this.cameraShake ? cam.shakeY : 0));
       c.scale(cam.scale, cam.scale);
       c.translate(-Math.round(cam.x), -Math.round(cam.y));
     } else if (
       this.inspectionZoom > 1 &&
       (!match.capture ||
-        (match.capture.kind === "grab" && self.data.id === "goku"))
+        (match.capture.kind === "grab" &&
+          (self.data.id === "goku" || self.data.id === "luffy")))
     ) {
       const z = this.inspectionZoom,
         focus =
@@ -361,7 +384,8 @@ export class Renderer {
       c.translate(-cx, -cy);
     }
     drawTestArena(c);
-    if (!road && !fury) drawTimeTint(c, match);
+    if (this.effects && !match.cinematicActive) drawSasukeClouds(c, match);
+    if (!match.cinematicActive) drawTimeTint(c, match);
     if (road) drawRoadBackdrop(c, this.sprites, road);
     if (this.effects) drawFury(c, match, this.sprites, "behind");
     if (match.capture?.kind === "ultimate") {
@@ -382,6 +406,7 @@ export class Renderer {
         return;
       const victimStand = road && f.id === road.victim;
       const opacity =
+        jet && f.id === jet.victim ? Math.max(0, 1 - jet.tick / 12) :
         fury && f.id === fury.victim
           ? Math.max(0, 1 - fury.tick / 12)
           : victimStand
@@ -432,7 +457,7 @@ export class Renderer {
     };
     for (const f of match.fighters)
       if (f.stand?.transform.depth === 0) drawStand(f);
-    const order = fury
+    const order = jet ? [jet.victim, jet.attacker] : fury
       ? [fury.victim, fury.attacker]
       : road
         ? [road.victim, road.attacker]
@@ -451,20 +476,29 @@ export class Renderer {
       c.translate(this.presentations[i].renderRootX(f), Math.round(f.y));
       const sprite = this.presentations[i].animator.sprite();
       c.scale(f.facing * sprite.scale, sprite.scale);
-      if (i === 1 && !sprite.player2Sheet && f.data.id !== "goku")
+      if (i === 1 && !sprite.player2Sheet && f.data.id !== "goku" && sprite.sheet !== sasukeCurseSheet)
         c.filter = "hue-rotate(145deg)";
       const original = this.sprites.get(
         i === 1 ? (sprite.player2Sheet ?? sprite.sheet) : sprite.sheet,
       );
       const image =
-        i === 1 && (this.opponentPalette !== "cyan" || f.data.id === "goku")
+        i === 1 && sprite.sheet !== sasukeCurseSheet && (this.opponentPalette !== "cyan" || f.data.id === "goku")
           ? (this.variants.get(`${this.opponentPalette}:${sprite.sheet}`) ??
             original)
           : original;
+      const jetActor = jet?.attacker === i ? jetStage : undefined;
+      const jetShift = jet && jetActor ? jetBodyRecoil(jetActor, jet) : 0;
+      drawJetActor(c, this.sprites, f, jetActor, true, this.effects, jetShift);
       const limbs = luffyAttackLimbs(f);
-      if (this.effects && f.data.id === "luffy" && f.move?.special)
+      if (this.effects && limbs.length && f.move)
         paintLuffyTrails(c, limbs, f.stateFrame, f.move);
-      for (const limb of limbs) if (limb.rear) paintElastic(c, limb, limb);
+      const luffyImpact = limbs.length
+        ? match.events.filter(e => e.luffy?.actor === i && e.luffy.move === f.moveId).at(-1)
+        : undefined;
+      const recoil = luffyImpact ? Math.max(0, 1 - ((luffyImpact.total ?? 16) - luffyImpact.life) / 6) : 0;
+      const rootShift = -Math.round((luffyImpact?.strength === 3 ? 3 : 2) * recoil);
+      const finish = { rootShift, recoil };
+      for (const limb of limbs) if (limb.rear) paintElastic(c, limb, limb, undefined, finish);
       if (
         image &&
         (image instanceof HTMLCanvasElement ||
@@ -472,8 +506,7 @@ export class Renderer {
       ) {
         if (
           this.effects &&
-          !road &&
-          !fury &&
+          !match.cinematicActive &&
           combatPace.feedback.dashTrails &&
           (f.state === "dash" || f.airChaseTicks > 0) &&
           Math.abs(f.vx) > 5
@@ -501,13 +534,21 @@ export class Renderer {
           sprite.y,
           sprite.width,
           sprite.height,
-          -sprite.pivot.x,
+          -sprite.pivot.x + rootShift + jetShift,
           -sprite.pivot.y,
           sprite.width,
           sprite.height,
         );
       }
-      for (const limb of limbs) if (!limb.rear) paintElastic(c, limb, limb);
+      for (const limb of limbs) if (!limb.rear) paintElastic(c, limb, limb, undefined, finish);
+      const grip = luffyGrabLimb(f);
+      if (grip) paintElastic(c, grip, grip);
+      drawJetActor(c, this.sprites, f, jetActor, false, this.effects, jetShift);
+      if (this.effects && f.data.id === "sasuke") {
+        drawSasukeCut(c, f);
+        drawSasukeTechnique(c, f);
+        drawSasukeCurseFX(c, f);
+      }
       c.restore();
       if (this.debug) {
         c.fillStyle = "#e7c56e";
@@ -516,7 +557,7 @@ export class Renderer {
           f.state === "attack" && f.move
             ? poseAt(f.move, f.stateFrame)
             : undefined;
-        if (!road && !fury)
+        if (!match.cinematicActive)
           drawCombatDebug(
             c,
             f.hurtboxes(),
@@ -530,22 +571,37 @@ export class Renderer {
     });
     for (const f of match.fighters)
       if (f.stand && f.stand.transform.depth > 0) drawStand(f);
-    if (!road && !fury)
+    if (!match.cinematicActive)
       drawKnives(c, match, this.sprites.get("fx/dio-specials.png"), this.debug);
-    if (!road && !fury) drawGokuSpecials(c, match, this.sprites, this.debug);
-    if (this.effects && !fury) drawEffects(c, match.events, this.fxImage);
-    if (this.effects && !road && !fury)
+    if (!match.cinematicActive) {
+      drawGokuSpecials(c, match, this.sprites, this.debug);
+      drawSasukeProjectiles(c, match, this.sprites, this.debug);
+    }
+    if (this.effects && !fury && !jet) {
+      drawEffects(c, match.events, this.fxImage);
+      paintLuffyImpacts(c, match.events);
+    }
+    if (this.effects && !match.cinematicActive)
       drawTemporalEffects(c, match, this.sprites.get("fx/dio-specials.png"));
+    if (this.effects && jet && jetStage) drawJetImpact(c, this.sprites, jetStage, jet.tick, jet.hold);
     if (this.effects && road) drawRoadEffects(c, this.sprites, road);
     if (this.effects) drawFury(c, match, this.sprites, "front");
     c.restore();
     c.restore();
+    if (jet && this.effects) drawJetScreen(c, jet);
     this.hud(match);
     if (self.moveId === "ssj1_fury" && self.stateFrame < 28) {
       c.fillStyle = "#ffe780";
       c.font = "bold 24px monospace";
       c.textAlign = "center";
       c.fillText("SUPER SAIYAJIN 1 · FÚRIA SAIYAJIN", 640, 179);
+      c.textAlign = "left";
+    }
+    if (match.fighters.some(f => f.moveId === jetId && f.stateFrame < 28) || (jet && jet.tick < 12)) {
+      c.font = "bold 24px monospace";
+      c.textAlign = "center";
+      c.fillStyle = "#ffd086";
+      c.fillText("GOMU GOMU NO JET GIGANT", 640, 179);
       c.textAlign = "left";
     }
     if (road && road.tick < 22) {
@@ -656,15 +712,18 @@ export class Renderer {
       c.fillStyle = i === 0 ? "#e5b16b" : "#73cbd5";
       c.fillText(
         f.data.id === "luffy"
-          ? "LUFFY · NORMAIS ELÁSTICOS"
+          ? `JET GIGANT · ${f.meter >= f.meterMaximum ? `PRONTA · ${this.superKey}` : Math.floor((100 * f.meter) / f.meterMaximum) + "%"}`
           : f.data.id === "goku"
-            ? `FÚRIA SAIYAJIN · ${f.meter >= f.meterMaximum ? "PRONTA · R" : Math.floor((100 * f.meter) / f.meterMaximum) + "%"}`
+            ? `FÚRIA SAIYAJIN · ${f.meter >= f.meterMaximum ? `PRONTA · ${this.superKey}` : Math.floor((100 * f.meter) / f.meterMaximum) + "%"}`
             : f.data.id === "samurai"
-              ? `MIL CORTES ${f.meter}%${f.meter >= 100 ? " · R" : ""}`
-              : `SUPER ${(f.meter / 100).toFixed(2)} / 2 · ROAD ROLLER · R`,
+              ? `MIL CORTES ${f.meter}%${f.meter >= 100 ? ` · ${this.superKey}` : ""}`
+              : f.data.id === "sasuke"
+                ? "TAIJUTSU / RAITON / KATON"
+                : `SUPER ${(f.meter / 100).toFixed(2)} / 2 · ROAD ROLLER · ${this.superKey}`,
         x,
         617,
       );
+      if (f.data.id === "sasuke") drawCurseHud(c, f, x);
       if (f.data.id === "dio") {
         const clock = m.temporal.s.ledger[i];
         const label = m.temporal.active

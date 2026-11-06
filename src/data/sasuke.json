@@ -1,0 +1,20 @@
+{
+  "id": "sasuke",
+  "name": "Sasuke Uchiha · Hebi",
+  "health": 1000,
+  "speed": 4.65,
+  "jump": -16.9,
+  "gravity": 0.73,
+  "meterGainScale": 0,
+  "airChaseSpeed": 6.6,
+  "airChaseTicks": 10,
+  "locomotion": {
+    "backSpeed": 3.65,
+    "airSpeed": 6.2,
+    "jumpStartup": 5,
+    "landingTicks": 7,
+    "dashForward": [3, 7, 13, 18, 19, 17, 15, 13, 10, 6, 3, 0],
+    "backdash": [3, 8, 13, 16, 16, 15, 13, 11, 8, 5, 2, 0]
+  },
+  "combatLimits": { "maxHits": 11, "maxAirHits": 6, "maxTicks": 280 }
+}

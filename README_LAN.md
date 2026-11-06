@@ -157,3 +157,7 @@ Para repetir: pare o backend comum, mantenha Apache ligado, execute `npm run bui
 **Ainda precisa ser verificado em dois computadores físicos:** abra o IP do servidor no PC do amigo; crie/entre/confirme/inicie uma sala; mova e ataque dos dois lados; teste os três personagens e Supers; complete uma partida, peça revanche e desconecte/reconecte um participante. Confira o proxy/heartbeat no DevTools dos dois. Teste também parar/iniciar Apache pelo painel XAMPP e a conectividade após mudanças de rede. Não foi realizado teste com um segundo computador disponível.
 
 Limitações: salas e progresso online são voláteis, não há migração do servidor para outro PC, autenticação de contas, matchmaking público ou rollback. O limite de retomada é finito. Congelar uma aba ou sobrecarregar o PC pode atrasar os dois jogadores; o serviço não promete ausência de lag. As limitações artísticas já documentadas de cada personagem permanecem; não foram alterados desenhos ou gameplay para esta migração.
+
+## Menu e opções
+
+Consulte [MENUS.md](MENUS.md) para seleção dos quatro personagens, Arcade, Versus BOT, treinamento, lobby, pausa, resultados, remapeamento e testes da interface. O endereço Apache e o backend LAN são os mesmos já configurados neste documento.

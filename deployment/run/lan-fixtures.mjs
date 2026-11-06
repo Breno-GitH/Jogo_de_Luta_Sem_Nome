@@ -17903,12 +17903,12 @@ function animationTick(move, tick) {
     return old.startup + (tick - move.startup) * old.active / move.active;
   return old.startup + old.active + (tick - move.startup - move.active) * old.recovery / move.recovery;
 }
-function retime(move, startup, active, recovery) {
+function retime(move, startup2, active2, recovery2) {
   const out = {
     ...move,
-    startup,
-    active,
-    recovery,
+    startup: startup2,
+    active: active2,
+    recovery: recovery2,
     visualTiming: {
       startup: move.startup,
       active: move.active,
@@ -17916,7 +17916,7 @@ function retime(move, startup, active, recovery) {
     }
   };
   const tick = (t) => Math.round(
-    t < move.startup ? t * startup / move.startup : t < move.startup + move.active ? startup + (t - move.startup) * active / move.active : startup + active + (t - move.startup - move.active) * recovery / move.recovery
+    t < move.startup ? t * startup2 / move.startup : t < move.startup + move.active ? startup2 + (t - move.startup) * active2 / move.active : startup2 + active2 + (t - move.startup - move.active) * recovery2 / move.recovery
   );
   if (move.hitWindows)
     out.hitWindows = move.hitWindows.map((w) => ({
@@ -18287,10 +18287,10 @@ var CombatStand = class {
           0,
           Math.min(1, (t - move.approachAt) / move.approachTicks)
         );
-        const ease2 = progress2 * progress2 * (3 - 2 * progress2);
-        const targetX2 = owner.x + (s.fromX + (move.front.x - s.fromX) * ease2) * s.facing;
+        const ease3 = progress2 * progress2 * (3 - 2 * progress2);
+        const targetX2 = owner.x + (s.fromX + (move.front.x - s.fromX) * ease3) * s.facing;
         s.x = owner.move?.special === "rush" || owner.move?.super ? s.x + Math.max(-16, Math.min(16, targetX2 - s.x)) : targetX2;
-        s.y = owner.y + s.fromY + (move.front.y - s.fromY) * ease2;
+        s.y = owner.y + s.fromY + (move.front.y - s.fromY) * ease3;
         s.depth = (s.x - owner.x) * owner.facing > 8 ? 20 : 0;
         s.clip = t < move.approachAt ? "standIdle" : t < move.punchAt ? "forwardAttackMovement" : t < move.recoverAt ? move.clip : move.recoveryClip ?? "attackRecovery";
         s.clipTick = t < move.approachAt ? t : t < move.punchAt ? Math.floor((t - move.approachAt) * 9 / move.approachTicks) : t < move.recoverAt ? t - move.punchAt : t - move.recoverAt;
@@ -18316,9 +18316,9 @@ var CombatStand = class {
         s.returnFrame = 0;
         s.facing = owner.facing;
       }
-      const progress2 = Math.min(1, ++s.returnFrame / s.returnDuration), ease2 = progress2 * progress2 * (3 - 2 * progress2);
-      s.x = owner.x + s.fromX + (this.data.neutral.x * owner.facing - s.fromX) * ease2;
-      s.y = owner.y + s.fromY + (this.data.neutral.y - s.fromY) * ease2;
+      const progress2 = Math.min(1, ++s.returnFrame / s.returnDuration), ease3 = progress2 * progress2 * (3 - 2 * progress2);
+      s.x = owner.x + s.fromX + (this.data.neutral.x * owner.facing - s.fromX) * ease3;
+      s.y = owner.y + s.fromY + (this.data.neutral.y - s.fromY) * ease3;
       s.facing = owner.facing;
       s.depth = (s.x - owner.x) * owner.facing > 8 ? 20 : 0;
       s.clip = s.returnClip ?? "returnBehind";
@@ -18354,9 +18354,9 @@ var CombatStand = class {
     else s.turnLeft--;
     s.y = Math.max(targetY - 4, Math.min(targetY + 4, s.y));
     const ability = owner.move?.special === "timeStop" && owner.state === "attack";
-    const clip = ability ? owner.stateFrame < (owner.move?.startup ?? 24) - 6 ? "timePrepare" : "timeActivate" : owner.temporalEnding && owner.state !== "attack" ? "timeFinish" : owner.temporalActive ? "timeMaintain" : s.turnLeft > 0 ? "returnPosition" : owner.airborne ? "jumpFollow" : owner.state === "dash" ? "dashFollow" : owner.state === "walk" ? owner.vx * owner.facing >= 0 ? "followForward" : "followBackward" : s.settleLeft > 0 ? "returnPosition" : s.clock % 120 < 60 ? "standIdle" : "floating";
-    if (clip !== s.clip) {
-      s.clip = clip;
+    const clip2 = ability ? owner.stateFrame < (owner.move?.startup ?? 24) - 6 ? "timePrepare" : "timeActivate" : owner.temporalEnding && owner.state !== "attack" ? "timeFinish" : owner.temporalActive ? "timeMaintain" : s.turnLeft > 0 ? "returnPosition" : owner.airborne ? "jumpFollow" : owner.state === "dash" ? "dashFollow" : owner.state === "walk" ? owner.vx * owner.facing >= 0 ? "followForward" : "followBackward" : s.settleLeft > 0 ? "returnPosition" : s.clock % 120 < 60 ? "standIdle" : "floating";
+    if (clip2 !== s.clip) {
+      s.clip = clip2;
       s.clipTick = 0;
     } else s.clipTick++;
     if (ability)
@@ -19124,11 +19124,11 @@ function canStartFury(f) {
   ) || f.canSuperCancel());
 }
 var furyContacts = goku_fury_contacts_default;
-function furyRelease(clip, tick) {
-  const entries = goku_fury_release_default[clip];
+function furyRelease(clip2, tick) {
+  const entries = goku_fury_release_default[clip2];
   if (!entries) return { x: -12, y: -76 };
   const total = entries.reduce((s, e) => s + e.ticks, 0);
-  let t = clip === "furyKamehamehaMaintain" ? tick % total : Math.min(tick, total - 1);
+  let t = clip2 === "furyKamehamehaMaintain" ? tick % total : Math.min(tick, total - 1);
   for (const entry of entries) {
     if (t < entry.ticks) return entry;
     t -= entry.ticks;
@@ -19169,14 +19169,14 @@ function furyScene(s) {
     [434, endX, 580]
   ];
   const victim = track(t, keys);
-  let clip = "furyFirstPunch", tick = 14, facing = f, hidden = false;
+  let clip2 = "furyFirstPunch", tick = 14, facing = f, hidden = false;
   let x = s.originX, y = 580;
   const aim = (name, at, side = f, ground = false) => {
     const target = track(at, keys), c = furyContacts[name] ?? furyContacts.furyAirPunch;
     return { x: target.x - c.x * side, y: ground ? 580 : target.y - 78 - c.y };
   };
   const contact = (name, hitTick, offset, start, previous, ground = false) => {
-    clip = name;
+    clip2 = name;
     tick = offset;
     const target = aim(name, hitTick, facing, ground), v = smooth(u(t, start, hitTick));
     x = mix(previous.x, target.x, v);
@@ -19184,12 +19184,12 @@ function furyScene(s) {
   };
   const first = { x: s.originX, y: 580 }, second = aim("furySecondStrike", 16, f, true), upper = aim("furyUppercut", 34, f, true), punch1 = aim("furyAirPunch", 65), kick1 = aim("furyAirKick", 78), punch2 = aim("furyAirPunch", 90), kick2 = aim("furyAirKick", 100);
   if (t < 8) {
-    clip = "furyFirstPunch";
+    clip2 = "furyFirstPunch";
     tick = 14 + t;
   } else if (t < 24) contact("furySecondStrike", 16, t - 8, 8, first, true);
   else if (t < 44) contact("furyUppercut", 34, t - 24, 24, second, true);
   else if (t < 60) {
-    clip = "furyAirPursuit";
+    clip2 = "furyAirPursuit";
     tick = t - 44;
     const v = smooth(u(t, 44, 60));
     x = mix(upper.x, punch1.x, v);
@@ -19212,10 +19212,10 @@ function furyScene(s) {
     const target = aim(attack, 116 + link * 24, facing);
     x = target.x;
     y = target.y;
-    clip = attack;
+    clip2 = attack;
     tick = Math.max(0, q - 6);
     if (q < 6) {
-      clip = "furyTeleportDisappear";
+      clip2 = "furyTeleportDisappear";
       tick = q;
       const prevFacing = link ? sides[link - 1] : f, previous = link ? aim(
         [
@@ -19232,14 +19232,14 @@ function furyScene(s) {
       y = previous.y;
     } else if (q < 9) {
       hidden = true;
-      clip = "furyTeleportDisappear";
+      clip2 = "furyTeleportDisappear";
       tick = 5;
     } else if (q < 12) {
-      clip = "furyTeleportReappear";
+      clip2 = "furyTeleportReappear";
       tick = q - 9;
     }
   } else if (t < 278) {
-    clip = t < 266 ? "furyKamehamehaPreparation" : "furyFuriousExpression";
+    clip2 = t < 266 ? "furyKamehamehaPreparation" : "furyFuriousExpression";
     tick = Math.max(0, t - (t < 266 ? 233 : 266));
     x = endX - 280 * f;
     y = 300;
@@ -19247,50 +19247,50 @@ function furyScene(s) {
       const previous = aim("furyAerialUppercut", 212);
       x = previous.x;
       y = previous.y;
-      clip = "furyTeleportDisappear";
+      clip2 = "furyTeleportDisappear";
       tick = t - 224;
       hidden = t >= 227;
     } else if (t < 233) {
-      clip = "furyTeleportReappear";
+      clip2 = "furyTeleportReappear";
       tick = t - 230;
     }
   } else if (t < 344) {
-    clip = t < 292 ? "furyDownwardBeam" : "furyKamehamehaMaintain";
+    clip2 = t < 292 ? "furyDownwardBeam" : "furyKamehamehaMaintain";
     tick = t - (t < 292 ? 278 : 292);
     x = endX - 280 * f;
     y = 300;
   } else if (t < 354) {
-    clip = "furyKamehamehaRecovery";
+    clip2 = "furyKamehamehaRecovery";
     tick = t - 344;
     x = endX - 280 * f;
     y = 300;
   } else if (t < 384) {
-    clip = "furyAirDescent";
+    clip2 = "furyAirDescent";
     tick = t - 354;
     x = endX - 280 * f;
     y = mix(300, 580, u(t, 354, 384) ** 2);
   } else if (t < 398) {
-    clip = "furyLanding";
+    clip2 = "furyLanding";
     tick = t - 384;
     x = endX - 280 * f;
     y = 580;
   } else if (t < 410) {
-    clip = "furyTransformationEnding";
+    clip2 = "furyTransformationEnding";
     tick = t - 398;
     x = endX - 280 * f;
     y = 580;
   } else if (t < 414) {
-    clip = "furyAuraFading";
+    clip2 = "furyAuraFading";
     tick = t - 410;
     x = endX - 280 * f;
     y = 580;
   } else if (t < 430) {
-    clip = "furyHairColorTransition";
+    clip2 = "furyHairColorTransition";
     tick = t - 414;
     x = endX - 280 * f;
     y = 580;
   } else {
-    clip = "furyRecoveryPose";
+    clip2 = "furyRecoveryPose";
     tick = t - 430;
     x = endX - 280 * f;
     y = 580;
@@ -19312,10 +19312,10 @@ function furyScene(s) {
   const framedY = (top + bottom) / 2 - 20;
   const centerY = t >= 398 ? mix(framedY, 360, smooth(u(t, 398, 434))) : framedY;
   const shake = t >= 330 && t < 344 ? Math.round((344 - t) / 3) * (t % 2 ? 1 : -1) : 0;
-  const release = furyRelease(clip, tick);
+  const release = furyRelease(clip2, tick);
   return {
     phase,
-    attacker: { x, y, clip, tick, facing, hidden },
+    attacker: { x, y, clip: clip2, tick, facing, hidden },
     victim: {
       ...victim,
       clip: vc,
@@ -19599,19 +19599,22 @@ function logicalReactionFor(f) {
       tick: time < 6 ? time : time - 6
     };
   if (f.state === "counterRecover") return { clip: "counterFail", tick: time };
-  if (f.state === "blockstun")
+  if (f.state === "blockstun") {
+    if (f.data.id === "luffy" && time >= 6 && f.stun <= 4 && !f.guardIntent)
+      return { clip: "guardRecovery", tick: Math.max(0, 4 - f.stun) };
     return {
       clip: time < 6 ? f.blockCrouched ? "guardImpactCrouch" : "guardImpactStand" : f.blockCrouched ? "guardCrouch" : "guardStand",
       tick: time < 6 ? time : time - 6
     };
+  }
   if (f.state === "hitstun") {
-    const clip = f.knockedDown && !f.airborne ? "downed" : f.airborne ? f.hitLaunch && f.vy < 0 ? "launched" : f.knockedDown || f.hitLaunch ? "falling" : "damageAir" : f.hitCrouched ? "damageCrouch" : f.reactionStrength === 1 ? "damageLight" : f.reactionStrength === 2 ? "damageMedium" : "damageHeavy";
+    const clip2 = f.knockedDown && !f.airborne ? "downed" : f.airborne ? f.hitLaunch && f.vy < 0 ? "launched" : f.data.id === "luffy" && !f.hitLaunch && time < 9 && (f.knockedDown || f.reactionStrength >= 3) ? "airKnockback" : f.knockedDown || f.hitLaunch ? "falling" : "damageAir" : f.hitCrouched ? "damageCrouch" : f.reactionStrength === 1 ? "damageLight" : f.reactionStrength === 2 ? "damageMedium" : "damageHeavy";
     return {
-      clip,
-      tick: (f.data.reactionClips?.[clip] ?? clip) === f.reactionPhase ? f.reactionFrame : 0
+      clip: clip2,
+      tick: (f.data.reactionClips?.[clip2] ?? clip2) === f.reactionPhase ? f.reactionFrame : 0
     };
   }
-  if (f.guardIntent && !f.airborne && (["idle", "crouch", "landing"].includes(f.state) || f.data.id === "dio" && f.state === "walk" && Math.abs(f.vx) < 0.01))
+  if (f.guardIntent && !f.airborne && (["idle", "crouch", "landing"].includes(f.state) || f.state === "walk" && (f.data.id === "luffy" || f.data.id === "dio" && Math.abs(f.vx) < 0.01)))
     return { clip: f.crouching ? "guardCrouch" : "guardStand", tick: time };
 }
 function reactionFor(f) {
@@ -19624,11 +19627,11 @@ function reactionFor(f) {
 function reactionBoxes(f) {
   const state = reactionFor(f);
   if (!state) return;
-  const sequence = f.data.reactions?.[state.clip];
-  if (!sequence) return;
-  const total = sequence.poses.reduce((sum, p) => sum + p.ticks, 0);
-  let time = sequence.loop ? state.tick % total : Math.min(state.tick, total - 1);
-  for (const pose of sequence.poses) {
+  const sequence2 = f.data.reactions?.[state.clip];
+  if (!sequence2) return;
+  const total = sequence2.poses.reduce((sum, p) => sum + p.ticks, 0);
+  let time = sequence2.loop ? state.tick % total : Math.min(state.tick, total - 1);
+  for (const pose of sequence2.poses) {
     if (time < pose.ticks) return pose.hurtboxes;
     time -= pose.ticks;
   }
@@ -19791,13 +19794,13 @@ var luffy_normals_default = {
     ]
   },
   stand_medium: {
-    holds: [4, 3, 2, 5, 7, 9],
+    holds: [3, 3, 2, 5, 7, 9],
     active: [2, 4],
     damage: 62,
-    stun: 29,
-    blockstun: 13,
+    stun: 30,
+    blockstun: 12,
     push: 1.7,
-    hitstop: 6,
+    hitstop: 5,
     level: "mid",
     kind: "foot",
     track: [
@@ -19818,8 +19821,8 @@ var luffy_normals_default = {
     damage: 84,
     stun: 32,
     blockstun: 16,
-    push: 3.1,
-    hitstop: 8,
+    push: 2.7,
+    hitstop: 7,
     level: "mid",
     kind: "fist",
     track: [
@@ -19855,13 +19858,13 @@ var luffy_normals_default = {
     ]
   },
   crouch_medium: {
-    holds: [4, 3, 2, 5, 8, 9],
+    holds: [3, 3, 2, 5, 8, 9],
     active: [2, 4],
     damage: 56,
     stun: 28,
-    blockstun: 13,
+    blockstun: 12,
     push: 1.6,
-    hitstop: 6,
+    hitstop: 5,
     level: "low",
     kind: "foot",
     track: [
@@ -19901,7 +19904,7 @@ var luffy_normals_default = {
     ]
   },
   air_light: {
-    holds: [4, 4, 4, 5],
+    holds: [4, 4, 4, 4],
     active: [1, 2],
     damage: 36,
     stun: 25,
@@ -19975,6 +19978,31 @@ var luffy_normals_default = {
 // src/data/luffy-normal-joints.json
 var luffy_normal_joints_default = { stand_light: [{ joint: [-4, -91], hurtboxes: [{ x: -21, y: -130, w: 52, h: 28 }, { x: -23, y: -102, w: 45, h: 34 }, { x: -24, y: -68, w: 54, h: 31 }, { x: -35, y: -37, w: 69, h: 36 }] }, { joint: [7, -88], hurtboxes: [{ x: -16, y: -120, w: 51, h: 26 }, { x: -26, y: -94, w: 55, h: 31 }, { x: -25, y: -63, w: 66, h: 29 }, { x: -48, y: -34, w: 88, h: 33 }] }, { joint: [7, -88], hurtboxes: [{ x: -16, y: -120, w: 51, h: 26 }, { x: -26, y: -94, w: 55, h: 31 }, { x: -25, y: -63, w: 66, h: 29 }, { x: -48, y: -34, w: 88, h: 33 }] }, { joint: [-7, -89], hurtboxes: [{ x: -20, y: -129, w: 48, h: 28 }, { x: -23, y: -101, w: 46, h: 33 }, { x: -21, y: -68, w: 53, h: 31 }, { x: -34, y: -37, w: 70, h: 36 }] }], stand_medium: [{ joint: [29, -70], hurtboxes: [{ x: -24, y: -138, w: 51, h: 30 }, { x: -26, y: -108, w: 64, h: 36 }, { x: -19, y: -72, w: 53, h: 33 }, { x: -11, y: -39, w: 23, h: 39 }] }, { joint: [29, -70], hurtboxes: [{ x: -24, y: -138, w: 51, h: 30 }, { x: -26, y: -108, w: 64, h: 36 }, { x: -19, y: -72, w: 53, h: 33 }, { x: -11, y: -39, w: 23, h: 39 }] }, { joint: [24, -84], hurtboxes: [{ x: -26, y: -137, w: 54, h: 30 }, { x: -26, y: -107, w: 58, h: 36 }, { x: -15, y: -71, w: 34, h: 33 }, { x: -8, y: -38, w: 22, h: 38 }] }, { joint: [24, -84], hurtboxes: [{ x: -26, y: -137, w: 54, h: 30 }, { x: -26, y: -107, w: 58, h: 36 }, { x: -15, y: -71, w: 34, h: 33 }, { x: -8, y: -38, w: 22, h: 38 }] }, { joint: [34, -61], hurtboxes: [{ x: -13, y: -138, w: 48, h: 30 }, { x: -16, y: -108, w: 51, h: 36 }, { x: -10, y: -72, w: 52, h: 33 }, { x: -7, y: -39, w: 22, h: 39 }] }, { joint: [34, -61], hurtboxes: [{ x: -13, y: -138, w: 48, h: 30 }, { x: -16, y: -108, w: 51, h: 36 }, { x: -10, y: -72, w: 52, h: 33 }, { x: -7, y: -39, w: 22, h: 39 }] }], stand_heavy: [{ joint: [-2, -75], hurtboxes: [{ x: -9, y: -115, w: 53, h: 25 }, { x: -10, y: -90, w: 50, h: 30 }, { x: -25, y: -60, w: 64, h: 27 }, { x: -52, y: -33, w: 88, h: 32 }] }, { joint: [-2, -75], hurtboxes: [{ x: -9, y: -115, w: 53, h: 25 }, { x: -10, y: -90, w: 50, h: 30 }, { x: -25, y: -60, w: 64, h: 27 }, { x: -52, y: -33, w: 88, h: 32 }] }, { joint: [18, -77], hurtboxes: [{ x: 3, y: -108, w: 59, h: 24 }, { x: -19, y: -84, w: 75, h: 28 }, { x: -34, y: -56, w: 89, h: 26 }, { x: -61, y: -30, w: 112, h: 30 }] }, { joint: [18, -77], hurtboxes: [{ x: 3, y: -108, w: 59, h: 24 }, { x: -19, y: -84, w: 75, h: 28 }, { x: -34, y: -56, w: 89, h: 26 }, { x: -61, y: -30, w: 112, h: 30 }] }, { joint: [18, -77], hurtboxes: [{ x: 3, y: -108, w: 59, h: 24 }, { x: -19, y: -84, w: 75, h: 28 }, { x: -34, y: -56, w: 89, h: 26 }, { x: -61, y: -30, w: 112, h: 30 }] }, { joint: [4, -81], hurtboxes: [{ x: -7, y: -123, w: 54, h: 27 }, { x: -11, y: -96, w: 49, h: 32 }, { x: -22, y: -64, w: 68, h: 30 }, { x: -45, y: -34, w: 91, h: 34 }] }, { joint: [4, -81], hurtboxes: [{ x: -7, y: -123, w: 54, h: 27 }, { x: -11, y: -96, w: 49, h: 32 }, { x: -22, y: -64, w: 68, h: 30 }, { x: -45, y: -34, w: 91, h: 34 }] }], crouch_light: [{ joint: [-2, -72], hurtboxes: [{ x: -14, y: -104, w: 54, h: 23 }, { x: -9, y: -81, w: 44, h: 27 }, { x: -26, y: -54, w: 65, h: 25 }, { x: -42, y: -29, w: 79, h: 29 }] }, { joint: [-4, -63], hurtboxes: [{ x: -18, y: -92, w: 61, h: 20 }, { x: -14, y: -72, w: 55, h: 24 }, { x: -36, y: -48, w: 72, h: 22 }, { x: -49, y: -26, w: 87, h: 25 }] }, { joint: [-4, -63], hurtboxes: [{ x: -18, y: -92, w: 61, h: 20 }, { x: -14, y: -72, w: 55, h: 24 }, { x: -36, y: -48, w: 72, h: 22 }, { x: -49, y: -26, w: 87, h: 25 }] }, { joint: [-5, -79], hurtboxes: [{ x: -15, y: -107, w: 53, h: 23 }, { x: -15, y: -84, w: 49, h: 28 }, { x: -24, y: -56, w: 65, h: 25 }, { x: -40, y: -31, w: 80, h: 30 }] }], crouch_medium: [{ joint: [28, -54], hurtboxes: [{ x: -16, y: -117, w: 56, h: 26 }, { x: -22, y: -91, w: 58, h: 30 }, { x: -21, y: -61, w: 64, h: 28 }, { x: -25, y: -33, w: 40, h: 32 }] }, { joint: [28, -54], hurtboxes: [{ x: -16, y: -117, w: 56, h: 26 }, { x: -22, y: -91, w: 58, h: 30 }, { x: -21, y: -61, w: 64, h: 28 }, { x: -25, y: -33, w: 40, h: 32 }] }, { joint: [25, -39], hurtboxes: [{ x: -23, y: -92, w: 77, h: 25 }, { x: -33, y: -67, w: 83, h: 29 }, { x: -28, y: -38, w: 55, h: 27 }, { x: -32, y: -11, w: 39, h: 32 }] }, { joint: [25, -39], hurtboxes: [{ x: -23, y: -92, w: 77, h: 25 }, { x: -33, y: -67, w: 83, h: 29 }, { x: -28, y: -38, w: 55, h: 27 }, { x: -32, y: -11, w: 39, h: 32 }] }, { joint: [25, -53], hurtboxes: [{ x: -19, y: -120, w: 54, h: 26 }, { x: -25, y: -94, w: 54, h: 31 }, { x: -24, y: -63, w: 61, h: 29 }, { x: -25, y: -34, w: 36, h: 33 }] }, { joint: [25, -53], hurtboxes: [{ x: -19, y: -120, w: 54, h: 26 }, { x: -25, y: -94, w: 54, h: 31 }, { x: -24, y: -63, w: 61, h: 29 }, { x: -25, y: -34, w: 36, h: 33 }] }], crouch_heavy: [{ joint: [-1, -31], hurtboxes: [{ x: -20, y: -93, w: 60, h: 20 }, { x: -33, y: -73, w: 72, h: 25 }, { x: -36, y: -48, w: 65, h: 22 }, { x: -23, y: -26, w: 52, h: 26 }] }, { joint: [-1, -31], hurtboxes: [{ x: -20, y: -93, w: 60, h: 20 }, { x: -33, y: -73, w: 72, h: 25 }, { x: -36, y: -48, w: 65, h: 22 }, { x: -23, y: -26, w: 52, h: 26 }] }, { joint: [26, -74], hurtboxes: [{ x: -19, y: -134, w: 40, h: 29 }, { x: -26, y: -105, w: 69, h: 35 }, { x: -17, y: -70, w: 43, h: 32 }, { x: -24, y: -38, w: 32, h: 38 }] }, { joint: [26, -74], hurtboxes: [{ x: -19, y: -134, w: 40, h: 29 }, { x: -26, y: -105, w: 69, h: 35 }, { x: -17, y: -70, w: 43, h: 32 }, { x: -24, y: -38, w: 32, h: 38 }] }, { joint: [26, -74], hurtboxes: [{ x: -19, y: -134, w: 40, h: 29 }, { x: -26, y: -105, w: 69, h: 35 }, { x: -17, y: -70, w: 43, h: 32 }, { x: -24, y: -38, w: 32, h: 38 }] }, { joint: [23, -58], hurtboxes: [{ x: -27, y: -126, w: 54, h: 28 }, { x: -32, y: -98, w: 61, h: 32 }, { x: -28, y: -66, w: 63, h: 31 }, { x: -31, y: -35, w: 40, h: 35 }] }, { joint: [23, -58], hurtboxes: [{ x: -27, y: -126, w: 54, h: 28 }, { x: -32, y: -98, w: 61, h: 32 }, { x: -28, y: -66, w: 63, h: 31 }, { x: -31, y: -35, w: 40, h: 35 }] }], air_light: [{ joint: [-2, -90], hurtboxes: [{ x: -19, y: -125, w: 46, h: 29 }, { x: -22, y: -96, w: 55, h: 34 }, { x: -17, y: -62, w: 52, h: 32 }, { x: -15, y: -30, w: 31, h: 37 }] }, { joint: [-5, -77], hurtboxes: [{ x: -16, y: -108, w: 48, h: 20 }, { x: -22, y: -88, w: 51, h: 24 }, { x: -28, y: -64, w: 55, h: 22 }, { x: -17, y: -42, w: 42, h: 26 }] }, { joint: [-5, -77], hurtboxes: [{ x: -16, y: -108, w: 48, h: 20 }, { x: -22, y: -88, w: 51, h: 24 }, { x: -28, y: -64, w: 55, h: 22 }, { x: -17, y: -42, w: 42, h: 26 }] }, { joint: [-5, -85], hurtboxes: [{ x: -20, y: -117, w: 51, h: 27 }, { x: -20, y: -90, w: 43, h: 32 }, { x: -12, y: -58, w: 43, h: 30 }, { x: -13, y: -28, w: 34, h: 34 }] }], air_medium: [{ joint: [24, -56], hurtboxes: [{ x: -22, y: -115, w: 46, h: 28 }, { x: -46, y: -87, w: 84, h: 32 }, { x: -46, y: -55, w: 72, h: 31 }, { x: -13, y: -24, w: 29, h: 35 }] }, { joint: [24, -56], hurtboxes: [{ x: -22, y: -115, w: 46, h: 28 }, { x: -46, y: -87, w: 84, h: 32 }, { x: -46, y: -55, w: 72, h: 31 }, { x: -13, y: -24, w: 29, h: 35 }] }, { joint: [30, -53], hurtboxes: [{ x: -12, y: -110, w: 32, h: 19 }, { x: -30, y: -91, w: 53, h: 22 }, { x: -53, y: -69, w: 87, h: 21 }, { x: -53, y: -48, w: 85, h: 24 }] }, { joint: [30, -53], hurtboxes: [{ x: -12, y: -110, w: 32, h: 19 }, { x: -30, y: -91, w: 53, h: 22 }, { x: -53, y: -69, w: 87, h: 21 }, { x: -53, y: -48, w: 85, h: 24 }] }, { joint: [20, -56], hurtboxes: [{ x: -21, y: -117, w: 51, h: 28 }, { x: -40, y: -89, w: 74, h: 33 }, { x: -40, y: -56, w: 63, h: 30 }, { x: -8, y: -26, w: 24, h: 36 }] }, { joint: [20, -56], hurtboxes: [{ x: -21, y: -117, w: 51, h: 28 }, { x: -40, y: -89, w: 74, h: 33 }, { x: -40, y: -56, w: 63, h: 30 }, { x: -8, y: -26, w: 24, h: 36 }] }], air_heavy: [{ joint: [25, -55], hurtboxes: [{ x: -20, y: -112, w: 50, h: 27 }, { x: -41, y: -85, w: 77, h: 31 }, { x: -44, y: -54, w: 71, h: 29 }, { x: -9, y: -22, w: 42, h: 31 }] }, { joint: [25, -55], hurtboxes: [{ x: -20, y: -112, w: 50, h: 27 }, { x: -41, y: -85, w: 77, h: 31 }, { x: -44, y: -54, w: 71, h: 29 }, { x: -9, y: -22, w: 42, h: 31 }] }, { joint: [27, -51], hurtboxes: [{ x: -20, y: -129, w: 54, h: 21 }, { x: -51, y: -108, w: 83, h: 26 }, { x: -49, y: -82, w: 78, h: 23 }, { x: -14, y: -59, w: 51, h: 27 }] }, { joint: [27, -51], hurtboxes: [{ x: -20, y: -129, w: 54, h: 21 }, { x: -51, y: -108, w: 83, h: 26 }, { x: -49, y: -82, w: 78, h: 23 }, { x: -14, y: -59, w: 51, h: 27 }] }, { joint: [27, -51], hurtboxes: [{ x: -20, y: -129, w: 54, h: 21 }, { x: -51, y: -108, w: 83, h: 26 }, { x: -49, y: -82, w: 78, h: 23 }, { x: -14, y: -59, w: 51, h: 27 }] }, { joint: [24, -53], hurtboxes: [{ x: -17, y: -111, w: 48, h: 26 }, { x: -39, y: -85, w: 76, h: 30 }, { x: -40, y: -55, w: 71, h: 28 }, { x: -7, y: -27, w: 40, h: 33 }] }, { joint: [24, -53], hurtboxes: [{ x: -17, y: -111, w: 48, h: 26 }, { x: -39, y: -85, w: 76, h: 30 }, { x: -40, y: -55, w: 71, h: 28 }, { x: -7, y: -27, w: 40, h: 33 }] }] };
 
+// src/engine/luffy-foot.ts
+var variants = {
+  stand_medium: { angle: -1.06, heel: 1, toe: -1, contact: 13 },
+  crouch_medium: { angle: -0.42, heel: 2, toe: 1, contact: 11 },
+  crouch_heavy: { angle: -0.97, heel: 0, toe: -2, contact: 13 },
+  air_medium: { angle: -1.17, heel: 1, toe: -1, contact: 14 },
+  air_heavy: { angle: -0.67, heel: 2, toe: 2, contact: 12 }
+};
+function luffyFootPose(id, length) {
+  const spec = variants[id] ?? variants.stand_medium;
+  const t = Math.max(0, Math.min(1, (length - 17) / 46));
+  const p = t * t * (3 - 2 * t);
+  const angle = -0.62 + (spec.angle + 0.62) * p;
+  return { ...spec, cos: Math.cos(angle), sin: Math.sin(angle) };
+}
+function luffyFootPoint(ankle, axis, pose, x, y) {
+  const lift = x < -3 ? pose.heel * (-3 - x) / 7 : pose.toe * Math.max(0, x - 5) / 11;
+  const forward = x * pose.cos - (y + lift) * pose.sin + 2;
+  const across = x * pose.sin + (y + lift) * pose.cos;
+  return {
+    x: Math.round(ankle.x + axis.x * forward - axis.y * across),
+    y: Math.round(ankle.y + axis.y * forward + axis.x * across)
+  };
+}
+
 // src/engine/elastic.ts
 var pixel = (p) => ({ x: Math.round(p.x), y: Math.round(p.y) });
 function elasticGeometry(pose) {
@@ -20033,14 +20061,14 @@ function buildMove(id, spec) {
     cancels
   } = spec;
   const total = (from, to) => holds.slice(from, to).reduce((sum, ticks) => sum + ticks, 0);
-  const startup = total(0, first);
-  const active = total(first, end);
-  const recovery = total(end, holds.length);
+  const startup2 = total(0, first);
+  const active2 = total(first, end);
+  const recovery2 = total(end, holds.length);
   return {
     ...spec,
-    startup,
-    active,
-    recovery,
+    startup: startup2,
+    active: active2,
+    recovery: recovery2,
     rank: id.endsWith("_light") ? 1 : id.endsWith("_medium") ? 2 : 3,
     launch: "launch" in spec ? spec.launch : 0,
     kind: "strike",
@@ -20051,8 +20079,8 @@ function buildMove(id, spec) {
       hurtboxes: normalPoses[id][index].hurtboxes
     })),
     cancelWindow: {
-      fromTick: startup,
-      toTick: startup + active + Math.min(8, recovery - 1)
+      fromTick: startup2,
+      toTick: startup2 + active2 + Math.min(8, recovery2 - 1)
     },
     cancels: [...cancels, ...!id.startsWith("air_") ? ["special"] : []],
     cancelMoves: cancels.map((button) => id.replace(/_[^_]+$/, "_" + button))
@@ -20122,11 +20150,20 @@ function buildLuffyLimb(actor, root, desiredTip, bend, foot = false, maximumLeng
     x: Math.round(geometry.tip.x + (foot ? 9 : 6) * axis.x),
     y: Math.round(geometry.tip.y + (foot ? 9 : 6) * axis.y)
   };
-  const terminal = { a: geometry.tip, b: nose, r: 7 };
+  const footPose = foot ? luffyFootPose(
+    actor.moveId,
+    Math.hypot(geometry.tip.x - root.x, geometry.tip.y - root.y)
+  ) : void 0;
+  const terminal = footPose ? {
+    a: luffyFootPoint(geometry.tip, axis, footPose, -4, 3),
+    b: luffyFootPoint(geometry.tip, axis, footPose, footPose.contact, 2),
+    r: 5
+  } : { a: geometry.tip, b: nose, r: 7 };
   return {
     ...geometry,
     foot,
     axis,
+    footPose,
     limbHurtboxes: [...geometry.limbHurtboxes, terminal],
     terminal
   };
@@ -20162,26 +20199,26 @@ function luffySpecialCommand(buffer, button) {
   const motion = buffer.gokuSpecial(button);
   return motion === "ki" ? "pistol" : motion === "kamehameha" ? "gatling" : motion === "teleport" ? "bazooka" : void 0;
 }
-function bodyFrame(name, tick, startup, active) {
-  if (tick < startup) return tick < Math.ceil(startup * 0.55) ? 0 : 1;
-  if (tick >= startup + active) return 3;
+function bodyFrame(name, tick, startup2, active2) {
+  if (tick < startup2) return tick < Math.ceil(startup2 * 0.55) ? 0 : 1;
+  if (tick >= startup2 + active2) return 3;
   if (name === "gatling")
-    return 1 + Math.floor((tick - startup) / pulseTicks) % 2;
-  return tick - startup < 2 ? 1 : 2;
+    return 1 + Math.floor((tick - startup2) / pulseTicks) % 2;
+  return tick - startup2 < 2 ? 1 : 2;
 }
 var luffySpecialMoves = {};
 for (const name of luffySpecialNames) {
   const spec = luffy_specials_default[name];
   for (const [index, strength] of strengths.entries()) {
     const id = name + "_" + strength;
-    const startup = spec.startup[index], active = spec.active[index], recovery = spec.recovery[index];
+    const startup2 = spec.startup[index], active2 = spec.active[index], recovery2 = spec.recovery[index];
     specByMove.set(id, { name, rank: index });
     luffySpecialMoves[id] = {
       special: name,
       kind: "strike",
-      startup,
-      active,
-      recovery,
+      startup: startup2,
+      active: active2,
+      recovery: recovery2,
       damage: spec.damage[index],
       stun: spec.stun[index],
       blockstun: spec.blockstun[index],
@@ -20193,18 +20230,18 @@ for (const name of luffySpecialNames) {
       level: "mid",
       cancels: [],
       box: { x: 0, y: 0, w: 0, h: 0 },
-      poses: Array.from({ length: startup + active + recovery }, (_, tick) => ({
+      poses: Array.from({ length: startup2 + active2 + recovery2 }, (_, tick) => ({
         ticks: 1,
-        phase: tick < startup ? "startup" : tick < startup + active ? "active" : "recovery",
-        hurtboxes: data[name][bodyFrame(name, tick, startup, active)].hurtboxes
+        phase: tick < startup2 ? "startup" : tick < startup2 + active2 ? "active" : "recovery",
+        hurtboxes: data[name][bodyFrame(name, tick, startup2, active2)].hurtboxes
       })),
       ...name === "gatling" ? {
         hitWindows: Array.from(
-          { length: active / pulseTicks },
+          { length: active2 / pulseTicks },
           (_, pulse) => ({
             id: pulse,
-            fromTick: startup + pulse * pulseTicks + 1,
-            toTick: startup + pulse * pulseTicks + 5
+            fromTick: startup2 + pulse * pulseTicks + 1,
+            toTick: startup2 + pulse * pulseTicks + 5
           })
         )
       } : {}
@@ -20261,12 +20298,12 @@ function luffyAttackLimbs(actor) {
     return limb ? [{ ...limb, rear: false, trail: false, driving: false }] : [];
   }
   const current = limbsAt(actor, spec.name, spec.rank, actor.stateFrame);
-  const active = actor.stateFrame >= actor.move.startup && actor.stateFrame < actor.move.startup + actor.move.active && (!actor.move.hitWindows || actor.move.hitWindows.some(
+  const active2 = actor.stateFrame >= actor.move.startup && actor.stateFrame < actor.move.startup + actor.move.active && (!actor.move.hitWindows || actor.move.hitWindows.some(
     (w) => actor.stateFrame >= w.fromTick && actor.stateFrame < w.toTick
   ));
-  const previous = active && actor.stateFrame ? limbsAt(actor, spec.name, spec.rank, actor.stateFrame - 1) : [];
+  const previous = active2 && actor.stateFrame ? limbsAt(actor, spec.name, spec.rank, actor.stateFrame - 1) : [];
   return current.map((limb, i) => {
-    const hitboxes = active && limb.driving ? [limb.terminal] : [];
+    const hitboxes = active2 && limb.driving ? [limb.terminal] : [];
     const prev = previous[i]?.terminal;
     if (prev && hitboxes.length && prev.b.x < limb.terminal.b.x) {
       hitboxes.push({ a: prev.a, b: limb.terminal.a, r: limb.terminal.r });
@@ -20274,6 +20311,1633 @@ function luffyAttackLimbs(actor) {
     }
     return { ...limb, hitboxes };
   });
+}
+
+// src/data/sasuke-specials.json
+var sasuke_specials_default = {
+  commands: {
+    motionTicks: 24,
+    finishTicks: 7,
+    doubleDownTicks: 20,
+    minimumDownGapTicks: 1
+  },
+  maximumProjectiles: 8,
+  stormTicks: 250,
+  techniques: {
+    senbon: {
+      holds: [4, 4, 8, 16],
+      damage: 17,
+      stun: 20,
+      blockstun: 8,
+      push: 0.9,
+      launch: 0,
+      hitstop: 3,
+      meterGain: 4,
+      shots: [
+        { at: 0, speed: 22, rise: -0.35, radius: 4, life: 34 },
+        { at: 3, speed: 25, rise: 0.1, radius: 4, life: 32 },
+        { at: 6, speed: 23, rise: 0.55, radius: 4, life: 35 }
+      ]
+    },
+    eiso: {
+      holds: [5, 5, 7, 29],
+      damage: 89,
+      stun: 24,
+      blockstun: 14,
+      push: 5.2,
+      launch: 0,
+      hitstop: 8,
+      meterGain: 15,
+      reach: 196
+    },
+    chidori: {
+      holds: [5, 6, 7, 22],
+      damage: 105,
+      stun: 31,
+      blockstun: 16,
+      push: 7.2,
+      launch: 0,
+      hitstop: 10,
+      meterGain: 18,
+      drive: { from: 6, to: 17, speed: 10.5 }
+    },
+    gokakyu: {
+      holds: [5, 5, 8, 20],
+      damage: 66,
+      stun: 27,
+      blockstun: 14,
+      push: 3.6,
+      launch: 0,
+      hitstop: 6,
+      meterGain: 12,
+      shots: [
+        { at: 0, speed: 12, rise: 0.45, radius: 23, life: 83 }
+      ]
+    },
+    hosenka: {
+      holds: [5, 7, 15, 23],
+      damage: 25,
+      stun: 22,
+      blockstun: 10,
+      push: 1.25,
+      launch: 0,
+      hitstop: 4,
+      meterGain: 5,
+      shots: [
+        { at: 0, speed: 12, rise: -2.1, radius: 12, life: 60 },
+        { at: 5, speed: 15, rise: 0.25, radius: 13, life: 56 },
+        { at: 10, speed: 13, rise: 1.45, radius: 12, life: 58 }
+      ]
+    },
+    goryuka: {
+      holds: [7, 9, 9, 29],
+      damage: 103,
+      stun: 31,
+      blockstun: 17,
+      push: 5.6,
+      launch: -6.6,
+      hitstop: 9,
+      meterGain: 18,
+      shots: [
+        { at: 0, speed: 15, rise: -4.2, radius: 31, life: 67 }
+      ]
+    },
+    serpents: {
+      holds: [5, 6, 9, 21],
+      damage: 44,
+      stun: 44,
+      blockstun: 12,
+      push: 0.24,
+      launch: 0,
+      hitstop: 5,
+      meterGain: 11,
+      shots: [{ at: 0, speed: 13, rise: 0.6, radius: 15, life: 15 }]
+    },
+    nagashi: {
+      holds: [4, 4, 5, 23],
+      damage: 60,
+      stun: 40,
+      blockstun: 13,
+      push: 0.95,
+      launch: 0,
+      hitstop: 6,
+      meterGain: 13
+    }
+  }
+};
+
+// src/data/sasuke-special-frames.json
+var sasuke_special_frames_default = { senbon: [{ hurtboxes: [{ x: -11, y: -122, w: 35, h: 29 }, { x: -30, y: -93, w: 71, h: 47 }, { x: -39, y: -46, w: 84, h: 46 }] }, { hurtboxes: [{ x: -20, y: -123, w: 48, h: 30 }, { x: -30, y: -93, w: 79, h: 46 }, { x: -35, y: -47, w: 83, h: 47 }], release: { x: 42, y: -75 } }, { hurtboxes: [{ x: -6, y: -121, w: 35, h: 29 }, { x: -26, y: -92, w: 83, h: 46 }, { x: -35, y: -46, w: 83, h: 46 }], release: { x: 62, y: -85 } }, { hurtboxes: [{ x: -10, y: -122, w: 34, h: 29 }, { x: -26, y: -93, w: 62, h: 47 }, { x: -39, y: -46, w: 83, h: 46 }] }], eiso: [{ hurtboxes: [{ x: -8, y: -118, w: 36, h: 28 }, { x: -25, y: -90, w: 67, h: 45 }, { x: -45, y: -45, w: 98, h: 45 }] }, { hurtboxes: [{ x: -33, y: -120, w: 64, h: 29 }, { x: -34, y: -91, w: 77, h: 45 }, { x: -45, y: -46, w: 101, h: 46 }], release: { x: -10, y: -96 } }, { hurtboxes: [{ x: 4, y: -113, w: 37, h: 27 }, { x: -18, y: -86, w: 75, h: 43 }, { x: -45, y: -43, w: 102, h: 43 }], release: { x: 76, y: -79 } }, { hurtboxes: [{ x: -6, y: -119, w: 34, h: 29 }, { x: -21, y: -90, w: 63, h: 45 }, { x: -45, y: -45, w: 96, h: 45 }] }], chidori: [{ hurtboxes: [{ x: -9, y: -103, w: 42, h: 25 }, { x: -36, y: -78, w: 76, h: 39 }, { x: -45, y: -39, w: 79, h: 39 }] }, { hurtboxes: [{ x: -1, y: -110, w: 42, h: 26 }, { x: -29, y: -84, w: 74, h: 42 }, { x: -45, y: -42, w: 85, h: 42 }], release: { x: 39, y: -65 } }, { hurtboxes: [{ x: 6, y: -105, w: 47, h: 25 }, { x: -26, y: -80, w: 83, h: 40 }, { x: -45, y: -40, w: 102, h: 39 }], release: { x: 82, y: -73 } }, { hurtboxes: [{ x: -13, y: -119, w: 38, h: 29 }, { x: -29, y: -90, w: 66, h: 45 }, { x: -42, y: -45, w: 92, h: 45 }] }], gokakyu: [{ hurtboxes: [{ x: -16, y: -127, w: 32, h: 30 }, { x: -25, y: -97, w: 54, h: 49 }, { x: -39, y: -48, w: 83, h: 48 }] }, { hurtboxes: [{ x: -19, y: -128, w: 33, h: 31 }, { x: -26, y: -97, w: 53, h: 48 }, { x: -38, y: -49, w: 81, h: 49 }], release: { x: 9, y: -104 } }, { hurtboxes: [{ x: -3, y: -117, w: 41, h: 28 }, { x: -34, y: -89, w: 74, h: 45 }, { x: -43, y: -44, w: 91, h: 44 }], release: { x: 32, y: -90 } }, { hurtboxes: [{ x: -14, y: -126, w: 35, h: 30 }, { x: -29, y: -96, w: 74, h: 48 }, { x: -38, y: -48, w: 82, h: 48 }] }], hosenka: [{ hurtboxes: [{ x: -14, y: -126, w: 32, h: 30 }, { x: -25, y: -96, w: 58, h: 48 }, { x: -28, y: -48, w: 53, h: 48 }] }, { hurtboxes: [{ x: -16, y: -127, w: 32, h: 30 }, { x: -29, y: -97, w: 63, h: 49 }, { x: -30, y: -48, w: 54, h: 48 }], release: { x: 10, y: -101 } }, { hurtboxes: [{ x: -8, y: -121, w: 38, h: 29 }, { x: -34, y: -92, w: 71, h: 46 }, { x: -32, y: -46, w: 59, h: 46 }], release: { x: 24, y: -96 } }, { hurtboxes: [{ x: -13, y: -125, w: 34, h: 30 }, { x: -27, y: -95, w: 69, h: 47 }, { x: -34, y: -48, w: 57, h: 48 }] }], goryuka: [{ hurtboxes: [{ x: -22, y: -122, w: 44, h: 29 }, { x: -34, y: -93, w: 72, h: 47 }, { x: -45, y: -46, w: 101, h: 46 }] }, { hurtboxes: [{ x: -21, y: -125, w: 35, h: 30 }, { x: -30, y: -95, w: 62, h: 47 }, { x: -45, y: -48, w: 99, h: 48 }], release: { x: 7, y: -110 } }, { hurtboxes: [{ x: -22, y: -125, w: 40, h: 30 }, { x: -25, y: -95, w: 62, h: 47 }, { x: -45, y: -48, w: 102, h: 48 }], release: { x: 9, y: -111 } }, { hurtboxes: [{ x: -14, y: -122, w: 33, h: 29 }, { x: -34, y: -93, w: 75, h: 47 }, { x: -45, y: -46, w: 98, h: 46 }] }], serpents: [{ hurtboxes: [{ x: -23, y: -120, w: 53, h: 29 }, { x: -45, y: -91, w: 87, h: 45 }, { x: -45, y: -46, w: 102, h: 46 }] }, { hurtboxes: [{ x: -17, y: -126, w: 66, h: 30 }, { x: -39, y: -96, w: 81, h: 48 }, { x: -45, y: -48, w: 102, h: 48 }], release: { x: 39, y: -104 } }, { hurtboxes: [{ x: -32, y: -116, w: 70, h: 28 }, { x: -37, y: -88, w: 94, h: 44 }, { x: -45, y: -44, w: 102, h: 44 }], release: { x: 68, y: -45 } }, { hurtboxes: [{ x: -20, y: -126, w: 41, h: 30 }, { x: -38, y: -96, w: 78, h: 48 }, { x: -45, y: -48, w: 102, h: 48 }] }], nagashi: [{ hurtboxes: [{ x: -23, y: -130, w: 43, h: 31 }, { x: -39, y: -99, w: 71, h: 50 }, { x: -45, y: -49, w: 102, h: 49 }] }, { hurtboxes: [{ x: -30, y: -113, w: 58, h: 27 }, { x: -45, y: -86, w: 80, h: 43 }, { x: -45, y: -43, w: 102, h: 43 }], release: { x: -10, y: -65 } }, { hurtboxes: [{ x: -23, y: -115, w: 48, h: 28 }, { x: -45, y: -87, w: 102, h: 43 }, { x: -45, y: -44, w: 102, h: 44 }], release: { x: -2, y: -62 } }, { hurtboxes: [{ x: -24, y: -129, w: 42, h: 31 }, { x: -40, y: -98, w: 70, h: 49 }, { x: -45, y: -49, w: 102, h: 49 }] }] };
+
+// src/engine/sasuke-specials.ts
+var sasukeSpecialBalance = sasuke_specials_default;
+var sasukeTechniques = sasuke_specials_default.techniques;
+var sasukeSpecialIds = Object.keys(
+  sasukeTechniques
+);
+function isSasukeSpecial(id) {
+  return Object.hasOwn(sasukeTechniques, id);
+}
+var commandMoves = {
+  ki: { light: "senbon", medium: "eiso", heavy: "chidori" },
+  kamehameha: { light: "gokakyu", medium: "hosenka", heavy: "goryuka" },
+  teleport: { light: "serpents", medium: "nagashi", heavy: "reserved" }
+};
+function sasukeSpecialCommand(buffer, button) {
+  if (button !== "light" && button !== "medium" && button !== "heavy") return;
+  const cfg = sasuke_specials_default.commands;
+  const motion = buffer.gokuSpecial(
+    button,
+    cfg.motionTicks,
+    cfg.finishTicks,
+    cfg.doubleDownTicks,
+    cfg.minimumDownGapTicks
+  );
+  return motion && commandMoves[motion][button];
+}
+var bodyCels = sasuke_special_frames_default;
+function sasukeSpecialContact(id, elapsed, facing, rootX) {
+  const origin = bodyCels[id][2].release;
+  if (id === "eiso") {
+    const tip = Math.min(
+      origin.x + (sasukeTechniques.eiso.reach - origin.x) * Math.min(1, (elapsed + 1) / 4),
+      facing > 0 ? 1280 - rootX : rootX
+    );
+    return [
+      { a: origin, b: { x: Math.max(origin.x, tip), y: origin.y - 6 }, r: 10 }
+    ];
+  }
+  if (id === "chidori")
+    return [{ a: { x: origin.x - 15, y: origin.y + 3 }, b: origin, r: 19 }];
+  if (id === "nagashi")
+    return [
+      { a: { x: -47, y: -53 }, b: { x: 52, y: -53 }, r: 20 },
+      { a: { x: -26, y: -91 }, b: { x: 33, y: -91 }, r: 14 },
+      { a: { x: -31, y: -21 }, b: { x: 37, y: -21 }, r: 16 }
+    ];
+  return [];
+}
+var sasukeSpecialMoves = Object.fromEntries(
+  sasukeSpecialIds.map((id) => {
+    const {
+      holds,
+      shots: _shots,
+      reach: _reach,
+      ...stats
+    } = sasukeTechniques[id];
+    const [seal, gather, active2, recovery2] = holds;
+    const poses = holds.map((ticks, index) => ({
+      ticks,
+      phase: index < 2 ? "startup" : index === 2 ? "active" : "recovery",
+      ...bodyCels[id][index]
+    }));
+    return [
+      id,
+      {
+        ...stats,
+        special: id,
+        startup: seal + gather,
+        active: active2,
+        recovery: recovery2,
+        kind: "strike",
+        rank: id === "senbon" || id === "hosenka" || id === "serpents" ? 1 : 2,
+        level: "mid",
+        box: { x: 0, y: 0, w: 0, h: 0 },
+        cancels: [],
+        poses
+      }
+    ];
+  })
+);
+
+// src/data/luffy-secondary-poses.json
+var luffy_secondary_poses_default = { guardStandA: { frame: 0, hurtboxes: [{ x: -20, y: -127, w: 54, h: 28 }, { x: -22, y: -99, w: 58, h: 33 }, { x: -23, y: -66, w: 58, h: 30 }, { x: -33, y: -36, w: 75, h: 36 }] }, guardStandB: { frame: 1, hurtboxes: [{ x: -25, y: -123, w: 57, h: 27 }, { x: -26, y: -96, w: 56, h: 32 }, { x: -30, y: -64, w: 68, h: 30 }, { x: -45, y: -34, w: 89, h: 34 }] }, guardLowA: { frame: 2, hurtboxes: [{ x: -19, y: -108, w: 49, h: 24 }, { x: -23, y: -84, w: 50, h: 28 }, { x: -28, y: -56, w: 66, h: 26 }, { x: -35, y: -30, w: 73, h: 30 }] }, guardLowB: { frame: 3, hurtboxes: [{ x: -19, y: -99, w: 50, h: 22 }, { x: -21, y: -77, w: 54, h: 26 }, { x: -26, y: -51, w: 63, h: 23 }, { x: -28, y: -28, w: 64, h: 28 }] }, guardStandHitA: { frame: 4, hurtboxes: [{ x: -37, y: -131, w: 50, h: 29 }, { x: -42, y: -102, w: 54, h: 34 }, { x: -31, y: -68, w: 59, h: 31 }, { x: -44, y: -37, w: 79, h: 37 }] }, guardStandHitB: { frame: 5, hurtboxes: [{ x: -48, y: -121, w: 54, h: 27 }, { x: -51, y: -94, w: 60, h: 31 }, { x: -34, y: -63, w: 68, h: 29 }, { x: -52, y: -34, w: 91, h: 34 }] }, guardLowHitA: { frame: 6, hurtboxes: [{ x: -39, y: -108, w: 48, h: 24 }, { x: -45, y: -84, w: 55, h: 28 }, { x: -37, y: -56, w: 72, h: 26 }, { x: -38, y: -30, w: 73, h: 30 }] }, guardLowHitB: { frame: 7, hurtboxes: [{ x: -26, y: -95, w: 57, h: 21 }, { x: -27, y: -74, w: 58, h: 25 }, { x: -33, y: -49, w: 64, h: 22 }, { x: -36, y: -27, w: 69, h: 27 }] }, guardExit: { frame: 8, hurtboxes: [{ x: -25, y: -124, w: 48, h: 27 }, { x: -32, y: -97, w: 72, h: 33 }, { x: -33, y: -64, w: 69, h: 29 }, { x: -42, y: -35, w: 79, h: 35 }] }, hitLight: { frame: 9, hurtboxes: [{ x: -26, y: -125, w: 41, h: 28 }, { x: -30, y: -97, w: 58, h: 32 }, { x: -36, y: -65, w: 67, h: 30 }, { x: -32, y: -35, w: 66, h: 35 }] }, hitMedium: { frame: 10, hurtboxes: [{ x: -44, y: -118, w: 62, h: 26 }, { x: -48, y: -92, w: 67, h: 31 }, { x: -46, y: -61, w: 76, h: 28 }, { x: -44, y: -33, w: 77, h: 33 }] }, hitHeavy: { frame: 11, hurtboxes: [{ x: -56, y: -122, w: 44, h: 27 }, { x: -49, y: -95, w: 85, h: 32 }, { x: -57, y: -63, w: 88, h: 29 }, { x: -43, y: -34, w: 75, h: 34 }] }, hitLow: { frame: 12, hurtboxes: [{ x: -19, y: -95, w: 57, h: 21 }, { x: -26, y: -74, w: 61, h: 25 }, { x: -30, y: -49, w: 64, h: 22 }, { x: -36, y: -27, w: 63, h: 27 }] }, hitAir: { frame: 13, hurtboxes: [{ x: -25, y: -94, w: 57, h: 21 }, { x: -30, y: -73, w: 58, h: 24 }, { x: -30, y: -49, w: 60, h: 23 }, { x: -15, y: -26, w: 32, h: 26 }] }, launched: { frame: 14, hurtboxes: [{ x: -48, y: -129, w: 55, h: 28 }, { x: -40, y: -101, w: 77, h: 34 }, { x: -44, y: -67, w: 71, h: 31 }, { x: -30, y: -36, w: 45, h: 36 }] }, airKnockback: { frame: 15, hurtboxes: [{ x: -42, y: -99, w: 72, h: 22 }, { x: -51, y: -77, w: 87, h: 26 }, { x: -42, y: -51, w: 104, h: 23 }, { x: -17, y: -28, w: 75, h: 28 }] }, falling: { frame: 16, hurtboxes: [{ x: -41, y: -98, w: 79, h: 22 }, { x: -47, y: -76, w: 81, h: 25 }, { x: -48, y: -51, w: 107, h: 24 }, { x: -57, y: -27, w: 105, h: 27 }] }, downed: { frame: 17, hurtboxes: [{ x: -57, y: -50, w: 98, h: 11 }, { x: -64, y: -39, w: 112, h: 13 }, { x: -64, y: -26, w: 125, h: 12 }, { x: -63, y: -14, w: 128, h: 14 }] }, getupStart: { frame: 18, hurtboxes: [{ x: -25, y: -82, w: 47, h: 18 }, { x: -32, y: -64, w: 70, h: 21 }, { x: -37, y: -43, w: 73, h: 20 }, { x: -51, y: -23, w: 102, h: 23 }] }, getupEnd: { frame: 19, hurtboxes: [{ x: -21, y: -101, w: 55, h: 22 }, { x: -32, y: -79, w: 62, h: 26 }, { x: -35, y: -53, w: 60, h: 25 }, { x: -43, y: -28, w: 70, h: 28 }] }, ko: { frame: 20, hurtboxes: [{ x: -71, y: -37, w: 137, h: 8 }, { x: -72, y: -29, w: 142, h: 10 }, { x: -72, y: -19, w: 142, h: 9 }, { x: -66, y: -10, w: 134, h: 10 }] }, entryWalk: { frame: 21, hurtboxes: [{ x: -26, y: -128, w: 43, h: 28 }, { x: -29, y: -100, w: 61, h: 33 }, { x: -34, y: -67, w: 64, h: 31 }, { x: -40, y: -36, w: 80, h: 36 }] }, entryReady: { frame: 22, hurtboxes: [{ x: -26, y: -130, w: 53, h: 29 }, { x: -30, y: -101, w: 58, h: 33 }, { x: -26, y: -68, w: 49, h: 32 }, { x: -35, y: -36, w: 68, h: 36 }] }, tauntBeckon: { frame: 23, hurtboxes: [{ x: -17, y: -113, w: 72, h: 25 }, { x: -26, y: -88, w: 82, h: 29 }, { x: -31, y: -59, w: 55, h: 27 }, { x: -41, y: -32, w: 71, h: 32 }] }, tauntGrin: { frame: 24, hurtboxes: [{ x: -25, y: -132, w: 52, h: 29 }, { x: -33, y: -103, w: 66, h: 34 }, { x: -25, y: -69, w: 49, h: 32 }, { x: -34, y: -37, w: 70, h: 37 }] }, victoryJump: { frame: 25, hurtboxes: [{ x: -33, y: -119, w: 62, h: 23 }, { x: -28, y: -96, w: 51, h: 26 }, { x: -24, y: -70, w: 58, h: 25 }, { x: -30, y: -45, w: 62, h: 29 }] }, victoryCheer: { frame: 26, hurtboxes: [{ x: -29, y: -136, w: 52, h: 30 }, { x: -38, y: -106, w: 50, h: 35 }, { x: -39, y: -71, w: 60, h: 33 }, { x: -41, y: -38, w: 78, h: 38 }] }, defeatKneel: { frame: 27, hurtboxes: [{ x: -10, y: -82, w: 55, h: 18 }, { x: -19, y: -64, w: 64, h: 21 }, { x: -20, y: -43, w: 58, h: 20 }, { x: -47, y: -23, w: 90, h: 23 }] }, defeatGround: { frame: 28, hurtboxes: [{ x: -14, y: -44, w: 62, h: 10 }, { x: -30, y: -34, w: 83, h: 11 }, { x: -58, y: -23, w: 111, h: 11 }, { x: -62, y: -12, w: 124, h: 12 }] }, throwPrep: { frame: 29, hurtboxes: [{ x: -41, y: -116, w: 59, h: 26 }, { x: -44, y: -90, w: 97, h: 30 }, { x: -37, y: -60, w: 65, h: 28 }, { x: -48, y: -32, w: 97, h: 32 }] }, throwReach: { frame: 30, hurtboxes: [{ x: -15, y: -99, w: 94, h: 22 }, { x: -28, y: -77, w: 68, h: 26 }, { x: -30, y: -51, w: 72, h: 23 }, { x: -53, y: -28, w: 107, h: 28 }], joint: [27, -68] }, throwRelease: { frame: 31, hurtboxes: [{ x: -21, y: -118, w: 31, h: 26 }, { x: -46, y: -92, w: 73, h: 31 }, { x: -30, y: -61, w: 67, h: 28 }, { x: -48, y: -33, w: 107, h: 33 }] }, throwRecover: { frame: 32, hurtboxes: [{ x: -20, y: -110, w: 53, h: 24 }, { x: -30, y: -86, w: 75, h: 29 }, { x: -38, y: -57, w: 83, h: 26 }, { x: -53, y: -31, w: 106, h: 31 }] } };
+
+// src/engine/luffy-secondary.ts
+function sequence(cels, loop = false) {
+  return {
+    frames: cels.map(([name]) => luffy_secondary_poses_default[name].frame),
+    durations: cels.map(([, ticks]) => ticks),
+    loop,
+    poses: cels.map(([name, ticks]) => ({
+      ticks,
+      phase: "reaction",
+      hurtboxes: luffy_secondary_poses_default[name].hurtboxes
+    }))
+  };
+}
+var reachAt = 4;
+var startup = 7;
+var active = 4;
+var retractAt = startup + active;
+var armHome = retractAt + 8;
+var recovery = 23;
+var releaseAt = 12;
+var releasePoseAt = 16;
+var luffySecondaryClips = {
+  guardStand: sequence(
+    [
+      ["guardStandA", 8],
+      ["guardStandB", 10]
+    ],
+    true
+  ),
+  guardCrouch: sequence(
+    [
+      ["guardLowA", 9],
+      ["guardLowB", 11]
+    ],
+    true
+  ),
+  guardImpactStand: sequence([
+    ["guardStandHitB", 3],
+    ["guardStandHitA", 3]
+  ]),
+  guardImpactCrouch: sequence([
+    ["guardLowHitB", 3],
+    ["guardLowHitA", 3]
+  ]),
+  guardRecovery: sequence([["guardExit", 4]]),
+  damageLight: sequence([
+    ["hitLight", 10],
+    ["guardExit", 8]
+  ]),
+  damageMedium: sequence([
+    ["hitMedium", 10],
+    ["hitLight", 10]
+  ]),
+  damageHeavy: sequence([
+    ["hitHeavy", 13],
+    ["hitMedium", 12]
+  ]),
+  damageCrouch: sequence([
+    ["hitLow", 12],
+    ["guardLowA", 8]
+  ]),
+  damageAir: sequence([
+    ["hitAir", 10],
+    ["falling", 12]
+  ]),
+  launched: sequence([
+    ["launched", 11],
+    ["hitAir", 10]
+  ]),
+  airKnockback: sequence([["airKnockback", 9]]),
+  falling: sequence([["falling", 12]]),
+  downed: sequence([["downed", 26]]),
+  getup: sequence([
+    ["getupStart", 8],
+    ["getupEnd", 9],
+    ["guardExit", 4]
+  ]),
+  ko: sequence([
+    ["defeatKneel", 7],
+    ["downed", 7],
+    ["ko", 41]
+  ]),
+  defeat: sequence([["defeatGround", 48]]),
+  entrance: sequence([
+    ["entryWalk", 4],
+    ["entryReady", 18]
+  ]),
+  taunt: sequence([
+    ["tauntBeckon", 14],
+    ["tauntGrin", 18],
+    ["guardExit", 6]
+  ]),
+  victory: sequence([
+    ["victoryJump", 10],
+    ["victoryCheer", 28],
+    ["victoryJump", 8],
+    ["victoryCheer", 32]
+  ]),
+  grabbed: sequence([
+    ["hitLow", 6],
+    ["hitAir", 10]
+  ]),
+  throw: sequence([
+    ["throwPrep", reachAt],
+    ["throwReach", armHome - reachAt],
+    ["throwRecover", startup + active + recovery - armHome]
+  ]),
+  grabHold: sequence([
+    ["throwReach", releasePoseAt],
+    ["throwRelease", 6]
+  ]),
+  throwRecover: sequence([
+    ["throwRecover", 9],
+    ["guardExit", 6]
+  ])
+};
+var luffyThrow = {
+  kind: "grab",
+  level: "throw",
+  startup,
+  active,
+  recovery,
+  damage: 112,
+  stun: 38,
+  blockstun: 0,
+  push: 0,
+  launch: 0,
+  rank: 0,
+  cancels: [],
+  box: { x: 0, y: 0, w: 0, h: 0 },
+  poses: luffySecondaryClips.throw.poses
+};
+var luffySecondary = {
+  lifecycle: {
+    entranceDistance: 63,
+    entranceWalkTicks: 21,
+    entranceSpeed: 3,
+    tauntTicks: 38,
+    getupTicks: 21,
+    koTicks: 55
+  },
+  reactions: luffySecondaryClips,
+  grabSequence: {
+    startFromContact: true,
+    duration: 22,
+    hitTick: releaseAt,
+    damage: luffyThrow.damage,
+    recoveryTicks: 15,
+    victimTrack: [
+      { tick: 0, x: 76, y: 0, clip: "grabbed" },
+      { tick: 6, x: 56, y: -12, clip: "grabbed" },
+      { tick: 10, x: 66, y: -24, clip: "grabbed" },
+      { tick: 12, x: 91, y: -26, clip: "damageAir" },
+      { tick: 16, x: 120, y: -25, clip: "damageAir" },
+      { tick: 21, x: 138, y: -9, clip: "falling" }
+    ],
+    release: { vx: 7, vy: -4, stun: 38 }
+  }
+};
+function luffyGrabLimb(actor) {
+  if (actor.data.id !== "luffy") return;
+  const tick = actor.stateFrame;
+  const [x, y] = luffy_secondary_poses_default.throwReach.joint;
+  const wrist = { x: x + 14, y: y + 4 };
+  let tip = wrist;
+  let activeHand = false;
+  if (actor.state === "attack" && actor.moveId === "throw") {
+    if (tick < reachAt || tick >= armHome) return;
+    const reach = Math.max(
+      0,
+      Math.min(1, (tick - reachAt + 1) / (retractAt - reachAt))
+    );
+    const pull = tick < retractAt ? 0 : (tick - retractAt + 1) / (armHome - retractAt);
+    const length = reach * (1 - pull);
+    tip = {
+      x: wrist.x + (90 - wrist.x) * length,
+      y: wrist.y + (-84 - wrist.y) * length
+    };
+    activeHand = tick >= startup && tick < retractAt;
+  } else if (actor.state === "grabbing" && actor.match?.capture?.kind === "grab") {
+    if (tick >= releasePoseAt || !actor.opponent) return;
+    const victim = actor.opponent;
+    const pull = Math.max(0, (tick - releaseAt) / (releasePoseAt - releaseAt));
+    const gripX = (victim.x - actor.x) * actor.facing - 7;
+    const gripY = victim.y - actor.y - 83;
+    tip = {
+      x: wrist.x + (gripX - wrist.x) * (1 - pull),
+      y: wrist.y + (gripY - wrist.y) * (1 - pull)
+    };
+  } else return;
+  const limb = buildLuffyLimb(actor, { x, y }, tip, 7, false, 120);
+  return { ...limb, palm: true, hitboxes: activeHand ? [limb.terminal] : [] };
+}
+
+// src/data/luffy-jet-gigant.json
+var luffy_jet_gigant_default = {
+  cost: 100,
+  meterGainScale: 1,
+  startup: 64,
+  active: 4,
+  recovery: 31,
+  dash: { from: 51, to: 63, speed: 8 },
+  initialDamage: 50,
+  minimumComboScale: 0.45,
+  duration: 406,
+  hits: [
+    { tick: 16, damage: 15, kind: "jab", hold: 1 },
+    { tick: 32, damage: 16, kind: "cross", hold: 2 },
+    { tick: 60, damage: 42, kind: "bazooka", hold: 5 },
+    { tick: 92, damage: 8, kind: "gatling", hold: 1 },
+    { tick: 105, damage: 8, kind: "gatling", hold: 1 },
+    { tick: 116, damage: 8, kind: "gatling", hold: 1 },
+    { tick: 125, damage: 8, kind: "gatling", hold: 1 },
+    { tick: 133, damage: 8, kind: "gatling", hold: 1 },
+    { tick: 140, damage: 8, kind: "gatling", hold: 1 },
+    { tick: 146, damage: 8, kind: "gatling", hold: 1 },
+    { tick: 163, damage: 27, kind: "launcher", hold: 4 },
+    { tick: 272, damage: 84, kind: "gigant", hold: 12 },
+    { tick: 299, damage: 42, kind: "ground", hold: 6 }
+  ]
+};
+
+// src/data/luffy-jet-poses.json
+var luffy_jet_poses_default = {
+  pump: {
+    frame: 0,
+    hurtboxes: [
+      {
+        x: -18,
+        y: -99,
+        w: 57,
+        h: 22
+      },
+      {
+        x: -24,
+        y: -77,
+        w: 71,
+        h: 26
+      },
+      {
+        x: -38,
+        y: -51,
+        w: 82,
+        h: 23
+      },
+      {
+        x: -45,
+        y: -28,
+        w: 91,
+        h: 28
+      }
+    ],
+    joints: []
+  },
+  ignite: {
+    frame: 1,
+    hurtboxes: [
+      {
+        x: -21,
+        y: -89,
+        w: 65,
+        h: 20
+      },
+      {
+        x: -39,
+        y: -69,
+        w: 85,
+        h: 23
+      },
+      {
+        x: -43,
+        y: -46,
+        w: 89,
+        h: 21
+      },
+      {
+        x: -46,
+        y: -25,
+        w: 92,
+        h: 25
+      }
+    ],
+    joints: []
+  },
+  rise: {
+    frame: 2,
+    hurtboxes: [
+      {
+        x: -26,
+        y: -114,
+        w: 60,
+        h: 25
+      },
+      {
+        x: -31,
+        y: -89,
+        w: 68,
+        h: 30
+      },
+      {
+        x: -41,
+        y: -59,
+        w: 83,
+        h: 27
+      },
+      {
+        x: -49,
+        y: -32,
+        w: 92,
+        h: 32
+      }
+    ],
+    joints: []
+  },
+  ready: {
+    frame: 3,
+    hurtboxes: [
+      {
+        x: -28,
+        y: -129,
+        w: 58,
+        h: 28
+      },
+      {
+        x: -36,
+        y: -101,
+        w: 88,
+        h: 34
+      },
+      {
+        x: -35,
+        y: -67,
+        w: 71,
+        h: 31
+      },
+      {
+        x: -46,
+        y: -36,
+        w: 90,
+        h: 36
+      }
+    ],
+    joints: []
+  },
+  dash: {
+    frame: 4,
+    hurtboxes: [
+      {
+        x: 1,
+        y: -107,
+        w: 67,
+        h: 24
+      },
+      {
+        x: -22,
+        y: -83,
+        w: 84,
+        h: 27
+      },
+      {
+        x: -27,
+        y: -56,
+        w: 82,
+        h: 26
+      },
+      {
+        x: -51,
+        y: -30,
+        w: 83,
+        h: 30
+      }
+    ],
+    joints: []
+  },
+  windup: {
+    frame: 5,
+    hurtboxes: [
+      {
+        x: -23,
+        y: -119,
+        w: 66,
+        h: 26
+      },
+      {
+        x: -31,
+        y: -93,
+        w: 85,
+        h: 31
+      },
+      {
+        x: -32,
+        y: -62,
+        w: 69,
+        h: 29
+      },
+      {
+        x: -52,
+        y: -33,
+        w: 91,
+        h: 33
+      }
+    ],
+    joints: []
+  },
+  pistol: {
+    frame: 6,
+    hurtboxes: [
+      {
+        x: -23,
+        y: -115,
+        w: 59,
+        h: 25
+      },
+      {
+        x: -43,
+        y: -90,
+        w: 108,
+        h: 30
+      },
+      {
+        x: -45,
+        y: -60,
+        w: 80,
+        h: 28
+      },
+      {
+        x: -64,
+        y: -32,
+        w: 105,
+        h: 32
+      }
+    ],
+    joints: [
+      {
+        x: 28,
+        y: -78
+      }
+    ]
+  },
+  cross: {
+    frame: 7,
+    hurtboxes: [
+      {
+        x: -30,
+        y: -117,
+        w: 60,
+        h: 26
+      },
+      {
+        x: -41,
+        y: -91,
+        w: 74,
+        h: 30
+      },
+      {
+        x: -41,
+        y: -61,
+        w: 74,
+        h: 28
+      },
+      {
+        x: -61,
+        y: -33,
+        w: 103,
+        h: 33
+      }
+    ],
+    joints: [
+      {
+        x: 30,
+        y: -80
+      }
+    ]
+  },
+  bazookaWindup: {
+    frame: 8,
+    hurtboxes: [
+      {
+        x: -23,
+        y: -131,
+        w: 49,
+        h: 29
+      },
+      {
+        x: -36,
+        y: -102,
+        w: 57,
+        h: 34
+      },
+      {
+        x: -51,
+        y: -68,
+        w: 92,
+        h: 31
+      },
+      {
+        x: -48,
+        y: -37,
+        w: 93,
+        h: 37
+      }
+    ],
+    joints: []
+  },
+  bazooka: {
+    frame: 9,
+    hurtboxes: [
+      {
+        x: -28,
+        y: -124,
+        w: 53,
+        h: 27
+      },
+      {
+        x: -32,
+        y: -97,
+        w: 56,
+        h: 33
+      },
+      {
+        x: -35,
+        y: -64,
+        w: 75,
+        h: 29
+      },
+      {
+        x: -57,
+        y: -35,
+        w: 105,
+        h: 35
+      }
+    ],
+    joints: [
+      {
+        x: 13,
+        y: -89
+      },
+      {
+        x: 14,
+        y: -97
+      }
+    ]
+  },
+  gatlingLeft: {
+    frame: 10,
+    hurtboxes: [
+      {
+        x: -28,
+        y: -120,
+        w: 58,
+        h: 26
+      },
+      {
+        x: -36,
+        y: -94,
+        w: 72,
+        h: 32
+      },
+      {
+        x: -35,
+        y: -62,
+        w: 74,
+        h: 28
+      },
+      {
+        x: -54,
+        y: -34,
+        w: 102,
+        h: 34
+      }
+    ],
+    joints: [
+      {
+        x: 33,
+        y: -85
+      }
+    ]
+  },
+  gatlingRight: {
+    frame: 11,
+    hurtboxes: [
+      {
+        x: -29,
+        y: -121,
+        w: 58,
+        h: 27
+      },
+      {
+        x: -30,
+        y: -94,
+        w: 69,
+        h: 31
+      },
+      {
+        x: -35,
+        y: -63,
+        w: 78,
+        h: 29
+      },
+      {
+        x: -52,
+        y: -34,
+        w: 104,
+        h: 34
+      }
+    ],
+    joints: [
+      {
+        x: 36,
+        y: -85
+      }
+    ]
+  },
+  launcher: {
+    frame: 12,
+    hurtboxes: [
+      {
+        x: -9,
+        y: -110,
+        w: 27,
+        h: 24
+      },
+      {
+        x: -21,
+        y: -86,
+        w: 52,
+        h: 29
+      },
+      {
+        x: -21,
+        y: -57,
+        w: 56,
+        h: 26
+      },
+      {
+        x: -40,
+        y: -31,
+        w: 75,
+        h: 31
+      }
+    ],
+    joints: [
+      {
+        x: 24,
+        y: -78
+      }
+    ]
+  },
+  watch: {
+    frame: 13,
+    hurtboxes: [
+      {
+        x: -14,
+        y: -109,
+        w: 33,
+        h: 24
+      },
+      {
+        x: -27,
+        y: -85,
+        w: 49,
+        h: 28
+      },
+      {
+        x: -36,
+        y: -57,
+        w: 71,
+        h: 26
+      },
+      {
+        x: -41,
+        y: -31,
+        w: 86,
+        h: 31
+      }
+    ],
+    joints: []
+  },
+  inflate: {
+    frame: 14,
+    hurtboxes: [
+      {
+        x: -16,
+        y: -104,
+        w: 41,
+        h: 23
+      },
+      {
+        x: -26,
+        y: -81,
+        w: 58,
+        h: 27
+      },
+      {
+        x: -32,
+        y: -54,
+        w: 64,
+        h: 25
+      },
+      {
+        x: -38,
+        y: -29,
+        w: 74,
+        h: 29
+      }
+    ],
+    joints: []
+  },
+  inflation: {
+    frame: 15,
+    hurtboxes: [
+      {
+        x: -32,
+        y: -108,
+        w: 28,
+        h: 24
+      },
+      {
+        x: -37,
+        y: -84,
+        w: 49,
+        h: 28
+      },
+      {
+        x: -50,
+        y: -56,
+        w: 81,
+        h: 26
+      },
+      {
+        x: -41,
+        y: -30,
+        w: 76,
+        h: 30
+      }
+    ],
+    joints: [
+      {
+        x: -26,
+        y: -68
+      }
+    ]
+  },
+  brace: {
+    frame: 16,
+    hurtboxes: [
+      {
+        x: -13,
+        y: -100,
+        w: 52,
+        h: 22
+      },
+      {
+        x: -26,
+        y: -78,
+        w: 77,
+        h: 26
+      },
+      {
+        x: -23,
+        y: -52,
+        w: 74,
+        h: 24
+      },
+      {
+        x: -40,
+        y: -28,
+        w: 90,
+        h: 28
+      }
+    ],
+    joints: [
+      {
+        x: -11,
+        y: -82
+      }
+    ]
+  },
+  giantWindup: {
+    frame: 17,
+    hurtboxes: [
+      {
+        x: -12,
+        y: -116,
+        w: 32,
+        h: 26
+      },
+      {
+        x: -19,
+        y: -90,
+        w: 66,
+        h: 30
+      },
+      {
+        x: -15,
+        y: -60,
+        w: 62,
+        h: 28
+      },
+      {
+        x: -34,
+        y: -32,
+        w: 59,
+        h: 32
+      }
+    ],
+    joints: [
+      {
+        x: -12,
+        y: -75
+      }
+    ]
+  },
+  giantStrike: {
+    frame: 18,
+    hurtboxes: [
+      {
+        x: -18,
+        y: -99,
+        w: 49,
+        h: 22
+      },
+      {
+        x: -52,
+        y: -77,
+        w: 87,
+        h: 26
+      },
+      {
+        x: -40,
+        y: -51,
+        w: 67,
+        h: 23
+      },
+      {
+        x: -59,
+        y: -28,
+        w: 63,
+        h: 28
+      }
+    ],
+    joints: [
+      {
+        x: 32,
+        y: -72
+      }
+    ]
+  },
+  giantFollow: {
+    frame: 19,
+    hurtboxes: [
+      {
+        x: -21,
+        y: -119,
+        w: 43,
+        h: 26
+      },
+      {
+        x: -47,
+        y: -93,
+        w: 78,
+        h: 31
+      },
+      {
+        x: -42,
+        y: -62,
+        w: 73,
+        h: 29
+      },
+      {
+        x: -41,
+        y: -33,
+        w: 50,
+        h: 33
+      }
+    ],
+    joints: [
+      {
+        x: 14,
+        y: -90
+      }
+    ]
+  },
+  descent: {
+    frame: 20,
+    hurtboxes: [
+      {
+        x: -14,
+        y: -104,
+        w: 47,
+        h: 23
+      },
+      {
+        x: -42,
+        y: -81,
+        w: 84,
+        h: 27
+      },
+      {
+        x: -43,
+        y: -54,
+        w: 86,
+        h: 25
+      },
+      {
+        x: -14,
+        y: -29,
+        w: 46,
+        h: 29
+      }
+    ],
+    joints: []
+  },
+  landing: {
+    frame: 21,
+    hurtboxes: [
+      {
+        x: -22,
+        y: -91,
+        w: 47,
+        h: 20
+      },
+      {
+        x: -34,
+        y: -71,
+        w: 63,
+        h: 24
+      },
+      {
+        x: -42,
+        y: -47,
+        w: 82,
+        h: 22
+      },
+      {
+        x: -37,
+        y: -25,
+        w: 67,
+        h: 25
+      }
+    ],
+    joints: []
+  },
+  small: {
+    frame: 22,
+    hurtboxes: [
+      {
+        x: -16,
+        y: -70,
+        w: 30,
+        h: 15
+      },
+      {
+        x: -30,
+        y: -55,
+        w: 56,
+        h: 19
+      },
+      {
+        x: -30,
+        y: -36,
+        w: 55,
+        h: 16
+      },
+      {
+        x: -21,
+        y: -20,
+        w: 36,
+        h: 20
+      }
+    ],
+    joints: []
+  },
+  growing: {
+    frame: 23,
+    hurtboxes: [
+      {
+        x: -18,
+        y: -89,
+        w: 38,
+        h: 20
+      },
+      {
+        x: -28,
+        y: -69,
+        w: 59,
+        h: 23
+      },
+      {
+        x: -28,
+        y: -46,
+        w: 54,
+        h: 21
+      },
+      {
+        x: -28,
+        y: -25,
+        w: 54,
+        h: 25
+      }
+    ],
+    joints: []
+  },
+  base: {
+    frame: 24,
+    hurtboxes: [
+      {
+        x: -27,
+        y: -130,
+        w: 46,
+        h: 29
+      },
+      {
+        x: -34,
+        y: -101,
+        w: 72,
+        h: 33
+      },
+      {
+        x: -30,
+        y: -68,
+        w: 53,
+        h: 32
+      },
+      {
+        x: -39,
+        y: -36,
+        w: 67,
+        h: 36
+      }
+    ],
+    joints: []
+  }
+};
+
+// src/data/luffy-jet-fists.json
+var luffy_jet_fists_default = [
+  {
+    width: 27,
+    height: 17,
+    pivot: {
+      x: 3,
+      y: 12
+    },
+    nose: 24,
+    wrist: 3.5
+  },
+  {
+    width: 48,
+    height: 37,
+    pivot: {
+      x: 3,
+      y: 26
+    },
+    nose: 45,
+    wrist: 5.5
+  },
+  {
+    width: 79,
+    height: 61,
+    pivot: {
+      x: 3,
+      y: 39
+    },
+    nose: 76,
+    wrist: 8
+  },
+  {
+    width: 116,
+    height: 95,
+    pivot: {
+      x: 4,
+      y: 55
+    },
+    nose: 112,
+    wrist: 16
+  },
+  {
+    width: 174,
+    height: 123,
+    pivot: {
+      x: 3,
+      y: 72
+    },
+    nose: 171,
+    wrist: 15.5
+  },
+  {
+    width: 163,
+    height: 102,
+    pivot: {
+      x: 5,
+      y: 54
+    },
+    nose: 158,
+    wrist: 16
+  },
+  {
+    width: 108,
+    height: 75,
+    pivot: {
+      x: 4,
+      y: 43
+    },
+    nose: 104,
+    wrist: 13.5
+  },
+  {
+    width: 42,
+    height: 27,
+    pivot: {
+      x: 3,
+      y: 17
+    },
+    nose: 39,
+    wrist: 3.5
+  }
+];
+
+// src/engine/luffy-jet-gigant.ts
+var jetId = "jet_gigant";
+var initial = [
+  ["pump", 12],
+  ["ignite", 16],
+  ["rise", 13],
+  ["ready", 10],
+  ["dash", 5],
+  ["windup", 3],
+  ["pistol", 5],
+  ["pistol", 4],
+  ["pistol", 8],
+  ["ready", 8],
+  ["landing", 6],
+  ["base", 9]
+];
+var jetMove = {
+  super: true,
+  kind: "jetGigant",
+  cost: luffy_jet_gigant_default.cost,
+  startup: luffy_jet_gigant_default.startup,
+  active: luffy_jet_gigant_default.active,
+  recovery: luffy_jet_gigant_default.recovery,
+  drive: luffy_jet_gigant_default.dash,
+  damage: luffy_jet_gigant_default.initialDamage,
+  hitstop: 8,
+  stun: 27,
+  blockstun: 21,
+  push: 0,
+  launch: 0,
+  level: "mid",
+  rank: 5,
+  cancels: [],
+  meterGain: 0,
+  box: { x: 0, y: 0, w: 0, h: 0 },
+  poses: initial.map(([name, ticks]) => ({
+    ticks,
+    phase: "pose",
+    hurtboxes: luffy_jet_poses_default[name].hurtboxes
+  }))
+};
+var clip = (name) => "jet_" + name;
+var jetClips = Object.fromEntries(
+  Object.entries(luffy_jet_poses_default).map(([name, cel]) => [
+    clip(name),
+    {
+      sheet: "luffy/jet/body.png",
+      frames: [cel.frame],
+      columns: 8,
+      ticks: 1,
+      loop: false
+    }
+  ])
+);
+var jetStartupClip = {
+  sheet: "luffy/jet/body.png",
+  columns: 8,
+  ticks: 1,
+  loop: false,
+  frames: initial.map(([name]) => luffy_jet_poses_default[name].frame),
+  durations: initial.map(([, ticks]) => ticks)
+};
+var clamp4 = (v, low, high) => Math.max(low, Math.min(high, v));
+var linear = (t, from, to) => clamp4((t - from) / (to - from), 0, 1);
+var ease2 = (v) => v * v * (3 - 2 * v);
+var mix2 = (a, b, v) => a + (b - a) * v;
+var interp = (a, b, v) => ({
+  x: mix2(a.x, b.x, v),
+  y: mix2(a.y, b.y, v)
+});
+var bound = (x) => clamp4(x, 40, 1240);
+function arm(cel, tip, radius = 7, bend = 0, slot = 0) {
+  const joints = luffy_jet_poses_default[cel].joints;
+  const root = joints[slot] ?? joints[0];
+  return {
+    ...elasticGeometry({
+      root,
+      tip,
+      radius,
+      bend,
+      maximumLength: 580,
+      active: false,
+      profile: "arm"
+    }),
+    foot: false,
+    palm: cel === "bazooka",
+    axis: { x: 1, y: 0 }
+  };
+}
+function jetOpener(f) {
+  if (f.state !== "attack" || f.moveId !== jetId) return;
+  const t = f.stateFrame;
+  if (t < 59 || t >= 76) return;
+  const active2 = t >= luffy_jet_gigant_default.startup && t < luffy_jet_gigant_default.startup + luffy_jet_gigant_default.active;
+  const root = luffy_jet_poses_default.pistol.joints[0];
+  const reach = t < luffy_jet_gigant_default.startup ? ease2(linear(t + 1, 59, luffy_jet_gigant_default.startup)) : 1 - ease2(linear(t, luffy_jet_gigant_default.startup + luffy_jet_gigant_default.active - 1, 76));
+  const forward = f.facing > 0 ? 1247 - f.x : f.x - 33;
+  const gap = f.opponent ? (f.opponent.x - f.x) * f.facing : 0;
+  const extension = Math.min(
+    144,
+    forward - 8,
+    gap > 0 ? Math.max(root.x + 6, gap - 8) : 144
+  );
+  const x = mix2(root.x + 6, extension, reach);
+  const geometry = arm(
+    "pistol",
+    { x, y: mix2(root.y + 3, -89, reach) },
+    7,
+    -3 * reach
+  );
+  return {
+    ...geometry,
+    hitboxes: active2 ? [
+      {
+        a: geometry.tip,
+        b: { x: geometry.tip.x + 9, y: geometry.tip.y },
+        r: 7
+      }
+    ] : []
+  };
+}
+function track2(t, keys) {
+  const at = keys.findIndex(([tick]) => t <= tick);
+  if (at <= 0) {
+    const [, x2, y2] = keys[at === 0 ? 0 : keys.length - 1];
+    return { x: x2, y: y2 };
+  }
+  const [from, x, y] = keys[at - 1];
+  const [to, endX, endY] = keys[at];
+  return interp({ x, y }, { x: endX, y: endY }, ease2(linear(t, from, to)));
+}
+var rushHits = luffy_jet_gigant_default.hits.filter((hit) => hit.kind === "gatling");
+function jetScene(s) {
+  const t = s.tick, side = s.facing, floor = 580;
+  const target = (offset) => bound(s.targetX + side * offset);
+  const startGap = Math.max(62, (s.targetX - s.originX) * side);
+  const back = (x, gap) => bound(x - side * gap);
+  const end = target(237);
+  const victim = track2(t, [
+    [0, s.targetX, s.targetY],
+    [16, target(14), floor],
+    [32, target(23), floor],
+    [60, target(28), floor],
+    [82, target(108), floor],
+    [92, target(118), floor],
+    [163, target(154), floor],
+    [208, target(180), 376],
+    [235, target(185), 342],
+    [272, target(198), 367],
+    [299, end, floor],
+    [406, end, floor]
+  ]);
+  const attacker = track2(t, [
+    [0, s.originX, floor],
+    [9, back(target(12), startGap), floor],
+    [16, back(target(14), 88), floor],
+    [32, back(target(23), 95), floor],
+    [49, back(target(27), 107), floor],
+    [60, back(target(28), 101), floor],
+    [69, back(target(64), 136), floor],
+    [88, back(target(114), 101), floor],
+    [163, back(target(154), 86), floor],
+    [180, back(target(160), 101), floor],
+    [221, back(target(182), 174), floor],
+    [243, back(target(189), 204), 519],
+    [272, back(target(198), 240), 493],
+    [286, back(end, 223), 511],
+    [319, back(end, 162), floor],
+    [406, back(end, 162), floor]
+  ]);
+  const phase = t < 9 ? "jetPistol" : t < 81 ? "jetBazooka" : t < 177 ? "jetGatling" : t < 246 ? "gearThird" : t < 305 ? "gigantPistol" : "return";
+  const aim = {
+    x: (victim.x - attacker.x) * side - 8,
+    y: victim.y - attacker.y - 86
+  };
+  const limbs = [];
+  let cel;
+  let steam = t < 177 ? 1 : 1 - linear(t, 177, 195);
+  const strike = (name, reach, y = aim.y, slot = 0, rear = false) => {
+    const root = luffy_jet_poses_default[name].joints[slot] ?? luffy_jet_poses_default[name].joints[0];
+    const tip = interp(
+      { x: root.x + 15, y: root.y + 1 },
+      { x: aim.x, y },
+      reach
+    );
+    limbs.push({ geometry: arm(name, tip, 7, -3 * reach, slot), rear });
+  };
+  const pulse = (hit, wind, recovery2) => t < hit ? ease2(linear(t, hit - wind, hit)) : 1 - ease2(linear(t, hit + 1, hit + recovery2));
+  if (t < 9) {
+    cel = "pistol";
+    const root = luffy_jet_poses_default.pistol.joints[0];
+    limbs.push({
+      geometry: arm(
+        cel,
+        interp(
+          s.openingTip,
+          { x: root.x + 14, y: root.y + 1 },
+          ease2(linear(t, 1, 9))
+        ),
+        7,
+        -3
+      )
+    });
+  } else if (t < 40) {
+    const hit = t < 23 ? 16 : 32;
+    cel = t < hit - 5 ? "windup" : hit === 16 ? "pistol" : "cross";
+    if (cel !== "windup") strike(cel, pulse(hit, 5, 8));
+  } else if (t < 73) {
+    cel = t < 54 ? "bazookaWindup" : "bazooka";
+    if (cel === "bazooka") {
+      const p = pulse(60, 6, 13);
+      strike(cel, p, aim.y - 10, 1, true);
+      strike(cel, p, aim.y + 7);
+    }
+  } else if (t < 154) {
+    const index = rushHits.findIndex(
+      (h, i) => t <= (i === rushHits.length - 1 ? 154 : Math.floor((h.tick + rushHits[i + 1].tick) / 2))
+    );
+    const hit = rushHits[index].tick;
+    cel = t < 85 ? "ready" : index % 2 ? "gatlingRight" : "gatlingLeft";
+    if (cel !== "ready")
+      strike(
+        cel,
+        pulse(hit, index < 3 ? 6 : 4, index < 3 ? 7 : 5),
+        aim.y + (index % 3 - 1) * 8
+      );
+  } else if (t < 177) {
+    cel = "launcher";
+    const p = pulse(163, 8, 13);
+    const root = luffy_jet_poses_default[cel].joints[0];
+    const end2 = { x: aim.x - 2, y: Math.max(-148, aim.y - 14) };
+    const geometry = arm(
+      cel,
+      interp({ x: root.x + 9, y: root.y - 9 }, end2, p),
+      7,
+      4
+    );
+    limbs.push({ geometry: { ...geometry, axis: { x: 0.71, y: -0.71 } } });
+  } else if (t < 208) {
+    cel = t < 187 ? "watch" : "inflate";
+  } else if (t < 305) {
+    cel = t < 222 ? "inflation" : t < 239 ? "brace" : t < 258 ? "giantWindup" : t < 276 ? "giantStrike" : "giantFollow";
+    const giant = t < 214 ? 0 : t < 222 ? 1 : t < 231 ? 2 : t < 263 ? 3 : t < 272 ? 4 : t < 280 ? 5 : t < 290 ? 6 : t < 299 ? 2 : 7;
+    const root = luffy_jet_poses_default[cel].joints[0];
+    const windup = {
+      x: Math.max(5 - (side > 0 ? attacker.x : 1280 - attacker.x), root.x - 32),
+      y: root.y - 13
+    };
+    const contact = { x: aim.x - luffy_jet_fists_default[giant].nose + 13, y: aim.y };
+    const advance = t < 272 ? ease2(linear(t, 254, 272)) : 1 - ease2(linear(t, 275, 305));
+    const tip = interp(windup, contact, advance);
+    const geometry = arm(cel, tip, Math.min(12, 7 + giant), -10 * advance);
+    geometry.radii = geometry.radii.map(
+      (radius, i, radii) => mix2(radius, luffy_jet_fists_default[giant].wrist, ease2(i / Math.max(1, radii.length - 1)))
+    );
+    const reverse = tip.x < root.x;
+    if (geometry.centers.length >= 4) {
+      const penultimate = geometry.centers.length - 2;
+      const direction = reverse ? -1 : 1;
+      geometry.centers[penultimate] = {
+        x: geometry.tip.x - direction * 7,
+        y: geometry.tip.y
+      };
+      geometry.centers.push({
+        x: geometry.tip.x + direction * 4,
+        y: geometry.tip.y
+      });
+      geometry.radii.push(geometry.radii.at(-1));
+    }
+    limbs.push({ geometry, giant, reverse, rear: t < 262 });
+  } else {
+    cel = t < 319 ? "descent" : t < 328 ? "landing" : t < 362 ? "small" : t < 384 ? "growing" : "base";
+    steam = 0;
+  }
+  const lastHit = luffy_jet_gigant_default.hits.filter((hit) => hit.tick <= t).at(-1);
+  const victimClip = t >= 299 ? "downed" : t >= 272 ? "falling" : t >= 205 ? "damageAir" : t >= 163 ? "launched" : "damageHeavy";
+  const release = ease2(linear(t, 364, luffy_jet_gigant_default.duration));
+  const scale = mix2(mix2(1.48, 1.21, ease2(linear(t, 219, 249))), 1, release);
+  const midX = (attacker.x + victim.x) / 2;
+  const visibleHalfWidth = 640 / scale;
+  const shake = t === 272 || t === 299 ? (s.hold % 3 - 1) * 7 : t > 299 && t < 313 ? Math.round((313 - t) / 3) * (t % 2 ? 1 : -1) : 0;
+  return {
+    phase,
+    cel,
+    limbs,
+    steam,
+    attacker: { ...attacker, clip: clip(cel), tick: 0, facing: side },
+    victim: {
+      ...victim,
+      clip: victimClip,
+      tick: t - (t >= 299 ? 299 : lastHit?.tick ?? 0) + (t >= 299 ? 0 : 4),
+      facing: -side
+    },
+    camera: {
+      scale,
+      x: mix2(
+        clamp4(midX, visibleHalfWidth, 1280 - visibleHalfWidth),
+        640,
+        release
+      ),
+      y: mix2(mix2(432, 386, ease2(linear(t, 170, 236))), 360, release),
+      shakeX: shake,
+      shakeY: -Math.round(shake / 2)
+    },
+    lastHit
+  };
 }
 
 // src/engine/combat.ts
@@ -20351,7 +22015,7 @@ var Fighter = class {
   }
   canSpecialCancel() {
     if (this.data.id === "goku") return canCancelGokuSpecial(this);
-    return !this.airborne && !this.move?.special && !this.move?.super && (this.data.id !== "luffy" || this.hitConfirmed) && this.canCancel("special");
+    return !this.airborne && !this.move?.special && !this.move?.super && (!["luffy", "sasuke"].includes(this.data.id) || this.hitConfirmed) && this.canCancel("special");
   }
   canStartSpecial(id) {
     if (this.data.id === "goku") return canStartGokuSpecial(this, id);
@@ -20364,6 +22028,12 @@ var Fighter = class {
       return false;
     if (move.projectile && this.match && this.match.projectiles.filter((p) => p.owner === this.id).length + move.projectile.releases.length > dio_specials_default.knives.maximumPerOwner)
       return false;
+    if (this.data.id === "sasuke" && isSasukeSpecial(id) && this.match) {
+      const shots = sasukeTechniques[id].shots;
+      if (shots && this.match.kiProjectiles.filter(
+        (p) => p.owner === this.id && p.state === "flight"
+      ).length + shots.length > sasukeSpecialBalance.maximumProjectiles) return false;
+    }
     if (move.stand && !this.stand?.canBegin(this.canSpecialCancel()))
       return false;
     return true;
@@ -20390,14 +22060,17 @@ var Fighter = class {
     return this.canSpecialCancel();
   }
   canStartSuper() {
+    if (this.match?.cinematicActive) return false;
+    if (this.data.id === "luffy")
+      return !!this.data.superMoves?.[jetId] && this.meter >= luffy_jet_gigant_default.cost && !this.airborne && !this.match?.capture && (["idle", "walk", "crouch", "dash", "landing", "jumpStart"].includes(this.state) || this.hitConfirmed && this.canSuperCancel());
     if (this.data.id === "samurai") {
       const m = this.data.moves.ultimate_start;
-      return !!m && this.meter >= (m.cost ?? 100) && !this.airborne && !this.match?.capture && !this.match?.roadRoller && !this.match?.fury && (["idle", "walk", "crouch", "dash", "landing", "jumpStart"].includes(
+      return !!m && this.meter >= (m.cost ?? 100) && !this.airborne && !this.match?.capture && (["idle", "walk", "crouch", "dash", "landing", "jumpStart"].includes(
         this.state
       ) || this.canSuperCancel());
     }
     if (this.data.id === "goku") return canStartFury(this);
-    return !!this.data.superMoves?.road_roller && this.meter >= road_roller_default.cost && !this.airborne && !this.match?.roadRoller && !this.match?.fury && !this.match?.capture && (["idle", "walk", "crouch", "dash", "landing", "jumpStart"].includes(
+    return !!this.data.superMoves?.road_roller && this.meter >= road_roller_default.cost && !this.airborne && !this.match?.capture && (["idle", "walk", "crouch", "dash", "landing", "jumpStart"].includes(
       this.state
     ) || this.canSuperCancel()) && !!this.stand?.canBegin(this.canSuperCancel());
   }
@@ -20423,6 +22096,10 @@ var Fighter = class {
     const limbs = luffyAttackLimbs(this);
     if (limbs.length)
       boxes = [...boxes, ...limbs.flatMap((limb) => limb.limbHurtboxes.map(shapeBounds))];
+    if (this.state === "attack") {
+      const grip = luffyGrabLimb(this) ?? jetOpener(this);
+      if (grip) boxes = [...boxes, ...grip.limbHurtboxes.map(shapeBounds)];
+    }
     return boxes.map((box) => worldRect(box, this.x, this.y, this.facing));
   }
   get invulnerability() {
@@ -20470,11 +22147,20 @@ var Fighter = class {
     const pose = poseAt(m, this.stateFrame);
     if (m.hitWindows && !this.hitWindow) return [];
     if (m.stand) return this.stand?.hitboxes(this) ?? [];
+    if (m.special && isSasukeSpecial(m.special))
+      return sasukeSpecialContact(m.special, this.stateFrame - m.startup, this.facing, this.x).map((shape) => worldCapsule(shape, this.x, this.y, this.facing));
     const limbs = luffyAttackLimbs(this);
     if (limbs.length)
       return limbs.flatMap((limb) => limb.hitboxes.map((shape) => worldCapsule(shape, this.x, this.y, this.facing)));
-    if (m.kind === "grab")
+    if (m.kind === "jetGigant")
+      return jetOpener(this)?.hitboxes.map((shape) => worldCapsule(shape, this.x, this.y, this.facing)) ?? [];
+    if (m.kind === "grab") {
+      if (this.data.id === "luffy") {
+        const grip = luffyGrabLimb(this);
+        return grip?.hitboxes.map((shape) => worldCapsule(shape, this.x, this.y, this.facing)) ?? [];
+      }
       return [worldRect(m.box, this.x, this.y, this.facing)];
+    }
     const body = pose?.hitboxes ? pose.hitboxes.map(
       (shape) => "a" in shape ? worldCapsule(shape, this.x, this.y, this.facing) : worldRect(shape, this.x, this.y, this.facing)
     ) : pose?.blade ? [worldCapsule(pose.blade, this.x, this.y, this.facing)] : pose ? [] : [worldRect(m.box, this.x, this.y, this.facing)];
@@ -20615,7 +22301,7 @@ var Fighter = class {
         (action) => action.button === "ultimate"
       );
       if (superRequested) {
-        const id = this.data.id === "goku" ? "ssj1_fury" : this.data.id === "dio" ? "road_roller" : "ultimate_start";
+        const id = this.data.id === "goku" ? "ssj1_fury" : this.data.id === "dio" ? "road_roller" : this.data.id === "luffy" ? jetId : "ultimate_start";
         const move = this.data.moves[id] ?? this.data.superMoves?.[id];
         if (this.canStartSuper()) {
           this.attack(id);
@@ -20646,6 +22332,18 @@ var Fighter = class {
             this.buffer.consumeSpecial(button);
             return;
           }
+        }
+      }
+      if (this.data.id === "sasuke") {
+        for (const button of ["heavy", "medium", "light"]) {
+          const id = sasukeSpecialCommand(this.buffer, button);
+          if (!id) continue;
+          if (id === "reserved" || this.attack(id)) {
+            this.buffer.consumeSpecial(button);
+            return;
+          }
+          if (free || this.move?.special) this.buffer.consumeSpecial(button);
+          break;
         }
       }
       if (this.data.id === "luffy" && !this.airborne) {
@@ -20703,6 +22401,7 @@ var Fighter = class {
       }
       if (free || this.state === "attack") {
         for (const b of ["throw", "light", "medium", "heavy"]) {
+          if (this.data.id === "sasuke" && sasukeSpecialCommand(this.buffer, b)) continue;
           if (this.data.id === "luffy" && !this.airborne && luffySpecialCommand(this.buffer, b))
             continue;
           if (this.data.id === "dio" && this.data.specialMoves && !this.airborne && this.buffer.dioSpecial(b))
@@ -20823,9 +22522,14 @@ var Match = class {
   }
   roadRoller;
   fury;
+  jetGigant;
+  get cinematicActive() {
+    return !!(this.roadRoller || this.fury || this.jetGigant);
+  }
   temporal = new TemporalController();
   projectiles = [];
   kiProjectiles = [];
+  sasukeStormUntil = 0;
   beams = [];
   projectileSerial = 0;
   fighters;
@@ -20892,6 +22596,7 @@ var Match = class {
           this.projectiles = [];
           this.kiProjectiles = [];
           this.beams = [];
+          this.sasukeStormUntil = 0;
           const meter = this.fighters.map((f) => f.meter);
           this.fighters = [
             new Fighter(this.data, 0, 400),
@@ -20914,8 +22619,8 @@ var Match = class {
       for (const f of this.fighters) f.stand?.tick(f);
       return;
     }
-    if (this.fury) {
-      this.stepFury();
+    if (this.fury || this.jetGigant) {
+      this.stepStagedSuper();
       return;
     }
     if (this.roadRoller) {
@@ -20952,7 +22657,7 @@ var Match = class {
       if (!this.temporal.isFrozen(f.id)) f.stand?.tick(f);
     this.stepSpecialReleases();
     for (const f of this.fighters)
-      if (f.state === "attack" && f.stateFrame === 0 && f.move?.kind === "ultimate")
+      if (f.state === "attack" && f.stateFrame === 0 && (f.move?.kind === "ultimate" || f.move?.kind === "jetGigant"))
         this.effect("power", f.x, f.y - 80, 20);
     const [a, b] = this.fighters;
     if (overlaps(a.pushbox(), b.pushbox()) && this.temporal.active) {
@@ -21002,14 +22707,15 @@ var Match = class {
       if (!c) continue;
       const { f, target, move: m, moveId } = c;
       if (m.super && f.health <= 0) continue;
-      if (this.capture || this.roadRoller || this.fury) continue;
+      if (m.kind === "jetGigant" && (f.state !== "attack" || f.moveId !== moveId)) continue;
+      if (this.capture || this.cinematicActive) continue;
       if (m.kind === "grab" && contacts.some(
         (other) => other && other.f === target && other.move.kind !== "grab"
       ))
         continue;
       f.connected = true;
       f.hitIds.push(c.hitId);
-      if (!this.temporal.isFrozen(target.id) && target.counterWindow && m.level !== "low" && m.level !== "throw" && m.kind !== "ultimate" && m.kind !== "roadRoller" && (f.x - target.x) * target.facing > 0) {
+      if (!this.temporal.isFrozen(target.id) && target.counterWindow && m.level !== "low" && m.level !== "throw" && m.kind !== "ultimate" && m.kind !== "roadRoller" && m.kind !== "jetGigant" && (f.x - target.x) * target.facing > 0) {
         f.setState("hitstun");
         f.stun = 12;
         f.reactionStrength = 1;
@@ -21024,11 +22730,12 @@ var Match = class {
         this.beginCapture("grab", f, target);
         continue;
       }
-      this.resolveImpact(f, target, m, moveId, c.impact);
+      const direction = m.special === "nagashi" && target.x !== f.x ? Math.sign(target.x - f.x) : f.facing;
+      this.resolveImpact(f, target, m, moveId, c.impact, direction);
     }
-    if (this.roadRoller || this.fury) return;
+    if (this.cinematicActive) return;
     this.stepProjectiles();
-    this.stepGokuEnergy();
+    this.stepEnergy();
     for (const f of this.fighters) f.syncReactionClock(false);
     if (this.capture) {
       this.finishTemporalStep(timeWasActive);
@@ -21041,7 +22748,7 @@ var Match = class {
     const frozen = this.temporal.isFrozen(target.id);
     const guarding = target.input.direction === -target.facing && !target.airborne && ["idle", "walk", "crouch", "landing", "blockstun"].includes(
       target.state
-    ) && (!["knives", "ki", "kamehameha"].includes(m.special ?? "") || direction === -target.facing);
+    ) && (!(["knives", "ki", "kamehameha"].includes(m.special ?? "") || m.special && isSasukeSpecial(m.special) && sasukeTechniques[m.special].shots) || direction === -target.facing);
     const blocked = guarding && m.level !== "throw" && (m.level !== "low" || target.input.down) && (m.level !== "high" || !target.input.down);
     let damage = blocked ? 0 : Math.round(
       m.damage * Math.max(
@@ -21056,7 +22763,7 @@ var Match = class {
     const applied = this.damage(
       target,
       damage,
-      ["ultimate", "roadRoller", "gokuFury"].includes(m.kind ?? "") && !blocked ? 1 : 0
+      ["ultimate", "roadRoller", "gokuFury", "jetGigant"].includes(m.kind ?? "") && !blocked ? 1 : 0
     );
     const reaction = {
       blocked,
@@ -21066,7 +22773,7 @@ var Match = class {
       knockdown: !blocked && !!m.knockdown,
       strength: m.damage <= 50 ? 1 : m.damage <= 90 ? 2 : 3,
       launch: m.launch <= -9,
-      crouched: target.crouching
+      crouched: target.crouching || target.data.id === "luffy" && !target.airborne && !blocked && m.level === "low"
     };
     if (!blocked) {
       if (f.state === "attack" && f.moveId === moveId) f.hitConfirmed = true;
@@ -21102,13 +22809,18 @@ var Match = class {
     );
     const event = this.events[eventCount];
     if (event) {
+      if (f.data.id === "luffy" && !m.super && (m.rank > 1 || m.special)) {
+        const style = m.special === "bazooka" ? "double" : m.special === "gatling" ? "rush" : /medium$|crouch_heavy|air_heavy/.test(moveId) && !m.special ? "kick" : "punch";
+        event.luffy = { actor: f.id, move: moveId, direction, style };
+      }
       event.strength = m.super || m.kind === "ultimate" || m.rank === 3 || m.knockdown || m.damage >= 90 ? 3 : m.rank === 2 || m.damage >= 55 ? 2 : 1;
       event.total = event.life = event.strength === 1 ? 10 : event.strength === 2 ? 13 : 16;
     }
     if (m.kind === "ultimate" && !blocked)
       this.beginCapture("ultimate", f, target);
     if (m.kind === "roadRoller" && !blocked) this.beginRoadRoller(f, target);
-    if (m.kind === "gokuFury" && !blocked) this.beginFury(f, target);
+    if (!blocked && (m.kind === "gokuFury" || m.kind === "jetGigant"))
+      this.beginStagedSuper(f, target, m.kind === "jetGigant");
   }
   applyReaction(target, reaction) {
     target.hitCrouched = target.blockCrouched = reaction.crouched;
@@ -21135,6 +22847,10 @@ var Match = class {
       const m = f.move;
       if (f.data.id === "goku") {
         this.spawnGokuSpecial(f);
+        continue;
+      }
+      if (m.special && isSasukeSpecial(m.special)) {
+        this.spawnSasukeSpecial(f, m, m.special);
         continue;
       }
       if (m.special === "timeStop" && f.stateFrame === m.startup && this.temporal.activate(f.id)) {
@@ -21242,7 +22958,35 @@ var Match = class {
       });
     }
   }
-  stepGokuEnergy() {
+  spawnSasukeSpecial(f, move, id) {
+    const age = f.stateFrame - move.startup;
+    const origin = poseAt(move, f.stateFrame)?.release;
+    if (!origin) return;
+    for (const shot of sasukeTechniques[id].shots ?? []) {
+      if (shot.at !== age) continue;
+      const x = f.x + f.facing * origin.x, y = f.y + origin.y;
+      this.kiProjectiles.push({
+        id: ++this.projectileSerial,
+        owner: f.id,
+        move: id,
+        cast: 0,
+        x,
+        y,
+        previousX: x,
+        previousY: y,
+        vx: shot.speed * f.facing,
+        vy: shot.rise,
+        facing: f.facing,
+        radius: shot.radius,
+        age: 0,
+        life: shot.life,
+        state: "flight",
+        impactAge: 0
+      });
+      if (id === "goryuka") this.sasukeStormUntil = this.combatFrame + sasukeSpecialBalance.stormTicks;
+    }
+  }
+  stepEnergy() {
     if (!this.kiProjectiles.length && !this.beams.length) return;
     if (this.temporal.active && dio_specials_default.timeStop.freezeAllProjectiles)
       return;
@@ -21265,9 +23009,15 @@ var Match = class {
       };
       const hurt = target.hurtboxes().find((r) => shapeHitsRect(shape, r));
       if (hurt) {
-        if (owner.gokuCastSerial === p.cast && owner.moveId === p.move)
+        let impact = hurt;
+        if (isSasukeSpecial(p.move)) {
+          p.x = Math.max(hurt.x, Math.min(hurt.x + hurt.w, p.x));
+          p.y = Math.max(hurt.y, Math.min(hurt.y + hurt.h, p.y));
+          impact = { x: p.x, y: p.y, w: 0, h: 0 };
+        } else if (owner.gokuCastSerial === p.cast && owner.moveId === p.move) {
           owner.connected = true;
-        this.resolveImpact(owner, target, move, p.move, hurt, p.facing);
+        }
+        this.resolveImpact(owner, target, move, p.move, impact, p.facing);
         p.state = "impact";
         p.impactAge = 0;
         p.vx = p.vy = 0;
@@ -21331,11 +23081,11 @@ var Match = class {
     this.events.push({ kind, x, y, life, total: life, blocked });
   }
   beginCapture(kind, attacker, victim) {
-    if (kind === "grab" && attacker.data.grabSequence) {
-      victim.x = Math.max(
-        40,
-        Math.min(1240, attacker.x + attacker.facing * 72)
-      );
+    const grab = kind === "grab" ? attacker.data.grabSequence : void 0;
+    const contactX = grab?.startFromContact ? (victim.x - attacker.x) * attacker.facing : void 0;
+    if (grab) {
+      if (contactX === void 0)
+        victim.x = Math.max(40, Math.min(1240, attacker.x + attacker.facing * 72));
     } else {
       const center = Math.max(140, Math.min(1140, (attacker.x + victim.x) / 2));
       attacker.x = center - attacker.facing * 36;
@@ -21356,12 +23106,14 @@ var Match = class {
       attacker: attacker.id,
       victim: victim.id,
       tick: 0,
-      scale: Math.max(0.45, 1 - Math.max(0, victim.combo - 1) * 0.08)
+      scale: Math.max(0.45, 1 - Math.max(0, victim.combo - 1) * 0.08),
+      ...contactX === void 0 ? {} : { contactX }
     };
     this.hitstop = Math.max(this.hitstop, kind === "ultimate" ? 12 : 5);
   }
-  beginFury(a, b) {
-    this.fury = {
+  beginStagedSuper(a, b, jet) {
+    const config = jet ? luffy_jet_gigant_default : goku_fury_default;
+    const state = {
       attacker: a.id,
       victim: b.id,
       tick: 0,
@@ -21370,10 +23122,12 @@ var Match = class {
       targetX: b.x,
       targetY: b.y,
       scale: Math.max(
-        goku_fury_default.minimumComboScale,
+        config.minimumComboScale,
         1 - Math.max(0, b.combo - 1) * 0.08
       )
     };
+    if (jet) this.jetGigant = { ...state, hold: 8, openingTip: jetOpener(a).tip };
+    else this.fury = state;
     a.setState("cinematic");
     b.setState("grabbed");
     a.vx = a.vy = b.vx = b.vy = 0;
@@ -21382,10 +23136,10 @@ var Match = class {
     b.buffer.clear();
     this.hitstop = 0;
     this.temporal.s.pending[b.id] = null;
-    this.stageFury();
+    this.stageSuper();
   }
-  stageFury() {
-    const s = this.fury, scene = furyScene(s), a = this.fighters[s.attacker], b = this.fighters[s.victim];
+  stageSuper() {
+    const s = this.jetGigant ?? this.fury, scene = this.jetGigant ? jetScene(this.jetGigant) : furyScene(s), a = this.fighters[s.attacker], b = this.fighters[s.victim];
     for (const [f, p] of [
       [a, scene.attacker],
       [b, scene.victim]
@@ -21398,27 +23152,31 @@ var Match = class {
     }
     b.stand?.tick(b);
   }
-  stepFury() {
-    const s = this.fury, t = ++s.tick, a = this.fighters[s.attacker], b = this.fighters[s.victim];
-    this.stageFury();
-    const hit = goku_fury_default.hits.find((h) => h.tick === t);
+  stepStagedSuper() {
+    const jet = this.jetGigant;
+    if (jet && jet.hold > 0) {
+      jet.hold--;
+      return;
+    }
+    const config = jet ? luffy_jet_gigant_default : goku_fury_default;
+    const s = jet ?? this.fury, t = ++s.tick, a = this.fighters[s.attacker], b = this.fighters[s.victim];
+    this.stageSuper();
+    const hit = config.hits.find((h) => h.tick === t);
     if (hit) {
-      const applied = this.damage(
-        b,
-        Math.round(hit.damage * s.scale),
-        hit.kind === "explosion" ? 0 : 1
-      );
+      const finish = hit.kind === "explosion" || hit.kind === "ground";
+      if (jet && "hold" in hit && typeof hit.hold === "number") jet.hold = hit.hold;
+      const applied = this.damage(b, Math.round(hit.damage * s.scale), finish ? 0 : 1);
       b.combo++;
-      this.recordHit(a, b, `fury_${hit.kind}`, applied);
+      this.recordHit(a, b, `${jet ? "jet" : "fury"}_${hit.kind}`, applied);
       b.gainMeter(2);
       this.effect(
-        hit.kind === "explosion" ? "roadExplosion" : "hit",
+        !jet && finish ? "roadExplosion" : jet && (finish || hit.kind === "gigant") ? "ultimate" : "hit",
         b.x,
         b.y - 78,
-        hit.kind === "explosion" ? 16 : 8
+        finish ? 16 : 8
       );
     }
-    if (t >= goku_fury_default.duration) {
+    if (t >= config.duration) {
       a.y = b.y = FLOOR;
       a.vx = a.vy = b.vx = b.vy = 0;
       a.actionClip = b.actionClip = "";
@@ -21431,13 +23189,13 @@ var Match = class {
       b.syncReactionClock(false);
       a.buffer.clear();
       b.buffer.clear();
-      this.fury = void 0;
+      this.fury = this.jetGigant = void 0;
       this.hitstop = 0;
       this.checkRoundEnd();
     }
   }
   beginRoadRoller(a, b) {
-    const bound = road_roller_default.objectHalfWidth + road_roller_default.objectMargin;
+    const bound2 = road_roller_default.objectHalfWidth + road_roller_default.objectMargin;
     this.roadRoller = {
       attacker: a.id,
       victim: b.id,
@@ -21450,7 +23208,7 @@ var Match = class {
       originX: a.x,
       targetX: b.x,
       targetY: b.y,
-      rollerX: Math.max(bound, Math.min(1280 - bound, b.x - a.facing * 95)),
+      rollerX: Math.max(bound2, Math.min(1280 - bound2, b.x - a.facing * 95)),
       landingX: Math.max(60, Math.min(1220, b.x - a.facing * 125)),
       standOriginX: a.stand.transform.x,
       standOriginY: a.stand.transform.y
@@ -21559,12 +23317,12 @@ var Match = class {
     }
   }
   stepCapture() {
-    const sequence = this.capture;
-    const a = this.fighters[sequence.attacker], b = this.fighters[sequence.victim];
-    const tick = sequence.tick++;
+    const sequence2 = this.capture;
+    const a = this.fighters[sequence2.attacker], b = this.fighters[sequence2.victim];
+    const tick = sequence2.tick++;
     a.stateFrame = tick;
     b.stateFrame = tick;
-    if (sequence.kind === "ultimate") {
+    if (sequence2.kind === "ultimate") {
       a.actionClip = tick < cinematics_default.ultimate.rushDuration ? "ultimateRush" : "ultimateFinish";
       a.stateFrame = tick < 48 ? tick : tick - 48;
       b.actionClip = tick >= cinematics_default.ultimate.finishTick ? "damageHeavy" : "damageMedium";
@@ -21573,7 +23331,7 @@ var Match = class {
       const finish = tick === cinematics_default.ultimate.finishTick;
       if (cinematics_default.ultimate.hits.includes(tick) || finish) {
         const damage = Math.round(
-          (finish ? cinematics_default.ultimate.finishDamage : cinematics_default.ultimate.damage) * sequence.scale
+          (finish ? cinematics_default.ultimate.finishDamage : cinematics_default.ultimate.damage) * sequence2.scale
         );
         const applied = this.damage(b, damage, finish ? 0 : 1);
         b.combo++;
@@ -21587,26 +23345,27 @@ var Match = class {
         this.effect("ultimate", b.x, b.y - 75, 12);
         this.hitstop = finish ? 15 : 3;
       }
-      if (sequence.tick >= cinematics_default.ultimate.duration)
-        this.endCapture(sequence, a, b);
+      if (sequence2.tick >= cinematics_default.ultimate.duration)
+        this.endCapture(sequence2, a, b);
     } else {
       a.actionClip = "grabHold";
       b.actionClip = "grabbed";
       const grab = a.data.grabSequence ?? cinematics_default.grab;
-      const track2 = a.data.grabSequence?.victimTrack;
-      if (track2?.length) {
+      const track3 = a.data.grabSequence?.victimTrack;
+      if (track3?.length) {
         let i = 0;
-        while (i + 1 < track2.length && track2[i + 1].tick <= tick) i++;
-        const p = track2[i], q = track2[Math.min(i + 1, track2.length - 1)], t = q.tick === p.tick ? 0 : Math.min(1, (tick - p.tick) / (q.tick - p.tick));
+        while (i + 1 < track3.length && track3[i + 1].tick <= tick) i++;
+        const p = track3[i], q = track3[Math.min(i + 1, track3.length - 1)], t = q.tick === p.tick ? 0 : Math.min(1, (tick - p.tick) / (q.tick - p.tick));
+        const fromX = i === 0 ? sequence2.contactX ?? p.x : p.x;
         b.x = Math.max(
           40,
-          Math.min(1240, a.x + a.facing * Math.round(p.x + (q.x - p.x) * t))
+          Math.min(1240, a.x + a.facing * Math.round(fromX + (q.x - fromX) * t))
         );
         b.y = FLOOR + Math.round(p.y + (q.y - p.y) * t);
         b.actionClip = p.clip;
         let start = i;
-        while (start > 0 && track2[start - 1].clip === p.clip) start--;
-        b.stateFrame = tick - track2[start].tick;
+        while (start > 0 && track3[start - 1].clip === p.clip) start--;
+        b.stateFrame = tick - track3[start].tick;
       }
       if (tick === grab.hitTick) {
         const applied = this.damage(b, grab.damage);
@@ -21617,24 +23376,24 @@ var Match = class {
         a.gainMeter(10);
         b.gainMeter(5);
       }
-      if (sequence.tick >= grab.duration) this.endCapture(sequence, a, b);
+      if (sequence2.tick >= grab.duration) this.endCapture(sequence2, a, b);
     }
   }
-  endCapture(sequence, a, b) {
+  endCapture(sequence2, a, b) {
     a.setState(
-      sequence.kind === "ultimate" ? "ultimateRecover" : "throwRecover"
+      sequence2.kind === "ultimate" ? "ultimateRecover" : "throwRecover"
     );
     a.actionClip = "";
     b.setState("hitstun");
     b.actionClip = "";
     b.knockedDown = true;
     b.hitCrouched = false;
-    b.hitLaunch = sequence.kind === "grab";
+    b.hitLaunch = sequence2.kind === "grab";
     b.reactionStrength = 3;
-    const release = sequence.kind === "grab" ? a.data.grabSequence?.release : void 0;
+    const release = sequence2.kind === "grab" ? a.data.grabSequence?.release : void 0;
     b.stun = release?.stun ?? 35;
     b.vx = a.facing * (release?.vx ?? 8);
-    b.vy = release?.vy ?? (sequence.kind === "ultimate" ? 12 : -6);
+    b.vy = release?.vy ?? (sequence2.kind === "ultimate" ? 12 : -6);
     b.syncReactionClock(false);
     a.buffer.clear();
     b.buffer.clear();
@@ -21648,6 +23407,7 @@ var Match = class {
       this.projectiles = [];
       this.kiProjectiles = [];
       this.beams = [];
+      this.sasukeStormUntil = 0;
       const winner = a.health === b.health ? -1 : a.health > b.health ? 0 : 1;
       if (winner < 0) {
         this.message = "EMPATE";
@@ -125929,6 +127689,164 @@ var goku = {
   reactionClips: { ...goku_default.reactionClips, ...secondary.reactionClips }
 };
 
+// src/data/sasuke.json
+var sasuke_default = {
+  id: "sasuke",
+  name: "Sasuke Uchiha \xB7 Hebi",
+  health: 1e3,
+  speed: 4.65,
+  jump: -16.9,
+  gravity: 0.73,
+  meterGainScale: 0,
+  airChaseSpeed: 6.6,
+  airChaseTicks: 10,
+  locomotion: {
+    backSpeed: 3.65,
+    airSpeed: 6.2,
+    jumpStartup: 5,
+    landingTicks: 7,
+    dashForward: [3, 7, 13, 18, 19, 17, 15, 13, 10, 6, 3, 0],
+    backdash: [3, 8, 13, 16, 16, 15, 13, 11, 8, 5, 2, 0]
+  },
+  combatLimits: { maxHits: 11, maxAirHits: 6, maxTicks: 280 }
+};
+
+// src/data/sasuke-frames.json
+var sasuke_frames_default = { movement: { idle: [0, 1, 2, 3, 4, 5], walkForward: [6, 7, 8, 9, 10, 11], walkBack: [12, 13, 14, 15, 16, 17], dashForward: [18, 19, 20, 21, 22], backdash: [23, 24, 25, 26, 27], crouchStart: [28, 29], crouchIdle: [30, 31], crouchEnd: [32, 33], jumpStart: [34, 35, 36], jumpRise: [37, 38], jumpApex: [39], jumpFall: [40, 41], landing: [42, 43, 44] }, normals: { stand_light: [{ hurtboxes: [{ x: -15, y: -131, w: 35, h: 28 }, { x: -29, y: -103, w: 64, h: 36 }, { x: -38, y: -67, w: 70, h: 33 }, { x: -37, y: -34, w: 82, h: 34 }], frame: 0 }, { hurtboxes: [{ x: -14, y: -131, w: 35, h: 28 }, { x: -31, y: -103, w: 94, h: 36 }, { x: -38, y: -67, w: 69, h: 33 }, { x: -36, y: -34, w: 81, h: 34 }], hitboxes: [{ a: { x: 33, y: -96 }, b: { x: 59, y: -97 }, r: 8 }], frame: 1 }, { hurtboxes: [{ x: -16, y: -130, w: 35, h: 27 }, { x: -30, y: -103, w: 77, h: 37 }, { x: -35, y: -66, w: 68, h: 32 }, { x: -34, y: -34, w: 80, h: 34 }], frame: 2 }, { hurtboxes: [{ x: -17, y: -131, w: 34, h: 28 }, { x: -31, y: -103, w: 69, h: 36 }, { x: -36, y: -67, w: 68, h: 33 }, { x: -36, y: -34, w: 81, h: 34 }], frame: 3 }], stand_medium: [{ hurtboxes: [{ x: -16, y: -133, w: 35, h: 28 }, { x: -27, y: -105, w: 68, h: 37 }, { x: -24, y: -68, w: 65, h: 33 }, { x: -11, y: -35, w: 41, h: 35 }], frame: 4 }, { hurtboxes: [{ x: -24, y: -131, w: 36, h: 28 }, { x: -35, y: -103, w: 100, h: 36 }, { x: -27, y: -67, w: 72, h: 33 }, { x: -18, y: -34, w: 23, h: 34 }], hitboxes: [{ a: { x: 52, y: -79 }, b: { x: 73, y: -80 }, r: 9 }], frame: 5 }, { hurtboxes: [{ x: -23, y: -132, w: 35, h: 28 }, { x: -29, y: -104, w: 62, h: 37 }, { x: -32, y: -67, w: 64, h: 33 }, { x: -19, y: -34, w: 41, h: 34 }], frame: 6 }, { hurtboxes: [{ x: -20, y: -130, w: 35, h: 27 }, { x: -33, y: -103, w: 69, h: 37 }, { x: -38, y: -66, w: 67, h: 32 }, { x: -37, y: -34, w: 80, h: 34 }], frame: 7 }], stand_heavy: [{ hurtboxes: [{ x: -8, y: -130, w: 35, h: 27 }, { x: -25, y: -103, w: 63, h: 37 }, { x: -56, y: -66, w: 91, h: 32 }, { x: -39, y: -34, w: 87, h: 34 }], frame: 8 }, { hurtboxes: [{ x: -7, y: -130, w: 35, h: 27 }, { x: -17, y: -103, w: 72, h: 37 }, { x: -35, y: -66, w: 70, h: 32 }, { x: -35, y: -34, w: 87, h: 34 }], blade: { a: { x: 54, y: -87 }, b: { x: 107, y: -87 }, r: 7 }, frame: 9 }, { hurtboxes: [{ x: -11, y: -131, w: 35, h: 28 }, { x: -22, y: -103, w: 56, h: 36 }, { x: -39, y: -67, w: 97, h: 33 }, { x: -43, y: -34, w: 89, h: 34 }], blade: { a: { x: 33, y: -57 }, b: { x: 85, y: -35 }, r: 7 }, frame: 10 }, { hurtboxes: [{ x: -17, y: -130, w: 34, h: 27 }, { x: -28, y: -103, w: 61, h: 37 }, { x: -39, y: -66, w: 66, h: 32 }, { x: -41, y: -34, w: 83, h: 34 }], frame: 11 }], crouch_light: [{ hurtboxes: [{ x: -16, y: -95, w: 58, h: 20 }, { x: -29, y: -75, w: 71, h: 27 }, { x: -42, y: -48, w: 87, h: 23 }, { x: -32, y: -25, w: 77, h: 25 }], frame: 12 }, { hurtboxes: [{ x: 19, y: -94, w: 35, h: 20 }, { x: -14, y: -74, w: 79, h: 26 }, { x: -35, y: -48, w: 100, h: 24 }, { x: -23, y: -24, w: 72, h: 24 }], hitboxes: [{ a: { x: 61, y: -52 }, b: { x: 85, y: -50 }, r: 8 }], frame: 13 }, { hurtboxes: [{ x: 6, y: -97, w: 36, h: 20 }, { x: -24, y: -77, w: 66, h: 28 }, { x: -41, y: -49, w: 89, h: 24 }, { x: -33, y: -25, w: 76, h: 25 }], frame: 14 }, { hurtboxes: [{ x: 0, y: -98, w: 35, h: 21 }, { x: -28, y: -77, w: 81, h: 27 }, { x: -43, y: -50, w: 88, h: 25 }, { x: -34, y: -25, w: 74, h: 25 }], frame: 15 }], crouch_medium: [{ hurtboxes: [{ x: -3, y: -100, w: 46, h: 21 }, { x: -24, y: -79, w: 86, h: 28 }, { x: -35, y: -51, w: 83, h: 25 }, { x: -34, y: -26, w: 62, h: 26 }], frame: 16 }, { hurtboxes: [{ x: -2, y: -97, w: 36, h: 20 }, { x: -33, y: -77, w: 87, h: 28 }, { x: -40, y: -49, w: 99, h: 24 }, { x: -31, y: -25, w: 96, h: 25 }], hitboxes: [{ a: { x: 52, y: -12 }, b: { x: 74, y: -9 }, r: 8 }], frame: 17 }, { hurtboxes: [{ x: 3, y: -100, w: 36, h: 21 }, { x: -27, y: -79, w: 82, h: 28 }, { x: -35, y: -51, w: 82, h: 25 }, { x: -35, y: -26, w: 77, h: 26 }], frame: 18 }, { hurtboxes: [{ x: 2, y: -99, w: 36, h: 21 }, { x: -27, y: -78, w: 84, h: 28 }, { x: -37, y: -50, w: 86, h: 24 }, { x: -37, y: -26, w: 80, h: 26 }], frame: 19 }], crouch_heavy: [{ hurtboxes: [{ x: -4, y: -105, w: 37, h: 22 }, { x: -28, y: -83, w: 83, h: 29 }, { x: -46, y: -54, w: 101, h: 27 }, { x: -40, y: -27, w: 81, h: 27 }], frame: 20 }, { hurtboxes: [{ x: 1, y: -114, w: 64, h: 24 }, { x: -19, y: -90, w: 61, h: 32 }, { x: -36, y: -58, w: 80, h: 28 }, { x: -36, y: -30, w: 87, h: 30 }], blade: { a: { x: 42, y: -79 }, b: { x: 92, y: -101 }, r: 7 }, frame: 21 }, { hurtboxes: [{ x: -11, y: -129, w: 66, h: 27 }, { x: -25, y: -102, w: 76, h: 36 }, { x: -32, y: -66, w: 75, h: 32 }, { x: -41, y: -34, w: 94, h: 34 }], blade: { a: { x: 51, y: -102 }, b: { x: 86, y: -127 }, r: 7 }, frame: 22 }, { hurtboxes: [{ x: -2, y: -118, w: 35, h: 25 }, { x: -20, y: -93, w: 52, h: 33 }, { x: -35, y: -60, w: 79, h: 29 }, { x: -39, y: -31, w: 87, h: 31 }], frame: 23 }], air_light: [{ hurtboxes: [{ x: -9, y: -133, w: 38, h: 27 }, { x: -28, y: -106, w: 68, h: 36 }, { x: -35, y: -70, w: 71, h: 32 }, { x: -35, y: -38, w: 56, h: 33 }], frame: 24 }, { hurtboxes: [{ x: -2, y: -132, w: 38, h: 26 }, { x: -24, y: -106, w: 89, h: 36 }, { x: -33, y: -70, w: 72, h: 31 }, { x: -32, y: -39, w: 53, h: 33 }], hitboxes: [{ a: { x: 37, y: -100 }, b: { x: 72, y: -99 }, r: 8 }], frame: 25 }, { hurtboxes: [{ x: -8, y: -129, w: 36, h: 26 }, { x: -31, y: -103, w: 72, h: 34 }, { x: -36, y: -69, w: 73, h: 31 }, { x: -29, y: -38, w: 48, h: 32 }], frame: 26 }, { hurtboxes: [{ x: -11, y: -130, w: 36, h: 26 }, { x: -28, y: -104, w: 55, h: 34 }, { x: -35, y: -70, w: 66, h: 30 }, { x: -22, y: -40, w: 41, h: 32 }], frame: 27 }], air_medium: [{ hurtboxes: [{ x: -15, y: -129, w: 38, h: 27 }, { x: -34, y: -102, w: 76, h: 36 }, { x: -28, y: -66, w: 66, h: 32 }, { x: -11, y: -34, w: 37, h: 34 }], frame: 28 }, { hurtboxes: [{ x: -8, y: -130, w: 35, h: 25 }, { x: -33, y: -105, w: 98, h: 33 }, { x: -34, y: -72, w: 99, h: 30 }, { x: -25, y: -42, w: 52, h: 31 }], hitboxes: [{ a: { x: 59, y: -73 }, b: { x: 86, y: -75 }, r: 9 }], frame: 29 }, { hurtboxes: [{ x: -7, y: -129, w: 34, h: 24 }, { x: -30, y: -105, w: 74, h: 31 }, { x: -33, y: -74, w: 74, h: 28 }, { x: -33, y: -46, w: 64, h: 29 }], frame: 30 }, { hurtboxes: [{ x: -9, y: -128, w: 35, h: 24 }, { x: -25, y: -104, w: 59, h: 32 }, { x: -31, y: -72, w: 67, h: 29 }, { x: -31, y: -43, w: 61, h: 30 }], frame: 31 }], air_heavy: [{ hurtboxes: [{ x: -26, y: -149, w: 69, h: 31 }, { x: -34, y: -118, w: 90, h: 42 }, { x: -37, y: -76, w: 92, h: 37 }, { x: -37, y: -39, w: 61, h: 39 }], frame: 32 }, { hurtboxes: [{ x: -7, y: -126, w: 45, h: 25 }, { x: -20, y: -101, w: 74, h: 34 }, { x: -37, y: -67, w: 78, h: 30 }, { x: -33, y: -37, w: 43, h: 31 }], blade: { a: { x: 39, y: -57 }, b: { x: 81, y: -29 }, r: 7 }, frame: 33 }, { hurtboxes: [{ x: -7, y: -128, w: 38, h: 27 }, { x: -25, y: -101, w: 71, h: 36 }, { x: -39, y: -65, w: 78, h: 32 }, { x: -34, y: -33, w: 93, h: 33 }], blade: { a: { x: 34, y: -47 }, b: { x: 70, y: -11 }, r: 7 }, frame: 34 }, { hurtboxes: [{ x: -12, y: -133, w: 34, h: 28 }, { x: -30, y: -105, w: 68, h: 37 }, { x: -42, y: -68, w: 69, h: 33 }, { x: -42, y: -35, w: 49, h: 35 }], frame: 35 }] }, reactions: { guardStand: [{ hurtboxes: [{ x: -17, y: -129, w: 46, h: 27 }, { x: -21, y: -102, w: 50, h: 36 }, { x: -37, y: -66, w: 71, h: 32 }, { x: -38, y: -34, w: 81, h: 34 }], frame: 0 }], guardImpactStand: [{ hurtboxes: [{ x: -45, y: -125, w: 60, h: 26 }, { x: -35, y: -99, w: 53, h: 35 }, { x: -35, y: -64, w: 73, h: 32 }, { x: -35, y: -32, w: 87, h: 32 }], frame: 1 }, { hurtboxes: [{ x: -17, y: -129, w: 46, h: 27 }, { x: -21, y: -102, w: 50, h: 36 }, { x: -37, y: -66, w: 71, h: 32 }, { x: -38, y: -34, w: 81, h: 34 }], frame: 0 }], guardCrouch: [{ hurtboxes: [{ x: -4, y: -100, w: 45, h: 21 }, { x: -19, y: -79, w: 60, h: 28 }, { x: -39, y: -51, w: 79, h: 25 }, { x: -34, y: -26, w: 77, h: 26 }], frame: 2 }], guardImpactCrouch: [{ hurtboxes: [{ x: -44, y: -102, w: 54, h: 21 }, { x: -38, y: -81, w: 69, h: 29 }, { x: -36, y: -52, w: 75, h: 25 }, { x: -42, y: -27, w: 89, h: 27 }], frame: 3 }, { hurtboxes: [{ x: -4, y: -100, w: 45, h: 21 }, { x: -19, y: -79, w: 60, h: 28 }, { x: -39, y: -51, w: 79, h: 25 }, { x: -34, y: -26, w: 77, h: 26 }], frame: 2 }], damageLight: [{ hurtboxes: [{ x: -29, y: -128, w: 42, h: 27 }, { x: -32, y: -101, w: 72, h: 36 }, { x: -35, y: -65, w: 73, h: 32 }, { x: -36, y: -33, w: 86, h: 33 }], frame: 4 }, { hurtboxes: [{ x: -45, y: -125, w: 60, h: 26 }, { x: -35, y: -99, w: 53, h: 35 }, { x: -35, y: -64, w: 73, h: 32 }, { x: -35, y: -32, w: 87, h: 32 }], frame: 1 }], damageMedium: [{ hurtboxes: [{ x: -53, y: -126, w: 88, h: 26 }, { x: -49, y: -100, w: 87, h: 36 }, { x: -31, y: -64, w: 74, h: 31 }, { x: -30, y: -33, w: 88, h: 33 }], frame: 5 }, { hurtboxes: [{ x: -29, y: -128, w: 42, h: 27 }, { x: -32, y: -101, w: 72, h: 36 }, { x: -35, y: -65, w: 73, h: 32 }, { x: -36, y: -33, w: 86, h: 33 }], frame: 4 }], damageHeavy: [{ hurtboxes: [{ x: -53, y: -126, w: 88, h: 26 }, { x: -49, y: -100, w: 87, h: 36 }, { x: -31, y: -64, w: 74, h: 31 }, { x: -30, y: -33, w: 88, h: 33 }], frame: 5 }, { hurtboxes: [{ x: -29, y: -128, w: 42, h: 27 }, { x: -32, y: -101, w: 72, h: 36 }, { x: -35, y: -65, w: 73, h: 32 }, { x: -36, y: -33, w: 86, h: 33 }], frame: 4 }], damageCrouch: [{ hurtboxes: [{ x: -44, y: -102, w: 54, h: 21 }, { x: -38, y: -81, w: 69, h: 29 }, { x: -36, y: -52, w: 75, h: 25 }, { x: -42, y: -27, w: 89, h: 27 }], frame: 3 }, { hurtboxes: [{ x: -4, y: -100, w: 45, h: 21 }, { x: -19, y: -79, w: 60, h: 28 }, { x: -39, y: -51, w: 79, h: 25 }, { x: -34, y: -26, w: 77, h: 26 }], frame: 2 }], damageAir: [{ hurtboxes: [{ x: -51, y: -129, w: 81, h: 22 }, { x: -50, y: -107, w: 89, h: 30 }, { x: -41, y: -77, w: 103, h: 27 }, { x: -36, y: -50, w: 93, h: 28 }], frame: 6 }, { hurtboxes: [{ x: -58, y: -91, w: 76, h: 18 }, { x: -58, y: -73, w: 116, h: 23 }, { x: -42, y: -50, w: 107, h: 21 }, { x: -21, y: -29, w: 86, h: 22 }], frame: 7 }], launched: [{ hurtboxes: [{ x: -51, y: -129, w: 81, h: 22 }, { x: -50, y: -107, w: 89, h: 30 }, { x: -41, y: -77, w: 103, h: 27 }, { x: -36, y: -50, w: 93, h: 28 }], frame: 6 }, { hurtboxes: [{ x: -58, y: -91, w: 76, h: 18 }, { x: -58, y: -73, w: 116, h: 23 }, { x: -42, y: -50, w: 107, h: 21 }, { x: -21, y: -29, w: 86, h: 22 }], frame: 7 }], falling: [{ hurtboxes: [{ x: -58, y: -91, w: 76, h: 18 }, { x: -58, y: -73, w: 116, h: 23 }, { x: -42, y: -50, w: 107, h: 21 }, { x: -21, y: -29, w: 86, h: 22 }], frame: 7 }], downed: [{ hurtboxes: [{ x: -58, y: -49, w: 75, h: 10 }, { x: -58, y: -39, w: 122, h: 14 }, { x: -58, y: -25, w: 123, h: 12 }, { x: -58, y: -13, w: 123, h: 13 }], frame: 8 }], getup: [{ hurtboxes: [{ x: -9, y: -90, w: 57, h: 19 }, { x: -25, y: -71, w: 73, h: 25 }, { x: -43, y: -46, w: 79, h: 23 }, { x: -41, y: -23, w: 91, h: 23 }], frame: 9 }, { hurtboxes: [{ x: -9, y: -103, w: 52, h: 22 }, { x: -24, y: -81, w: 67, h: 28 }, { x: -41, y: -53, w: 85, h: 26 }, { x: -31, y: -27, w: 76, h: 27 }], frame: 10 }, { hurtboxes: [{ x: 1, y: -94, w: 47, h: 20 }, { x: -22, y: -74, w: 70, h: 26 }, { x: -41, y: -48, w: 75, h: 24 }, { x: -43, y: -24, w: 89, h: 24 }], frame: 11 }], grabbed: [{ hurtboxes: [{ x: -53, y: -126, w: 88, h: 26 }, { x: -49, y: -100, w: 87, h: 36 }, { x: -31, y: -64, w: 74, h: 31 }, { x: -30, y: -33, w: 88, h: 33 }], frame: 5 }], ko: [{ hurtboxes: [{ x: 1, y: -94, w: 47, h: 20 }, { x: -22, y: -74, w: 70, h: 26 }, { x: -41, y: -48, w: 75, h: 24 }, { x: -43, y: -24, w: 89, h: 24 }], frame: 11 }, { hurtboxes: [{ x: -58, y: -49, w: 75, h: 10 }, { x: -58, y: -39, w: 122, h: 14 }, { x: -58, y: -25, w: 123, h: 12 }, { x: -58, y: -13, w: 123, h: 13 }], frame: 8 }], defeat: [{ hurtboxes: [{ x: -58, y: -49, w: 75, h: 10 }, { x: -58, y: -39, w: 122, h: 14 }, { x: -58, y: -25, w: 123, h: 12 }, { x: -58, y: -13, w: 123, h: 13 }], frame: 8 }], entrance: [{ hurtboxes: [{ x: -12, y: -124, w: 33, h: 26 }, { x: -28, y: -98, w: 71, h: 35 }, { x: -40, y: -63, w: 68, h: 31 }, { x: -42, y: -32, w: 85, h: 32 }], frame: 12 }, { hurtboxes: [{ x: -10, y: -125, w: 30, h: 26 }, { x: -28, y: -99, w: 70, h: 35 }, { x: -42, y: -64, w: 65, h: 32 }, { x: -39, y: -32, w: 61, h: 32 }], frame: 13 }, { hurtboxes: [{ x: -7, y: -126, w: 31, h: 26 }, { x: -22, y: -100, w: 66, h: 36 }, { x: -39, y: -64, w: 66, h: 31 }, { x: -36, y: -33, w: 61, h: 33 }], frame: 14 }, { hurtboxes: [{ x: -6, y: -126, w: 30, h: 26 }, { x: -21, y: -100, w: 66, h: 36 }, { x: -39, y: -64, w: 65, h: 31 }, { x: -31, y: -33, w: 70, h: 33 }], frame: 15 }, { hurtboxes: [{ x: -8, y: -129, w: 28, h: 27 }, { x: -30, y: -102, w: 75, h: 36 }, { x: -36, y: -66, w: 66, h: 32 }, { x: -35, y: -34, w: 75, h: 34 }], frame: 16 }], victory: [{ hurtboxes: [{ x: -8, y: -129, w: 28, h: 27 }, { x: -30, y: -102, w: 75, h: 36 }, { x: -36, y: -66, w: 66, h: 32 }, { x: -35, y: -34, w: 75, h: 34 }], frame: 16 }, { hurtboxes: [{ x: -13, y: -131, w: 32, h: 28 }, { x: -30, y: -103, w: 74, h: 36 }, { x: -37, y: -67, w: 65, h: 33 }, { x: -36, y: -34, w: 75, h: 34 }], frame: 18 }], taunt: [{ hurtboxes: [{ x: -8, y: -129, w: 28, h: 27 }, { x: -30, y: -102, w: 75, h: 36 }, { x: -36, y: -66, w: 66, h: 32 }, { x: -35, y: -34, w: 75, h: 34 }], frame: 16 }, { hurtboxes: [{ x: -13, y: -131, w: 32, h: 28 }, { x: -30, y: -103, w: 74, h: 36 }, { x: -37, y: -67, w: 65, h: 33 }, { x: -36, y: -34, w: 75, h: 34 }], frame: 18 }, { hurtboxes: [{ x: -8, y: -125, w: 28, h: 26 }, { x: -30, y: -99, w: 74, h: 35 }, { x: -36, y: -64, w: 66, h: 32 }, { x: -36, y: -32, w: 75, h: 32 }], frame: 17 }] } };
+
+// src/data/sasuke-clips.json
+var sasuke_clips_default = {
+  idle: [9, 8, 8, 8, 9, 10],
+  walkForward: [4, 4, 4, 4, 4, 4],
+  walkBack: [5, 4, 5, 5, 4, 5],
+  dashForward: [2, 2, 3, 3, 2],
+  backdash: [2, 2, 3, 3, 2],
+  crouchStart: [3, 3],
+  crouchIdle: [9, 10],
+  crouchEnd: [3, 3],
+  jumpStart: [2, 2, 1],
+  jumpRise: [6, 8],
+  jumpApex: [9],
+  jumpFall: [8, 6],
+  landing: [2, 3, 2],
+  guardStand: [9],
+  guardImpactStand: [6, 4],
+  guardCrouch: [9],
+  guardImpactCrouch: [6, 4],
+  damageLight: [7, 8],
+  damageMedium: [8, 10],
+  damageHeavy: [12, 10],
+  damageCrouch: [7, 9],
+  damageAir: [8, 9],
+  launched: [10, 10],
+  falling: [10],
+  downed: [26],
+  getup: [7, 7, 6],
+  grabbed: [9],
+  ko: [7, 48],
+  defeat: [44],
+  entrance: [5, 5, 5, 7, 24],
+  victory: [10, 30],
+  taunt: [14, 10, 12]
+};
+
+// src/data/sasuke-normals.json
+var sasuke_normals_default = {
+  stand_light: { holds: [4, 3, 5, 8], activeFrames: [1, 2], damage: 35, stun: 22, blockstun: 10, push: 1.2, launch: 0, hitstop: 4, level: "mid" },
+  stand_medium: { holds: [7, 4, 6, 10], activeFrames: [1, 2], damage: 59, stun: 27, blockstun: 13, push: 1.9, launch: 0, hitstop: 6, level: "mid" },
+  stand_heavy: { holds: [11, 3, 3, 22], activeFrames: [1, 3], damage: 88, stun: 26, blockstun: 16, push: 4.4, launch: 0, hitstop: 8, level: "mid" },
+  crouch_light: { holds: [4, 3, 5, 8], activeFrames: [1, 2], damage: 32, stun: 21, blockstun: 10, push: 1.1, launch: 0, hitstop: 4, level: "low" },
+  crouch_medium: { holds: [7, 4, 6, 11], activeFrames: [1, 2], damage: 55, stun: 27, blockstun: 13, push: 1.9, launch: 0, hitstop: 6, level: "low" },
+  crouch_heavy: { holds: [10, 3, 3, 20], activeFrames: [1, 3], damage: 73, stun: 34, blockstun: 15, push: 2.7, launch: -13.5, hitstop: 7, level: "mid" },
+  air_light: { holds: [4, 3, 4, 7], activeFrames: [1, 2], damage: 33, stun: 22, blockstun: 10, push: 1.1, launch: -4.3, hitstop: 4, level: "high", airHold: -3.8 },
+  air_medium: { holds: [6, 4, 5, 8], activeFrames: [1, 2], damage: 56, stun: 25, blockstun: 13, push: 2, launch: -3.7, hitstop: 6, level: "high", airHold: -3.4 },
+  air_heavy: { holds: [9, 3, 3, 14], activeFrames: [1, 3], damage: 82, stun: 30, blockstun: 15, push: 3.5, launch: 7, hitstop: 8, level: "high", knockdown: true }
+};
+
+// src/engine/sasuke-data.ts
+var sasukeFrames = sasuke_frames_default;
+var sasukeMoves = Object.fromEntries(
+  Object.keys(sasuke_normals_default).map((id) => {
+    const {
+      holds,
+      activeFrames: [first, end],
+      ...stats
+    } = sasuke_normals_default[id];
+    const [stance, weight] = id.split("_");
+    const rank = weight === "light" ? 1 : weight === "medium" ? 2 : 3;
+    const duration = (start, stop) => holds.slice(start, stop).reduce((a, b) => a + b, 0);
+    const startup2 = duration(0, first), active2 = duration(first, end);
+    const recovery2 = duration(end, holds.length);
+    const next = rank === 1 ? "medium" : rank === 2 ? "heavy" : void 0;
+    return [
+      id,
+      {
+        ...stats,
+        startup: startup2,
+        active: active2,
+        recovery: recovery2,
+        rank,
+        kind: "strike",
+        box: { x: 0, y: 0, w: 0, h: 0 },
+        cancels: [
+          ...next ? [next] : id === "crouch_heavy" ? ["jump"] : [],
+          ...stance !== "air" ? ["special"] : []
+        ],
+        cancelMoves: next ? [`${stance}_${next}`] : [],
+        cancelWindow: {
+          fromTick: startup2,
+          toTick: startup2 + active2 + (id === "crouch_heavy" ? 9 : 6)
+        },
+        poses: sasukeFrames.normals[id].map(({ frame: _, ...cel }, index) => ({
+          ...cel,
+          ticks: holds[index],
+          phase: index < first ? "startup" : index < end ? "active" : "recovery"
+        }))
+      }
+    ];
+  })
+);
+var sasuke = {
+  ...sasuke_default,
+  moves: sasukeMoves,
+  specialMoves: sasukeSpecialMoves,
+  lifecycle: {
+    entranceDistance: 58,
+    entranceWalkTicks: 20,
+    entranceSpeed: 2.9,
+    tauntTicks: 36,
+    getupTicks: 20,
+    koTicks: 55
+  },
+  hurtboxes: {
+    standing: [
+      { x: -18, y: -127, w: 40, h: 29 },
+      { x: -25, y: -99, w: 58, h: 53 },
+      { x: -31, y: -46, w: 68, h: 46 }
+    ],
+    crouching: [
+      { x: -13, y: -83, w: 35, h: 29 },
+      { x: -31, y: -56, w: 70, h: 55 }
+    ],
+    air: [
+      { x: -20, y: -119, w: 43, h: 31 },
+      { x: -29, y: -89, w: 62, h: 77 }
+    ]
+  },
+  reactions: Object.fromEntries(
+    Object.entries(sasukeFrames.reactions).map(([id, cels]) => [
+      id,
+      {
+        loop: id === "guardStand" || id === "guardCrouch" || id === "falling",
+        poses: cels.map((cel, index) => ({
+          ticks: sasuke_clips_default[id][index],
+          hurtboxes: cel.hurtboxes
+        }))
+      }
+    ])
+  )
+};
+
 // src/data/luffy.json
 var luffy_default = {
   id: "luffy",
@@ -125937,7 +127855,6 @@ var luffy_default = {
   speed: 4.3,
   jump: -17.5,
   gravity: 0.74,
-  meterGainScale: 0,
   locomotion: {
     backSpeed: 3.5,
     airSpeed: 6.4,
@@ -126048,9 +127965,9 @@ var luffy_default = {
     ]
   },
   combatLimits: {
-    maxHits: 14,
-    maxAirHits: 8,
-    maxTicks: 390
+    maxHits: 12,
+    maxAirHits: 6,
+    maxTicks: 300
   }
 };
 
@@ -240036,7 +241953,16 @@ var the_world_secondary_default = {
 var characters = {
   samurai: pacedCharacter(samurai_default),
   goku: pacedCharacter(goku),
-  luffy: { ...luffy_default, moves: luffyMoves, specialMoves: luffySpecialMoves },
+  sasuke,
+  luffy: {
+    ...luffy_default,
+    ...luffySecondary,
+    moves: { ...luffyMoves, throw: luffyThrow },
+    specialMoves: luffySpecialMoves,
+    superMoves: { [jetId]: jetMove },
+    meterMaximum: luffy_jet_gigant_default.cost,
+    meterGainScale: luffy_jet_gigant_default.meterGainScale
+  },
   dio: pacedCharacter({
     ...dio_default,
     ...dio_secondary_default,
@@ -240108,12 +242034,14 @@ var matchKeys = [
   "capture",
   "roadRoller",
   "fury",
+  "jetGigant",
   "hits",
   "hitSerial",
   "rules",
   "projectiles",
   "projectileSerial",
   "kiProjectiles",
+  "sasukeStormUntil",
   "beams"
 ];
 var clone = (value) => structuredClone(value);

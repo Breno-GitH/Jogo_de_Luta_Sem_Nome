@@ -29,6 +29,7 @@ const fighterKeys = [
   "gokuAirTeleportUsed",
   "gokuAirTeleportsUsed",
   "gokuCastSerial",
+  "sasukeCurse",
   "homeX",
   "guardIntent",
   "blockCrouched",
@@ -54,12 +55,14 @@ const matchKeys = [
   "capture",
   "roadRoller",
   "fury",
+  "jetGigant",
   "hits",
   "hitSerial",
   "rules",
   "projectiles",
   "projectileSerial",
   "kiProjectiles",
+  "sasukeStormUntil",
   "beams",
 ] as const;
 type FighterState = Pick<Fighter, (typeof fighterKeys)[number]> & {

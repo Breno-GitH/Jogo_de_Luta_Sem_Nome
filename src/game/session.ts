@@ -1,5 +1,5 @@
 import opponents from "../data/arcade.json";
-import { Match, character } from "../engine/combat";
+import { Match } from "../engine/combat";
 import { Bot, type Difficulty } from "../engine/bot";
 import type { InputFrame } from "../engine/types";
 import { Training } from "./training";
@@ -7,6 +7,10 @@ import { characterById, type CharacterId } from "../engine/characters";
 
 export type Mode = "versus" | "arcade" | "training";
 export type Palette = "cyan" | "amber" | "violet";
+export function arcadeRoute(characterId: CharacterId) {
+  const original: CharacterId[] = ["samurai", "dio", "goku", "luffy"];
+  return original.filter(id => id !== characterId).slice(0, opponents.length);
+}
 export class GameSession {
   match = new Match();
   bot: Bot;
@@ -24,13 +28,23 @@ export class GameSession {
     this.restart();
   }
   get opponent() {
-    return opponents[this.stage];
+    return {
+      ...opponents[this.stage],
+      name: characterById(this.route[this.stage]).name,
+    };
+  }
+  get route(): CharacterId[] {
+    return arcadeRoute(this.characterId);
   }
   get palette(): Palette {
     return this.mode === "arcade" ? (this.opponent.palette as Palette) : "cyan";
   }
   get opponentName() {
-    const name = characterById(this.opponentCharacterId).name;
+    const name = characterById(
+      this.mode === "arcade"
+        ? this.route[this.stage]
+        : this.opponentCharacterId,
+    ).name;
     return this.mode === "arcade"
       ? this.opponent.name
       : this.mode === "training"
@@ -47,7 +61,7 @@ export class GameSession {
       characterById(this.characterId),
       this.mode === "training" ? { training: true } : {},
       this.mode === "arcade"
-        ? character
+        ? characterById(this.route[this.stage])
         : characterById(this.opponentCharacterId),
     );
     this.bot = new Bot(

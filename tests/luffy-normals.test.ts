@@ -6,6 +6,7 @@ import {
   luffyMoves,
   luffyNormals,
 } from "../src/engine/luffy-normals";
+import { luffyFootPoint } from "../src/engine/luffy-foot";
 import { neutral, type InputFrame } from "../src/engine/types";
 import {
   shapeBounds,
@@ -91,6 +92,36 @@ describe("Luffy normals", () => {
       }
     },
   );
+
+  it.each(
+    Object.keys(luffyNormals).filter((id) => luffyNormals[id].kind === "foot"),
+  )("%s uses the visible sandal as its mirrored contact", (id) => {
+    const { luffy } = bout("samurai");
+    luffy.y = id.startsWith("air") ? FLOOR - 220 : FLOOR;
+    luffy.attack(id);
+    const spec = luffyNormals[id];
+    luffy.stateFrame =
+      luffy.move!.startup + luffy.move!.active - spec.holds[spec.active[1] - 1];
+    for (const side of [1, -1]) {
+      luffy.facing = side;
+      const { tip, axis, footPose, terminal } = luffyLimb(luffy)!;
+      const pose = footPose!;
+      const heel = luffyFootPoint(tip, axis, pose, -4, 3);
+      const ball = luffyFootPoint(tip, axis, pose, pose.contact, 2);
+      expect(heel).not.toEqual(tip);
+      expect(terminal).toEqual({ a: heel, b: ball, r: 5 });
+      expect(luffy.attackShapes()[0]).toEqual(
+        worldCapsule(terminal, luffy.x, luffy.y, side),
+      );
+      // Rotating the fixed-size sandal changes its contact plane, never
+      // stretches the toes as the shin grows.
+      const end = luffyFootPoint(tip, axis, pose, 16, 3);
+      expect(Math.hypot(end.x - heel.x, end.y - heel.y)).toBeLessThan(23);
+      expect(
+        Math.abs((ball.x - heel.x) * axis.y - (ball.y - heel.y) * axis.x),
+      ).toBeGreaterThan(5);
+    }
+  });
 
   it("registers a target passed between two active endpoint samples once", () => {
     const { luffy, rival, tick, run } = bout("samurai", 1, 216);

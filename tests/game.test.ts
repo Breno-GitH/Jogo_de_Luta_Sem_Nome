@@ -59,7 +59,7 @@ describe("Arcade and match flow", () => {
     win(session, 1);
     expect(session.status).toBe("defeat");
     expect(session.next()).toBe(false);
-    expect(resultScreen(session)).toContain("Derrota.");
+    expect(resultScreen(session)).toContain("Derrota");
     session.restart();
     expect(session.stage).toBe(1);
     expect(session.currentDifficulty).toBe("normal");
@@ -78,10 +78,25 @@ describe("Arcade and match flow", () => {
       expect(session.match.rules.training).toBeUndefined();
     }
   });
-  it("only offers the completed Samurai and honestly labels Arcade as a test route", () => {
-    expect(selectionScreen("arcade")).toContain("três versões do Samurai");
+  it("offers the same four fighters in every local selection", () => {
+    for (const id of ["samurai", "dio", "goku", "luffy"])
+      expect(selectionScreen("arcade")).toContain(`value="${id}"`);
     expect(selectionScreen("arcade")).not.toContain('id="difficulty"');
-    expect(selectionScreen("versus")).toContain('value="samurai" checked');
+    expect(selectionScreen("versus")).toContain('value="samurai"');
+  });
+  it("builds three distinct non-mirror opponents for each selected fighter", () => {
+    for (const id of ["samurai", "dio", "goku", "luffy"] as const) {
+      const s = new GameSession("arcade", "easy", id);
+      expect(s.route).toHaveLength(3);
+      expect(new Set(s.route).size).toBe(3);
+      expect(s.route).not.toContain(id);
+      for (const enemy of s.route) {
+        expect(s.match.fighters[1].data.id).toBe(enemy);
+        win(s, 0);
+        if (s.status === "stageClear") expect(s.next()).toBe(true);
+      }
+      expect(s.status).toBe("victory");
+    }
   });
 });
 

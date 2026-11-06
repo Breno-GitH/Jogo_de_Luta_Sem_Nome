@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Luffy · defesa, reações e agarrão</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        font: 15px system-ui;
+        background: #101922;
+        color: #f1e5d7;
+      }
+      body {
+        max-width: 1280px;
+        margin: 26px auto;
+        padding: 0 22px;
+      }
+      h1 {
+        margin: 8px 0;
+      }
+      a {
+        color: #ffd486;
+      }
+      p {
+        color: #b9c6c9;
+        line-height: 1.6;
+      }
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 12px;
+        margin: 18px 0;
+      }
+      button,
+      select {
+        font: inherit;
+        color: inherit;
+        background: #273946;
+        border: 1px solid #60747d;
+        padding: 8px;
+      }
+      canvas,
+      img {
+        display: block;
+        width: 100%;
+        height: auto;
+        image-rendering: pixelated;
+      }
+      canvas {
+        border: 1px solid #455b68;
+      }
+      pre {
+        white-space: pre-wrap;
+        background: #1b2c38;
+        padding: 14px;
+        line-height: 1.7;
+      }
+      #error {
+        color: #ff9c85;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href="../">Voltar ao jogo</a> ·
+      <a href="luffy.html">Normais, especiais e movimentação</a> ·
+      <a href="luffy-jet.html">Super Jet Gigant</a>
+    </nav>
+    <h1>Luffy · defesa, reações e agarrão</h1>
+    <p>
+      Ensaios reproduzidos pelo motor do jogo. No combate livre, U agarra, T
+      provoca e a direção para trás defende. S + trás defende golpes baixos.
+    </p>
+    <div class="controls">
+      <label
+        >Ensaio
+        <select id="scenario"></select
+      ></label>
+      <button id="repeat">Repetir</button>
+      <button id="pause">Pausar</button>
+      <button id="step" disabled>Avançar um tick</button>
+      <label
+        >Velocidade
+        <select id="speed">
+          <option value="0.25">¼×</option>
+          <option value="0.5">½×</option>
+          <option value="1" selected>1×</option>
+        </select></label
+      >
+      <label
+        >Ampliação
+        <select id="zoom">
+          <option>1</option>
+          <option selected>2</option>
+        </select></label
+      >
+      <label><input id="mirror" type="checkbox" /> Espelhar</label>
+      <label><input id="boxes" type="checkbox" /> Caixas</label>
+    </div>
+    <canvas
+      id="arena"
+      width="1280"
+      height="720"
+      tabindex="0"
+      aria-label="Ensaios das animações secundárias de Luffy"
+    ></canvas>
+    <pre id="readout"></pre>
+    <p id="error" role="alert"></p>
+    <p>
+      <a href="../sprites/luffy/secondary.png" download
+        >Baixar atlas transparente</a
+      >
+    </p>
+    <img
+      src="../sprites/luffy/secondary-contact.png"
+      width="1056"
+      height="1020"
+      alt="Os 33 desenhos de guarda, dano, entrada, vitória e agarrão do Luffy"
+    />
+    <script type="module" src="/src/luffy-secondary-lab.ts"></script>
+  </body>
+</html>

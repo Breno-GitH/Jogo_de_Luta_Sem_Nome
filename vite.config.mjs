@@ -15,7 +15,10 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
+        sasuke: fileURLToPath(new URL("./art/sasuke.html", import.meta.url)),
         luffy: fileURLToPath(new URL("./art/luffy.html", import.meta.url)),
+        luffyJet: fileURLToPath(new URL("./art/luffy-jet.html", import.meta.url)),
+        luffySecondary: fileURLToPath(new URL("./art/luffy-secondary.html", import.meta.url)),
         game: fileURLToPath(new URL("./index.html", import.meta.url)),
         samurai: fileURLToPath(new URL("./art/samurai.html", import.meta.url)),
         dio: fileURLToPath(new URL("./art/dio.html", import.meta.url)),
