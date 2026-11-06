@@ -3,6 +3,7 @@ import { FLOOR, Match } from "./engine/combat";
 import { isSasukeSpecial, sasukeSpecialLabels } from "./engine/sasuke-specials";
 import { sasukeCurseBalance } from "./engine/sasuke-curse";
 import { KeyboardInput } from "./engine/input";
+import { kirinConfig } from "./engine/sasuke-kirin";
 import { FixedLoop } from "./engine/loop";
 import { neutral, type Button } from "./engine/types";
 import { Renderer } from "./render/renderer";
@@ -29,6 +30,15 @@ const labels: Record<string, string> = {
   guard: "Defesa em pé",
   guardLow: "Defesa baixa",
   ...sasukeSpecialLabels,
+  goryukaWave: "Gōryūka · ondas pela arena",
+  chidoriFar: "Chidori · investida à distância",
+  nagashiField: "Nagashi · área ampliada",
+  "powered:chidoriFar": "Marca II · investida à distância",
+  "powered:nagashiField": "Marca II · área ampliada",
+  "powered:kirinStorm": "Kirin negro · tempestade do Katon",
+  kirin: "Kirin · forma base",
+  kirinStorm: "Kirin · com tempestade do Katon",
+  "powered:kirin": "Kirin · Marca II",
   awakening: "Marca II · transformação",
   "powered:idle": "Marca II · repouso",
   "powered:forward": "Marca II · caminhada",
@@ -48,6 +58,11 @@ const specialPreviews = {
   serpents: ["down", "light", 105],
   nagashi: ["down", "medium", 55],
 } as const;
+const spaced: Record<string, { id: keyof typeof specialPreviews; range: number; origin: number }> = {
+  goryukaWave: { id: "goryuka", range: 1010, origin: 158 },
+  chidoriFar: { id: "chidori", range: 260, origin: 455 },
+  nagashiField: { id: "nagashi", range: 135, origin: 594 },
+};
 const el = <T extends HTMLElement>(id: string) =>
   document.getElementById(id) as T;
 const canvas = el<HTMLCanvasElement>("arena");
@@ -79,8 +94,12 @@ function draw() {
   canvas.dataset.elapsed = String(time);
   canvas.dataset.cursePhase = match.fighters[0].sasukeCurse?.phase ?? "ready";
   canvas.dataset.storm = String(match.sasukeStormUntil > match.combatFrame);
+  const dragon = match.kiProjectiles.find(p => p.wave);
+  canvas.dataset.fireDragonX = String(dragon?.x ?? 0);
+  canvas.dataset.fireDragonY = String(dragon?.y ?? 0);
+  canvas.dataset.fireDragonLive = String(!!dragon);
   el<HTMLOutputElement>("status").value =
-    `Tick ${time} · ${canvas.dataset.animation} · pose ${canvas.dataset.frame} · ${canvas.dataset.phase}`;
+    `Tick ${time} · ${canvas.dataset.animation} · pose ${canvas.dataset.frame} · ${match.kirin ? canvas.dataset.kirinPhase : canvas.dataset.phase}`;
 }
 function reset(value = false) {
   match = new Match(characters.sasuke, { training: true }, characters.samurai);
@@ -89,18 +108,25 @@ function reset(value = false) {
   const [a, b] = match.fighters;
   const side = mirror.checked ? -1 : 1;
   const mode = scenario.value.replace("powered:", "");
-  a.x = 610;
-  b.x = isSasukeSpecial(mode)
+  const shot = spaced[mode];
+  a.x = shot ? (side === 1 ? shot.origin : 1280 - shot.origin) : 610;
+  b.x = shot ? a.x + side * shot.range : isSasukeSpecial(mode)
     ? a.x + side * specialPreviews[mode][2]
     : a.x +
       side *
         (mode.startsWith("guard")
           ? 53
-          : mode.includes("_") || mode.endsWith("Chain")
+          : mode.startsWith("kirin") || mode.includes("_") || mode.endsWith("Chain")
             ? 57
             : 400);
   a.facing = side;
   b.facing = -side;
+  seek.max = mode.startsWith("kirin") ? String(kirinConfig.duration + 39) : mode === "goryukaWave" ? "155" : "135";
+  if (mode.startsWith("kirin") || mode === "free") a.meter = a.meterMaximum;
+  if (mode === "kirinStorm") {
+    match.sasukeStormLevel = 3;
+    match.sasukeStormUntil = 250;
+  }
   if (scenario.value.startsWith("powered:")) a.sasukeCurse = {
     phase: "active", remaining: mode === "revert" ? 18 : sasukeCurseBalance.durationTicks,
     airBurstUsed: false, airBurstTick: 0,
@@ -123,6 +149,7 @@ function update() {
   const side = mirror.checked ? -1 : 1;
   const a = mode === "free" ? keyboard.sample() : neutral();
   const b = neutral();
+  if (mode.startsWith("kirin") && time === 0) a.pressed.push("ultimate");
   if (mode === "awakening" && time < 3) {
     a.down = time !== 1;
     if (time === 2) a.pressed.push("heavy");
@@ -132,8 +159,9 @@ function update() {
     if (time === 0) a.pressed.push("jump");
     if (time === 15) a.pressed.push("dash");
   }
-  if (isSasukeSpecial(mode) && time < 3) {
-    const [motion, button] = specialPreviews[mode];
+  const special = spaced[mode]?.id ?? mode;
+  if (isSasukeSpecial(special) && time < 3) {
+    const [motion, button] = specialPreviews[special];
     a.down = time === 0 || (motion === "down" ? time === 2 : time === 1);
     if (time > 0 && motion !== "down")
       a.direction = (side * (motion === "forward" ? 1 : -1)) as 1 | -1;

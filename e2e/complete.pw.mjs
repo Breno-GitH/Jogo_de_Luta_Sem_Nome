@@ -10,7 +10,7 @@ test("203 new cells load in both palettes, with pause, precise boxes and frame s
   test.setTimeout(90000);
   const errors = [];
   page.on("pageerror", (e) => errors.push(e.message));
-  await page.goto("/art/samurai.html");
+  await page.goto("art/samurai.html");
   const canvas = page.locator("#preview");
   await expect(canvas).toHaveAttribute("data-loaded", "true");
   await page.locator("#boxes").check();
@@ -56,7 +56,7 @@ test("all special strengths execute real directional input, hit the dummy and re
   page,
 }) => {
   test.setTimeout(45000);
-  await page.goto("/art/samurai.html");
+  await page.goto("art/samurai.html");
   const canvas = page.locator("#preview");
   await expect(canvas).toHaveAttribute("data-loaded", "true");
   for (const family of ["draw", "crescent"])
@@ -80,7 +80,7 @@ test("counter has entry, success, failure and loses to low attacks and throws", 
   page,
 }) => {
   test.setTimeout(40000);
-  await page.goto("/art/samurai.html");
+  await page.goto("art/samurai.html");
   const canvas = page.locator("#preview");
   await expect(canvas).toHaveAttribute("data-loaded", "true");
   for (const scenario of [
@@ -111,11 +111,11 @@ test("counter has entry, success, failure and loses to low attacks and throws", 
   }
 });
 
-test("ultimate confirms ten hits, spends meter on block or whiff, and completes knockdown", async ({
+test("ultimate confirms through guard, spends meter on whiff and completes knockdown", async ({
   page,
 }) => {
   test.setTimeout(30000);
-  await page.goto("/art/samurai.html");
+  await page.goto("art/samurai.html");
   const canvas = page.locator("#preview");
   await expect(canvas).toHaveAttribute("data-loaded", "true");
   await page.locator("#arena").check();
@@ -138,11 +138,11 @@ test("ultimate confirms ten hits, spends meter on block or whiff, and completes 
     await expect(canvas).toHaveAttribute("data-meter", "0");
     await expect(canvas).toHaveAttribute(
       "data-capture-seen",
-      String(scenario === "ultimateHit"),
+      String(scenario !== "ultimateMiss"),
     );
     await expect(canvas).toHaveAttribute(
       "data-target-health",
-      scenario === "ultimateHit" ? "701" : "1000",
+      scenario === "ultimateMiss" ? "1000" : "701",
     );
     if (scenario === "ultimateHit") {
       await expect(canvas).toHaveAttribute("data-max-combo", "10");
@@ -165,7 +165,7 @@ test("grabs, guard impacts, entrance, taunt, victory and defeat run through thei
   page,
 }) => {
   test.setTimeout(45000);
-  await page.goto("/art/samurai.html");
+  await page.goto("art/samurai.html");
   const canvas = page.locator("#preview");
   await expect(canvas).toHaveAttribute("data-loaded", "true");
   const cases = {
@@ -192,7 +192,7 @@ test("keyboard performs the new motion in the playable match and menus stay hone
 }) => {
   const errors = [];
   page.on("pageerror", (e) => errors.push(e.message));
-  await page.goto("/");
+  await page.goto("./");
   await page.locator("#versus").click();
   await page.selectOption("#difficulty", "easy");
   await page.locator("#fight").click();

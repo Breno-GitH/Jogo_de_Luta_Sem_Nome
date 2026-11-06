@@ -1,6 +1,6 @@
 import type { InputFrame } from "../engine/types";
 import type { MatchState } from "../engine/state";
-export const PROTOCOL = 2;
+export const PROTOCOL = 3;
 export const ONLINE_CHARACTERS = ["samurai", "dio", "goku", "luffy", "sasuke"] as const;
 export type OnlineCharacter = (typeof ONLINE_CHARACTERS)[number];
 export const INPUT_DELAY = 6;
@@ -55,6 +55,7 @@ export interface EndPacket {
   matchId: string;
   tick: number;
   winner: Seat | null;
+  score: [number, number];
   reason: "ko" | "time" | "disconnect" | "left" | "inputTimeout" | "desync";
 }
 export type Reply<T = undefined> =

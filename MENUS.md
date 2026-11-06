@@ -12,7 +12,7 @@ O fluxo central está em `src/game/app.ts`. Existe uma única tela sobreposta at
 
 ## Modos
 
-- **Arcade**: escolha qualquer um dos quatro personagens e enfrente os outros três, sem espelho. A dificuldade cresce Fácil → Normal → Difícil. Cada confronto é melhor de três rounds. Vitória avança, derrota permite repetir a etapa sem apagar a progressão. Após a terceira vitória aparece a conclusão.
+- **Arcade Torre**. Escolha um dos cinco lutadores e suba dez andares em melhor de três rounds. A sequência sorteada permanece fixa. Vitória desbloqueia o próximo confronto. Derrota oferece a repetição do mesmo andar. O quinto é o mini-chefe e o décimo é o chefe final.
 - **Versus BOT**: escolha jogador, adversário e dificuldade. Usa os perfis reais da IA existente, com diferentes atrasos de reação, decisões, defesa e confirmações. Resultado oferece revanche, troca de personagem e menu.
 - **Treinamento**: selecione ambos os personagens. Configure vida e Super infinitas ou quantidades percentuais individuais. Há parceiro parado, defendendo em pé/agachado, pulando ou controlado pela IA. Pode restaurar vida, encher/zerar Super, reiniciar posições, zerar o combo e seus medidores, consultar golpes e visualizar caixas. O histórico mostra os comandos realmente amostrados; os estados e dano vêm da simulação. Reiniciar combo cria uma prática neutra nas mesmas posições horizontais, limpando ataques, efeitos, stun e medidores.
 - **Multiplayer LAN**: utiliza o backend Socket.IO e o proxy Apache existentes, com conexão na origem atual. Criar sala obtém código real; entrar valida código, sala e vagas no servidor. Dois jogadores escolhem, confirmam e ficam prontos. Somente o anfitrião pode iniciar, com confirmação do servidor. Copiar código usa a área de transferência; em origens onde o navegador a bloqueia, seleciona o texto para Ctrl+C. Resultado oferece revanche bilateral, lobby e saída.
@@ -38,7 +38,7 @@ Samurai, Dio, Goku, Luffy e Sasuke Hebi estão selecionáveis nos quatro modos. 
 ## Arquivos principais
 
 - `src/game/app.ts`: estado das telas e integração dos modos.
-- `src/game/session.ts`: progressão Arcade com o elenco atual.
+- `src/game/session.ts`, `src/game/tower.ts` e `src/ui/tower.ts` integram a Torre, o progresso local e as telas de apresentação e resultado.
 - `src/game/preferences.ts`: preferências, padrões e validação de teclas.
 - `src/ui/screens.ts`: telas locais, opções, resultados e treinamento.
 - `src/ui/catalog.ts`: seleção reutilizável, descrições e golpes por personagem.
@@ -65,3 +65,11 @@ Os testes de navegador estão em `e2e/menu/`, com registros em `deployment/audit
 - Não houve acesso a dois computadores físicos. O teste de rede foi feito com sessões independentes no mesmo computador; a conectividade com outro dispositivo permanece uma verificação manual descrita em `README_LAN.md`.
 
 Para repetir a interface local, inicie `npm run dev -- --port 5191` e execute `node node_modules/@playwright/test/cli.js test --config=playwright.menu.config.mjs e2e/menu/local.pw.mjs`. Para a versão Apache, defina `MENU_URL=http://localhost/2025/Jogo_de_Luta_Sem_Nome/`. Os testes LAN precisam da porta 3001 livre e iniciam seu próprio backend real de teste, encerrando-o no final.
+
+## Progresso da Torre
+
+O Arcade oferece continuar a tentativa salva ou escolher um lutador para iniciar outra. O progresso local inclui a rota, os andares vencidos, as derrotas, os ticks de lutas encerradas e o recorde. O retorno sempre começa antes do confronto do andar em aberto. Confirmar uma nova tentativa substitui a anterior e preserva o recorde. O tempo mostrado soma as lutas concluídas da tentativa, incluindo derrotas.
+
+Os perfis do BOT reduzem o atraso de reação de 26 ticks no primeiro andar para 6 no último. As probabilidades de defesa, punição, confirmação e uso de especiais crescem conforme o andar. O chefe usa a música sintetizada de confronto decisivo. Cada luta usa os atributos de combate normais dos personagens.
+
+Validação desta revisão: 864 testes TypeScript, 20 suítes de arte, fluxo do menu com os dez andares e verificação das paletas. A progressão no navegador passou por KO, recarga da página, retomada, mini-chefe, chefe, conclusão, derrota, repetição e início de outra tentativa. A build de produção abriu Arcade, Versus e Treinamento pelos aliases do Apache.

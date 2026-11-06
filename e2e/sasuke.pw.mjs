@@ -141,3 +141,78 @@ test("Sasuke Curse Mark uses the corrected atlas through awakening, combat and r
   await expect(arena).toHaveAttribute("data-animation", "idle");
   expect(errors).toEqual([]);
 });
+
+test("Kirin runs from palm confirm through the dragon impact in both forms", async ({ page }) => {
+  const errors = [];
+  page.on("pageerror", error => errors.push(error.message));
+  await page.goto("art/sasuke.html", { waitUntil: "domcontentloaded" });
+  const arena = page.locator("#arena");
+  await expect(arena).toHaveAttribute("data-loaded", "true");
+  for (const [mode, cursed] of [["kirin", false], ["powered:kirin", true]]) {
+    await page.locator("#mirror").setChecked(cursed);
+    await page.selectOption("#scenario", mode);
+    await seek(page, 7);
+    await expect(arena).toHaveAttribute("data-animation", cursed ? "curse_kirin_start" : "kirin_start");
+    await seek(page, 55);
+    await expect(arena).toHaveAttribute("data-kirin-phase", "storm");
+    await seek(page, 92);
+    await expect(arena).toHaveAttribute("data-kirin-phase", "reveal");
+    await expect(arena).toHaveAttribute("data-kirin-dragon", "true");
+    await expect(arena).toHaveAttribute("data-kirin-cursed", String(cursed));
+    await expect(arena).toHaveAttribute("data-kirin-variant", cursed ? "black" : "blue");
+    await seek(page, 136);
+    await expect(arena).toHaveAttribute("data-animation", cursed ? "curse_kirinCommand" : "kirinCommand");
+    await seek(page, 156);
+    await expect(arena).toHaveAttribute("data-kirin-phase", "dive");
+    await seek(page, 171);
+    await expect(arena).toHaveAttribute("data-kirin-phase", "impact");
+    await expect(arena).toHaveAttribute("data-target-health", "680");
+    await seek(page, 257);
+    await expect(arena).toHaveAttribute("data-kirin-phase", "none");
+    await expect(arena).toHaveAttribute("data-camera-zoom", "1");
+  }
+  expect(errors).toEqual([]);
+});
+
+test("polished Goryuka, Chidori and Nagashi use the real engine in the lab", async ({ page }) => {
+  const errors = [];
+  page.on("pageerror", error => errors.push(error.message));
+  await page.goto("art/sasuke.html", { waitUntil: "domcontentloaded" });
+  const arena = page.locator("#arena");
+  await expect(arena).toHaveAttribute("data-loaded", "true");
+  for (const reverse of [false, true]) {
+    await page.locator("#mirror").setChecked(reverse);
+    await page.selectOption("#scenario", "goryukaWave");
+    const samples = [];
+    for (const tick of [38, 42, 46, 50, 54, 58, 62, 66]) {
+      await seek(page, tick);
+      await expect(arena).toHaveAttribute("data-fire-dragon-live", "true");
+      samples.push(await arena.evaluate(c => ({
+        x: Number(c.dataset.fireDragonX), y: Number(c.dataset.fireDragonY),
+      })));
+    }
+    expect(samples.slice(1).every((sample, i) => (sample.x - samples[i].x) * (reverse ? -1 : 1) > 0)).toBe(true);
+    expect(samples.filter((sample, i) => i > 0 && i + 1 < samples.length &&
+      (sample.y - samples[i - 1].y) * (samples[i + 1].y - sample.y) < 0).length).toBeGreaterThanOrEqual(2);
+    await seek(page, 150);
+    await expect(arena).toHaveAttribute("data-fire-dragon-live", "false");
+  }
+  for (const powered of ["", "powered:"]) {
+    await page.selectOption("#scenario", powered + "chidoriFar");
+    await seek(page, 11);
+    await expect(arena).toHaveAttribute("data-animation", powered ? "curse_chidori" : "chidori");
+    let zoomed = false;
+    for (const tick of [19, 22, 25, 28, 31, 34, 37]) {
+      await seek(page, tick);
+      zoomed ||= Number(await arena.getAttribute("data-camera-zoom")) > 1;
+    }
+    expect(zoomed).toBe(true);
+    await seek(page, 85);
+    await expect(arena).toHaveAttribute("data-target-health", powered ? "879" : "895");
+    await expect(arena).toHaveAttribute("data-camera-zoom", "1");
+    await page.selectOption("#scenario", powered + "nagashiField");
+    await seek(page, 65);
+    await expect(arena).toHaveAttribute("data-target-health", powered ? "931" : "940");
+  }
+  expect(errors).toEqual([]);
+});

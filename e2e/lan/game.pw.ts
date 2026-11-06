@@ -238,6 +238,7 @@ async function capture(code: string, name: string) {
     expect(ds[0].jetTick).toBe(ds[1].jetTick);
     expect(ds[0].jetFist).toBe(ds[1].jetFist);
     expect(ds[0].roadTick).toBe(ds[1].roadTick);
+    expect(ds[0].kirinVariant).toBe(ds[1].kirinVariant);
     for (let i = 0; i < 2; i++) {
       const data = await [a, b][i]
         .locator("canvas")
@@ -277,7 +278,11 @@ test("Apache aliases, nested labs, static resources and production build are ind
     ]) {
       await a.click(`#${mode}`);
       await a.check(`input[name="character"][value="${character}"]`);
-      if (mode === "versus") await a.selectOption("#difficulty", difficulty);
+      await a.click("#confirm-character");
+      if (mode === "versus") {
+        await a.click("#confirm-character");
+        await a.selectOption("#difficulty", difficulty);
+      } else await expect(a.locator(".tower-floor")).toHaveCount(10);
       await a.click("#fight");
       await expect(a.locator("#app")).toHaveAttribute("data-screen", "fight");
       await expect(a.locator("canvas")).toHaveAttribute(
@@ -288,6 +293,8 @@ test("Apache aliases, nested labs, static resources and production build are ind
     }
     await a.click("#training");
     await a.check('input[name="character"][value="goku"]');
+    await a.click("#confirm-character");
+    await a.click("#confirm-character");
     await a.click("#fight");
     await expect(a.locator("#app")).toHaveAttribute("data-screen", "fight");
     await expect(a.locator("canvas")).toHaveAttribute("data-character", "goku");
@@ -748,8 +755,11 @@ test("refresh resumes the same room, disconnect terminates safely, lobby reuse, 
       "data-screen",
       "onlineResult",
     );
+  expect(r.result?.score).toEqual([2, 0]);
+  for (const p of [a, b]) await expect(p.locator(".score strong")).toHaveText(["2", "0"]);
   const old = r.matchId;
   await a.click("#online-rematch");
+  expect(r.matchId).toBe(old);
   await b.click("#online-rematch");
   await expect.poll(() => r.matchId).not.toBe(old);
   expect(r.match!.fighters.map((f) => f.data.id)).toEqual(["goku", "dio"]);
@@ -869,4 +879,82 @@ test("Sasuke Curse Mark activates from keyboard and synchronizes through expiry"
   for (const client of [a, b])
     await expect(client.locator("canvas")).toHaveAttribute("data-p1-curse", "cooldown");
   await consistent();
+});
+
+test("Sasuke Kirin confirms on R and synchronizes both clients through the storm", async () => {
+  const code = await pair("sasuke", "dio");
+  const room = await seed(code, 57, 100);
+  await press(a, "r");
+  await expect.poll(() => room.match!.kirin?.attacker).toBe(0);
+  expect(room.match!.fighters[0].meter).toBe(0);
+  const timer = room.match!.timer;
+  for (const client of [a,b])
+    await expect(client.locator("canvas")).toHaveAttribute("data-kirin-phase", "reveal");
+  await capture(code, "sasuke-kirin");
+  await consistent();
+  await expect.poll(() => room.match!.fighters[1].health, { timeout: 12000 }).toBe(680);
+  expect(room.match!.timer).toBe(timer);
+  for (const client of [a,b])
+    await expect(client.locator("canvas")).toHaveAttribute("data-p2-health", "680");
+  await expect.poll(
+    () => !room.match!.kirin && room.match!.fighters[1].knockedDown,
+    { intervals: [16], timeout: 8000 },
+  ).toBe(true);
+  for (const client of [a,b])
+    await expect(client.locator("canvas")).toHaveAttribute("data-camera-zoom", "1");
+  await consistent();
+});
+
+test("Sasuke Black Kirin hits through crouching guard and keeps the same variant on both LAN clients", async () => {
+  const code = await pair("sasuke", "samurai");
+  const room = await seed(code, 57, 100);
+  await motion(a, [2, 5, 2], "l", 72);
+  await expect.poll(() => room.match!.fighters[0].sasukeCurse?.phase).toBe("active");
+  await b.keyboard.down("s");
+  await b.keyboard.down("d");
+  await expect.poll(() => room.match!.fighters[1].guardIntent && room.match!.fighters[1].crouching).toBe(true);
+  try {
+    await press(a, "r");
+    await expect.poll(() => room.match!.kirin?.cursed).toBe(true);
+    expect(room.match!.fighters[0].meter).toBe(0);
+    const remaining = room.match!.fighters[0].sasukeCurse!.remaining;
+    await Promise.all([a, b].map(async client => {
+      const canvas = client.locator("canvas");
+      await expect(canvas).toHaveAttribute("data-kirin-variant", "black");
+      await expect(canvas).toHaveAttribute("data-kirin-phase", "reveal");
+    }));
+    await capture(code, "sasuke-kirin-black");
+    await expect.poll(() => room.match!.fighters[1].health, { timeout: 12000 }).toBe(680);
+    expect(room.match!.fighters[0].sasukeCurse!.remaining).toBe(remaining);
+    await Promise.all([a, b].map(async client => {
+      const canvas = client.locator("canvas");
+      await expect(canvas).toHaveAttribute("data-p2-health", "680");
+      await expect(canvas).toHaveAttribute("data-kirin-phase", "none");
+      await expect(canvas).toHaveAttribute("data-camera-zoom", "1");
+    }));
+    await consistent();
+  } finally {
+    await b.keyboard.up("s");
+    await b.keyboard.up("d");
+  }
+});
+
+test("backend outage has a bounded retry window and a usable return to the main menu", async () => {
+  await pair("luffy", "sasuke");
+  await app.close();
+  try {
+    for (const p of [a, b]) {
+      await expect(p.locator("#connection-state")).toHaveText("Conexão indisponível", { timeout: 15000 });
+      await expect(p.locator("#online-error")).toContainText("Servidor indisponível");
+      await expect(p.locator("#create-room")).toBeDisabled();
+    }
+    await b.click("#back");
+    await expect(b.locator("#app")).toHaveAttribute("data-screen", "menu");
+  } finally {
+    await startServer();
+  }
+  await a.click("#reconnect-online");
+  await expect(a.locator("#create-room")).toBeEnabled({ timeout: 10000 });
+  await a.click("#create-room");
+  await expect(a.locator("#lobby-code")).toHaveText(/^[A-Z2-9]{6}$/);
 });

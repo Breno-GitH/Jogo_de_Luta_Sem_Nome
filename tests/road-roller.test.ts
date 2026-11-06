@@ -218,7 +218,7 @@ describe("Road Roller confirmed cinematic Super", () => {
     expect(m.fighters[0].meterMaximum).toBe(200);
     expect(m.fighters[1].meterMaximum).toBe(100);
   });
-  it("spends two bars on block and whiff but never starts the machine", () => {
+  it("spends two bars on whiff and starts the machine through ordinary guard", () => {
     for (const blocked of [false, true]) {
       const m = fixture("samurai", false, blocked ? 85 : 450),
         [a, b] = m.fighters;
@@ -226,15 +226,15 @@ describe("Road Roller confirmed cinematic Super", () => {
       const guard = { ...neutral(), direction: -b.facing as -1 | 1 };
       expect(a.attack("road_roller")).toBe(true);
       let blocks = 0;
-      for (let i = 0; i < 180; i++) {
+      for (let i = 0; i < 180 && !m.roadRoller; i++) {
         step(m, neutral(), blocked ? guard : neutral());
         blocks += m.hits.filter((h) => h.blocked).length;
-        expect(m.roadRoller).toBeUndefined();
       }
       expect(a.meter).toBe(0);
-      expect(b.health).toBe(1000);
-      expect(blocks).toBe(blocked ? 1 : 0);
-      expect(a.stand!.ready).toBe(true);
+      expect(b.health < 1000).toBe(blocked);
+      expect(!!m.roadRoller).toBe(blocked);
+      expect(blocks).toBe(0);
+      if (!blocked) expect(a.stand!.ready).toBe(true);
     }
   });
   it("has vulnerable startup; a real early Samurai hit cancels it without refund", () => {

@@ -4,6 +4,11 @@
       "baseline": "a03d90a5eec3424bd8372acd3a7947408e30d36136f9aa8092bd22c7ed96f127",
       "current": "fd0f5eaf7d83cd8bac92c060efaf8d700a7d85aa9ebfc87a44f1a03058206fdb",
       "reason": "User-requested persisted key remapping and menu/combat input isolation. CommandBuffer and combat action protocol unchanged."
+    },
+    "src/engine/bot.ts": {
+      "baseline": "0c3a5f1be8210a087fd11b16c6386887502a866835d440d3504effb4c20ac07b",
+      "current": "fcc79aba21a25a086e55db93990ef68afb787c5c53f8b83fd14e14a2a12008bf",
+      "reason": "Opt-in BOT tuning for the ten Arcade Tower floors. Versus and Training use the original profiles."
     }
   }
 }

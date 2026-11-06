@@ -6,6 +6,8 @@ import { FixedLoop } from "../engine/loop";
 import { Renderer } from "../render/renderer";
 import { Sound } from "../audio/sound";
 import { GameSession, type Mode } from "./session";
+import { readTower, saveTower, towerComplete, towerFloors, type TowerAttempt } from "./tower";
+import { towerResult, towerResume, towerScreen } from "../ui/tower";
 import { OnlineClient } from "../net/client";
 import { onlineEntry, lobby, onlineResult, escapeText } from "../ui/online";
 import { neutral, type InputFrame } from "../engine/types";
@@ -42,6 +44,7 @@ import {
 type Screen =
   | "menu"
   | "selection"
+  | "tower"
   | "settings"
   | "info"
   | "online"
@@ -213,6 +216,7 @@ export class GameApp {
     this.online?.dispose();
     this.online = undefined;
     this.session = undefined;
+    this.sound.setBossMusic(false);
     this.remapping = undefined;
     this.demo = new Match();
     this.demo.message = "";
@@ -234,13 +238,25 @@ export class GameApp {
     this.el("mode-label").textContent = "PRONTO PARA O PRÓXIMO ROUND";
     for (const [id, mode] of [
       ["versus", "versus"],
-      ["arcade", "arcade"],
       ["training", "training"],
     ] as const)
       this.bind(id, () => {
         this.cue();
         this.selection(mode);
       });
+    this.bind("arcade", () => {
+      this.cue();
+      const { attempt, best } = readTower();
+      if (!attempt || towerComplete(attempt)) {
+        this.selection("arcade");
+        return;
+      }
+      this.root.dataset.mode = "arcade";
+      this.show(towerResume(attempt, best), "tower");
+      this.bind("continue-tower", () => this.startTower(attempt));
+      this.bind("new-tower", () => this.selection("arcade"));
+      this.bind("back", () => this.menu());
+    });
     this.bind("online", () => {
       this.cue();
       void this.enterOnline();
@@ -251,6 +267,25 @@ export class GameApp {
       this.settings();
     });
     this.footer();
+  }
+  private startTower(attempt?: TowerAttempt) {
+    this.session = new GameSession("arcade", "normal", this.selected, this.enemy, attempt);
+    saveTower(this.session.tower!);
+    this.presentTower();
+  }
+  private presentTower() {
+    const session = this.session!;
+    this.sound.setBossMusic(session.stage === towerFloors.length - 1);
+    this.show(towerScreen(session, Math.max(readTower().best, session.results.length)), "tower");
+    Object.assign(this.root.dataset, {
+      mode: "arcade",
+      stage: String(session.stage + 1),
+      character: session.characterId,
+    });
+    this.el("mode-label").textContent = `ARCADE TORRE / ANDAR ${session.stage + 1}`;
+    this.el("status").textContent = `PRÓXIMO CONFRONTO · ${session.opponentName.toUpperCase()}`;
+    this.bind("fight", () => { this.cue(); void this.enter(); });
+    this.bind("back", () => this.menu());
   }
   private selection(mode: Mode, step: SelectStep = "player") {
     this.selectedMode = mode;
@@ -290,19 +325,14 @@ export class GameApp {
       ?.focus({ preventScroll: true });
     this.bind("confirm-character", () => {
       this.cue();
-      this.selection(
-        mode,
-        step === "player" && mode !== "arcade" ? "opponent" : "ready",
-      );
+      if (mode === "arcade") this.startTower();
+      else this.selection(mode, step === "player" ? "opponent" : "ready");
     });
     this.bind("back", () => this.selectionBack());
     this.bind("fight", () => {
       if (this.screen !== "selection" || this.selectStep !== "ready") return;
       this.cue();
-      const difficulty =
-        mode === "arcade"
-          ? "easy"
-          : (this.el<HTMLSelectElement>("difficulty").value as Difficulty);
+      const difficulty = this.el<HTMLSelectElement>("difficulty").value as Difficulty;
       this.session = new GameSession(
         mode,
         difficulty,
@@ -366,10 +396,10 @@ export class GameApp {
       this.lastInput = "";
       this.el("mode-label").textContent =
         session.mode === "arcade"
-          ? `ARCADE / CONFRONTO ${session.stage + 1} DE ${session.route.length}`
+          ? `ARCADE TORRE / ANDAR ${session.stage + 1} DE ${session.route.length}`
           : modeName[session.mode].toUpperCase();
       this.el("status").textContent =
-        `${modeName[session.mode].toUpperCase()} / ${session.opponentName.toUpperCase()} / ${difficultyName[session.currentDifficulty].toUpperCase()}`;
+        `${modeName[session.mode].toUpperCase()} / ${session.opponentName.toUpperCase()} / ${(session.tower ? towerFloors[session.stage].label : difficultyName[session.currentDifficulty]).toUpperCase()}`;
       this.syncTraining();
       this.renderer.tick(session.match);
       this.canvas.focus({ preventScroll: true });
@@ -547,21 +577,27 @@ export class GameApp {
   }
   private finish() {
     const session = this.session!;
-    this.show(resultScreen(session), "result");
+    if (session.tower) saveTower(session.tower);
+    this.show(session.tower ? towerResult(session, Math.max(readTower().best, session.results.length)) : resultScreen(session), "result");
     this.el<HTMLButtonElement>("pause").disabled = true;
     this.el<HTMLButtonElement>("restart").disabled = true;
     this.bind("return", () => this.menu());
     this.bind("change-character", () => this.selection(session.mode));
     this.bind("next-opponent", () => {
       this.cue();
-      if (session.next()) void this.enter();
+      if (session.next()) this.presentTower();
     });
     this.bind("again", () => {
-      if (session.mode === "arcade" && session.status === "victory")
-        this.session = new GameSession("arcade", "easy", session.characterId);
-      else session.restart();
       this.cue();
-      void this.enter();
+      if (session.tower) {
+        if (session.status === "victory") {
+          this.selected = session.characterId;
+          this.startTower();
+        } else {
+          session.restart();
+          this.presentTower();
+        }
+      } else this.restart();
     });
   }
   private recordInput(input: InputFrame) {
@@ -583,10 +619,10 @@ export class GameApp {
   private tick() {
     if (this.online?.match) {
       const active =
-        this.online.canSend &&
+        this.online.canControl &&
         this.screen === "onlineFight" &&
         this.overlay.hidden;
-      this.online.advance(active ? this.keyboard.sample() : neutral());
+      this.online.advance(active ? this.keyboard.sample() : neutral(), active);
       if (!active) this.keyboard.clear();
     } else if (this.screen === "fight" && this.session) {
       const match = this.session.match,
@@ -694,6 +730,7 @@ export class GameApp {
     this.el<HTMLButtonElement>("pause").disabled = !c.match || !!c.result;
     if (c.result) {
       this.show(onlineResult(c), "onlineResult");
+      this.bind("reconnect-online", () => c.retry());
       this.bind("leave-room", () => this.confirmLeave());
       this.bind(
         "online-rematch",

@@ -26,7 +26,7 @@ import { MOVEMENT_TIMING } from "./movement";
 import { combatPace, pacedCharacter } from "./pace";
 import cinematics from "../data/cinematics.json";
 import { reactionBoxes, reactionFor } from "./lifecycle";
-import { poseAt, phaseAt } from "./moves";
+import { isSuperMove, poseAt, phaseAt } from "./moves";
 import { luffyAttackLimbs, luffySpecialCommand } from "./luffy-specials";
 import {
   isSasukeSpecial, sasukeSpecialBalance, sasukeSpecialCommand, sasukeSpecialContact,
@@ -37,6 +37,8 @@ import {
   sasukeCurseMovement, sasukeCurseMoves, startCurse, tickSasukeAirBurst,
   tickSasukeCurse, winged, type SasukeCurseState,
 } from "./sasuke-curse";
+import { canStartKirin, kirinConfig, kirinId, kirinCurseOpener, kirinScene, type KirinState } from "./sasuke-kirin";
+import { chidoriVelocity, fireDragonPoint, fireDragonVolumes, fireDragonWave, nagashiVolumes, sasukePolish } from "./sasuke-polish";
 import { luffyGrabLimb } from "./luffy-secondary";
 import { jetConfig, jetId, jetOpener, jetScene, type JetState } from "./luffy-jet-gigant";
 import {
@@ -86,6 +88,7 @@ export class Fighter {
   gokuAirTeleportsUsed = 0;
   gokuCastSerial = 0;
   sasukeCurse?: SasukeCurseState;
+  kirinCursed?: boolean;
   homeX: number;
   guardIntent = false;
   blockCrouched = false;
@@ -130,6 +133,8 @@ export class Fighter {
     return this.lookupMove(this.moveId);
   }
   private lookupMove(id: string) {
+    if (id === kirinId && (this.moveId === id ? this.kirinCursed : winged(this)))
+      return kirinCurseOpener;
     return curseMove(this, id) ?? this.data.moves[id] ??
       this.data.specialMoves?.[id] ?? this.data.superMoves?.[id];
   }
@@ -229,6 +234,7 @@ export class Fighter {
   }
   canStartSuper() {
     if (this.match?.cinematicActive) return false;
+    if (this.data.id === "sasuke") return canStartKirin(this);
     if (this.data.id === "luffy")
       return (
         !!this.data.superMoves?.[jetId] &&
@@ -393,7 +399,7 @@ export class Fighter {
     const shapes = this.attackShapes();
     return shapes.length ? unionBounds(shapes.map(shapeBounds)) : undefined;
   }
-  attackShapes(): AttackShape[] {
+  attackShapes(previousX = this.x): AttackShape[] {
     const m = this.move;
     if (
       this.state !== "attack" ||
@@ -405,6 +411,20 @@ export class Fighter {
     const pose = poseAt(m, this.stateFrame);
     if (m.hitWindows && !this.hitWindow) return [];
     if (m.stand) return this.stand?.hitboxes(this) ?? [];
+    if (m.special === "chidori" && pose?.release) {
+      const hand = pose.release;
+      const touch = worldCapsule(
+        { a: { x: hand.x - 17, y: hand.y + 4 }, b: hand, r: winged(this) ? 23 : 20 },
+        this.x, this.y, this.facing,
+      );
+      if (previousX !== this.x) return [touch, {
+        a: { x: touch.b.x + previousX - this.x, y: touch.b.y }, b: touch.b, r: touch.r,
+      }];
+      return [touch];
+    }
+    if (m.special === "nagashi")
+      return nagashiVolumes(this.stateFrame - m.startup, winged(this))
+        .map(shape => worldCapsule(shape, this.x, this.y, this.facing));
     if (m.special && isSasukeSpecial(m.special)) {
       const age = this.stateFrame - m.startup;
       const shapes = winged(this) && pose?.release
@@ -453,6 +473,7 @@ export class Fighter {
     this.reactionFrame = 0;
     if (s !== "attack") {
       this.moveId = "";
+      this.kirinCursed = undefined;
       this.connected = false;
       this.hitConfirmed = false;
       this.hitIds = [];
@@ -495,6 +516,7 @@ export class Fighter {
     this.meter -= m.cost ?? 0;
     this.setState("attack", chain);
     this.moveId = id;
+    this.kirinCursed = id === kirinId ? winged(this) : undefined;
     if (this.data.id === "goku" && m.special) {
       this.gokuCastSerial++;
       this.airChaseTicks = 0;
@@ -633,7 +655,7 @@ export class Fighter {
             ? "ssj1_fury"
             : this.data.id === "dio"
               ? "road_roller"
-              : this.data.id === "luffy" ? jetId : "ultimate_start";
+              : this.data.id === "luffy" ? jetId : this.data.id === "sasuke" ? kirinId : "ultimate_start";
         const move = this.data.moves[id] ?? this.data.superMoves?.[id];
         if (this.canStartSuper()) {
           this.attack(id);
@@ -879,7 +901,9 @@ export class Fighter {
       }
       if (this.state === "attack" && this.move) {
         const move = this.move;
-        if (move.drive)
+        if (move.special === "chidori")
+          this.vx = this.connected ? 0 : this.facing * chidoriVelocity(this.stateFrame, winged(this));
+        else if (move.drive)
           this.vx =
             !this.connected &&
             this.stateFrame >= move.drive.from &&
@@ -956,6 +980,7 @@ export class Fighter {
   }
 }
 export interface HitEvent {
+  sasuke?: { kind: "chidori" | "goryuka"; cursed: boolean; facing: number };
   luffy?: { actor: number; move: string; direction: number; style: "kick" | "punch" | "rush" | "double" };
   strength?: number;
   audioOnly?: boolean;
@@ -973,7 +998,9 @@ export interface HitEvent {
     | "power"
     | "roadImpact"
     | "roadPunch"
-    | "roadExplosion";
+    | "roadExplosion"
+    | "kirinCharge"
+    | "kirinThunder";
   total?: number;
 }
 export interface CaptureSequence {
@@ -1002,11 +1029,13 @@ export class Match {
   roadRoller?: RoadRollerState;
   fury?: FuryState;
   jetGigant?: JetState;
-  get cinematicActive() { return !!(this.roadRoller || this.fury || this.jetGigant); }
+  kirin?: KirinState;
+  get cinematicActive() { return !!(this.roadRoller || this.fury || this.jetGigant || this.kirin); }
   temporal = new TemporalController();
   projectiles: KnifeProjectile[] = [];
   kiProjectiles: KiProjectile[] = [];
   sasukeStormUntil = 0;
+  sasukeStormLevel = 0;
   beams: KiBeam[] = [];
   projectileSerial = 0;
   fighters: [Fighter, Fighter];
@@ -1092,7 +1121,7 @@ export class Match {
           this.projectiles = [];
           this.kiProjectiles = [];
           this.beams = [];
-          this.sasukeStormUntil = 0;
+          this.sasukeStormUntil = this.sasukeStormLevel = 0;
           const meter = this.fighters.map((f) => f.meter);
           this.fighters = [
             new Fighter(this.data, 0, 400),
@@ -1115,7 +1144,7 @@ export class Match {
       for (const f of this.fighters) f.stand?.tick(f);
       return;
     }
-    if (this.fury || this.jetGigant) {
+    if (this.fury || this.jetGigant || this.kirin) {
       this.stepStagedSuper();
       return;
     }
@@ -1145,6 +1174,7 @@ export class Match {
     }
     if (!this.rules.training && !this.temporal.active) this.timer--;
     this.combatFrame++;
+    const beforeMovement = this.fighters.map(f => f.x);
     this.fighters.forEach((f, i) => {
       if (this.temporal.isFrozen(i)) return;
       const other = this.fighters[1 - i];
@@ -1162,7 +1192,7 @@ export class Match {
       if (
         f.state === "attack" &&
         f.stateFrame === 0 &&
-        (f.move?.kind === "ultimate" || f.move?.kind === "jetGigant")
+        (f.move?.kind === "ultimate" || f.move?.kind === "jetGigant" || f.move?.kind === "kirin")
       )
         this.effect("power", f.x, f.y - 80, 20);
     const [a, b] = this.fighters;
@@ -1183,7 +1213,7 @@ export class Match {
     // Capture contacts before resolving so simultaneous attacks can trade.
     const contacts = this.fighters.map((f, i) => {
       if (this.temporal.isFrozen(i)) return null;
-      const shapes = f.attackShapes();
+      const shapes = f.attackShapes(beforeMovement[i]);
       const target = this.fighters[1 - i];
       if (!shapes.length || !f.canConnect || target.knockedDown || target.invulnerable ||
           (f.move?.level === "throw" &&
@@ -1195,7 +1225,7 @@ export class Match {
         const hurt = hurtboxes.find(box => shapeHitsRect(shape, box));
         if (!hurt) continue;
         let impact = f.move?.stand ? shapeBounds(shapes[0]) : undefined;
-        if (f.data.id === "luffy") {
+        if (f.data.id === "luffy" || f.move?.special === "chidori") {
           const bounds = shapeBounds(shape);
           const x = Math.max(hurt.x, bounds.x), y = Math.max(hurt.y, bounds.y);
           impact = {
@@ -1215,7 +1245,7 @@ export class Match {
       if (!c) continue;
       const { f, target, move: m, moveId } = c;
       if (m.super && f.health <= 0) continue;
-      if (m.kind === "jetGigant" && (f.state !== "attack" || f.moveId !== moveId)) continue;
+      if ((m.kind === "jetGigant" || m.kind === "kirin") && (f.state !== "attack" || f.moveId !== moveId)) continue;
       if (this.capture || this.cinematicActive) continue;
       // A strike beats a simultaneous throw; do not capture an actor whose
       // already-sampled strike is about to resolve on this same simulation tick.
@@ -1275,6 +1305,7 @@ export class Match {
     moveId: string,
     impact?: Rect,
     direction = f.facing,
+    curseFx = winged(f),
   ) {
     const frozen = this.temporal.isFrozen(target.id);
     const guarding =
@@ -1289,6 +1320,7 @@ export class Match {
     const blocked =
       guarding &&
       m.level !== "throw" &&
+      !isSuperMove(m) &&
       (m.level !== "low" || target.input.down) &&
       (m.level !== "high" || !target.input.down);
     let damage = blocked
@@ -1307,7 +1339,7 @@ export class Match {
     const applied = this.damage(
       target,
       damage,
-      ["ultimate", "roadRoller", "gokuFury", "jetGigant"].includes(m.kind ?? "") && !blocked
+      ["ultimate", "roadRoller", "gokuFury", "jetGigant", "kirin"].includes(m.kind ?? "") && !blocked
         ? 1
         : 0,
     );
@@ -1377,6 +1409,8 @@ export class Match {
     );
     const event = this.events[eventCount];
     if (event) {
+      if (!blocked && (m.special === "chidori" || m.special === "goryuka"))
+        event.sasuke = { kind: m.special, cursed: curseFx, facing: direction };
       if (f.data.id === "luffy" && !m.super && (m.rank > 1 || m.special)) {
         const style = m.special === "bazooka" ? "double"
           : m.special === "gatling" ? "rush"
@@ -1399,8 +1433,8 @@ export class Match {
     if (m.kind === "ultimate" && !blocked)
       this.beginCapture("ultimate", f, target);
     if (m.kind === "roadRoller" && !blocked) this.beginRoadRoller(f, target);
-    if (!blocked && (m.kind === "gokuFury" || m.kind === "jetGigant"))
-      this.beginStagedSuper(f, target, m.kind === "jetGigant");
+    if (!blocked && (m.kind === "gokuFury" || m.kind === "jetGigant" || m.kind === "kirin"))
+      this.beginStagedSuper(f, target, m.kind);
   }
   private applyReaction(target: Fighter, reaction: DeferredReaction) {
     target.hitCrouched = target.blockCrouched = reaction.crouched;
@@ -1570,30 +1604,66 @@ export class Match {
     for (const shot of (curse ? curseSpecials : sasukeTechniques)[id].shots ?? []) {
       if (shot.at !== age) continue;
       const x = f.x + f.facing * origin.x, y = f.y + origin.y;
+      const wave = id === "goryuka" ? fireDragonWave({ x, y }, f.facing, curse) : undefined;
+      const fire = sasukePolish.goryuka;
       this.kiProjectiles.push({
         id: ++this.projectileSerial,
         owner: f.id,
         move: id,
         cast: 0,
         ...(curse ? { curse } : {}),
+        ...(wave ? { wave } : {}),
         x, y, previousX: x, previousY: y,
-        vx: shot.speed * f.facing,
-        vy: shot.rise,
+        vx: (wave ? (curse ? fire.curse.speed : fire.base.speed) : shot.speed) * f.facing,
+        vy: wave ? 0 : shot.rise,
         facing: f.facing,
-        radius: shot.radius,
+        radius: wave ? fire.headRadius : shot.radius,
         age: 0,
-        life: shot.life,
+        life: wave ? fire.maximumLife : shot.life,
         state: "flight",
         impactAge: 0,
       });
-      if (id === "goryuka") this.sasukeStormUntil = this.combatFrame + sasukeSpecialBalance.stormTicks;
+      const heat = kirinConfig.weather.contributions[id as keyof typeof kirinConfig.weather.contributions];
+      if (shot.at === 0 && heat) {
+        const level = this.sasukeStormUntil > this.combatFrame ? this.sasukeStormLevel : 0;
+        this.sasukeStormLevel = Math.min(kirinConfig.weather.maximum, level + heat);
+        this.sasukeStormUntil = this.combatFrame + sasukeSpecialBalance.stormTicks;
+      }
     }
+  }
+  private stepFireDragon(p: KiProjectile) {
+    const w = p.wave!;
+    p.previousX = p.x;
+    p.previousY = p.y;
+    w.distance += Math.abs(p.vx);
+    const point = fireDragonPoint(w, w.distance);
+    p.x = point.x;
+    p.y = point.y;
+    p.age++;
+    p.radius = Math.round(sasukePolish.goryuka.headRadius * Math.min(1, .48 + p.age * .095));
+    if (--p.life <= 0 || w.distance > w.limit) return false;
+    if (w.struck) return true;
+    const target = this.fighters[1 - p.owner], owner = this.fighters[p.owner];
+    if (target.invulnerable || target.knockedDown) return true;
+    const boxes = target.hurtboxes();
+    for (const shape of fireDragonVolumes(w, { x: p.previousX, y: p.previousY }, p.radius)) {
+      const box = boxes.find(r => shapeHitsRect(shape, r));
+      if (!box) continue;
+      const move = p.curse ? sasukeCurseMoves[p.move] : owner.data.specialMoves?.[p.move];
+      if (move) {
+        w.struck = true;
+        this.resolveImpact(owner, target, move, p.move, box, p.facing, !!p.curse);
+      }
+      break;
+    }
+    return true;
   }
   private stepEnergy() {
     if (!this.kiProjectiles.length && !this.beams.length) return;
     if (this.temporal.active && dioBalance.timeStop.freezeAllProjectiles)
       return;
     this.kiProjectiles = this.kiProjectiles.filter((p) => {
+      if (p.wave) return this.stepFireDragon(p);
       if (p.state === "impact")
         return ++p.impactAge < gokuBalance.projectiles.impactTicks;
       p.previousX = p.x;
@@ -1756,8 +1826,8 @@ export class Match {
     };
     this.hitstop = Math.max(this.hitstop, kind === "ultimate" ? 12 : 5);
   }
-  private beginStagedSuper(a: Fighter, b: Fighter, jet: boolean) {
-    const config = jet ? jetConfig : furyConfig;
+  private beginStagedSuper(a: Fighter, b: Fighter, kind: "jetGigant" | "gokuFury" | "kirin") {
+    const config = kind === "kirin" ? kirinConfig : kind === "jetGigant" ? jetConfig : furyConfig;
     const state: FuryState = {
       attacker: a.id,
       victim: b.id,
@@ -1771,7 +1841,11 @@ export class Match {
         1 - Math.max(0, b.combo - 1) * 0.08,
       ),
     };
-    if (jet) this.jetGigant = { ...state, hold: 8, openingTip: jetOpener(a)!.tip };
+    if (kind === "jetGigant") this.jetGigant = { ...state, hold: 8, openingTip: jetOpener(a)!.tip };
+    else if (kind === "kirin") this.kirin = {
+      ...state, hold: 5, cursed: !!a.kirinCursed,
+      storm: this.sasukeStormUntil > this.combatFrame ? this.sasukeStormLevel : 0,
+    };
     else this.fury = state;
     a.setState("cinematic");
     b.setState("grabbed");
@@ -1786,8 +1860,8 @@ export class Match {
     this.stageSuper();
   }
   private stageSuper() {
-    const s = (this.jetGigant ?? this.fury)!,
-      scene = this.jetGigant ? jetScene(this.jetGigant) : furyScene(s),
+    const s = (this.kirin ?? this.jetGigant ?? this.fury)!,
+      scene = this.kirin ? kirinScene(this.kirin) : this.jetGigant ? jetScene(this.jetGigant) : furyScene(s),
       a = this.fighters[s.attacker],
       b = this.fighters[s.victim];
     for (const [f, p] of [
@@ -1805,27 +1879,30 @@ export class Match {
     b.stand?.tick(b);
   }
   private stepStagedSuper() {
-    const jet = this.jetGigant;
-    if (jet && jet.hold > 0) {
-      jet.hold--;
+    const jet = this.jetGigant, kirin = this.kirin;
+    const held = kirin ?? jet;
+    if (held && held.hold > 0) {
+      held.hold--;
       return;
     }
-    const config = jet ? jetConfig : furyConfig;
-    const s = (jet ?? this.fury)!,
+    const config = kirin ? kirinConfig : jet ? jetConfig : furyConfig;
+    const s = (kirin ?? jet ?? this.fury)!,
       t = ++s.tick,
       a = this.fighters[s.attacker],
       b = this.fighters[s.victim];
     this.stageSuper();
+    if (kirin && (t === kirinConfig.phases.storm || t === kirinConfig.phases.reveal || t === kirinConfig.phases.dive))
+      this.effect("kirinCharge", a.x, a.y - 130, 9);
     const hit = config.hits.find((h) => h.tick === t);
     if (hit) {
       const finish = hit.kind === "explosion" || hit.kind === "ground";
-      if (jet && "hold" in hit && typeof hit.hold === "number") jet.hold = hit.hold;
+      if (held && "hold" in hit && typeof hit.hold === "number") held.hold = hit.hold;
       const applied = this.damage(b, Math.round(hit.damage * s.scale), finish ? 0 : 1);
       b.combo++;
-      this.recordHit(a, b, `${jet ? "jet" : "fury"}_${hit.kind}`, applied);
+      this.recordHit(a, b, `${kirin ? "kirin" : jet ? "jet" : "fury"}_${hit.kind}`, applied);
       b.gainMeter(2);
       this.effect(
-        !jet && finish ? "roadExplosion" : jet && (finish || hit.kind === "gigant") ? "ultimate" : "hit",
+        kirin ? "kirinThunder" : !jet && finish ? "roadExplosion" : jet && (finish || hit.kind === "gigant") ? "ultimate" : "hit",
         b.x,
         b.y - 78,
         finish ? 16 : 8,
@@ -1844,7 +1921,8 @@ export class Match {
       b.syncReactionClock(false);
       a.buffer.clear();
       b.buffer.clear();
-      this.fury = this.jetGigant = undefined;
+      this.fury = this.jetGigant = this.kirin = undefined;
+      if (kirin) this.sasukeStormUntil = this.sasukeStormLevel = 0;
       this.hitstop = 0;
       this.checkRoundEnd();
     }

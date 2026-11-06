@@ -17809,22 +17809,22 @@ function worldCapsule(capsule, x, y, facing) {
     r: capsule.r
   };
 }
-function pointRectDistance(p, r) {
+function pointRectDistance(p2, r) {
   return Math.hypot(
-    Math.max(r.x - p.x, 0, p.x - r.x - r.w),
-    Math.max(r.y - p.y, 0, p.y - r.y - r.h)
+    Math.max(r.x - p2.x, 0, p2.x - r.x - r.w),
+    Math.max(r.y - p2.y, 0, p2.y - r.y - r.h)
   );
 }
-function pointSegmentDistance(p, a, b) {
+function pointSegmentDistance(p2, a, b) {
   const dx = b.x - a.x, dy = b.y - a.y;
   const t = Math.max(
     0,
     Math.min(
       1,
-      ((p.x - a.x) * dx + (p.y - a.y) * dy) / (dx * dx + dy * dy || 1)
+      ((p2.x - a.x) * dx + (p2.y - a.y) * dy) / (dx * dx + dy * dy || 1)
     )
   );
-  return Math.hypot(p.x - a.x - t * dx, p.y - a.y - t * dy);
+  return Math.hypot(p2.x - a.x - t * dx, p2.y - a.y - t * dy);
 }
 function segmentCrossesRect(a, b, r) {
   let low = 0, high = 1;
@@ -17851,13 +17851,13 @@ function shapeHitsRect(shape, r) {
     pointRectDistance(shape.a, r),
     pointRectDistance(shape.b, r)
   );
-  for (const p of [
+  for (const p2 of [
     { x: r.x, y: r.y },
     { x: r.x + r.w, y: r.y },
     { x: r.x, y: r.y + r.h },
     { x: r.x + r.w, y: r.y + r.h }
   ])
-    distance = Math.min(distance, pointSegmentDistance(p, shape.a, shape.b));
+    distance = Math.min(distance, pointSegmentDistance(p2, shape.a, shape.b));
   return distance <= shape.r;
 }
 
@@ -18017,6 +18017,7 @@ function pacedCharacter(source) {
 }
 
 // src/engine/moves.ts
+var isSuperMove = (move) => !!(move?.super || move?.kind === "ultimate");
 function poseAt(move, tick) {
   tick = animationTick(move, tick);
   let time = 0;
@@ -18086,7 +18087,7 @@ var CombatStand = class {
     this.s.bridgeClip = chain ? this.data.actions[key] ? key : "comboTransition" : void 0;
     let front = timeline.front;
     const first = this.data.actions[timeline.clip].poses.find(
-      (p) => p.hitboxes?.length
+      (p2) => p2.hitboxes?.length
     )?.hitboxes?.[0];
     if (targetX !== void 0 && first) {
       const b = shapeBounds(first), gap = (targetX - owner.x) * owner.facing;
@@ -18265,7 +18266,7 @@ var CombatStand = class {
         const t = owner.move ? animationTick(owner.move, owner.stateFrame) : owner.stateFrame, move = s.timeline;
         if ((owner.move?.special === "rush" || owner.move?.super) && owner.opponent) {
           const centers = this.data.actions[move.clip].poses.flatMap(
-            (p) => (p.hitboxes ?? []).map((shape) => {
+            (p2) => (p2.hitboxes ?? []).map((shape) => {
               const b = shapeBounds(shape);
               return b.x + b.w / 2;
             })
@@ -18283,11 +18284,11 @@ var CombatStand = class {
             )
           };
         }
-        const progress2 = Math.max(
+        const progress3 = Math.max(
           0,
           Math.min(1, (t - move.approachAt) / move.approachTicks)
         );
-        const ease3 = progress2 * progress2 * (3 - 2 * progress2);
+        const ease3 = progress3 * progress3 * (3 - 2 * progress3);
         const targetX2 = owner.x + (s.fromX + (move.front.x - s.fromX) * ease3) * s.facing;
         s.x = owner.move?.special === "rush" || owner.move?.super ? s.x + Math.max(-16, Math.min(16, targetX2 - s.x)) : targetX2;
         s.y = owner.y + s.fromY + (move.front.y - s.fromY) * ease3;
@@ -18316,7 +18317,7 @@ var CombatStand = class {
         s.returnFrame = 0;
         s.facing = owner.facing;
       }
-      const progress2 = Math.min(1, ++s.returnFrame / s.returnDuration), ease3 = progress2 * progress2 * (3 - 2 * progress2);
+      const progress3 = Math.min(1, ++s.returnFrame / s.returnDuration), ease3 = progress3 * progress3 * (3 - 2 * progress3);
       s.x = owner.x + s.fromX + (this.data.neutral.x * owner.facing - s.fromX) * ease3;
       s.y = owner.y + s.fromY + (this.data.neutral.y - s.fromY) * ease3;
       s.facing = owner.facing;
@@ -18327,7 +18328,7 @@ var CombatStand = class {
         returnTicks - 1,
         Math.floor((s.returnFrame - 1) * returnTicks / s.returnDuration)
       );
-      if (progress2 === 1) {
+      if (progress3 === 1) {
         s.mode = "follow";
         s.moveId = "";
         s.timeline = void 0;
@@ -18512,13 +18513,13 @@ var TemporalController = class {
 };
 
 // src/engine/projectiles.ts
-function projectileHits(p, boxes) {
-  const tip = p.facing * 14;
+function projectileHits(p2, boxes) {
+  const tip = p2.facing * 14;
   return boxes.some(
     (box) => shapeHitsRect(
       {
-        a: { x: p.previousX - tip, y: p.previousY },
-        b: { x: p.x + tip, y: p.y },
+        a: { x: p2.previousX - tip, y: p2.previousY },
+        b: { x: p2.x + tip, y: p2.y },
         r: 2
       },
       box
@@ -18676,7 +18677,7 @@ function canStartGokuSpecial(f, id) {
     return (free || airAllowed && f.hitConfirmed && canCancelGokuSpecial(f)) && (airAllowed || f.gokuTeleportLock === 0) && (!airAllowed || f.gokuAirTeleportsUsed < combat_pace_default.airTeleport.maximumPerJumpOrCombo && (move.gokuStrength !== "heavy" || validAirChase(f)));
   if (!free && !canCancelGokuSpecial(f)) return false;
   if (move.projectile && f.match.kiProjectiles.filter(
-    (p) => p.owner === f.id && p.state === "flight"
+    (p2) => p2.owner === f.id && p2.state === "flight"
   ).length + move.projectile.releases.length > goku_specials_default.projectiles.maximumPerOwner)
     return false;
   return true;
@@ -18800,49 +18801,49 @@ function roadPhase(tick) {
   return result;
 }
 function roadScene(s) {
-  const t = s.tick, p = road_roller_default.phases, phase = roadPhase(t), f = s.facing;
+  const t = s.tick, p2 = road_roller_default.phases, phase = roadPhase(t), f = s.facing;
   let ax = s.originX, ay = 580, ac = "roadUltimateStart", at = t;
   let sx = lerp(
     s.standOriginX,
     ax - 30 * f,
-    ease(progress(t, 0, p.preparation))
-  ), sy = lerp(s.standOriginY, 562, ease(progress(t, 0, p.preparation))), sc = "roadUltimateStart", st = t, depth = 0;
+    ease(progress(t, 0, p2.preparation))
+  ), sy = lerp(s.standOriginY, 562, ease(progress(t, 0, p2.preparation))), sc = "roadUltimateStart", st = t, depth = 0;
   let oy = 580, objectClip = "roadBase", objectTick = 0, visible = false;
   const perchX = clamp2(s.rollerX - 50 * f, 60, 1220), perchY = 455;
-  if (t >= p.preparation && t < p.ascent) {
+  if (t >= p2.preparation && t < p2.ascent) {
     ac = "roadFlyingPreparation";
-    at = t - p.preparation;
+    at = t - p2.preparation;
     sc = "roadFlyingPreparation";
     st = at;
   }
-  if (t >= p.ascent && t < p.offscreen) {
-    const u2 = progress(t, p.ascent, p.offscreen);
+  if (t >= p2.ascent && t < p2.offscreen) {
+    const u2 = progress(t, p2.ascent, p2.offscreen);
     ax = lerp(s.originX, perchX, ease(u2));
     ay = 580 - 920 * u2 * u2;
     ac = "roadFlyingUp";
-    at = t - p.ascent;
+    at = t - p2.ascent;
     sc = "roadFlyingUp";
     st = at;
     sx = ax - 30 * f;
     sy = ay - 22;
   }
-  if (t >= p.offscreen && t < p.descent) {
+  if (t >= p2.offscreen && t < p2.descent) {
     ax = perchX;
     ay = -340;
     sx = ax - 30 * f;
     sy = -370;
     ac = "roadFlyingUp";
     sc = "roadFlyingUp";
-    at = t - p.ascent;
+    at = t - p2.ascent;
     st = at;
   }
-  if (t >= p.descent && t < p.impact) {
-    const u2 = progress(t, p.descent, p.impact);
+  if (t >= p2.descent && t < p2.impact) {
+    const u2 = progress(t, p2.descent, p2.impact);
     oy = lerp(-220, 580, u2 * u2);
     ax = perchX;
     ay = oy - 64;
     ac = "roadReturning";
-    at = t - p.descent;
+    at = t - p2.descent;
     sx = s.rollerX - f * 110;
     sy = oy - 75;
     sc = "roadCarrying";
@@ -18852,66 +18853,66 @@ function roadScene(s) {
     objectClip = "roadFalling";
     objectTick = at;
   }
-  if (t >= p.impact && t < p.explosion) {
+  if (t >= p2.impact && t < p2.explosion) {
     visible = true;
     ax = perchX;
     ay = perchY;
-    ac = t < p.barrage ? "roadImpactPose" : "roadRollerPose";
-    at = t - (t < p.barrage ? p.impact : p.barrage);
-    const grip = ease(progress(t, p.impact, p.barrage));
+    ac = t < p2.barrage ? "roadImpactPose" : "roadRollerPose";
+    at = t - (t < p2.barrage ? p2.impact : p2.barrage);
+    const grip = ease(progress(t, p2.impact, p2.barrage));
     sx = lerp(s.rollerX - f * 110, s.rollerX + f * 30, grip);
     sy = lerp(505, 570, grip);
     depth = 20;
-    sc = t < p.barrage ? "roadReposition" : t < p.barrage + 12 ? "roadFirstPunch" : t < p.finisher ? "roadBarrage" : "roadFinalHeavy";
-    st = t < p.barrage ? t - p.impact : t < p.finisher ? t - p.barrage : t - p.finisher;
-    objectClip = t < p.barrage ? "roadImpact" : "roadPunched";
-    objectTick = t - (t < p.barrage ? p.impact : p.barrage);
+    sc = t < p2.barrage ? "roadReposition" : t < p2.barrage + 12 ? "roadFirstPunch" : t < p2.finisher ? "roadBarrage" : "roadFinalHeavy";
+    st = t < p2.barrage ? t - p2.impact : t < p2.finisher ? t - p2.barrage : t - p2.finisher;
+    objectClip = t < p2.barrage ? "roadImpact" : "roadPunched";
+    objectTick = t - (t < p2.barrage ? p2.impact : p2.barrage);
   }
-  if (t >= p.explosion && t < p.landing) {
-    const u2 = ease(progress(t, p.explosion, p.landing));
+  if (t >= p2.explosion && t < p2.landing) {
+    const u2 = ease(progress(t, p2.explosion, p2.landing));
     ax = lerp(perchX, s.landingX, u2);
     ay = lerp(perchY, 580, u2);
     ac = "roadUltimateFinish";
-    at = t - p.explosion;
+    at = t - p2.explosion;
     sx = lerp(s.rollerX + f * 30, s.landingX - 30 * f, u2);
     sy = lerp(570, 562, u2);
     sc = "roadUltimateRecovery";
-    st = t - p.explosion;
+    st = t - p2.explosion;
     depth = u2 > 0.6 ? 0 : 20;
-    visible = t < p.smoke + 4;
+    visible = t < p2.smoke + 4;
     objectClip = "roadExplosion";
-    objectTick = t - p.explosion;
+    objectTick = t - p2.explosion;
   }
-  if (t >= p.landing) {
+  if (t >= p2.landing) {
     ax = s.landingX;
     ay = 580;
-    ac = t < p.finish ? "roadUltimateFinish" : "roadReturnIdle";
-    at = t - (t < p.finish ? p.explosion : p.finish);
+    ac = t < p2.finish ? "roadUltimateFinish" : "roadReturnIdle";
+    at = t - (t < p2.finish ? p2.explosion : p2.finish);
     sx = ax - 30 * f;
     sy = 562;
     sc = "roadReturnBehind";
-    st = t - p.landing;
+    st = t - p2.landing;
     depth = 0;
   }
-  const scale = t < p.offscreen || t >= p.descent && t < p.landing ? 2 : 1;
+  const scale = t < p2.offscreen || t >= p2.descent && t < p2.landing ? 2 : 1;
   const cx = clamp2(
-    t < p.descent ? (s.originX + s.targetX) / 2 : s.rollerX,
+    t < p2.descent ? (s.originX + s.targetX) / 2 : s.rollerX,
     640 / scale,
     1280 - 640 / scale
   );
   let cy = 580;
-  if (t >= p.ascent && t < p.offscreen)
-    cy -= 100 * ease(progress(t, p.ascent, p.offscreen));
+  if (t >= p2.ascent && t < p2.offscreen)
+    cy -= 100 * ease(progress(t, p2.ascent, p2.offscreen));
   let shake = 0;
   for (const hit of [
-    p.impact,
+    p2.impact,
     ...road_roller_default.punchTicks,
     road_roller_default.finalPunchTick,
-    p.explosion
+    p2.explosion
   ]) {
     const age = t - hit;
     if (age >= 0 && age < road_roller_default.shake.length)
-      shake += road_roller_default.shake[age] * (hit === p.explosion ? 1.4 : hit === p.impact ? 1 : 0.35);
+      shake += road_roller_default.shake[age] * (hit === p2.explosion ? 1.4 : hit === p2.impact ? 1 : 0.35);
   }
   return {
     phase,
@@ -18926,9 +18927,9 @@ function roadScene(s) {
     },
     victim: {
       x: s.targetX,
-      y: lerp(s.targetY ?? 580, 580, ease(progress(t, 0, p.preparation))),
-      clip: t < p.impact ? "damageMedium" : "downed",
-      tick: t < p.impact ? t % 12 : t - p.impact
+      y: lerp(s.targetY ?? 580, 580, ease(progress(t, 0, p2.preparation))),
+      clip: t < p2.impact ? "damageMedium" : "downed",
+      tick: t < p2.impact ? t % 12 : t - p2.impact
     },
     camera: {
       scale,
@@ -19145,7 +19146,7 @@ function track(t, keys) {
   return { x: k[1], y: k[2] };
 }
 function furyScene(s) {
-  const t = s.tick, f = s.facing, p = goku_fury_default.phases;
+  const t = s.tick, f = s.facing, p2 = goku_fury_default.phases;
   const stage = clamp3(s.targetX, 310, 970), endX = clamp3(stage + 60 * f, 180, 1100);
   const keys = [
     [0, s.targetX, s.targetY],
@@ -19297,7 +19298,7 @@ function furyScene(s) {
   }
   x = clamp3(x, 42, 1238);
   let phase = "ground";
-  for (const [name, start] of Object.entries(p)) if (t >= start) phase = name;
+  for (const [name, start] of Object.entries(p2)) if (t >= start) phase = name;
   let vc = t >= 330 ? "downed" : t < 34 ? "damageMedium" : t < 60 ? "launched" : t < 224 ? "damageAir" : "falling";
   const lastHit = goku_fury_default.hits.filter((h) => h.tick <= t).at(-1)?.tick ?? 0;
   if (t >= 278 && t < 330) vc = "damageAir";
@@ -19629,7 +19630,7 @@ function reactionBoxes(f) {
   if (!state) return;
   const sequence2 = f.data.reactions?.[state.clip];
   if (!sequence2) return;
-  const total = sequence2.poses.reduce((sum, p) => sum + p.ticks, 0);
+  const total = sequence2.poses.reduce((sum, p2) => sum + p2.ticks, 0);
   let time = sequence2.loop ? state.tick % total : Math.min(state.tick, total - 1);
   for (const pose of sequence2.poses) {
     if (time < pose.ticks) return pose.hurtboxes;
@@ -19989,8 +19990,8 @@ var variants = {
 function luffyFootPose(id, length) {
   const spec = variants[id] ?? variants.stand_medium;
   const t = Math.max(0, Math.min(1, (length - 17) / 46));
-  const p = t * t * (3 - 2 * t);
-  const angle = -0.62 + (spec.angle + 0.62) * p;
+  const p2 = t * t * (3 - 2 * t);
+  const angle = -0.62 + (spec.angle + 0.62) * p2;
   return { ...spec, cos: Math.cos(angle), sin: Math.sin(angle) };
 }
 function luffyFootPoint(ankle, axis, pose, x, y) {
@@ -20004,7 +20005,7 @@ function luffyFootPoint(ankle, axis, pose, x, y) {
 }
 
 // src/engine/elastic.ts
-var pixel = (p) => ({ x: Math.round(p.x), y: Math.round(p.y) });
+var pixel = (p2) => ({ x: Math.round(p2.x), y: Math.round(p2.y) });
 function elasticGeometry(pose) {
   const finite = [
     pose.root.x,
@@ -20260,13 +20261,13 @@ function limbsAt(actor, name, rank, tick) {
     0,
     Math.min(1, (after - move.active) / (move.recovery * 0.77))
   );
-  const progress2 = name === "gatling" ? live ? [0, 0.33, 0.67, 0.91, 1, 0.48][within] : after >= move.active ? 0.38 * (1 - recoil) : 0 : after < 0 ? 0 : live ? Math.min(1, (after + 1) / (name === "pistol" ? 6 : 4)) : (1 - recoil) ** 2;
+  const progress3 = name === "gatling" ? live ? [0, 0.33, 0.67, 0.91, 1, 0.48][within] : after >= move.active ? 0.38 * (1 - recoil) : 0 : after < 0 ? 0 : live ? Math.min(1, (after + 1) / (name === "pistol" ? 6 : 4)) : (1 - recoil) ** 2;
   const front = name === "gatling" ? pulse % 2 : 0;
   const depth = name === "bazooka" || name === "gatling" ? 2 : 1;
   return Array.from({ length: depth }, (_, side) => {
     const [x, y] = data[name][frame].joints[side];
     const driving = name !== "gatling" || side === front;
-    const extent = driving ? progress2 : 0;
+    const extent = driving ? progress3 : 0;
     const tucked = x + (after < 0 ? 5 - 20 * (tick / move.startup) : 12);
     const punchHeight = name === "gatling" ? -88 + (pulse % 3 - 1) * 7 : name === "bazooka" ? -80 + side * 10 : -88;
     const length = range - (name === "gatling" ? pulse % 3 * 5 : side * 4);
@@ -20429,6 +20430,130 @@ var sasuke_specials_default = {
 // src/data/sasuke-special-frames.json
 var sasuke_special_frames_default = { senbon: [{ hurtboxes: [{ x: -11, y: -122, w: 35, h: 29 }, { x: -30, y: -93, w: 71, h: 47 }, { x: -39, y: -46, w: 84, h: 46 }] }, { hurtboxes: [{ x: -20, y: -123, w: 48, h: 30 }, { x: -30, y: -93, w: 79, h: 46 }, { x: -35, y: -47, w: 83, h: 47 }], release: { x: 42, y: -75 } }, { hurtboxes: [{ x: -6, y: -121, w: 35, h: 29 }, { x: -26, y: -92, w: 83, h: 46 }, { x: -35, y: -46, w: 83, h: 46 }], release: { x: 62, y: -85 } }, { hurtboxes: [{ x: -10, y: -122, w: 34, h: 29 }, { x: -26, y: -93, w: 62, h: 47 }, { x: -39, y: -46, w: 83, h: 46 }] }], eiso: [{ hurtboxes: [{ x: -8, y: -118, w: 36, h: 28 }, { x: -25, y: -90, w: 67, h: 45 }, { x: -45, y: -45, w: 98, h: 45 }] }, { hurtboxes: [{ x: -33, y: -120, w: 64, h: 29 }, { x: -34, y: -91, w: 77, h: 45 }, { x: -45, y: -46, w: 101, h: 46 }], release: { x: -10, y: -96 } }, { hurtboxes: [{ x: 4, y: -113, w: 37, h: 27 }, { x: -18, y: -86, w: 75, h: 43 }, { x: -45, y: -43, w: 102, h: 43 }], release: { x: 76, y: -79 } }, { hurtboxes: [{ x: -6, y: -119, w: 34, h: 29 }, { x: -21, y: -90, w: 63, h: 45 }, { x: -45, y: -45, w: 96, h: 45 }] }], chidori: [{ hurtboxes: [{ x: -9, y: -103, w: 42, h: 25 }, { x: -36, y: -78, w: 76, h: 39 }, { x: -45, y: -39, w: 79, h: 39 }] }, { hurtboxes: [{ x: -1, y: -110, w: 42, h: 26 }, { x: -29, y: -84, w: 74, h: 42 }, { x: -45, y: -42, w: 85, h: 42 }], release: { x: 39, y: -65 } }, { hurtboxes: [{ x: 6, y: -105, w: 47, h: 25 }, { x: -26, y: -80, w: 83, h: 40 }, { x: -45, y: -40, w: 102, h: 39 }], release: { x: 82, y: -73 } }, { hurtboxes: [{ x: -13, y: -119, w: 38, h: 29 }, { x: -29, y: -90, w: 66, h: 45 }, { x: -42, y: -45, w: 92, h: 45 }] }], gokakyu: [{ hurtboxes: [{ x: -16, y: -127, w: 32, h: 30 }, { x: -25, y: -97, w: 54, h: 49 }, { x: -39, y: -48, w: 83, h: 48 }] }, { hurtboxes: [{ x: -19, y: -128, w: 33, h: 31 }, { x: -26, y: -97, w: 53, h: 48 }, { x: -38, y: -49, w: 81, h: 49 }], release: { x: 9, y: -104 } }, { hurtboxes: [{ x: -3, y: -117, w: 41, h: 28 }, { x: -34, y: -89, w: 74, h: 45 }, { x: -43, y: -44, w: 91, h: 44 }], release: { x: 32, y: -90 } }, { hurtboxes: [{ x: -14, y: -126, w: 35, h: 30 }, { x: -29, y: -96, w: 74, h: 48 }, { x: -38, y: -48, w: 82, h: 48 }] }], hosenka: [{ hurtboxes: [{ x: -14, y: -126, w: 32, h: 30 }, { x: -25, y: -96, w: 58, h: 48 }, { x: -28, y: -48, w: 53, h: 48 }] }, { hurtboxes: [{ x: -16, y: -127, w: 32, h: 30 }, { x: -29, y: -97, w: 63, h: 49 }, { x: -30, y: -48, w: 54, h: 48 }], release: { x: 10, y: -101 } }, { hurtboxes: [{ x: -8, y: -121, w: 38, h: 29 }, { x: -34, y: -92, w: 71, h: 46 }, { x: -32, y: -46, w: 59, h: 46 }], release: { x: 24, y: -96 } }, { hurtboxes: [{ x: -13, y: -125, w: 34, h: 30 }, { x: -27, y: -95, w: 69, h: 47 }, { x: -34, y: -48, w: 57, h: 48 }] }], goryuka: [{ hurtboxes: [{ x: -22, y: -122, w: 44, h: 29 }, { x: -34, y: -93, w: 72, h: 47 }, { x: -45, y: -46, w: 101, h: 46 }] }, { hurtboxes: [{ x: -21, y: -125, w: 35, h: 30 }, { x: -30, y: -95, w: 62, h: 47 }, { x: -45, y: -48, w: 99, h: 48 }], release: { x: 7, y: -110 } }, { hurtboxes: [{ x: -22, y: -125, w: 40, h: 30 }, { x: -25, y: -95, w: 62, h: 47 }, { x: -45, y: -48, w: 102, h: 48 }], release: { x: 9, y: -111 } }, { hurtboxes: [{ x: -14, y: -122, w: 33, h: 29 }, { x: -34, y: -93, w: 75, h: 47 }, { x: -45, y: -46, w: 98, h: 46 }] }], serpents: [{ hurtboxes: [{ x: -23, y: -120, w: 53, h: 29 }, { x: -45, y: -91, w: 87, h: 45 }, { x: -45, y: -46, w: 102, h: 46 }] }, { hurtboxes: [{ x: -17, y: -126, w: 66, h: 30 }, { x: -39, y: -96, w: 81, h: 48 }, { x: -45, y: -48, w: 102, h: 48 }], release: { x: 39, y: -104 } }, { hurtboxes: [{ x: -32, y: -116, w: 70, h: 28 }, { x: -37, y: -88, w: 94, h: 44 }, { x: -45, y: -44, w: 102, h: 44 }], release: { x: 68, y: -45 } }, { hurtboxes: [{ x: -20, y: -126, w: 41, h: 30 }, { x: -38, y: -96, w: 78, h: 48 }, { x: -45, y: -48, w: 102, h: 48 }] }], nagashi: [{ hurtboxes: [{ x: -23, y: -130, w: 43, h: 31 }, { x: -39, y: -99, w: 71, h: 50 }, { x: -45, y: -49, w: 102, h: 49 }] }, { hurtboxes: [{ x: -30, y: -113, w: 58, h: 27 }, { x: -45, y: -86, w: 80, h: 43 }, { x: -45, y: -43, w: 102, h: 43 }], release: { x: -10, y: -65 } }, { hurtboxes: [{ x: -23, y: -115, w: 48, h: 28 }, { x: -45, y: -87, w: 102, h: 43 }, { x: -45, y: -44, w: 102, h: 44 }], release: { x: -2, y: -62 } }, { hurtboxes: [{ x: -24, y: -129, w: 42, h: 31 }, { x: -40, y: -98, w: 70, h: 49 }, { x: -45, y: -49, w: 102, h: 49 }] }] };
 
+// src/data/sasuke-polish.json
+var sasuke_polish_default = {
+  goryuka: {
+    arenaWidth: 1280,
+    cycles: 5,
+    minimumWavelength: 155,
+    heightOffset: -8,
+    leadIn: 42,
+    bodyLength: 192,
+    offensiveLength: 104,
+    headRadius: 28,
+    exitPadding: 42,
+    maximumLife: 205,
+    base: { speed: 12.5, amplitude: 77 },
+    curse: { speed: 14, amplitude: 91 }
+  },
+  chidori: {
+    base: {
+      holds: [4, 4, 3, 5, 6, 25],
+      drive: [6, 10, 14, 19, 22, 23, 23, 22, 21, 20, 18, 16, 13, 10],
+      hitstop: 12,
+      push: 8.2
+    },
+    curse: {
+      holds: [4, 4, 3, 5, 6, 27],
+      drive: [7, 12, 16, 21, 24, 25, 25, 24, 23, 22, 20, 18, 15, 12],
+      hitstop: 14,
+      push: 9
+    }
+  },
+  nagashi: {
+    base: { reach: 115, height: 147, holds: [4, 5, 8, 29], stun: 46 },
+    curse: { reach: 135, height: 158, holds: [9, 8, 31], stun: 49 }
+  }
+};
+
+// src/data/sasuke-polish-art.json
+var sasuke_polish_art_default = { chidori: [{ release: { x: 38, y: -35 }, hurtboxes: [{ x: -12, y: -107, w: 49, h: 32 }, { x: -28, y: -78, w: 61, h: 42 }, { x: -43, y: -45, w: 91, h: 45 }] }, { release: { x: 63, y: -38 }, hurtboxes: [{ x: -12, y: -107, w: 49, h: 32 }, { x: -28, y: -78, w: 61, h: 42 }, { x: -43, y: -45, w: 91, h: 45 }] }, { release: { x: 70, y: -51 }, hurtboxes: [{ x: -12, y: -107, w: 49, h: 32 }, { x: -28, y: -78, w: 61, h: 42 }, { x: -43, y: -45, w: 91, h: 45 }] }, { release: { x: 76, y: -67 }, hurtboxes: [{ x: -12, y: -107, w: 49, h: 32 }, { x: -28, y: -78, w: 61, h: 42 }, { x: -43, y: -45, w: 91, h: 45 }] }, { release: { x: 84, y: -93 }, hurtboxes: [{ x: -12, y: -126, w: 49, h: 32 }, { x: -28, y: -97, w: 61, h: 42 }, { x: -43, y: -45, w: 91, h: 45 }] }, { release: { x: 38, y: -97 }, hurtboxes: [{ x: -12, y: -126, w: 49, h: 32 }, { x: -28, y: -97, w: 61, h: 42 }, { x: -43, y: -45, w: 91, h: 45 }] }], chidoriCurse: [{ release: { x: 49, y: -44 }, hurtboxes: [{ x: -12, y: -107, w: 49, h: 32 }, { x: -28, y: -78, w: 61, h: 42 }, { x: -43, y: -45, w: 91, h: 45 }] }, { release: { x: 59, y: -35 }, hurtboxes: [{ x: -12, y: -107, w: 49, h: 32 }, { x: -28, y: -78, w: 61, h: 42 }, { x: -43, y: -45, w: 91, h: 45 }] }, { release: { x: 61, y: -35 }, hurtboxes: [{ x: -12, y: -107, w: 49, h: 32 }, { x: -28, y: -78, w: 61, h: 42 }, { x: -43, y: -45, w: 91, h: 45 }] }, { release: { x: 71, y: -51 }, hurtboxes: [{ x: -12, y: -107, w: 49, h: 32 }, { x: -28, y: -78, w: 61, h: 42 }, { x: -43, y: -45, w: 91, h: 45 }] }, { release: { x: 85, y: -99 }, hurtboxes: [{ x: -12, y: -126, w: 49, h: 32 }, { x: -28, y: -97, w: 61, h: 42 }, { x: -43, y: -45, w: 91, h: 45 }] }, { release: { x: 39, y: -80 }, hurtboxes: [{ x: -12, y: -126, w: 49, h: 32 }, { x: -28, y: -97, w: 61, h: 42 }, { x: -43, y: -45, w: 91, h: 45 }] }], fire: [{ x: 91, y: 45 }, { x: 91, y: 53 }, { x: 92, y: 65 }, { x: 90, y: 47 }, { x: 91, y: 55 }, { x: 91, y: 66 }], blackDragon: [{ x: 484, y: 153 }, { x: 484, y: 163 }, { x: 480, y: 263 }, { x: 480, y: 301 }], blackSky: [{ x: 256, y: 182 }, { x: 256, y: 182 }, { x: 256, y: 283 }, { x: 256, y: 235 }] };
+
+// src/engine/sasuke-polish.ts
+var fire = sasuke_polish_default.goryuka;
+function fireDragonWave(origin, facing, cursed) {
+  const span = Math.max(0, facing > 0 ? fire.arenaWidth - origin.x : origin.x);
+  const style = cursed ? fire.curse : fire.base;
+  return {
+    origin,
+    facing,
+    distance: 0,
+    struck: false,
+    period: Math.max(fire.minimumWavelength, span / fire.cycles),
+    amplitude: Math.min(
+      style.amplitude * Math.min(1, span / 580),
+      557 - origin.y
+    ),
+    limit: span + fire.bodyLength + fire.exitPadding
+  };
+}
+function fireDragonPoint(w, distance) {
+  const t = Math.max(0, distance);
+  const ramp = Math.min(1, t / fire.leadIn);
+  const envelope = ramp * ramp * (3 - 2 * ramp);
+  return {
+    x: w.origin.x + t * w.facing,
+    y: w.origin.y + envelope * (fire.heightOffset - w.amplitude * Math.sin(t * 2 * Math.PI / w.period))
+  };
+}
+function fireDragonVolumes(w, previous, radius) {
+  const point = fireDragonPoint(w, w.distance);
+  const hit = [{ a: previous, b: point, r: radius }];
+  const span = Math.min(w.distance, fire.offensiveLength);
+  for (let i = 0; i < span; i += 16) {
+    hit.push({
+      a: fireDragonPoint(w, w.distance - i),
+      b: fireDragonPoint(w, w.distance - Math.min(span, i + 16)),
+      r: Math.max(10, radius * (0.71 - i / 340))
+    });
+  }
+  return hit;
+}
+function chidoriProfile(cursed) {
+  return cursed ? sasuke_polish_default.chidori.curse : sasuke_polish_default.chidori.base;
+}
+function chidoriMove(base, cursed) {
+  const { holds, hitstop, push } = chidoriProfile(cursed);
+  const cels = cursed ? sasuke_polish_art_default.chidoriCurse : sasuke_polish_art_default.chidori;
+  return {
+    ...base,
+    hitstop,
+    push,
+    launch: -2.4,
+    drive: void 0,
+    startup: holds[0] + holds[1] + holds[2],
+    active: holds[3] + holds[4],
+    recovery: holds[5],
+    poses: holds.map((ticks, i) => ({
+      ...cels[i],
+      ticks,
+      phase: i < 3 ? "startup" : i < 5 ? "active" : "recovery"
+    }))
+  };
+}
+var chidoriVelocity = (tick, cursed) => chidoriProfile(cursed).drive[tick - 8] ?? 0;
+function nagashiProfile(cursed) {
+  return cursed ? sasuke_polish_default.nagashi.curse : sasuke_polish_default.nagashi.base;
+}
+function nagashiVolumes(age, cursed) {
+  const { reach, height } = nagashiProfile(cursed);
+  const growth = 0.56 + 0.44 * Math.max(0, Math.min(1, (age + 1) / 3));
+  const root = { x: 0, y: -64 };
+  return [-1, 1].flatMap((side) => [
+    { a: root, b: { x: side * reach * growth, y: -63 }, r: 14 },
+    {
+      a: { x: 0, y: -84 },
+      b: { x: side * reach * 0.68 * growth, y: -height },
+      r: 13
+    },
+    {
+      a: { x: 0, y: -43 },
+      b: { x: side * reach * 0.83 * growth, y: -14 },
+      r: 13
+    }
+  ]);
+}
+
 // src/engine/sasuke-specials.ts
 var sasukeSpecialBalance = sasuke_specials_default;
 var sasukeTechniques = sasuke_specials_default.techniques;
@@ -20441,7 +20566,7 @@ function isSasukeSpecial(id) {
 var commandMoves = {
   ki: { light: "senbon", medium: "eiso", heavy: "chidori" },
   kamehameha: { light: "gokakyu", medium: "hosenka", heavy: "goryuka" },
-  teleport: { light: "serpents", medium: "nagashi", heavy: "reserved" }
+  teleport: { light: "serpents", medium: "nagashi", heavy: "curse" }
 };
 function sasukeSpecialCommand(buffer, button) {
   if (button !== "light" && button !== "medium" && button !== "heavy") return;
@@ -20480,35 +20605,531 @@ function sasukeSpecialContact(id, elapsed, facing, rootX) {
 var sasukeSpecialMoves = Object.fromEntries(
   sasukeSpecialIds.map((id) => {
     const {
-      holds,
+      holds: originalHolds,
       shots: _shots,
       reach: _reach,
       ...stats
     } = sasukeTechniques[id];
+    const nagashi = id === "nagashi" ? nagashiProfile(false) : void 0;
+    const holds = nagashi?.holds ?? originalHolds;
     const [seal, gather, active2, recovery2] = holds;
     const poses = holds.map((ticks, index) => ({
       ticks,
       phase: index < 2 ? "startup" : index === 2 ? "active" : "recovery",
       ...bodyCels[id][index]
     }));
+    const move = {
+      ...stats,
+      ...nagashi ? { stun: nagashi.stun } : {},
+      special: id,
+      startup: seal + gather,
+      active: active2,
+      recovery: recovery2,
+      kind: "strike",
+      rank: id === "senbon" || id === "hosenka" || id === "serpents" ? 1 : 2,
+      level: "mid",
+      box: { x: 0, y: 0, w: 0, h: 0 },
+      cancels: [],
+      poses
+    };
+    return [id, id === "chidori" ? chidoriMove(move, false) : move];
+  })
+);
+
+// src/data/sasuke-curse.json
+var sasuke_curse_default = {
+  durationTicks: 780,
+  cooldownTicks: 1080,
+  damageMultiplier: 1.15,
+  movementMultiplier: 1.1,
+  activationHolds: [6, 6, 6, 5, 5, 5],
+  reversionHolds: [6, 6, 5],
+  airBurst: { speeds: [8, 12, 14, 13, 10, 8, 6.82], fallCap: 3.2 },
+  normalTimings: {
+    stand_light: [4, 4, 12],
+    stand_medium: [6, 5, 15],
+    stand_heavy: [10, 6, 23],
+    crouch_light: [4, 4, 12],
+    crouch_medium: [7, 5, 16],
+    crouch_heavy: [10, 6, 22],
+    air_light: [4, 4, 10],
+    air_medium: [6, 5, 12],
+    air_heavy: [9, 6, 16]
+  },
+  specials: {
+    senbon: {
+      holds: [9, 11, 18],
+      shots: [
+        { at: 0, speed: 25, rise: -0.9, radius: 5, life: 31 },
+        { at: 3, speed: 27, rise: -0.22, radius: 5, life: 31 },
+        { at: 6, speed: 28, rise: 0.33, radius: 5, life: 31 },
+        { at: 9, speed: 26, rise: 0.9, radius: 5, life: 31 }
+      ]
+    },
+    eiso: { holds: [11, 7, 32], reach: 238, push: 6.1 },
+    chidori: { holds: [11, 8, 25], push: 8, hitstop: 11, drive: { from: 6, to: 18, speed: 12.8 } },
+    gokakyu: {
+      holds: [11, 8, 23],
+      shots: [{ at: 0, speed: 13.5, rise: 0.35, radius: 29, life: 75 }]
+    },
+    hosenka: {
+      holds: [13, 17, 24],
+      shots: [
+        { at: 0, speed: 13, rise: -2.6, radius: 13, life: 60 },
+        { at: 4, speed: 16, rise: -0.8, radius: 14, life: 57 },
+        { at: 8, speed: 15, rise: 0.65, radius: 14, life: 57 },
+        { at: 12, speed: 13, rise: 1.95, radius: 13, life: 60 }
+      ]
+    },
+    goryuka: {
+      holds: [17, 10, 32],
+      shots: [{ at: 0, speed: 16, rise: -5.2, radius: 37, life: 67 }]
+    },
+    serpents: {
+      holds: [12, 9, 21],
+      stun: 46,
+      shots: [{ at: 0, speed: 15, rise: 0.55, radius: 17, life: 18 }]
+    },
+    nagashi: { holds: [9, 6, 26], stun: 43, blockstun: 13 }
+  }
+};
+
+// src/data/sasuke-curse-frames.json
+var sasuke_curse_frames_default = { clips: { idle: { frames: [0, 1, 2, 1], holds: [8, 8, 8, 8] }, walkForward: { frames: [3, 4, 5, 4], holds: [4, 4, 4, 4] }, walkBack: { frames: [6, 7, 8, 7], holds: [5, 4, 5, 4] }, dashForward: { frames: [9, 15, 12], holds: [4, 4, 4] }, backdash: { frames: [10, 14, 16], holds: [5, 4, 3] }, airBurst: { frames: [15], holds: [7] }, crouchStart: { frames: [11], holds: [6] }, crouchIdle: { frames: [11], holds: [7] }, crouchEnd: { frames: [11, 16], holds: [3, 3] }, jumpStart: { frames: [11, 12], holds: [2, 3] }, jumpRise: { frames: [12, 13], holds: [5, 6] }, jumpApex: { frames: [13], holds: [5] }, jumpFall: { frames: [13, 14], holds: [6, 5] }, landing: { frames: [14, 11, 16], holds: [2, 2, 3] }, guardStand: { frames: [16], holds: [6] }, guardImpactStand: { frames: [16, 17, 16], holds: [3, 4, 4] }, guardCrouch: { frames: [11], holds: [6] }, guardImpactCrouch: { frames: [11, 16, 11], holds: [3, 4, 4] }, damageLight: { frames: [17, 16], holds: [8, 9] }, damageMedium: { frames: [17, 16], holds: [8, 9] }, damageHeavy: { frames: [17, 16], holds: [8, 9] }, grabbed: { frames: [17, 16], holds: [8, 9] }, damageCrouch: { frames: [17, 11], holds: [8, 9] }, damageAir: { frames: [69], holds: [10] }, launched: { frames: [69], holds: [10] }, falling: { frames: [69], holds: [10] }, downed: { frames: [70], holds: [15] }, getup: { frames: [70, 71], holds: [7, 12] }, taunt: { frames: [1, 2], holds: [15, 15] }, stand_light: { frames: [18, 19, 20], holds: [4, 4, 12] }, stand_medium: { frames: [21, 22, 23], holds: [6, 5, 15] }, stand_heavy: { frames: [24, 25, 26], holds: [10, 6, 23] }, crouch_light: { frames: [27, 28, 29], holds: [4, 4, 12] }, crouch_medium: { frames: [30, 31, 32], holds: [7, 5, 16] }, crouch_heavy: { frames: [33, 34, 35], holds: [10, 6, 22] }, air_light: { frames: [36, 37, 38], holds: [4, 4, 10] }, air_medium: { frames: [39, 40, 41], holds: [6, 5, 12] }, air_heavy: { frames: [42, 43, 44], holds: [9, 6, 16] }, senbon: { frames: [45, 46, 47], holds: [9, 11, 18] }, eiso: { frames: [48, 49, 50], holds: [11, 7, 32] }, chidori: { frames: [51, 52, 53], holds: [11, 8, 25] }, gokakyu: { frames: [54, 55, 56], holds: [11, 8, 23] }, hosenka: { frames: [57, 58, 59], holds: [13, 17, 24] }, goryuka: { frames: [60, 61, 62], holds: [17, 10, 32] }, serpents: { frames: [63, 64, 65], holds: [12, 9, 21] }, nagashi: { frames: [66, 67, 68], holds: [9, 6, 26] }, curse_awaken: { frames: [72, 73, 74, 75, 76, 77], holds: [6, 6, 6, 5, 5, 5] }, curse_revert: { frames: [78, 79, 80], holds: [6, 6, 5] } }, cels: [{ hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -97, w: 38, h: 26 }, { x: -25, y: -72, w: 54, h: 53 }, { x: -32, y: -19, w: 70, h: 19 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }], hitboxes: [{ a: { x: 30, y: -89 }, b: { x: 69, y: -91 }, r: 10 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }], hitboxes: [{ a: { x: 41, y: -74 }, b: { x: 78, y: -77 }, r: 12 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }], hitboxes: [{ a: { x: 32, y: -75 }, b: { x: 126, y: -103 }, r: 13 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -97, w: 38, h: 26 }, { x: -25, y: -72, w: 54, h: 53 }, { x: -32, y: -19, w: 70, h: 19 }] }, { hurtboxes: [{ x: -14, y: -97, w: 38, h: 26 }, { x: -25, y: -72, w: 54, h: 53 }, { x: -32, y: -19, w: 70, h: 19 }], hitboxes: [{ a: { x: 37, y: -66 }, b: { x: 62, y: -64 }, r: 10 }] }, { hurtboxes: [{ x: -14, y: -97, w: 38, h: 26 }, { x: -25, y: -72, w: 54, h: 53 }, { x: -32, y: -19, w: 70, h: 19 }] }, { hurtboxes: [{ x: -14, y: -97, w: 38, h: 26 }, { x: -25, y: -72, w: 54, h: 53 }, { x: -32, y: -19, w: 70, h: 19 }] }, { hurtboxes: [{ x: -14, y: -97, w: 38, h: 26 }, { x: -25, y: -72, w: 54, h: 53 }, { x: -32, y: -19, w: 70, h: 19 }], hitboxes: [{ a: { x: 55, y: -20 }, b: { x: 78, y: -13 }, r: 10 }] }, { hurtboxes: [{ x: -14, y: -97, w: 38, h: 26 }, { x: -25, y: -72, w: 54, h: 53 }, { x: -32, y: -19, w: 70, h: 19 }] }, { hurtboxes: [{ x: -14, y: -97, w: 38, h: 26 }, { x: -25, y: -72, w: 54, h: 53 }, { x: -32, y: -19, w: 70, h: 19 }] }, { hurtboxes: [{ x: -14, y: -97, w: 38, h: 26 }, { x: -25, y: -72, w: 54, h: 53 }, { x: -32, y: -19, w: 70, h: 19 }], hitboxes: [{ a: { x: 18, y: -89 }, b: { x: 53, y: -114 }, r: 15 }] }, { hurtboxes: [{ x: -14, y: -97, w: 38, h: 26 }, { x: -25, y: -72, w: 54, h: 53 }, { x: -32, y: -19, w: 70, h: 19 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }], hitboxes: [{ a: { x: 27, y: -86 }, b: { x: 55, y: -90 }, r: 11 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }], hitboxes: [{ a: { x: 45, y: -81 }, b: { x: 77, y: -86 }, r: 13 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }], hitboxes: [{ a: { x: 46, y: -41 }, b: { x: 71, y: -24 }, r: 15 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }], release: { x: 17, y: -98 } }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }], release: { x: 48, y: -100 } }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }], release: { x: -6, y: -97 } }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }], release: { x: 65, y: -89 } }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }], release: { x: -4, y: -27 } }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }], release: { x: 73, y: -72 } }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }], release: { x: 17, y: -105 } }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }], release: { x: 20, y: -101 } }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }], release: { x: 17, y: -114 } }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }], release: { x: 31, y: -96 } }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }], release: { x: 60, y: -77 } }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }], release: { x: -10, y: -47 } }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }], release: { x: -1, y: -90 } }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -35, y: -31, w: 87, h: 31 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }] };
+
+// src/data/sasuke.json
+var sasuke_default = {
+  id: "sasuke",
+  name: "Sasuke Uchiha \xB7 Hebi",
+  health: 1e3,
+  speed: 4.65,
+  jump: -16.9,
+  gravity: 0.73,
+  meterGainScale: 0,
+  airChaseSpeed: 6.6,
+  airChaseTicks: 10,
+  locomotion: {
+    backSpeed: 3.65,
+    airSpeed: 6.2,
+    jumpStartup: 5,
+    landingTicks: 7,
+    dashForward: [3, 7, 13, 18, 19, 17, 15, 13, 10, 6, 3, 0],
+    backdash: [3, 8, 13, 16, 16, 15, 13, 11, 8, 5, 2, 0]
+  },
+  combatLimits: { maxHits: 11, maxAirHits: 6, maxTicks: 280 }
+};
+
+// src/data/sasuke-frames.json
+var sasuke_frames_default = { movement: { idle: [0, 1, 2, 3, 4, 5], walkForward: [6, 7, 8, 9, 10, 11], walkBack: [12, 13, 14, 15, 16, 17], dashForward: [18, 19, 20, 21, 22], backdash: [23, 24, 25, 26, 27], crouchStart: [28, 29], crouchIdle: [30, 31], crouchEnd: [32, 33], jumpStart: [34, 35, 36], jumpRise: [37, 38], jumpApex: [39], jumpFall: [40, 41], landing: [42, 43, 44] }, normals: { stand_light: [{ hurtboxes: [{ x: -15, y: -131, w: 35, h: 28 }, { x: -29, y: -103, w: 64, h: 36 }, { x: -38, y: -67, w: 70, h: 33 }, { x: -37, y: -34, w: 82, h: 34 }], frame: 0 }, { hurtboxes: [{ x: -14, y: -131, w: 35, h: 28 }, { x: -31, y: -103, w: 94, h: 36 }, { x: -38, y: -67, w: 69, h: 33 }, { x: -36, y: -34, w: 81, h: 34 }], hitboxes: [{ a: { x: 33, y: -96 }, b: { x: 59, y: -97 }, r: 8 }], frame: 1 }, { hurtboxes: [{ x: -16, y: -130, w: 35, h: 27 }, { x: -30, y: -103, w: 77, h: 37 }, { x: -35, y: -66, w: 68, h: 32 }, { x: -34, y: -34, w: 80, h: 34 }], frame: 2 }, { hurtboxes: [{ x: -17, y: -131, w: 34, h: 28 }, { x: -31, y: -103, w: 69, h: 36 }, { x: -36, y: -67, w: 68, h: 33 }, { x: -36, y: -34, w: 81, h: 34 }], frame: 3 }], stand_medium: [{ hurtboxes: [{ x: -16, y: -133, w: 35, h: 28 }, { x: -27, y: -105, w: 68, h: 37 }, { x: -24, y: -68, w: 65, h: 33 }, { x: -11, y: -35, w: 41, h: 35 }], frame: 4 }, { hurtboxes: [{ x: -24, y: -131, w: 36, h: 28 }, { x: -35, y: -103, w: 100, h: 36 }, { x: -27, y: -67, w: 72, h: 33 }, { x: -18, y: -34, w: 23, h: 34 }], hitboxes: [{ a: { x: 52, y: -79 }, b: { x: 73, y: -80 }, r: 9 }], frame: 5 }, { hurtboxes: [{ x: -23, y: -132, w: 35, h: 28 }, { x: -29, y: -104, w: 62, h: 37 }, { x: -32, y: -67, w: 64, h: 33 }, { x: -19, y: -34, w: 41, h: 34 }], frame: 6 }, { hurtboxes: [{ x: -20, y: -130, w: 35, h: 27 }, { x: -33, y: -103, w: 69, h: 37 }, { x: -38, y: -66, w: 67, h: 32 }, { x: -37, y: -34, w: 80, h: 34 }], frame: 7 }], stand_heavy: [{ hurtboxes: [{ x: -8, y: -130, w: 35, h: 27 }, { x: -25, y: -103, w: 63, h: 37 }, { x: -56, y: -66, w: 91, h: 32 }, { x: -39, y: -34, w: 87, h: 34 }], frame: 8 }, { hurtboxes: [{ x: -7, y: -130, w: 35, h: 27 }, { x: -17, y: -103, w: 72, h: 37 }, { x: -35, y: -66, w: 70, h: 32 }, { x: -35, y: -34, w: 87, h: 34 }], blade: { a: { x: 54, y: -87 }, b: { x: 107, y: -87 }, r: 7 }, frame: 9 }, { hurtboxes: [{ x: -11, y: -131, w: 35, h: 28 }, { x: -22, y: -103, w: 56, h: 36 }, { x: -39, y: -67, w: 97, h: 33 }, { x: -43, y: -34, w: 89, h: 34 }], blade: { a: { x: 33, y: -57 }, b: { x: 85, y: -35 }, r: 7 }, frame: 10 }, { hurtboxes: [{ x: -17, y: -130, w: 34, h: 27 }, { x: -28, y: -103, w: 61, h: 37 }, { x: -39, y: -66, w: 66, h: 32 }, { x: -41, y: -34, w: 83, h: 34 }], frame: 11 }], crouch_light: [{ hurtboxes: [{ x: -16, y: -95, w: 58, h: 20 }, { x: -29, y: -75, w: 71, h: 27 }, { x: -42, y: -48, w: 87, h: 23 }, { x: -32, y: -25, w: 77, h: 25 }], frame: 12 }, { hurtboxes: [{ x: 19, y: -94, w: 35, h: 20 }, { x: -14, y: -74, w: 79, h: 26 }, { x: -35, y: -48, w: 100, h: 24 }, { x: -23, y: -24, w: 72, h: 24 }], hitboxes: [{ a: { x: 61, y: -52 }, b: { x: 85, y: -50 }, r: 8 }], frame: 13 }, { hurtboxes: [{ x: 6, y: -97, w: 36, h: 20 }, { x: -24, y: -77, w: 66, h: 28 }, { x: -41, y: -49, w: 89, h: 24 }, { x: -33, y: -25, w: 76, h: 25 }], frame: 14 }, { hurtboxes: [{ x: 0, y: -98, w: 35, h: 21 }, { x: -28, y: -77, w: 81, h: 27 }, { x: -43, y: -50, w: 88, h: 25 }, { x: -34, y: -25, w: 74, h: 25 }], frame: 15 }], crouch_medium: [{ hurtboxes: [{ x: -3, y: -100, w: 46, h: 21 }, { x: -24, y: -79, w: 86, h: 28 }, { x: -35, y: -51, w: 83, h: 25 }, { x: -34, y: -26, w: 62, h: 26 }], frame: 16 }, { hurtboxes: [{ x: -2, y: -97, w: 36, h: 20 }, { x: -33, y: -77, w: 87, h: 28 }, { x: -40, y: -49, w: 99, h: 24 }, { x: -31, y: -25, w: 96, h: 25 }], hitboxes: [{ a: { x: 52, y: -12 }, b: { x: 74, y: -9 }, r: 8 }], frame: 17 }, { hurtboxes: [{ x: 3, y: -100, w: 36, h: 21 }, { x: -27, y: -79, w: 82, h: 28 }, { x: -35, y: -51, w: 82, h: 25 }, { x: -35, y: -26, w: 77, h: 26 }], frame: 18 }, { hurtboxes: [{ x: 2, y: -99, w: 36, h: 21 }, { x: -27, y: -78, w: 84, h: 28 }, { x: -37, y: -50, w: 86, h: 24 }, { x: -37, y: -26, w: 80, h: 26 }], frame: 19 }], crouch_heavy: [{ hurtboxes: [{ x: -4, y: -105, w: 37, h: 22 }, { x: -28, y: -83, w: 83, h: 29 }, { x: -46, y: -54, w: 101, h: 27 }, { x: -40, y: -27, w: 81, h: 27 }], frame: 20 }, { hurtboxes: [{ x: 1, y: -114, w: 64, h: 24 }, { x: -19, y: -90, w: 61, h: 32 }, { x: -36, y: -58, w: 80, h: 28 }, { x: -36, y: -30, w: 87, h: 30 }], blade: { a: { x: 42, y: -79 }, b: { x: 92, y: -101 }, r: 7 }, frame: 21 }, { hurtboxes: [{ x: -11, y: -129, w: 66, h: 27 }, { x: -25, y: -102, w: 76, h: 36 }, { x: -32, y: -66, w: 75, h: 32 }, { x: -41, y: -34, w: 94, h: 34 }], blade: { a: { x: 51, y: -102 }, b: { x: 86, y: -127 }, r: 7 }, frame: 22 }, { hurtboxes: [{ x: -2, y: -118, w: 35, h: 25 }, { x: -20, y: -93, w: 52, h: 33 }, { x: -35, y: -60, w: 79, h: 29 }, { x: -39, y: -31, w: 87, h: 31 }], frame: 23 }], air_light: [{ hurtboxes: [{ x: -9, y: -133, w: 38, h: 27 }, { x: -28, y: -106, w: 68, h: 36 }, { x: -35, y: -70, w: 71, h: 32 }, { x: -35, y: -38, w: 56, h: 33 }], frame: 24 }, { hurtboxes: [{ x: -2, y: -132, w: 38, h: 26 }, { x: -24, y: -106, w: 89, h: 36 }, { x: -33, y: -70, w: 72, h: 31 }, { x: -32, y: -39, w: 53, h: 33 }], hitboxes: [{ a: { x: 37, y: -100 }, b: { x: 72, y: -99 }, r: 8 }], frame: 25 }, { hurtboxes: [{ x: -8, y: -129, w: 36, h: 26 }, { x: -31, y: -103, w: 72, h: 34 }, { x: -36, y: -69, w: 73, h: 31 }, { x: -29, y: -38, w: 48, h: 32 }], frame: 26 }, { hurtboxes: [{ x: -11, y: -130, w: 36, h: 26 }, { x: -28, y: -104, w: 55, h: 34 }, { x: -35, y: -70, w: 66, h: 30 }, { x: -22, y: -40, w: 41, h: 32 }], frame: 27 }], air_medium: [{ hurtboxes: [{ x: -15, y: -129, w: 38, h: 27 }, { x: -34, y: -102, w: 76, h: 36 }, { x: -28, y: -66, w: 66, h: 32 }, { x: -11, y: -34, w: 37, h: 34 }], frame: 28 }, { hurtboxes: [{ x: -8, y: -130, w: 35, h: 25 }, { x: -33, y: -105, w: 98, h: 33 }, { x: -34, y: -72, w: 99, h: 30 }, { x: -25, y: -42, w: 52, h: 31 }], hitboxes: [{ a: { x: 59, y: -73 }, b: { x: 86, y: -75 }, r: 9 }], frame: 29 }, { hurtboxes: [{ x: -7, y: -129, w: 34, h: 24 }, { x: -30, y: -105, w: 74, h: 31 }, { x: -33, y: -74, w: 74, h: 28 }, { x: -33, y: -46, w: 64, h: 29 }], frame: 30 }, { hurtboxes: [{ x: -9, y: -128, w: 35, h: 24 }, { x: -25, y: -104, w: 59, h: 32 }, { x: -31, y: -72, w: 67, h: 29 }, { x: -31, y: -43, w: 61, h: 30 }], frame: 31 }], air_heavy: [{ hurtboxes: [{ x: -26, y: -149, w: 69, h: 31 }, { x: -34, y: -118, w: 90, h: 42 }, { x: -37, y: -76, w: 92, h: 37 }, { x: -37, y: -39, w: 61, h: 39 }], frame: 32 }, { hurtboxes: [{ x: -7, y: -126, w: 45, h: 25 }, { x: -20, y: -101, w: 74, h: 34 }, { x: -37, y: -67, w: 78, h: 30 }, { x: -33, y: -37, w: 43, h: 31 }], blade: { a: { x: 39, y: -57 }, b: { x: 81, y: -29 }, r: 7 }, frame: 33 }, { hurtboxes: [{ x: -7, y: -128, w: 38, h: 27 }, { x: -25, y: -101, w: 71, h: 36 }, { x: -39, y: -65, w: 78, h: 32 }, { x: -34, y: -33, w: 93, h: 33 }], blade: { a: { x: 34, y: -47 }, b: { x: 70, y: -11 }, r: 7 }, frame: 34 }, { hurtboxes: [{ x: -12, y: -133, w: 34, h: 28 }, { x: -30, y: -105, w: 68, h: 37 }, { x: -42, y: -68, w: 69, h: 33 }, { x: -42, y: -35, w: 49, h: 35 }], frame: 35 }] }, reactions: { guardStand: [{ hurtboxes: [{ x: -17, y: -129, w: 46, h: 27 }, { x: -21, y: -102, w: 50, h: 36 }, { x: -37, y: -66, w: 71, h: 32 }, { x: -38, y: -34, w: 81, h: 34 }], frame: 0 }], guardImpactStand: [{ hurtboxes: [{ x: -45, y: -125, w: 60, h: 26 }, { x: -35, y: -99, w: 53, h: 35 }, { x: -35, y: -64, w: 73, h: 32 }, { x: -35, y: -32, w: 87, h: 32 }], frame: 1 }, { hurtboxes: [{ x: -17, y: -129, w: 46, h: 27 }, { x: -21, y: -102, w: 50, h: 36 }, { x: -37, y: -66, w: 71, h: 32 }, { x: -38, y: -34, w: 81, h: 34 }], frame: 0 }], guardCrouch: [{ hurtboxes: [{ x: -4, y: -100, w: 45, h: 21 }, { x: -19, y: -79, w: 60, h: 28 }, { x: -39, y: -51, w: 79, h: 25 }, { x: -34, y: -26, w: 77, h: 26 }], frame: 2 }], guardImpactCrouch: [{ hurtboxes: [{ x: -44, y: -102, w: 54, h: 21 }, { x: -38, y: -81, w: 69, h: 29 }, { x: -36, y: -52, w: 75, h: 25 }, { x: -42, y: -27, w: 89, h: 27 }], frame: 3 }, { hurtboxes: [{ x: -4, y: -100, w: 45, h: 21 }, { x: -19, y: -79, w: 60, h: 28 }, { x: -39, y: -51, w: 79, h: 25 }, { x: -34, y: -26, w: 77, h: 26 }], frame: 2 }], damageLight: [{ hurtboxes: [{ x: -29, y: -128, w: 42, h: 27 }, { x: -32, y: -101, w: 72, h: 36 }, { x: -35, y: -65, w: 73, h: 32 }, { x: -36, y: -33, w: 86, h: 33 }], frame: 4 }, { hurtboxes: [{ x: -45, y: -125, w: 60, h: 26 }, { x: -35, y: -99, w: 53, h: 35 }, { x: -35, y: -64, w: 73, h: 32 }, { x: -35, y: -32, w: 87, h: 32 }], frame: 1 }], damageMedium: [{ hurtboxes: [{ x: -53, y: -126, w: 88, h: 26 }, { x: -49, y: -100, w: 87, h: 36 }, { x: -31, y: -64, w: 74, h: 31 }, { x: -30, y: -33, w: 88, h: 33 }], frame: 5 }, { hurtboxes: [{ x: -29, y: -128, w: 42, h: 27 }, { x: -32, y: -101, w: 72, h: 36 }, { x: -35, y: -65, w: 73, h: 32 }, { x: -36, y: -33, w: 86, h: 33 }], frame: 4 }], damageHeavy: [{ hurtboxes: [{ x: -53, y: -126, w: 88, h: 26 }, { x: -49, y: -100, w: 87, h: 36 }, { x: -31, y: -64, w: 74, h: 31 }, { x: -30, y: -33, w: 88, h: 33 }], frame: 5 }, { hurtboxes: [{ x: -29, y: -128, w: 42, h: 27 }, { x: -32, y: -101, w: 72, h: 36 }, { x: -35, y: -65, w: 73, h: 32 }, { x: -36, y: -33, w: 86, h: 33 }], frame: 4 }], damageCrouch: [{ hurtboxes: [{ x: -44, y: -102, w: 54, h: 21 }, { x: -38, y: -81, w: 69, h: 29 }, { x: -36, y: -52, w: 75, h: 25 }, { x: -42, y: -27, w: 89, h: 27 }], frame: 3 }, { hurtboxes: [{ x: -4, y: -100, w: 45, h: 21 }, { x: -19, y: -79, w: 60, h: 28 }, { x: -39, y: -51, w: 79, h: 25 }, { x: -34, y: -26, w: 77, h: 26 }], frame: 2 }], damageAir: [{ hurtboxes: [{ x: -51, y: -129, w: 81, h: 22 }, { x: -50, y: -107, w: 89, h: 30 }, { x: -41, y: -77, w: 103, h: 27 }, { x: -36, y: -50, w: 93, h: 28 }], frame: 6 }, { hurtboxes: [{ x: -58, y: -91, w: 76, h: 18 }, { x: -58, y: -73, w: 116, h: 23 }, { x: -42, y: -50, w: 107, h: 21 }, { x: -21, y: -29, w: 86, h: 22 }], frame: 7 }], launched: [{ hurtboxes: [{ x: -51, y: -129, w: 81, h: 22 }, { x: -50, y: -107, w: 89, h: 30 }, { x: -41, y: -77, w: 103, h: 27 }, { x: -36, y: -50, w: 93, h: 28 }], frame: 6 }, { hurtboxes: [{ x: -58, y: -91, w: 76, h: 18 }, { x: -58, y: -73, w: 116, h: 23 }, { x: -42, y: -50, w: 107, h: 21 }, { x: -21, y: -29, w: 86, h: 22 }], frame: 7 }], falling: [{ hurtboxes: [{ x: -58, y: -91, w: 76, h: 18 }, { x: -58, y: -73, w: 116, h: 23 }, { x: -42, y: -50, w: 107, h: 21 }, { x: -21, y: -29, w: 86, h: 22 }], frame: 7 }], downed: [{ hurtboxes: [{ x: -58, y: -49, w: 75, h: 10 }, { x: -58, y: -39, w: 122, h: 14 }, { x: -58, y: -25, w: 123, h: 12 }, { x: -58, y: -13, w: 123, h: 13 }], frame: 8 }], getup: [{ hurtboxes: [{ x: -9, y: -90, w: 57, h: 19 }, { x: -25, y: -71, w: 73, h: 25 }, { x: -43, y: -46, w: 79, h: 23 }, { x: -41, y: -23, w: 91, h: 23 }], frame: 9 }, { hurtboxes: [{ x: -9, y: -103, w: 52, h: 22 }, { x: -24, y: -81, w: 67, h: 28 }, { x: -41, y: -53, w: 85, h: 26 }, { x: -31, y: -27, w: 76, h: 27 }], frame: 10 }, { hurtboxes: [{ x: 1, y: -94, w: 47, h: 20 }, { x: -22, y: -74, w: 70, h: 26 }, { x: -41, y: -48, w: 75, h: 24 }, { x: -43, y: -24, w: 89, h: 24 }], frame: 11 }], grabbed: [{ hurtboxes: [{ x: -53, y: -126, w: 88, h: 26 }, { x: -49, y: -100, w: 87, h: 36 }, { x: -31, y: -64, w: 74, h: 31 }, { x: -30, y: -33, w: 88, h: 33 }], frame: 5 }], ko: [{ hurtboxes: [{ x: 1, y: -94, w: 47, h: 20 }, { x: -22, y: -74, w: 70, h: 26 }, { x: -41, y: -48, w: 75, h: 24 }, { x: -43, y: -24, w: 89, h: 24 }], frame: 11 }, { hurtboxes: [{ x: -58, y: -49, w: 75, h: 10 }, { x: -58, y: -39, w: 122, h: 14 }, { x: -58, y: -25, w: 123, h: 12 }, { x: -58, y: -13, w: 123, h: 13 }], frame: 8 }], defeat: [{ hurtboxes: [{ x: -58, y: -49, w: 75, h: 10 }, { x: -58, y: -39, w: 122, h: 14 }, { x: -58, y: -25, w: 123, h: 12 }, { x: -58, y: -13, w: 123, h: 13 }], frame: 8 }], entrance: [{ hurtboxes: [{ x: -12, y: -124, w: 33, h: 26 }, { x: -28, y: -98, w: 71, h: 35 }, { x: -40, y: -63, w: 68, h: 31 }, { x: -42, y: -32, w: 85, h: 32 }], frame: 12 }, { hurtboxes: [{ x: -10, y: -125, w: 30, h: 26 }, { x: -28, y: -99, w: 70, h: 35 }, { x: -42, y: -64, w: 65, h: 32 }, { x: -39, y: -32, w: 61, h: 32 }], frame: 13 }, { hurtboxes: [{ x: -7, y: -126, w: 31, h: 26 }, { x: -22, y: -100, w: 66, h: 36 }, { x: -39, y: -64, w: 66, h: 31 }, { x: -36, y: -33, w: 61, h: 33 }], frame: 14 }, { hurtboxes: [{ x: -6, y: -126, w: 30, h: 26 }, { x: -21, y: -100, w: 66, h: 36 }, { x: -39, y: -64, w: 65, h: 31 }, { x: -31, y: -33, w: 70, h: 33 }], frame: 15 }, { hurtboxes: [{ x: -8, y: -129, w: 28, h: 27 }, { x: -30, y: -102, w: 75, h: 36 }, { x: -36, y: -66, w: 66, h: 32 }, { x: -35, y: -34, w: 75, h: 34 }], frame: 16 }], victory: [{ hurtboxes: [{ x: -8, y: -129, w: 28, h: 27 }, { x: -30, y: -102, w: 75, h: 36 }, { x: -36, y: -66, w: 66, h: 32 }, { x: -35, y: -34, w: 75, h: 34 }], frame: 16 }, { hurtboxes: [{ x: -13, y: -131, w: 32, h: 28 }, { x: -30, y: -103, w: 74, h: 36 }, { x: -37, y: -67, w: 65, h: 33 }, { x: -36, y: -34, w: 75, h: 34 }], frame: 18 }], taunt: [{ hurtboxes: [{ x: -8, y: -129, w: 28, h: 27 }, { x: -30, y: -102, w: 75, h: 36 }, { x: -36, y: -66, w: 66, h: 32 }, { x: -35, y: -34, w: 75, h: 34 }], frame: 16 }, { hurtboxes: [{ x: -13, y: -131, w: 32, h: 28 }, { x: -30, y: -103, w: 74, h: 36 }, { x: -37, y: -67, w: 65, h: 33 }, { x: -36, y: -34, w: 75, h: 34 }], frame: 18 }, { hurtboxes: [{ x: -8, y: -125, w: 28, h: 26 }, { x: -30, y: -99, w: 74, h: 35 }, { x: -36, y: -64, w: 66, h: 32 }, { x: -36, y: -32, w: 75, h: 32 }], frame: 17 }] } };
+
+// src/data/sasuke-clips.json
+var sasuke_clips_default = {
+  idle: [9, 8, 8, 8, 9, 10],
+  walkForward: [4, 4, 4, 4, 4, 4],
+  walkBack: [5, 4, 5, 5, 4, 5],
+  dashForward: [2, 2, 3, 3, 2],
+  backdash: [2, 2, 3, 3, 2],
+  crouchStart: [3, 3],
+  crouchIdle: [9, 10],
+  crouchEnd: [3, 3],
+  jumpStart: [2, 2, 1],
+  jumpRise: [6, 8],
+  jumpApex: [9],
+  jumpFall: [8, 6],
+  landing: [2, 3, 2],
+  guardStand: [9],
+  guardImpactStand: [6, 4],
+  guardCrouch: [9],
+  guardImpactCrouch: [6, 4],
+  damageLight: [7, 8],
+  damageMedium: [8, 10],
+  damageHeavy: [12, 10],
+  damageCrouch: [7, 9],
+  damageAir: [8, 9],
+  launched: [10, 10],
+  falling: [10],
+  downed: [26],
+  getup: [7, 7, 6],
+  grabbed: [9],
+  ko: [7, 48],
+  defeat: [44],
+  entrance: [5, 5, 5, 7, 24],
+  victory: [10, 30],
+  taunt: [14, 10, 12]
+};
+
+// src/data/sasuke-normals.json
+var sasuke_normals_default = {
+  stand_light: { holds: [4, 3, 5, 8], activeFrames: [1, 2], damage: 35, stun: 22, blockstun: 10, push: 1.2, launch: 0, hitstop: 4, level: "mid" },
+  stand_medium: { holds: [7, 4, 6, 10], activeFrames: [1, 2], damage: 59, stun: 27, blockstun: 13, push: 1.9, launch: 0, hitstop: 6, level: "mid" },
+  stand_heavy: { holds: [11, 3, 3, 22], activeFrames: [1, 3], damage: 88, stun: 26, blockstun: 16, push: 4.4, launch: 0, hitstop: 8, level: "mid" },
+  crouch_light: { holds: [4, 3, 5, 8], activeFrames: [1, 2], damage: 32, stun: 21, blockstun: 10, push: 1.1, launch: 0, hitstop: 4, level: "low" },
+  crouch_medium: { holds: [7, 4, 6, 11], activeFrames: [1, 2], damage: 55, stun: 27, blockstun: 13, push: 1.9, launch: 0, hitstop: 6, level: "low" },
+  crouch_heavy: { holds: [10, 3, 3, 20], activeFrames: [1, 3], damage: 73, stun: 34, blockstun: 15, push: 2.7, launch: -13.5, hitstop: 7, level: "mid" },
+  air_light: { holds: [4, 3, 4, 7], activeFrames: [1, 2], damage: 33, stun: 22, blockstun: 10, push: 1.1, launch: -4.3, hitstop: 4, level: "high", airHold: -3.8 },
+  air_medium: { holds: [6, 4, 5, 8], activeFrames: [1, 2], damage: 56, stun: 25, blockstun: 13, push: 2, launch: -3.7, hitstop: 6, level: "high", airHold: -3.4 },
+  air_heavy: { holds: [9, 3, 3, 14], activeFrames: [1, 3], damage: 82, stun: 30, blockstun: 15, push: 3.5, launch: 7, hitstop: 8, level: "high", knockdown: true }
+};
+
+// src/data/sasuke-kirin.json
+var sasuke_kirin_default = {
+  cost: 100,
+  minimumComboScale: 0.62,
+  duration: 221,
+  opening: { holds: [13, 5, 34], damage: 34, hitstop: 6, stun: 24, blockstun: 14, push: 2.4 },
+  phases: { prepare: 0, storm: 24, reveal: 55, command: 102, dive: 135, impact: 147, clear: 176 },
+  hits: [{ tick: 147, kind: "ground", damage: 286, hold: 11 }],
+  weather: { maximum: 4, contributions: { gokakyu: 1, hosenka: 1, goryuka: 3 } }
+};
+
+// src/data/sasuke-kirin-art.json
+var sasuke_kirin_art_default = { base: [{ hurtboxes: [{ x: -15, y: -126, w: 38, h: 30 }, { x: -28, y: -96, w: 58, h: 49 }, { x: -44, y: -47, w: 91, h: 47 }] }, { hurtboxes: [{ x: -15, y: -126, w: 38, h: 30 }, { x: -28, y: -96, w: 58, h: 49 }, { x: -44, y: -47, w: 91, h: 47 }], hitboxes: [{ a: { x: 41, y: -90 }, b: { x: 63, y: -94 }, r: 12 }] }, { hurtboxes: [{ x: -15, y: -126, w: 38, h: 30 }, { x: -28, y: -96, w: 58, h: 49 }, { x: -44, y: -47, w: 91, h: 47 }] }, { hurtboxes: [{ x: -15, y: -126, w: 38, h: 30 }, { x: -28, y: -96, w: 58, h: 49 }, { x: -44, y: -47, w: 91, h: 47 }] }, { hurtboxes: [{ x: -15, y: -126, w: 38, h: 30 }, { x: -28, y: -96, w: 58, h: 49 }, { x: -44, y: -47, w: 91, h: 47 }] }, { hurtboxes: [{ x: -15, y: -126, w: 38, h: 30 }, { x: -28, y: -96, w: 58, h: 49 }, { x: -44, y: -47, w: 91, h: 47 }] }, { hurtboxes: [{ x: -15, y: -126, w: 38, h: 30 }, { x: -28, y: -96, w: 58, h: 49 }, { x: -44, y: -47, w: 91, h: 47 }] }, { hurtboxes: [{ x: -15, y: -126, w: 38, h: 30 }, { x: -28, y: -96, w: 58, h: 49 }, { x: -44, y: -47, w: 91, h: 47 }] }, { hurtboxes: [{ x: -15, y: -126, w: 38, h: 30 }, { x: -28, y: -96, w: 58, h: 49 }, { x: -44, y: -47, w: 91, h: 47 }] }], curse: [{ hurtboxes: [{ x: -15, y: -126, w: 38, h: 30 }, { x: -28, y: -96, w: 58, h: 49 }, { x: -44, y: -47, w: 91, h: 47 }] }, { hurtboxes: [{ x: -15, y: -126, w: 38, h: 30 }, { x: -28, y: -96, w: 58, h: 49 }, { x: -44, y: -47, w: 91, h: 47 }], hitboxes: [{ a: { x: 48, y: -84 }, b: { x: 70, y: -88 }, r: 12 }] }, { hurtboxes: [{ x: -15, y: -126, w: 38, h: 30 }, { x: -28, y: -96, w: 58, h: 49 }, { x: -44, y: -47, w: 91, h: 47 }] }, { hurtboxes: [{ x: -15, y: -126, w: 38, h: 30 }, { x: -28, y: -96, w: 58, h: 49 }, { x: -44, y: -47, w: 91, h: 47 }] }, { hurtboxes: [{ x: -15, y: -126, w: 38, h: 30 }, { x: -28, y: -96, w: 58, h: 49 }, { x: -44, y: -47, w: 91, h: 47 }] }, { hurtboxes: [{ x: -15, y: -126, w: 38, h: 30 }, { x: -28, y: -96, w: 58, h: 49 }, { x: -44, y: -47, w: 91, h: 47 }] }, { hurtboxes: [{ x: -15, y: -126, w: 38, h: 30 }, { x: -28, y: -96, w: 58, h: 49 }, { x: -44, y: -47, w: 91, h: 47 }] }, { hurtboxes: [{ x: -15, y: -126, w: 38, h: 30 }, { x: -28, y: -96, w: 58, h: 49 }, { x: -44, y: -47, w: 91, h: 47 }] }, { hurtboxes: [{ x: -15, y: -126, w: 38, h: 30 }, { x: -28, y: -96, w: 58, h: 49 }, { x: -44, y: -47, w: 91, h: 47 }] }], dragon: [{ x: 484, y: 155 }, { x: 484, y: 163 }, { x: 480, y: 261 }, { x: 470, y: 301 }], sky: [{ x: 256, y: 182 }, { x: 256, y: 181 }, { x: 256, y: 270 }, { x: 256, y: 229 }] };
+
+// src/engine/sasuke-kirin.ts
+var kirinId = "kirin_start";
+function opener(cursed) {
+  const { holds, ...stats } = sasuke_kirin_default.opening;
+  const [startup2, active2, recovery2] = holds;
+  const cels = cursed ? sasuke_kirin_art_default.curse : sasuke_kirin_art_default.base;
+  return {
+    ...stats,
+    startup: startup2,
+    active: active2,
+    recovery: recovery2,
+    kind: "kirin",
+    super: true,
+    cost: sasuke_kirin_default.cost,
+    meterGain: 0,
+    rank: 3,
+    level: "mid",
+    launch: 0,
+    cancels: [],
+    box: { x: 0, y: 0, w: 0, h: 0 },
+    poses: holds.map((ticks, i) => ({
+      ...cels[i],
+      ticks,
+      phase: i === 0 ? "startup" : i === 1 ? "active" : "recovery"
+    }))
+  };
+}
+var kirinOpener = opener(false);
+var kirinCurseOpener = opener(true);
+function canStartKirin(f) {
+  const phase = f.sasukeCurse?.phase;
+  return f.meter >= f.meterMaximum && !f.airborne && !f.match?.capture && (!phase || phase === "active" || phase === "cooldown") && (["idle", "walk", "crouch", "dash", "landing", "jumpStart"].includes(f.state) || f.hitConfirmed && f.canSuperCancel());
+}
+var clamp4 = (v, a, b) => Math.max(a, Math.min(b, v));
+var mix2 = (a, b, t) => a + (b - a) * t;
+var progress2 = (t, a, b) => clamp4((t - a) / (b - a), 0, 1);
+var smooth2 = (t) => t * t * (3 - 2 * t);
+var floor = 580;
+var p = sasuke_kirin_default.phases;
+function kirinScene(s) {
+  const t = s.tick, f = s.facing;
+  const land = smooth2(progress2(t, 0, 14));
+  const afterImpact = t - p.impact;
+  const recoil = smooth2(progress2(t, p.impact, p.impact + 13));
+  const targetX = clamp4(s.targetX + 33 * f * recoil, 40, 1240);
+  const actor = {
+    x: s.originX,
+    y: floor,
+    facing: f,
+    clip: t < p.command ? "kirinPrepare" : t < p.dive ? "kirinCommand" : "kirinRelease",
+    tick: t < p.command ? t : t < p.dive ? t - p.command : t - p.dive
+  };
+  const victim = {
+    x: targetX,
+    y: mix2(s.targetY, floor, land) - (afterImpact >= 0 && afterImpact < 16 ? 34 * Math.sin(Math.PI * afterImpact / 16) : 0),
+    facing: -f,
+    clip: t < p.impact ? "damageMedium" : afterImpact < 16 ? "damageAir" : "downed",
+    tick: t < p.impact ? Math.min(7, t) : afterImpact < 16 ? afterImpact : afterImpact - 16
+  };
+  const phase = t < p.storm ? "prepare" : t < p.reveal ? "storm" : t < p.command ? "reveal" : t < p.dive ? "command" : t < p.impact ? "dive" : t < p.clear ? "impact" : "clear";
+  const center = (s.originX + s.targetX) / 2;
+  const keys = [
+    [0, 640, 360, 1],
+    [p.storm - 1, s.originX + f * 25, 449, 1.3],
+    [p.storm + 16, s.targetX, 229, 1.08],
+    [p.command - 1, s.targetX, 240, 1.07],
+    [p.command + 5, s.originX + f * 9, 445, 1.39],
+    [p.dive - 1, center, 421, 1.26],
+    [p.dive + 6, s.targetX, 347, 1.08],
+    [p.impact + 5, s.targetX, 464, 1.24],
+    [p.clear, center, 411, 1.13],
+    [sasuke_kirin_default.duration, 640, 360, 1]
+  ];
+  const next = keys.findIndex((k) => t <= k[0]);
+  const a = keys[Math.max(0, next - 1)], b = keys[Math.max(0, next)];
+  const u2 = a === b ? 0 : smooth2(progress2(t, a[0], b[0]));
+  const scale = mix2(a[3], b[3], u2);
+  const shake = afterImpact >= 0 ? Math.max(0, 12 - afterImpact) : 0;
+  const facing = s.targetX < 420 ? -1 : s.targetX > 860 ? 1 : f;
+  const descent = progress2(t, p.dive, p.impact);
+  const dragon = {
+    visible: phase === "reveal" || phase === "dive" || afterImpact === 0,
+    cel: t < p.dive ? Math.floor(Math.max(0, t - p.reveal) / 13) % 2 : descent < 0.45 ? 2 : 3,
+    alpha: t < p.dive ? smooth2(progress2(t, p.reveal, p.reveal + 17)) : 1,
+    facing,
+    x: t < p.dive ? clamp4(s.targetX + facing * 160, 390, 890) + Math.sin((t - p.reveal) * 0.16) * 16 : mix2(clamp4(s.targetX - facing * 174, 130, 1150), s.targetX, descent),
+    y: t < p.dive ? 223 + 8 * Math.sin(t * 0.12) : mix2(164, floor - 53, descent ** 2.25),
+    scale: t < p.dive ? 1.23 + Math.sin(t * 0.19) * 0.028 : mix2(1.1, 1.4, descent)
+  };
+  const clear = 1 - smooth2(progress2(t, p.clear, sasuke_kirin_default.duration));
+  const clouds = Math.min(1, 0.18 * s.storm + smooth2(progress2(t, 0, p.reveal))) * clear;
+  return {
+    attacker: actor,
+    victim,
+    phase,
+    dragon,
+    clouds,
+    camera: {
+      x: clamp4(mix2(a[1], b[1], u2), 640 / scale, 1280 - 640 / scale),
+      y: mix2(a[2], b[2], u2),
+      scale,
+      shakeX: shake * ((t + s.hold) % 2 ? 1 : -1),
+      shakeY: Math.floor(shake * 0.42) * ((t + s.hold) % 3 ? 1 : -1)
+    }
+  };
+}
+
+// src/engine/sasuke-data.ts
+var sasukeFrames = sasuke_frames_default;
+var sasukeMoves = Object.fromEntries(
+  Object.keys(sasuke_normals_default).map((id) => {
+    const {
+      holds,
+      activeFrames: [first, end],
+      ...stats
+    } = sasuke_normals_default[id];
+    const [stance, weight] = id.split("_");
+    const rank = weight === "light" ? 1 : weight === "medium" ? 2 : 3;
+    const duration = (start, stop) => holds.slice(start, stop).reduce((a, b) => a + b, 0);
+    const startup2 = duration(0, first), active2 = duration(first, end);
+    const recovery2 = duration(end, holds.length);
+    const next = rank === 1 ? "medium" : rank === 2 ? "heavy" : void 0;
     return [
       id,
       {
         ...stats,
-        special: id,
-        startup: seal + gather,
+        startup: startup2,
         active: active2,
         recovery: recovery2,
+        rank,
         kind: "strike",
-        rank: id === "senbon" || id === "hosenka" || id === "serpents" ? 1 : 2,
-        level: "mid",
         box: { x: 0, y: 0, w: 0, h: 0 },
-        cancels: [],
-        poses
+        cancels: [
+          ...next ? [next] : id === "crouch_heavy" ? ["jump"] : [],
+          ...stance !== "air" ? ["special"] : []
+        ],
+        cancelMoves: next ? [`${stance}_${next}`] : [],
+        cancelWindow: {
+          fromTick: startup2,
+          toTick: startup2 + active2 + (id === "crouch_heavy" ? 9 : 6)
+        },
+        poses: sasukeFrames.normals[id].map(({ frame: _, ...cel }, index) => ({
+          ...cel,
+          ticks: holds[index],
+          phase: index < first ? "startup" : index < end ? "active" : "recovery"
+        }))
       }
     ];
   })
 );
+var sasuke = {
+  ...sasuke_default,
+  moves: sasukeMoves,
+  specialMoves: sasukeSpecialMoves,
+  superMoves: { [kirinId]: kirinOpener },
+  meterMaximum: sasuke_kirin_default.cost,
+  meterGainScale: 1,
+  lifecycle: {
+    entranceDistance: 58,
+    entranceWalkTicks: 20,
+    entranceSpeed: 2.9,
+    tauntTicks: 36,
+    getupTicks: 20,
+    koTicks: 55
+  },
+  hurtboxes: {
+    standing: [
+      { x: -18, y: -127, w: 40, h: 29 },
+      { x: -25, y: -99, w: 58, h: 53 },
+      { x: -31, y: -46, w: 68, h: 46 }
+    ],
+    crouching: [
+      { x: -13, y: -83, w: 35, h: 29 },
+      { x: -31, y: -56, w: 70, h: 55 }
+    ],
+    air: [
+      { x: -20, y: -119, w: 43, h: 31 },
+      { x: -29, y: -89, w: 62, h: 77 }
+    ]
+  },
+  reactions: Object.fromEntries(
+    Object.entries(sasukeFrames.reactions).map(([id, cels]) => [
+      id,
+      {
+        loop: id === "guardStand" || id === "guardCrouch" || id === "falling",
+        poses: cels.map((cel, index) => ({
+          ticks: sasuke_clips_default[id][index],
+          hurtboxes: cel.hurtboxes
+        }))
+      }
+    ])
+  )
+};
+
+// src/engine/sasuke-curse.ts
+var sasukeCurseArt = sasuke_curse_frames_default;
+var curseAwaken = "curse_awaken";
+var curseRevert = "curse_revert";
+var winged = (f) => f.sasukeCurse?.phase === "active" || f.sasukeCurse?.phase === "ending";
+var sasukeCurseMovement = (f) => f.sasukeCurse?.phase === "active" ? sasuke_curse_default.movementMultiplier : 1;
+var curseSpecials = sasuke_curse_default.specials;
+function poseSequence(id, holds, attack) {
+  return holds.map((ticks, i) => ({
+    ticks,
+    phase: !attack ? "recovery" : i === 0 ? "startup" : i === 1 ? "active" : "recovery",
+    ...sasukeCurseArt.cels[sasukeCurseArt.clips[id].frames[i]]
+  }));
+}
+function poweredMove(id, base, holds, extra = {}) {
+  const [startup2, active2, recovery2] = holds;
+  return {
+    ...base,
+    ...extra,
+    damage: Math.round(base.damage * sasuke_curse_default.damageMultiplier),
+    startup: startup2,
+    active: active2,
+    recovery: recovery2,
+    cancelWindow: base.cancelWindow && {
+      fromTick: startup2,
+      toTick: startup2 + active2 + (base.cancelWindow.toTick - base.startup - base.active)
+    },
+    poses: poseSequence(id, holds, true)
+  };
+}
+var sasukeCurseMoves = Object.fromEntries([
+  ...Object.entries(sasuke_curse_default.normalTimings).map(([id, holds]) => {
+    const base = sasukeMoves[id];
+    const extra = id === "crouch_heavy" ? { launch: -14.4, stun: 37, push: 2.3, hitstop: 8 } : id === "air_medium" ? { airHold: -3.8, launch: -4.2, push: 1.8 } : id === "air_heavy" ? { launch: 9, hitstop: 9 } : id === "stand_heavy" ? { push: 4.7, hitstop: 9 } : {};
+    return [id, poweredMove(id, base, holds, extra)];
+  }),
+  ...Object.entries(curseSpecials).map(([id, { holds, shots: _, reach: _reach, ...stats }]) => {
+    const nagashi = id === "nagashi" ? nagashiProfile(true) : void 0;
+    const move = poweredMove(
+      id,
+      sasukeSpecialMoves[id],
+      nagashi?.holds ?? holds,
+      nagashi ? { ...stats, stun: nagashi.stun } : stats
+    );
+    return [id, id === "chidori" ? chidoriMove(move, true) : move];
+  })
+]);
+var transitions = Object.fromEntries(
+  [[curseAwaken, sasuke_curse_default.activationHolds], [curseRevert, sasuke_curse_default.reversionHolds]].map(([id, holds]) => {
+    const timing = holds;
+    return [id, {
+      kind: "curseTransition",
+      startup: 0,
+      active: 0,
+      recovery: timing.reduce((a, b) => a + b, 0),
+      damage: 0,
+      stun: 0,
+      blockstun: 0,
+      hitstop: 0,
+      push: 0,
+      launch: 0,
+      rank: 0,
+      level: "mid",
+      cancels: [],
+      box: { x: 0, y: 0, w: 0, h: 0 },
+      poses: poseSequence(id, timing, false)
+    }];
+  })
+);
+function curseMove(f, id) {
+  if (f.data.id !== "sasuke") return;
+  if (id === curseAwaken || id === curseRevert) return transitions[id];
+  if (winged(f)) return sasukeCurseMoves[id];
+}
+var grounded = (f) => !f.airborne && (f.state === "idle" || f.state === "walk" || f.state === "crouch" || f.state === "landing");
+function canAwaken(f) {
+  return f.data.id === "sasuke" && !f.sasukeCurse && grounded(f);
+}
+function startCurse(f) {
+  if (!canAwaken(f) || !f.attack(curseAwaken)) return;
+  f.sasukeCurse = { phase: "awakening", remaining: 0, airBurstUsed: false, airBurstTick: 0 };
+}
+function cooldown(s) {
+  s.phase = "cooldown";
+  s.remaining = sasuke_curse_default.cooldownTicks;
+  s.airBurstUsed = false;
+  s.airBurstTick = 0;
+}
+function tickSasukeCurse(f) {
+  const s = f.sasukeCurse;
+  if (!s) return;
+  if (s.phase === "cooldown") {
+    if (--s.remaining <= 0) f.sasukeCurse = void 0;
+    return;
+  }
+  if (s.phase === "awakening" || s.phase === "reverting") {
+    const id = s.phase === "awakening" ? curseAwaken : curseRevert;
+    if (f.state !== "attack" || f.moveId !== id) {
+      cooldown(s);
+    } else if (f.stateFrame + 1 >= transitions[id].recovery) {
+      f.setState("idle");
+      if (id === curseAwaken) {
+        s.phase = "active";
+        s.remaining = sasuke_curse_default.durationTicks;
+      } else cooldown(s);
+    }
+    return;
+  }
+  if (s.phase === "active" && --s.remaining <= 0) {
+    s.phase = "ending";
+    s.airBurstTick = 0;
+  }
+  if (!f.airborne) {
+    s.airBurstUsed = false;
+    s.airBurstTick = 0;
+  } else if (f.state !== "air") s.airBurstTick = 0;
+  if (s.phase === "ending" && grounded(f) && f.attack(curseRevert)) {
+    f.buffer.clear();
+    s.phase = "reverting";
+  }
+}
+function tickSasukeAirBurst(f) {
+  const s = f.sasukeCurse;
+  if (s?.phase !== "active" || f.state !== "air" || !f.airborne) return false;
+  const { speeds, fallCap } = sasuke_curse_default.airBurst;
+  if (!s.airBurstUsed && f.input.direction * f.facing >= 0 && f.buffer.consume("dash")) {
+    s.airBurstUsed = true;
+    s.airBurstTick = 1;
+    f.airChaseTicks = 0;
+    f.vy = Math.min(f.vy, fallCap);
+  }
+  if (!s.airBurstTick) return false;
+  f.vx = speeds[s.airBurstTick - 1] * f.facing;
+  s.airBurstTick = s.airBurstTick < speeds.length ? s.airBurstTick + 1 : 0;
+  return true;
+}
+function curseSpecialContact(id, age, facing, rootX, origin) {
+  if (id === "eiso") {
+    const reach = curseSpecials.eiso.reach;
+    const edge = facing > 0 ? 1280 - rootX : rootX;
+    const x = Math.min(edge, origin.x + (reach - origin.x) * Math.min(1, (age + 1) / 4));
+    return [{ a: origin, b: { x: Math.max(origin.x, x), y: origin.y - 8 }, r: 12 }];
+  }
+  if (id === "chidori") return [{ a: { x: origin.x - 19, y: origin.y + 4 }, b: origin, r: 23 }];
+  if (id === "nagashi") return [
+    { a: { x: -68, y: -54 }, b: { x: 73, y: -54 }, r: 23 },
+    { a: { x: -48, y: -91 }, b: { x: 50, y: -91 }, r: 17 },
+    { a: { x: -39, y: -24 }, b: { x: 42, y: -24 }, r: 19 }
+  ];
+  return [];
+}
 
 // src/data/luffy-secondary-poses.json
 var luffy_secondary_poses_default = { guardStandA: { frame: 0, hurtboxes: [{ x: -20, y: -127, w: 54, h: 28 }, { x: -22, y: -99, w: 58, h: 33 }, { x: -23, y: -66, w: 58, h: 30 }, { x: -33, y: -36, w: 75, h: 36 }] }, guardStandB: { frame: 1, hurtboxes: [{ x: -25, y: -123, w: 57, h: 27 }, { x: -26, y: -96, w: 56, h: 32 }, { x: -30, y: -64, w: 68, h: 30 }, { x: -45, y: -34, w: 89, h: 34 }] }, guardLowA: { frame: 2, hurtboxes: [{ x: -19, y: -108, w: 49, h: 24 }, { x: -23, y: -84, w: 50, h: 28 }, { x: -28, y: -56, w: 66, h: 26 }, { x: -35, y: -30, w: 73, h: 30 }] }, guardLowB: { frame: 3, hurtboxes: [{ x: -19, y: -99, w: 50, h: 22 }, { x: -21, y: -77, w: 54, h: 26 }, { x: -26, y: -51, w: 63, h: 23 }, { x: -28, y: -28, w: 64, h: 28 }] }, guardStandHitA: { frame: 4, hurtboxes: [{ x: -37, y: -131, w: 50, h: 29 }, { x: -42, y: -102, w: 54, h: 34 }, { x: -31, y: -68, w: 59, h: 31 }, { x: -44, y: -37, w: 79, h: 37 }] }, guardStandHitB: { frame: 5, hurtboxes: [{ x: -48, y: -121, w: 54, h: 27 }, { x: -51, y: -94, w: 60, h: 31 }, { x: -34, y: -63, w: 68, h: 29 }, { x: -52, y: -34, w: 91, h: 34 }] }, guardLowHitA: { frame: 6, hurtboxes: [{ x: -39, y: -108, w: 48, h: 24 }, { x: -45, y: -84, w: 55, h: 28 }, { x: -37, y: -56, w: 72, h: 26 }, { x: -38, y: -30, w: 73, h: 30 }] }, guardLowHitB: { frame: 7, hurtboxes: [{ x: -26, y: -95, w: 57, h: 21 }, { x: -27, y: -74, w: 58, h: 25 }, { x: -33, y: -49, w: 64, h: 22 }, { x: -36, y: -27, w: 69, h: 27 }] }, guardExit: { frame: 8, hurtboxes: [{ x: -25, y: -124, w: 48, h: 27 }, { x: -32, y: -97, w: 72, h: 33 }, { x: -33, y: -64, w: 69, h: 29 }, { x: -42, y: -35, w: 79, h: 35 }] }, hitLight: { frame: 9, hurtboxes: [{ x: -26, y: -125, w: 41, h: 28 }, { x: -30, y: -97, w: 58, h: 32 }, { x: -36, y: -65, w: 67, h: 30 }, { x: -32, y: -35, w: 66, h: 35 }] }, hitMedium: { frame: 10, hurtboxes: [{ x: -44, y: -118, w: 62, h: 26 }, { x: -48, y: -92, w: 67, h: 31 }, { x: -46, y: -61, w: 76, h: 28 }, { x: -44, y: -33, w: 77, h: 33 }] }, hitHeavy: { frame: 11, hurtboxes: [{ x: -56, y: -122, w: 44, h: 27 }, { x: -49, y: -95, w: 85, h: 32 }, { x: -57, y: -63, w: 88, h: 29 }, { x: -43, y: -34, w: 75, h: 34 }] }, hitLow: { frame: 12, hurtboxes: [{ x: -19, y: -95, w: 57, h: 21 }, { x: -26, y: -74, w: 61, h: 25 }, { x: -30, y: -49, w: 64, h: 22 }, { x: -36, y: -27, w: 63, h: 27 }] }, hitAir: { frame: 13, hurtboxes: [{ x: -25, y: -94, w: 57, h: 21 }, { x: -30, y: -73, w: 58, h: 24 }, { x: -30, y: -49, w: 60, h: 23 }, { x: -15, y: -26, w: 32, h: 26 }] }, launched: { frame: 14, hurtboxes: [{ x: -48, y: -129, w: 55, h: 28 }, { x: -40, y: -101, w: 77, h: 34 }, { x: -44, y: -67, w: 71, h: 31 }, { x: -30, y: -36, w: 45, h: 36 }] }, airKnockback: { frame: 15, hurtboxes: [{ x: -42, y: -99, w: 72, h: 22 }, { x: -51, y: -77, w: 87, h: 26 }, { x: -42, y: -51, w: 104, h: 23 }, { x: -17, y: -28, w: 75, h: 28 }] }, falling: { frame: 16, hurtboxes: [{ x: -41, y: -98, w: 79, h: 22 }, { x: -47, y: -76, w: 81, h: 25 }, { x: -48, y: -51, w: 107, h: 24 }, { x: -57, y: -27, w: 105, h: 27 }] }, downed: { frame: 17, hurtboxes: [{ x: -57, y: -50, w: 98, h: 11 }, { x: -64, y: -39, w: 112, h: 13 }, { x: -64, y: -26, w: 125, h: 12 }, { x: -63, y: -14, w: 128, h: 14 }] }, getupStart: { frame: 18, hurtboxes: [{ x: -25, y: -82, w: 47, h: 18 }, { x: -32, y: -64, w: 70, h: 21 }, { x: -37, y: -43, w: 73, h: 20 }, { x: -51, y: -23, w: 102, h: 23 }] }, getupEnd: { frame: 19, hurtboxes: [{ x: -21, y: -101, w: 55, h: 22 }, { x: -32, y: -79, w: 62, h: 26 }, { x: -35, y: -53, w: 60, h: 25 }, { x: -43, y: -28, w: 70, h: 28 }] }, ko: { frame: 20, hurtboxes: [{ x: -71, y: -37, w: 137, h: 8 }, { x: -72, y: -29, w: 142, h: 10 }, { x: -72, y: -19, w: 142, h: 9 }, { x: -66, y: -10, w: 134, h: 10 }] }, entryWalk: { frame: 21, hurtboxes: [{ x: -26, y: -128, w: 43, h: 28 }, { x: -29, y: -100, w: 61, h: 33 }, { x: -34, y: -67, w: 64, h: 31 }, { x: -40, y: -36, w: 80, h: 36 }] }, entryReady: { frame: 22, hurtboxes: [{ x: -26, y: -130, w: 53, h: 29 }, { x: -30, y: -101, w: 58, h: 33 }, { x: -26, y: -68, w: 49, h: 32 }, { x: -35, y: -36, w: 68, h: 36 }] }, tauntBeckon: { frame: 23, hurtboxes: [{ x: -17, y: -113, w: 72, h: 25 }, { x: -26, y: -88, w: 82, h: 29 }, { x: -31, y: -59, w: 55, h: 27 }, { x: -41, y: -32, w: 71, h: 32 }] }, tauntGrin: { frame: 24, hurtboxes: [{ x: -25, y: -132, w: 52, h: 29 }, { x: -33, y: -103, w: 66, h: 34 }, { x: -25, y: -69, w: 49, h: 32 }, { x: -34, y: -37, w: 70, h: 37 }] }, victoryJump: { frame: 25, hurtboxes: [{ x: -33, y: -119, w: 62, h: 23 }, { x: -28, y: -96, w: 51, h: 26 }, { x: -24, y: -70, w: 58, h: 25 }, { x: -30, y: -45, w: 62, h: 29 }] }, victoryCheer: { frame: 26, hurtboxes: [{ x: -29, y: -136, w: 52, h: 30 }, { x: -38, y: -106, w: 50, h: 35 }, { x: -39, y: -71, w: 60, h: 33 }, { x: -41, y: -38, w: 78, h: 38 }] }, defeatKneel: { frame: 27, hurtboxes: [{ x: -10, y: -82, w: 55, h: 18 }, { x: -19, y: -64, w: 64, h: 21 }, { x: -20, y: -43, w: 58, h: 20 }, { x: -47, y: -23, w: 90, h: 23 }] }, defeatGround: { frame: 28, hurtboxes: [{ x: -14, y: -44, w: 62, h: 10 }, { x: -30, y: -34, w: 83, h: 11 }, { x: -58, y: -23, w: 111, h: 11 }, { x: -62, y: -12, w: 124, h: 12 }] }, throwPrep: { frame: 29, hurtboxes: [{ x: -41, y: -116, w: 59, h: 26 }, { x: -44, y: -90, w: 97, h: 30 }, { x: -37, y: -60, w: 65, h: 28 }, { x: -48, y: -32, w: 97, h: 32 }] }, throwReach: { frame: 30, hurtboxes: [{ x: -15, y: -99, w: 94, h: 22 }, { x: -28, y: -77, w: 68, h: 26 }, { x: -30, y: -51, w: 72, h: 23 }, { x: -53, y: -28, w: 107, h: 28 }], joint: [27, -68] }, throwRelease: { frame: 31, hurtboxes: [{ x: -21, y: -118, w: 31, h: 26 }, { x: -46, y: -92, w: 73, h: 31 }, { x: -30, y: -61, w: 67, h: 28 }, { x: -48, y: -33, w: 107, h: 33 }] }, throwRecover: { frame: 32, hurtboxes: [{ x: -20, y: -110, w: 53, h: 24 }, { x: -30, y: -86, w: 75, h: 29 }, { x: -38, y: -57, w: 83, h: 26 }, { x: -53, y: -31, w: 106, h: 31 }] } };
@@ -21694,15 +22315,15 @@ var jetStartupClip = {
   frames: initial.map(([name]) => luffy_jet_poses_default[name].frame),
   durations: initial.map(([, ticks]) => ticks)
 };
-var clamp4 = (v, low, high) => Math.max(low, Math.min(high, v));
-var linear = (t, from, to) => clamp4((t - from) / (to - from), 0, 1);
+var clamp5 = (v, low, high) => Math.max(low, Math.min(high, v));
+var linear = (t, from, to) => clamp5((t - from) / (to - from), 0, 1);
 var ease2 = (v) => v * v * (3 - 2 * v);
-var mix2 = (a, b, v) => a + (b - a) * v;
+var mix3 = (a, b, v) => a + (b - a) * v;
 var interp = (a, b, v) => ({
-  x: mix2(a.x, b.x, v),
-  y: mix2(a.y, b.y, v)
+  x: mix3(a.x, b.x, v),
+  y: mix3(a.y, b.y, v)
 });
-var bound = (x) => clamp4(x, 40, 1240);
+var bound = (x) => clamp5(x, 40, 1240);
 function arm(cel, tip, radius = 7, bend = 0, slot = 0) {
   const joints = luffy_jet_poses_default[cel].joints;
   const root = joints[slot] ?? joints[0];
@@ -21735,10 +22356,10 @@ function jetOpener(f) {
     forward - 8,
     gap > 0 ? Math.max(root.x + 6, gap - 8) : 144
   );
-  const x = mix2(root.x + 6, extension, reach);
+  const x = mix3(root.x + 6, extension, reach);
   const geometry = arm(
     "pistol",
-    { x, y: mix2(root.y + 3, -89, reach) },
+    { x, y: mix3(root.y + 3, -89, reach) },
     7,
     -3 * reach
   );
@@ -21765,42 +22386,42 @@ function track2(t, keys) {
 }
 var rushHits = luffy_jet_gigant_default.hits.filter((hit) => hit.kind === "gatling");
 function jetScene(s) {
-  const t = s.tick, side = s.facing, floor = 580;
+  const t = s.tick, side = s.facing, floor2 = 580;
   const target = (offset) => bound(s.targetX + side * offset);
   const startGap = Math.max(62, (s.targetX - s.originX) * side);
   const back = (x, gap) => bound(x - side * gap);
   const end = target(237);
   const victim = track2(t, [
     [0, s.targetX, s.targetY],
-    [16, target(14), floor],
-    [32, target(23), floor],
-    [60, target(28), floor],
-    [82, target(108), floor],
-    [92, target(118), floor],
-    [163, target(154), floor],
+    [16, target(14), floor2],
+    [32, target(23), floor2],
+    [60, target(28), floor2],
+    [82, target(108), floor2],
+    [92, target(118), floor2],
+    [163, target(154), floor2],
     [208, target(180), 376],
     [235, target(185), 342],
     [272, target(198), 367],
-    [299, end, floor],
-    [406, end, floor]
+    [299, end, floor2],
+    [406, end, floor2]
   ]);
   const attacker = track2(t, [
-    [0, s.originX, floor],
-    [9, back(target(12), startGap), floor],
-    [16, back(target(14), 88), floor],
-    [32, back(target(23), 95), floor],
-    [49, back(target(27), 107), floor],
-    [60, back(target(28), 101), floor],
-    [69, back(target(64), 136), floor],
-    [88, back(target(114), 101), floor],
-    [163, back(target(154), 86), floor],
-    [180, back(target(160), 101), floor],
-    [221, back(target(182), 174), floor],
+    [0, s.originX, floor2],
+    [9, back(target(12), startGap), floor2],
+    [16, back(target(14), 88), floor2],
+    [32, back(target(23), 95), floor2],
+    [49, back(target(27), 107), floor2],
+    [60, back(target(28), 101), floor2],
+    [69, back(target(64), 136), floor2],
+    [88, back(target(114), 101), floor2],
+    [163, back(target(154), 86), floor2],
+    [180, back(target(160), 101), floor2],
+    [221, back(target(182), 174), floor2],
     [243, back(target(189), 204), 519],
     [272, back(target(198), 240), 493],
     [286, back(end, 223), 511],
-    [319, back(end, 162), floor],
-    [406, back(end, 162), floor]
+    [319, back(end, 162), floor2],
+    [406, back(end, 162), floor2]
   ]);
   const phase = t < 9 ? "jetPistol" : t < 81 ? "jetBazooka" : t < 177 ? "jetGatling" : t < 246 ? "gearThird" : t < 305 ? "gigantPistol" : "return";
   const aim = {
@@ -21842,9 +22463,9 @@ function jetScene(s) {
   } else if (t < 73) {
     cel = t < 54 ? "bazookaWindup" : "bazooka";
     if (cel === "bazooka") {
-      const p = pulse(60, 6, 13);
-      strike(cel, p, aim.y - 10, 1, true);
-      strike(cel, p, aim.y + 7);
+      const p2 = pulse(60, 6, 13);
+      strike(cel, p2, aim.y - 10, 1, true);
+      strike(cel, p2, aim.y + 7);
     }
   } else if (t < 154) {
     const index = rushHits.findIndex(
@@ -21860,12 +22481,12 @@ function jetScene(s) {
       );
   } else if (t < 177) {
     cel = "launcher";
-    const p = pulse(163, 8, 13);
+    const p2 = pulse(163, 8, 13);
     const root = luffy_jet_poses_default[cel].joints[0];
     const end2 = { x: aim.x - 2, y: Math.max(-148, aim.y - 14) };
     const geometry = arm(
       cel,
-      interp({ x: root.x + 9, y: root.y - 9 }, end2, p),
+      interp({ x: root.x + 9, y: root.y - 9 }, end2, p2),
       7,
       4
     );
@@ -21885,7 +22506,7 @@ function jetScene(s) {
     const tip = interp(windup, contact, advance);
     const geometry = arm(cel, tip, Math.min(12, 7 + giant), -10 * advance);
     geometry.radii = geometry.radii.map(
-      (radius, i, radii) => mix2(radius, luffy_jet_fists_default[giant].wrist, ease2(i / Math.max(1, radii.length - 1)))
+      (radius, i, radii) => mix3(radius, luffy_jet_fists_default[giant].wrist, ease2(i / Math.max(1, radii.length - 1)))
     );
     const reverse = tip.x < root.x;
     if (geometry.centers.length >= 4) {
@@ -21909,7 +22530,7 @@ function jetScene(s) {
   const lastHit = luffy_jet_gigant_default.hits.filter((hit) => hit.tick <= t).at(-1);
   const victimClip = t >= 299 ? "downed" : t >= 272 ? "falling" : t >= 205 ? "damageAir" : t >= 163 ? "launched" : "damageHeavy";
   const release = ease2(linear(t, 364, luffy_jet_gigant_default.duration));
-  const scale = mix2(mix2(1.48, 1.21, ease2(linear(t, 219, 249))), 1, release);
+  const scale = mix3(mix3(1.48, 1.21, ease2(linear(t, 219, 249))), 1, release);
   const midX = (attacker.x + victim.x) / 2;
   const visibleHalfWidth = 640 / scale;
   const shake = t === 272 || t === 299 ? (s.hold % 3 - 1) * 7 : t > 299 && t < 313 ? Math.round((313 - t) / 3) * (t % 2 ? 1 : -1) : 0;
@@ -21927,12 +22548,12 @@ function jetScene(s) {
     },
     camera: {
       scale,
-      x: mix2(
-        clamp4(midX, visibleHalfWidth, 1280 - visibleHalfWidth),
+      x: mix3(
+        clamp5(midX, visibleHalfWidth, 1280 - visibleHalfWidth),
         640,
         release
       ),
-      y: mix2(mix2(432, 386, ease2(linear(t, 170, 236))), 360, release),
+      y: mix3(mix3(432, 386, ease2(linear(t, 170, 236))), 360, release),
       shakeX: shake,
       shakeY: -Math.round(shake / 2)
     },
@@ -21989,6 +22610,8 @@ var Fighter = class {
   gokuAirTeleportUsed = false;
   gokuAirTeleportsUsed = 0;
   gokuCastSerial = 0;
+  sasukeCurse;
+  kirinCursed;
   homeX;
   guardIntent = false;
   blockCrouched = false;
@@ -22005,7 +22628,12 @@ var Fighter = class {
     return this.y < FLOOR || this.vy < 0;
   }
   get move() {
-    return this.data.moves[this.moveId] ?? this.data.specialMoves?.[this.moveId] ?? this.data.superMoves?.[this.moveId];
+    return this.lookupMove(this.moveId);
+  }
+  lookupMove(id) {
+    if (id === kirinId && (this.moveId === id ? this.kirinCursed : winged(this)))
+      return kirinCurseOpener;
+    return curseMove(this, id) ?? this.data.moves[id] ?? this.data.specialMoves?.[id] ?? this.data.superMoves?.[id];
   }
   get temporalActive() {
     return this.match?.temporal.active && this.match.temporal.s.owner === this.id;
@@ -22019,19 +22647,19 @@ var Fighter = class {
   }
   canStartSpecial(id) {
     if (this.data.id === "goku") return canStartGokuSpecial(this, id);
-    const move = this.data.specialMoves?.[id];
+    const move = (winged(this) ? sasukeCurseMoves[id] : void 0) ?? this.data.specialMoves?.[id];
     if (!move || this.airborne || !(["idle", "walk", "crouch", "dash", "landing", "jumpStart"].includes(
       this.state
     ) || this.canSpecialCancel()))
       return false;
     if (move.special === "timeStop" && !this.match?.temporal.canActivate(this.id))
       return false;
-    if (move.projectile && this.match && this.match.projectiles.filter((p) => p.owner === this.id).length + move.projectile.releases.length > dio_specials_default.knives.maximumPerOwner)
+    if (move.projectile && this.match && this.match.projectiles.filter((p2) => p2.owner === this.id).length + move.projectile.releases.length > dio_specials_default.knives.maximumPerOwner)
       return false;
     if (this.data.id === "sasuke" && isSasukeSpecial(id) && this.match) {
-      const shots = sasukeTechniques[id].shots;
+      const shots = (winged(this) ? curseSpecials : sasukeTechniques)[id].shots;
       if (shots && this.match.kiProjectiles.filter(
-        (p) => p.owner === this.id && p.state === "flight"
+        (p2) => p2.owner === this.id && p2.state === "flight"
       ).length + shots.length > sasukeSpecialBalance.maximumProjectiles) return false;
     }
     if (move.stand && !this.stand?.canBegin(this.canSpecialCancel()))
@@ -22061,6 +22689,7 @@ var Fighter = class {
   }
   canStartSuper() {
     if (this.match?.cinematicActive) return false;
+    if (this.data.id === "sasuke") return canStartKirin(this);
     if (this.data.id === "luffy")
       return !!this.data.superMoves?.[jetId] && this.meter >= luffy_jet_gigant_default.cost && !this.airborne && !this.match?.capture && (["idle", "walk", "crouch", "dash", "landing", "jumpStart"].includes(this.state) || this.hitConfirmed && this.canSuperCancel());
     if (this.data.id === "samurai") {
@@ -22124,6 +22753,7 @@ var Fighter = class {
     return this.move?.hitWindows ? !!this.hitWindow && !this.hitIds.includes(this.hitWindow.id) : !this.connected;
   }
   canCancel(name) {
+    if (this.sasukeCurse?.phase === "ending") return false;
     const window2 = this.move?.cancelWindow;
     const reverse = name === "light" && combat_pace_default.cancel.reverseBeatOnHit && this.hitConfirmed && !this.reverseBeatUsed && !this.airborne && this.move?.rank === 2 && !this.move?.special;
     if (!this.hitConfirmed && (name === "jump" || name === "special" && (this.move?.rank ?? 0) >= 3))
@@ -22140,15 +22770,35 @@ var Fighter = class {
     const shapes = this.attackShapes();
     return shapes.length ? unionBounds(shapes.map(shapeBounds)) : void 0;
   }
-  attackShapes() {
+  attackShapes(previousX = this.x) {
     const m = this.move;
     if (this.state !== "attack" || !m || this.stateFrame < m.startup || this.stateFrame >= m.startup + m.active)
       return [];
     const pose = poseAt(m, this.stateFrame);
     if (m.hitWindows && !this.hitWindow) return [];
     if (m.stand) return this.stand?.hitboxes(this) ?? [];
-    if (m.special && isSasukeSpecial(m.special))
-      return sasukeSpecialContact(m.special, this.stateFrame - m.startup, this.facing, this.x).map((shape) => worldCapsule(shape, this.x, this.y, this.facing));
+    if (m.special === "chidori" && pose?.release) {
+      const hand = pose.release;
+      const touch = worldCapsule(
+        { a: { x: hand.x - 17, y: hand.y + 4 }, b: hand, r: winged(this) ? 23 : 20 },
+        this.x,
+        this.y,
+        this.facing
+      );
+      if (previousX !== this.x) return [touch, {
+        a: { x: touch.b.x + previousX - this.x, y: touch.b.y },
+        b: touch.b,
+        r: touch.r
+      }];
+      return [touch];
+    }
+    if (m.special === "nagashi")
+      return nagashiVolumes(this.stateFrame - m.startup, winged(this)).map((shape) => worldCapsule(shape, this.x, this.y, this.facing));
+    if (m.special && isSasukeSpecial(m.special)) {
+      const age = this.stateFrame - m.startup;
+      const shapes = winged(this) && pose?.release ? curseSpecialContact(m.special, age, this.facing, this.x, pose.release) : sasukeSpecialContact(m.special, age, this.facing, this.x);
+      return shapes.map((shape) => worldCapsule(shape, this.x, this.y, this.facing));
+    }
     const limbs = luffyAttackLimbs(this);
     if (limbs.length)
       return limbs.flatMap((limb) => limb.hitboxes.map((shape) => worldCapsule(shape, this.x, this.y, this.facing)));
@@ -22179,13 +22829,17 @@ var Fighter = class {
     this.reactionFrame = 0;
     if (s !== "attack") {
       this.moveId = "";
+      this.kirinCursed = void 0;
       this.connected = false;
       this.hitConfirmed = false;
       this.hitIds = [];
     }
   }
   attack(id) {
-    const m = this.data.moves[id] ?? this.data.specialMoves?.[id] ?? this.data.superMoves?.[id];
+    const phase = this.sasukeCurse?.phase;
+    if (id === curseAwaken && !canAwaken(this)) return false;
+    if (id === curseRevert ? phase !== "ending" : phase === "ending") return false;
+    const m = this.lookupMove(id);
     if (!m || this.meter < (m.cost ?? 0)) return false;
     if (m.kind === "ultimate" && !this.canStartSuper()) return false;
     if (m.super && !this.canStartSuper()) return false;
@@ -22200,6 +22854,7 @@ var Fighter = class {
     this.meter -= m.cost ?? 0;
     this.setState("attack", chain);
     this.moveId = id;
+    this.kirinCursed = id === kirinId ? winged(this) : void 0;
     if (this.data.id === "goku" && m.special) {
       this.gokuCastSerial++;
       this.airChaseTicks = 0;
@@ -22267,7 +22922,8 @@ var Fighter = class {
       if (this.stateFrame >= 24) this.setState("counterRecover");
       return;
     }
-    if (this.state === "hitstun" || this.state === "blockstun") {
+    if (tickSasukeAirBurst(this)) {
+    } else if (this.state === "hitstun" || this.state === "blockstun") {
       if (--this.stun <= 0) {
         if (this.knockedDown && this.airborne) this.stun = 1;
         else {
@@ -22284,7 +22940,7 @@ var Fighter = class {
         this.setState(this.airborne ? "air" : "idle");
       if (this.state === "jumpStart" && this.stateFrame >= (this.data.locomotion?.jumpStartup ?? MOVEMENT_TIMING.jumpStartup)) {
         this.vy = this.data.jump;
-        this.vx = this.jumpDirection * (this.data.locomotion?.airSpeed ?? this.data.speed);
+        this.vx = this.jumpDirection * (this.data.locomotion?.airSpeed ?? this.data.speed) * sasukeCurseMovement(this);
         this.setState("air");
       }
       if (this.state === "landing" && this.stateFrame >= (this.data.locomotion?.landingTicks ?? MOVEMENT_TIMING.landing))
@@ -22301,7 +22957,7 @@ var Fighter = class {
         (action) => action.button === "ultimate"
       );
       if (superRequested) {
-        const id = this.data.id === "goku" ? "ssj1_fury" : this.data.id === "dio" ? "road_roller" : this.data.id === "luffy" ? jetId : "ultimate_start";
+        const id = this.data.id === "goku" ? "ssj1_fury" : this.data.id === "dio" ? "road_roller" : this.data.id === "luffy" ? jetId : this.data.id === "sasuke" ? kirinId : "ultimate_start";
         const move = this.data.moves[id] ?? this.data.superMoves?.[id];
         if (this.canStartSuper()) {
           this.attack(id);
@@ -22338,7 +22994,12 @@ var Fighter = class {
         for (const button of ["heavy", "medium", "light"]) {
           const id = sasukeSpecialCommand(this.buffer, button);
           if (!id) continue;
-          if (id === "reserved" || this.attack(id)) {
+          if (id === "curse") {
+            this.buffer.consumeSpecial(button);
+            startCurse(this);
+            return;
+          }
+          if (this.attack(id)) {
             this.buffer.consumeSpecial(button);
             return;
           }
@@ -22448,27 +23109,29 @@ var Fighter = class {
         } else {
           if (this.airborne && this.data.locomotion) {
             if (input.direction)
-              this.vx = input.direction * this.data.locomotion.airSpeed;
+              this.vx = input.direction * this.data.locomotion.airSpeed * sasukeCurseMovement(this);
           } else
-            this.vx = input.down && !this.airborne ? 0 : input.direction * (input.direction === this.facing ? this.data.speed : this.data.locomotion?.backSpeed ?? this.data.speed);
+            this.vx = input.down && !this.airborne ? 0 : input.direction * (input.direction === this.facing ? this.data.speed : this.data.locomotion?.backSpeed ?? this.data.speed) * sasukeCurseMovement(this);
           const next = this.airborne ? "air" : input.down ? "crouch" : input.direction ? "walk" : "idle";
           if (this.state !== next) this.setState(next);
         }
       }
       if (this.state === "dash") {
         const profile = this.data.locomotion;
-        this.vx = this.dashDirection * (profile ? (this.dashDirection === this.facing ? profile.dashForward : profile.backdash)[this.stateFrame] : this.dashDirection === this.facing ? 14 : 11);
+        this.vx = this.dashDirection * (profile ? (this.dashDirection === this.facing ? profile.dashForward : profile.backdash)[this.stateFrame] : this.dashDirection === this.facing ? 14 : 11) * sasukeCurseMovement(this);
       }
       if (this.state === "attack" && this.move) {
         const move = this.move;
-        if (move.drive)
+        if (move.special === "chidori")
+          this.vx = this.connected ? 0 : this.facing * chidoriVelocity(this.stateFrame, winged(this));
+        else if (move.drive)
           this.vx = !this.connected && this.stateFrame >= move.drive.from && this.stateFrame < move.drive.to ? this.facing * move.drive.speed : 0;
         if (move.hopAt === this.stateFrame) this.vy = move.hopVelocity ?? 0;
       }
     }
     if (this.airChaseTicks > 0) {
       if (this.airborne && (this.state === "air" || this.state === "attack")) {
-        const speed = this.data.airChaseSpeed ?? this.data.speed;
+        const speed = (this.data.airChaseSpeed ?? this.data.speed) * sasukeCurseMovement(this);
         const gap = (opponent.x - this.x) * this.facing - combat_pace_default.cancel.chaseSpacing;
         this.vx = this.facing * Math.max(-speed, Math.min(speed, gap));
         if (--this.airChaseTicks === 0) {
@@ -22523,13 +23186,15 @@ var Match = class {
   roadRoller;
   fury;
   jetGigant;
+  kirin;
   get cinematicActive() {
-    return !!(this.roadRoller || this.fury || this.jetGigant);
+    return !!(this.roadRoller || this.fury || this.jetGigant || this.kirin);
   }
   temporal = new TemporalController();
   projectiles = [];
   kiProjectiles = [];
   sasukeStormUntil = 0;
+  sasukeStormLevel = 0;
   beams = [];
   projectileSerial = 0;
   fighters;
@@ -22596,7 +23261,7 @@ var Match = class {
           this.projectiles = [];
           this.kiProjectiles = [];
           this.beams = [];
-          this.sasukeStormUntil = 0;
+          this.sasukeStormUntil = this.sasukeStormLevel = 0;
           const meter = this.fighters.map((f) => f.meter);
           this.fighters = [
             new Fighter(this.data, 0, 400),
@@ -22619,7 +23284,7 @@ var Match = class {
       for (const f of this.fighters) f.stand?.tick(f);
       return;
     }
-    if (this.fury || this.jetGigant) {
+    if (this.fury || this.jetGigant || this.kirin) {
       this.stepStagedSuper();
       return;
     }
@@ -22647,17 +23312,19 @@ var Match = class {
     }
     if (!this.rules.training && !this.temporal.active) this.timer--;
     this.combatFrame++;
+    const beforeMovement = this.fighters.map((f) => f.x);
     this.fighters.forEach((f, i) => {
       if (this.temporal.isFrozen(i)) return;
       const other = this.fighters[1 - i];
       f.guardIntent = inputs[i].direction === -f.facing && !f.airborne && Math.abs(f.x - other.x) < 200;
+      tickSasukeCurse(f);
       f.tick(inputs[i], this.combatFrame, other);
     });
     for (const f of this.fighters)
       if (!this.temporal.isFrozen(f.id)) f.stand?.tick(f);
     this.stepSpecialReleases();
     for (const f of this.fighters)
-      if (f.state === "attack" && f.stateFrame === 0 && (f.move?.kind === "ultimate" || f.move?.kind === "jetGigant"))
+      if (f.state === "attack" && f.stateFrame === 0 && (f.move?.kind === "ultimate" || f.move?.kind === "jetGigant" || f.move?.kind === "kirin"))
         this.effect("power", f.x, f.y - 80, 20);
     const [a, b] = this.fighters;
     if (overlaps(a.pushbox(), b.pushbox()) && this.temporal.active) {
@@ -22672,7 +23339,7 @@ var Match = class {
     }
     const contacts = this.fighters.map((f, i) => {
       if (this.temporal.isFrozen(i)) return null;
-      const shapes = f.attackShapes();
+      const shapes = f.attackShapes(beforeMovement[i]);
       const target = this.fighters[1 - i];
       if (!shapes.length || !f.canConnect || target.knockedDown || target.invulnerable || f.move?.level === "throw" && (target.airborne || target.state === "hitstun" || target.state === "blockstun"))
         return null;
@@ -22682,7 +23349,7 @@ var Match = class {
         const hurt = hurtboxes.find((box) => shapeHitsRect(shape, box));
         if (!hurt) continue;
         let impact = f.move?.stand ? shapeBounds(shapes[0]) : void 0;
-        if (f.data.id === "luffy") {
+        if (f.data.id === "luffy" || f.move?.special === "chidori") {
           const bounds = shapeBounds(shape);
           const x = Math.max(hurt.x, bounds.x), y = Math.max(hurt.y, bounds.y);
           impact = {
@@ -22707,7 +23374,7 @@ var Match = class {
       if (!c) continue;
       const { f, target, move: m, moveId } = c;
       if (m.super && f.health <= 0) continue;
-      if (m.kind === "jetGigant" && (f.state !== "attack" || f.moveId !== moveId)) continue;
+      if ((m.kind === "jetGigant" || m.kind === "kirin") && (f.state !== "attack" || f.moveId !== moveId)) continue;
       if (this.capture || this.cinematicActive) continue;
       if (m.kind === "grab" && contacts.some(
         (other) => other && other.f === target && other.move.kind !== "grab"
@@ -22744,12 +23411,12 @@ var Match = class {
     this.checkRoundEnd();
     this.finishTemporalStep(timeWasActive);
   }
-  resolveImpact(f, target, m, moveId, impact, direction = f.facing) {
+  resolveImpact(f, target, m, moveId, impact, direction = f.facing, curseFx = winged(f)) {
     const frozen = this.temporal.isFrozen(target.id);
     const guarding = target.input.direction === -target.facing && !target.airborne && ["idle", "walk", "crouch", "landing", "blockstun"].includes(
       target.state
     ) && (!(["knives", "ki", "kamehameha"].includes(m.special ?? "") || m.special && isSasukeSpecial(m.special) && sasukeTechniques[m.special].shots) || direction === -target.facing);
-    const blocked = guarding && m.level !== "throw" && (m.level !== "low" || target.input.down) && (m.level !== "high" || !target.input.down);
+    const blocked = guarding && m.level !== "throw" && !isSuperMove(m) && (m.level !== "low" || target.input.down) && (m.level !== "high" || !target.input.down);
     let damage = blocked ? 0 : Math.round(
       m.damage * Math.max(
         combat_pace_default.combo.minimumDamageScale,
@@ -22763,7 +23430,7 @@ var Match = class {
     const applied = this.damage(
       target,
       damage,
-      ["ultimate", "roadRoller", "gokuFury", "jetGigant"].includes(m.kind ?? "") && !blocked ? 1 : 0
+      ["ultimate", "roadRoller", "gokuFury", "jetGigant", "kirin"].includes(m.kind ?? "") && !blocked ? 1 : 0
     );
     const reaction = {
       blocked,
@@ -22809,6 +23476,8 @@ var Match = class {
     );
     const event = this.events[eventCount];
     if (event) {
+      if (!blocked && (m.special === "chidori" || m.special === "goryuka"))
+        event.sasuke = { kind: m.special, cursed: curseFx, facing: direction };
       if (f.data.id === "luffy" && !m.super && (m.rank > 1 || m.special)) {
         const style = m.special === "bazooka" ? "double" : m.special === "gatling" ? "rush" : /medium$|crouch_heavy|air_heavy/.test(moveId) && !m.special ? "kick" : "punch";
         event.luffy = { actor: f.id, move: moveId, direction, style };
@@ -22819,8 +23488,8 @@ var Match = class {
     if (m.kind === "ultimate" && !blocked)
       this.beginCapture("ultimate", f, target);
     if (m.kind === "roadRoller" && !blocked) this.beginRoadRoller(f, target);
-    if (!blocked && (m.kind === "gokuFury" || m.kind === "jetGigant"))
-      this.beginStagedSuper(f, target, m.kind === "jetGigant");
+    if (!blocked && (m.kind === "gokuFury" || m.kind === "jetGigant" || m.kind === "kirin"))
+      this.beginStagedSuper(f, target, m.kind);
   }
   applyReaction(target, reaction) {
     target.hitCrouched = target.blockCrouched = reaction.crouched;
@@ -22858,7 +23527,7 @@ var Match = class {
       }
       if (!m.projectile) continue;
       for (let i = 0; i < m.projectile.releases.length; i++) {
-        if (m.projectile.releases[i] !== f.stateFrame || this.projectiles.filter((p) => p.owner === f.id).length >= dio_specials_default.knives.maximumPerOwner)
+        if (m.projectile.releases[i] !== f.stateFrame || this.projectiles.filter((p2) => p2.owner === f.id).length >= dio_specials_default.knives.maximumPerOwner)
           continue;
         const hand = poseAt(m, f.stateFrame)?.release;
         const x = f.x + (hand?.x ?? 40) * f.facing, y = f.y + (hand?.y ?? -95);
@@ -22887,26 +23556,26 @@ var Match = class {
   stepProjectiles() {
     if (this.temporal.active && dio_specials_default.timeStop.freezeAllProjectiles)
       return;
-    this.projectiles = this.projectiles.filter((p) => {
-      p.previousX = p.x;
-      p.previousY = p.y;
-      p.x += p.vx;
-      p.y += p.vy;
-      p.age++;
-      if (--p.life <= 0 || p.x < -30 || p.x > 1310 || p.y < -40 || p.y > FLOOR + 20)
+    this.projectiles = this.projectiles.filter((p2) => {
+      p2.previousX = p2.x;
+      p2.previousY = p2.y;
+      p2.x += p2.vx;
+      p2.y += p2.vy;
+      p2.age++;
+      if (--p2.life <= 0 || p2.x < -30 || p2.x > 1310 || p2.y < -40 || p2.y > FLOOR + 20)
         return false;
-      const target = this.fighters[1 - p.owner], owner = this.fighters[p.owner];
-      if (target.knockedDown || target.invulnerable || !projectileHits(p, target.hurtboxes()))
+      const target = this.fighters[1 - p2.owner], owner = this.fighters[p2.owner];
+      if (target.knockedDown || target.invulnerable || !projectileHits(p2, target.hurtboxes()))
         return true;
-      const source = owner.data.specialMoves?.[p.move];
+      const source = owner.data.specialMoves?.[p2.move];
       if (source)
         this.resolveImpact(
           owner,
           target,
-          { ...source, damage: p.damage, stun: p.stun, blockstun: p.blockstun },
-          p.move,
-          { x: p.x - 14, y: p.y - 3, w: 29, h: 6 },
-          p.facing
+          { ...source, damage: p2.damage, stun: p2.stun, blockstun: p2.blockstun },
+          p2.move,
+          { x: p2.x - 14, y: p2.y - 3, w: 29, h: 6 },
+          p2.facing
         );
       return false;
     });
@@ -22916,7 +23585,7 @@ var Match = class {
     if (m.special === "ki" && m.projectile) {
       for (const tick of m.projectile.releases) {
         if (tick !== f.stateFrame || this.kiProjectiles.filter(
-          (p) => p.owner === f.id && p.state === "flight"
+          (p2) => p2.owner === f.id && p2.state === "flight"
         ).length >= goku_specials_default.projectiles.maximumPerOwner)
           continue;
         const point = beamOrigin(f);
@@ -22962,65 +23631,103 @@ var Match = class {
     const age = f.stateFrame - move.startup;
     const origin = poseAt(move, f.stateFrame)?.release;
     if (!origin) return;
-    for (const shot of sasukeTechniques[id].shots ?? []) {
+    const curse = winged(f);
+    for (const shot of (curse ? curseSpecials : sasukeTechniques)[id].shots ?? []) {
       if (shot.at !== age) continue;
       const x = f.x + f.facing * origin.x, y = f.y + origin.y;
+      const wave = id === "goryuka" ? fireDragonWave({ x, y }, f.facing, curse) : void 0;
+      const fire2 = sasuke_polish_default.goryuka;
       this.kiProjectiles.push({
         id: ++this.projectileSerial,
         owner: f.id,
         move: id,
         cast: 0,
+        ...curse ? { curse } : {},
+        ...wave ? { wave } : {},
         x,
         y,
         previousX: x,
         previousY: y,
-        vx: shot.speed * f.facing,
-        vy: shot.rise,
+        vx: (wave ? curse ? fire2.curse.speed : fire2.base.speed : shot.speed) * f.facing,
+        vy: wave ? 0 : shot.rise,
         facing: f.facing,
-        radius: shot.radius,
+        radius: wave ? fire2.headRadius : shot.radius,
         age: 0,
-        life: shot.life,
+        life: wave ? fire2.maximumLife : shot.life,
         state: "flight",
         impactAge: 0
       });
-      if (id === "goryuka") this.sasukeStormUntil = this.combatFrame + sasukeSpecialBalance.stormTicks;
+      const heat = sasuke_kirin_default.weather.contributions[id];
+      if (shot.at === 0 && heat) {
+        const level = this.sasukeStormUntil > this.combatFrame ? this.sasukeStormLevel : 0;
+        this.sasukeStormLevel = Math.min(sasuke_kirin_default.weather.maximum, level + heat);
+        this.sasukeStormUntil = this.combatFrame + sasukeSpecialBalance.stormTicks;
+      }
     }
+  }
+  stepFireDragon(p2) {
+    const w = p2.wave;
+    p2.previousX = p2.x;
+    p2.previousY = p2.y;
+    w.distance += Math.abs(p2.vx);
+    const point = fireDragonPoint(w, w.distance);
+    p2.x = point.x;
+    p2.y = point.y;
+    p2.age++;
+    p2.radius = Math.round(sasuke_polish_default.goryuka.headRadius * Math.min(1, 0.48 + p2.age * 0.095));
+    if (--p2.life <= 0 || w.distance > w.limit) return false;
+    if (w.struck) return true;
+    const target = this.fighters[1 - p2.owner], owner = this.fighters[p2.owner];
+    if (target.invulnerable || target.knockedDown) return true;
+    const boxes = target.hurtboxes();
+    for (const shape of fireDragonVolumes(w, { x: p2.previousX, y: p2.previousY }, p2.radius)) {
+      const box = boxes.find((r) => shapeHitsRect(shape, r));
+      if (!box) continue;
+      const move = p2.curse ? sasukeCurseMoves[p2.move] : owner.data.specialMoves?.[p2.move];
+      if (move) {
+        w.struck = true;
+        this.resolveImpact(owner, target, move, p2.move, box, p2.facing, !!p2.curse);
+      }
+      break;
+    }
+    return true;
   }
   stepEnergy() {
     if (!this.kiProjectiles.length && !this.beams.length) return;
     if (this.temporal.active && dio_specials_default.timeStop.freezeAllProjectiles)
       return;
-    this.kiProjectiles = this.kiProjectiles.filter((p) => {
-      if (p.state === "impact")
-        return ++p.impactAge < goku_specials_default.projectiles.impactTicks;
-      p.previousX = p.x;
-      p.previousY = p.y;
-      p.x += p.vx;
-      p.y += p.vy;
-      p.age++;
-      if (--p.life <= 0 || p.x < -40 || p.x > 1320 || p.y < 0 || p.y > FLOOR + 20)
+    this.kiProjectiles = this.kiProjectiles.filter((p2) => {
+      if (p2.wave) return this.stepFireDragon(p2);
+      if (p2.state === "impact")
+        return ++p2.impactAge < goku_specials_default.projectiles.impactTicks;
+      p2.previousX = p2.x;
+      p2.previousY = p2.y;
+      p2.x += p2.vx;
+      p2.y += p2.vy;
+      p2.age++;
+      if (--p2.life <= 0 || p2.x < -40 || p2.x > 1320 || p2.y < 0 || p2.y > FLOOR + 20)
         return false;
-      const target = this.fighters[1 - p.owner], owner = this.fighters[p.owner], move = owner.data.specialMoves?.[p.move];
+      const target = this.fighters[1 - p2.owner], owner = this.fighters[p2.owner], move = p2.curse ? sasukeCurseMoves[p2.move] : owner.data.specialMoves?.[p2.move];
       if (!move || target.knockedDown || target.invulnerable) return true;
       const shape = {
-        a: { x: p.previousX, y: p.previousY },
-        b: { x: p.x, y: p.y },
-        r: p.radius
+        a: { x: p2.previousX, y: p2.previousY },
+        b: { x: p2.x, y: p2.y },
+        r: p2.radius
       };
       const hurt = target.hurtboxes().find((r) => shapeHitsRect(shape, r));
       if (hurt) {
         let impact = hurt;
-        if (isSasukeSpecial(p.move)) {
-          p.x = Math.max(hurt.x, Math.min(hurt.x + hurt.w, p.x));
-          p.y = Math.max(hurt.y, Math.min(hurt.y + hurt.h, p.y));
-          impact = { x: p.x, y: p.y, w: 0, h: 0 };
-        } else if (owner.gokuCastSerial === p.cast && owner.moveId === p.move) {
+        if (isSasukeSpecial(p2.move)) {
+          p2.x = Math.max(hurt.x, Math.min(hurt.x + hurt.w, p2.x));
+          p2.y = Math.max(hurt.y, Math.min(hurt.y + hurt.h, p2.y));
+          impact = { x: p2.x, y: p2.y, w: 0, h: 0 };
+        } else if (owner.gokuCastSerial === p2.cast && owner.moveId === p2.move) {
           owner.connected = true;
         }
-        this.resolveImpact(owner, target, move, p.move, impact, p.facing);
-        p.state = "impact";
-        p.impactAge = 0;
-        p.vx = p.vy = 0;
+        this.resolveImpact(owner, target, move, p2.move, impact, p2.facing);
+        p2.state = "impact";
+        p2.impactAge = 0;
+        p2.vx = p2.vy = 0;
       }
       return true;
     });
@@ -23111,8 +23818,8 @@ var Match = class {
     };
     this.hitstop = Math.max(this.hitstop, kind === "ultimate" ? 12 : 5);
   }
-  beginStagedSuper(a, b, jet) {
-    const config = jet ? luffy_jet_gigant_default : goku_fury_default;
+  beginStagedSuper(a, b, kind) {
+    const config = kind === "kirin" ? sasuke_kirin_default : kind === "jetGigant" ? luffy_jet_gigant_default : goku_fury_default;
     const state = {
       attacker: a.id,
       victim: b.id,
@@ -23126,7 +23833,13 @@ var Match = class {
         1 - Math.max(0, b.combo - 1) * 0.08
       )
     };
-    if (jet) this.jetGigant = { ...state, hold: 8, openingTip: jetOpener(a).tip };
+    if (kind === "jetGigant") this.jetGigant = { ...state, hold: 8, openingTip: jetOpener(a).tip };
+    else if (kind === "kirin") this.kirin = {
+      ...state,
+      hold: 5,
+      cursed: !!a.kirinCursed,
+      storm: this.sasukeStormUntil > this.combatFrame ? this.sasukeStormLevel : 0
+    };
     else this.fury = state;
     a.setState("cinematic");
     b.setState("grabbed");
@@ -23139,38 +23852,41 @@ var Match = class {
     this.stageSuper();
   }
   stageSuper() {
-    const s = this.jetGigant ?? this.fury, scene = this.jetGigant ? jetScene(this.jetGigant) : furyScene(s), a = this.fighters[s.attacker], b = this.fighters[s.victim];
-    for (const [f, p] of [
+    const s = this.kirin ?? this.jetGigant ?? this.fury, scene = this.kirin ? kirinScene(this.kirin) : this.jetGigant ? jetScene(this.jetGigant) : furyScene(s), a = this.fighters[s.attacker], b = this.fighters[s.victim];
+    for (const [f, p2] of [
       [a, scene.attacker],
       [b, scene.victim]
     ]) {
-      f.x = p.x;
-      f.y = p.y;
-      f.facing = p.facing;
-      f.actionClip = p.clip;
-      f.stateFrame = p.tick;
+      f.x = p2.x;
+      f.y = p2.y;
+      f.facing = p2.facing;
+      f.actionClip = p2.clip;
+      f.stateFrame = p2.tick;
     }
     b.stand?.tick(b);
   }
   stepStagedSuper() {
-    const jet = this.jetGigant;
-    if (jet && jet.hold > 0) {
-      jet.hold--;
+    const jet = this.jetGigant, kirin = this.kirin;
+    const held = kirin ?? jet;
+    if (held && held.hold > 0) {
+      held.hold--;
       return;
     }
-    const config = jet ? luffy_jet_gigant_default : goku_fury_default;
-    const s = jet ?? this.fury, t = ++s.tick, a = this.fighters[s.attacker], b = this.fighters[s.victim];
+    const config = kirin ? sasuke_kirin_default : jet ? luffy_jet_gigant_default : goku_fury_default;
+    const s = kirin ?? jet ?? this.fury, t = ++s.tick, a = this.fighters[s.attacker], b = this.fighters[s.victim];
     this.stageSuper();
+    if (kirin && (t === sasuke_kirin_default.phases.storm || t === sasuke_kirin_default.phases.reveal || t === sasuke_kirin_default.phases.dive))
+      this.effect("kirinCharge", a.x, a.y - 130, 9);
     const hit = config.hits.find((h) => h.tick === t);
     if (hit) {
       const finish = hit.kind === "explosion" || hit.kind === "ground";
-      if (jet && "hold" in hit && typeof hit.hold === "number") jet.hold = hit.hold;
+      if (held && "hold" in hit && typeof hit.hold === "number") held.hold = hit.hold;
       const applied = this.damage(b, Math.round(hit.damage * s.scale), finish ? 0 : 1);
       b.combo++;
-      this.recordHit(a, b, `${jet ? "jet" : "fury"}_${hit.kind}`, applied);
+      this.recordHit(a, b, `${kirin ? "kirin" : jet ? "jet" : "fury"}_${hit.kind}`, applied);
       b.gainMeter(2);
       this.effect(
-        !jet && finish ? "roadExplosion" : jet && (finish || hit.kind === "gigant") ? "ultimate" : "hit",
+        kirin ? "kirinThunder" : !jet && finish ? "roadExplosion" : jet && (finish || hit.kind === "gigant") ? "ultimate" : "hit",
         b.x,
         b.y - 78,
         finish ? 16 : 8
@@ -23189,7 +23905,8 @@ var Match = class {
       b.syncReactionClock(false);
       a.buffer.clear();
       b.buffer.clear();
-      this.fury = this.jetGigant = void 0;
+      this.fury = this.jetGigant = this.kirin = void 0;
+      if (kirin) this.sasukeStormUntil = this.sasukeStormLevel = 0;
       this.hitstop = 0;
       this.checkRoundEnd();
     }
@@ -23355,16 +24072,16 @@ var Match = class {
       if (track3?.length) {
         let i = 0;
         while (i + 1 < track3.length && track3[i + 1].tick <= tick) i++;
-        const p = track3[i], q = track3[Math.min(i + 1, track3.length - 1)], t = q.tick === p.tick ? 0 : Math.min(1, (tick - p.tick) / (q.tick - p.tick));
-        const fromX = i === 0 ? sequence2.contactX ?? p.x : p.x;
+        const p2 = track3[i], q = track3[Math.min(i + 1, track3.length - 1)], t = q.tick === p2.tick ? 0 : Math.min(1, (tick - p2.tick) / (q.tick - p2.tick));
+        const fromX = i === 0 ? sequence2.contactX ?? p2.x : p2.x;
         b.x = Math.max(
           40,
           Math.min(1240, a.x + a.facing * Math.round(fromX + (q.x - fromX) * t))
         );
-        b.y = FLOOR + Math.round(p.y + (q.y - p.y) * t);
-        b.actionClip = p.clip;
+        b.y = FLOOR + Math.round(p2.y + (q.y - p2.y) * t);
+        b.actionClip = p2.clip;
         let start = i;
-        while (start > 0 && track3[start - 1].clip === p.clip) start--;
+        while (start > 0 && track3[start - 1].clip === p2.clip) start--;
         b.stateFrame = tick - track3[start].tick;
       }
       if (tick === grab.hitTick) {
@@ -23419,6 +24136,7 @@ var Match = class {
         f.vx = f.vy = 0;
         f.y = FLOOR;
         f.buffer.clear();
+        f.sasukeCurse = void 0;
         f.setState(winner < 0 ? "idle" : i === winner ? "victory" : "ko");
       });
       this.phase = "roundEnd";
@@ -127687,164 +128405,6 @@ var goku = {
   meterGainScale: goku_fury_default.meterGainScale,
   reactions: { ...goku_default.reactions, ...secondary.reactions },
   reactionClips: { ...goku_default.reactionClips, ...secondary.reactionClips }
-};
-
-// src/data/sasuke.json
-var sasuke_default = {
-  id: "sasuke",
-  name: "Sasuke Uchiha \xB7 Hebi",
-  health: 1e3,
-  speed: 4.65,
-  jump: -16.9,
-  gravity: 0.73,
-  meterGainScale: 0,
-  airChaseSpeed: 6.6,
-  airChaseTicks: 10,
-  locomotion: {
-    backSpeed: 3.65,
-    airSpeed: 6.2,
-    jumpStartup: 5,
-    landingTicks: 7,
-    dashForward: [3, 7, 13, 18, 19, 17, 15, 13, 10, 6, 3, 0],
-    backdash: [3, 8, 13, 16, 16, 15, 13, 11, 8, 5, 2, 0]
-  },
-  combatLimits: { maxHits: 11, maxAirHits: 6, maxTicks: 280 }
-};
-
-// src/data/sasuke-frames.json
-var sasuke_frames_default = { movement: { idle: [0, 1, 2, 3, 4, 5], walkForward: [6, 7, 8, 9, 10, 11], walkBack: [12, 13, 14, 15, 16, 17], dashForward: [18, 19, 20, 21, 22], backdash: [23, 24, 25, 26, 27], crouchStart: [28, 29], crouchIdle: [30, 31], crouchEnd: [32, 33], jumpStart: [34, 35, 36], jumpRise: [37, 38], jumpApex: [39], jumpFall: [40, 41], landing: [42, 43, 44] }, normals: { stand_light: [{ hurtboxes: [{ x: -15, y: -131, w: 35, h: 28 }, { x: -29, y: -103, w: 64, h: 36 }, { x: -38, y: -67, w: 70, h: 33 }, { x: -37, y: -34, w: 82, h: 34 }], frame: 0 }, { hurtboxes: [{ x: -14, y: -131, w: 35, h: 28 }, { x: -31, y: -103, w: 94, h: 36 }, { x: -38, y: -67, w: 69, h: 33 }, { x: -36, y: -34, w: 81, h: 34 }], hitboxes: [{ a: { x: 33, y: -96 }, b: { x: 59, y: -97 }, r: 8 }], frame: 1 }, { hurtboxes: [{ x: -16, y: -130, w: 35, h: 27 }, { x: -30, y: -103, w: 77, h: 37 }, { x: -35, y: -66, w: 68, h: 32 }, { x: -34, y: -34, w: 80, h: 34 }], frame: 2 }, { hurtboxes: [{ x: -17, y: -131, w: 34, h: 28 }, { x: -31, y: -103, w: 69, h: 36 }, { x: -36, y: -67, w: 68, h: 33 }, { x: -36, y: -34, w: 81, h: 34 }], frame: 3 }], stand_medium: [{ hurtboxes: [{ x: -16, y: -133, w: 35, h: 28 }, { x: -27, y: -105, w: 68, h: 37 }, { x: -24, y: -68, w: 65, h: 33 }, { x: -11, y: -35, w: 41, h: 35 }], frame: 4 }, { hurtboxes: [{ x: -24, y: -131, w: 36, h: 28 }, { x: -35, y: -103, w: 100, h: 36 }, { x: -27, y: -67, w: 72, h: 33 }, { x: -18, y: -34, w: 23, h: 34 }], hitboxes: [{ a: { x: 52, y: -79 }, b: { x: 73, y: -80 }, r: 9 }], frame: 5 }, { hurtboxes: [{ x: -23, y: -132, w: 35, h: 28 }, { x: -29, y: -104, w: 62, h: 37 }, { x: -32, y: -67, w: 64, h: 33 }, { x: -19, y: -34, w: 41, h: 34 }], frame: 6 }, { hurtboxes: [{ x: -20, y: -130, w: 35, h: 27 }, { x: -33, y: -103, w: 69, h: 37 }, { x: -38, y: -66, w: 67, h: 32 }, { x: -37, y: -34, w: 80, h: 34 }], frame: 7 }], stand_heavy: [{ hurtboxes: [{ x: -8, y: -130, w: 35, h: 27 }, { x: -25, y: -103, w: 63, h: 37 }, { x: -56, y: -66, w: 91, h: 32 }, { x: -39, y: -34, w: 87, h: 34 }], frame: 8 }, { hurtboxes: [{ x: -7, y: -130, w: 35, h: 27 }, { x: -17, y: -103, w: 72, h: 37 }, { x: -35, y: -66, w: 70, h: 32 }, { x: -35, y: -34, w: 87, h: 34 }], blade: { a: { x: 54, y: -87 }, b: { x: 107, y: -87 }, r: 7 }, frame: 9 }, { hurtboxes: [{ x: -11, y: -131, w: 35, h: 28 }, { x: -22, y: -103, w: 56, h: 36 }, { x: -39, y: -67, w: 97, h: 33 }, { x: -43, y: -34, w: 89, h: 34 }], blade: { a: { x: 33, y: -57 }, b: { x: 85, y: -35 }, r: 7 }, frame: 10 }, { hurtboxes: [{ x: -17, y: -130, w: 34, h: 27 }, { x: -28, y: -103, w: 61, h: 37 }, { x: -39, y: -66, w: 66, h: 32 }, { x: -41, y: -34, w: 83, h: 34 }], frame: 11 }], crouch_light: [{ hurtboxes: [{ x: -16, y: -95, w: 58, h: 20 }, { x: -29, y: -75, w: 71, h: 27 }, { x: -42, y: -48, w: 87, h: 23 }, { x: -32, y: -25, w: 77, h: 25 }], frame: 12 }, { hurtboxes: [{ x: 19, y: -94, w: 35, h: 20 }, { x: -14, y: -74, w: 79, h: 26 }, { x: -35, y: -48, w: 100, h: 24 }, { x: -23, y: -24, w: 72, h: 24 }], hitboxes: [{ a: { x: 61, y: -52 }, b: { x: 85, y: -50 }, r: 8 }], frame: 13 }, { hurtboxes: [{ x: 6, y: -97, w: 36, h: 20 }, { x: -24, y: -77, w: 66, h: 28 }, { x: -41, y: -49, w: 89, h: 24 }, { x: -33, y: -25, w: 76, h: 25 }], frame: 14 }, { hurtboxes: [{ x: 0, y: -98, w: 35, h: 21 }, { x: -28, y: -77, w: 81, h: 27 }, { x: -43, y: -50, w: 88, h: 25 }, { x: -34, y: -25, w: 74, h: 25 }], frame: 15 }], crouch_medium: [{ hurtboxes: [{ x: -3, y: -100, w: 46, h: 21 }, { x: -24, y: -79, w: 86, h: 28 }, { x: -35, y: -51, w: 83, h: 25 }, { x: -34, y: -26, w: 62, h: 26 }], frame: 16 }, { hurtboxes: [{ x: -2, y: -97, w: 36, h: 20 }, { x: -33, y: -77, w: 87, h: 28 }, { x: -40, y: -49, w: 99, h: 24 }, { x: -31, y: -25, w: 96, h: 25 }], hitboxes: [{ a: { x: 52, y: -12 }, b: { x: 74, y: -9 }, r: 8 }], frame: 17 }, { hurtboxes: [{ x: 3, y: -100, w: 36, h: 21 }, { x: -27, y: -79, w: 82, h: 28 }, { x: -35, y: -51, w: 82, h: 25 }, { x: -35, y: -26, w: 77, h: 26 }], frame: 18 }, { hurtboxes: [{ x: 2, y: -99, w: 36, h: 21 }, { x: -27, y: -78, w: 84, h: 28 }, { x: -37, y: -50, w: 86, h: 24 }, { x: -37, y: -26, w: 80, h: 26 }], frame: 19 }], crouch_heavy: [{ hurtboxes: [{ x: -4, y: -105, w: 37, h: 22 }, { x: -28, y: -83, w: 83, h: 29 }, { x: -46, y: -54, w: 101, h: 27 }, { x: -40, y: -27, w: 81, h: 27 }], frame: 20 }, { hurtboxes: [{ x: 1, y: -114, w: 64, h: 24 }, { x: -19, y: -90, w: 61, h: 32 }, { x: -36, y: -58, w: 80, h: 28 }, { x: -36, y: -30, w: 87, h: 30 }], blade: { a: { x: 42, y: -79 }, b: { x: 92, y: -101 }, r: 7 }, frame: 21 }, { hurtboxes: [{ x: -11, y: -129, w: 66, h: 27 }, { x: -25, y: -102, w: 76, h: 36 }, { x: -32, y: -66, w: 75, h: 32 }, { x: -41, y: -34, w: 94, h: 34 }], blade: { a: { x: 51, y: -102 }, b: { x: 86, y: -127 }, r: 7 }, frame: 22 }, { hurtboxes: [{ x: -2, y: -118, w: 35, h: 25 }, { x: -20, y: -93, w: 52, h: 33 }, { x: -35, y: -60, w: 79, h: 29 }, { x: -39, y: -31, w: 87, h: 31 }], frame: 23 }], air_light: [{ hurtboxes: [{ x: -9, y: -133, w: 38, h: 27 }, { x: -28, y: -106, w: 68, h: 36 }, { x: -35, y: -70, w: 71, h: 32 }, { x: -35, y: -38, w: 56, h: 33 }], frame: 24 }, { hurtboxes: [{ x: -2, y: -132, w: 38, h: 26 }, { x: -24, y: -106, w: 89, h: 36 }, { x: -33, y: -70, w: 72, h: 31 }, { x: -32, y: -39, w: 53, h: 33 }], hitboxes: [{ a: { x: 37, y: -100 }, b: { x: 72, y: -99 }, r: 8 }], frame: 25 }, { hurtboxes: [{ x: -8, y: -129, w: 36, h: 26 }, { x: -31, y: -103, w: 72, h: 34 }, { x: -36, y: -69, w: 73, h: 31 }, { x: -29, y: -38, w: 48, h: 32 }], frame: 26 }, { hurtboxes: [{ x: -11, y: -130, w: 36, h: 26 }, { x: -28, y: -104, w: 55, h: 34 }, { x: -35, y: -70, w: 66, h: 30 }, { x: -22, y: -40, w: 41, h: 32 }], frame: 27 }], air_medium: [{ hurtboxes: [{ x: -15, y: -129, w: 38, h: 27 }, { x: -34, y: -102, w: 76, h: 36 }, { x: -28, y: -66, w: 66, h: 32 }, { x: -11, y: -34, w: 37, h: 34 }], frame: 28 }, { hurtboxes: [{ x: -8, y: -130, w: 35, h: 25 }, { x: -33, y: -105, w: 98, h: 33 }, { x: -34, y: -72, w: 99, h: 30 }, { x: -25, y: -42, w: 52, h: 31 }], hitboxes: [{ a: { x: 59, y: -73 }, b: { x: 86, y: -75 }, r: 9 }], frame: 29 }, { hurtboxes: [{ x: -7, y: -129, w: 34, h: 24 }, { x: -30, y: -105, w: 74, h: 31 }, { x: -33, y: -74, w: 74, h: 28 }, { x: -33, y: -46, w: 64, h: 29 }], frame: 30 }, { hurtboxes: [{ x: -9, y: -128, w: 35, h: 24 }, { x: -25, y: -104, w: 59, h: 32 }, { x: -31, y: -72, w: 67, h: 29 }, { x: -31, y: -43, w: 61, h: 30 }], frame: 31 }], air_heavy: [{ hurtboxes: [{ x: -26, y: -149, w: 69, h: 31 }, { x: -34, y: -118, w: 90, h: 42 }, { x: -37, y: -76, w: 92, h: 37 }, { x: -37, y: -39, w: 61, h: 39 }], frame: 32 }, { hurtboxes: [{ x: -7, y: -126, w: 45, h: 25 }, { x: -20, y: -101, w: 74, h: 34 }, { x: -37, y: -67, w: 78, h: 30 }, { x: -33, y: -37, w: 43, h: 31 }], blade: { a: { x: 39, y: -57 }, b: { x: 81, y: -29 }, r: 7 }, frame: 33 }, { hurtboxes: [{ x: -7, y: -128, w: 38, h: 27 }, { x: -25, y: -101, w: 71, h: 36 }, { x: -39, y: -65, w: 78, h: 32 }, { x: -34, y: -33, w: 93, h: 33 }], blade: { a: { x: 34, y: -47 }, b: { x: 70, y: -11 }, r: 7 }, frame: 34 }, { hurtboxes: [{ x: -12, y: -133, w: 34, h: 28 }, { x: -30, y: -105, w: 68, h: 37 }, { x: -42, y: -68, w: 69, h: 33 }, { x: -42, y: -35, w: 49, h: 35 }], frame: 35 }] }, reactions: { guardStand: [{ hurtboxes: [{ x: -17, y: -129, w: 46, h: 27 }, { x: -21, y: -102, w: 50, h: 36 }, { x: -37, y: -66, w: 71, h: 32 }, { x: -38, y: -34, w: 81, h: 34 }], frame: 0 }], guardImpactStand: [{ hurtboxes: [{ x: -45, y: -125, w: 60, h: 26 }, { x: -35, y: -99, w: 53, h: 35 }, { x: -35, y: -64, w: 73, h: 32 }, { x: -35, y: -32, w: 87, h: 32 }], frame: 1 }, { hurtboxes: [{ x: -17, y: -129, w: 46, h: 27 }, { x: -21, y: -102, w: 50, h: 36 }, { x: -37, y: -66, w: 71, h: 32 }, { x: -38, y: -34, w: 81, h: 34 }], frame: 0 }], guardCrouch: [{ hurtboxes: [{ x: -4, y: -100, w: 45, h: 21 }, { x: -19, y: -79, w: 60, h: 28 }, { x: -39, y: -51, w: 79, h: 25 }, { x: -34, y: -26, w: 77, h: 26 }], frame: 2 }], guardImpactCrouch: [{ hurtboxes: [{ x: -44, y: -102, w: 54, h: 21 }, { x: -38, y: -81, w: 69, h: 29 }, { x: -36, y: -52, w: 75, h: 25 }, { x: -42, y: -27, w: 89, h: 27 }], frame: 3 }, { hurtboxes: [{ x: -4, y: -100, w: 45, h: 21 }, { x: -19, y: -79, w: 60, h: 28 }, { x: -39, y: -51, w: 79, h: 25 }, { x: -34, y: -26, w: 77, h: 26 }], frame: 2 }], damageLight: [{ hurtboxes: [{ x: -29, y: -128, w: 42, h: 27 }, { x: -32, y: -101, w: 72, h: 36 }, { x: -35, y: -65, w: 73, h: 32 }, { x: -36, y: -33, w: 86, h: 33 }], frame: 4 }, { hurtboxes: [{ x: -45, y: -125, w: 60, h: 26 }, { x: -35, y: -99, w: 53, h: 35 }, { x: -35, y: -64, w: 73, h: 32 }, { x: -35, y: -32, w: 87, h: 32 }], frame: 1 }], damageMedium: [{ hurtboxes: [{ x: -53, y: -126, w: 88, h: 26 }, { x: -49, y: -100, w: 87, h: 36 }, { x: -31, y: -64, w: 74, h: 31 }, { x: -30, y: -33, w: 88, h: 33 }], frame: 5 }, { hurtboxes: [{ x: -29, y: -128, w: 42, h: 27 }, { x: -32, y: -101, w: 72, h: 36 }, { x: -35, y: -65, w: 73, h: 32 }, { x: -36, y: -33, w: 86, h: 33 }], frame: 4 }], damageHeavy: [{ hurtboxes: [{ x: -53, y: -126, w: 88, h: 26 }, { x: -49, y: -100, w: 87, h: 36 }, { x: -31, y: -64, w: 74, h: 31 }, { x: -30, y: -33, w: 88, h: 33 }], frame: 5 }, { hurtboxes: [{ x: -29, y: -128, w: 42, h: 27 }, { x: -32, y: -101, w: 72, h: 36 }, { x: -35, y: -65, w: 73, h: 32 }, { x: -36, y: -33, w: 86, h: 33 }], frame: 4 }], damageCrouch: [{ hurtboxes: [{ x: -44, y: -102, w: 54, h: 21 }, { x: -38, y: -81, w: 69, h: 29 }, { x: -36, y: -52, w: 75, h: 25 }, { x: -42, y: -27, w: 89, h: 27 }], frame: 3 }, { hurtboxes: [{ x: -4, y: -100, w: 45, h: 21 }, { x: -19, y: -79, w: 60, h: 28 }, { x: -39, y: -51, w: 79, h: 25 }, { x: -34, y: -26, w: 77, h: 26 }], frame: 2 }], damageAir: [{ hurtboxes: [{ x: -51, y: -129, w: 81, h: 22 }, { x: -50, y: -107, w: 89, h: 30 }, { x: -41, y: -77, w: 103, h: 27 }, { x: -36, y: -50, w: 93, h: 28 }], frame: 6 }, { hurtboxes: [{ x: -58, y: -91, w: 76, h: 18 }, { x: -58, y: -73, w: 116, h: 23 }, { x: -42, y: -50, w: 107, h: 21 }, { x: -21, y: -29, w: 86, h: 22 }], frame: 7 }], launched: [{ hurtboxes: [{ x: -51, y: -129, w: 81, h: 22 }, { x: -50, y: -107, w: 89, h: 30 }, { x: -41, y: -77, w: 103, h: 27 }, { x: -36, y: -50, w: 93, h: 28 }], frame: 6 }, { hurtboxes: [{ x: -58, y: -91, w: 76, h: 18 }, { x: -58, y: -73, w: 116, h: 23 }, { x: -42, y: -50, w: 107, h: 21 }, { x: -21, y: -29, w: 86, h: 22 }], frame: 7 }], falling: [{ hurtboxes: [{ x: -58, y: -91, w: 76, h: 18 }, { x: -58, y: -73, w: 116, h: 23 }, { x: -42, y: -50, w: 107, h: 21 }, { x: -21, y: -29, w: 86, h: 22 }], frame: 7 }], downed: [{ hurtboxes: [{ x: -58, y: -49, w: 75, h: 10 }, { x: -58, y: -39, w: 122, h: 14 }, { x: -58, y: -25, w: 123, h: 12 }, { x: -58, y: -13, w: 123, h: 13 }], frame: 8 }], getup: [{ hurtboxes: [{ x: -9, y: -90, w: 57, h: 19 }, { x: -25, y: -71, w: 73, h: 25 }, { x: -43, y: -46, w: 79, h: 23 }, { x: -41, y: -23, w: 91, h: 23 }], frame: 9 }, { hurtboxes: [{ x: -9, y: -103, w: 52, h: 22 }, { x: -24, y: -81, w: 67, h: 28 }, { x: -41, y: -53, w: 85, h: 26 }, { x: -31, y: -27, w: 76, h: 27 }], frame: 10 }, { hurtboxes: [{ x: 1, y: -94, w: 47, h: 20 }, { x: -22, y: -74, w: 70, h: 26 }, { x: -41, y: -48, w: 75, h: 24 }, { x: -43, y: -24, w: 89, h: 24 }], frame: 11 }], grabbed: [{ hurtboxes: [{ x: -53, y: -126, w: 88, h: 26 }, { x: -49, y: -100, w: 87, h: 36 }, { x: -31, y: -64, w: 74, h: 31 }, { x: -30, y: -33, w: 88, h: 33 }], frame: 5 }], ko: [{ hurtboxes: [{ x: 1, y: -94, w: 47, h: 20 }, { x: -22, y: -74, w: 70, h: 26 }, { x: -41, y: -48, w: 75, h: 24 }, { x: -43, y: -24, w: 89, h: 24 }], frame: 11 }, { hurtboxes: [{ x: -58, y: -49, w: 75, h: 10 }, { x: -58, y: -39, w: 122, h: 14 }, { x: -58, y: -25, w: 123, h: 12 }, { x: -58, y: -13, w: 123, h: 13 }], frame: 8 }], defeat: [{ hurtboxes: [{ x: -58, y: -49, w: 75, h: 10 }, { x: -58, y: -39, w: 122, h: 14 }, { x: -58, y: -25, w: 123, h: 12 }, { x: -58, y: -13, w: 123, h: 13 }], frame: 8 }], entrance: [{ hurtboxes: [{ x: -12, y: -124, w: 33, h: 26 }, { x: -28, y: -98, w: 71, h: 35 }, { x: -40, y: -63, w: 68, h: 31 }, { x: -42, y: -32, w: 85, h: 32 }], frame: 12 }, { hurtboxes: [{ x: -10, y: -125, w: 30, h: 26 }, { x: -28, y: -99, w: 70, h: 35 }, { x: -42, y: -64, w: 65, h: 32 }, { x: -39, y: -32, w: 61, h: 32 }], frame: 13 }, { hurtboxes: [{ x: -7, y: -126, w: 31, h: 26 }, { x: -22, y: -100, w: 66, h: 36 }, { x: -39, y: -64, w: 66, h: 31 }, { x: -36, y: -33, w: 61, h: 33 }], frame: 14 }, { hurtboxes: [{ x: -6, y: -126, w: 30, h: 26 }, { x: -21, y: -100, w: 66, h: 36 }, { x: -39, y: -64, w: 65, h: 31 }, { x: -31, y: -33, w: 70, h: 33 }], frame: 15 }, { hurtboxes: [{ x: -8, y: -129, w: 28, h: 27 }, { x: -30, y: -102, w: 75, h: 36 }, { x: -36, y: -66, w: 66, h: 32 }, { x: -35, y: -34, w: 75, h: 34 }], frame: 16 }], victory: [{ hurtboxes: [{ x: -8, y: -129, w: 28, h: 27 }, { x: -30, y: -102, w: 75, h: 36 }, { x: -36, y: -66, w: 66, h: 32 }, { x: -35, y: -34, w: 75, h: 34 }], frame: 16 }, { hurtboxes: [{ x: -13, y: -131, w: 32, h: 28 }, { x: -30, y: -103, w: 74, h: 36 }, { x: -37, y: -67, w: 65, h: 33 }, { x: -36, y: -34, w: 75, h: 34 }], frame: 18 }], taunt: [{ hurtboxes: [{ x: -8, y: -129, w: 28, h: 27 }, { x: -30, y: -102, w: 75, h: 36 }, { x: -36, y: -66, w: 66, h: 32 }, { x: -35, y: -34, w: 75, h: 34 }], frame: 16 }, { hurtboxes: [{ x: -13, y: -131, w: 32, h: 28 }, { x: -30, y: -103, w: 74, h: 36 }, { x: -37, y: -67, w: 65, h: 33 }, { x: -36, y: -34, w: 75, h: 34 }], frame: 18 }, { hurtboxes: [{ x: -8, y: -125, w: 28, h: 26 }, { x: -30, y: -99, w: 74, h: 35 }, { x: -36, y: -64, w: 66, h: 32 }, { x: -36, y: -32, w: 75, h: 32 }], frame: 17 }] } };
-
-// src/data/sasuke-clips.json
-var sasuke_clips_default = {
-  idle: [9, 8, 8, 8, 9, 10],
-  walkForward: [4, 4, 4, 4, 4, 4],
-  walkBack: [5, 4, 5, 5, 4, 5],
-  dashForward: [2, 2, 3, 3, 2],
-  backdash: [2, 2, 3, 3, 2],
-  crouchStart: [3, 3],
-  crouchIdle: [9, 10],
-  crouchEnd: [3, 3],
-  jumpStart: [2, 2, 1],
-  jumpRise: [6, 8],
-  jumpApex: [9],
-  jumpFall: [8, 6],
-  landing: [2, 3, 2],
-  guardStand: [9],
-  guardImpactStand: [6, 4],
-  guardCrouch: [9],
-  guardImpactCrouch: [6, 4],
-  damageLight: [7, 8],
-  damageMedium: [8, 10],
-  damageHeavy: [12, 10],
-  damageCrouch: [7, 9],
-  damageAir: [8, 9],
-  launched: [10, 10],
-  falling: [10],
-  downed: [26],
-  getup: [7, 7, 6],
-  grabbed: [9],
-  ko: [7, 48],
-  defeat: [44],
-  entrance: [5, 5, 5, 7, 24],
-  victory: [10, 30],
-  taunt: [14, 10, 12]
-};
-
-// src/data/sasuke-normals.json
-var sasuke_normals_default = {
-  stand_light: { holds: [4, 3, 5, 8], activeFrames: [1, 2], damage: 35, stun: 22, blockstun: 10, push: 1.2, launch: 0, hitstop: 4, level: "mid" },
-  stand_medium: { holds: [7, 4, 6, 10], activeFrames: [1, 2], damage: 59, stun: 27, blockstun: 13, push: 1.9, launch: 0, hitstop: 6, level: "mid" },
-  stand_heavy: { holds: [11, 3, 3, 22], activeFrames: [1, 3], damage: 88, stun: 26, blockstun: 16, push: 4.4, launch: 0, hitstop: 8, level: "mid" },
-  crouch_light: { holds: [4, 3, 5, 8], activeFrames: [1, 2], damage: 32, stun: 21, blockstun: 10, push: 1.1, launch: 0, hitstop: 4, level: "low" },
-  crouch_medium: { holds: [7, 4, 6, 11], activeFrames: [1, 2], damage: 55, stun: 27, blockstun: 13, push: 1.9, launch: 0, hitstop: 6, level: "low" },
-  crouch_heavy: { holds: [10, 3, 3, 20], activeFrames: [1, 3], damage: 73, stun: 34, blockstun: 15, push: 2.7, launch: -13.5, hitstop: 7, level: "mid" },
-  air_light: { holds: [4, 3, 4, 7], activeFrames: [1, 2], damage: 33, stun: 22, blockstun: 10, push: 1.1, launch: -4.3, hitstop: 4, level: "high", airHold: -3.8 },
-  air_medium: { holds: [6, 4, 5, 8], activeFrames: [1, 2], damage: 56, stun: 25, blockstun: 13, push: 2, launch: -3.7, hitstop: 6, level: "high", airHold: -3.4 },
-  air_heavy: { holds: [9, 3, 3, 14], activeFrames: [1, 3], damage: 82, stun: 30, blockstun: 15, push: 3.5, launch: 7, hitstop: 8, level: "high", knockdown: true }
-};
-
-// src/engine/sasuke-data.ts
-var sasukeFrames = sasuke_frames_default;
-var sasukeMoves = Object.fromEntries(
-  Object.keys(sasuke_normals_default).map((id) => {
-    const {
-      holds,
-      activeFrames: [first, end],
-      ...stats
-    } = sasuke_normals_default[id];
-    const [stance, weight] = id.split("_");
-    const rank = weight === "light" ? 1 : weight === "medium" ? 2 : 3;
-    const duration = (start, stop) => holds.slice(start, stop).reduce((a, b) => a + b, 0);
-    const startup2 = duration(0, first), active2 = duration(first, end);
-    const recovery2 = duration(end, holds.length);
-    const next = rank === 1 ? "medium" : rank === 2 ? "heavy" : void 0;
-    return [
-      id,
-      {
-        ...stats,
-        startup: startup2,
-        active: active2,
-        recovery: recovery2,
-        rank,
-        kind: "strike",
-        box: { x: 0, y: 0, w: 0, h: 0 },
-        cancels: [
-          ...next ? [next] : id === "crouch_heavy" ? ["jump"] : [],
-          ...stance !== "air" ? ["special"] : []
-        ],
-        cancelMoves: next ? [`${stance}_${next}`] : [],
-        cancelWindow: {
-          fromTick: startup2,
-          toTick: startup2 + active2 + (id === "crouch_heavy" ? 9 : 6)
-        },
-        poses: sasukeFrames.normals[id].map(({ frame: _, ...cel }, index) => ({
-          ...cel,
-          ticks: holds[index],
-          phase: index < first ? "startup" : index < end ? "active" : "recovery"
-        }))
-      }
-    ];
-  })
-);
-var sasuke = {
-  ...sasuke_default,
-  moves: sasukeMoves,
-  specialMoves: sasukeSpecialMoves,
-  lifecycle: {
-    entranceDistance: 58,
-    entranceWalkTicks: 20,
-    entranceSpeed: 2.9,
-    tauntTicks: 36,
-    getupTicks: 20,
-    koTicks: 55
-  },
-  hurtboxes: {
-    standing: [
-      { x: -18, y: -127, w: 40, h: 29 },
-      { x: -25, y: -99, w: 58, h: 53 },
-      { x: -31, y: -46, w: 68, h: 46 }
-    ],
-    crouching: [
-      { x: -13, y: -83, w: 35, h: 29 },
-      { x: -31, y: -56, w: 70, h: 55 }
-    ],
-    air: [
-      { x: -20, y: -119, w: 43, h: 31 },
-      { x: -29, y: -89, w: 62, h: 77 }
-    ]
-  },
-  reactions: Object.fromEntries(
-    Object.entries(sasukeFrames.reactions).map(([id, cels]) => [
-      id,
-      {
-        loop: id === "guardStand" || id === "guardCrouch" || id === "falling",
-        poses: cels.map((cel, index) => ({
-          ticks: sasuke_clips_default[id][index],
-          hurtboxes: cel.hurtboxes
-        }))
-      }
-    ])
-  )
 };
 
 // src/data/luffy.json
@@ -242009,6 +242569,8 @@ var fighterKeys = [
   "gokuAirTeleportUsed",
   "gokuAirTeleportsUsed",
   "gokuCastSerial",
+  "sasukeCurse",
+  "kirinCursed",
   "homeX",
   "guardIntent",
   "blockCrouched",
@@ -242035,6 +242597,7 @@ var matchKeys = [
   "roadRoller",
   "fury",
   "jetGigant",
+  "kirin",
   "hits",
   "hitSerial",
   "rules",
@@ -242042,6 +242605,7 @@ var matchKeys = [
   "projectileSerial",
   "kiProjectiles",
   "sasukeStormUntil",
+  "sasukeStormLevel",
   "beams"
 ];
 var clone = (value) => structuredClone(value);

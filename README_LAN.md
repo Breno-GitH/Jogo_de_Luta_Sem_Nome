@@ -1,15 +1,15 @@
 # Jogo de luta no XAMPP e multiplayer LAN
 
-**Combate atualizado:** R ativa as três Supers; Goku possui teletransporte aéreo J/K/L e perseguição de combos. Regras e verificação da revisão atual: [COMBATE-FRENETICO.md](COMBATE-FRENETICO.md). Os números de testes da seção de migração abaixo são o registro daquela implantação.
+**Combate atualizado:** R ativa todas as Supers; Goku possui teletransporte aéreo J/K/L e perseguição de combos. Regras e verificação da revisão atual: [COMBATE-FRENETICO.md](COMBATE-FRENETICO.md). Os números de testes da seção de migração abaixo são o registro daquela implantação.
 
-O projeto existente foi adaptado. O Apache serve o frontend de produção; o Node.js executa o combate e o Socket.IO por trás do proxy. Vite não é necessário para jogar. Samurai, Dio/The World e Goku usam o mesmo motor e os mesmos recursos dos modos locais.
+O projeto existente foi adaptado. O Apache serve o frontend de produção; o Node.js executa o combate e o Socket.IO por trás do proxy. Vite não é necessário para jogar. Samurai, Dio/The World, Goku, Luffy e Sasuke Hebi usam o mesmo motor e os mesmos recursos dos modos locais.
 
 ## Endereços e arquivos
 
 - Projeto editável: `C:\xampp\htdocs\2025\Jogo_de_Luta_Sem_Nome`.
 - Frontend publicado: `C:\xampp\htdocs\2025\Jogo_de_Luta_Sem_Nome\dist`.
-- Endereço principal: [http://localhost/jogo-luta/](http://localhost/jogo-luta/).
-- Endereço completo, também suportado: [http://localhost/2025/Jogo_de_Luta_Sem_Nome/](http://localhost/2025/Jogo_de_Luta_Sem_Nome/).
+- Endereço curto: [http://localhost/jogo-luta/](http://localhost/jogo-luta/).
+- Endereço principal: [http://localhost/2025/Jogo_de_Luta_Sem_Nome/](http://localhost/2025/Jogo_de_Luta_Sem_Nome/).
 
 Os dois endereços são aliases do **mesmo** build. Não há outro jogo nem cópia manual do index. O Apache não publica a raiz de desenvolvimento: `src`, `node_modules`, `.env`, configurações, scripts e backups ficam fora do diretório servido. As URLs de sprites, sons, laboratórios e Socket.IO derivam da origem e do caminho atuais do navegador. Não há IP da LAN fixado no frontend.
 
@@ -38,7 +38,7 @@ Requer Node.js 22 ou superior, npm e o XAMPP instalado em `C:\xampp`.
 
 1. Abra o painel do XAMPP e inicie **Apache**. MySQL não é necessário.
 2. Execute `iniciar-multiplayer.bat` na raiz do projeto. Mantenha a janela aberta; ela mostra erros e os endereços disponíveis. Ctrl+C encerra o backend. Uma segunda execução detecta o serviço existente e não inicia uma cópia duplicada.
-3. Abra [o jogo no Apache](http://localhost/jogo-luta/).
+3. Abra [o jogo no Apache](http://localhost/2025/Jogo_de_Luta_Sem_Nome/).
 
 BOT, Arcade, Treinamento e os laboratórios funcionam com o Apache, mesmo com o backend desligado. Contra Amigo precisa dos dois processos. Não execute `npm run dev` para jogar a versão publicada. O Apache foi iniciado e testado durante esta instalação; posteriormente use o painel do XAMPP para iniciar/parar o serviço normalmente.
 
@@ -77,9 +77,9 @@ Ambos devem estar na mesma rede privada, sem isolamento de clientes Wi-Fi. Não 
 
 ## Criar sala, escolher e lutar
 
-1. Abra **Jogar com amigo → Criar sala**. O backend gera e reserva um código aleatório único de seis caracteres.
+1. Abra **Multiplayer LAN → Criar sala**. O backend gera e reserva um código aleatório único de seis caracteres.
 2. Compartilhe esse código. O amigo abre **Entrar em sala**, informa o código e confirma.
-3. Cada jogador escolhe Samurai, Dio ou Goku, clica **Confirmar personagem** e depois **Pronto**. Trocar a escolha remove confirmação e prontidão anteriores. Personagens iguais usam paletas diferentes.
+3. Cada jogador escolhe Samurai, Dio, Goku, Luffy ou Sasuke Hebi, clica **Confirmar personagem** e depois **Pronto**. Trocar a escolha remove confirmação e prontidão anteriores. Personagens iguais usam paletas diferentes.
 4. Quando os dois estiverem conectados, confirmados e prontos, o anfitrião usa **Iniciar partida**. O convidado não pode iniciar à força.
 5. Joguem com os controles normais. Cada navegador controla seu próprio jogador com A/D, W, S, J/K/L, Shift, U, R e os comandos direcionais dos personagens. Goku usa R para Fúria Saiyajin; R mantém a função existente de Samurai/Dio.
 6. Ao terminar, ambos podem pedir **Revanche**. **Voltar ao lobby** permite selecionar novamente e reutilizar o código. **Sair** libera a vaga ou encerra a sala vazia.
@@ -154,10 +154,26 @@ Os testes de cinematografias configuram posição/energia **diretamente no servi
 
 Para repetir: pare o backend comum, mantenha Apache ligado, execute `npm run build:lan`, `npm test`, `npm run test:lan`. A suíte LAN inicia e encerra seu próprio backend em loopback. Ela não altera configurações do Apache; o teste opcional de interrupção do Apache exige controle explícito do processo pelo operador. Evite executar os testes pesados de arte/IA simultaneamente aos dois navegadores nesta máquina.
 
-**Ainda precisa ser verificado em dois computadores físicos:** abra o IP do servidor no PC do amigo; crie/entre/confirme/inicie uma sala; mova e ataque dos dois lados; teste os três personagens e Supers; complete uma partida, peça revanche e desconecte/reconecte um participante. Confira o proxy/heartbeat no DevTools dos dois. Teste também parar/iniciar Apache pelo painel XAMPP e a conectividade após mudanças de rede. Não foi realizado teste com um segundo computador disponível.
+**Ainda precisa ser verificado em dois computadores físicos:** abra o IP do servidor no PC do amigo; crie/entre/confirme/inicie uma sala; mova e ataque dos dois lados; teste os cinco personagens e suas Supers; complete uma partida, peça revanche e desconecte/reconecte um participante. Confira o proxy/heartbeat no DevTools dos dois. Teste também parar/iniciar Apache pelo painel XAMPP e a conectividade após mudanças de rede. Não foi realizado teste com um segundo computador disponível.
 
 Limitações: salas e progresso online são voláteis, não há migração do servidor para outro PC, autenticação de contas, matchmaking público ou rollback. O limite de retomada é finito. Congelar uma aba ou sobrecarregar o PC pode atrasar os dois jogadores; o serviço não promete ausência de lag. As limitações artísticas já documentadas de cada personagem permanecem; não foram alterados desenhos ou gameplay para esta migração.
 
 ## Menu e opções
 
-Consulte [MENUS.md](MENUS.md) para seleção dos quatro personagens, Arcade, Versus BOT, treinamento, lobby, pausa, resultados, remapeamento e testes da interface. O endereço Apache e o backend LAN são os mesmos já configurados neste documento.
+Consulte [MENUS.md](MENUS.md) para seleção dos cinco personagens, Arcade Torre, Versus BOT, treinamento, lobby, pausa, resultados, remapeamento e testes da interface. O endereço Apache e o backend LAN são os mesmos já configurados neste documento.
+
+## Verificação do anfitrião e do convidado
+
+Execute `node scripts/verificar-lan.mjs`. O diagnóstico lista as interfaces IPv4 com as URLs para convidados, compara as versões do Apache e do backend e verifica o upgrade de polling para WebSocket. Ele faz as mesmas verificações pelo endereço da rede a partir do anfitrião. Em caso de versões diferentes, encerre o backend, publique com `atualizar-xampp.bat`, reinicie com `iniciar-multiplayer.bat` e recarregue os navegadores.
+
+O servidor envia o vencedor e o placar em ordem J1/J2, inclusive quando a luta é interrompida. O cliente preserva os botões pressionados durante um atraso breve de envio e descarta entradas antigas quando a partida é retomada. Se a conexão não se recuperar dentro do prazo, a interface indica indisponibilidade e oferece nova tentativa. Uma revanche exige confirmação dos dois jogadores.
+
+Para o teste com outro computador físico:
+
+1. Inicie Apache e backend no anfitrião. Anote a URL da interface Wi-Fi ou Ethernet ativa indicada pelo diagnóstico.
+2. No segundo computador, conectado à mesma rede privada, abra essa URL. Somente o anfitrião executa o backend.
+3. Crie a sala no anfitrião. Entre com o código no segundo computador, escolha e confirme os lutadores, marque os dois como prontos e inicie no anfitrião.
+4. Movimente e ataque dos dois lados, use uma Super e confirme placar e câmera ao terminar. Peça revanche em um cliente e confirme no outro. Durante outra luta, recarregue o navegador convidado e abra Multiplayer LAN novamente dentro do prazo.
+5. Se a página não abrir no segundo PC, verifique se ambos estão na mesma rede e se a rede Wi-Fi permite comunicação entre clientes. No Windows do anfitrião, permita entrada TCP 80 para o Apache apenas no perfil **Privado** e com origem **LocalSubnet**. O processo Node permanece em 127.0.0.1:3001.
+
+A build `545a57129b0c44ed5463e278` respondeu com a mesma versão no frontend e no backend e passou no polling, WebSocket e ping pelo localhost e pelo IPv4 do anfitrião. Os testes com dois Chromes cobriram sala e isolamento, combate dos cinco personagens, placar autoritativo, revanche, retomada, queda prolongada e criação de sala após reiniciar o serviço. Os dois Chromes rodaram no anfitrião.

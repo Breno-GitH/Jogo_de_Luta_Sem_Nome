@@ -76,16 +76,16 @@ app.http.listen(port, host, () => {
     }),
   );
   console.log("Multiplayer LAN ativo. Backend interno em 127.0.0.1:3001.");
-  console.log("No servidor: http://localhost/jogo-luta/");
+  console.log("No servidor: http://localhost/2025/Jogo_de_Luta_Sem_Nome/");
   for (const entries of Object.values(networkInterfaces()))
     for (const n of entries ?? [])
       if (n.family === "IPv4" && !n.internal)
-        console.log(`Na rede: http://${n.address}/jogo-luta/`);
+        console.log(`Na rede: http://${n.address}/2025/Jogo_de_Luta_Sem_Nome/`);
   console.log(
-    `Nome do computador (se resolvido pela rede): http://${hostname()}/jogo-luta/`,
+    `Nome do computador (se resolvido pela rede): http://${hostname()}/2025/Jogo_de_Luta_Sem_Nome/`,
   );
   console.log(
-    "Apache precisa estar iniciado no XAMPP. Ctrl+C encerra este backend.",
+    "Apache precisa estar iniciado no XAMPP. Ctrl+C encerra este backend. Diagnóstico: node scripts/verificar-lan.mjs",
   );
 });
 for (const signal of ["SIGINT", "SIGTERM"])

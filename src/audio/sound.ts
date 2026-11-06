@@ -6,11 +6,14 @@ export type Cue =
   | "guard"
   | "counter"
   | "power"
+  | "kirinCharge"
+  | "kirinThunder"
   | "round"
   | "fight"
   | "ko"
   | "menu";
 export function effectCue(event: HitEvent): Cue {
+  if (event.kind === "kirinCharge" || event.kind === "kirinThunder") return event.kind;
   return event.kind === "guard"
     ? "guard"
     : event.kind === "counter"
@@ -41,6 +44,11 @@ export class Sound {
   private musicVolume = 0.18;
   private masterVolume = 0.5;
   private musicStep = 0;
+  private bossMusic = false;
+  setBossMusic(value: boolean) {
+    if (value !== this.bossMusic) this.musicStep = 0;
+    this.bossMusic = value;
+  }
   get available() {
     return typeof AudioContext !== "undefined";
   }
@@ -121,7 +129,7 @@ export class Sound {
       !this.musicVolume
     )
       return;
-    const sequence = [
+    const sequence = this.bossMusic ? [33, 45, 36, 45, 40, 48, 41, 47, 33, 45, 36, 48, 39, 46, 40, 47] : [
       45, 52, 57, 60, 45, 52, 59, 64, 41, 48, 53, 57, 43, 50, 55, 59,
     ];
     const osc = ctx.createOscillator(),
@@ -178,13 +186,13 @@ export class Sound {
       };
     };
     if (
-      ["swing", "hit", "heavy", "guard", "counter", "power"].includes(cue) &&
+      ["swing", "hit", "heavy", "guard", "counter", "power", "kirinThunder"].includes(cue) &&
       this.noise
     ) {
       const source = ctx.createBufferSource(),
         filter = ctx.createBiquadFilter(),
         envelope = ctx.createGain();
-      const duration = cue === "swing" ? 0.085 : cue === "heavy" ? 0.16 : 0.1;
+      const duration = cue === "swing" ? 0.085 : cue === "heavy" || cue === "kirinThunder" ? 0.18 : 0.1;
       source.buffer = this.noise;
       filter.type = cue === "swing" ? "highpass" : "lowpass";
       filter.frequency.value =
@@ -202,7 +210,13 @@ export class Sound {
         envelope.disconnect();
       };
     }
-    if (cue === "guard" || cue === "counter")
+    if (cue === "kirinCharge") {
+      tone(91, 47, .42, "triangle", .30);
+      tone(330, 1150, .12, "sawtooth", .075, .12);
+    } else if (cue === "kirinThunder") {
+      tone(146, 34, .52, "triangle", .56);
+      tone(1200, 230, .095, "square", .14);
+    } else if (cue === "guard" || cue === "counter")
       tone(cue === "guard" ? 1250 : 1650, 700, 0.12, "sine", 0.2);
     else if (cue === "hit" || cue === "heavy")
       tone(

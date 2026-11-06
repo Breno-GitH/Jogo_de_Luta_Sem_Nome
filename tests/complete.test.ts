@@ -239,7 +239,7 @@ describe("Mil Cortes", () => {
     expect(b.state).toBe("idle");
     expect(a.moveId).toBe("");
   });
-  it("spends energy on whiff or block, never runs an unconfirmed cinematic", () => {
+  it("spends energy on a whiff and confirms through ordinary guard", () => {
     for (const blocked of [false, true]) {
       const m = fixture(blocked ? 130 : 500);
       m.fighters[0].meter = 100;
@@ -250,10 +250,10 @@ describe("Mil Cortes", () => {
         m.step([neutral(), blocked ? input(1) : neutral()]);
         captured ||= !!m.capture;
       }
-      expect(captured).toBe(false);
-      expect(m.fighters[1].health).toBe(1000);
+      expect(captured).toBe(blocked);
+      expect(m.fighters[1].health < 1000).toBe(blocked);
       expect(m.fighters[0].meter).toBe(0);
-      expect(m.fighters[0].state).toBe("idle");
+      if (!blocked) expect(m.fighters[0].state).toBe("idle");
     }
   });
   it("finishes a lethal cinematic before awarding the round and holds its final victory pose", () => {

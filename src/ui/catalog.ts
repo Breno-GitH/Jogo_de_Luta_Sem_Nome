@@ -117,6 +117,7 @@ export function movesContent(id: CharacterId, b: Bindings) {
       `Serpentes|↓ ↓ + ${keyLabel(b.light)}`,
       `Chidori Nagashi|↓ ↓ + ${keyLabel(b.medium)}`,
       `Marca da Maldição nível 2|↓ ↓ + ${keyLabel(b.heavy)} · transformação temporária`,
+      `Kirin|${keyLabel(b.ultimate)} · barra completa · confirme o golpe inicial`,
       `Avanço aéreo com asas|${keyLabel(b.dash)} no ar · um por salto na Marca`,
     ],
     luffy: [

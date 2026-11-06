@@ -6,7 +6,7 @@ async function start(page) {
   const epoch = new Date("2026-11-02T12:00:00Z");
   await page.clock.install({ time: epoch });
   await page.clock.pauseAt(new Date(epoch.getTime() + 60000));
-  await page.goto("/art/goku-fury.html");
+  await page.goto("art/goku-fury.html");
   const c = page.locator("#arena");
   await expect(c).toHaveAttribute("data-loaded", "true", { timeout: 30000 });
   await page.clock.runFor(34);
@@ -96,10 +96,10 @@ for (const enemy of ["samurai", "dio", "goku"])
         expect(d.capture).toBe("none");
         expect(d.transformed).toBe("false");
         expect(Number(d.hitCount)).toBe(
-          ["hit", "wall", "ko"].includes(scene) ? 16 : 0,
+          ["hit", "wall", "block", "ko"].includes(scene) ? 16 : 0,
         );
         if (scene === "ko") expect(d.matchPhase).toBe("roundEnd");
-        if (scene === "block") expect(Number(d.blockedHits)).toBe(1);
+        if (scene === "block") expect(Number(d.blockedHits)).toBe(0);
       }
     }
     expect(errors).toEqual([]);

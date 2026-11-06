@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kaneki Ken · Laboratório Rinkaku</title>
+    <link rel="stylesheet" href="../src/kaneki-lab.css" />
+  </head>
+  <body>
+    <main>
+      <nav>
+        <a href="../">← Voltar ao jogo</a
+        ><span>SEM NOME / LABORATÓRIO DE SPRITES</span>
+      </nav>
+      <header>
+        <p class="eyebrow">ARQUIVO 06 / RINKAKU</p>
+        <h1>Kaneki <em>Ken</em></h1>
+        <p id="profile">Cabelo branco · Tokyo Ghoul</p>
+        <small
+          >Etapa 1 · Corpo, Idle e Kagune · Disponível no visualizador</small
+        >
+      </header>
+      <section class="stage" aria-label="Prévia de Kaneki">
+        <canvas
+          id="arena"
+          width="512"
+          height="256"
+          aria-label="Sprite e quatro Kagunes de Kaneki"
+        ></canvas>
+        <div class="readout">
+          <span>RINKAKU / 4 TENTÁCULOS</span
+          ><output id="status" role="status">Carregando o atlas…</output>
+        </div>
+      </section>
+      <section class="controls" aria-label="Inspeção de animação">
+        <label
+          >Ensaio
+          <select id="scenario"></select
+        ></label>
+        <label
+          >Tentáculo
+          <select id="limb"></select
+        ></label>
+        <label
+          >Camada selecionada
+          <select id="layer">
+            <option value="behind">Atrás do corpo</option>
+            <option value="front">Na frente do corpo</option>
+          </select>
+        </label>
+        <label
+          >Velocidade
+          <select id="speed">
+            <option value="0.25">¼×</option>
+            <option value="0.5">½×</option>
+            <option value="1" selected>1×</option>
+          </select>
+        </label>
+        <div class="buttons">
+          <button id="play" type="button">Pausar</button>
+          <button id="step" type="button">Avançar 1 tick</button>
+          <button id="next-frame" type="button">Próximo desenho</button>
+        </div>
+        <label class="timeline"
+          >Linha do tempo
+          <input id="seek" type="range" min="0" max="215" value="0"
+        /></label>
+        <div class="checks">
+          <label
+            ><input id="mirror" type="checkbox" /> Olhar para a esquerda</label
+          >
+          <label
+            ><input id="guides" type="checkbox" /> Pivô, origem e ponta</label
+          >
+          <label
+            ><input id="compare" type="checkbox" /> Comparar com Sasuke
+            (1:1)</label
+          >
+        </div>
+      </section>
+      <footer>
+        <a id="body-atlas">Atlas do corpo</a
+        ><a id="raw-atlas">Atlas transparente do Kagune</a
+        ><a id="pose-atlas">Prancha visual e poses</a
+        ><a id="scale-sheet">Comparação de escala</a>
+      </footer>
+    </main>
+    <script type="module" src="../src/kaneki-lab.ts"></script>
+  </body>
+</html>

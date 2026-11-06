@@ -1,4 +1,4 @@
-import { arcadeRoute, type Mode, type GameSession } from "../game/session";
+import type { Mode, GameSession } from "../game/session";
 import type { CharacterId } from "../engine/characters";
 import type { Preferences } from "../game/preferences";
 import { keyLabel } from "../game/preferences";
@@ -17,12 +17,12 @@ export const difficultyName = {
 };
 export const modeName: Record<Mode, string> = {
   versus: "Versus BOT",
-  arcade: "Arcade",
+  arcade: "Arcade Torre",
   training: "Treinamento",
 };
 export const menuScreen = () =>
   `<div class="main-menu"><div class="menu-copy"><span class="eyebrow">FIGHTING PROJECT / 60 Hz</span><h1>SEM<span>NOME</span></h1><p class="tagline">${roster.length} ESTILOS.<br>UMA ARENA.</p><nav aria-label="Menu principal">${[
-    ["arcade", "01", "ARCADE", "Três adversários. Um caminho até o topo."],
+    ["arcade", "01", "ARCADE", "Dez andares. Vença até chegar ao topo."],
     ["versus", "02", "VERSUS BOT", "Seu rival. Sua dificuldade."],
     ["training", "03", "TREINAMENTO", "Explore golpes, alcance e combos."],
     ["online", "04", "MULTIPLAYER LAN", "Dois jogadores. Uma sala privada."],
@@ -44,21 +44,13 @@ export function selectionScreen(
 ) {
   const choosing = step !== "ready",
     current = step === "opponent" ? enemy : selected;
-  const route = arcadeRoute(selected).map(fighterInfo);
-  return `<div class="panel selection"><div class="screen-heading"><div><span class="eyebrow">${modeName[mode].toUpperCase()}</span><h2>${step === "player" ? "Escolha seu lutador" : step === "opponent" ? (mode === "training" ? "Parceiro de treino" : "Escolha seu rival") : "Prepare o confronto"}</h2></div><span class="step-indicator">${step === "player" ? "01 / LUTADOR" : step === "opponent" ? "02 / ADVERSÁRIO" : "03 / CONFIRMAÇÃO"}</span></div>${choosing ? `<div class="selection-layout"><div id="fighter-hero" class="fighter-hero">${fighterHero(current)}</div><div class="selection-choices">${characterCards(step === "player" ? "character" : "opponent", current)}<button class="primary" id="confirm-character">CONFIRMAR ${step === "player" ? "LUTADOR" : "ADVERSÁRIO"}<span>→</span></button></div></div>` : `<div class="versus-line"><div><img src="${fighterImage(selected)}" alt="${fighterInfo(selected).name}"><strong>${fighterInfo(selected).name}</strong></div><b>VS</b><div><img src="${fighterImage(mode === "arcade" ? route[0].id : enemy)}" alt="Adversário"><strong>${fighterInfo(mode === "arcade" ? route[0].id : enemy).name}</strong></div></div>${mode === "arcade" ? `<ol class="route">${route.map((c, i) => `<li>${i + 1}. ${c.name}<small>${["Fácil", "Normal", "Difícil"][i]}</small></li>`).join("")}</ol><p>Vença dois rounds por confronto para avançar. O elenco adversário é diferente do seu personagem.</p>` : `<label class="difficulty-label">Dificuldade do BOT <select id="difficulty"><option value="easy">Fácil</option><option value="normal" selected>Normal</option><option value="hard">Difícil</option></select></label><p class="hint">Fácil: espaço para aprender. Normal: pressão equilibrada e combos. Difícil: reage mais rápido, defende melhor e pune aberturas. ${mode === "training" ? "O treino começa com o parceiro parado; você pode ativar a IA na arena." : ""}</p>`}<button class="primary" id="fight">${mode === "training" ? "INICIAR TREINAMENTO" : "ENTRAR NA ARENA"}<span>→</span></button>`}<button class="text" id="back">Voltar</button></div>`;
+  return `<div class="panel selection"><div class="screen-heading"><div><span class="eyebrow">${modeName[mode].toUpperCase()}</span><h2>${step === "player" ? "Escolha seu lutador" : step === "opponent" ? (mode === "training" ? "Parceiro de treino" : "Escolha seu rival") : "Prepare o confronto"}</h2></div><span class="step-indicator">${step === "player" ? "01 / LUTADOR" : step === "opponent" ? "02 / ADVERSÁRIO" : "03 / CONFIRMAÇÃO"}</span></div>${choosing ? `<div class="selection-layout"><div id="fighter-hero" class="fighter-hero">${fighterHero(current)}</div><div class="selection-choices">${characterCards(step === "player" ? "character" : "opponent", current)}<button class="primary" id="confirm-character">CONFIRMAR ${step === "player" ? "LUTADOR" : "ADVERSÁRIO"}<span>→</span></button></div></div>` : `<div class="versus-line"><div><img src="${fighterImage(selected)}" alt="${fighterInfo(selected).name}"><strong>${fighterInfo(selected).name}</strong></div><b>VS</b><div><img src="${fighterImage(enemy)}" alt="Adversário"><strong>${fighterInfo(enemy).name}</strong></div></div><label class="difficulty-label">Dificuldade do BOT <select id="difficulty"><option value="easy">Fácil</option><option value="normal" selected>Normal</option><option value="hard">Difícil</option></select></label><p class="hint">Fácil: espaço para aprender. Normal: pressão equilibrada e combos. Difícil: reage mais rápido, defende melhor e pune aberturas. ${mode === "training" ? "O treino começa com o parceiro parado; você pode ativar a IA na arena." : ""}</p><button class="primary" id="fight">${mode === "training" ? "INICIAR TREINAMENTO" : "ENTRAR NA ARENA"}<span>→</span></button>`}<button class="text" id="back">Voltar</button></div>`;
 }
 export function resultScreen(session: GameSession) {
-  const won = session.status !== "defeat",
-    between = session.status === "stageClear";
+  const won = session.status === "victory";
   const [self, enemy] = session.match.fighters;
-  const title = between
-    ? `Confronto ${session.stage + 1} vencido`
-    : session.mode === "arcade" && won
-      ? "Arcade concluído"
-      : won
-        ? "Vitória"
-        : "Derrota";
-  return `<div class="panel result"><span class="eyebrow">${modeName[session.mode].toUpperCase()} / RESULTADO</span><h2>${title}</h2><div class="result-winner"><img src="${fighterImage((won ? self : enemy).data.id as CharacterId)}" alt="Vencedor"><div><small>VENCEDOR</small><strong>${(won ? self : enemy).data.name}</strong><p>Derrotado: ${(won ? enemy : self).data.name}</p></div></div><div class="score"><strong>${session.match.wins[0]}</strong><span>ROUNDS</span><strong>${session.match.wins[1]}</strong></div>${session.mode === "arcade" ? `<ol class="route">${session.route.map((id, i) => `<li class="${session.results[i] ? "cleared" : ""}">${i + 1}. ${fighterInfo(id).name}<small>${session.results[i] ? "VENCIDO" : "A SEGUIR"}</small></li>`).join("")}</ol>` : ""}${between ? `<button class="primary" id="next-opponent">PRÓXIMO ADVERSÁRIO <span>→</span></button>` : `<button class="primary" id="again">${session.mode === "arcade" ? (won ? "JOGAR ARCADE NOVAMENTE" : "TENTAR NOVAMENTE") : "REVANCHE"}</button>`}<button id="change-character">Trocar personagem</button><button class="text" id="return">Menu principal</button></div>`;
+  const winner = won ? self : enemy;
+  return `<div class="panel result"><span class="eyebrow">${modeName[session.mode].toUpperCase()} / RESULTADO</span><h2>${won ? "Vitória" : "Derrota"}</h2><div class="result-winner"><img src="${fighterImage(winner.data.id as CharacterId)}" alt="Vencedor"><div><small>VENCEDOR</small><strong>${winner.data.name}</strong><p>Derrotado: ${(won ? enemy : self).data.name}</p></div></div><div class="score"><strong>${session.match.wins[0]}</strong><span>ROUNDS</span><strong>${session.match.wins[1]}</strong></div><button class="primary" id="again">REVANCHE</button><button id="change-character">Trocar personagem</button><button class="text" id="return">Menu principal</button></div>`;
 }
 export function settingsScreen(p: Preferences) {
   return `<div class="panel settings"><span class="eyebrow">CONFIGURAÇÕES LOCAIS</span><h2>Opções</h2><div class="settings-columns"><section><h3>ÁUDIO</h3>${(

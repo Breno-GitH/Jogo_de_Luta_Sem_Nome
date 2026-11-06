@@ -8,9 +8,11 @@ import { FLOOR, type Match } from "../engine/combat";
 import { Animator, metadata, type AnimationData } from "./animator";
 import dioAnimations from "../data/dio-animations.json";
 import { gokuAnimations } from "./goku-animations";
-import { sasukeAnimations, sasukeCurseSheet } from "./sasuke-animations";
-import { drawSasukeClouds, drawSasukeProjectiles, drawSasukeTechnique, sasukeEffectsSheet } from "./sasuke-special-fx";
+import { sasukeAnimations, sasukeCurseSheet, kirinCurseSheet, chidoriCurseSheet } from "./sasuke-animations";
+import { chidoriCamera, drawSasukeContact, drawSasukeProjectiles, drawSasukeTechnique, goryukaHeadSheet, sasukeEffectsSheet } from "./sasuke-special-fx";
 import { drawCurseHud, drawSasukeCurseFX } from "./sasuke-curse-fx";
+import { kirinConfig, kirinId, kirinScene } from "../engine/sasuke-kirin";
+import { drawKirinFlash, drawKirinStorm, drawKirinWorld, kirinEffectsSheets } from "./sasuke-kirin-fx";
 import { drawSasukeCut } from "./sasuke-fx";
 import { luffyAnimations } from "./luffy-animations";
 import { luffyAttackLimbs } from "../engine/luffy-specials";
@@ -22,7 +24,7 @@ import { paintLuffyImpacts, paintLuffyTrails } from "./luffy-special-fx";
 import worldAnimations from "../data/the-world-animations.json";
 import { FighterPresentation } from "./presentation";
 import { drawCombatDebug } from "./debug";
-import { poseAt } from "../engine/moves";
+import { isSuperMove, poseAt } from "../engine/moves";
 import { worldCapsule } from "../engine/geometry";
 import type { Rect } from "../engine/types";
 import { drawEffects } from "./effects";
@@ -81,6 +83,8 @@ export class Renderer {
     const sheets = new Set<string>();
     sheets.add("fx/dio-specials.png");
     sheets.add(sasukeEffectsSheet);
+    sheets.add(goryukaHeadSheet);
+    for (const sheet of kirinEffectsSheets) sheets.add(sheet);
     for (const sheet of gokuFxSheets) sheets.add(sheet);
     for (const sheet of [...furyFxSheets, ...jetFxSheets]) sheets.add(sheet);
     for (const data of [
@@ -215,7 +219,8 @@ export class Renderer {
       furyStage = fury ? furyScene(fury) : undefined;
     const jet = match.jetGigant,
       jetStage = jet ? jetScene(jet) : undefined;
-    const stagedCamera = jet && jetStage ? jetCamera(jetStage, jet) : furyStage?.camera;
+    const kirin = match.kirin, kirinStage = kirin ? kirinScene(kirin) : undefined;
+    const stagedCamera = kirinStage?.camera ?? (jet && jetStage ? jetCamera(jetStage, jet) : furyStage?.camera) ?? (this.effects ? chidoriCamera(match) : undefined);
     const self = match.fighters[this.localSeat],
       other = match.fighters[1 - this.localSeat];
     this.canvas.dataset.animation =
@@ -233,7 +238,7 @@ export class Renderer {
     this.canvas.dataset.combo = String(other.combo);
     this.canvas.dataset.targetHealth = String(other.health);
     this.canvas.dataset.hitstop = String(match.hitstop);
-    this.canvas.dataset.capture = jet ? "jetGigant" : fury
+    this.canvas.dataset.capture = kirin ? "kirin" : jet ? "jetGigant" : fury
       ? "gokuFury"
       : road
         ? "roadRoller"
@@ -308,6 +313,12 @@ export class Renderer {
       rollerX: String(scene?.object.x ?? 0),
       rollerY: String(scene?.object.y ?? 0),
       rollerVisible: String(scene?.object.visible ?? false),
+      kirinTick: String(kirin?.tick ?? -1),
+      kirinPhase: kirinStage?.phase ?? "none",
+      kirinDragon: String(kirinStage?.dragon.visible ?? false),
+      kirinCursed: String(kirin?.cursed ?? false),
+      kirinVariant: kirin ? (kirin.cursed ? "black" : "blue") : "none",
+      sasukeStormLevel: String(match.sasukeStormUntil > match.combatFrame ? match.sasukeStormLevel : 0),
       jetTick: String(jet?.tick ?? -1),
       jetPhase: jetStage?.phase ?? "none",
       jetCel: jetStage?.cel ?? "none",
@@ -345,7 +356,7 @@ export class Renderer {
         : 0;
     this.canvas.dataset.impactShake = String(this.effects ? ordinaryShake : 0);
     c.imageSmoothingEnabled = false;
-    if (this.inspectionZoom > 1 || match.cinematicActive) {
+    if (this.inspectionZoom > 1 || match.cinematicActive || stagedCamera) {
       c.fillStyle = "#101b2b";
       c.fillRect(0, 0, 1280, 720);
     }
@@ -384,7 +395,7 @@ export class Renderer {
       c.translate(-cx, -cy);
     }
     drawTestArena(c);
-    if (this.effects && !match.cinematicActive) drawSasukeClouds(c, match);
+    if (this.effects && (kirinStage || !match.cinematicActive)) drawKirinStorm(c, match, this.sprites, kirinStage);
     if (!match.cinematicActive) drawTimeTint(c, match);
     if (road) drawRoadBackdrop(c, this.sprites, road);
     if (this.effects) drawFury(c, match, this.sprites, "behind");
@@ -476,13 +487,13 @@ export class Renderer {
       c.translate(this.presentations[i].renderRootX(f), Math.round(f.y));
       const sprite = this.presentations[i].animator.sprite();
       c.scale(f.facing * sprite.scale, sprite.scale);
-      if (i === 1 && !sprite.player2Sheet && f.data.id !== "goku" && sprite.sheet !== sasukeCurseSheet)
+      if (i === 1 && !sprite.player2Sheet && f.data.id !== "goku" && sprite.sheet !== sasukeCurseSheet && sprite.sheet !== kirinCurseSheet && sprite.sheet !== chidoriCurseSheet)
         c.filter = "hue-rotate(145deg)";
       const original = this.sprites.get(
         i === 1 ? (sprite.player2Sheet ?? sprite.sheet) : sprite.sheet,
       );
       const image =
-        i === 1 && sprite.sheet !== sasukeCurseSheet && (this.opponentPalette !== "cyan" || f.data.id === "goku")
+        i === 1 && sprite.sheet !== sasukeCurseSheet && sprite.sheet !== kirinCurseSheet && sprite.sheet !== chidoriCurseSheet && (this.opponentPalette !== "cyan" || f.data.id === "goku")
           ? (this.variants.get(`${this.opponentPalette}:${sprite.sheet}`) ??
             original)
           : original;
@@ -577,19 +588,30 @@ export class Renderer {
       drawGokuSpecials(c, match, this.sprites, this.debug);
       drawSasukeProjectiles(c, match, this.sprites, this.debug);
     }
-    if (this.effects && !fury && !jet) {
+    if (this.effects && !fury && !jet && !kirin) {
       drawEffects(c, match.events, this.fxImage);
       paintLuffyImpacts(c, match.events);
+      drawSasukeContact(c, match, this.sprites);
     }
     if (this.effects && !match.cinematicActive)
       drawTemporalEffects(c, match, this.sprites.get("fx/dio-specials.png"));
+    if (this.effects && kirin && kirinStage) drawKirinWorld(c, kirin, kirinStage, this.sprites);
     if (this.effects && jet && jetStage) drawJetImpact(c, this.sprites, jetStage, jet.tick, jet.hold);
     if (this.effects && road) drawRoadEffects(c, this.sprites, road);
     if (this.effects) drawFury(c, match, this.sprites, "front");
     c.restore();
     c.restore();
     if (jet && this.effects) drawJetScreen(c, jet);
+    if (kirin && this.effects) drawKirinFlash(c, kirin);
     this.hud(match);
+    if (match.fighters.some(f => f.state === "attack" && f.stateFrame < 9 && isSuperMove(f.move))) {
+      c.save(); c.textAlign = "center"; c.font = "bold 14px monospace"; c.fillStyle = "#ffd694";
+      c.fillText("SUPER!", 640, 149); c.restore();
+    }
+    if ((kirin && kirin.tick < kirinConfig.phases.storm) || match.fighters.some(f => f.moveId === kirinId && f.stateFrame < 11)) {
+      c.save(); c.font = "bold 29px monospace"; c.textAlign = "center"; c.fillStyle = "#c6edff";
+      c.fillText("K I R I N", 640, 178); c.restore();
+    }
     if (self.moveId === "ssj1_fury" && self.stateFrame < 28) {
       c.fillStyle = "#ffe780";
       c.font = "bold 24px monospace";
@@ -718,7 +740,7 @@ export class Renderer {
             : f.data.id === "samurai"
               ? `MIL CORTES ${f.meter}%${f.meter >= 100 ? ` · ${this.superKey}` : ""}`
               : f.data.id === "sasuke"
-                ? "TAIJUTSU / RAITON / KATON"
+                ? `KIRIN · ${f.meter >= kirinConfig.cost ? `PRONTA · ${this.superKey}` : Math.floor(100 * f.meter / kirinConfig.cost) + "%"}`
                 : `SUPER ${(f.meter / 100).toFixed(2)} / 2 · ROAD ROLLER · ${this.superKey}`,
         x,
         617,

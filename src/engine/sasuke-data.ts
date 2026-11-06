@@ -3,6 +3,7 @@ import frames from "../data/sasuke-frames.json";
 import clips from "../data/sasuke-clips.json";
 import normals from "../data/sasuke-normals.json";
 import { sasukeSpecialMoves } from "./sasuke-specials";
+import { kirinConfig, kirinId, kirinOpener } from "./sasuke-kirin";
 import type { CharacterData, CombatPose, Move } from "./types";
 
 export const sasukeNormals = normals;
@@ -62,6 +63,9 @@ export const sasuke: CharacterData = {
   ...base,
   moves: sasukeMoves,
   specialMoves: sasukeSpecialMoves,
+  superMoves: { [kirinId]: kirinOpener },
+  meterMaximum: kirinConfig.cost,
+  meterGainScale: 1,
   lifecycle: {
     entranceDistance: 58,
     entranceWalkTicks: 20,

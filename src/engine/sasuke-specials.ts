@@ -1,5 +1,6 @@
 import balance from "../data/sasuke-specials.json";
 import frames from "../data/sasuke-special-frames.json";
+import { chidoriMove, nagashiProfile } from "./sasuke-polish";
 import type { CommandBuffer } from "./input";
 import type { Button, Capsule, CombatPose, Move } from "./types";
 
@@ -102,21 +103,22 @@ export function sasukeSpecialFrames(id: SasukeSpecialId) {
 export const sasukeSpecialMoves: Record<string, Move> = Object.fromEntries(
   sasukeSpecialIds.map((id) => {
     const {
-      holds,
+      holds: originalHolds,
       shots: _shots,
       reach: _reach,
       ...stats
     } = sasukeTechniques[id];
+    const nagashi = id === "nagashi" ? nagashiProfile(false) : undefined;
+    const holds = nagashi?.holds ?? originalHolds;
     const [seal, gather, active, recovery] = holds;
     const poses: CombatPose[] = holds.map((ticks, index) => ({
       ticks,
       phase: index < 2 ? "startup" : index === 2 ? "active" : "recovery",
       ...bodyCels[id][index],
     }));
-    return [
-      id,
-      {
+    const move: Move = {
         ...stats,
+        ...(nagashi ? { stun: nagashi.stun } : {}),
         special: id,
         startup: seal + gather,
         active,
@@ -127,7 +129,7 @@ export const sasukeSpecialMoves: Record<string, Move> = Object.fromEntries(
         box: { x: 0, y: 0, w: 0, h: 0 },
         cancels: [],
         poses,
-      },
-    ];
+    };
+    return [id, id === "chidori" ? chidoriMove(move, false) : move];
   }),
 );

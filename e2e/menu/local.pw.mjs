@@ -253,7 +253,7 @@ test("training settings, all four playable characters, real inputs, move lists, 
   }
   expect(errors).toEqual([]);
 });
-test("real best-of-three Arcade progression, completion, defeat, retry, versus rematch and character change", async ({
+test("ten-floor Arcade progression, save and resume, bosses, retry, and Versus rematch", async ({
   page,
 }) => {
   test.skip(
@@ -263,6 +263,7 @@ test("real best-of-three Arcade progression, completion, defeat, retry, versus r
   await page.clock.install();
   await page.goto("/e2e/flow.html");
   await select(page, "arcade", "luffy");
+  test.setTimeout(180000);
   async function advanceFight() {
     for (let i = 0; i < 30; i++) {
       if (
@@ -282,19 +283,39 @@ test("real best-of-three Arcade progression, completion, defeat, retry, versus r
     }
     await expect(page.locator("#app")).toHaveAttribute("data-screen", "result");
   }
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < 10; i++) {
     await bout(1);
-    if (i < 2) await page.click("#next-opponent");
+    if (i === 1) {
+      await page.click("#return");
+      await page.reload();
+      await page.click("#arcade");
+      await expect(page.locator("#overlay")).toContainText("Andar 3 de 10");
+      await page.click("#continue-tower");
+    } else if (i < 9) await page.click("#next-opponent");
+    if (i < 9) {
+      const next = i + 2;
+      await expect(page.locator(".tower-floor")).toHaveCount(10);
+      await expect(page.locator(`[data-floor="${next}"]`)).toHaveAttribute("aria-current", "step");
+      await expect(page.locator(".tower-floor.cleared")).toHaveCount(i + 1);
+      if (next === 5 || next === 10) {
+        await expect(page.locator(".tower-panel")).toHaveAttribute("data-tower-boss", next === 5 ? "mini" : "final");
+        await page.screenshot({ path: `${audit}/tower-floor-${next}.png` });
+      }
+      await page.click("#fight");
+    }
   }
-  await expect(page.locator("#overlay")).toContainText("Arcade concluído");
+  await expect(page.locator("#overlay")).toContainText("Torre concluída");
   await page.screenshot({
     path: `${audit}/arcade-complete.png`,
     fullPage: true,
   });
   await page.click("#again");
+  await page.click("#fight");
   await bout(0);
-  await expect(page.locator("#overlay")).toContainText("Derrota");
+  await expect(page.locator("#overlay")).toContainText("Derrota no andar 1");
   await page.click("#again");
+  await expect(page.locator("[data-floor=\"1\"]")).toHaveAttribute("aria-current", "step");
+  await page.click("#fight");
   await advanceFight();
   await page.keyboard.press("Escape");
   await page.click("#pause-menu");

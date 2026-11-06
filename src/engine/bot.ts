@@ -1,8 +1,10 @@
 import profiles from "../data/bot-profiles.json";
 import { neutral, type Button, type InputFrame, type State } from "./types";
 import type { Fighter, Match } from "./combat";
+import { isSuperMove } from "./moves";
 
 export type Difficulty = keyof typeof profiles;
+export type BotProfile = (typeof profiles)[Difficulty];
 export interface Observation {
   frame: number;
   x: number;
@@ -14,6 +16,7 @@ export interface Observation {
   level?: string;
   remaining: number;
   connected: boolean;
+  super?: boolean;
 }
 
 /** A controller of ordinary input frames. Opponent decisions use ONLY delayed
@@ -36,11 +39,12 @@ export class Bot {
     public difficulty: Difficulty,
     seed = 3417,
     public controlled: 0 | 1 = 1,
+    private towerTuning?: BotProfile,
   ) {
     this.seed = seed;
   }
   get profile() {
-    return profiles[this.difficulty];
+    return this.towerTuning ?? profiles[this.difficulty];
   }
   private random() {
     this.seed = (Math.imul(this.seed, 1664525) + 1013904223) >>> 0;
@@ -124,6 +128,7 @@ export class Bot {
             enemy.stateFrame
           : 0,
         connected: enemy.connected,
+        super: isSuperMove(enemy.move),
       });
       this.history = this.history.filter((item) => now - item.frame < 100);
       this.observedAt = now;
@@ -163,13 +168,13 @@ export class Bot {
           if (
             self.move?.cancels.includes("special") &&
             !self.airborne &&
-            self.meter >= 100 &&
+            (this.towerTuning ? self.hitConfirmed && self.canStartSuper() : self.meter >= 100) &&
             self.moveId !== "crouch_heavy" &&
             this.chance(this.profile.ultimate)
           ) {
             return this.choose(
               { ...neutral(), pressed: ["ultimate"] },
-              "confirmar Mil Cortes",
+              this.towerTuning ? "confirmar Super" : "confirmar Mil Cortes",
             );
           }
           if (
@@ -244,6 +249,10 @@ export class Bot {
         "ajustar salto",
       );
     }
+    if (this.towerTuning && enemy.super && enemy.phase === "startup" &&
+        distance < 250 && this.chance(this.profile.guard)) {
+      return this.choose({ direction: away, down: false, pressed: ["dash"] }, "esquivar da Super");
+    }
     if (
       enemy.state === "attack" &&
       enemy.phase !== "recovery" &&
@@ -316,6 +325,18 @@ export class Bot {
     if (self.data.id === "luffy" && self.canStartSuper() && !enemy.airborne &&
         distance > 95 && distance < 235 && this.chance(this.profile.ultimate))
       return this.choose({ ...neutral(), pressed: ["ultimate"] }, "Jet Gigant");
+    if (this.towerTuning && self.data.id === "sasuke" &&
+        self.canStartSuper() && !enemy.airborne && distance < 88 &&
+        (enemy.phase === "recovery" || enemy.state === "hitstun") &&
+        this.chance(this.profile.ultimate))
+      return this.choose({ ...neutral(), pressed: ["ultimate"] }, "punir com Kirin");
+    if (this.towerTuning && (self.data.id === "luffy" || self.data.id === "sasuke") &&
+        distance > 175 && distance < 440 && !enemy.airborne &&
+        this.chance(this.profile.special)) {
+      this.lastDecision = self.data.id === "luffy" ? "controlar espaço com Pistol" : "controlar espaço com Katon";
+      return this.command(self.data.id === "luffy" ? [2, 3, 6] : [2, 1, 4],
+        enemy.phase === "recovery" ? "heavy" : "light", self);
+    }
     const closing = enemy.vx * toward < 0;
     const lowHealth = self.health / self.data.health < 0.3;
     if (self.data.id === "goku" && self.data.specialMoves && !self.airborne) {

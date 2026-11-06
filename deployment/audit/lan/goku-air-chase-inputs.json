@@ -3,7 +3,7 @@
   "rows": [
     {
       "tick": 1,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -31,7 +31,7 @@
     },
     {
       "tick": 2,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -59,7 +59,7 @@
     },
     {
       "tick": 3,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -87,7 +87,7 @@
     },
     {
       "tick": 4,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -115,7 +115,7 @@
     },
     {
       "tick": 5,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -143,7 +143,7 @@
     },
     {
       "tick": 6,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -171,7 +171,7 @@
     },
     {
       "tick": 7,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -199,7 +199,7 @@
     },
     {
       "tick": 8,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -227,7 +227,7 @@
     },
     {
       "tick": 9,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -255,7 +255,7 @@
     },
     {
       "tick": 10,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -283,7 +283,7 @@
     },
     {
       "tick": 11,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -311,7 +311,7 @@
     },
     {
       "tick": 12,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -339,7 +339,7 @@
     },
     {
       "tick": 13,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -367,7 +367,7 @@
     },
     {
       "tick": 14,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -395,7 +395,7 @@
     },
     {
       "tick": 15,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -423,7 +423,7 @@
     },
     {
       "tick": 16,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -451,7 +451,7 @@
     },
     {
       "tick": 17,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -479,7 +479,7 @@
     },
     {
       "tick": 18,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -507,7 +507,7 @@
     },
     {
       "tick": 19,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -535,7 +535,7 @@
     },
     {
       "tick": 20,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -563,7 +563,7 @@
     },
     {
       "tick": 21,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -591,7 +591,7 @@
     },
     {
       "tick": 22,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -619,7 +619,7 @@
     },
     {
       "tick": 23,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -647,7 +647,7 @@
     },
     {
       "tick": 24,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -675,7 +675,7 @@
     },
     {
       "tick": 25,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -703,7 +703,7 @@
     },
     {
       "tick": 26,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -731,7 +731,7 @@
     },
     {
       "tick": 27,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -759,7 +759,7 @@
     },
     {
       "tick": 28,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -787,7 +787,7 @@
     },
     {
       "tick": 29,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -815,7 +815,7 @@
     },
     {
       "tick": 30,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -843,7 +843,7 @@
     },
     {
       "tick": 31,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -871,7 +871,7 @@
     },
     {
       "tick": 32,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -899,7 +899,7 @@
     },
     {
       "tick": 33,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -927,7 +927,7 @@
     },
     {
       "tick": 34,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -955,7 +955,7 @@
     },
     {
       "tick": 35,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -983,7 +983,7 @@
     },
     {
       "tick": 36,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -1011,7 +1011,7 @@
     },
     {
       "tick": 37,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -1039,7 +1039,7 @@
     },
     {
       "tick": 38,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -1067,7 +1067,7 @@
     },
     {
       "tick": 39,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -1095,7 +1095,7 @@
     },
     {
       "tick": 40,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -1123,7 +1123,7 @@
     },
     {
       "tick": 41,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -1151,7 +1151,7 @@
     },
     {
       "tick": 42,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -1179,7 +1179,7 @@
     },
     {
       "tick": 43,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -1207,7 +1207,7 @@
     },
     {
       "tick": 44,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -1235,7 +1235,7 @@
     },
     {
       "tick": 45,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -1263,7 +1263,7 @@
     },
     {
       "tick": 46,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -1291,7 +1291,7 @@
     },
     {
       "tick": 47,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -1319,7 +1319,7 @@
     },
     {
       "tick": 48,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -1347,7 +1347,7 @@
     },
     {
       "tick": 49,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -1375,7 +1375,7 @@
     },
     {
       "tick": 50,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -1403,7 +1403,7 @@
     },
     {
       "tick": 51,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -1431,7 +1431,7 @@
     },
     {
       "tick": 52,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -1459,7 +1459,7 @@
     },
     {
       "tick": 53,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -1487,7 +1487,7 @@
     },
     {
       "tick": 54,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -1515,7 +1515,7 @@
     },
     {
       "tick": 55,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -1543,7 +1543,7 @@
     },
     {
       "tick": 56,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -1571,7 +1571,7 @@
     },
     {
       "tick": 57,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -1599,7 +1599,7 @@
     },
     {
       "tick": 58,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -1627,7 +1627,7 @@
     },
     {
       "tick": 59,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -1655,7 +1655,7 @@
     },
     {
       "tick": 60,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -1683,7 +1683,7 @@
     },
     {
       "tick": 61,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -1711,7 +1711,7 @@
     },
     {
       "tick": 62,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -1739,7 +1739,7 @@
     },
     {
       "tick": 63,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -1767,7 +1767,7 @@
     },
     {
       "tick": 64,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -1795,7 +1795,7 @@
     },
     {
       "tick": 65,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -1823,7 +1823,7 @@
     },
     {
       "tick": 66,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -1851,7 +1851,7 @@
     },
     {
       "tick": 67,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -1879,7 +1879,7 @@
     },
     {
       "tick": 68,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -1907,7 +1907,7 @@
     },
     {
       "tick": 69,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -1935,7 +1935,7 @@
     },
     {
       "tick": 70,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -1963,7 +1963,7 @@
     },
     {
       "tick": 71,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -1991,7 +1991,7 @@
     },
     {
       "tick": 72,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -2019,7 +2019,7 @@
     },
     {
       "tick": 73,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -2047,7 +2047,7 @@
     },
     {
       "tick": 74,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -2075,7 +2075,7 @@
     },
     {
       "tick": 75,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -2103,7 +2103,7 @@
     },
     {
       "tick": 76,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -2131,7 +2131,7 @@
     },
     {
       "tick": 77,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -2159,7 +2159,7 @@
     },
     {
       "tick": 78,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -2187,7 +2187,7 @@
     },
     {
       "tick": 79,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -2215,7 +2215,7 @@
     },
     {
       "tick": 80,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -2243,7 +2243,7 @@
     },
     {
       "tick": 81,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -2271,7 +2271,7 @@
     },
     {
       "tick": 82,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -2299,7 +2299,7 @@
     },
     {
       "tick": 83,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -2327,7 +2327,7 @@
     },
     {
       "tick": 84,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -2355,7 +2355,7 @@
     },
     {
       "tick": 85,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -2383,7 +2383,7 @@
     },
     {
       "tick": 86,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -2411,7 +2411,7 @@
     },
     {
       "tick": 87,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -2439,7 +2439,7 @@
     },
     {
       "tick": 88,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -2467,7 +2467,7 @@
     },
     {
       "tick": 89,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -2495,7 +2495,7 @@
     },
     {
       "tick": 90,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -2523,7 +2523,7 @@
     },
     {
       "tick": 91,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -2551,7 +2551,7 @@
     },
     {
       "tick": 92,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -2579,7 +2579,7 @@
     },
     {
       "tick": 93,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -2607,7 +2607,7 @@
     },
     {
       "tick": 94,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -2635,7 +2635,7 @@
     },
     {
       "tick": 95,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -2663,7 +2663,7 @@
     },
     {
       "tick": 96,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -2691,7 +2691,7 @@
     },
     {
       "tick": 97,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -2719,7 +2719,7 @@
     },
     {
       "tick": 98,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -2747,7 +2747,7 @@
     },
     {
       "tick": 99,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -2775,7 +2775,7 @@
     },
     {
       "tick": 100,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -2803,7 +2803,7 @@
     },
     {
       "tick": 101,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -2831,7 +2831,7 @@
     },
     {
       "tick": 102,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -2859,7 +2859,7 @@
     },
     {
       "tick": 103,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -2887,7 +2887,7 @@
     },
     {
       "tick": 104,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -2915,7 +2915,7 @@
     },
     {
       "tick": 105,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -2943,7 +2943,7 @@
     },
     {
       "tick": 106,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -2971,7 +2971,7 @@
     },
     {
       "tick": 107,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -2999,7 +2999,7 @@
     },
     {
       "tick": 108,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -3027,7 +3027,7 @@
     },
     {
       "tick": 109,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -3055,7 +3055,7 @@
     },
     {
       "tick": 110,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -3083,7 +3083,7 @@
     },
     {
       "tick": 111,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -3111,7 +3111,7 @@
     },
     {
       "tick": 112,
-      "epoch": "bc76eb68-d412-46aa-a900-00708e82de2a",
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
       "input": {
         "direction": 0,
         "down": false,
@@ -3138,8 +3138,36 @@
       "stop": 0
     },
     {
+      "tick": 113,
+      "epoch": "61a8f9c6-86d4-4674-9f3b-492719000e03",
+      "input": {
+        "direction": 0,
+        "down": false,
+        "pressed": []
+      },
+      "f": [
+        "idle",
+        "",
+        13,
+        400,
+        580,
+        0,
+        false,
+        0
+      ],
+      "v": [
+        "idle",
+        0,
+        880,
+        580,
+        0,
+        0
+      ],
+      "stop": 0
+    },
+    {
       "tick": 1,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -3167,7 +3195,7 @@
     },
     {
       "tick": 2,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -3195,7 +3223,7 @@
     },
     {
       "tick": 3,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -3223,7 +3251,7 @@
     },
     {
       "tick": 4,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -3251,7 +3279,7 @@
     },
     {
       "tick": 5,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -3279,7 +3307,7 @@
     },
     {
       "tick": 6,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -3307,7 +3335,7 @@
     },
     {
       "tick": 7,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -3335,7 +3363,7 @@
     },
     {
       "tick": 8,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": true,
@@ -3365,7 +3393,7 @@
     },
     {
       "tick": 9,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": true,
@@ -3393,7 +3421,7 @@
     },
     {
       "tick": 10,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -3421,7 +3449,7 @@
     },
     {
       "tick": 11,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -3449,7 +3477,7 @@
     },
     {
       "tick": 12,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -3477,7 +3505,7 @@
     },
     {
       "tick": 13,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -3505,7 +3533,7 @@
     },
     {
       "tick": 14,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -3533,7 +3561,7 @@
     },
     {
       "tick": 15,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -3561,7 +3589,7 @@
     },
     {
       "tick": 16,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -3589,7 +3617,7 @@
     },
     {
       "tick": 17,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -3617,7 +3645,7 @@
     },
     {
       "tick": 18,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -3645,7 +3673,7 @@
     },
     {
       "tick": 19,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -3673,7 +3701,7 @@
     },
     {
       "tick": 20,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -3701,7 +3729,7 @@
     },
     {
       "tick": 21,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -3729,7 +3757,7 @@
     },
     {
       "tick": 22,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -3757,7 +3785,7 @@
     },
     {
       "tick": 23,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -3785,7 +3813,7 @@
     },
     {
       "tick": 24,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -3813,7 +3841,7 @@
     },
     {
       "tick": 25,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -3841,7 +3869,7 @@
     },
     {
       "tick": 26,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -3869,7 +3897,7 @@
     },
     {
       "tick": 27,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -3897,7 +3925,7 @@
     },
     {
       "tick": 28,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -3925,7 +3953,7 @@
     },
     {
       "tick": 29,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -3953,7 +3981,7 @@
     },
     {
       "tick": 30,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -3981,7 +4009,7 @@
     },
     {
       "tick": 31,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -4009,7 +4037,7 @@
     },
     {
       "tick": 32,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -4037,41 +4065,12 @@
     },
     {
       "tick": 33,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
-      "input": {
-        "direction": 0,
-        "down": false,
-        "pressed": []
-      },
-      "f": [
-        "attack",
-        "crouch_heavy",
-        16,
-        518,
-        580,
-        0,
-        true,
-        0
-      ],
-      "v": [
-        "hitstun",
-        1,
-        572.5521860882365,
-        453.9200000000001,
-        -13.240000000000002,
-        37
-      ],
-      "stop": 0
-    },
-    {
-      "tick": 34,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
         "pressed": [
-          "jump",
-          "light"
+          "jump"
         ]
       },
       "f": [
@@ -4087,6 +4086,36 @@
       "v": [
         "hitstun",
         1,
+        572.5521860882365,
+        453.9200000000001,
+        -13.240000000000002,
+        37
+      ],
+      "stop": 0
+    },
+    {
+      "tick": 34,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
+      "input": {
+        "direction": 0,
+        "down": false,
+        "pressed": [
+          "light"
+        ]
+      },
+      "f": [
+        "attack",
+        "air_light",
+        0,
+        508.55218608823645,
+        522.1600000000001,
+        -28.560000000000002,
+        false,
+        0
+      ],
+      "v": [
+        "hitstun",
+        1,
         572.6783144532362,
         441.4000000000001,
         -12.520000000000001,
@@ -4096,7 +4125,7 @@
     },
     {
       "tick": 35,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -4105,10 +4134,10 @@
       "f": [
         "attack",
         "air_light",
-        0,
+        1,
         508.6783144532362,
-        522.1600000000001,
-        -28.560000000000002,
+        494.32000000000005,
+        -27.840000000000003,
         false,
         0
       ],
@@ -4124,7 +4153,7 @@
     },
     {
       "tick": 36,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -4133,10 +4162,10 @@
       "f": [
         "attack",
         "air_light",
-        1,
+        2,
         508.78300099618605,
-        494.32000000000005,
-        -27.840000000000003,
+        467.20000000000005,
+        -27.120000000000005,
         false,
         0
       ],
@@ -4152,35 +4181,7 @@
     },
     {
       "tick": 37,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
-      "input": {
-        "direction": 0,
-        "down": false,
-        "pressed": []
-      },
-      "f": [
-        "attack",
-        "air_light",
-        2,
-        508.8698908268344,
-        467.20000000000005,
-        -27.120000000000005,
-        false,
-        0
-      ],
-      "v": [
-        "hitstun",
-        1,
-        572.9420093862725,
-        408.1600000000001,
-        -10.36,
-        33
-      ],
-      "stop": 0
-    },
-    {
-      "tick": 38,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -4190,7 +4191,7 @@
         "attack",
         "air_light",
         3,
-        508.9420093862725,
+        508.8698908268344,
         440.80000000000007,
         -5,
         true,
@@ -4199,16 +4200,16 @@
       "v": [
         "hitstun",
         2,
-        573.0018677906062,
-        398.5200000000001,
+        572.9420093862725,
+        408.1600000000001,
         -5,
         30
       ],
       "stop": 4
     },
     {
-      "tick": 39,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 38,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -4218,7 +4219,7 @@
         "attack",
         "air_light",
         3,
-        508.9420093862725,
+        508.8698908268344,
         440.80000000000007,
         -5,
         true,
@@ -4227,16 +4228,16 @@
       "v": [
         "hitstun",
         2,
-        573.0018677906062,
-        398.5200000000001,
+        572.9420093862725,
+        408.1600000000001,
         -5,
         30
       ],
       "stop": 3
     },
     {
-      "tick": 40,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 39,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -4246,7 +4247,7 @@
         "attack",
         "air_light",
         3,
-        508.9420093862725,
+        508.8698908268344,
         440.80000000000007,
         -5,
         true,
@@ -4255,16 +4256,16 @@
       "v": [
         "hitstun",
         2,
-        573.0018677906062,
-        398.5200000000001,
+        572.9420093862725,
+        408.1600000000001,
         -5,
         30
       ],
       "stop": 2
     },
     {
-      "tick": 41,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 40,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -4274,7 +4275,7 @@
         "attack",
         "air_light",
         3,
-        508.9420093862725,
+        508.8698908268344,
         440.80000000000007,
         -5,
         true,
@@ -4283,16 +4284,16 @@
       "v": [
         "hitstun",
         2,
-        573.0018677906062,
-        398.5200000000001,
+        572.9420093862725,
+        408.1600000000001,
         -5,
         30
       ],
       "stop": 1
     },
     {
-      "tick": 42,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 41,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -4302,7 +4303,7 @@
         "attack",
         "air_light",
         3,
-        508.9420093862725,
+        508.8698908268344,
         440.80000000000007,
         -5,
         true,
@@ -4311,16 +4312,16 @@
       "v": [
         "hitstun",
         2,
-        573.0018677906062,
-        398.5200000000001,
+        572.9420093862725,
+        408.1600000000001,
         -5,
         30
       ],
       "stop": 0
     },
     {
-      "tick": 43,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 42,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -4330,7 +4331,7 @@
         "attack",
         "air_light",
         4,
-        509.0018677906062,
+        508.9420093862725,
         436.5200000000001,
         -4.28,
         true,
@@ -4339,16 +4340,16 @@
       "v": [
         "hitstun",
         2,
-        573.5718677906062,
-        394.2400000000001,
+        573.5120093862726,
+        403.8800000000001,
         -4.28,
         29
       ],
       "stop": 0
     },
     {
-      "tick": 44,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 43,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -4358,7 +4359,7 @@
         "attack",
         "air_light",
         5,
-        509.57186779060623,
+        509.51200938627255,
         432.9600000000001,
         -3.5600000000000005,
         true,
@@ -4367,16 +4368,16 @@
       "v": [
         "hitstun",
         2,
-        574.0449677906063,
-        390.6800000000001,
+        573.9851093862726,
+        400.3200000000001,
         -3.5600000000000005,
         28
       ],
       "stop": 0
     },
     {
-      "tick": 45,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 44,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -4386,7 +4387,7 @@
         "attack",
         "air_light",
         6,
-        510.0449677906063,
+        509.9851093862726,
         430.1200000000001,
         -2.8400000000000007,
         true,
@@ -4395,44 +4396,16 @@
       "v": [
         "hitstun",
         2,
-        574.4376407906062,
-        387.84000000000015,
+        574.3777823862725,
+        397.48000000000013,
         -2.8400000000000007,
         27
       ],
       "stop": 0
     },
     {
-      "tick": 46,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
-      "input": {
-        "direction": 0,
-        "down": false,
-        "pressed": []
-      },
-      "f": [
-        "attack",
-        "air_light",
-        7,
-        510.4376407906062,
-        428.0000000000001,
-        -2.120000000000001,
-        true,
-        0
-      ],
-      "v": [
-        "hitstun",
-        2,
-        574.7635593806062,
-        385.72000000000014,
-        -2.120000000000001,
-        26
-      ],
-      "stop": 0
-    },
-    {
-      "tick": 47,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 45,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -4444,25 +4417,25 @@
         "attack",
         "air_medium",
         0,
-        510.4376407906062,
-        426.60000000000014,
-        -1.400000000000001,
+        510.37778238627254,
+        428.0000000000001,
+        -2.120000000000001,
         false,
         0
       ],
       "v": [
         "hitstun",
         2,
-        575.0340718103063,
-        384.32000000000016,
-        -1.400000000000001,
-        25
+        574.7037009762726,
+        395.3600000000001,
+        -2.120000000000001,
+        26
       ],
       "stop": 0
     },
     {
-      "tick": 48,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 46,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -4472,25 +4445,25 @@
         "attack",
         "air_medium",
         1,
-        510.4376407906062,
-        425.92000000000013,
-        -0.680000000000001,
+        510.37778238627254,
+        426.60000000000014,
+        -1.400000000000001,
         false,
         0
       ],
       "v": [
         "hitstun",
         2,
-        575.2585971269573,
-        383.64000000000016,
-        -0.680000000000001,
-        24
+        574.9742134059726,
+        393.96000000000015,
+        -1.400000000000001,
+        25
       ],
       "stop": 0
     },
     {
-      "tick": 49,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 47,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -4500,25 +4473,25 @@
         "attack",
         "air_medium",
         2,
-        510.4376407906062,
-        425.96000000000015,
-        0.039999999999998925,
+        510.37778238627254,
+        425.92000000000013,
+        -0.680000000000001,
         false,
         0
       ],
       "v": [
         "hitstun",
         2,
-        575.4449531397776,
-        383.6800000000002,
-        0.039999999999998925,
-        23
+        575.1987387226236,
+        393.28000000000014,
+        -0.680000000000001,
+        24
       ],
       "stop": 0
     },
     {
-      "tick": 50,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 48,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -4528,25 +4501,25 @@
         "attack",
         "air_medium",
         3,
-        510.4376407906062,
-        426.72000000000014,
-        0.7599999999999989,
+        510.37778238627254,
+        425.96000000000015,
+        0.039999999999998925,
         false,
         0
       ],
       "v": [
         "hitstun",
         2,
-        575.5996286304185,
-        384.44000000000017,
-        0.7599999999999989,
-        22
+        575.3850947354439,
+        393.32000000000016,
+        0.039999999999998925,
+        23
       ],
       "stop": 0
     },
     {
-      "tick": 51,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 49,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -4556,25 +4529,25 @@
         "attack",
         "air_medium",
         4,
-        510.4376407906062,
-        428.20000000000016,
-        1.4799999999999989,
+        510.37778238627254,
+        426.72000000000014,
+        0.7599999999999989,
         false,
         0
       ],
       "v": [
         "hitstun",
         2,
-        575.7280092876504,
-        385.9200000000002,
-        1.4799999999999989,
-        21
+        575.5397702260848,
+        394.08000000000015,
+        0.7599999999999989,
+        22
       ],
       "stop": 0
     },
     {
-      "tick": 52,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 50,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -4584,8 +4557,8 @@
         "attack",
         "air_medium",
         5,
-        510.4376407906062,
-        430.40000000000015,
+        510.37778238627254,
+        428.20000000000016,
         -8,
         true,
         0
@@ -4593,16 +4566,16 @@
       "v": [
         "hitstun",
         3,
-        575.8345652331528,
-        388.1200000000002,
+        575.6681508833167,
+        395.5600000000002,
         -2.5,
         34
       ],
       "stop": 6
     },
     {
-      "tick": 53,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 51,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -4612,8 +4585,8 @@
         "attack",
         "air_medium",
         5,
-        510.4376407906062,
-        430.40000000000015,
+        510.37778238627254,
+        428.20000000000016,
         -8,
         true,
         0
@@ -4621,16 +4594,16 @@
       "v": [
         "hitstun",
         3,
-        575.8345652331528,
-        388.1200000000002,
+        575.6681508833167,
+        395.5600000000002,
         -2.5,
         34
       ],
       "stop": 5
     },
     {
-      "tick": 54,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 52,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -4640,8 +4613,8 @@
         "attack",
         "air_medium",
         5,
-        510.4376407906062,
-        430.40000000000015,
+        510.37778238627254,
+        428.20000000000016,
         -8,
         true,
         0
@@ -4649,16 +4622,16 @@
       "v": [
         "hitstun",
         3,
-        575.8345652331528,
-        388.1200000000002,
+        575.6681508833167,
+        395.5600000000002,
         -2.5,
         34
       ],
       "stop": 4
     },
     {
-      "tick": 55,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 53,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -4668,8 +4641,8 @@
         "attack",
         "air_medium",
         5,
-        510.4376407906062,
-        430.40000000000015,
+        510.37778238627254,
+        428.20000000000016,
         -8,
         true,
         0
@@ -4677,16 +4650,16 @@
       "v": [
         "hitstun",
         3,
-        575.8345652331528,
-        388.1200000000002,
+        575.6681508833167,
+        395.5600000000002,
         -2.5,
         34
       ],
       "stop": 3
     },
     {
-      "tick": 56,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 54,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -4696,8 +4669,8 @@
         "attack",
         "air_medium",
         5,
-        510.4376407906062,
-        430.40000000000015,
+        510.37778238627254,
+        428.20000000000016,
         -8,
         true,
         0
@@ -4705,16 +4678,16 @@
       "v": [
         "hitstun",
         3,
-        575.8345652331528,
-        388.1200000000002,
+        575.6681508833167,
+        395.5600000000002,
         -2.5,
         34
       ],
       "stop": 2
     },
     {
-      "tick": 57,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 55,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -4724,8 +4697,8 @@
         "attack",
         "air_medium",
         5,
-        510.4376407906062,
-        430.40000000000015,
+        510.37778238627254,
+        428.20000000000016,
         -8,
         true,
         0
@@ -4733,16 +4706,16 @@
       "v": [
         "hitstun",
         3,
-        575.8345652331528,
-        388.1200000000002,
+        575.6681508833167,
+        395.5600000000002,
         -2.5,
         34
       ],
       "stop": 1
     },
     {
-      "tick": 58,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 56,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -4752,8 +4725,8 @@
         "attack",
         "air_medium",
         5,
-        510.4376407906062,
-        430.40000000000015,
+        510.37778238627254,
+        428.20000000000016,
         -8,
         true,
         0
@@ -4761,16 +4734,16 @@
       "v": [
         "hitstun",
         3,
-        575.8345652331528,
-        388.1200000000002,
+        575.6681508833167,
+        395.5600000000002,
         -2.5,
         34
       ],
       "stop": 0
     },
     {
-      "tick": 59,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 57,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -4780,8 +4753,8 @@
         "attack",
         "air_medium",
         6,
-        510.4376407906062,
-        423.1200000000002,
+        510.37778238627254,
+        420.9200000000002,
         -7.28,
         true,
         0
@@ -4789,16 +4762,16 @@
       "v": [
         "hitstun",
         3,
-        576.4645652331528,
-        386.3400000000002,
+        576.2981508833167,
+        393.7800000000002,
         -1.78,
         33
       ],
       "stop": 0
     },
     {
-      "tick": 60,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 58,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": true,
@@ -4808,8 +4781,8 @@
         "attack",
         "air_medium",
         7,
-        510.4376407906062,
-        416.5600000000002,
+        510.37778238627254,
+        414.3600000000002,
         -6.5600000000000005,
         true,
         0
@@ -4817,16 +4790,16 @@
       "v": [
         "hitstun",
         3,
-        576.9874652331529,
-        385.2800000000002,
+        576.8210508833167,
+        392.7200000000002,
         -1.06,
         32
       ],
       "stop": 0
     },
     {
-      "tick": 61,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 59,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": true,
@@ -4836,8 +4809,8 @@
         "attack",
         "air_medium",
         8,
-        510.4376407906062,
-        410.7200000000002,
+        510.37778238627254,
+        408.5200000000002,
         -5.840000000000001,
         true,
         0
@@ -4845,16 +4818,16 @@
       "v": [
         "hitstun",
         3,
-        577.4214722331528,
-        384.9400000000002,
+        577.2550578833167,
+        392.3800000000002,
         -0.3400000000000001,
         31
       ],
       "stop": 0
     },
     {
-      "tick": 62,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 60,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -4864,8 +4837,8 @@
         "attack",
         "air_medium",
         9,
-        510.4376407906062,
-        405.6000000000002,
+        510.37778238627254,
+        403.4000000000002,
         -5.120000000000001,
         true,
         0
@@ -4873,16 +4846,16 @@
       "v": [
         "hitstun",
         3,
-        577.7816980431528,
-        385.3200000000002,
+        577.6152836933167,
+        392.7600000000002,
         0.3799999999999999,
         30
       ],
       "stop": 0
     },
     {
-      "tick": 63,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 61,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -4892,8 +4865,8 @@
         "attack",
         "air_medium",
         10,
-        510.4376407906062,
-        401.2000000000002,
+        510.37778238627254,
+        399.0000000000002,
         -4.400000000000001,
         true,
         0
@@ -4901,16 +4874,16 @@
       "v": [
         "hitstun",
         3,
-        578.0806854654528,
-        386.42000000000024,
+        577.9142711156167,
+        393.86000000000024,
         1.0999999999999999,
         29
       ],
       "stop": 0
     },
     {
-      "tick": 64,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 62,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": true,
@@ -4922,8 +4895,8 @@
         "attack",
         "teleport_air",
         0,
-        510.4376407906062,
-        401.2000000000002,
+        510.37778238627254,
+        399.0000000000002,
         -4.400000000000001,
         false,
         1
@@ -4931,16 +4904,16 @@
       "v": [
         "hitstun",
         3,
-        578.3288450259618,
-        388.24000000000024,
+        578.1624306761256,
+        395.68000000000023,
         1.8199999999999998,
         28
       ],
       "stop": 0
     },
     {
-      "tick": 65,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 63,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": true,
@@ -4950,8 +4923,8 @@
         "attack",
         "teleport_air",
         1,
-        510.4376407906062,
-        401.2000000000002,
+        510.37778238627254,
+        399.0000000000002,
         0,
         false,
         1
@@ -4959,16 +4932,16 @@
       "v": [
         "hitstun",
         3,
-        578.5348174611843,
-        390.78000000000026,
+        578.3684031113481,
+        398.22000000000025,
         2.54,
         27
       ],
       "stop": 0
     },
     {
-      "tick": 66,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 64,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -4978,8 +4951,8 @@
         "attack",
         "teleport_air",
         2,
-        510.4376407906062,
-        401.2000000000002,
+        510.37778238627254,
+        399.0000000000002,
         0,
         false,
         1
@@ -4987,16 +4960,16 @@
       "v": [
         "hitstun",
         3,
-        578.7057745824189,
-        394.04000000000025,
+        578.5393602325828,
+        401.48000000000025,
         3.26,
         26
       ],
       "stop": 0
     },
     {
-      "tick": 67,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 65,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -5006,8 +4979,8 @@
         "attack",
         "teleport_air",
         3,
-        510.4376407906062,
-        401.2000000000002,
+        510.37778238627254,
+        399.0000000000002,
         0,
         false,
         1
@@ -5015,16 +4988,16 @@
       "v": [
         "hitstun",
         3,
-        578.8476689930437,
-        398.02000000000027,
+        578.6812546432076,
+        405.46000000000026,
         3.9799999999999995,
         25
       ],
       "stop": 0
     },
     {
-      "tick": 68,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 66,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -5034,8 +5007,8 @@
         "attack",
         "teleport_air",
         4,
-        510.4376407906062,
-        401.2000000000002,
+        510.37778238627254,
+        399.0000000000002,
         0,
         false,
         1
@@ -5043,16 +5016,16 @@
       "v": [
         "hitstun",
         3,
-        578.9654413538623,
-        402.72000000000025,
+        578.7990270040261,
+        410.16000000000025,
         4.699999999999999,
         24
       ],
       "stop": 0
     },
     {
-      "tick": 69,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 67,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -5062,8 +5035,8 @@
         "attack",
         "teleport_air",
         5,
-        510.4376407906062,
-        401.2000000000002,
+        510.37778238627254,
+        399.0000000000002,
         0,
         false,
         1
@@ -5071,16 +5044,16 @@
       "v": [
         "hitstun",
         3,
-        579.0631924133417,
-        408.14000000000027,
+        578.8967780635055,
+        415.58000000000027,
         5.419999999999999,
         23
       ],
       "stop": 0
     },
     {
-      "tick": 70,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 68,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -5090,8 +5063,8 @@
         "attack",
         "teleport_air",
         6,
-        510.4376407906062,
-        401.2000000000002,
+        510.37778238627254,
+        399.0000000000002,
         0,
         false,
         1
@@ -5099,44 +5072,16 @@
       "v": [
         "hitstun",
         3,
-        579.1443257927095,
-        414.28000000000026,
+        578.9779114428734,
+        421.72000000000025,
         6.139999999999999,
         22
       ],
       "stop": 0
     },
     {
-      "tick": 71,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
-      "input": {
-        "direction": 0,
-        "down": false,
-        "pressed": []
-      },
-      "f": [
-        "attack",
-        "teleport_air",
-        7,
-        510.4376407906062,
-        401.2000000000002,
-        0,
-        false,
-        1
-      ],
-      "v": [
-        "hitstun",
-        3,
-        579.2116664975849,
-        421.14000000000027,
-        6.8599999999999985,
-        21
-      ],
-      "stop": 0
-    },
-    {
-      "tick": 72,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 69,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -5147,9 +5092,37 @@
       "f": [
         "attack",
         "teleport_air",
+        7,
+        510.37778238627254,
+        399.0000000000002,
+        0,
+        false,
+        1
+      ],
+      "v": [
+        "hitstun",
+        3,
+        579.0452521477488,
+        428.58000000000027,
+        6.8599999999999985,
+        21
+      ],
+      "stop": 0
+    },
+    {
+      "tick": 70,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
+      "input": {
+        "direction": 0,
+        "down": false,
+        "pressed": []
+      },
+      "f": [
+        "attack",
+        "teleport_air",
         8,
-        507.21166649758493,
-        422.72000000000025,
+        507.0452521477488,
+        430.16000000000025,
         7.579999999999998,
         false,
         1
@@ -5157,16 +5130,16 @@
       "v": [
         "hitstun",
         3,
-        579.2675592826315,
-        428.72000000000025,
+        579.1011449327954,
+        436.16000000000025,
         7.579999999999998,
         20
       ],
       "stop": 0
     },
     {
-      "tick": 73,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 71,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -5176,8 +5149,8 @@
         "attack",
         "teleport_air",
         9,
-        507.21166649758493,
-        431.02000000000027,
+        507.0452521477488,
+        438.46000000000026,
         8.299999999999999,
         false,
         1
@@ -5185,16 +5158,16 @@
       "v": [
         "hitstun",
         3,
-        579.3139502942201,
-        437.02000000000027,
+        579.147535944384,
+        444.46000000000026,
         8.299999999999999,
         19
       ],
       "stop": 0
     },
     {
-      "tick": 74,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 72,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -5204,8 +5177,8 @@
         "attack",
         "teleport_air",
         10,
-        507.21166649758493,
-        440.04000000000025,
+        507.0452521477488,
+        447.48000000000025,
         9.02,
         false,
         1
@@ -5213,16 +5186,16 @@
       "v": [
         "hitstun",
         3,
-        579.3524548338387,
-        446.04000000000025,
+        579.1860404840025,
+        453.48000000000025,
         9.02,
         18
       ],
       "stop": 0
     },
     {
-      "tick": 75,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 73,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -5232,8 +5205,8 @@
         "attack",
         "air_light",
         0,
-        507.21166649758493,
-        449.78000000000026,
+        507.0452521477488,
+        457.22000000000025,
         9.74,
         false,
         1
@@ -5241,16 +5214,16 @@
       "v": [
         "hitstun",
         3,
-        579.3844136017221,
-        455.78000000000026,
+        579.217999251886,
+        463.22000000000025,
         9.74,
         17
       ],
       "stop": 0
     },
     {
-      "tick": 76,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 74,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -5260,8 +5233,8 @@
         "attack",
         "air_light",
         1,
-        507.21166649758493,
-        460.24000000000024,
+        507.0452521477488,
+        467.68000000000023,
         10.46,
         false,
         1
@@ -5269,16 +5242,16 @@
       "v": [
         "hitstun",
         3,
-        579.4109393790653,
-        466.24000000000024,
+        579.2445250292292,
+        473.68000000000023,
         10.46,
         16
       ],
       "stop": 0
     },
     {
-      "tick": 77,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 75,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -5288,8 +5261,8 @@
         "attack",
         "air_light",
         2,
-        507.21166649758493,
-        471.42000000000024,
+        507.0452521477488,
+        478.86000000000024,
         11.180000000000001,
         false,
         1
@@ -5297,16 +5270,16 @@
       "v": [
         "hitstun",
         3,
-        579.4329557742602,
-        477.42000000000024,
+        579.2665414244241,
+        484.86000000000024,
         11.180000000000001,
         15
       ],
       "stop": 0
     },
     {
-      "tick": 78,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 76,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -5316,8 +5289,8 @@
         "attack",
         "air_light",
         3,
-        507.21166649758493,
-        483.3200000000002,
+        507.0452521477488,
+        490.7600000000002,
         -5,
         true,
         1
@@ -5325,16 +5298,16 @@
       "v": [
         "hitstun",
         4,
-        579.451229382272,
-        489.3200000000002,
+        579.2848150324359,
+        496.7600000000002,
         -5,
         30
       ],
       "stop": 4
     },
     {
-      "tick": 79,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 77,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -5344,8 +5317,8 @@
         "attack",
         "air_light",
         3,
-        507.21166649758493,
-        483.3200000000002,
+        507.0452521477488,
+        490.7600000000002,
         -5,
         true,
         1
@@ -5353,16 +5326,16 @@
       "v": [
         "hitstun",
         4,
-        579.451229382272,
-        489.3200000000002,
+        579.2848150324359,
+        496.7600000000002,
         -5,
         30
       ],
       "stop": 3
     },
     {
-      "tick": 80,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 78,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -5372,8 +5345,8 @@
         "attack",
         "air_light",
         3,
-        507.21166649758493,
-        483.3200000000002,
+        507.0452521477488,
+        490.7600000000002,
         -5,
         true,
         1
@@ -5381,16 +5354,16 @@
       "v": [
         "hitstun",
         4,
-        579.451229382272,
-        489.3200000000002,
+        579.2848150324359,
+        496.7600000000002,
         -5,
         30
       ],
       "stop": 2
     },
     {
-      "tick": 81,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 79,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -5400,8 +5373,8 @@
         "attack",
         "air_light",
         3,
-        507.21166649758493,
-        483.3200000000002,
+        507.0452521477488,
+        490.7600000000002,
         -5,
         true,
         1
@@ -5409,16 +5382,16 @@
       "v": [
         "hitstun",
         4,
-        579.451229382272,
-        489.3200000000002,
+        579.2848150324359,
+        496.7600000000002,
         -5,
         30
       ],
       "stop": 1
     },
     {
-      "tick": 82,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 80,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -5428,8 +5401,8 @@
         "attack",
         "air_light",
         3,
-        507.21166649758493,
-        483.3200000000002,
+        507.0452521477488,
+        490.7600000000002,
         -5,
         true,
         1
@@ -5437,16 +5410,16 @@
       "v": [
         "hitstun",
         4,
-        579.451229382272,
-        489.3200000000002,
+        579.2848150324359,
+        496.7600000000002,
         -5,
         30
       ],
       "stop": 0
     },
     {
-      "tick": 83,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 81,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -5456,8 +5429,8 @@
         "attack",
         "air_light",
         4,
-        507.21166649758493,
-        479.04000000000025,
+        507.0452521477488,
+        486.48000000000025,
         -4.28,
         true,
         1
@@ -5465,16 +5438,16 @@
       "v": [
         "hitstun",
         4,
-        580.021229382272,
-        485.04000000000025,
+        579.8548150324359,
+        492.48000000000025,
         -4.28,
         29
       ],
       "stop": 0
     },
     {
-      "tick": 84,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 82,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -5484,8 +5457,8 @@
         "attack",
         "air_light",
         5,
-        507.21166649758493,
-        475.48000000000025,
+        507.0452521477488,
+        482.92000000000024,
         -3.5600000000000005,
         true,
         1
@@ -5493,16 +5466,16 @@
       "v": [
         "hitstun",
         4,
-        580.4943293822721,
-        481.48000000000025,
+        580.327915032436,
+        488.92000000000024,
         -3.5600000000000005,
         28
       ],
       "stop": 0
     },
     {
-      "tick": 85,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 83,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -5512,8 +5485,8 @@
         "attack",
         "air_light",
         6,
-        507.21166649758493,
-        472.64000000000027,
+        507.0452521477488,
+        480.08000000000027,
         -2.8400000000000007,
         true,
         1
@@ -5521,16 +5494,16 @@
       "v": [
         "hitstun",
         4,
-        580.887002382272,
-        478.64000000000027,
+        580.7205880324359,
+        486.08000000000027,
         -2.8400000000000007,
         27
       ],
       "stop": 0
     },
     {
-      "tick": 86,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 84,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -5542,8 +5515,8 @@
         "attack",
         "air_medium",
         0,
-        507.21166649758493,
-        470.52000000000027,
+        507.0452521477488,
+        477.96000000000026,
         -2.120000000000001,
         false,
         1
@@ -5551,16 +5524,16 @@
       "v": [
         "hitstun",
         4,
-        581.2129209722721,
-        476.52000000000027,
+        581.0465066224359,
+        483.96000000000026,
         -2.120000000000001,
         26
       ],
       "stop": 0
     },
     {
-      "tick": 87,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 85,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -5570,8 +5543,8 @@
         "attack",
         "air_medium",
         1,
-        507.21166649758493,
-        469.1200000000003,
+        507.0452521477488,
+        476.5600000000003,
         -1.400000000000001,
         false,
         1
@@ -5579,16 +5552,16 @@
       "v": [
         "hitstun",
         4,
-        581.4834334019721,
-        475.1200000000003,
+        581.317019052136,
+        482.5600000000003,
         -1.400000000000001,
         25
       ],
       "stop": 0
     },
     {
-      "tick": 88,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 86,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -5598,8 +5571,8 @@
         "attack",
         "air_medium",
         2,
-        507.21166649758493,
-        468.4400000000003,
+        507.0452521477488,
+        475.8800000000003,
         -0.680000000000001,
         false,
         1
@@ -5607,16 +5580,16 @@
       "v": [
         "hitstun",
         4,
-        581.7079587186231,
-        474.4400000000003,
+        581.541544368787,
+        481.8800000000003,
         -0.680000000000001,
         24
       ],
       "stop": 0
     },
     {
-      "tick": 89,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 87,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -5626,8 +5599,8 @@
         "attack",
         "air_medium",
         3,
-        507.21166649758493,
-        468.4800000000003,
+        507.0452521477488,
+        475.9200000000003,
         0.039999999999998925,
         false,
         1
@@ -5635,16 +5608,16 @@
       "v": [
         "hitstun",
         4,
-        581.8943147314434,
-        474.4800000000003,
+        581.7279003816072,
+        481.9200000000003,
         0.039999999999998925,
         23
       ],
       "stop": 0
     },
     {
-      "tick": 90,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 88,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -5654,8 +5627,8 @@
         "attack",
         "air_medium",
         4,
-        507.21166649758493,
-        469.2400000000003,
+        507.0452521477488,
+        476.6800000000003,
         0.7599999999999989,
         false,
         1
@@ -5663,16 +5636,16 @@
       "v": [
         "hitstun",
         4,
-        582.0489902220843,
-        475.2400000000003,
+        581.8825758722481,
+        482.6800000000003,
         0.7599999999999989,
         22
       ],
       "stop": 0
     },
     {
-      "tick": 91,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 89,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -5682,8 +5655,8 @@
         "attack",
         "air_medium",
         5,
-        507.21166649758493,
-        470.7200000000003,
+        507.0452521477488,
+        478.1600000000003,
         -8,
         true,
         1
@@ -5691,16 +5664,16 @@
       "v": [
         "hitstun",
         5,
-        582.1773708793162,
-        476.7200000000003,
+        582.01095652948,
+        484.1600000000003,
         -2.5,
         34
       ],
       "stop": 6
     },
     {
-      "tick": 92,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 90,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -5710,8 +5683,8 @@
         "attack",
         "air_medium",
         5,
-        507.21166649758493,
-        470.7200000000003,
+        507.0452521477488,
+        478.1600000000003,
         -8,
         true,
         1
@@ -5719,16 +5692,16 @@
       "v": [
         "hitstun",
         5,
-        582.1773708793162,
-        476.7200000000003,
+        582.01095652948,
+        484.1600000000003,
         -2.5,
         34
       ],
       "stop": 5
     },
     {
-      "tick": 93,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 91,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -5738,8 +5711,8 @@
         "attack",
         "air_medium",
         5,
-        507.21166649758493,
-        470.7200000000003,
+        507.0452521477488,
+        478.1600000000003,
         -8,
         true,
         1
@@ -5747,16 +5720,16 @@
       "v": [
         "hitstun",
         5,
-        582.1773708793162,
-        476.7200000000003,
+        582.01095652948,
+        484.1600000000003,
         -2.5,
         34
       ],
       "stop": 4
     },
     {
-      "tick": 94,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 92,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -5766,8 +5739,8 @@
         "attack",
         "air_medium",
         5,
-        507.21166649758493,
-        470.7200000000003,
+        507.0452521477488,
+        478.1600000000003,
         -8,
         true,
         1
@@ -5775,16 +5748,16 @@
       "v": [
         "hitstun",
         5,
-        582.1773708793162,
-        476.7200000000003,
+        582.01095652948,
+        484.1600000000003,
         -2.5,
         34
       ],
       "stop": 3
     },
     {
-      "tick": 95,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 93,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -5794,8 +5767,8 @@
         "attack",
         "air_medium",
         5,
-        507.21166649758493,
-        470.7200000000003,
+        507.0452521477488,
+        478.1600000000003,
         -8,
         true,
         1
@@ -5803,16 +5776,16 @@
       "v": [
         "hitstun",
         5,
-        582.1773708793162,
-        476.7200000000003,
+        582.01095652948,
+        484.1600000000003,
         -2.5,
         34
       ],
       "stop": 2
     },
     {
-      "tick": 96,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 94,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -5822,8 +5795,8 @@
         "attack",
         "air_medium",
         5,
-        507.21166649758493,
-        470.7200000000003,
+        507.0452521477488,
+        478.1600000000003,
         -8,
         true,
         1
@@ -5831,16 +5804,16 @@
       "v": [
         "hitstun",
         5,
-        582.1773708793162,
-        476.7200000000003,
+        582.01095652948,
+        484.1600000000003,
         -2.5,
         34
       ],
       "stop": 1
     },
     {
-      "tick": 97,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 95,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -5850,8 +5823,8 @@
         "attack",
         "air_medium",
         5,
-        507.21166649758493,
-        470.7200000000003,
+        507.0452521477488,
+        478.1600000000003,
         -8,
         true,
         1
@@ -5859,16 +5832,16 @@
       "v": [
         "hitstun",
         5,
-        582.1773708793162,
-        476.7200000000003,
+        582.01095652948,
+        484.1600000000003,
         -2.5,
         34
       ],
       "stop": 0
     },
     {
-      "tick": 98,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 96,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -5878,8 +5851,8 @@
         "attack",
         "air_medium",
         6,
-        507.21166649758493,
-        463.44000000000034,
+        507.0452521477488,
+        470.88000000000034,
         -7.28,
         true,
         1
@@ -5887,16 +5860,16 @@
       "v": [
         "hitstun",
         5,
-        582.8073708793162,
-        474.94000000000034,
+        582.64095652948,
+        482.38000000000034,
         -1.78,
         33
       ],
       "stop": 0
     },
     {
-      "tick": 99,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 97,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -5908,8 +5881,8 @@
         "attack",
         "air_heavy",
         0,
-        507.21166649758493,
-        456.88000000000034,
+        507.0452521477488,
+        464.32000000000033,
         -6.5600000000000005,
         false,
         1
@@ -5917,16 +5890,16 @@
       "v": [
         "hitstun",
         5,
-        583.3302708793162,
-        473.88000000000034,
+        583.1638565294801,
+        481.32000000000033,
         -1.06,
         32
       ],
       "stop": 0
     },
     {
-      "tick": 100,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 98,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -5936,8 +5909,8 @@
         "attack",
         "air_heavy",
         1,
-        507.21166649758493,
-        451.04000000000036,
+        507.0452521477488,
+        458.48000000000036,
         -5.840000000000001,
         false,
         1
@@ -5945,16 +5918,16 @@
       "v": [
         "hitstun",
         5,
-        583.7642778793162,
-        473.54000000000036,
+        583.59786352948,
+        480.98000000000036,
         -0.3400000000000001,
         31
       ],
       "stop": 0
     },
     {
-      "tick": 101,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 99,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -5964,8 +5937,8 @@
         "attack",
         "air_heavy",
         2,
-        507.21166649758493,
-        445.92000000000036,
+        507.0452521477488,
+        453.36000000000035,
         -5.120000000000001,
         false,
         1
@@ -5973,16 +5946,16 @@
       "v": [
         "hitstun",
         5,
-        584.1245036893162,
-        473.92000000000036,
+        583.95808933948,
+        481.36000000000035,
         0.3799999999999999,
         30
       ],
       "stop": 0
     },
     {
-      "tick": 102,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 100,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -5992,8 +5965,8 @@
         "attack",
         "air_heavy",
         3,
-        507.21166649758493,
-        441.5200000000004,
+        507.0452521477488,
+        448.9600000000004,
         -4.400000000000001,
         false,
         1
@@ -6001,16 +5974,16 @@
       "v": [
         "hitstun",
         5,
-        584.4234911116162,
-        475.0200000000004,
+        584.25707676178,
+        482.4600000000004,
         1.0999999999999999,
         29
       ],
       "stop": 0
     },
     {
-      "tick": 103,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 101,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -6020,8 +5993,8 @@
         "attack",
         "air_heavy",
         4,
-        507.21166649758493,
-        437.8400000000004,
+        507.0452521477488,
+        445.28000000000037,
         -3.6800000000000015,
         false,
         1
@@ -6029,16 +6002,16 @@
       "v": [
         "hitstun",
         5,
-        584.6716506721251,
-        476.8400000000004,
+        584.505236322289,
+        484.28000000000037,
         1.8199999999999998,
         28
       ],
       "stop": 0
     },
     {
-      "tick": 104,
-      "epoch": "4c574f1f-55bb-4a9f-ac90-ed420d72113b",
+      "tick": 102,
+      "epoch": "9738e115-527f-4027-8370-78883f0e8925",
       "input": {
         "direction": 0,
         "down": false,
@@ -6048,8 +6021,8 @@
         "attack",
         "air_heavy",
         5,
-        507.21166649758493,
-        434.8800000000004,
+        507.0452521477488,
+        442.3200000000004,
         2,
         true,
         1
@@ -6057,8 +6030,8 @@
       "v": [
         "hitstun",
         6,
-        584.8776231073476,
-        479.3800000000004,
+        584.7112087575115,
+        486.8200000000004,
         13,
         38
       ],

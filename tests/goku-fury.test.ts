@@ -208,7 +208,7 @@ describe("Fúria Saiyajin: only a confirmed cinematic owns SSJ1", () => {
     },
   );
   it.each([false, true])(
-    "blocked initial strike never captures, left=%s",
+    "initial strike confirms through ordinary guard, left=%s",
     (left) => {
       const m = setup("samurai", left);
       const [a, b] = m.fighters;
@@ -217,14 +217,14 @@ describe("Fúria Saiyajin: only a confirmed cinematic owns SSJ1", () => {
       const guard = { ...neutral(), direction: -b.facing as -1 | 1 };
       expect(a.attack("ssj1_fury")).toBe(true);
       let blocked = 0;
-      for (let i = 0; i < 220; i++) {
+      for (let i = 0; i < 220 && !m.fury; i++) {
         m.step([neutral(), guard]);
-        expect(m.fury).toBeUndefined();
         blocked += m.hits.filter((h) => h.blocked).length;
       }
-      expect(blocked).toBe(1);
-      expect(b.health).toBe(b.data.health);
-      expect(a.state).toBe("idle");
+      expect(blocked).toBe(0);
+      expect(m.fury).toBeDefined();
+      expect(b.health).toBeLessThan(b.data.health);
+      expect(a.state).toBe("cinematic");
       expect(a.meter).toBe(0);
     },
   );

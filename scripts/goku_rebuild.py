@@ -40,14 +40,14 @@ def protect():
  if frenzy.exists():revisions.update(read(frenzy)['files'])
  luffy=ROOT/'deployment/audit/luffy-normals-shared-engine-revisions.json'
  if luffy.exists():revisions.update(read(luffy)['files'])
- menu=ROOT/'deployment/audit/menu-shared-engine-revisions.json'
- if menu.exists():revisions.update(read(menu)['files'])
  luffy_secondary=ROOT/'deployment/audit/luffy-secondary-shared-engine-revisions.json'
  if luffy_secondary.exists():revisions.update(read(luffy_secondary)['files'])
  luffy_jet=ROOT/'deployment/audit/luffy-jet-shared-engine-revisions.json'
  if luffy_jet.exists():revisions.update(read(luffy_jet)['files'])
  sasuke=ROOT/'deployment/audit/sasuke-shared-engine-revisions.json'
  if sasuke.exists():revisions.update(read(sasuke)['files'])
+ menu=ROOT/'deployment/audit/menu-shared-engine-revisions.json'
+ if menu.exists():revisions.update(read(menu)['files'])
  allowed={'src/engine/bot.ts','src/engine/characters.ts','src/engine/combat.ts','src/engine/types.ts','src/engine/input.ts','src/engine/state.ts'}
  allowed.update({'src/engine/moves.ts','src/engine/stand-combat.ts','src/engine/lifecycle.ts','src/render/dio-motion.ts'})
  assert set(revisions)<=allowed,'unreviewed shared-engine exemption'
