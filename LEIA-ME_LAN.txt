@@ -1,0 +1,39 @@
+LAN SEM JANELA DE POWERSHELL — JOGO DE LUTA SEM NOME
+
+NAO CRIA UM SERVIDOR NOVO.
+O instalador apenas liga scripts/start-lan.mjs em segundo plano
+ao entrar no Windows. Esse processo Node e necessario ao Socket.IO.
+Somente o computador anfitriao precisa de XAMPP e Node.js.
+
+INSTALACAO (uma vez)
+1) Pare o multiplayer aberto num PowerShell antigo (Ctrl+C).
+2) Copie o conteudo deste ZIP para a pasta raiz:
+   C:\xampp\htdocs\2025\Jogo_de_Luta_Sem_Nome\
+3) Confira que server-dist/server-core.mjs existe (caso contrario,
+   execute atualizar-xampp.bat antes).
+4) Clique duas vezes em instalar-lan-invisivel.cmd.
+5) Inicie o Apache no XAMPP.
+6) Clique duas vezes em verificar-lan.cmd para diagnostico.
+
+USO NOS PROXIMOS DIAS
+- O backend multiplayer existente inicia invisivel ao entrar no Windows.
+- Abra o XAMPP e inicie Apache.
+- Anfitriao: http://localhost/2025/Jogo_de_Luta_Sem_Nome/
+- Convidado: http://SEU-IP-LOCAL/2025/Jogo_de_Luta_Sem_Nome/
+- O convidado so precisa de navegador e mesma rede LAN.
+
+IMPORTANTE
+- O Apache sozinho nao executa Socket.IO. O backend Node
+  existente continua ativo invisivelmente.
+- Sem reinicio do Windows, o backend permanece ligado mesmo se o
+  Apache for desligado. Ao atualizar o projeto, encerre o backend e
+  execute atualizar-xampp.bat, depois inicie-o novamente.
+- A porta interna do Node (3001) permanece em 127.0.0.1.
+- Se precisar liberar Windows Firewall, libere APENAS a porta do Apache
+  para rede PRIVADA, preferencialmente somente sub-rede local.
+- Nao configure redirecionamento de portas no roteador.
+- Para remover a inicializacao automatica, execute
+  remover-lan-invisivel.cmd.
+
+LOG:
+deployment\run\lan-automatico.log

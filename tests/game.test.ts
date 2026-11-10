@@ -102,12 +102,14 @@ describe("Arcade and match flow", () => {
     }
   });
   it("offers all complete fighters and schedules every rival without mirrors or adjacent repeats", () => {
-    const ids = (Object.keys(characters) as CharacterId[]).filter(id => id !== "ben");
-    for (const id of ids) {
-      expect(selectionScreen("arcade")).toContain(`value="${id}"`);
+    const playable = Object.keys(characters) as CharacterId[];
+    const rivals = playable.filter(id => id !== "ben");
+    for (const id of playable) {
+      for (const mode of ["arcade", "versus", "training"] as const)
+        expect(selectionScreen(mode)).toContain(`value="${id}"`);
       const s = new GameSession("arcade", "normal", id);
       expect(s.route).toHaveLength(10);
-      expect(new Set(s.route)).toEqual(new Set(ids.filter(other => other !== id)));
+      expect(new Set(s.route)).toEqual(new Set(rivals.filter(other => other !== id)));
       expect(s.route.some((other, i) => other === s.route[i - 1])).toBe(false);
       expect(s.match.fighters[0].data.id).toBe(id);
       expect(s.match.fighters[1].data.id).toBe(s.route[0]);

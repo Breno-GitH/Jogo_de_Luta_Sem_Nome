@@ -1,0 +1,55 @@
+PATCH — BEN 10 EM ARCADE, VERSUS BOT, TREINAMENTO E LAN
+====================================================
+
+Este pacote foi preparado a partir de Jogo_Codigo_Leve.zip.
+Contém apenas:
+  src/ui/catalog.ts
+  src/game/app.ts
+  src/game/tower.ts
+  tests/game.test.ts
+
+Mudanças:
+1. Ben deixa de estar marcado como protótipo e entra na seleção principal.
+2. Seleção em Arcade/Versus não substitui mais Ben por Samurai.
+3. Arcade aceita Ben como protagonista e salva/retoma progresso com Ben.
+4. Os adversários da torre permanecem no elenco original (sem Ben como BOT).
+5. Teste de seleção e rota arcade atualizado para incluir Ben.
+
+LAN: o código original já lista Ben em ONLINE_CHARACTERS; esta patch não
+modifica o protocolo, servidor, simulação ou shaders/sprites.
+
+COMO APLICAR NO WINDOWS / POWERSHELL
+====================================
+1. Faça backup antes de substituir qualquer arquivo.
+2. Descompacte o conteúdo do ZIP na pasta:
+   C:\xampp\htdocs\2025\Jogo_de_Luta_Sem_Nome
+   mantendo as pastas internas e autorizando a substituição SOMENTE
+   dos quatro arquivos acima.
+
+3. No PowerShell, dentro da pasta do projeto:
+   npm run build
+
+4. Para testar primeiro via Vite:
+   npm run dev
+
+5. Para publicar no XAMPP pelo fluxo do projeto:
+   .\atualizar-xampp.bat
+   (Este script executa scripts/build-lan.mjs.)
+   Para o servidor LAN:
+   .\iniciar-multiplayer.bat
+
+TESTES SUGERIDOS:
+  npx vitest run tests/game.test.ts tests/ben-omnitrix.test.ts tests/ben-stage7.test.ts
+
+LIMITAÇÕES / TRANSPARÊNCIA
+==========================
+- A validação realizada aqui é estática; os testes em navegador não foram
+  executados, pois o ZIP recebido excluía os PNGs e demais arquivos de mídia.
+- Não cria sprites, animações ou golpes ausentes.
+- O adversário controlado pelo BOT não possui uma IA especializada em
+  escolher/transformar alienígenas de Ben. O jogador Ben pode enfrentar BOT.
+- A Super Alien X aparece como 'RESERVADO' no código atual; não foi criada.
+- Os quatro modos usam o mesmo motor de combate, mas multiplayer LAN deve
+  ser validado com dois computadores/abas e servidor correto.
+
+NÃO apague a pasta original do jogo, public/sprites ou outras mídias.

@@ -53,9 +53,8 @@ export const roster: {
   {
     id: benId,
     name: "Ben Tennyson",
-    style: "Omniverse. Alterne entre a velocidade de XLR8, a força de Quatro Braços e a mobilidade de Chama.",
-    status: "Protótipo · Treinamento e LAN · três formas com combate próprio",
-    prototype: true,
+    style: "Omniverse. Onze alienígenas selecionáveis pelo Omnitrix, cada um com seu estilo de combate.",
+    status: "Onze formas cadastradas · transformação com L · especiais próprios · Alien X reservado",
   },
 ];
 export const completeRoster = roster.filter(fighter => !fighter.prototype);

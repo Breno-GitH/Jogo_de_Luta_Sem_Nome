@@ -79,7 +79,9 @@ export type TowerAttempt = {
 };
 type TowerSave = { attempt: TowerAttempt | undefined; best: number };
 const key = "sem-nome-arcade-tower-v1";
-const ids: CharacterId[] = (Object.keys(characters) as CharacterId[]).filter(id => id !== "ben");
+// Ben can be the Arcade player. Keep the established rival pool unchanged.
+const playableIds = Object.keys(characters) as CharacterId[];
+const ids: CharacterId[] = playableIds.filter(id => id !== "ben");
 export const currentFloor = (attempt: TowerAttempt) =>
   Math.min(attempt.results.length, towerFloors.length - 1);
 export const towerComplete = (attempt: TowerAttempt) =>
@@ -114,7 +116,7 @@ function validAttempt(value?: TowerAttempt): value is TowerAttempt {
   return (
     !!value &&
     value.schema === 1 &&
-    ids.includes(value.fighter) &&
+    playableIds.includes(value.fighter) &&
     Array.isArray(value.route) &&
     value.route.length === towerFloors.length &&
     value.route.every(

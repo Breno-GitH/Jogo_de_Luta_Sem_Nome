@@ -291,7 +291,6 @@ export class GameApp {
   }
   private selection(mode: Mode, step: SelectStep = "player") {
     this.selectedMode = mode;
-    if (mode !== "training" && this.selected === "ben") this.selected = "samurai";
     this.selectStep = step;
     this.show(
       selectionScreen(mode, this.selected, this.enemy, step),
