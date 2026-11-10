@@ -5,6 +5,10 @@ import { join } from "node:path";
 const base = process.argv[2] ?? "http://localhost/2025/Jogo_de_Luta_Sem_Nome/";
 const out = process.argv[4] ?? "deployment/audit/sasuke-kirin";
 const scenarios = {
+  throw: { end: 58, marks: {} },
+  "powered:throw": { end: 58, marks: {} },
+  taunt: { end: 45, marks: {} },
+  awakening: { end: 112, marks: {} },
   kirinStorm: { end: 255, marks: { 37: "preparacao", 66: "tempestade", 103: "dragao", 143: "comando", 161: "queda", 176: "impacto", 210: "poeira" } },
   "powered:kirinStorm": { end: 255, marks: { 37: "preparacao", 66: "tempestade", 103: "dragao", 143: "comando", 161: "queda", 176: "impacto", 210: "poeira" } },
   goryukaWave: { end: 132, marks: { 37: "inicio", 55: "onda", 85: "trajetoria", 107: "saida" } },
@@ -19,8 +23,8 @@ await mkdir(join(out, "frames"), { recursive: true });
 const browser = await chromium.launch({ channel: "chrome" });
 try {
   const page = await browser.newPage({ viewport: { width: 1440, height: 1100 } });
-  await page.goto(new URL("art/sasuke.html", base).href);
-  await page.locator("#arena[data-loaded=true]").waitFor();
+  await page.goto(new URL("art/sasuke.html", base).href, { waitUntil: "domcontentloaded", timeout: 90000 });
+  await page.locator("#arena[data-loaded=true]").waitFor({ timeout: 60000 });
   const save = (name, url) => writeFile(join(out, name), Buffer.from(url.split(",")[1], "base64"));
   await page.selectOption("#scenario", scenario);
   const { frames, stills } = await page.evaluate(({ end, marks }) => {

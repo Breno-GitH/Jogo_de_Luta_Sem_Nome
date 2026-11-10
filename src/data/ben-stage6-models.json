@@ -1,0 +1,156 @@
+{
+  "bigChill": {
+    "sheet": "ben/bigChill/stage6-model.png",
+    "frameWidth": 352,
+    "frameHeight": 224,
+    "columns": 3,
+    "pivot": {
+      "x": 176,
+      "y": 203
+    },
+    "scale": 1,
+    "clips": {
+      "idle": {
+        "frames": [
+          0,
+          1,
+          2,
+          1
+        ],
+        "ticks": 12,
+        "loop": true
+      },
+      "poses": {
+        "frames": [
+          3,
+          4,
+          5
+        ],
+        "ticks": 28,
+        "loop": true
+      },
+      "wings": {
+        "frames": [
+          0,
+          3,
+          4,
+          3
+        ],
+        "ticks": 12,
+        "loop": true
+      }
+    }
+  },
+  "ghostfreak": {
+    "sheet": "ben/ghostfreak/stage6-model.png",
+    "frameWidth": 352,
+    "frameHeight": 224,
+    "columns": 3,
+    "pivot": {
+      "x": 176,
+      "y": 203
+    },
+    "scale": 1,
+    "clips": {
+      "idle": {
+        "frames": [
+          0,
+          1,
+          2,
+          1
+        ],
+        "ticks": 12,
+        "loop": true
+      },
+      "poses": {
+        "frames": [
+          3,
+          4,
+          5
+        ],
+        "ticks": 28,
+        "loop": true
+      }
+    }
+  },
+  "nrg": {
+    "sheet": "ben/nrg/stage6-model.png",
+    "frameWidth": 352,
+    "frameHeight": 224,
+    "columns": 3,
+    "pivot": {
+      "x": 176,
+      "y": 203
+    },
+    "scale": 1,
+    "clips": {
+      "idle": {
+        "frames": [
+          0,
+          1,
+          2,
+          1
+        ],
+        "ticks": 12,
+        "loop": true
+      },
+      "poses": {
+        "frames": [
+          3,
+          4,
+          5
+        ],
+        "ticks": 28,
+        "loop": true
+      },
+      "containment": {
+        "frames": [
+          0,
+          5
+        ],
+        "ticks": 24,
+        "loop": false
+      }
+    }
+  },
+  "nrgReleased": {
+    "sheet": "ben/nrgReleased/stage6-model.png",
+    "frameWidth": 352,
+    "frameHeight": 224,
+    "columns": 3,
+    "pivot": {
+      "x": 176,
+      "y": 203
+    },
+    "scale": 1,
+    "clips": {
+      "idle": {
+        "frames": [
+          0,
+          1,
+          2,
+          1
+        ],
+        "ticks": 12,
+        "loop": true
+      },
+      "poses": {
+        "frames": [
+          3,
+          4,
+          5
+        ],
+        "ticks": 28,
+        "loop": true
+      },
+      "containment": {
+        "frames": [
+          0,
+          5
+        ],
+        "ticks": 24,
+        "loop": false
+      }
+    }
+  }
+}

@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Kaneki · Laboratório de captura</title>
+    <style>
+      body {
+        background: #161722;
+        color: #efe6e9;
+        font: 15px system-ui;
+        margin: 24px auto;
+        max-width: 1200px;
+        padding: 0 14px;
+      }
+      h1 {
+        font-size: clamp(1.8rem, 4vw, 3rem);
+        margin: 0.3em 0;
+      }
+      a {
+        color: #f6a6b8;
+      }
+      .controls {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        flex-wrap: wrap;
+        margin: 14px 0;
+      }
+      canvas {
+        display: block;
+        width: 100%;
+        height: auto;
+        image-rendering: pixelated;
+        outline: 1px solid #685163;
+      }
+      select,
+      button {
+        background: #272533;
+        color: inherit;
+        border: 1px solid #6d596d;
+        padding: 6px;
+        font: inherit;
+      }
+      output {
+        display: block;
+        color: #ffb8c7;
+        margin: 8px 0;
+      }
+    </style>
+    <script type="module" crossorigin src="../assets/kanekiCombat-DNmfy0_5.js"></script>
+    <link rel="modulepreload" crossorigin href="../assets/animator-DQfVwx3m.js">
+    <link rel="modulepreload" crossorigin href="../assets/pixel-contour-NT5Irm0G.js">
+    <link rel="modulepreload" crossorigin href="../assets/luffy-special-fx-BBSF3u8v.js">
+    <link rel="modulepreload" crossorigin href="../assets/characters-B5bEmGF-.js">
+    <link rel="modulepreload" crossorigin href="../assets/sound-D-zK73FF.js">
+    <link rel="modulepreload" crossorigin href="../assets/loop-LRiz5Snv.js">
+    <link rel="modulepreload" crossorigin href="../assets/dio-motion-CRD3pkPn.js">
+    <link rel="modulepreload" crossorigin href="../assets/kagune-wmJN6S8V.js">
+    <link rel="modulepreload" crossorigin href="../assets/renderer-cSsgoSbT.js">
+  </head>
+  <body>
+    <nav><a href="../">Jogo</a> · <a href="./kaneki.html">Movimentação</a></nav>
+    <h1>Kaneki Ken · Capturas Rinkaku</h1>
+    <p>
+      No treino livre, U tenta capturar. Durante a captura, J puxa, K arremessa
+      e L lança. Após J ou L, escolha a segunda técnica com J/K/L.
+      ↓ → ativa Kagune Grab, ↓ ← ativa Four Swords e ↓ ↓ ativa Rinkaku Rush.
+      Finalize cada comando com J, K ou L. Ative o som e reproduza Four Swords para ouvir o estalo.
+    </p>
+    <div class="controls">
+      <label
+        >Ensaio
+        <select id="scenario"></select
+      ></label>
+      <label
+        >Adversário
+        <select id="opponent"></select
+      ></label>
+      <label
+        >Velocidade
+        <select id="speed">
+          <option value=".25">¼×</option>
+          <option value=".5">½×</option>
+          <option value="1" selected>1×</option>
+        </select></label
+      >
+      <label><input id="mirror" type="checkbox" /> Espelhar</label>
+      <label><input id="boxes" type="checkbox" /> Caixas</label>
+      <button id="play">Reproduzir</button
+      ><button id="step">Avançar 1 tick</button>
+      <button id="audio">Ativar som</button>
+    </div>
+    <canvas
+      id="arena"
+      width="1280"
+      height="720"
+      tabindex="0"
+      aria-label="Arena de captura do Kaneki"
+    ></canvas>
+    <div class="controls">
+      <label
+        >Linha do tempo
+        <input id="seek" type="range" min="0" max="560" value="0"
+      /></label>
+      <output id="status">Carregando…</output>
+    </div>
+    <p>
+      <a href="../sprites/kaneki/specials.png">Spritesheet dos especiais</a> ·
+      <a href="../sprites/kaneki/chain-centipede.png">Folha da Centopeia</a> ·
+      <a href="../sprites/kaneki/chain-meteor.png">Folha do Meteoro</a> ·
+      <a href="../previews/kaneki/estalo-corpo.png">Três quadros do estalo</a> ·
+      <a href="../sprites/kaneki/combat.png">Spritesheet de combate</a> ·
+      <a href="../previews/kaneki/puxar.webp">Puxar</a> ·
+      <a href="../previews/kaneki/arremessar.webp">Arremessar</a> ·
+      <a href="../previews/kaneki/lancar.webp">Lançar</a>
+    </p>
+    <p>
+      Four Swords <a href="../previews/kaneki/fourSwords-j.webp">J</a> ·
+      <a href="../previews/kaneki/fourSwords-k.webp">K</a> ·
+      <a href="../previews/kaneki/fourSwords-l.webp">L</a>
+    </p>
+    <p>
+      Rinkaku Rush <a href="../previews/kaneki/rinkakuRush-j.webp">J</a> ·
+      <a href="../previews/kaneki/rinkakuRush-k.webp">K</a> ·
+      <a href="../previews/kaneki/rinkakuRush-l.webp">L</a>
+    </p>
+    <p>
+      Capturas encadeadas
+      <a href="../previews/kaneki/chain-throw.webp">Arremesso</a> ·
+      <a href="../previews/kaneki/chain-embrace.webp">Abraço</a> ·
+      <a href="../previews/kaneki/chain-pendulum.webp">Pêndulo</a> ·
+      <a href="../previews/kaneki/chain-centipede.webp">Centopeia</a> ·
+      <a href="../previews/kaneki/chain-lasso.webp">Laço</a> ·
+      <a href="../previews/kaneki/chain-spin.webp">Giro</a> ·
+      <a href="../previews/kaneki/chain-meteor.webp">Meteoro</a>
+    </p>
+    <p>
+      Expansão
+      <a href="../previews/kaneki/stage5-centipedeDrop.webp">Centipede Drop</a> ·
+      <a href="../previews/kaneki/stage5-redCatapult.webp">Red Catapult</a> ·
+      <a href="../previews/kaneki/stage5-centipedeMeteor.webp">Centipede Meteor</a> ·
+      <a href="../previews/kaneki/stage5-swordsRise.webp">Four Swords ascendente</a> ·
+      <a href="../previews/kaneki/stage5-rushCrossover.webp">Rush K reposicionamento</a> ·
+      <a href="../previews/kaneki/stage5-rushSlam.webp">Rush L descendente</a> ·
+      <a href="../previews/kaneki/stage5-stage5Escape.webp">Escape</a>
+    </p>
+    <p>
+      <a href="../previews/kaneki/centipede.webp">Super Centipede completa</a> ·
+      <a href="../previews/kaneki/centipede-comparacao.png">Comparação visual</a> ·
+      <a href="../previews/kaneki/centipede-fases.png">Prancha das fases</a> ·
+      <a href="../previews/kaneki/kakuja-v2-preview.png">Kakuja · rosto e seis tentáculos</a> ·
+      <a href="../previews/kaneki/kakuja-v2-tentaculos.png">Spritesheet dos tentáculos</a> ·
+      <a href="../previews/kaneki/kakuja-rosto-comparacao.png">Comparação do rosto</a>
+    </p>
+  </body>
+</html>

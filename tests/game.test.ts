@@ -101,8 +101,8 @@ describe("Arcade and match flow", () => {
       expect(session.match.rules.training).toBeUndefined();
     }
   });
-  it("offers all five fighters and schedules every rival without mirrors or adjacent repeats", () => {
-    const ids = Object.keys(characters) as CharacterId[];
+  it("offers all complete fighters and schedules every rival without mirrors or adjacent repeats", () => {
+    const ids = (Object.keys(characters) as CharacterId[]).filter(id => id !== "ben");
     for (const id of ids) {
       expect(selectionScreen("arcade")).toContain(`value="${id}"`);
       const s = new GameSession("arcade", "normal", id);

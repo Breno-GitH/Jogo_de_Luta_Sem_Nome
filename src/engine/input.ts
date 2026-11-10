@@ -1,10 +1,16 @@
 import { neutral, type Button, type InputFrame } from "./types";
+import { GamepadInput } from "./gamepad";
 import { defaultBindings, type Bindings } from "../game/preferences";
+
 export class KeyboardInput {
   private held = new Set<string>();
+  private omnitrixOwner?: "keyboard" | "pad";
+  private omnitrixInterrupted = false;
   private queued: Button[] = [];
   private actionContext?: { direction: -1 | 0 | 1; down: boolean };
-  constructor(private options: { dashOnDirection?: boolean; bindings?: Bindings; active?: () => boolean } = {}) {
+  private pad = new GamepadInput();
+  activeChainKeys?: readonly string[];
+  constructor(private options: { dashOnDirection?: boolean; bindings?: Bindings; active?: () => boolean; gamepad?: boolean; omnitrix?: () => boolean } = {}) {
     window.addEventListener("keydown", e => {
       if (this.options.active && !this.options.active()) return;
       if (e.target instanceof HTMLElement && e.target.closest('input,select,textarea,[contenteditable="true"]')) return;
@@ -21,19 +27,58 @@ export class KeyboardInput {
         this.actionContext = { direction: this.direction(), down: this.held.has(b.down) };
       }
     });
-    window.addEventListener("keyup", e => this.held.delete(e.code === "ShiftRight" && this.bindings.dash === "ShiftLeft" ? "ShiftLeft" : e.code));
+    window.addEventListener("keyup", e => {
+      this.held.delete(e.code === "ShiftRight" && this.bindings.dash === "ShiftLeft" ? "ShiftLeft" : e.code);
+    });
     window.addEventListener("blur", () => this.clear());
   }
   private get bindings() { return this.options.bindings ?? defaultBindings; }
   private direction() { return (Number(this.held.has(this.bindings.right)) - Number(this.held.has(this.bindings.left))) as -1 | 0 | 1; }
-  clear() { this.held.clear(); this.queued = []; this.actionContext = undefined; }
+  clear() {
+    this.held.clear(); this.queued = []; this.actionContext = undefined;
+    this.omnitrixOwner = undefined;
+    this.omnitrixInterrupted = true;
+    if (this.options.gamepad) this.pad.sample(true);
+  }
   sample(): InputFrame {
     const i = neutral();
     i.direction = this.direction(); i.down = this.held.has(this.bindings.down);
     i.pressed = this.queued.splice(0);
     if (i.pressed.length && this.actionContext) { i.direction = this.actionContext.direction; i.down = this.actionContext.down; }
     this.actionContext = undefined;
-    return i;
+    const omnitrix = Boolean(this.options.omnitrix?.());
+    const pad = this.options.gamepad ? this.pad.sample(false, omnitrix) : undefined;
+    const keyboardActive = Boolean(i.direction || i.down || i.pressed.length ||
+      (omnitrix && (this.held.has(this.bindings.heavy) || this.held.has(this.bindings.jump))));
+    const padActive = Boolean(pad && (pad.direction || pad.down || pad.up || pad.pressed.length || pad.omnitrix?.held));
+    if (keyboardActive) this.activeChainKeys = undefined;
+    else if (padActive) this.activeChainKeys = this.pad.keys;
+    const frame = !keyboardActive && padActive ? pad! : i;
+    if (omnitrix) {
+      if (frame === i && this.held.has(this.bindings.jump)) frame.up = true;
+      this.sampleOmnitrix(frame, i, pad);
+    }
+    this.omnitrixInterrupted = false;
+    return frame;
+  }
+  private sampleOmnitrix(frame: InputFrame, keyboard: InputFrame, pad?: InputFrame) {
+    const keyboardEdge = keyboard.pressed.includes("heavy");
+    const padEdge = pad?.pressed.includes("heavy");
+    const keyboardHeld = this.held.has(this.bindings.heavy);
+    const padHeld = pad?.omnitrix?.held;
+    let owner = this.omnitrixOwner ?? (keyboardEdge ? "keyboard" : padEdge ? "pad" : undefined);
+    // Keep ownership until release, then preserve a new edge even in the same sample.
+    if (owner === "pad" && padHeld === false && keyboardEdge) owner = "keyboard";
+    else if (owner === "keyboard" && !keyboardHeld && !keyboardEdge && padEdge) owner = "pad";
+    const held = owner === "keyboard" ? keyboardHeld : padHeld;
+    const edge = owner === "keyboard" ? keyboardEdge : padEdge;
+    frame.pressed = frame.pressed.filter(button => button !== "heavy");
+    delete frame.omnitrix;
+    if (!this.omnitrixInterrupted && owner && held !== undefined) {
+      frame.omnitrix = { held };
+      if (edge) frame.pressed.push("heavy");
+    }
+    this.omnitrixOwner = frame.omnitrix?.held ? owner : undefined;
   }
 }
 // Frame-indexed command history can also be fed by a future network adapter.

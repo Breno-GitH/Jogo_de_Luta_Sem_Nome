@@ -59,5 +59,30 @@ class SasukeHebiArt(unittest.TestCase):
             self.assertEqual(len(all_hashes), 36)
 
 
+
+    def test_throw_cells_and_grip_match_the_two_approved_forms(self):
+        boxes = json.loads((DATA / "sasuke-throw-boxes.json").read_text())
+        for form, box in boxes.items():
+            with Image.open(SPRITES / f"throw-{form}.png") as sheet:
+                self.assertEqual(sheet.size, (1152, 576))
+                hashes = set()
+                for i in range(6):
+                    x, y = i % 3 * 384, i // 3 * 288
+                    sprite = sheet.crop((x, y, x + 384, y + 288))
+                    alpha = sprite.getchannel("A")
+                    self.assertEqual(set(alpha.tobytes()), {0, 255})
+                    left, top, right, bottom = alpha.getbbox()
+                    self.assertGreaterEqual(min(left, top, 384 - right), 12)
+                    self.assertEqual(bottom, 248)
+                    hashes.add(hashlib.sha256(sprite.tobytes()).digest())
+                    if i == 1:
+                        px, py = box["x"] + 192 + box["w"] // 2, box["y"] + 248 + box["h"] // 2
+                        self.assertIsNotNone(alpha.crop((px - 4, py - 4, px + 5, py + 5)).getbbox())
+                self.assertEqual(len(hashes), 6)
+        with Image.open(SPRITES / "menu-idle.webp") as idle:
+            self.assertEqual(idle.size, (256, 256))
+            self.assertEqual(idle.n_frames, 6)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

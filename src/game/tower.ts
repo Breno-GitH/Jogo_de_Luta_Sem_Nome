@@ -79,7 +79,7 @@ export type TowerAttempt = {
 };
 type TowerSave = { attempt: TowerAttempt | undefined; best: number };
 const key = "sem-nome-arcade-tower-v1";
-const ids = Object.keys(characters) as CharacterId[];
+const ids: CharacterId[] = (Object.keys(characters) as CharacterId[]).filter(id => id !== "ben");
 export const currentFloor = (attempt: TowerAttempt) =>
   Math.min(attempt.results.length, towerFloors.length - 1);
 export const towerComplete = (attempt: TowerAttempt) =>

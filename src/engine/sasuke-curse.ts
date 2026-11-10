@@ -1,5 +1,6 @@
 import balance from "../data/sasuke-curse.json";
 import metadata from "../data/sasuke-curse-frames.json";
+import { sasukeCurseThrow } from "./sasuke-grab";
 import { sasukeMoves } from "./sasuke-data";
 import { sasukeSpecialMoves, type SasukeSpecialId } from "./sasuke-specials";
 import { chidoriMove, nagashiProfile } from "./sasuke-polish";
@@ -85,7 +86,7 @@ const transitions: Record<string, Move> = Object.fromEntries(
 export function curseMove(f: Fighter, id: string) {
   if (f.data.id !== "sasuke") return;
   if (id === curseAwaken || id === curseRevert) return transitions[id];
-  if (winged(f)) return sasukeCurseMoves[id];
+  if (winged(f)) return id === "throw" ? sasukeCurseThrow : sasukeCurseMoves[id];
 }
 
 const grounded = (f: Fighter) => !f.airborne &&

@@ -410,6 +410,9 @@ export class Rooms {
       direction: payload.input.direction,
       down: payload.input.down,
       pressed: [...payload.input.pressed],
+      ...(room.match?.fighters[seat].omnitrix && payload.input.up ? { up: true } : {}),
+      ...(room.match?.fighters[seat].omnitrix && payload.input.omnitrix
+        ? { omnitrix: { ...payload.input.omnitrix } } : {}),
     });
   }
   sync(socketId: string, matchId: unknown) {

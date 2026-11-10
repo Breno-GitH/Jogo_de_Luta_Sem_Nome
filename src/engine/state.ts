@@ -2,6 +2,7 @@ import { Match, Fighter, character } from "./combat";
 import type { CommandBuffer } from "./input";
 import { characterById } from "./characters";
 import type { StandState } from "./stand-combat";
+import type { OmnitrixState } from "./ben-omnitrix";
 const fighterKeys = [
   "x",
   "y",
@@ -15,6 +16,11 @@ const fighterKeys = [
   "stun",
   "moveId",
   "connected",
+  "kanekiCaptured",
+  "kanekiThrowLink",
+  "kanekiLimb",
+  "kanekiBurrowX",
+  "kanekiSpecialRecovery",
   "hitConfirmed",
   "reverseBeatUsed",
   "hitIds",
@@ -25,6 +31,7 @@ const fighterKeys = [
   "dashDirection",
   "jumpDirection",
   "airChaseTicks",
+  "chill",
   "gokuTeleportLock",
   "gokuAirTeleportUsed",
   "gokuAirTeleportsUsed",
@@ -58,6 +65,7 @@ const matchKeys = [
   "fury",
   "jetGigant",
   "kirin",
+  "centipede",
   "hits",
   "hitSerial",
   "rules",
@@ -72,6 +80,7 @@ type FighterState = Pick<Fighter, (typeof fighterKeys)[number]> & {
   buffer: ReturnType<CommandBuffer["snapshot"]>;
   characterId: string;
   stand?: StandState;
+  omnitrix?: OmnitrixState;
 };
 export type MatchState = Pick<Match, (typeof matchKeys)[number]> & {
   temporal: import("./temporal").TemporalState;
@@ -89,6 +98,7 @@ export function snapshot(match: Match): MatchState {
         buffer: f.buffer.snapshot(),
         characterId: f.data.id,
         ...(f.stand ? { stand: clone(f.stand.s) } : {}),
+        ...(f.omnitrix ? { omnitrix: clone(f.omnitrix) } : {}),
       }) as FighterState,
   );
   state.temporal = clone(match.temporal.s);
@@ -114,6 +124,7 @@ export function restore(state: MatchState, match = new Match()): Match {
     );
     fighter.buffer.restore(saved.buffer);
     if (fighter.stand && saved.stand) fighter.stand.s = clone(saved.stand);
+    if (fighter.omnitrix && saved.omnitrix) fighter.omnitrix = { ...fighter.omnitrix, ...clone(saved.omnitrix) };
     return fighter;
   }) as [Fighter, Fighter];
   match.data = match.fighters[0].data;

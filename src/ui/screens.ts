@@ -3,7 +3,7 @@ import type { CharacterId } from "../engine/characters";
 import type { Preferences } from "../game/preferences";
 import { keyLabel } from "../game/preferences";
 import {
-  roster,
+  completeRoster,
   characterCards,
   fighterHero,
   fighterInfo,
@@ -21,7 +21,7 @@ export const modeName: Record<Mode, string> = {
   training: "Treinamento",
 };
 export const menuScreen = () =>
-  `<div class="main-menu"><div class="menu-copy"><span class="eyebrow">FIGHTING PROJECT / 60 Hz</span><h1>SEM<span>NOME</span></h1><p class="tagline">${roster.length} ESTILOS.<br>UMA ARENA.</p><nav aria-label="Menu principal">${[
+  `<div class="main-menu"><div class="menu-copy"><span class="eyebrow">FIGHTING PROJECT / 60 Hz</span><h1>SEM<span>NOME</span></h1><p class="tagline">${completeRoster.length} ESTILOS.<br>UMA ARENA.</p><nav aria-label="Menu principal">${[
     ["arcade", "01", "ARCADE", "Dez andares. Vença até chegar ao topo."],
     ["versus", "02", "VERSUS BOT", "Seu rival. Sua dificuldade."],
     ["training", "03", "TREINAMENTO", "Explore golpes, alcance e combos."],
@@ -34,7 +34,7 @@ export const menuScreen = () =>
     )
     .join(
       "",
-    )}</nav><div class="nav-help"><kbd>W</kbd><kbd>S</kbd> navegar <kbd>Enter</kbd> confirmar <kbd>Esc</kbd> voltar</div></div><div class="menu-cast" aria-label="Elenco atual">${roster.map((c) => `<div class="cast-member cast-${c.id}"><img src="${fighterImage(c.id)}" alt="${c.name}"><strong>${c.name}</strong></div>`).join("")}<span class="cast-caption">ESCOLHA SEU ESTILO DE COMBATE</span></div></div>`;
+    )}</nav><div class="nav-help"><kbd>W</kbd><kbd>S</kbd> navegar <kbd>Enter</kbd> confirmar <kbd>Esc</kbd> voltar</div></div><div class="menu-cast" aria-label="Elenco atual">${completeRoster.map((c) => `<div class="cast-member cast-${c.id}"><img src="${fighterImage(c.id)}" alt="${c.name}"><strong>${c.name}</strong></div>`).join("")}<span class="cast-caption">ESCOLHA SEU ESTILO DE COMBATE</span></div></div>`;
 export type SelectStep = "player" | "opponent" | "ready";
 export function selectionScreen(
   mode: Mode,
@@ -44,7 +44,7 @@ export function selectionScreen(
 ) {
   const choosing = step !== "ready",
     current = step === "opponent" ? enemy : selected;
-  return `<div class="panel selection"><div class="screen-heading"><div><span class="eyebrow">${modeName[mode].toUpperCase()}</span><h2>${step === "player" ? "Escolha seu lutador" : step === "opponent" ? (mode === "training" ? "Parceiro de treino" : "Escolha seu rival") : "Prepare o confronto"}</h2></div><span class="step-indicator">${step === "player" ? "01 / LUTADOR" : step === "opponent" ? "02 / ADVERSÁRIO" : "03 / CONFIRMAÇÃO"}</span></div>${choosing ? `<div class="selection-layout"><div id="fighter-hero" class="fighter-hero">${fighterHero(current)}</div><div class="selection-choices">${characterCards(step === "player" ? "character" : "opponent", current)}<button class="primary" id="confirm-character">CONFIRMAR ${step === "player" ? "LUTADOR" : "ADVERSÁRIO"}<span>→</span></button></div></div>` : `<div class="versus-line"><div><img src="${fighterImage(selected)}" alt="${fighterInfo(selected).name}"><strong>${fighterInfo(selected).name}</strong></div><b>VS</b><div><img src="${fighterImage(enemy)}" alt="Adversário"><strong>${fighterInfo(enemy).name}</strong></div></div><label class="difficulty-label">Dificuldade do BOT <select id="difficulty"><option value="easy">Fácil</option><option value="normal" selected>Normal</option><option value="hard">Difícil</option></select></label><p class="hint">Fácil: espaço para aprender. Normal: pressão equilibrada e combos. Difícil: reage mais rápido, defende melhor e pune aberturas. ${mode === "training" ? "O treino começa com o parceiro parado; você pode ativar a IA na arena." : ""}</p><button class="primary" id="fight">${mode === "training" ? "INICIAR TREINAMENTO" : "ENTRAR NA ARENA"}<span>→</span></button>`}<button class="text" id="back">Voltar</button></div>`;
+  return `<div class="panel selection"><div class="screen-heading"><div><span class="eyebrow">${modeName[mode].toUpperCase()}</span><h2>${step === "player" ? "Escolha seu lutador" : step === "opponent" ? (mode === "training" ? "Parceiro de treino" : "Escolha seu rival") : "Prepare o confronto"}</h2></div><span class="step-indicator">${step === "player" ? "01 / LUTADOR" : step === "opponent" ? "02 / ADVERSÁRIO" : "03 / CONFIRMAÇÃO"}</span></div>${choosing ? `<div class="selection-layout"><div id="fighter-hero" class="fighter-hero">${fighterHero(current)}</div><div class="selection-choices">${characterCards(step === "player" ? "character" : "opponent", current, undefined, false, mode === "training" && step === "player")}<button class="primary" id="confirm-character">CONFIRMAR ${step === "player" ? "LUTADOR" : "ADVERSÁRIO"}<span>→</span></button></div></div>` : `<div class="versus-line"><div><img src="${fighterImage(selected)}" alt="${fighterInfo(selected).name}"><strong>${fighterInfo(selected).name}</strong></div><b>VS</b><div><img src="${fighterImage(enemy)}" alt="Adversário"><strong>${fighterInfo(enemy).name}</strong></div></div><label class="difficulty-label">Dificuldade do BOT <select id="difficulty"><option value="easy">Fácil</option><option value="normal" selected>Normal</option><option value="hard">Difícil</option></select></label><p class="hint">Fácil: espaço para aprender. Normal: pressão equilibrada e combos. Difícil: reage mais rápido, defende melhor e pune aberturas. ${mode === "training" ? "O treino começa com o parceiro parado; você pode ativar a IA na arena." : ""}</p><button class="primary" id="fight">${mode === "training" ? "INICIAR TREINAMENTO" : "ENTRAR NA ARENA"}<span>→</span></button>`}<button class="text" id="back">Voltar</button></div>`;
 }
 export function resultScreen(session: GameSession) {
   const won = session.status === "victory";

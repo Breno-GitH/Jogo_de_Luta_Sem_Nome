@@ -1,3 +1,4 @@
+import { sasukeThrowClips } from "../engine/sasuke-grab";
 import {
   sasukeClips,
   sasukeFrames,
@@ -86,6 +87,30 @@ for (const cursed of [false, true]) {
     clips[cursed ? curseClipName(name) : name] = {
       sheet: cursed ? kirinCurseSheet : "sasuke/kirin-base.png",
       frames: [...frames], durations: [...durations], ticks: 1, loop: false,
+      frameWidth: 384, frameHeight: 288, columns: 3, pivot: { x: 192, y: 248 },
+    };
+  }
+}
+
+for (const cursed of [false, true]) {
+  const sheet = cursed ? "sasuke/taunt-marca.png" : "sasuke/taunt-hebi.png";
+  clips[cursed ? "curse_taunt" : "taunt"] = {
+    sheet, frames: [0, 1, 2, 1, 0], durations: [5, 6, 14, 6, 5], ticks: 1, loop: false,
+    frameWidth: 384, frameHeight: 288, columns: 3, pivot: { x: 192, y: 248 },
+  };
+}
+export const sasukeWingedSheets = new Set([
+  "sasuke/taunt-marca.png",
+  sasukeCurseSheet,
+  chidoriCurseSheet,
+  kirinCurseSheet,
+  "sasuke/throw-curse.png",
+]);
+for (const [name, { frames, holds }] of Object.entries(sasukeThrowClips)) {
+  for (const cursed of [false, true]) {
+    clips[cursed ? curseClipName(name) : name] = {
+      sheet: cursed ? "sasuke/throw-curse.png" : "sasuke/throw-base.png",
+      frames, durations: holds, ticks: 1, loop: false,
       frameWidth: 384, frameHeight: 288, columns: 3, pivot: { x: 192, y: 248 },
     };
   }

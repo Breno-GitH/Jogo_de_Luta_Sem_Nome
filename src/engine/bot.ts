@@ -1,7 +1,21 @@
 import profiles from "../data/bot-profiles.json";
 import { neutral, type Button, type InputFrame, type State } from "./types";
 import type { Fighter, Match } from "./combat";
+import { chainFinisher, type ChainButton } from "./kaneki-chain";
 import { isSuperMove } from "./moves";
+import { canAwaken } from "./sasuke-curse";
+import type { SasukeSpecialId } from "./sasuke-specials";
+
+const sasukeCommands: Record<SasukeSpecialId, [number[], Button]> = {
+  senbon: [[2, 6], "light"],
+  eiso: [[2, 6], "medium"],
+  chidori: [[2, 6], "heavy"],
+  gokakyu: [[2, 4], "light"],
+  hosenka: [[2, 4], "medium"],
+  goryuka: [[2, 4], "heavy"],
+  serpents: [[2, 5, 2], "light"],
+  nagashi: [[2, 5, 2], "medium"],
+};
 
 export type Difficulty = keyof typeof profiles;
 export type BotProfile = (typeof profiles)[Difficulty];
@@ -15,6 +29,7 @@ export interface Observation {
   phase?: string;
   level?: string;
   remaining: number;
+  stun?: number;
   connected: boolean;
   super?: boolean;
 }
@@ -33,6 +48,7 @@ export class Bot {
   private hitMove = "";
   private attempted = false;
   private airRoute = false;
+  private lastSasukeSpecial?: SasukeSpecialId;
   lastDecision = "aguardar";
   perceived?: Observation;
   constructor(
@@ -63,6 +79,7 @@ export class Bot {
     this.confirmedAt = -1;
     this.hitMove = "";
     this.airRoute = false;
+    this.lastSasukeSpecial = undefined;
     this.attempted = false;
     this.perceived = undefined;
   }
@@ -92,6 +109,38 @@ export class Bot {
     this.plan = neutral();
     return this.queue.shift()!;
   }
+  private sasukeTechnique(self: Fighter, options: readonly SasukeSpecialId[]) {
+    const valid = options.filter(id => self.canStartSpecial(id));
+    if (!valid.length) return;
+    const varied = valid.filter(id => id !== this.lastSasukeSpecial);
+    const choices = varied.length ? varied : valid;
+    const id = choices[Math.floor(this.random() * choices.length)];
+    this.lastSasukeSpecial = id;
+    this.lastDecision = "Sasuke · " + id;
+    const [pattern, button] = sasukeCommands[id];
+    return this.command(pattern, button, self);
+  }
+  private chainInput(match: Match, self: Fighter): InputFrame {
+    const sequence = match.capture!;
+    const chain = sequence.kaneki?.chain;
+    if (!chain || sequence.attacker !== self.id || match.hitstop) return neutral();
+    const age = sequence.tick - chain.since;
+    const victim = match.fighters[sequence.victim];
+    const wall = self.facing > 0 ? 1240 - victim.x : victim.x - 40;
+    const heavyReady = victim.health <= 180 || wall < 140;
+    if (chain.phase === "choice1" && age === (this.difficulty === "easy" ? 17 : 12)) {
+      let pick: ChainButton = "medium";
+      if (this.difficulty === "hard" || this.difficulty === "normal" && this.chance(.36))
+        pick = wall > 235 && this.chance(.54) ? "heavy" : "light";
+      return this.choose({ ...neutral(), pressed: [pick] }, "escolher captura Rinkaku");
+    }
+    if (chain.phase === "choice2" && age === (this.difficulty === "hard" ? 8 : 15)) {
+      let pick: ChainButton = wall > 255 ? "medium" : "light";
+      if (this.difficulty === "hard" && heavyReady && chainFinisher(chain, "heavy", sequence.kaneki?.route)) pick = "heavy";
+      return this.choose({ ...neutral(), pressed: [pick] }, "finalizar captura Rinkaku");
+    }
+    return neutral();
+  }
   sample(match: Match): InputFrame {
     const self = match.fighters[this.controlled];
     if (self !== this.actor) this.reset(self);
@@ -105,7 +154,7 @@ export class Bot {
       this.plan = neutral();
       this.history = [];
       this.perceived = undefined;
-      return neutral();
+      return match.capture ? this.chainInput(match, self) : neutral();
     }
     if (match.hitstop > 0) return neutral();
     if (self.state === "blockstun") return { ...this.plan, pressed: [] };
@@ -128,6 +177,7 @@ export class Bot {
             enemy.stateFrame
           : 0,
         connected: enemy.connected,
+        stun: enemy.stun,
         super: isSuperMove(enemy.move),
       });
       this.history = this.history.filter((item) => now - item.frame < 100);
@@ -166,15 +216,20 @@ export class Bot {
         this.attempted = true;
         if (this.chance(this.profile.combo)) {
           if (
+            self.data.id !== "kaneki" &&
             self.move?.cancels.includes("special") &&
             !self.airborne &&
-            (this.towerTuning ? self.hitConfirmed && self.canStartSuper() : self.meter >= 100) &&
+            (this.towerTuning || self.data.id === "sasuke"
+              ? self.hitConfirmed && self.canStartSuper()
+              : self.meter >= 100) &&
+            (self.data.id !== "sasuke" || this.perceived && Math.abs(this.perceived.x - self.x) < 106) &&
             self.moveId !== "crouch_heavy" &&
             this.chance(this.profile.ultimate)
           ) {
             return this.choose(
               { ...neutral(), pressed: ["ultimate"] },
-              this.towerTuning ? "confirmar Super" : "confirmar Mil Cortes",
+              self.data.id === "sasuke" ? "confirmar Kirin" :
+                this.towerTuning ? "confirmar Super" : "confirmar Mil Cortes",
             );
           }
           if (
@@ -186,6 +241,17 @@ export class Bot {
               { ...neutral(), pressed: ["jump"] },
               "perseguir lançamento",
             );
+          }
+          if (self.data.id === "kaneki" && self.hitConfirmed && this.chance(this.profile.special)) {
+            const distance = Math.abs((this.perceived?.x ?? self.x) - self.x);
+            if (self.move?.rank === 3 && distance <= 155 && self.canStartSpecial("fourSwords_light")) {
+              this.lastDecision = "finalizar com Four Swords";
+              return this.command([2, 4], "light", self);
+            }
+            if (self.move?.rank === 2 && distance < 110 && self.canStartSpecial("rinkakuRush_light")) {
+              this.lastDecision = "confirmar Rinkaku Rush";
+              return this.command([2, 5, 2], "light", self);
+            }
           }
           const next: Button | undefined = self.move?.cancels.includes("medium")
             ? "medium"
@@ -205,6 +271,8 @@ export class Bot {
             self.move?.cancels.includes("special") &&
             this.chance(this.profile.special)
           ) {
+            if (self.data.id === "sasuke")
+              return this.sasukeTechnique(self, ["chidori", "eiso", "gokakyu", "serpents"]) ?? neutral();
             this.lastDecision = "cancelar em especial";
             return this.command(
               self.moveId === "crouch_heavy" ? [6, 2, 3] : [2, 3, 6],
@@ -238,7 +306,12 @@ export class Bot {
     const distance = Math.abs(enemy.x - self.x),
       toward = (enemy.x >= self.x ? 1 : -1) as -1 | 1;
     const away = -toward as -1 | 1;
+    const sasuke = self.data.id === "sasuke";
     if (self.airborne) {
+      if (sasuke && self.sasukeCurse?.phase === "active" && !self.sasukeCurse.airBurstUsed &&
+          toward === self.facing && distance >= 118 && distance < 220 &&
+          Math.abs(self.y - enemy.y) < 82 && this.chance(this.profile.airCombo))
+        return this.choose({ ...neutral(), direction: toward, pressed: ["dash"] }, "perseguir com as asas");
       if (distance < 125 && Math.abs(enemy.y - self.y) < 90)
         return this.choose(
           { ...neutral(), pressed: [this.chance(0.65) ? "light" : "heavy"] },
@@ -249,7 +322,7 @@ export class Bot {
         "ajustar salto",
       );
     }
-    if (this.towerTuning && enemy.super && enemy.phase === "startup" &&
+    if ((this.towerTuning || sasuke) && enemy.super && enemy.phase === "startup" &&
         distance < 250 && this.chance(this.profile.guard)) {
       return this.choose({ direction: away, down: false, pressed: ["dash"] }, "esquivar da Super");
     }
@@ -289,11 +362,17 @@ export class Bot {
             { ...neutral(), pressed: ["heavy"] },
             "punir com The World",
           );
+        if (sasuke) {
+          const punish = this.sasukeTechnique(self, ["eiso", "chidori"]);
+          if (punish) return punish;
+        }
         this.lastDecision = "punir com saque";
         return this.command([2, 3, 6], "light", self);
       }
     }
     if (enemy.airborne && distance < 110 && this.chance(this.profile.special)) {
+      if (sasuke)
+        return this.choose({ ...neutral(), down: true, pressed: ["heavy"] }, "corte ascendente");
       if (self.data.id === "goku")
         return this.choose(
           { ...neutral(), down: true, pressed: ["heavy"] },
@@ -325,19 +404,53 @@ export class Bot {
     if (self.data.id === "luffy" && self.canStartSuper() && !enemy.airborne &&
         distance > 95 && distance < 235 && this.chance(this.profile.ultimate))
       return this.choose({ ...neutral(), pressed: ["ultimate"] }, "Jet Gigant");
-    if (this.towerTuning && self.data.id === "sasuke" &&
-        self.canStartSuper() && !enemy.airborne && distance < 88 &&
-        (enemy.phase === "recovery" || enemy.state === "hitstun") &&
-        this.chance(this.profile.ultimate))
-      return this.choose({ ...neutral(), pressed: ["ultimate"] }, "punir com Kirin");
-    if (this.towerTuning && (self.data.id === "luffy" || self.data.id === "sasuke") &&
+    const closing = enemy.vx * toward < 0;
+    if (self.data.id === "kaneki" && !enemy.airborne && this.chance(this.profile.special)) {
+      if (enemy.phase === "recovery" && remaining >= 14 && distance >= 62 && distance <= 135 &&
+          self.canStartSpecial("fourSwords_medium")) {
+        this.lastDecision = "punir com Four Swords";
+        return this.command([2, 4], "medium", self);
+      }
+      if (distance >= 95 && distance <= 165 && !closing && enemy.phase !== "active" &&
+          self.canStartSpecial("kaguneGrab_medium")) {
+        this.lastDecision = "capturar com Kagune Grab";
+        return this.command([2, 6], "medium", self);
+      }
+      if (distance > 165 && distance <= 250 && self.canStartSpecial("rinkakuRush_medium")) {
+        this.lastDecision = "aproximar com Rinkaku Rush";
+        return this.command([2, 5, 2], "medium", self);
+      }
+    }
+    if (sasuke) {
+      const powered = self.sasukeCurse?.phase === "active";
+      if (self.canStartSuper() && !enemy.airborne && distance < 88 &&
+          ((enemy.phase === "recovery" && remaining >= 12) ||
+            (enemy.state === "hitstun" && (enemy.stun ?? 0) - (now - enemy.frame) >= 12)) &&
+          this.chance(this.profile.ultimate))
+        return this.choose({ ...neutral(), pressed: ["ultimate"] }, "punir com Kirin");
+      if (canAwaken(self) && distance >= (closing ? 295 : 220) && distance < 600 &&
+          this.chance(this.profile.special)) {
+        this.lastDecision = "despertar a Marca II";
+        return this.command([2, 5, 2], "heavy", self);
+      }
+      if (this.chance(this.profile.special * (powered ? 1.45 : 1))) {
+        const options: SasukeSpecialId[] = distance < 112
+          ? closing || enemy.airborne ? ["nagashi", "serpents"] : ["serpents", "chidori"]
+          : distance < (powered ? 310 : 245)
+            ? enemy.airborne ? ["hosenka", "eiso"] : ["eiso", "chidori", "senbon"]
+            : distance < 575 ? ["gokakyu", "hosenka", "goryuka", "senbon"] : [];
+        if (options.length) {
+          const special = this.sasukeTechnique(self, options);
+          if (special) return special;
+        }
+      }
+    }
+    if (this.towerTuning && self.data.id === "luffy" &&
         distance > 175 && distance < 440 && !enemy.airborne &&
         this.chance(this.profile.special)) {
-      this.lastDecision = self.data.id === "luffy" ? "controlar espaço com Pistol" : "controlar espaço com Katon";
-      return this.command(self.data.id === "luffy" ? [2, 3, 6] : [2, 1, 4],
-        enemy.phase === "recovery" ? "heavy" : "light", self);
+      this.lastDecision = "controlar espaço com Pistol";
+      return this.command([2, 3, 6], enemy.phase === "recovery" ? "heavy" : "light", self);
     }
-    const closing = enemy.vx * toward < 0;
     const lowHealth = self.health / self.data.health < 0.3;
     if (self.data.id === "goku" && self.data.specialMoves && !self.airborne) {
       if (

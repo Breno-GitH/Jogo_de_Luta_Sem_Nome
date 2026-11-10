@@ -26,7 +26,7 @@ import {
 } from "../ui/screens";
 import {
   fighterHero,
-  roster,
+  completeRoster,
   fighterInfo,
   movesContent,
   controlsContent,
@@ -63,6 +63,8 @@ export class GameApp {
   private screen: Screen = "menu";
   private keyboardOptions = {
     dashOnDirection: true,
+    gamepad: true,
+    omnitrix: () => (this.online?.match?.fighters[this.online.seat]?.data.id ?? this.session?.characterId) === "ben",
     bindings: this.preferences.bindings,
     active: () =>
       ["fight", "onlineFight"].includes(this.screen) && this.overlay.hidden,
@@ -91,7 +93,7 @@ export class GameApp {
   private fpsAt = performance.now();
   private fpsFrames = 0;
   constructor(private root: HTMLDivElement) {
-    root.innerHTML = `<header><a class="brand" href="#">SEM<span>NOME</span><small>FIGHTING PROJECT</small></a><span class="build">${roster.length} LUTADORES <b>ARCADE / LAN</b></span></header><main><div class="topline"><span><i></i> ESCOLHA SEU ESTILO. ENCONTRE SUA ABERTURA.</span><span id="mode-label">PRONTO PARA O PRÓXIMO ROUND</span></div><div class="stage"><canvas width="1280" height="720" tabindex="0" aria-label="Arena de combate"></canvas><output id="fps" hidden>60 FPS</output><section id="overlay" aria-label="Interface do jogo"></section></div><div class="toolbar"><span id="status" role="status">Selecione um modo</span><div><button id="sound">Som</button><button id="boxes">Caixas: desligadas</button><button id="restart" disabled>Reiniciar</button><button id="pause" disabled>Pausar · Esc</button><button id="menu">Menu</button></div></div><div id="network-info" class="network-info" hidden role="status"></div>${trainingPanel()}<footer></footer></main>`;
+    root.innerHTML = `<header><a class="brand" href="#">SEM<span>NOME</span><small>FIGHTING PROJECT</small></a><span class="build">${completeRoster.length} LUTADORES <b>ARCADE / LAN</b></span></header><main><div class="topline"><span><i></i> ESCOLHA SEU ESTILO. ENCONTRE SUA ABERTURA.</span><span id="mode-label">PRONTO PARA O PRÓXIMO ROUND</span></div><div class="stage"><canvas width="1280" height="720" tabindex="0" aria-label="Arena de combate"></canvas><output id="fps" hidden>60 FPS</output><section id="overlay" aria-label="Interface do jogo"></section></div><div class="toolbar"><span id="status" role="status">Selecione um modo</span><div><button id="sound">Som</button><button id="boxes">Caixas: desligadas</button><button id="restart" disabled>Reiniciar</button><button id="pause" disabled>Pausar · Esc</button><button id="menu">Menu</button></div></div><div id="network-info" class="network-info" hidden role="status"></div>${trainingPanel()}<footer></footer></main>`;
     this.canvas = this.el<HTMLCanvasElement>("canvas", true);
     this.overlay = this.el("overlay");
     this.renderer = new Renderer(this.canvas);
@@ -209,7 +211,7 @@ export class GameApp {
   }
   private footer(id: CharacterId = this.selected) {
     this.root.querySelector("footer")!.innerHTML =
-      `<div>${controlsContent(this.preferences.bindings)}</div><div class="footer-moves">${movesContent(id, this.preferences.bindings)}</div>`;
+      `<div>${controlsContent(this.preferences.bindings, id)}</div><div class="footer-moves">${movesContent(id, this.preferences.bindings)}</div>`;
   }
   private menu() {
     this.operation++;
@@ -289,6 +291,7 @@ export class GameApp {
   }
   private selection(mode: Mode, step: SelectStep = "player") {
     this.selectedMode = mode;
+    if (mode !== "training" && this.selected === "ben") this.selected = "samurai";
     this.selectStep = step;
     this.show(
       selectionScreen(mode, this.selected, this.enemy, step),
@@ -307,6 +310,7 @@ export class GameApp {
             if (step === "player") this.selected = id;
             else this.enemy = id;
             this.el("fighter-hero").innerHTML = fighterHero(id);
+            this.footer(id);
             this.root
               .querySelectorAll(".character-card")
               .forEach((card) =>
@@ -474,7 +478,7 @@ export class GameApp {
       this.session?.characterId ??
       this.selected) as CharacterId;
     this.show(
-      `<div class="panel info-panel"><span class="eyebrow">${fighterInfo(id).name.toUpperCase()}</span><h2>${kind === "moves" ? "Lista de golpes" : "Controles"}</h2>${kind === "moves" ? movesContent(id, this.preferences.bindings) : controlsContent(this.preferences.bindings)}<button class="primary" id="back">Voltar</button></div>`,
+      `<div class="panel info-panel"><span class="eyebrow">${fighterInfo(id).name.toUpperCase()}</span><h2>${kind === "moves" ? "Lista de golpes" : "Controles"}</h2>${kind === "moves" ? movesContent(id, this.preferences.bindings) : controlsContent(this.preferences.bindings, id)}<button class="primary" id="back">Voltar</button></div>`,
       "info",
     );
     this.bind("back", back);
@@ -641,6 +645,8 @@ export class GameApp {
     } else if (!this.session) this.renderer.tick(this.demo);
   }
   private draw() {
+    const bindings = this.preferences.bindings;
+    this.renderer.chainKeys = this.keyboard.activeChainKeys ?? [bindings.light, bindings.medium, bindings.heavy].map(keyLabel);
     this.renderer.draw(this.online?.match ?? this.session?.match ?? this.demo);
     if (this.online) {
       const c = this.online;
@@ -710,7 +716,7 @@ export class GameApp {
       };
       client.onStep = (match, frozen) => {
         if (!frozen) this.renderer.tick(match);
-        this.sound.tick(match);
+        this.sound.tick(match, client.matchId);
       };
       this.el("network-info").hidden = false;
       this.onlineChanged();
@@ -770,6 +776,7 @@ export class GameApp {
     if (c.room && !c.fatal) {
       if (this.screen === "leaveConfirm") return;
       this.show(lobby(c), "onlineLobby");
+      this.footer(c.room.players[c.seat]?.character ?? this.selected);
       this.el("status").textContent =
         `SALA ${c.room.code} / JOGADOR ${c.seat + 1}`;
       this.bind("leave-room", () => this.confirmLeave());

@@ -1,5 +1,6 @@
 import type { KaguneId, KagunePose } from "../engine/kagune";
 import type { Point } from "../engine/types";
+import { drawCentipedeShell } from "./kaneki-centipede-rig";
 import { fillPixels } from "./pixel-contour";
 
 const palettes: Record<KaguneId, readonly string[]> = {
@@ -28,6 +29,16 @@ export function drawKagune(
   pose: KagunePose,
   facing: 1 | -1,
 ) {
+  if (pose.kakuja && pose.kakuja.growth > .78) {
+    drawCentipedeShell(c, pose);
+    return;
+  }
+  if (pose.floorClip !== undefined) {
+    c.save();
+    c.beginPath();
+    c.rect(-512, -1024, 2304, 1024 + pose.floorClip);
+    c.clip();
+  }
   const { spine, radius, id } = pose;
   const last = spine.length - 1;
   const [ink, shadow, blood, mid, light, hot] = palettes[id];
@@ -99,7 +110,7 @@ export function drawKagune(
   const n = normals[last - 2];
   const tip = edge(last, 0);
   const size = Math.min(1, pose.length / 100);
-  const bend = pose.hook * size;
+  const bend = pose.hook * size * 0.56;
   const turn = (value: number) => ({
     x: Math.round(throat.x + n.x * value),
     y: Math.round(throat.y + n.y * value),
@@ -132,4 +143,11 @@ export function drawKagune(
     [edge(last - 4, -0.49, 1.6), turn(bend - 0.9 * size), tip],
     light,
   );
+  if (pose.floorClip !== undefined) c.restore();
+  if (pose.kakuja) {
+    c.save();
+    c.globalAlpha *= Math.min(1, pose.kakuja.growth / .76);
+    drawCentipedeShell(c, pose);
+    c.restore();
+  }
 }

@@ -94,3 +94,39 @@ Os três Katon acumulam nuvens quando o primeiro projétil é emitido. Gōryūka
 - [Efeitos dos especiais](src/render/sasuke-special-fx.ts), [efeitos do Kirin](src/render/sasuke-kirin-fx.ts) e [áudio](src/audio/sound.ts).
 - [Laboratório no XAMPP](http://localhost/2025/Jogo_de_Luta_Sem_Nome/art/sasuke.html) e capturas da simulação [Gōryūka](deployment/audit/sasuke-polish/goryuka/animacao.webp), [Chidori](deployment/audit/sasuke-polish/chidori/animacao.webp), [Nagashi](deployment/audit/sasuke-polish/nagashi/animacao.webp), [Kirin azul](deployment/audit/sasuke-polish/kirin-azul/animacao.webp) e [Kirin negro](deployment/audit/sasuke-polish/kirin-negro/animacao.webp).
 - [Testes dos especiais](tests/sasuke-polish.test.ts), [guarda e esquiva das cinco Supers](tests/super-guard.test.ts), [Kirin](tests/sasuke-kirin.test.ts), [atlas](tests/test_sasuke_kirin_art.py), [Chrome no Apache](e2e/sasuke.pw.mjs) e [clientes LAN](e2e/lan/game.pw.ts).
+
+## Etapa 5 — Integração final
+
+Sasuke permanece no elenco de Arcade Torre, Versus BOT, Treinamento e Multiplayer LAN. A seleção ganhou uma prévia animada de Idle, com retrato estático quando o navegador indica preferência por movimento reduzido. Os comandos acompanham o lutador selecionado, inclusive no lobby.
+
+**U** inicia o agarrão de pulso. As formas Hebi e Marca II usam seis desenhos próprios cada, com a caixa de captura calibrada na palma. O arremesso exige contato com um adversário em solo, vence a guarda em pé e termina em knockdown. A tentativa deixa uma abertura ao errar. As duas formas causam 105 de dano no arremesso universal. O bônus de 15% continua nos normais e especiais transformados. **T** usa a provocação da forma atual em solo. Ela pode ser interrompida por dano.
+
+A IA continua usando entradas normais do jogo e percepção atrasada. Alterna técnicas conforme a distância, defende e tenta punir a recuperação. Usa Katon para controlar espaço, Raiton e serpentes para pressão ou confirmação e o avanço com asas para perseguir. O despertar pede espaço para cobrir a vulnerabilidade da preparação. Kirin é priorizado em acertos confirmados ou aberturas observadas com barra cheia.
+
+A revisão manteve os tempos de **13 s** de combate efetivo e **18 s** de recarga. O avanço com asas continua limitado a um por salto. Kirin custa **100 de energia**, requer confirmação e causa até **320 de dano bruto**. A variante escolhida na ativação e o relógio da Marca são preservados durante a cena.
+
+### Arte e prévias
+
+- [Prévia animada base](public/sprites/sasuke/menu-idle.webp), [Marca II](public/previews/sasuke-final/marca-ii.webp), [Kirin azul](public/previews/sasuke-final/kirin-azul.webp) e [Kirin negro](public/previews/sasuke-final/kirin-negro.webp).
+- [Agarrão Hebi em combate](public/previews/sasuke-final/agarrao-hebi.webp), [agarrão da Marca II](public/previews/sasuke-final/agarrao-marca-ii.webp) e [provocação](public/previews/sasuke-final/provocacao.webp).
+- [Atlas Hebi do agarrão](public/sprites/sasuke/throw-base.png), [atlas da Marca II](public/sprites/sasuke/throw-curse.png) e [fontes e prompts do ImageGen](art/sasuke-final-source/PROMPTS.md). Para reproduzir os atlas e a prévia do seletor, execute `node scripts/run_art.mjs scripts/pack_sasuke_throw.py`.
+- [Laboratório no XAMPP](http://localhost/2025/Jogo_de_Luta_Sem_Nome/art/sasuke.html) com ensaios de agarrão, provocação e vitória.
+
+- A provocação de **T** recebeu três novas poses em cada forma, com um gesto de desafio visível. [Atlas Hebi](public/sprites/sasuke/taunt-hebi.png), [atlas Marca II](public/sprites/sasuke/taunt-marca.png) e [prévia da Marca II](public/previews/sasuke-final/provocacao-marca-ii.webp).
+
+### Arquivos de integração
+
+- [Agarrão e trilha da vítima](src/engine/sasuke-grab.ts), [colisão medida](src/data/sasuke-throw-boxes.json), [dados do lutador](src/engine/sasuke-data.ts) e [seletor de movimentos da Marca](src/engine/sasuke-curse.ts).
+- [IA](src/engine/bot.ts), [clipes de animação](src/render/sasuke-animations.ts), [renderização](src/render/renderer.ts), [catálogo](src/ui/catalog.ts), [telas](src/game/app.ts) e [assinatura da simulação LAN](scripts/net_version.mjs).
+- [Laboratório](art/sasuke.html), [ensaios reproduzíveis](src/sasuke-lab.ts) e [captura de prévias](scripts/capture_sasuke_kirin.mjs).
+- [Testes de integração](tests/sasuke-final.test.ts), [atlas](tests/test_sasuke_hebi_art.py), [Chrome](e2e/sasuke.pw.mjs) e [LAN](e2e/lan/game.pw.ts).
+
+### Validação
+
+A simulação passou em 892 testes. A suíte de arte de Sasuke passou em nove testes, incluindo a transparência, o contato na mão e os desenhos únicos do agarrão. As técnicas foram exercitadas nas duas formas, com verificações de dano, cancelamento, relógio efetivo da Marca, recarga e Kirin. O agarrão foi testado contra Samurai, Dio, Goku, Luffy e Sasuke.
+
+Os oito testes de navegador passaram no build publicado. A provocação por T foi verificada em uma partida iniciada pelo menu de Treinamento nas duas formas.
+
+Os seis testes LAN passaram em dois processos independentes do Chrome no mesmo computador. Eles cobriram especiais, transformação e expiração, Kirin azul e negro, U e T pelo teclado, KO, mudança de round, revanche e troca de personagem. O teste com dois computadores físicos permanece pendente.
+
+A publicação foi feita pelo fluxo existente do XAMPP. Apache e backend usam a versão de simulação `ec85b4b76ac4ec7f4e89eb29`.

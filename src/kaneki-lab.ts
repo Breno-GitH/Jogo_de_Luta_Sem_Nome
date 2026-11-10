@@ -7,6 +7,11 @@ import {
   type KaguneLayer,
   type KagunePose,
 } from "./engine/kagune";
+import { FLOOR, Match } from "./engine/combat";
+import { kanekiMotion } from "./engine/kaneki-motion";
+import { KeyboardInput } from "./engine/input";
+import { neutral } from "./engine/types";
+import { KanekiPresentation } from "./render/kaneki-presentation";
 import { FixedLoop } from "./engine/loop";
 import type { Point } from "./engine/types";
 import { Animator } from "./render/animator";
@@ -22,8 +27,28 @@ const modes = {
   full: "Extensão completa",
   folded: "Quatro recolhidos",
   cycle: "Estender, interromper e recolher",
+  walkForward: "Caminhada para frente",
+  walkBack: "Caminhada para trás",
+  dashForward: "Dash ofensivo",
+  backdash: "Backdash",
+  crouch: "Agachar e levantar",
+  jump: "Salto e aterrissagem",
+  jumpForward: "Salto para frente",
+  jumpBack: "Salto para trás",
+  free: "Treino livre · WASD / Shift",
 } as const;
 type Mode = keyof typeof modes;
+const motionLengths = {
+  walkForward: 72,
+  walkBack: 72,
+  dashForward: 33,
+  backdash: 33,
+  crouch: 51,
+  jump: 69,
+  jumpForward: 69,
+  jumpBack: 69,
+  free: 216,
+};
 const labels: Record<KaguneId, string> = {
   upperRear: "1 · Superior traseiro",
   upperFront: "2 · Superior dianteiro",
@@ -54,9 +79,22 @@ const speed = el<HTMLSelectElement>("speed");
 const end = 216;
 const floor = 224;
 const bodyAtlas = new Image(),
-  sasuke = new Image();
+  movementAtlas = new Image();
+const scaleFighters = ["sasuke", "goku", "samurai"].map((id) => {
+  const image = new Image();
+  image.src = new URL(`sprites/${id}/base.png`, assetBase).href;
+  return { id, image };
+});
 bodyAtlas.src = new URL(`sprites/${kaneki.animations.sheet}`, assetBase).href;
-sasuke.src = new URL("sprites/sasuke/base.png", assetBase).href;
+movementAtlas.src = new URL("sprites/kaneki/movement.png", assetBase).href;
+
+let practice: Match | undefined;
+let motion: KanekiPresentation | undefined;
+let startingX = 0;
+const keyboard = new KeyboardInput({
+  dashOnDirection: true,
+  active: () => mode() === "free" && !paused && !compare.checked,
+});
 
 let rinkaku = new Rinkaku(),
   paused = false,
@@ -79,6 +117,31 @@ function setup(value: Mode, id: KaguneId) {
 }
 
 function stepActor() {
+  if (practice && motion) {
+    const scene = mode(),
+      side = facing();
+    const input =
+      scene === "free" && !paused && !compare.checked
+        ? keyboard.sample()
+        : neutral();
+    if (scene !== "free") {
+      if (elapsed < 56 && (scene === "walkForward" || scene === "walkBack"))
+        input.direction = scene === "walkForward" ? side : (-side as 1 | -1);
+      if (elapsed === 0 && (scene === "dashForward" || scene === "backdash")) {
+        input.direction = scene === "dashForward" ? side : (-side as 1 | -1);
+        input.pressed.push("dash");
+      }
+      if (scene === "crouch") input.down = elapsed < 30;
+      if (scene.startsWith("jump")) {
+        if (scene === "jumpForward") input.direction = side;
+        if (scene === "jumpBack") input.direction = -side as 1 | -1;
+        if (elapsed === 0) input.pressed.push("jump");
+        if (elapsed >= 46) input.direction = 0;
+      }
+    }
+    practice.step([input, neutral()]);
+    motion.step(practice.fighters[0]);
+  }
   if (mode() === "cycle") {
     if (elapsed === 22) rinkaku.move(limb(), 2, 20);
     if (elapsed === 70) rinkaku.interrupt(22);
@@ -93,10 +156,29 @@ function stepActor() {
 function reset() {
   rinkaku = setup(mode(), limb());
   rinkaku.setLayer(limb(), layerInput.value as KaguneLayer);
+  practice = undefined;
+  motion = undefined;
+  if (Object.hasOwn(motionLengths, mode())) {
+    practice = new Match(kanekiMotion, { training: true }, kanekiMotion);
+    practice.phase = "fight";
+    const [fighter, opponent] = practice.fighters;
+    startingX = fighter.x = 620;
+    fighter.facing = facing();
+    opponent.x = startingX + fighter.facing * (mode() === "free" ? 226 : 470);
+    opponent.facing = -fighter.facing;
+    motion = new KanekiPresentation(fighter);
+    motion.rinkaku.setLayer(limb(), layerInput.value as KaguneLayer);
+  }
+  keyboard.clear();
   elapsed = 0;
 }
 function advance() {
-  if (mode() === "cycle" && elapsed + 1 >= end) reset();
+  const length = motionLengths[mode() as keyof typeof motionLengths] ?? end;
+  if (
+    (mode() === "cycle" || (practice && mode() !== "free")) &&
+    elapsed + 1 >= length
+  )
+    reset();
   else stepActor();
 }
 function go(tick: number) {
@@ -121,6 +203,19 @@ function body(
   ctx.restore();
 }
 
+function layered(
+  ctx: CanvasRenderingContext2D,
+  poses: KagunePose[],
+  side: 1 | -1,
+  paintBody: () => void,
+) {
+  for (const pose of poses)
+    if (pose.layer === "behind") drawKagune(ctx, pose, side);
+  paintBody();
+  for (const pose of poses)
+    if (pose.layer === "front") drawKagune(ctx, pose, side);
+}
+
 function figure(
   ctx: CanvasRenderingContext2D,
   actor: Rinkaku,
@@ -134,11 +229,7 @@ function figure(
   const anchor = kaneki.lumbar[animator.frame()];
   const roots = { x: position.x + anchor.x * side, y: position.y + anchor.y };
   const poses = visible ? actor.poses(roots, side) : [];
-  for (const pose of poses)
-    if (pose.layer === "behind") drawKagune(ctx, pose, side);
-  body(ctx, bodyAtlas, position, side, x, y);
-  for (const pose of poses)
-    if (pose.layer === "front") drawKagune(ctx, pose, side);
+  layered(ctx, poses, side, () => body(ctx, bodyAtlas, position, side, x, y));
   return poses;
 }
 
@@ -152,11 +243,13 @@ function background(
   w: number,
   h: number,
   ground: number,
+  camera = 0,
 ) {
   ctx.fillStyle = "#1d1d2c";
   ctx.fillRect(0, 0, w, h);
   ctx.fillStyle = "#282535";
-  for (let i = 0; i < w; i += 32) ctx.fillRect(i, 0, 1, ground);
+  for (let i = -Math.round(camera) % 32; i < w; i += 32)
+    ctx.fillRect(i, 0, 1, ground);
   ctx.fillStyle = "#181723";
   ctx.fillRect(0, ground, w, h - ground);
   ctx.fillStyle = "#6f556c";
@@ -165,15 +258,17 @@ function background(
 
 function scaleFrame(ctx: CanvasRenderingContext2D, tick = 0, side: 1 | -1 = 1) {
   background(ctx, 512, 256, floor);
-  const left = { x: 152, y: floor },
-    right = { x: 360, y: floor };
+  const left = { x: 87, y: floor };
   figure(ctx, rinkaku, left, side, tick, false);
-  body(ctx, sasuke, right, -side as 1 | -1, 0, 0);
   ctx.fillStyle = "#f9b2bc";
   ctx.font = "9px monospace";
   ctx.textAlign = "center";
   ctx.fillText("KANEKI KEN", left.x, 242);
-  ctx.fillText("SASUKE HEBI", right.x, 242);
+  for (const [i, { id, image }] of scaleFighters.entries()) {
+    const x = 196 + i * 112;
+    body(ctx, image, { x, y: floor }, side, 0, 0);
+    ctx.fillText(id.toUpperCase(), x, 242);
+  }
   ctx.fillStyle = "#b2a6bc";
   ctx.textAlign = "left";
   for (const h of [0, 32, 64, 96, 128, 160]) {
@@ -184,11 +279,56 @@ function scaleFrame(ctx: CanvasRenderingContext2D, tick = 0, side: 1 | -1 = 1) {
 }
 
 function draw() {
-  const side = facing();
-  let position = { x: 256, y: floor };
+  let side = facing();
+  const moving = !!(practice && motion && !compare.checked);
+  const ground = moving ? 349 : floor;
+  const height = moving ? 384 : 256;
+  if (canvas.height !== height) {
+    canvas.height = height;
+    c.imageSmoothingEnabled = false;
+  }
+  let position = { x: 256, y: ground };
   let poses: KagunePose[] = [];
   if (compare.checked) position = scaleFrame(c, elapsed, side);
-  else {
+  else if (practice && motion) {
+    const [fighter, target] = practice.fighters;
+    side = fighter.facing as 1 | -1;
+    const screenX = Math.round(
+      256 + Math.max(-42, Math.min(42, (fighter.x - startingX) * 0.26)),
+    );
+    const camera = fighter.x - screenX;
+    position = {
+      x: Math.round(screenX + side * motion.offset),
+      y: Math.round(ground + fighter.y - FLOOR),
+    };
+    const anchor = motion.lumbar;
+    poses = motion.rinkaku.poses(
+      { x: position.x + anchor.x * side, y: position.y + anchor.y },
+      side,
+      ground,
+    );
+    const sprite = motion.animator.sprite();
+    background(c, 512, height, ground, camera);
+    if (mode() === "free")
+      body(
+        c,
+        scaleFighters[0].image,
+        { x: Math.round(target.x - camera), y: ground },
+        target.facing as 1 | -1,
+        0,
+        0,
+      );
+    layered(c, poses, side, () =>
+      body(
+        c,
+        sprite.sheet === kaneki.animations.sheet ? bodyAtlas : movementAtlas,
+        position,
+        side,
+        sprite.x,
+        sprite.y,
+      ),
+    );
+  } else {
     background(c, 512, 256, floor);
     poses = figure(c, rinkaku, position, side, elapsed, mode() !== "none");
   }
@@ -199,11 +339,24 @@ function draw() {
       point(c, pose.tip, "#ffde86");
     }
   }
-  const current = animator.frame();
+  const current = moving && motion ? motion.animator.frame() : animator.frame();
   const active = poses.find((p) => p.id === limb());
-  seek.value = String(elapsed % end);
+  const length = motionLengths[mode() as keyof typeof motionLengths] ?? end;
+  seek.max = String(length - 1);
+  seek.value = String(elapsed % length);
   Object.assign(canvas.dataset, {
     frame: String(current),
+    clip: moving ? motion!.clip : "idle",
+    motion: active?.motion ?? "idle",
+    worldX: String(practice?.fighters[0].x ?? 0),
+    worldY: String(practice?.fighters[0].y ?? FLOOR),
+    ground: String(ground),
+    support:
+      motion?.planted == null
+        ? ""
+        : String(
+            practice!.fighters[0].x + side * (motion.offset + motion.planted),
+          ),
     tick: String(elapsed),
     facing: String(side),
     count: String(poses.length),
@@ -214,7 +367,7 @@ function draw() {
     tips: JSON.stringify(poses.map((p) => p.tip)),
   });
   el<HTMLOutputElement>("status").value =
-    `Desenho ${current + 1}/6 · Tick ${elapsed}${active ? ` · ${phaseLabel[active.phase]} · ${Math.round(active.length)} px` : ""}`;
+    `${moving ? motion!.clip : "Idle"} · Desenho ${current + 1} · Tick ${elapsed}${active ? ` · ${phaseLabel[active.phase]} · ${Math.round(active.length)} px` : ""}`;
 }
 
 function pause(value: boolean) {
@@ -273,8 +426,12 @@ function sheet(contact: boolean) {
   return output;
 }
 
-try {
-  await Promise.all([bodyAtlas.decode(), sasuke.decode()]);
+async function start() {
+  await Promise.all([
+    bodyAtlas.decode(),
+    movementAtlas.decode(),
+    ...scaleFighters.map((f) => f.image.decode()),
+  ]);
   for (const [value, text] of Object.entries(modes))
     modeInput.add(new Option(text, value));
   for (const id of kaguneIds) limbInput.add(new Option(labels[id], id));
@@ -295,7 +452,27 @@ try {
   ).href;
   for (const input of [modeInput, limbInput, layerInput])
     input.onchange = () => go(0);
-  for (const input of [compare, mirror, guides]) input.onchange = draw;
+  for (const input of [compare, guides]) input.onchange = draw;
+  modeInput.onchange = () => {
+    go(0);
+    if (mode() === "free") {
+      compare.checked = false;
+      pause(false);
+      canvas.focus();
+      draw();
+    }
+  };
+  mirror.onchange = () =>
+    practice ? go(mode() === "free" ? 0 : elapsed) : draw();
+  el<HTMLAnchorElement>("movement-atlas").href = movementAtlas.src;
+  el<HTMLAnchorElement>("motion-sheet").href = new URL(
+    "previews/kaneki/folha-movimento.png",
+    assetBase,
+  ).href;
+  el<HTMLAnchorElement>("motion-preview").href = new URL(
+    "previews/kaneki/movimentacao.webp",
+    assetBase,
+  ).href;
   play.onclick = () => pause(!paused);
   seek.oninput = () => {
     pause(true);
@@ -308,11 +485,16 @@ try {
   };
   el("next-frame").onclick = () => {
     pause(true);
-    const before = animator.frame();
-    do {
+    const key = () =>
+      motion
+        ? `${motion.clip}:${motion.animator.frame()}`
+        : String(animator.frame());
+    const before = key();
+    for (let i = 0; i < end; i++) {
       advance();
-      animator.seekTick(elapsed);
-    } while (animator.frame() === before);
+      if (!motion) animator.seekTick(elapsed);
+      if (key() !== before) break;
+    }
     draw();
   };
   // Export the same native frames shown by the engine, without screen scaling.
@@ -342,6 +524,7 @@ try {
     },
     () => {},
   ).start();
-} catch {
-  el("status").textContent = "Falha ao carregar os sprites do laboratório.";
 }
+void start().catch(() => {
+  el("status").textContent = "Falha ao carregar os sprites do laboratório.";
+});

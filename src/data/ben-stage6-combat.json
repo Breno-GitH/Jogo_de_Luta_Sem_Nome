@@ -1,0 +1,2973 @@
+{
+  "bigChill": {
+    "sheet": "ben/bigChill/stage6-locomotion.png",
+    "columns": 6,
+    "frameWidth": 181,
+    "frameHeight": 158,
+    "pivot": {
+      "x": 89,
+      "y": 156
+    },
+    "scale": 1,
+    "clips": {
+      "idle": {
+        "sheet": "ben/bigChill/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 181,
+        "frameHeight": 158,
+        "pivot": {
+          "x": 89,
+          "y": 156
+        },
+        "scale": 1,
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "durations": [
+          10,
+          10,
+          9,
+          10,
+          10,
+          11
+        ],
+        "ticks": 1,
+        "loop": true
+      },
+      "walkForward": {
+        "sheet": "ben/bigChill/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 181,
+        "frameHeight": 158,
+        "pivot": {
+          "x": 89,
+          "y": 156
+        },
+        "scale": 1,
+        "frames": [
+          6,
+          7,
+          8,
+          7
+        ],
+        "durations": [
+          5,
+          4,
+          5,
+          4
+        ],
+        "ticks": 1,
+        "loop": true
+      },
+      "walkBack": {
+        "sheet": "ben/bigChill/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 181,
+        "frameHeight": 158,
+        "pivot": {
+          "x": 89,
+          "y": 156
+        },
+        "scale": 1,
+        "frames": [
+          9,
+          10,
+          11,
+          10
+        ],
+        "durations": [
+          5,
+          4,
+          5,
+          4
+        ],
+        "ticks": 1,
+        "loop": true
+      },
+      "dashForward": {
+        "sheet": "ben/bigChill/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 181,
+        "frameHeight": 158,
+        "pivot": {
+          "x": 89,
+          "y": 156
+        },
+        "scale": 1,
+        "frames": [
+          12,
+          13,
+          8
+        ],
+        "durations": [
+          3,
+          6,
+          5
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "backdash": {
+        "sheet": "ben/bigChill/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 181,
+        "frameHeight": 158,
+        "pivot": {
+          "x": 89,
+          "y": 156
+        },
+        "scale": 1,
+        "frames": [
+          14,
+          9,
+          11
+        ],
+        "durations": [
+          4,
+          5,
+          5
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "crouchStart": {
+        "sheet": "ben/bigChill/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 181,
+        "frameHeight": 158,
+        "pivot": {
+          "x": 89,
+          "y": 156
+        },
+        "scale": 1,
+        "frames": [
+          15,
+          16
+        ],
+        "durations": [
+          3,
+          3
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "crouchIdle": {
+        "sheet": "ben/bigChill/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 181,
+        "frameHeight": 158,
+        "pivot": {
+          "x": 89,
+          "y": 156
+        },
+        "scale": 1,
+        "frames": [
+          16,
+          15
+        ],
+        "durations": [
+          13,
+          11
+        ],
+        "ticks": 1,
+        "loop": true
+      },
+      "crouchEnd": {
+        "sheet": "ben/bigChill/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 181,
+        "frameHeight": 158,
+        "pivot": {
+          "x": 89,
+          "y": 156
+        },
+        "scale": 1,
+        "frames": [
+          15,
+          22
+        ],
+        "durations": [
+          3,
+          2
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "jumpStart": {
+        "sheet": "ben/bigChill/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 181,
+        "frameHeight": 158,
+        "pivot": {
+          "x": 89,
+          "y": 156
+        },
+        "scale": 1,
+        "frames": [
+          15,
+          17,
+          18
+        ],
+        "durations": [
+          1,
+          3,
+          1
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "jumpRise": {
+        "sheet": "ben/bigChill/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 181,
+        "frameHeight": 158,
+        "pivot": {
+          "x": 89,
+          "y": 156
+        },
+        "scale": 1,
+        "frames": [
+          18,
+          19
+        ],
+        "durations": [
+          1,
+          1
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "jumpApex": {
+        "sheet": "ben/bigChill/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 181,
+        "frameHeight": 158,
+        "pivot": {
+          "x": 89,
+          "y": 156
+        },
+        "scale": 1,
+        "frames": [
+          19
+        ],
+        "durations": [
+          1
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "jumpFall": {
+        "sheet": "ben/bigChill/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 181,
+        "frameHeight": 158,
+        "pivot": {
+          "x": 89,
+          "y": 156
+        },
+        "scale": 1,
+        "frames": [
+          20,
+          21
+        ],
+        "durations": [
+          1,
+          1
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "landing": {
+        "sheet": "ben/bigChill/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 181,
+        "frameHeight": 158,
+        "pivot": {
+          "x": 89,
+          "y": 156
+        },
+        "scale": 1,
+        "frames": [
+          21,
+          22,
+          23
+        ],
+        "durations": [
+          2,
+          3,
+          5
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "guardStand": {
+        "sheet": "ben/bigChill/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 181,
+        "frameHeight": 158,
+        "pivot": {
+          "x": 89,
+          "y": 156
+        },
+        "scale": 1,
+        "frames": [
+          23
+        ],
+        "durations": [
+          1
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "guardCrouch": {
+        "sheet": "ben/bigChill/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 181,
+        "frameHeight": 158,
+        "pivot": {
+          "x": 89,
+          "y": 156
+        },
+        "scale": 1,
+        "frames": [
+          24
+        ],
+        "durations": [
+          1
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "damage": {
+        "sheet": "ben/bigChill/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 181,
+        "frameHeight": 158,
+        "pivot": {
+          "x": 89,
+          "y": 156
+        },
+        "scale": 1,
+        "frames": [
+          25
+        ],
+        "durations": [
+          1
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "downed": {
+        "sheet": "ben/bigChill/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 181,
+        "frameHeight": 158,
+        "pivot": {
+          "x": 89,
+          "y": 156
+        },
+        "scale": 1,
+        "frames": [
+          26
+        ],
+        "durations": [
+          1
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "stand_light": {
+        "sheet": "ben/bigChill/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 217,
+        "frameHeight": 177,
+        "pivot": {
+          "x": 101,
+          "y": 175
+        },
+        "scale": 1,
+        "frames": [
+          0,
+          1,
+          29
+        ],
+        "durations": [
+          5,
+          4,
+          11
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "stand_medium": {
+        "sheet": "ben/bigChill/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 181,
+        "frameHeight": 158,
+        "pivot": {
+          "x": 89,
+          "y": 156
+        },
+        "scale": 1,
+        "frames": [
+          27,
+          28,
+          27
+        ],
+        "durations": [
+          8,
+          6,
+          17
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "crouch_light": {
+        "sheet": "ben/bigChill/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 217,
+        "frameHeight": 177,
+        "pivot": {
+          "x": 101,
+          "y": 175
+        },
+        "scale": 1,
+        "frames": [
+          5,
+          6,
+          5
+        ],
+        "durations": [
+          5,
+          4,
+          11
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "crouch_medium": {
+        "sheet": "ben/bigChill/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 217,
+        "frameHeight": 177,
+        "pivot": {
+          "x": 101,
+          "y": 175
+        },
+        "scale": 1,
+        "frames": [
+          6,
+          7,
+          6
+        ],
+        "durations": [
+          9,
+          5,
+          20
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "air_light": {
+        "sheet": "ben/bigChill/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 217,
+        "frameHeight": 177,
+        "pivot": {
+          "x": 101,
+          "y": 175
+        },
+        "scale": 1,
+        "frames": [
+          8,
+          9,
+          8
+        ],
+        "durations": [
+          4,
+          6,
+          11
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "air_medium": {
+        "sheet": "ben/bigChill/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 217,
+        "frameHeight": 177,
+        "pivot": {
+          "x": 101,
+          "y": 175
+        },
+        "scale": 1,
+        "frames": [
+          10,
+          11,
+          10
+        ],
+        "durations": [
+          7,
+          7,
+          17
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "throw": {
+        "sheet": "ben/bigChill/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 217,
+        "frameHeight": 177,
+        "pivot": {
+          "x": 101,
+          "y": 175
+        },
+        "scale": 1,
+        "frames": [
+          12,
+          13,
+          26
+        ],
+        "durations": [
+          7,
+          3,
+          21
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "grabHold": {
+        "sheet": "ben/bigChill/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 217,
+        "frameHeight": 177,
+        "pivot": {
+          "x": 101,
+          "y": 175
+        },
+        "scale": 1,
+        "frames": [
+          13,
+          26,
+          27
+        ],
+        "durations": [
+          13,
+          4,
+          3
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "throwRecover": {
+        "sheet": "ben/bigChill/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 217,
+        "frameHeight": 177,
+        "pivot": {
+          "x": 101,
+          "y": 175
+        },
+        "scale": 1,
+        "frames": [
+          27,
+          28
+        ],
+        "durations": [
+          4,
+          8
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "frostBreath_light": {
+        "sheet": "ben/bigChill/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 217,
+        "frameHeight": 177,
+        "pivot": {
+          "x": 101,
+          "y": 175
+        },
+        "scale": 1,
+        "frames": [
+          14,
+          15,
+          14
+        ],
+        "durations": [
+          8,
+          1,
+          19
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "frostBreath_medium": {
+        "sheet": "ben/bigChill/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 217,
+        "frameHeight": 177,
+        "pivot": {
+          "x": 101,
+          "y": 175
+        },
+        "scale": 1,
+        "frames": [
+          16,
+          17,
+          16
+        ],
+        "durations": [
+          15,
+          1,
+          27
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "iceDive_light": {
+        "sheet": "ben/bigChill/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 181,
+        "frameHeight": 158,
+        "pivot": {
+          "x": 89,
+          "y": 156
+        },
+        "scale": 1,
+        "frames": [
+          27,
+          29,
+          28
+        ],
+        "durations": [
+          9,
+          10,
+          22
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "iceDive_medium": {
+        "sheet": "ben/bigChill/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 217,
+        "frameHeight": 177,
+        "pivot": {
+          "x": 101,
+          "y": 175
+        },
+        "scale": 1,
+        "frames": [
+          20,
+          21,
+          20
+        ],
+        "durations": [
+          14,
+          14,
+          32
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "ghostFlight_light": {
+        "sheet": "ben/bigChill/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 217,
+        "frameHeight": 177,
+        "pivot": {
+          "x": 101,
+          "y": 175
+        },
+        "scale": 1,
+        "frames": [
+          22,
+          23,
+          22
+        ],
+        "durations": [
+          5,
+          25,
+          13
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "ghostFlight_medium": {
+        "sheet": "ben/bigChill/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 217,
+        "frameHeight": 177,
+        "pivot": {
+          "x": 101,
+          "y": 175
+        },
+        "scale": 1,
+        "frames": [
+          24,
+          25,
+          24
+        ],
+        "durations": [
+          6,
+          12,
+          22
+        ],
+        "ticks": 1,
+        "loop": false
+      }
+    }
+  },
+  "ghostfreak": {
+    "sheet": "ben/ghostfreak/stage6-locomotion.png",
+    "columns": 6,
+    "frameWidth": 192,
+    "frameHeight": 159,
+    "pivot": {
+      "x": 97,
+      "y": 157
+    },
+    "scale": 1,
+    "clips": {
+      "idle": {
+        "sheet": "ben/ghostfreak/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 192,
+        "frameHeight": 159,
+        "pivot": {
+          "x": 97,
+          "y": 157
+        },
+        "scale": 1,
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "durations": [
+          10,
+          10,
+          9,
+          10,
+          10,
+          11
+        ],
+        "ticks": 1,
+        "loop": true
+      },
+      "walkForward": {
+        "sheet": "ben/ghostfreak/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 192,
+        "frameHeight": 159,
+        "pivot": {
+          "x": 97,
+          "y": 157
+        },
+        "scale": 1,
+        "frames": [
+          6,
+          7,
+          8,
+          7
+        ],
+        "durations": [
+          5,
+          4,
+          5,
+          4
+        ],
+        "ticks": 1,
+        "loop": true
+      },
+      "walkBack": {
+        "sheet": "ben/ghostfreak/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 192,
+        "frameHeight": 159,
+        "pivot": {
+          "x": 97,
+          "y": 157
+        },
+        "scale": 1,
+        "frames": [
+          9,
+          10,
+          11,
+          10
+        ],
+        "durations": [
+          5,
+          4,
+          5,
+          4
+        ],
+        "ticks": 1,
+        "loop": true
+      },
+      "dashForward": {
+        "sheet": "ben/ghostfreak/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 192,
+        "frameHeight": 159,
+        "pivot": {
+          "x": 97,
+          "y": 157
+        },
+        "scale": 1,
+        "frames": [
+          12,
+          13,
+          8
+        ],
+        "durations": [
+          3,
+          6,
+          5
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "backdash": {
+        "sheet": "ben/ghostfreak/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 192,
+        "frameHeight": 159,
+        "pivot": {
+          "x": 97,
+          "y": 157
+        },
+        "scale": 1,
+        "frames": [
+          14,
+          9,
+          11
+        ],
+        "durations": [
+          4,
+          5,
+          5
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "crouchStart": {
+        "sheet": "ben/ghostfreak/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 192,
+        "frameHeight": 159,
+        "pivot": {
+          "x": 97,
+          "y": 157
+        },
+        "scale": 1,
+        "frames": [
+          15,
+          16
+        ],
+        "durations": [
+          3,
+          3
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "crouchIdle": {
+        "sheet": "ben/ghostfreak/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 192,
+        "frameHeight": 159,
+        "pivot": {
+          "x": 97,
+          "y": 157
+        },
+        "scale": 1,
+        "frames": [
+          16,
+          15
+        ],
+        "durations": [
+          13,
+          11
+        ],
+        "ticks": 1,
+        "loop": true
+      },
+      "crouchEnd": {
+        "sheet": "ben/ghostfreak/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 192,
+        "frameHeight": 159,
+        "pivot": {
+          "x": 97,
+          "y": 157
+        },
+        "scale": 1,
+        "frames": [
+          15,
+          22
+        ],
+        "durations": [
+          3,
+          2
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "jumpStart": {
+        "sheet": "ben/ghostfreak/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 192,
+        "frameHeight": 159,
+        "pivot": {
+          "x": 97,
+          "y": 157
+        },
+        "scale": 1,
+        "frames": [
+          15,
+          17,
+          18
+        ],
+        "durations": [
+          1,
+          4,
+          1
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "jumpRise": {
+        "sheet": "ben/ghostfreak/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 192,
+        "frameHeight": 159,
+        "pivot": {
+          "x": 97,
+          "y": 157
+        },
+        "scale": 1,
+        "frames": [
+          18,
+          19
+        ],
+        "durations": [
+          1,
+          1
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "jumpApex": {
+        "sheet": "ben/ghostfreak/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 192,
+        "frameHeight": 159,
+        "pivot": {
+          "x": 97,
+          "y": 157
+        },
+        "scale": 1,
+        "frames": [
+          19
+        ],
+        "durations": [
+          1
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "jumpFall": {
+        "sheet": "ben/ghostfreak/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 192,
+        "frameHeight": 159,
+        "pivot": {
+          "x": 97,
+          "y": 157
+        },
+        "scale": 1,
+        "frames": [
+          20,
+          21
+        ],
+        "durations": [
+          1,
+          1
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "landing": {
+        "sheet": "ben/ghostfreak/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 192,
+        "frameHeight": 159,
+        "pivot": {
+          "x": 97,
+          "y": 157
+        },
+        "scale": 1,
+        "frames": [
+          21,
+          22,
+          23
+        ],
+        "durations": [
+          2,
+          3,
+          5
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "guardStand": {
+        "sheet": "ben/ghostfreak/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 192,
+        "frameHeight": 159,
+        "pivot": {
+          "x": 97,
+          "y": 157
+        },
+        "scale": 1,
+        "frames": [
+          23
+        ],
+        "durations": [
+          1
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "guardCrouch": {
+        "sheet": "ben/ghostfreak/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 192,
+        "frameHeight": 159,
+        "pivot": {
+          "x": 97,
+          "y": 157
+        },
+        "scale": 1,
+        "frames": [
+          24
+        ],
+        "durations": [
+          1
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "damage": {
+        "sheet": "ben/ghostfreak/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 192,
+        "frameHeight": 159,
+        "pivot": {
+          "x": 97,
+          "y": 157
+        },
+        "scale": 1,
+        "frames": [
+          25
+        ],
+        "durations": [
+          1
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "downed": {
+        "sheet": "ben/ghostfreak/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 192,
+        "frameHeight": 159,
+        "pivot": {
+          "x": 97,
+          "y": 157
+        },
+        "scale": 1,
+        "frames": [
+          26
+        ],
+        "durations": [
+          1
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "stand_light": {
+        "sheet": "ben/ghostfreak/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 193,
+        "frameHeight": 167,
+        "pivot": {
+          "x": 93,
+          "y": 165
+        },
+        "scale": 1,
+        "frames": [
+          0,
+          1,
+          29
+        ],
+        "durations": [
+          5,
+          4,
+          10
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "stand_medium": {
+        "sheet": "ben/ghostfreak/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 193,
+        "frameHeight": 167,
+        "pivot": {
+          "x": 93,
+          "y": 165
+        },
+        "scale": 1,
+        "frames": [
+          2,
+          3,
+          29
+        ],
+        "durations": [
+          8,
+          6,
+          17
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "crouch_light": {
+        "sheet": "ben/ghostfreak/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 193,
+        "frameHeight": 167,
+        "pivot": {
+          "x": 93,
+          "y": 165
+        },
+        "scale": 1,
+        "frames": [
+          4,
+          5,
+          4
+        ],
+        "durations": [
+          5,
+          4,
+          10
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "crouch_medium": {
+        "sheet": "ben/ghostfreak/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 193,
+        "frameHeight": 167,
+        "pivot": {
+          "x": 93,
+          "y": 165
+        },
+        "scale": 1,
+        "frames": [
+          6,
+          7,
+          6
+        ],
+        "durations": [
+          10,
+          6,
+          19
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "air_light": {
+        "sheet": "ben/ghostfreak/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 193,
+        "frameHeight": 167,
+        "pivot": {
+          "x": 93,
+          "y": 165
+        },
+        "scale": 1,
+        "frames": [
+          8,
+          9,
+          8
+        ],
+        "durations": [
+          5,
+          5,
+          11
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "air_medium": {
+        "sheet": "ben/ghostfreak/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 193,
+        "frameHeight": 167,
+        "pivot": {
+          "x": 93,
+          "y": 165
+        },
+        "scale": 1,
+        "frames": [
+          10,
+          11,
+          10
+        ],
+        "durations": [
+          8,
+          6,
+          21
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "throw": {
+        "sheet": "ben/ghostfreak/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 193,
+        "frameHeight": 167,
+        "pivot": {
+          "x": 93,
+          "y": 165
+        },
+        "scale": 1,
+        "frames": [
+          12,
+          13,
+          26
+        ],
+        "durations": [
+          8,
+          3,
+          21
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "grabHold": {
+        "sheet": "ben/ghostfreak/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 193,
+        "frameHeight": 167,
+        "pivot": {
+          "x": 93,
+          "y": 165
+        },
+        "scale": 1,
+        "frames": [
+          13,
+          26,
+          27
+        ],
+        "durations": [
+          14,
+          4,
+          3
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "throwRecover": {
+        "sheet": "ben/ghostfreak/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 193,
+        "frameHeight": 167,
+        "pivot": {
+          "x": 93,
+          "y": 165
+        },
+        "scale": 1,
+        "frames": [
+          27,
+          28
+        ],
+        "durations": [
+          4,
+          8
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "ghostCross_light": {
+        "sheet": "ben/ghostfreak/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 193,
+        "frameHeight": 167,
+        "pivot": {
+          "x": 93,
+          "y": 165
+        },
+        "scale": 1,
+        "frames": [
+          14,
+          15,
+          14
+        ],
+        "durations": [
+          4,
+          10,
+          20
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "ghostCross_medium": {
+        "sheet": "ben/ghostfreak/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 193,
+        "frameHeight": 167,
+        "pivot": {
+          "x": 93,
+          "y": 165
+        },
+        "scale": 1,
+        "frames": [
+          16,
+          17,
+          16
+        ],
+        "durations": [
+          18,
+          5,
+          27
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "spectralArms_light": {
+        "sheet": "ben/ghostfreak/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 193,
+        "frameHeight": 167,
+        "pivot": {
+          "x": 93,
+          "y": 165
+        },
+        "scale": 1,
+        "frames": [
+          18,
+          20,
+          18
+        ],
+        "durations": [
+          8,
+          7,
+          22
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "spectralArms_medium": {
+        "sheet": "ben/ghostfreak/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 193,
+        "frameHeight": 167,
+        "pivot": {
+          "x": 93,
+          "y": 165
+        },
+        "scale": 1,
+        "frames": [
+          20,
+          25,
+          20
+        ],
+        "durations": [
+          16,
+          8,
+          34
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "ghostPhase_light": {
+        "sheet": "ben/ghostfreak/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 193,
+        "frameHeight": 167,
+        "pivot": {
+          "x": 93,
+          "y": 165
+        },
+        "scale": 1,
+        "frames": [
+          22,
+          23,
+          22
+        ],
+        "durations": [
+          3,
+          7,
+          18
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "ghostPhase_medium": {
+        "sheet": "ben/ghostfreak/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 193,
+        "frameHeight": 167,
+        "pivot": {
+          "x": 93,
+          "y": 165
+        },
+        "scale": 1,
+        "frames": [
+          24,
+          25,
+          24
+        ],
+        "durations": [
+          7,
+          31,
+          21
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "spectralGrabHold": {
+        "sheet": "ben/ghostfreak/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 193,
+        "frameHeight": 167,
+        "pivot": {
+          "x": 93,
+          "y": 165
+        },
+        "scale": 1,
+        "frames": [
+          20,
+          13,
+          26
+        ],
+        "durations": [
+          7,
+          7,
+          7
+        ],
+        "ticks": 1,
+        "loop": false
+      }
+    }
+  },
+  "nrg": {
+    "sheet": "ben/nrg/stage6-locomotion.png",
+    "columns": 6,
+    "frameWidth": 239,
+    "frameHeight": 175,
+    "pivot": {
+      "x": 102,
+      "y": 173
+    },
+    "scale": 1,
+    "clips": {
+      "idle": {
+        "sheet": "ben/nrg/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 239,
+        "frameHeight": 175,
+        "pivot": {
+          "x": 102,
+          "y": 173
+        },
+        "scale": 1,
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "durations": [
+          10,
+          10,
+          9,
+          10,
+          10,
+          11
+        ],
+        "ticks": 1,
+        "loop": true
+      },
+      "walkForward": {
+        "sheet": "ben/nrg/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 239,
+        "frameHeight": 175,
+        "pivot": {
+          "x": 102,
+          "y": 173
+        },
+        "scale": 1,
+        "frames": [
+          6,
+          7,
+          8,
+          7
+        ],
+        "durations": [
+          5,
+          4,
+          5,
+          4
+        ],
+        "ticks": 1,
+        "loop": true
+      },
+      "walkBack": {
+        "sheet": "ben/nrg/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 239,
+        "frameHeight": 175,
+        "pivot": {
+          "x": 102,
+          "y": 173
+        },
+        "scale": 1,
+        "frames": [
+          9,
+          10,
+          11,
+          10
+        ],
+        "durations": [
+          5,
+          4,
+          5,
+          4
+        ],
+        "ticks": 1,
+        "loop": true
+      },
+      "dashForward": {
+        "sheet": "ben/nrg/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 239,
+        "frameHeight": 175,
+        "pivot": {
+          "x": 102,
+          "y": 173
+        },
+        "scale": 1,
+        "frames": [
+          12,
+          13,
+          8
+        ],
+        "durations": [
+          3,
+          6,
+          5
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "backdash": {
+        "sheet": "ben/nrg/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 239,
+        "frameHeight": 175,
+        "pivot": {
+          "x": 102,
+          "y": 173
+        },
+        "scale": 1,
+        "frames": [
+          14,
+          9,
+          11
+        ],
+        "durations": [
+          4,
+          5,
+          5
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "crouchStart": {
+        "sheet": "ben/nrg/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 239,
+        "frameHeight": 175,
+        "pivot": {
+          "x": 102,
+          "y": 173
+        },
+        "scale": 1,
+        "frames": [
+          15,
+          16
+        ],
+        "durations": [
+          3,
+          3
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "crouchIdle": {
+        "sheet": "ben/nrg/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 239,
+        "frameHeight": 175,
+        "pivot": {
+          "x": 102,
+          "y": 173
+        },
+        "scale": 1,
+        "frames": [
+          16,
+          15
+        ],
+        "durations": [
+          13,
+          11
+        ],
+        "ticks": 1,
+        "loop": true
+      },
+      "crouchEnd": {
+        "sheet": "ben/nrg/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 239,
+        "frameHeight": 175,
+        "pivot": {
+          "x": 102,
+          "y": 173
+        },
+        "scale": 1,
+        "frames": [
+          15,
+          22
+        ],
+        "durations": [
+          3,
+          2
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "jumpStart": {
+        "sheet": "ben/nrg/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 239,
+        "frameHeight": 175,
+        "pivot": {
+          "x": 102,
+          "y": 173
+        },
+        "scale": 1,
+        "frames": [
+          15,
+          17,
+          18
+        ],
+        "durations": [
+          1,
+          6,
+          1
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "jumpRise": {
+        "sheet": "ben/nrg/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 239,
+        "frameHeight": 175,
+        "pivot": {
+          "x": 102,
+          "y": 173
+        },
+        "scale": 1,
+        "frames": [
+          18,
+          19
+        ],
+        "durations": [
+          1,
+          1
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "jumpApex": {
+        "sheet": "ben/nrg/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 239,
+        "frameHeight": 175,
+        "pivot": {
+          "x": 102,
+          "y": 173
+        },
+        "scale": 1,
+        "frames": [
+          19
+        ],
+        "durations": [
+          1
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "jumpFall": {
+        "sheet": "ben/nrg/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 239,
+        "frameHeight": 175,
+        "pivot": {
+          "x": 102,
+          "y": 173
+        },
+        "scale": 1,
+        "frames": [
+          20,
+          21
+        ],
+        "durations": [
+          1,
+          1
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "landing": {
+        "sheet": "ben/nrg/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 239,
+        "frameHeight": 175,
+        "pivot": {
+          "x": 102,
+          "y": 173
+        },
+        "scale": 1,
+        "frames": [
+          21,
+          22,
+          23
+        ],
+        "durations": [
+          2,
+          3,
+          5
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "guardStand": {
+        "sheet": "ben/nrg/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 239,
+        "frameHeight": 175,
+        "pivot": {
+          "x": 102,
+          "y": 173
+        },
+        "scale": 1,
+        "frames": [
+          23
+        ],
+        "durations": [
+          1
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "guardCrouch": {
+        "sheet": "ben/nrg/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 239,
+        "frameHeight": 175,
+        "pivot": {
+          "x": 102,
+          "y": 173
+        },
+        "scale": 1,
+        "frames": [
+          24
+        ],
+        "durations": [
+          1
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "damage": {
+        "sheet": "ben/nrg/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 239,
+        "frameHeight": 175,
+        "pivot": {
+          "x": 102,
+          "y": 173
+        },
+        "scale": 1,
+        "frames": [
+          25
+        ],
+        "durations": [
+          1
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "downed": {
+        "sheet": "ben/nrg/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 239,
+        "frameHeight": 175,
+        "pivot": {
+          "x": 102,
+          "y": 173
+        },
+        "scale": 1,
+        "frames": [
+          26
+        ],
+        "durations": [
+          1
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "stand_light": {
+        "sheet": "ben/nrg/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 214,
+        "frameHeight": 184,
+        "pivot": {
+          "x": 100,
+          "y": 182
+        },
+        "scale": 1,
+        "frames": [
+          0,
+          1,
+          29
+        ],
+        "durations": [
+          6,
+          4,
+          12
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "stand_medium": {
+        "sheet": "ben/nrg/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 214,
+        "frameHeight": 184,
+        "pivot": {
+          "x": 100,
+          "y": 182
+        },
+        "scale": 1,
+        "frames": [
+          2,
+          3,
+          29
+        ],
+        "durations": [
+          10,
+          6,
+          23
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "crouch_light": {
+        "sheet": "ben/nrg/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 214,
+        "frameHeight": 184,
+        "pivot": {
+          "x": 100,
+          "y": 182
+        },
+        "scale": 1,
+        "frames": [
+          4,
+          5,
+          4
+        ],
+        "durations": [
+          7,
+          5,
+          13
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "crouch_medium": {
+        "sheet": "ben/nrg/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 214,
+        "frameHeight": 184,
+        "pivot": {
+          "x": 100,
+          "y": 182
+        },
+        "scale": 1,
+        "frames": [
+          6,
+          7,
+          6
+        ],
+        "durations": [
+          11,
+          6,
+          24
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "air_light": {
+        "sheet": "ben/nrg/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 214,
+        "frameHeight": 184,
+        "pivot": {
+          "x": 100,
+          "y": 182
+        },
+        "scale": 1,
+        "frames": [
+          8,
+          9,
+          8
+        ],
+        "durations": [
+          6,
+          5,
+          15
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "air_medium": {
+        "sheet": "ben/nrg/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 214,
+        "frameHeight": 184,
+        "pivot": {
+          "x": 100,
+          "y": 182
+        },
+        "scale": 1,
+        "frames": [
+          10,
+          11,
+          10
+        ],
+        "durations": [
+          8,
+          9,
+          25
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "throw": {
+        "sheet": "ben/nrg/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 214,
+        "frameHeight": 184,
+        "pivot": {
+          "x": 100,
+          "y": 182
+        },
+        "scale": 1,
+        "frames": [
+          12,
+          13,
+          26
+        ],
+        "durations": [
+          10,
+          3,
+          21
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "grabHold": {
+        "sheet": "ben/nrg/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 214,
+        "frameHeight": 184,
+        "pivot": {
+          "x": 100,
+          "y": 182
+        },
+        "scale": 1,
+        "frames": [
+          13,
+          26,
+          27
+        ],
+        "durations": [
+          17,
+          4,
+          5
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "throwRecover": {
+        "sheet": "ben/nrg/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 214,
+        "frameHeight": 184,
+        "pivot": {
+          "x": 100,
+          "y": 182
+        },
+        "scale": 1,
+        "frames": [
+          27,
+          28
+        ],
+        "durations": [
+          4,
+          8
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "thermal_light": {
+        "sheet": "ben/nrg/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 214,
+        "frameHeight": 184,
+        "pivot": {
+          "x": 100,
+          "y": 182
+        },
+        "scale": 1,
+        "frames": [
+          14,
+          15,
+          14
+        ],
+        "durations": [
+          10,
+          1,
+          20
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "thermal_medium": {
+        "sheet": "ben/nrg/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 214,
+        "frameHeight": 184,
+        "pivot": {
+          "x": 100,
+          "y": 182
+        },
+        "scale": 1,
+        "frames": [
+          16,
+          17,
+          16
+        ],
+        "durations": [
+          19,
+          1,
+          33
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "nuclear_light": {
+        "sheet": "ben/nrg/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 214,
+        "frameHeight": 184,
+        "pivot": {
+          "x": 100,
+          "y": 182
+        },
+        "scale": 1,
+        "frames": [
+          18,
+          19,
+          18
+        ],
+        "durations": [
+          9,
+          7,
+          21
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "nuclear_medium": {
+        "sheet": "ben/nrg/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 214,
+        "frameHeight": 184,
+        "pivot": {
+          "x": 100,
+          "y": 182
+        },
+        "scale": 1,
+        "frames": [
+          20,
+          21,
+          20
+        ],
+        "durations": [
+          16,
+          9,
+          34
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "nrgUnseal_light": {
+        "sheet": "ben/nrg/stage6-release.png",
+        "columns": 4,
+        "frameWidth": 188,
+        "frameHeight": 231,
+        "pivot": {
+          "x": 86,
+          "y": 229
+        },
+        "scale": 1,
+        "frames": [
+          0,
+          1,
+          2
+        ],
+        "durations": [
+          5,
+          6,
+          7
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "nrgUnseal_medium": {
+        "sheet": "ben/nrg/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 214,
+        "frameHeight": 184,
+        "pivot": {
+          "x": 100,
+          "y": 182
+        },
+        "scale": 1,
+        "frames": [
+          24,
+          25,
+          24
+        ],
+        "durations": [
+          11,
+          7,
+          26
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "nrgLock": {
+        "sheet": "ben/nrg/stage6-release.png",
+        "columns": 4,
+        "frameWidth": 188,
+        "frameHeight": 231,
+        "pivot": {
+          "x": 86,
+          "y": 229
+        },
+        "scale": 1,
+        "frames": [
+          1,
+          0
+        ],
+        "durations": [
+          4,
+          7
+        ],
+        "ticks": 1,
+        "loop": false
+      }
+    }
+  },
+  "nrgReleased": {
+    "sheet": "ben/nrgReleased/stage6-locomotion.png",
+    "columns": 6,
+    "frameWidth": 190,
+    "frameHeight": 165,
+    "pivot": {
+      "x": 78,
+      "y": 163
+    },
+    "scale": 1,
+    "clips": {
+      "idle": {
+        "sheet": "ben/nrgReleased/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 190,
+        "frameHeight": 165,
+        "pivot": {
+          "x": 78,
+          "y": 163
+        },
+        "scale": 1,
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "durations": [
+          10,
+          10,
+          9,
+          10,
+          10,
+          11
+        ],
+        "ticks": 1,
+        "loop": true
+      },
+      "walkForward": {
+        "sheet": "ben/nrgReleased/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 190,
+        "frameHeight": 165,
+        "pivot": {
+          "x": 78,
+          "y": 163
+        },
+        "scale": 1,
+        "frames": [
+          6,
+          7,
+          8,
+          7
+        ],
+        "durations": [
+          5,
+          4,
+          5,
+          4
+        ],
+        "ticks": 1,
+        "loop": true
+      },
+      "walkBack": {
+        "sheet": "ben/nrgReleased/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 190,
+        "frameHeight": 165,
+        "pivot": {
+          "x": 78,
+          "y": 163
+        },
+        "scale": 1,
+        "frames": [
+          9,
+          10,
+          11,
+          10
+        ],
+        "durations": [
+          5,
+          4,
+          5,
+          4
+        ],
+        "ticks": 1,
+        "loop": true
+      },
+      "dashForward": {
+        "sheet": "ben/nrgReleased/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 190,
+        "frameHeight": 165,
+        "pivot": {
+          "x": 78,
+          "y": 163
+        },
+        "scale": 1,
+        "frames": [
+          12,
+          13,
+          8
+        ],
+        "durations": [
+          3,
+          6,
+          5
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "backdash": {
+        "sheet": "ben/nrgReleased/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 190,
+        "frameHeight": 165,
+        "pivot": {
+          "x": 78,
+          "y": 163
+        },
+        "scale": 1,
+        "frames": [
+          14,
+          9,
+          11
+        ],
+        "durations": [
+          4,
+          5,
+          5
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "crouchStart": {
+        "sheet": "ben/nrgReleased/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 190,
+        "frameHeight": 165,
+        "pivot": {
+          "x": 78,
+          "y": 163
+        },
+        "scale": 1,
+        "frames": [
+          15,
+          16
+        ],
+        "durations": [
+          3,
+          3
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "crouchIdle": {
+        "sheet": "ben/nrgReleased/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 190,
+        "frameHeight": 165,
+        "pivot": {
+          "x": 78,
+          "y": 163
+        },
+        "scale": 1,
+        "frames": [
+          16,
+          15
+        ],
+        "durations": [
+          13,
+          11
+        ],
+        "ticks": 1,
+        "loop": true
+      },
+      "crouchEnd": {
+        "sheet": "ben/nrgReleased/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 190,
+        "frameHeight": 165,
+        "pivot": {
+          "x": 78,
+          "y": 163
+        },
+        "scale": 1,
+        "frames": [
+          15,
+          22
+        ],
+        "durations": [
+          3,
+          2
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "jumpStart": {
+        "sheet": "ben/nrgReleased/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 190,
+        "frameHeight": 165,
+        "pivot": {
+          "x": 78,
+          "y": 163
+        },
+        "scale": 1,
+        "frames": [
+          15,
+          17,
+          18
+        ],
+        "durations": [
+          1,
+          3,
+          1
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "jumpRise": {
+        "sheet": "ben/nrgReleased/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 190,
+        "frameHeight": 165,
+        "pivot": {
+          "x": 78,
+          "y": 163
+        },
+        "scale": 1,
+        "frames": [
+          18,
+          19
+        ],
+        "durations": [
+          1,
+          1
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "jumpApex": {
+        "sheet": "ben/nrgReleased/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 190,
+        "frameHeight": 165,
+        "pivot": {
+          "x": 78,
+          "y": 163
+        },
+        "scale": 1,
+        "frames": [
+          19
+        ],
+        "durations": [
+          1
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "jumpFall": {
+        "sheet": "ben/nrgReleased/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 190,
+        "frameHeight": 165,
+        "pivot": {
+          "x": 78,
+          "y": 163
+        },
+        "scale": 1,
+        "frames": [
+          20,
+          21
+        ],
+        "durations": [
+          1,
+          1
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "landing": {
+        "sheet": "ben/nrgReleased/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 190,
+        "frameHeight": 165,
+        "pivot": {
+          "x": 78,
+          "y": 163
+        },
+        "scale": 1,
+        "frames": [
+          21,
+          22,
+          23
+        ],
+        "durations": [
+          2,
+          3,
+          5
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "guardStand": {
+        "sheet": "ben/nrgReleased/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 190,
+        "frameHeight": 165,
+        "pivot": {
+          "x": 78,
+          "y": 163
+        },
+        "scale": 1,
+        "frames": [
+          23
+        ],
+        "durations": [
+          1
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "guardCrouch": {
+        "sheet": "ben/nrgReleased/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 190,
+        "frameHeight": 165,
+        "pivot": {
+          "x": 78,
+          "y": 163
+        },
+        "scale": 1,
+        "frames": [
+          24
+        ],
+        "durations": [
+          1
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "damage": {
+        "sheet": "ben/nrgReleased/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 190,
+        "frameHeight": 165,
+        "pivot": {
+          "x": 78,
+          "y": 163
+        },
+        "scale": 1,
+        "frames": [
+          25
+        ],
+        "durations": [
+          1
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "downed": {
+        "sheet": "ben/nrgReleased/stage6-locomotion.png",
+        "columns": 6,
+        "frameWidth": 190,
+        "frameHeight": 165,
+        "pivot": {
+          "x": 78,
+          "y": 163
+        },
+        "scale": 1,
+        "frames": [
+          26
+        ],
+        "durations": [
+          1
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "stand_light": {
+        "sheet": "ben/nrgReleased/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 186,
+        "frameHeight": 175,
+        "pivot": {
+          "x": 82,
+          "y": 173
+        },
+        "scale": 1,
+        "frames": [
+          1,
+          2,
+          29
+        ],
+        "durations": [
+          4,
+          4,
+          10
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "stand_medium": {
+        "sheet": "ben/nrgReleased/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 186,
+        "frameHeight": 175,
+        "pivot": {
+          "x": 82,
+          "y": 173
+        },
+        "scale": 1,
+        "frames": [
+          3,
+          4,
+          29
+        ],
+        "durations": [
+          8,
+          5,
+          16
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "crouch_light": {
+        "sheet": "ben/nrgReleased/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 186,
+        "frameHeight": 175,
+        "pivot": {
+          "x": 82,
+          "y": 173
+        },
+        "scale": 1,
+        "frames": [
+          5,
+          6,
+          5
+        ],
+        "durations": [
+          5,
+          4,
+          10
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "crouch_medium": {
+        "sheet": "ben/nrgReleased/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 186,
+        "frameHeight": 175,
+        "pivot": {
+          "x": 82,
+          "y": 173
+        },
+        "scale": 1,
+        "frames": [
+          7,
+          8,
+          7
+        ],
+        "durations": [
+          9,
+          6,
+          17
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "air_light": {
+        "sheet": "ben/nrgReleased/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 186,
+        "frameHeight": 175,
+        "pivot": {
+          "x": 82,
+          "y": 173
+        },
+        "scale": 1,
+        "frames": [
+          9,
+          10,
+          9
+        ],
+        "durations": [
+          5,
+          5,
+          11
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "air_medium": {
+        "sheet": "ben/nrgReleased/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 186,
+        "frameHeight": 175,
+        "pivot": {
+          "x": 82,
+          "y": 173
+        },
+        "scale": 1,
+        "frames": [
+          11,
+          12,
+          11
+        ],
+        "durations": [
+          7,
+          7,
+          18
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "throw": {
+        "sheet": "ben/nrgReleased/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 186,
+        "frameHeight": 175,
+        "pivot": {
+          "x": 82,
+          "y": 173
+        },
+        "scale": 1,
+        "frames": [
+          13,
+          14,
+          27
+        ],
+        "durations": [
+          7,
+          3,
+          21
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "grabHold": {
+        "sheet": "ben/nrgReleased/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 186,
+        "frameHeight": 175,
+        "pivot": {
+          "x": 82,
+          "y": 173
+        },
+        "scale": 1,
+        "frames": [
+          14,
+          27,
+          27
+        ],
+        "durations": [
+          13,
+          4,
+          2
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "throwRecover": {
+        "sheet": "ben/nrgReleased/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 186,
+        "frameHeight": 175,
+        "pivot": {
+          "x": 82,
+          "y": 173
+        },
+        "scale": 1,
+        "frames": [
+          27,
+          28
+        ],
+        "durations": [
+          4,
+          8
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "radiantShot_light": {
+        "sheet": "ben/nrgReleased/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 186,
+        "frameHeight": 175,
+        "pivot": {
+          "x": 82,
+          "y": 173
+        },
+        "scale": 1,
+        "frames": [
+          15,
+          16,
+          15
+        ],
+        "durations": [
+          7,
+          1,
+          18
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "radiantShot_medium": {
+        "sheet": "ben/nrgReleased/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 186,
+        "frameHeight": 175,
+        "pivot": {
+          "x": 82,
+          "y": 173
+        },
+        "scale": 1,
+        "frames": [
+          17,
+          18,
+          17
+        ],
+        "durations": [
+          17,
+          1,
+          36
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "radiantWave_light": {
+        "sheet": "ben/nrgReleased/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 186,
+        "frameHeight": 175,
+        "pivot": {
+          "x": 82,
+          "y": 173
+        },
+        "scale": 1,
+        "frames": [
+          19,
+          20,
+          19
+        ],
+        "durations": [
+          8,
+          1,
+          20
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "radiantWave_medium": {
+        "sheet": "ben/nrgReleased/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 186,
+        "frameHeight": 175,
+        "pivot": {
+          "x": 82,
+          "y": 173
+        },
+        "scale": 1,
+        "frames": [
+          21,
+          22,
+          21
+        ],
+        "durations": [
+          15,
+          10,
+          28
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "nrgSeal_light": {
+        "sheet": "ben/nrgReleased/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 186,
+        "frameHeight": 175,
+        "pivot": {
+          "x": 82,
+          "y": 173
+        },
+        "scale": 1,
+        "frames": [
+          23,
+          24,
+          23
+        ],
+        "durations": [
+          4,
+          12,
+          18
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "nrgSeal_medium": {
+        "sheet": "ben/nrgReleased/stage6-combat.png",
+        "columns": 6,
+        "frameWidth": 186,
+        "frameHeight": 175,
+        "pivot": {
+          "x": 82,
+          "y": 173
+        },
+        "scale": 1,
+        "frames": [
+          25,
+          26,
+          25
+        ],
+        "durations": [
+          12,
+          1,
+          11
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "nrgEmergence": {
+        "sheet": "ben/nrg/stage6-release.png",
+        "columns": 4,
+        "frameWidth": 188,
+        "frameHeight": 231,
+        "pivot": {
+          "x": 86,
+          "y": 229
+        },
+        "scale": 1,
+        "frames": [
+          3
+        ],
+        "durations": [
+          9
+        ],
+        "ticks": 1,
+        "loop": false
+      }
+    }
+  }
+}

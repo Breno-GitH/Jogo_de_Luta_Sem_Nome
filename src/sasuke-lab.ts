@@ -29,6 +29,11 @@ const labels: Record<string, string> = {
   airChain: "Launcher → Jump Cancel → combo aéreo",
   guard: "Defesa em pé",
   guardLow: "Defesa baixa",
+  throw: "Agarrão de pulso",
+  taunt: "Provocação",
+  victory: "Vitória",
+  "powered:throw": "Marca II · agarrão de pulso",
+  "powered:taunt": "Marca II · provocação",
   ...sasukeSpecialLabels,
   goryukaWave: "Gōryūka · ondas pela arena",
   chidoriFar: "Chidori · investida à distância",
@@ -108,6 +113,8 @@ function reset(value = false) {
   const [a, b] = match.fighters;
   const side = mirror.checked ? -1 : 1;
   const mode = scenario.value.replace("powered:", "");
+  renderer.inspectionZoom = mode === "taunt" ? 1.65 : 1;
+  renderer.inspectionTarget = mode === "taunt" ? 0 : undefined;
   const shot = spaced[mode];
   a.x = shot ? (side === 1 ? shot.origin : 1280 - shot.origin) : 610;
   b.x = shot ? a.x + side * shot.range : isSasukeSpecial(mode)
@@ -116,7 +123,7 @@ function reset(value = false) {
       side *
         (mode.startsWith("guard")
           ? 53
-          : mode.startsWith("kirin") || mode.includes("_") || mode.endsWith("Chain")
+          : mode === "throw" || mode.startsWith("kirin") || mode.includes("_") || mode.endsWith("Chain")
             ? 57
             : 400);
   a.facing = side;
@@ -137,6 +144,12 @@ function reset(value = false) {
     a.setState("air");
     b.setState("air");
   }
+  if (mode === "victory") {
+    match.phase = "roundEnd";
+    match.phaseFrames = 150;
+    a.setState("victory");
+    b.setState("ko");
+  }
   time = debt = chain = 0;
   seek.disabled = mode === "free";
   renderer.resetAnimations();
@@ -150,6 +163,7 @@ function update() {
   const a = mode === "free" ? keyboard.sample() : neutral();
   const b = neutral();
   if (mode.startsWith("kirin") && time === 0) a.pressed.push("ultimate");
+  if (time === 0 && (mode === "throw" || mode === "taunt")) a.pressed.push(mode);
   if (mode === "awakening" && time < 3) {
     a.down = time !== 1;
     if (time === 2) a.pressed.push("heavy");

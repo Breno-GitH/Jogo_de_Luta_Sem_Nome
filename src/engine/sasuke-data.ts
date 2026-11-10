@@ -2,6 +2,7 @@ import base from "../data/sasuke.json";
 import frames from "../data/sasuke-frames.json";
 import clips from "../data/sasuke-clips.json";
 import normals from "../data/sasuke-normals.json";
+import { sasukeGrab, sasukeThrow } from "./sasuke-grab";
 import { sasukeSpecialMoves } from "./sasuke-specials";
 import { kirinConfig, kirinId, kirinOpener } from "./sasuke-kirin";
 import type { CharacterData, CombatPose, Move } from "./types";
@@ -61,7 +62,8 @@ export const sasukeMoves: Record<string, Move> = Object.fromEntries(
 );
 export const sasuke: CharacterData = {
   ...base,
-  moves: sasukeMoves,
+  moves: { ...sasukeMoves, throw: sasukeThrow },
+  grabSequence: sasukeGrab,
   specialMoves: sasukeSpecialMoves,
   superMoves: { [kirinId]: kirinOpener },
   meterMaximum: kirinConfig.cost,

@@ -324,8 +324,10 @@ h1 span {
   border-top-color: var(--blue);
 }
 .cast-sasuke {
-  grid-column: span 2;
   border-top-color: #b994e7;
+}
+.cast-kaneki {
+  border-top-color: #dd748c;
 }
 .cast-member img {
   position: absolute;

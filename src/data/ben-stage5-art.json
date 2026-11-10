@@ -1,0 +1,3693 @@
+{
+  "forms": {
+    "diamondhead": {
+      "sheet": "ben/diamondhead/idle.png",
+      "frameWidth": 125,
+      "frameHeight": 157,
+      "pivot": {
+        "x": 79,
+        "y": 155
+      },
+      "scale": 1,
+      "columns": 6,
+      "clips": {
+        "idle": {
+          "sheet": "ben/diamondhead/idle.png",
+          "columns": 6,
+          "frames": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "durations": [
+            10,
+            9,
+            11,
+            10,
+            10,
+            11
+          ],
+          "ticks": 1,
+          "loop": true,
+          "frameWidth": 125,
+          "frameHeight": 157,
+          "pivot": {
+            "x": 79,
+            "y": 155
+          }
+        },
+        "walkForward": {
+          "sheet": "ben/diamondhead/walkForward.png",
+          "columns": 6,
+          "frames": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "durations": [
+            5,
+            5,
+            4,
+            5,
+            5,
+            4
+          ],
+          "ticks": 1,
+          "loop": true,
+          "frameWidth": 169,
+          "frameHeight": 158,
+          "pivot": {
+            "x": 88,
+            "y": 156
+          }
+        },
+        "walkBack": {
+          "sheet": "ben/diamondhead/walkBack.png",
+          "columns": 6,
+          "frames": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "durations": [
+            5,
+            5,
+            4,
+            5,
+            5,
+            4
+          ],
+          "ticks": 1,
+          "loop": true,
+          "frameWidth": 146,
+          "frameHeight": 156,
+          "pivot": {
+            "x": 83,
+            "y": 154
+          }
+        },
+        "dashForward": {
+          "sheet": "ben/diamondhead/dashForward.png",
+          "columns": 5,
+          "frames": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "durations": [
+            2,
+            3,
+            3,
+            2,
+            2
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 248,
+          "frameHeight": 158,
+          "pivot": {
+            "x": 77,
+            "y": 156
+          }
+        },
+        "backdash": {
+          "sheet": "ben/diamondhead/backdash.png",
+          "columns": 5,
+          "frames": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "durations": [
+            2,
+            3,
+            3,
+            2,
+            2
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 174,
+          "frameHeight": 155,
+          "pivot": {
+            "x": 99,
+            "y": 153
+          }
+        },
+        "crouchStart": {
+          "sheet": "ben/diamondhead/crouchStart.png",
+          "columns": 2,
+          "frames": [
+            0,
+            1
+          ],
+          "durations": [
+            3,
+            3
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 116,
+          "frameHeight": 155,
+          "pivot": {
+            "x": 61,
+            "y": 153
+          }
+        },
+        "crouchIdle": {
+          "sheet": "ben/diamondhead/crouchIdle.png",
+          "columns": 2,
+          "frames": [
+            0,
+            1
+          ],
+          "durations": [
+            11,
+            10
+          ],
+          "ticks": 1,
+          "loop": true,
+          "frameWidth": 116,
+          "frameHeight": 133,
+          "pivot": {
+            "x": 59,
+            "y": 131
+          }
+        },
+        "crouchEnd": {
+          "sheet": "ben/diamondhead/crouchEnd.png",
+          "columns": 2,
+          "frames": [
+            0,
+            1
+          ],
+          "durations": [
+            3,
+            2
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 122,
+          "frameHeight": 143,
+          "pivot": {
+            "x": 62,
+            "y": 141
+          }
+        },
+        "jumpStart": {
+          "sheet": "ben/diamondhead/jumpStart.png",
+          "columns": 3,
+          "frames": [
+            0,
+            1,
+            2
+          ],
+          "durations": [
+            2,
+            2,
+            2
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 162,
+          "frameHeight": 144,
+          "pivot": {
+            "x": 63,
+            "y": 142
+          }
+        },
+        "jumpRise": {
+          "sheet": "ben/diamondhead/jumpRise.png",
+          "columns": 2,
+          "frames": [
+            0,
+            1
+          ],
+          "durations": [
+            1,
+            1
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 109,
+          "frameHeight": 156,
+          "pivot": {
+            "x": 38,
+            "y": 154
+          }
+        },
+        "jumpApex": {
+          "sheet": "ben/diamondhead/jumpApex.png",
+          "columns": 1,
+          "frames": [
+            0
+          ],
+          "durations": [
+            1
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 107,
+          "frameHeight": 115,
+          "pivot": {
+            "x": 48,
+            "y": 113
+          }
+        },
+        "jumpFall": {
+          "sheet": "ben/diamondhead/jumpFall.png",
+          "columns": 2,
+          "frames": [
+            0,
+            1
+          ],
+          "durations": [
+            1,
+            1
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 111,
+          "frameHeight": 150,
+          "pivot": {
+            "x": 49,
+            "y": 148
+          }
+        },
+        "landing": {
+          "sheet": "ben/diamondhead/landing.png",
+          "columns": 3,
+          "frames": [
+            0,
+            1,
+            2
+          ],
+          "durations": [
+            2,
+            3,
+            4
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 112,
+          "frameHeight": 149,
+          "pivot": {
+            "x": 66,
+            "y": 147
+          }
+        },
+        "damage": {
+          "sheet": "ben/diamondhead/damage.png",
+          "columns": 1,
+          "frames": [
+            0
+          ],
+          "durations": [
+            1
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 128,
+          "frameHeight": 145,
+          "pivot": {
+            "x": 74,
+            "y": 143
+          }
+        },
+        "guardStand": {
+          "sheet": "ben/diamondhead/guardStand.png",
+          "columns": 1,
+          "frames": [
+            0
+          ],
+          "durations": [
+            1
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 99,
+          "frameHeight": 155,
+          "pivot": {
+            "x": 70,
+            "y": 153
+          }
+        },
+        "guardCrouch": {
+          "sheet": "ben/diamondhead/guardCrouch.png",
+          "columns": 1,
+          "frames": [
+            0
+          ],
+          "durations": [
+            1
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 98,
+          "frameHeight": 135,
+          "pivot": {
+            "x": 61,
+            "y": 133
+          }
+        },
+        "downed": {
+          "sheet": "ben/diamondhead/downed.png",
+          "columns": 1,
+          "frames": [
+            0
+          ],
+          "durations": [
+            1
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 188,
+          "frameHeight": 78,
+          "pivot": {
+            "x": 106,
+            "y": 76
+          }
+        },
+        "stand_light": {
+          "sheet": "ben/diamondhead/stand_light.png",
+          "columns": 4,
+          "frames": [
+            0,
+            2,
+            1,
+            3
+          ],
+          "durations": [
+            5,
+            4,
+            4,
+            8
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 161,
+          "frameHeight": 155,
+          "pivot": {
+            "x": 80,
+            "y": 153
+          }
+        },
+        "stand_medium": {
+          "sheet": "ben/diamondhead/stand_medium.png",
+          "columns": 4,
+          "frames": [
+            0,
+            2,
+            1,
+            3
+          ],
+          "durations": [
+            9,
+            5,
+            6,
+            13
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 175,
+          "frameHeight": 155,
+          "pivot": {
+            "x": 88,
+            "y": 153
+          }
+        },
+        "crouch_light": {
+          "sheet": "ben/diamondhead/crouch_light.png",
+          "columns": 4,
+          "frames": [
+            0,
+            2,
+            1,
+            3
+          ],
+          "durations": [
+            6,
+            4,
+            3,
+            8
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 146,
+          "frameHeight": 132,
+          "pivot": {
+            "x": 66,
+            "y": 130
+          }
+        },
+        "crouch_medium": {
+          "sheet": "ben/diamondhead/crouch_medium.png",
+          "columns": 4,
+          "frames": [
+            0,
+            2,
+            1,
+            3
+          ],
+          "durations": [
+            10,
+            6,
+            7,
+            14
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 178,
+          "frameHeight": 132,
+          "pivot": {
+            "x": 112,
+            "y": 130
+          }
+        },
+        "air_light": {
+          "sheet": "ben/diamondhead/air_light.png",
+          "columns": 4,
+          "frames": [
+            0,
+            2,
+            1,
+            3
+          ],
+          "durations": [
+            5,
+            5,
+            4,
+            8
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 173,
+          "frameHeight": 155,
+          "pivot": {
+            "x": 15,
+            "y": 153
+          }
+        },
+        "air_medium": {
+          "sheet": "ben/diamondhead/air_medium.png",
+          "columns": 4,
+          "frames": [
+            0,
+            2,
+            1,
+            3
+          ],
+          "durations": [
+            9,
+            7,
+            6,
+            14
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 235,
+          "frameHeight": 155,
+          "pivot": {
+            "x": 128,
+            "y": 153
+          }
+        },
+        "throw": {
+          "sheet": "ben/diamondhead/throw.png",
+          "columns": 4,
+          "frames": [
+            0,
+            1,
+            3
+          ],
+          "durations": [
+            8,
+            3,
+            21
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 177,
+          "frameHeight": 155,
+          "pivot": {
+            "x": 87,
+            "y": 153
+          }
+        },
+        "grabHold": {
+          "sheet": "ben/diamondhead/throw.png",
+          "columns": 4,
+          "frames": [
+            1,
+            2,
+            3
+          ],
+          "durations": [
+            8,
+            8,
+            8
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 177,
+          "frameHeight": 155,
+          "pivot": {
+            "x": 87,
+            "y": 153
+          }
+        },
+        "throwRecover": {
+          "sheet": "ben/diamondhead/throw.png",
+          "columns": 4,
+          "frames": [
+            3
+          ],
+          "durations": [
+            12
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 177,
+          "frameHeight": 155,
+          "pivot": {
+            "x": 87,
+            "y": 153
+          }
+        },
+        "spikes_light": {
+          "sheet": "ben/diamondhead/spikes.png",
+          "columns": 4,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "durations": [
+            4,
+            5,
+            1,
+            23
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 192,
+          "frameHeight": 155,
+          "pivot": {
+            "x": 124,
+            "y": 153
+          }
+        },
+        "spikes_medium": {
+          "sheet": "ben/diamondhead/spikes.png",
+          "columns": 4,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "durations": [
+            7,
+            8,
+            1,
+            34
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 192,
+          "frameHeight": 155,
+          "pivot": {
+            "x": 124,
+            "y": 153
+          }
+        },
+        "wall_light": {
+          "sheet": "ben/diamondhead/wall.png",
+          "columns": 4,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "durations": [
+            4,
+            5,
+            1,
+            23
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 202,
+          "frameHeight": 155,
+          "pivot": {
+            "x": 133,
+            "y": 153
+          }
+        },
+        "wall_medium": {
+          "sheet": "ben/diamondhead/wall.png",
+          "columns": 4,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "durations": [
+            8,
+            9,
+            1,
+            33
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 202,
+          "frameHeight": 155,
+          "pivot": {
+            "x": 133,
+            "y": 153
+          }
+        },
+        "shards_light": {
+          "sheet": "ben/diamondhead/shards.png",
+          "columns": 4,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "durations": [
+            4,
+            4,
+            1,
+            21
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 182,
+          "frameHeight": 155,
+          "pivot": {
+            "x": 104,
+            "y": 153
+          }
+        },
+        "shards_medium": {
+          "sheet": "ben/diamondhead/shards.png",
+          "columns": 4,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "durations": [
+            7,
+            8,
+            1,
+            32
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 182,
+          "frameHeight": 155,
+          "pivot": {
+            "x": 104,
+            "y": 153
+          }
+        }
+      }
+    },
+    "humungousaur": {
+      "sheet": "ben/humungousaur/idle.png",
+      "frameWidth": 163,
+      "frameHeight": 183,
+      "pivot": {
+        "x": 62,
+        "y": 181
+      },
+      "scale": 1,
+      "columns": 6,
+      "clips": {
+        "idle": {
+          "sheet": "ben/humungousaur/idle.png",
+          "columns": 6,
+          "frames": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "durations": [
+            10,
+            9,
+            11,
+            10,
+            10,
+            11
+          ],
+          "ticks": 1,
+          "loop": true,
+          "frameWidth": 163,
+          "frameHeight": 183,
+          "pivot": {
+            "x": 62,
+            "y": 181
+          }
+        },
+        "walkForward": {
+          "sheet": "ben/humungousaur/walkForward.png",
+          "columns": 6,
+          "frames": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "durations": [
+            5,
+            5,
+            4,
+            5,
+            5,
+            4
+          ],
+          "ticks": 1,
+          "loop": true,
+          "frameWidth": 197,
+          "frameHeight": 175,
+          "pivot": {
+            "x": 84,
+            "y": 173
+          }
+        },
+        "walkBack": {
+          "sheet": "ben/humungousaur/walkBack.png",
+          "columns": 6,
+          "frames": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "durations": [
+            5,
+            5,
+            4,
+            5,
+            5,
+            4
+          ],
+          "ticks": 1,
+          "loop": true,
+          "frameWidth": 167,
+          "frameHeight": 178,
+          "pivot": {
+            "x": 62,
+            "y": 176
+          }
+        },
+        "dashForward": {
+          "sheet": "ben/humungousaur/dashForward.png",
+          "columns": 5,
+          "frames": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "durations": [
+            2,
+            3,
+            3,
+            2,
+            5
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 291,
+          "frameHeight": 182,
+          "pivot": {
+            "x": 135,
+            "y": 180
+          }
+        },
+        "backdash": {
+          "sheet": "ben/humungousaur/backdash.png",
+          "columns": 5,
+          "frames": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "durations": [
+            2,
+            3,
+            3,
+            2,
+            5
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 215,
+          "frameHeight": 180,
+          "pivot": {
+            "x": 112,
+            "y": 178
+          }
+        },
+        "crouchStart": {
+          "sheet": "ben/humungousaur/crouchStart.png",
+          "columns": 2,
+          "frames": [
+            0,
+            1
+          ],
+          "durations": [
+            3,
+            3
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 183,
+          "frameHeight": 181,
+          "pivot": {
+            "x": 73,
+            "y": 179
+          }
+        },
+        "crouchIdle": {
+          "sheet": "ben/humungousaur/crouchIdle.png",
+          "columns": 2,
+          "frames": [
+            0,
+            1
+          ],
+          "durations": [
+            11,
+            10
+          ],
+          "ticks": 1,
+          "loop": true,
+          "frameWidth": 193,
+          "frameHeight": 140,
+          "pivot": {
+            "x": 84,
+            "y": 138
+          }
+        },
+        "crouchEnd": {
+          "sheet": "ben/humungousaur/crouchEnd.png",
+          "columns": 2,
+          "frames": [
+            0,
+            1
+          ],
+          "durations": [
+            3,
+            2
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 184,
+          "frameHeight": 170,
+          "pivot": {
+            "x": 68,
+            "y": 168
+          }
+        },
+        "jumpStart": {
+          "sheet": "ben/humungousaur/jumpStart.png",
+          "columns": 3,
+          "frames": [
+            0,
+            1,
+            2
+          ],
+          "durations": [
+            3,
+            3,
+            3
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 188,
+          "frameHeight": 168,
+          "pivot": {
+            "x": 70,
+            "y": 166
+          }
+        },
+        "jumpRise": {
+          "sheet": "ben/humungousaur/jumpRise.png",
+          "columns": 2,
+          "frames": [
+            0,
+            1
+          ],
+          "durations": [
+            1,
+            1
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 181,
+          "frameHeight": 188,
+          "pivot": {
+            "x": 60,
+            "y": 186
+          }
+        },
+        "jumpApex": {
+          "sheet": "ben/humungousaur/jumpApex.png",
+          "columns": 1,
+          "frames": [
+            0
+          ],
+          "durations": [
+            1
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 188,
+          "frameHeight": 146,
+          "pivot": {
+            "x": 63,
+            "y": 144
+          }
+        },
+        "jumpFall": {
+          "sheet": "ben/humungousaur/jumpFall.png",
+          "columns": 2,
+          "frames": [
+            0,
+            1
+          ],
+          "durations": [
+            1,
+            1
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 193,
+          "frameHeight": 172,
+          "pivot": {
+            "x": 69,
+            "y": 170
+          }
+        },
+        "landing": {
+          "sheet": "ben/humungousaur/landing.png",
+          "columns": 3,
+          "frames": [
+            0,
+            1,
+            2
+          ],
+          "durations": [
+            2,
+            5,
+            6
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 202,
+          "frameHeight": 163,
+          "pivot": {
+            "x": 77,
+            "y": 161
+          }
+        },
+        "damage": {
+          "sheet": "ben/humungousaur/damage.png",
+          "columns": 1,
+          "frames": [
+            0
+          ],
+          "durations": [
+            1
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 195,
+          "frameHeight": 181,
+          "pivot": {
+            "x": 65,
+            "y": 179
+          }
+        },
+        "guardStand": {
+          "sheet": "ben/humungousaur/guardStand.png",
+          "columns": 1,
+          "frames": [
+            0
+          ],
+          "durations": [
+            1
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 185,
+          "frameHeight": 162,
+          "pivot": {
+            "x": 59,
+            "y": 160
+          }
+        },
+        "guardCrouch": {
+          "sheet": "ben/humungousaur/guardCrouch.png",
+          "columns": 1,
+          "frames": [
+            0
+          ],
+          "durations": [
+            1
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 200,
+          "frameHeight": 126,
+          "pivot": {
+            "x": 67,
+            "y": 124
+          }
+        },
+        "downed": {
+          "sheet": "ben/humungousaur/downed.png",
+          "columns": 1,
+          "frames": [
+            0
+          ],
+          "durations": [
+            1
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 259,
+          "frameHeight": 64,
+          "pivot": {
+            "x": 142,
+            "y": 62
+          }
+        },
+        "stand_light": {
+          "sheet": "ben/humungousaur/stand_light.png",
+          "columns": 4,
+          "frames": [
+            0,
+            2,
+            1,
+            3
+          ],
+          "durations": [
+            6,
+            4,
+            4,
+            9
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 271,
+          "frameHeight": 180,
+          "pivot": {
+            "x": 74,
+            "y": 178
+          }
+        },
+        "stand_medium": {
+          "sheet": "ben/humungousaur/stand_medium.png",
+          "columns": 4,
+          "frames": [
+            0,
+            2,
+            1,
+            3
+          ],
+          "durations": [
+            10,
+            5,
+            7,
+            15
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 227,
+          "frameHeight": 180,
+          "pivot": {
+            "x": 69,
+            "y": 178
+          }
+        },
+        "crouch_light": {
+          "sheet": "ben/humungousaur/crouch_light.png",
+          "columns": 4,
+          "frames": [
+            0,
+            2,
+            1,
+            3
+          ],
+          "durations": [
+            6,
+            4,
+            4,
+            10
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 196,
+          "frameHeight": 153,
+          "pivot": {
+            "x": 84,
+            "y": 151
+          }
+        },
+        "crouch_medium": {
+          "sheet": "ben/humungousaur/crouch_medium.png",
+          "columns": 4,
+          "frames": [
+            0,
+            2,
+            1,
+            3
+          ],
+          "durations": [
+            12,
+            6,
+            8,
+            17
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 234,
+          "frameHeight": 153,
+          "pivot": {
+            "x": 106,
+            "y": 151
+          }
+        },
+        "air_light": {
+          "sheet": "ben/humungousaur/air_light.png",
+          "columns": 4,
+          "frames": [
+            0,
+            2,
+            1,
+            3
+          ],
+          "durations": [
+            6,
+            5,
+            5,
+            10
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 300,
+          "frameHeight": 180,
+          "pivot": {
+            "x": 71,
+            "y": 178
+          }
+        },
+        "air_medium": {
+          "sheet": "ben/humungousaur/air_medium.png",
+          "columns": 4,
+          "frames": [
+            0,
+            2,
+            1,
+            3
+          ],
+          "durations": [
+            10,
+            10,
+            8,
+            16
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 252,
+          "frameHeight": 180,
+          "pivot": {
+            "x": 126,
+            "y": 178
+          }
+        },
+        "throw": {
+          "sheet": "ben/humungousaur/throw.png",
+          "columns": 4,
+          "frames": [
+            0,
+            1,
+            3
+          ],
+          "durations": [
+            10,
+            3,
+            21
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 299,
+          "frameHeight": 189,
+          "pivot": {
+            "x": 119,
+            "y": 187
+          }
+        },
+        "grabHold": {
+          "sheet": "ben/humungousaur/throw.png",
+          "columns": 4,
+          "frames": [
+            1,
+            2,
+            3
+          ],
+          "durations": [
+            8,
+            9,
+            9
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 299,
+          "frameHeight": 189,
+          "pivot": {
+            "x": 119,
+            "y": 187
+          }
+        },
+        "throwRecover": {
+          "sheet": "ben/humungousaur/throw.png",
+          "columns": 4,
+          "frames": [
+            3
+          ],
+          "durations": [
+            12
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 299,
+          "frameHeight": 189,
+          "pivot": {
+            "x": 119,
+            "y": 187
+          }
+        },
+        "colossal_light": {
+          "sheet": "ben/humungousaur/colossal.png",
+          "columns": 4,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "durations": [
+            10,
+            4,
+            4,
+            23
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 375,
+          "frameHeight": 180,
+          "pivot": {
+            "x": 140,
+            "y": 178
+          }
+        },
+        "colossal_medium": {
+          "sheet": "ben/humungousaur/colossal.png",
+          "columns": 4,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "durations": [
+            16,
+            6,
+            6,
+            33
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 375,
+          "frameHeight": 180,
+          "pivot": {
+            "x": 140,
+            "y": 178
+          }
+        },
+        "tailspin_light": {
+          "sheet": "ben/humungousaur/tailspin.png",
+          "columns": 4,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "durations": [
+            9,
+            3,
+            4,
+            25
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 313,
+          "frameHeight": 186,
+          "pivot": {
+            "x": 90,
+            "y": 184
+          }
+        },
+        "tailspin_medium": {
+          "sheet": "ben/humungousaur/tailspin.png",
+          "columns": 4,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "durations": [
+            16,
+            4,
+            5,
+            37
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 313,
+          "frameHeight": 186,
+          "pivot": {
+            "x": 90,
+            "y": 184
+          }
+        },
+        "growth_light": {
+          "sheet": "ben/humungousaur/growth.png",
+          "columns": 4,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "durations": [
+            6,
+            6,
+            1,
+            23
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 197,
+          "frameHeight": 180,
+          "pivot": {
+            "x": 83,
+            "y": 178
+          }
+        },
+        "growth_medium": {
+          "sheet": "ben/humungousaur/growth.png",
+          "columns": 4,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "durations": [
+            10,
+            11,
+            1,
+            35
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 197,
+          "frameHeight": 180,
+          "pivot": {
+            "x": 83,
+            "y": 178
+          }
+        }
+      }
+    },
+    "feedback": {
+      "sheet": "ben/feedback/idle.png",
+      "frameWidth": 134,
+      "frameHeight": 150,
+      "pivot": {
+        "x": 66,
+        "y": 148
+      },
+      "scale": 1,
+      "columns": 6,
+      "clips": {
+        "idle": {
+          "sheet": "ben/feedback/idle.png",
+          "columns": 6,
+          "frames": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "durations": [
+            10,
+            9,
+            11,
+            10,
+            10,
+            11
+          ],
+          "ticks": 1,
+          "loop": true,
+          "frameWidth": 134,
+          "frameHeight": 150,
+          "pivot": {
+            "x": 66,
+            "y": 148
+          }
+        },
+        "walkForward": {
+          "sheet": "ben/feedback/walkForward.png",
+          "columns": 6,
+          "frames": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "durations": [
+            4,
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "ticks": 1,
+          "loop": true,
+          "frameWidth": 160,
+          "frameHeight": 148,
+          "pivot": {
+            "x": 88,
+            "y": 146
+          }
+        },
+        "walkBack": {
+          "sheet": "ben/feedback/walkBack.png",
+          "columns": 6,
+          "frames": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "durations": [
+            4,
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "ticks": 1,
+          "loop": true,
+          "frameWidth": 127,
+          "frameHeight": 144,
+          "pivot": {
+            "x": 60,
+            "y": 142
+          }
+        },
+        "dashForward": {
+          "sheet": "ben/feedback/dashForward.png",
+          "columns": 5,
+          "frames": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "durations": [
+            2,
+            3,
+            3,
+            2,
+            2
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 209,
+          "frameHeight": 151,
+          "pivot": {
+            "x": 62,
+            "y": 149
+          }
+        },
+        "backdash": {
+          "sheet": "ben/feedback/backdash.png",
+          "columns": 5,
+          "frames": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "durations": [
+            2,
+            3,
+            3,
+            2,
+            2
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 178,
+          "frameHeight": 151,
+          "pivot": {
+            "x": 78,
+            "y": 149
+          }
+        },
+        "crouchStart": {
+          "sheet": "ben/feedback/crouchStart.png",
+          "columns": 2,
+          "frames": [
+            0,
+            1
+          ],
+          "durations": [
+            3,
+            3
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 126,
+          "frameHeight": 147,
+          "pivot": {
+            "x": 42,
+            "y": 145
+          }
+        },
+        "crouchIdle": {
+          "sheet": "ben/feedback/crouchIdle.png",
+          "columns": 2,
+          "frames": [
+            0,
+            1
+          ],
+          "durations": [
+            11,
+            10
+          ],
+          "ticks": 1,
+          "loop": true,
+          "frameWidth": 120,
+          "frameHeight": 114,
+          "pivot": {
+            "x": 61,
+            "y": 112
+          }
+        },
+        "crouchEnd": {
+          "sheet": "ben/feedback/crouchEnd.png",
+          "columns": 2,
+          "frames": [
+            0,
+            1
+          ],
+          "durations": [
+            3,
+            2
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 121,
+          "frameHeight": 127,
+          "pivot": {
+            "x": 38,
+            "y": 125
+          }
+        },
+        "jumpStart": {
+          "sheet": "ben/feedback/jumpStart.png",
+          "columns": 3,
+          "frames": [
+            0,
+            1,
+            2
+          ],
+          "durations": [
+            1,
+            1,
+            3
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 145,
+          "frameHeight": 141,
+          "pivot": {
+            "x": 56,
+            "y": 139
+          }
+        },
+        "jumpRise": {
+          "sheet": "ben/feedback/jumpRise.png",
+          "columns": 2,
+          "frames": [
+            0,
+            1
+          ],
+          "durations": [
+            1,
+            1
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 144,
+          "frameHeight": 156,
+          "pivot": {
+            "x": 42,
+            "y": 154
+          }
+        },
+        "jumpApex": {
+          "sheet": "ben/feedback/jumpApex.png",
+          "columns": 1,
+          "frames": [
+            0
+          ],
+          "durations": [
+            1
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 120,
+          "frameHeight": 131,
+          "pivot": {
+            "x": 16,
+            "y": 129
+          }
+        },
+        "jumpFall": {
+          "sheet": "ben/feedback/jumpFall.png",
+          "columns": 2,
+          "frames": [
+            0,
+            1
+          ],
+          "durations": [
+            1,
+            1
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 141,
+          "frameHeight": 147,
+          "pivot": {
+            "x": 47,
+            "y": 145
+          }
+        },
+        "landing": {
+          "sheet": "ben/feedback/landing.png",
+          "columns": 3,
+          "frames": [
+            0,
+            1,
+            2
+          ],
+          "durations": [
+            2,
+            2,
+            3
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 131,
+          "frameHeight": 138,
+          "pivot": {
+            "x": 53,
+            "y": 136
+          }
+        },
+        "damage": {
+          "sheet": "ben/feedback/damage.png",
+          "columns": 1,
+          "frames": [
+            0
+          ],
+          "durations": [
+            1
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 140,
+          "frameHeight": 143,
+          "pivot": {
+            "x": 61,
+            "y": 141
+          }
+        },
+        "guardStand": {
+          "sheet": "ben/feedback/guardStand.png",
+          "columns": 1,
+          "frames": [
+            0
+          ],
+          "durations": [
+            1
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 130,
+          "frameHeight": 149,
+          "pivot": {
+            "x": 41,
+            "y": 147
+          }
+        },
+        "guardCrouch": {
+          "sheet": "ben/feedback/guardCrouch.png",
+          "columns": 1,
+          "frames": [
+            0
+          ],
+          "durations": [
+            1
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 148,
+          "frameHeight": 118,
+          "pivot": {
+            "x": 51,
+            "y": 116
+          }
+        },
+        "downed": {
+          "sheet": "ben/feedback/downed.png",
+          "columns": 1,
+          "frames": [
+            0
+          ],
+          "durations": [
+            1
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 215,
+          "frameHeight": 73,
+          "pivot": {
+            "x": 122,
+            "y": 71
+          }
+        },
+        "stand_light": {
+          "sheet": "ben/feedback/stand_light.png",
+          "columns": 4,
+          "frames": [
+            0,
+            2,
+            1,
+            3
+          ],
+          "durations": [
+            4,
+            4,
+            3,
+            7
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 153,
+          "frameHeight": 149,
+          "pivot": {
+            "x": 34,
+            "y": 147
+          }
+        },
+        "stand_medium": {
+          "sheet": "ben/feedback/stand_medium.png",
+          "columns": 4,
+          "frames": [
+            0,
+            2,
+            1,
+            3
+          ],
+          "durations": [
+            8,
+            5,
+            5,
+            12
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 164,
+          "frameHeight": 149,
+          "pivot": {
+            "x": 36,
+            "y": 147
+          }
+        },
+        "crouch_light": {
+          "sheet": "ben/feedback/crouch_light.png",
+          "columns": 4,
+          "frames": [
+            0,
+            2,
+            1,
+            3
+          ],
+          "durations": [
+            5,
+            4,
+            3,
+            8
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 133,
+          "frameHeight": 127,
+          "pivot": {
+            "x": 28,
+            "y": 125
+          }
+        },
+        "crouch_medium": {
+          "sheet": "ben/feedback/crouch_medium.png",
+          "columns": 4,
+          "frames": [
+            0,
+            2,
+            1,
+            3
+          ],
+          "durations": [
+            10,
+            5,
+            6,
+            13
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 115,
+          "frameHeight": 127,
+          "pivot": {
+            "x": 40,
+            "y": 125
+          }
+        },
+        "air_light": {
+          "sheet": "ben/feedback/air_light.png",
+          "columns": 4,
+          "frames": [
+            0,
+            2,
+            1,
+            3
+          ],
+          "durations": [
+            5,
+            5,
+            3,
+            7
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 160,
+          "frameHeight": 149,
+          "pivot": {
+            "x": 32,
+            "y": 147
+          }
+        },
+        "air_medium": {
+          "sheet": "ben/feedback/air_medium.png",
+          "columns": 4,
+          "frames": [
+            0,
+            2,
+            1,
+            3
+          ],
+          "durations": [
+            8,
+            7,
+            6,
+            14
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 145,
+          "frameHeight": 149,
+          "pivot": {
+            "x": 68,
+            "y": 147
+          }
+        },
+        "throw": {
+          "sheet": "ben/feedback/throw.png",
+          "columns": 4,
+          "frames": [
+            0,
+            1,
+            3
+          ],
+          "durations": [
+            7,
+            3,
+            21
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 165,
+          "frameHeight": 149,
+          "pivot": {
+            "x": 41,
+            "y": 147
+          }
+        },
+        "grabHold": {
+          "sheet": "ben/feedback/throw.png",
+          "columns": 4,
+          "frames": [
+            1,
+            2,
+            3
+          ],
+          "durations": [
+            6,
+            7,
+            7
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 165,
+          "frameHeight": 149,
+          "pivot": {
+            "x": 41,
+            "y": 147
+          }
+        },
+        "throwRecover": {
+          "sheet": "ben/feedback/throw.png",
+          "columns": 4,
+          "frames": [
+            3
+          ],
+          "durations": [
+            12
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 165,
+          "frameHeight": 149,
+          "pivot": {
+            "x": 41,
+            "y": 147
+          }
+        },
+        "discharge_light": {
+          "sheet": "ben/feedback/discharge.png",
+          "columns": 4,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "durations": [
+            4,
+            4,
+            1,
+            21
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 212,
+          "frameHeight": 149,
+          "pivot": {
+            "x": 45,
+            "y": 147
+          }
+        },
+        "discharge_medium": {
+          "sheet": "ben/feedback/discharge.png",
+          "columns": 4,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "durations": [
+            8,
+            9,
+            1,
+            33
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 212,
+          "frameHeight": 149,
+          "pivot": {
+            "x": 45,
+            "y": 147
+          }
+        },
+        "absorbConfirm": {
+          "sheet": "ben/feedback/absorb.png",
+          "columns": 4,
+          "frames": [
+            1,
+            2,
+            3
+          ],
+          "durations": [
+            4,
+            7,
+            7
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 144,
+          "frameHeight": 149,
+          "pivot": {
+            "x": 36,
+            "y": 147
+          }
+        },
+        "absorb_light": {
+          "sheet": "ben/feedback/absorb.png",
+          "columns": 4,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "durations": [
+            5,
+            5,
+            5,
+            22
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 144,
+          "frameHeight": 149,
+          "pivot": {
+            "x": 36,
+            "y": 147
+          }
+        },
+        "absorb_medium": {
+          "sheet": "ben/feedback/absorb.png",
+          "columns": 4,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "durations": [
+            11,
+            10,
+            10,
+            34
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 144,
+          "frameHeight": 149,
+          "pivot": {
+            "x": 36,
+            "y": 147
+          }
+        },
+        "cables_light": {
+          "sheet": "ben/feedback/cables.png",
+          "columns": 4,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "durations": [
+            8,
+            3,
+            4,
+            22
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 225,
+          "frameHeight": 149,
+          "pivot": {
+            "x": 41,
+            "y": 147
+          }
+        },
+        "cables_medium": {
+          "sheet": "ben/feedback/cables.png",
+          "columns": 4,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "durations": [
+            14,
+            6,
+            7,
+            34
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 225,
+          "frameHeight": 149,
+          "pivot": {
+            "x": 41,
+            "y": 147
+          }
+        }
+      }
+    }
+  },
+  "grown": {
+    "1": {
+      "sheet": "ben/humungousaur/growth-1/idle.png",
+      "frameWidth": 194,
+      "frameHeight": 219,
+      "pivot": {
+        "x": 74,
+        "y": 217
+      },
+      "scale": 1,
+      "columns": 6,
+      "clips": {
+        "idle": {
+          "sheet": "ben/humungousaur/growth-1/idle.png",
+          "columns": 6,
+          "frames": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "durations": [
+            10,
+            9,
+            11,
+            10,
+            10,
+            11
+          ],
+          "ticks": 1,
+          "loop": true,
+          "frameWidth": 194,
+          "frameHeight": 219,
+          "pivot": {
+            "x": 74,
+            "y": 217
+          }
+        },
+        "walkForward": {
+          "sheet": "ben/humungousaur/growth-1/walkForward.png",
+          "columns": 6,
+          "frames": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "durations": [
+            5,
+            5,
+            4,
+            5,
+            5,
+            4
+          ],
+          "ticks": 1,
+          "loop": true,
+          "frameWidth": 236,
+          "frameHeight": 209,
+          "pivot": {
+            "x": 101,
+            "y": 207
+          }
+        },
+        "walkBack": {
+          "sheet": "ben/humungousaur/growth-1/walkBack.png",
+          "columns": 6,
+          "frames": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "durations": [
+            5,
+            5,
+            4,
+            5,
+            5,
+            4
+          ],
+          "ticks": 1,
+          "loop": true,
+          "frameWidth": 199,
+          "frameHeight": 212,
+          "pivot": {
+            "x": 74,
+            "y": 210
+          }
+        },
+        "dashForward": {
+          "sheet": "ben/humungousaur/growth-1/dashForward.png",
+          "columns": 5,
+          "frames": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "durations": [
+            2,
+            3,
+            3,
+            2,
+            5
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 349,
+          "frameHeight": 218,
+          "pivot": {
+            "x": 162,
+            "y": 216
+          }
+        },
+        "backdash": {
+          "sheet": "ben/humungousaur/growth-1/backdash.png",
+          "columns": 5,
+          "frames": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "durations": [
+            2,
+            3,
+            3,
+            2,
+            5
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 257,
+          "frameHeight": 215,
+          "pivot": {
+            "x": 134,
+            "y": 213
+          }
+        },
+        "crouchStart": {
+          "sheet": "ben/humungousaur/growth-1/crouchStart.png",
+          "columns": 2,
+          "frames": [
+            0,
+            1
+          ],
+          "durations": [
+            3,
+            3
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 219,
+          "frameHeight": 216,
+          "pivot": {
+            "x": 87,
+            "y": 214
+          }
+        },
+        "crouchIdle": {
+          "sheet": "ben/humungousaur/growth-1/crouchIdle.png",
+          "columns": 2,
+          "frames": [
+            0,
+            1
+          ],
+          "durations": [
+            11,
+            10
+          ],
+          "ticks": 1,
+          "loop": true,
+          "frameWidth": 230,
+          "frameHeight": 167,
+          "pivot": {
+            "x": 99,
+            "y": 165
+          }
+        },
+        "crouchEnd": {
+          "sheet": "ben/humungousaur/growth-1/crouchEnd.png",
+          "columns": 2,
+          "frames": [
+            0,
+            1
+          ],
+          "durations": [
+            3,
+            2
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 220,
+          "frameHeight": 203,
+          "pivot": {
+            "x": 80,
+            "y": 201
+          }
+        },
+        "jumpStart": {
+          "sheet": "ben/humungousaur/growth-1/jumpStart.png",
+          "columns": 3,
+          "frames": [
+            0,
+            1,
+            2
+          ],
+          "durations": [
+            3,
+            3,
+            3
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 224,
+          "frameHeight": 201,
+          "pivot": {
+            "x": 82,
+            "y": 199
+          }
+        },
+        "jumpRise": {
+          "sheet": "ben/humungousaur/growth-1/jumpRise.png",
+          "columns": 2,
+          "frames": [
+            0,
+            1
+          ],
+          "durations": [
+            1,
+            1
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 216,
+          "frameHeight": 224,
+          "pivot": {
+            "x": 71,
+            "y": 222
+          }
+        },
+        "jumpApex": {
+          "sheet": "ben/humungousaur/growth-1/jumpApex.png",
+          "columns": 1,
+          "frames": [
+            0
+          ],
+          "durations": [
+            1
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 224,
+          "frameHeight": 174,
+          "pivot": {
+            "x": 75,
+            "y": 172
+          }
+        },
+        "jumpFall": {
+          "sheet": "ben/humungousaur/growth-1/jumpFall.png",
+          "columns": 2,
+          "frames": [
+            0,
+            1
+          ],
+          "durations": [
+            1,
+            1
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 231,
+          "frameHeight": 206,
+          "pivot": {
+            "x": 82,
+            "y": 204
+          }
+        },
+        "landing": {
+          "sheet": "ben/humungousaur/growth-1/landing.png",
+          "columns": 3,
+          "frames": [
+            0,
+            1,
+            2
+          ],
+          "durations": [
+            2,
+            5,
+            6
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 241,
+          "frameHeight": 195,
+          "pivot": {
+            "x": 93,
+            "y": 193
+          }
+        },
+        "damage": {
+          "sheet": "ben/humungousaur/growth-1/damage.png",
+          "columns": 1,
+          "frames": [
+            0
+          ],
+          "durations": [
+            1
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 234,
+          "frameHeight": 216,
+          "pivot": {
+            "x": 77,
+            "y": 214
+          }
+        },
+        "guardStand": {
+          "sheet": "ben/humungousaur/growth-1/guardStand.png",
+          "columns": 1,
+          "frames": [
+            0
+          ],
+          "durations": [
+            1
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 221,
+          "frameHeight": 194,
+          "pivot": {
+            "x": 72,
+            "y": 192
+          }
+        },
+        "guardCrouch": {
+          "sheet": "ben/humungousaur/growth-1/guardCrouch.png",
+          "columns": 1,
+          "frames": [
+            0
+          ],
+          "durations": [
+            1
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 239,
+          "frameHeight": 151,
+          "pivot": {
+            "x": 81,
+            "y": 149
+          }
+        },
+        "downed": {
+          "sheet": "ben/humungousaur/growth-1/downed.png",
+          "columns": 1,
+          "frames": [
+            0
+          ],
+          "durations": [
+            1
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 310,
+          "frameHeight": 76,
+          "pivot": {
+            "x": 170,
+            "y": 74
+          }
+        },
+        "stand_light": {
+          "sheet": "ben/humungousaur/growth-1/stand_light.png",
+          "columns": 4,
+          "frames": [
+            0,
+            2,
+            1,
+            3
+          ],
+          "durations": [
+            6,
+            4,
+            4,
+            9
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 324,
+          "frameHeight": 215,
+          "pivot": {
+            "x": 88,
+            "y": 213
+          }
+        },
+        "stand_medium": {
+          "sheet": "ben/humungousaur/growth-1/stand_medium.png",
+          "columns": 4,
+          "frames": [
+            0,
+            2,
+            1,
+            3
+          ],
+          "durations": [
+            10,
+            5,
+            7,
+            15
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 271,
+          "frameHeight": 215,
+          "pivot": {
+            "x": 82,
+            "y": 213
+          }
+        },
+        "crouch_light": {
+          "sheet": "ben/humungousaur/growth-1/crouch_light.png",
+          "columns": 4,
+          "frames": [
+            0,
+            2,
+            1,
+            3
+          ],
+          "durations": [
+            6,
+            4,
+            4,
+            10
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 235,
+          "frameHeight": 183,
+          "pivot": {
+            "x": 100,
+            "y": 181
+          }
+        },
+        "crouch_medium": {
+          "sheet": "ben/humungousaur/growth-1/crouch_medium.png",
+          "columns": 4,
+          "frames": [
+            0,
+            2,
+            1,
+            3
+          ],
+          "durations": [
+            12,
+            6,
+            8,
+            17
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 279,
+          "frameHeight": 183,
+          "pivot": {
+            "x": 127,
+            "y": 181
+          }
+        },
+        "air_light": {
+          "sheet": "ben/humungousaur/growth-1/air_light.png",
+          "columns": 4,
+          "frames": [
+            0,
+            2,
+            1,
+            3
+          ],
+          "durations": [
+            6,
+            5,
+            5,
+            10
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 360,
+          "frameHeight": 215,
+          "pivot": {
+            "x": 85,
+            "y": 213
+          }
+        },
+        "air_medium": {
+          "sheet": "ben/humungousaur/growth-1/air_medium.png",
+          "columns": 4,
+          "frames": [
+            0,
+            2,
+            1,
+            3
+          ],
+          "durations": [
+            10,
+            10,
+            8,
+            16
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 302,
+          "frameHeight": 215,
+          "pivot": {
+            "x": 151,
+            "y": 213
+          }
+        },
+        "throw": {
+          "sheet": "ben/humungousaur/growth-1/throw.png",
+          "columns": 4,
+          "frames": [
+            0,
+            1,
+            3
+          ],
+          "durations": [
+            10,
+            3,
+            21
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 358,
+          "frameHeight": 226,
+          "pivot": {
+            "x": 142,
+            "y": 224
+          }
+        },
+        "grabHold": {
+          "sheet": "ben/humungousaur/growth-1/throw.png",
+          "columns": 4,
+          "frames": [
+            1,
+            2,
+            3
+          ],
+          "durations": [
+            8,
+            9,
+            9
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 358,
+          "frameHeight": 226,
+          "pivot": {
+            "x": 142,
+            "y": 224
+          }
+        },
+        "throwRecover": {
+          "sheet": "ben/humungousaur/growth-1/throw.png",
+          "columns": 4,
+          "frames": [
+            3
+          ],
+          "durations": [
+            12
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 358,
+          "frameHeight": 226,
+          "pivot": {
+            "x": 142,
+            "y": 224
+          }
+        },
+        "colossal_light": {
+          "sheet": "ben/humungousaur/growth-1/colossal.png",
+          "columns": 4,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "durations": [
+            10,
+            4,
+            4,
+            23
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 450,
+          "frameHeight": 215,
+          "pivot": {
+            "x": 168,
+            "y": 213
+          }
+        },
+        "colossal_medium": {
+          "sheet": "ben/humungousaur/growth-1/colossal.png",
+          "columns": 4,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "durations": [
+            16,
+            6,
+            6,
+            33
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 450,
+          "frameHeight": 215,
+          "pivot": {
+            "x": 168,
+            "y": 213
+          }
+        },
+        "tailspin_light": {
+          "sheet": "ben/humungousaur/growth-1/tailspin.png",
+          "columns": 4,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "durations": [
+            9,
+            3,
+            4,
+            25
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 375,
+          "frameHeight": 222,
+          "pivot": {
+            "x": 108,
+            "y": 220
+          }
+        },
+        "tailspin_medium": {
+          "sheet": "ben/humungousaur/growth-1/tailspin.png",
+          "columns": 4,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "durations": [
+            16,
+            4,
+            5,
+            37
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 375,
+          "frameHeight": 222,
+          "pivot": {
+            "x": 108,
+            "y": 220
+          }
+        },
+        "growth_light": {
+          "sheet": "ben/humungousaur/growth-1/growth.png",
+          "columns": 4,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "durations": [
+            6,
+            6,
+            1,
+            23
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 235,
+          "frameHeight": 215,
+          "pivot": {
+            "x": 99,
+            "y": 213
+          }
+        },
+        "growth_medium": {
+          "sheet": "ben/humungousaur/growth-1/growth.png",
+          "columns": 4,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "durations": [
+            10,
+            11,
+            1,
+            35
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 235,
+          "frameHeight": 215,
+          "pivot": {
+            "x": 99,
+            "y": 213
+          }
+        }
+      }
+    },
+    "2": {
+      "sheet": "ben/humungousaur/growth-2/idle.png",
+      "frameWidth": 218,
+      "frameHeight": 246,
+      "pivot": {
+        "x": 83,
+        "y": 244
+      },
+      "scale": 1,
+      "columns": 6,
+      "clips": {
+        "idle": {
+          "sheet": "ben/humungousaur/growth-2/idle.png",
+          "columns": 6,
+          "frames": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "durations": [
+            10,
+            9,
+            11,
+            10,
+            10,
+            11
+          ],
+          "ticks": 1,
+          "loop": true,
+          "frameWidth": 218,
+          "frameHeight": 246,
+          "pivot": {
+            "x": 83,
+            "y": 244
+          }
+        },
+        "walkForward": {
+          "sheet": "ben/humungousaur/growth-2/walkForward.png",
+          "columns": 6,
+          "frames": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "durations": [
+            5,
+            5,
+            4,
+            5,
+            5,
+            4
+          ],
+          "ticks": 1,
+          "loop": true,
+          "frameWidth": 265,
+          "frameHeight": 235,
+          "pivot": {
+            "x": 113,
+            "y": 233
+          }
+        },
+        "walkBack": {
+          "sheet": "ben/humungousaur/growth-2/walkBack.png",
+          "columns": 6,
+          "frames": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "durations": [
+            5,
+            5,
+            4,
+            5,
+            5,
+            4
+          ],
+          "ticks": 1,
+          "loop": true,
+          "frameWidth": 224,
+          "frameHeight": 238,
+          "pivot": {
+            "x": 83,
+            "y": 236
+          }
+        },
+        "dashForward": {
+          "sheet": "ben/humungousaur/growth-2/dashForward.png",
+          "columns": 5,
+          "frames": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "durations": [
+            2,
+            3,
+            3,
+            2,
+            5
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 391,
+          "frameHeight": 244,
+          "pivot": {
+            "x": 182,
+            "y": 242
+          }
+        },
+        "backdash": {
+          "sheet": "ben/humungousaur/growth-2/backdash.png",
+          "columns": 5,
+          "frames": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "durations": [
+            2,
+            3,
+            3,
+            2,
+            5
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 288,
+          "frameHeight": 242,
+          "pivot": {
+            "x": 150,
+            "y": 240
+          }
+        },
+        "crouchStart": {
+          "sheet": "ben/humungousaur/growth-2/crouchStart.png",
+          "columns": 2,
+          "frames": [
+            0,
+            1
+          ],
+          "durations": [
+            3,
+            3
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 246,
+          "frameHeight": 242,
+          "pivot": {
+            "x": 98,
+            "y": 240
+          }
+        },
+        "crouchIdle": {
+          "sheet": "ben/humungousaur/growth-2/crouchIdle.png",
+          "columns": 2,
+          "frames": [
+            0,
+            1
+          ],
+          "durations": [
+            11,
+            10
+          ],
+          "ticks": 1,
+          "loop": true,
+          "frameWidth": 259,
+          "frameHeight": 188,
+          "pivot": {
+            "x": 112,
+            "y": 186
+          }
+        },
+        "crouchEnd": {
+          "sheet": "ben/humungousaur/growth-2/crouchEnd.png",
+          "columns": 2,
+          "frames": [
+            0,
+            1
+          ],
+          "durations": [
+            3,
+            2
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 247,
+          "frameHeight": 228,
+          "pivot": {
+            "x": 90,
+            "y": 226
+          }
+        },
+        "jumpStart": {
+          "sheet": "ben/humungousaur/growth-2/jumpStart.png",
+          "columns": 3,
+          "frames": [
+            0,
+            1,
+            2
+          ],
+          "durations": [
+            3,
+            3,
+            3
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 252,
+          "frameHeight": 225,
+          "pivot": {
+            "x": 93,
+            "y": 223
+          }
+        },
+        "jumpRise": {
+          "sheet": "ben/humungousaur/growth-2/jumpRise.png",
+          "columns": 2,
+          "frames": [
+            0,
+            1
+          ],
+          "durations": [
+            1,
+            1
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 243,
+          "frameHeight": 252,
+          "pivot": {
+            "x": 80,
+            "y": 250
+          }
+        },
+        "jumpApex": {
+          "sheet": "ben/humungousaur/growth-2/jumpApex.png",
+          "columns": 1,
+          "frames": [
+            0
+          ],
+          "durations": [
+            1
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 252,
+          "frameHeight": 195,
+          "pivot": {
+            "x": 84,
+            "y": 193
+          }
+        },
+        "jumpFall": {
+          "sheet": "ben/humungousaur/growth-2/jumpFall.png",
+          "columns": 2,
+          "frames": [
+            0,
+            1
+          ],
+          "durations": [
+            1,
+            1
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 260,
+          "frameHeight": 231,
+          "pivot": {
+            "x": 93,
+            "y": 229
+          }
+        },
+        "landing": {
+          "sheet": "ben/humungousaur/growth-2/landing.png",
+          "columns": 3,
+          "frames": [
+            0,
+            1,
+            2
+          ],
+          "durations": [
+            2,
+            5,
+            6
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 271,
+          "frameHeight": 219,
+          "pivot": {
+            "x": 104,
+            "y": 217
+          }
+        },
+        "damage": {
+          "sheet": "ben/humungousaur/growth-2/damage.png",
+          "columns": 1,
+          "frames": [
+            0
+          ],
+          "durations": [
+            1
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 263,
+          "frameHeight": 243,
+          "pivot": {
+            "x": 86,
+            "y": 241
+          }
+        },
+        "guardStand": {
+          "sheet": "ben/humungousaur/growth-2/guardStand.png",
+          "columns": 1,
+          "frames": [
+            0
+          ],
+          "durations": [
+            1
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 248,
+          "frameHeight": 218,
+          "pivot": {
+            "x": 80,
+            "y": 216
+          }
+        },
+        "guardCrouch": {
+          "sheet": "ben/humungousaur/growth-2/guardCrouch.png",
+          "columns": 1,
+          "frames": [
+            0
+          ],
+          "durations": [
+            1
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 268,
+          "frameHeight": 169,
+          "pivot": {
+            "x": 90,
+            "y": 167
+          }
+        },
+        "downed": {
+          "sheet": "ben/humungousaur/growth-2/downed.png",
+          "columns": 1,
+          "frames": [
+            0
+          ],
+          "durations": [
+            1
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 348,
+          "frameHeight": 85,
+          "pivot": {
+            "x": 190,
+            "y": 83
+          }
+        },
+        "stand_light": {
+          "sheet": "ben/humungousaur/growth-2/stand_light.png",
+          "columns": 4,
+          "frames": [
+            0,
+            2,
+            1,
+            3
+          ],
+          "durations": [
+            6,
+            4,
+            4,
+            9
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 364,
+          "frameHeight": 242,
+          "pivot": {
+            "x": 99,
+            "y": 240
+          }
+        },
+        "stand_medium": {
+          "sheet": "ben/humungousaur/growth-2/stand_medium.png",
+          "columns": 4,
+          "frames": [
+            0,
+            2,
+            1,
+            3
+          ],
+          "durations": [
+            10,
+            5,
+            7,
+            15
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 307,
+          "frameHeight": 242,
+          "pivot": {
+            "x": 93,
+            "y": 240
+          }
+        },
+        "crouch_light": {
+          "sheet": "ben/humungousaur/growth-2/crouch_light.png",
+          "columns": 4,
+          "frames": [
+            0,
+            2,
+            1,
+            3
+          ],
+          "durations": [
+            6,
+            4,
+            4,
+            10
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 264,
+          "frameHeight": 205,
+          "pivot": {
+            "x": 113,
+            "y": 203
+          }
+        },
+        "crouch_medium": {
+          "sheet": "ben/humungousaur/growth-2/crouch_medium.png",
+          "columns": 4,
+          "frames": [
+            0,
+            2,
+            1,
+            3
+          ],
+          "durations": [
+            12,
+            6,
+            8,
+            17
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 313,
+          "frameHeight": 205,
+          "pivot": {
+            "x": 141,
+            "y": 203
+          }
+        },
+        "air_light": {
+          "sheet": "ben/humungousaur/growth-2/air_light.png",
+          "columns": 4,
+          "frames": [
+            0,
+            2,
+            1,
+            3
+          ],
+          "durations": [
+            6,
+            5,
+            5,
+            10
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 403,
+          "frameHeight": 242,
+          "pivot": {
+            "x": 95,
+            "y": 240
+          }
+        },
+        "air_medium": {
+          "sheet": "ben/humungousaur/growth-2/air_medium.png",
+          "columns": 4,
+          "frames": [
+            0,
+            2,
+            1,
+            3
+          ],
+          "durations": [
+            10,
+            10,
+            8,
+            16
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 340,
+          "frameHeight": 242,
+          "pivot": {
+            "x": 170,
+            "y": 240
+          }
+        },
+        "throw": {
+          "sheet": "ben/humungousaur/growth-2/throw.png",
+          "columns": 4,
+          "frames": [
+            0,
+            1,
+            3
+          ],
+          "durations": [
+            10,
+            3,
+            21
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 402,
+          "frameHeight": 254,
+          "pivot": {
+            "x": 160,
+            "y": 252
+          }
+        },
+        "grabHold": {
+          "sheet": "ben/humungousaur/growth-2/throw.png",
+          "columns": 4,
+          "frames": [
+            1,
+            2,
+            3
+          ],
+          "durations": [
+            8,
+            9,
+            9
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 402,
+          "frameHeight": 254,
+          "pivot": {
+            "x": 160,
+            "y": 252
+          }
+        },
+        "throwRecover": {
+          "sheet": "ben/humungousaur/growth-2/throw.png",
+          "columns": 4,
+          "frames": [
+            3
+          ],
+          "durations": [
+            12
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 402,
+          "frameHeight": 254,
+          "pivot": {
+            "x": 160,
+            "y": 252
+          }
+        },
+        "colossal_light": {
+          "sheet": "ben/humungousaur/growth-2/colossal.png",
+          "columns": 4,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "durations": [
+            10,
+            4,
+            4,
+            23
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 506,
+          "frameHeight": 242,
+          "pivot": {
+            "x": 189,
+            "y": 240
+          }
+        },
+        "colossal_medium": {
+          "sheet": "ben/humungousaur/growth-2/colossal.png",
+          "columns": 4,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "durations": [
+            16,
+            6,
+            6,
+            33
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 506,
+          "frameHeight": 242,
+          "pivot": {
+            "x": 189,
+            "y": 240
+          }
+        },
+        "tailspin_light": {
+          "sheet": "ben/humungousaur/growth-2/tailspin.png",
+          "columns": 4,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "durations": [
+            9,
+            3,
+            4,
+            25
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 421,
+          "frameHeight": 249,
+          "pivot": {
+            "x": 121,
+            "y": 247
+          }
+        },
+        "tailspin_medium": {
+          "sheet": "ben/humungousaur/growth-2/tailspin.png",
+          "columns": 4,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "durations": [
+            16,
+            4,
+            5,
+            37
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 421,
+          "frameHeight": 249,
+          "pivot": {
+            "x": 121,
+            "y": 247
+          }
+        },
+        "growth_light": {
+          "sheet": "ben/humungousaur/growth-2/growth.png",
+          "columns": 4,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "durations": [
+            6,
+            6,
+            1,
+            23
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 264,
+          "frameHeight": 242,
+          "pivot": {
+            "x": 112,
+            "y": 240
+          }
+        },
+        "growth_medium": {
+          "sheet": "ben/humungousaur/growth-2/growth.png",
+          "columns": 4,
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "durations": [
+            10,
+            11,
+            1,
+            35
+          ],
+          "ticks": 1,
+          "loop": false,
+          "frameWidth": 264,
+          "frameHeight": 242,
+          "pivot": {
+            "x": 112,
+            "y": 240
+          }
+        }
+      }
+    }
+  }
+}
