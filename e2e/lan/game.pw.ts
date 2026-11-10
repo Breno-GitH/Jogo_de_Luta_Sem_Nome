@@ -1445,3 +1445,50 @@ test("Kaneki long grab branches and resistance use authoritative LAN inputs", as
   for (const client of [a,b])
     await expect(client.locator("canvas")).toHaveAttribute("data-capture","none");
 });
+
+test("Ben Stage 7 agrees on gravity, the planetoid and Echo's clone attacks", async () => {
+  const code = await pair("ben", "samurai");
+  const room = await seed(code, 145);
+  const own = a.locator("canvas"), remote = b.locator("canvas");
+  const ben = () => room.match!.fighters[0];
+  const samurai = () => room.match!.fighters[1];
+
+  async function change(id: string) {
+    await expect.poll(() => ben().state).toBe("idle");
+    for (let i = 0; i < 11 && (await own.getAttribute("data-omnitrix-selection")) !== id; i++) {
+      const before = await own.getAttribute("data-omnitrix-selection");
+      await press(a, "l", 60);
+      await expect(own).not.toHaveAttribute("data-omnitrix-selection", before);
+    }
+    await expect(own).toHaveAttribute("data-omnitrix-selection", id);
+    await a.keyboard.down("l");
+    try { await expect(own).toHaveAttribute("data-omnitrix-form", id); }
+    finally { await a.keyboard.up("l"); }
+    await expect(remote).toHaveAttribute("data-rival-omnitrix-form", id);
+    for (const view of [own, remote]) await expect(view).toHaveAttribute("data-omnitrix-sheet", `ben/${id}/stage7.png`);
+  }
+
+  await change("gravattack");
+  const startX = samurai().x;
+  await motion(a, [2, 6], "j");
+  await expect.poll(() => samurai().x).toBeLessThan(startX - 12);
+  await expect.poll(() => ben().state).toBe("idle");
+  await motion(a, [2, 5, 2], "j");
+  for (const view of [own, remote]) await expect(view).toHaveAttribute("data-gravity-well", "true");
+  await expect.poll(() => ben().state).toBe("idle");
+  await motion(a, [2, 5, 2], "k", 48);
+  await expect.poll(() => ben().moveId === "gravityDomain_medium" && ben().y < 580).toBe(true);
+
+  await change("echoEcho");
+  await motion(a, [2, 4], "k");
+  for (const view of [own, remote]) await expect(view).toHaveAttribute("data-echo-clones", "2");
+  await expect.poll(() => ben().state).toBe("idle");
+  const before = samurai().health;
+  await motion(a, [2, 5, 2], "k");
+  await expect.poll(() => samurai().health).toBeLessThan(before);
+  await expect.poll(() => ben().state).toBe("idle");
+  for (const view of [own, remote]) await expect(view).toHaveAttribute("data-p2-health", String(samurai().health));
+  await change("gravattack");
+  for (const view of [own, remote]) await expect(view).toHaveAttribute("data-echo-clones", "0");
+  await consistent();
+});

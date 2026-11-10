@@ -49,6 +49,7 @@ import { benId, cancelOmnitrix, newOmnitrix, omnitrixCanBrowse, tickOmnitrix, ty
 import { benForms, benGrabFor, nrgReleasedForm, type BenForm } from "./ben-forms";
 import { benManeuverTarget, driveBenManeuver, flyNrg } from "./ben-rework";
 import { feedbackConductorContact } from "./feedback-conductor";
+import { clearStage7, gravityAt, hitEchoClones, planetoid, tickEchoClones } from "./ben-stage7";
 import { feedbackCablePaths, benFormBalance, benObjectMove, benObjectShape, benSpecialCommand,
   benProjectile, benStage6Balance, spectralPaths,
   type BenEffect, type BenField, type BenObject } from "./ben-moves";
@@ -326,6 +327,7 @@ export class Fighter {
   }
   hurtboxes(): Rect[] {
     if (gokuInvisible(this)) return [];
+    if (planetoid(this)) return [worldRect({ x: -50, y: -118, w: 105, h: 116 }, this.x, this.y, this.facing)];
     const lift = this.stand?.s.ownerLiftFrame ?? -1;
     const pose =
       this.state === "attack" && this.move
@@ -602,6 +604,7 @@ export class Fighter {
     const ben = m.ben;
     if (ben?.grow && watch?.growthCooldown) return false;
     if (ben?.nrgMode === "release" && watch?.nrgCooldown) return false;
+    if (ben?.echoSplit && (watch?.echoCooldown || (watch?.echoClones?.length ?? 0) >= 2)) return false;
     if (ben?.technique === "ghostPhase" && watch?.ghostCooldown) return false;
     if (ben?.airUse === "flight" && watch?.flightUsed || ben?.airUse === "dive" && watch?.diveUsed) return false;
     if (m.ben?.technique && this.omnitrix) {
@@ -1108,7 +1111,8 @@ export class Fighter {
             this.stateFrame < move.drive.to
               ? this.facing * (this.connected && move.ben?.follow ? move.ben.follow : move.drive.speed)
               : 0;
-        if (move.hopAt === this.stateFrame) this.vy = move.hopVelocity ?? 0;
+        if (move.hopAt === this.stateFrame)
+          this.vy = (move.hopVelocity ?? 0) + (planetoid(this) ? input.up ? -2 : input.down ? 1.4 : 0 : 0);
         const age = this.stateFrame;
         if (move.ben?.aerialMotion === "dive") {
           if (age === 3 && !this.airborne) this.vy = -8;
@@ -1458,6 +1462,11 @@ export class Match {
     this.fighters.forEach((f, i) => {
       if (this.temporal.isFrozen(i)) return;
       const other = this.fighters[1 - i];
+      const well = f.airborne && !["hitstun", "blockstun", "ko", "getup"].includes(f.state) && !this.temporal.isFrozen(other.id)
+        ? gravityAt(other, f.x, f.y, FLOOR) : undefined;
+      if (well && !this.benWalls().some(w => this.benWallBetween(w, well.x, f.x,
+        { x: Math.min(well.x, f.x), y: f.y - 60, w: Math.abs(well.x - f.x), h: 62 })))
+        f.vy = Math.min(14, f.vy + .72);
       f.guardIntent =
         inputs[i].direction === -f.facing &&
         !f.airborne &&
@@ -1514,6 +1523,8 @@ export class Match {
       if (this.temporal.isFrozen(i)) return null;
       const shapes = f.attackShapes(beforeMovement[i]);
       const target = this.fighters[1 - i];
+      if (shapes.length && f.canConnect && f.move?.damage && f.move.kind !== "grab")
+        this.strikeEchoClones(f, target, shapes, crystalWalls);
       const groundedGrab = f.move?.level === "throw" || f.move?.ben?.captureStrike;
       const illegalGrab = groundedGrab && (f.data.id === "kaneki"
         ? !canKaguneCapture(f, target, "ground")
@@ -1653,7 +1664,7 @@ export class Match {
       ) &&
       (!(m.ben?.field || ["knives", "ki", "kamehameha"].includes(m.special ?? "") ||
         (m.special && isSasukeSpecial(m.special) && sasukeTechniques[m.special].shots)) ||
-        direction === -target.facing);
+        direction === -target.facing || m.ben?.field?.type === "sonicAssist");
     const blocked =
       guarding &&
       m.level !== "throw" &&
@@ -1890,8 +1901,10 @@ export class Match {
       const target = this.fighters[1 - p.owner],
         owner = this.fighters[p.owner];
       const tip = p.facing * 14;
-      if (this.damageBenWalls([{ a: { x: p.previousX - tip, y: p.previousY }, b: { x: p.x + tip, y: p.y }, r: 2 }],
-          p.damage, this.benWalls(), `knife:${p.id}`, p.owner)) return false;
+      const shape = { a: { x: p.previousX - tip, y: p.previousY }, b: { x: p.x + tip, y: p.y }, r: 2 };
+      const walls = this.benWalls();
+      if (this.damageBenWalls([shape], p.damage, walls, `knife:${p.id}`, p.owner) ||
+          this.strikeEchoClones(owner, target, [shape], walls)) return false;
       if (
         target.knockedDown ||
         target.invulnerable ||
@@ -2057,7 +2070,9 @@ export class Match {
         b: { x: p.x, y: p.y },
         r: p.radius,
       };
-      if (this.damageBenWalls([shape], move.damage, this.benWalls(), `energy:${p.id}`, p.owner)) return false;
+      const walls = this.benWalls();
+      if (this.damageBenWalls([shape], move.damage, walls, `energy:${p.id}`, p.owner) ||
+          this.strikeEchoClones(owner, target, [shape], walls)) return false;
       if (target.knockedDown || target.invulnerable) return true;
       const hurt = target.hurtboxes().find((r) => shapeHitsRect(shape, r));
       if (hurt) {
@@ -2164,6 +2179,7 @@ export class Match {
     if (watch.growthCooldown > 0) watch.growthCooldown--;
     if (watch.ghostCooldown) watch.ghostCooldown--;
     if (watch.nrgCooldown) watch.nrgCooldown--;
+    if (watch.echoCooldown) watch.echoCooldown--;
     const current = f.state === "attack" ? f.move : undefined;
     if (!f.airborne && !current?.ben?.airUse && !current?.ben?.lift) {
       delete watch.flightUsed;
@@ -2344,6 +2360,12 @@ export class Match {
     return true;
   }
 
+  private strikeEchoClones(owner: Fighter, target: Fighter, shapes: AttackShape[], walls: BenWall[]) {
+    if (this.temporal.isFrozen(target.id)) return false;
+    return hitEchoClones(target, shapes, FLOOR,
+      (shape, x) => !walls.some(w => this.benWallBetween(w, owner.x, x, shape)));
+  }
+
   private stepBenObjects() {
     for (const owner of this.fighters) {
       const watch = owner.omnitrix;
@@ -2353,6 +2375,9 @@ export class Match {
       const cast = move?.ben?.field;
       if (cast && move && owner.stateFrame === move.startup) this.spawnBenField(owner, target, cast);
       const walls = this.benWalls();
+      tickEchoClones(owner, target, this.combatFrame, FLOOR, x => walls.some(w => this.benWallSolid(w) &&
+        (Math.abs(w.object.x - x) <= w.field.width / 2 + 19 ||
+          this.benWallBetween(w, owner.x, x, { x: Math.min(owner.x, x), y: FLOOR - 95, w: Math.abs(x - owner.x), h: 95 }))));
       watch.objects = watch.objects.filter((object, index) => {
         const projectile = benObjectMove(object.id);
         const field = projectile?.ben?.field;
@@ -2360,7 +2385,10 @@ export class Match {
         if (object.impactAge !== undefined) return ++object.impactAge < 15;
         if (projectile.ben?.nightmare && (owner.state !== "attack" || owner.moveId !== object.id)) return false;
         if (++object.age > field.life + (object.power ? 6 : 0)) return false;
-        if (object.age <= 0 || field.type === "wall") return true;
+        if (object.age <= 0 || field.type === "wall" || field.type === "gravityWell") return true;
+        if (["fireball", "bolt", "shard", "frost", "sonic"].includes(field.type) &&
+            gravityAt(target, object.x, object.y, FLOOR))
+          object.vy = Math.min(7, (object.vy ?? 0) + .48);
         const before = { x: object.x, y: object.y };
         object.x += object.direction * (field.type === "spectralHand" && object.vy ? 6 : field.speed);
         object.y += object.vy ?? 0;
@@ -2406,7 +2434,10 @@ export class Match {
         const missile = benProjectile(field);
         if (missile && this.damageBenWalls([shape], damage, walls, `ben:${owner.id}:${object.cast}:${index}`, owner.id))
           return field.type === "car" ? crash() : false;
-        if (this.capture || target.knockedDown || target.invulnerable || target.health <= 0) return true;
+        if (field.type === "gravityPulse" && walls.some(w => this.benWallBetween(w, owner.x, target.x, shape))) return true;
+        if (damage && this.strikeEchoClones(owner, target, [shape], walls) && missile && field.type !== "beam") return false;
+        if (this.capture || target.knockedDown || target.invulnerable || target.health <= 0 ||
+            field.type === "sonicAssist" && (target.combo >= 5 || owner.omnitrix?.active !== "echoEcho")) return true;
         const hurt = target.hurtboxes().find(box => shapeHitsRect(shape, box));
         if (!hurt) return true;
         object.spent = true;
@@ -2416,7 +2447,8 @@ export class Match {
               sibling.spent = true;
         }
         const direction = field.type === "lightning" || field.type === "spectralHand" ? -target.facing
-          : field.type === "pillar" && target.x !== object.x ? Math.sign(target.x - object.x) : object.direction;
+          : (field.type === "pillar" || field.gravityMode === "repel") && target.x !== object.x
+            ? Math.sign(target.x - object.x) : object.direction;
         if (field.type === "spectralHand" && projectile.ben?.nightmare &&
             !this.benBlocked(target, projectile, direction) && !this.temporal.isFrozen(target.id) &&
             target.combo < (owner.data.combatLimits?.maxHits ?? 9)) {
@@ -2430,7 +2462,9 @@ export class Match {
         if (energy && this.absorbBen(target, energy, damage, direction)) return false;
         const impact = object.power
           ? { ...projectile, damage, stun: projectile.stun + 3, push: projectile.push + 2 }
-          : { ...projectile, damage };
+          : field.type === "sonicAssist" && target.combo
+            ? { ...projectile, damage, stun: Math.max(projectile.stun, Math.min(16, target.stun)), launch: target.airborne ? target.vy * .65 : 0 }
+            : { ...projectile, damage };
         const beamX = field.type === "beam" ? target.x : object.x;
         const contactX = Math.max(hurt.x, Math.min(beamX, hurt.x + hurt.w));
         const impactY = field.type === "beam" ? Math.max(hurt.y, Math.min(hurt.y + hurt.h,
@@ -2496,6 +2530,7 @@ export class Match {
     const form = benForms[to];
     if (!form || !this.placeBenBody(fighter, rival, form)) return false;
     const watch = fighter.omnitrix!;
+    if (watch.active === "gravattack" || watch.active === "echoEcho") clearStage7(fighter);
     if (watch.nrgReleased) {
       watch.nrgReleased = false;
       delete watch.flightTicks;
@@ -3380,6 +3415,7 @@ export class Match {
         f.chill = undefined;
         if (f.omnitrix) {
           f.omnitrix.objects.length = 0;
+          delete f.omnitrix.echoClones;
           if (f.omnitrix.nrgReleased) {
             f.omnitrix.nrgReleased = false;
             f.omnitrix.nrgTicks = 0;

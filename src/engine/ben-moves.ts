@@ -1,9 +1,9 @@
 import type { CommandBuffer } from "./input";
 import type { Button, HitWindow, Move, Point, Rect } from "./types";
 
-export type BenEffect = "speed" | "tail" | "wind" | "step" | "power" | "quake" | "flame" | "fireball" | "pillar" | "boost" | "crystal" | "colossus" | "metal" | "electric" | "ice" | "spectral" | "thermal" | "car" | "storm" | "nightmare";
+export type BenEffect = "speed" | "tail" | "wind" | "step" | "power" | "quake" | "flame" | "fireball" | "pillar" | "boost" | "crystal" | "colossus" | "metal" | "electric" | "ice" | "spectral" | "thermal" | "car" | "storm" | "nightmare" | "gravity" | "sonic";
 export interface BenField {
-  type: "fireball" | "pillar" | "quake" | "spikes" | "wall" | "shard" | "bolt" | "frost" | "heat" | "beam" | "car" | "lightning" | "spectralHand";
+  type: "fireball" | "pillar" | "quake" | "spikes" | "wall" | "shard" | "bolt" | "frost" | "heat" | "beam" | "car" | "lightning" | "spectralHand" | "gravityPulse" | "gravityWell" | "sonic" | "sonicAssist";
   offset: number;
   height: number;
   width: number;
@@ -15,6 +15,7 @@ export interface BenField {
   aim?: "heat" | "rain";
   spendCharge?: boolean;
   durability?: number;
+  gravityMode?: "pull" | "repel";
   energy?: 1 | 2;
   length?: number;
 }
@@ -47,6 +48,8 @@ export interface BenMoveMeta {
   carSlam?: boolean;
   captureStrike?: boolean;
   nightmare?: boolean;
+  echoSplit?: 1 | 2;
+  echoHarmony?: 1 | 2;
 }
 export interface BenObject {
   id: string;
@@ -63,6 +66,7 @@ export interface BenObject {
   power?: number;
   durability?: number;
   hitKeys?: string[];
+  sourceClone?: number;
 }
 
 export const benFormBalance = {
@@ -441,6 +445,75 @@ export const nrgReleasedMoves = {
   nrgEmergence: special("nrgEmergence", thermal, [0, 1, 8], 0, noBox, {}),
 };
 
+const gravityPulse = (
+  gravityMode: "pull" | "repel", offset: number, width: number, height: number, life: number,
+): BenField => ({ type: "gravityPulse", gravityMode, offset, width, height, speed: 0, life, activeAge: [2, life - 4] });
+const sonic = (offset: number, height: number, width: number, speed: number, life: number, length: number): BenField =>
+  ({ type: "sonic", offset, height, width, speed, life, length });
+
+export const gravattackMoves = {
+  stand_light: blow([7, 4, 12], 29, rect(32, -133, 68, 38), 1, "gravity", { stun: 25, push: 2 }),
+  stand_medium: blow([12, 5, 24], 56, rect(35, -136, 85, 66), 2, "gravity", { stun: 34, push: 2.8, hitstop: 7 }),
+  crouch_light: blow([7, 4, 13], 25, rect(29, -61, 71, 35), 1, "gravity", { level: "low", stun: 24 }),
+  crouch_medium: blow([11, 6, 24], 44, rect(25, -57, 101, 44), 2, "gravity", { level: "low", push: 5, drive: charge(7, 14, 2.5) }),
+  air_light: blow([5, 6, 13], 29, rect(29, -128, 73, 60), 1, "gravity", airLight),
+  air_medium: blow([9, 9, 26], 58, rect(14, -80, 92, 81), 2, "gravity", {
+    level: "high", hopAt: 9, hopVelocity: 6, knockdown: true, cancels: [], hitstop: 8,
+  }),
+  gravityPull_light: special("gravityPull", "gravity", [9, 1, 15], 23, noBox, { stun: 31, push: -6.5, hitstop: 3 }, {
+    field: gravityPulse("pull", 116, 150, 137, 11),
+  }),
+  gravityPull_medium: special("gravityPull", "gravity", [17, 1, 29], 42, noBox, {
+    stun: 39, push: -3.7, launch: -13, cancels: ["jump", "omnitrix"], cancelWindow: { fromTick: 18, toTick: 42 },
+  }, { field: gravityPulse("pull", 137, 184, 175, 14) }),
+  gravityRepel_light: special("gravityRepel", "gravity", [10, 1, 22], 45, noBox, { stun: 22, push: 8 }, {
+    field: gravityPulse("repel", 81, 112, 113, 11),
+  }),
+  gravityRepel_medium: special("gravityRepel", "gravity", [21, 1, 35], 67, noBox, {
+    stun: 32, push: 11, launch: -8, knockdown: true, hitstop: 8,
+  }, { field: gravityPulse("repel", 19, 236, 149, 15) }),
+  gravityDomain_light: special("gravityDomain", "gravity", [17, 1, 25], 0, noBox, {}, {
+    field: { type: "gravityWell", offset: 123, width: 218, height: 179, speed: 0, life: 180 },
+  }),
+  gravityDomain_medium: special("gravityDomain", "gravity", [16, 13, 29], 71, rect(13, -115, 81, 106), {
+    hopAt: 13, hopVelocity: -4.3, drive: charge(15, 29, 10.5), stun: 27, push: 9, knockdown: true, hitstop: 8,
+  }),
+};
+
+export const echoEchoMoves = {
+  stand_light: blow([4, 4, 9], 19, rect(13, -79, 53, 29), 1, "speed", { stun: 22, push: 1.8 }),
+  stand_medium: blow([8, 5, 16], 35, rect(16, -80, 70, 40), 2, "sonic", { stun: 29, push: 2.8 }),
+  crouch_light: blow([5, 4, 10], 17, rect(12, -43, 50, 27), 1, "speed", { level: "low", stun: 22 }),
+  crouch_medium: blow([9, 5, 18], 32, rect(15, -44, 76, 36), 2, "sonic", { level: "low", stun: 24 }),
+  air_light: blow([4, 5, 11], 20, rect(12, -81, 54, 47), 1, "speed", airLight),
+  air_medium: blow([7, 6, 17], 37, rect(15, -66, 71, 66), 2, "sonic", {
+    level: "high", airHold: 2, stun: 24, cancels: ["special"],
+  }),
+  sonicCry_light: special("sonicCry", "sonic", [7, 1, 15], 34, noBox, { stun: 23, push: 3.8 }, {
+    air: true, field: sonic(31, 73, 14, 14, 13, 18),
+  }),
+  sonicCry_medium: special("sonicCry", "sonic", [14, 1, 25], 53, noBox, { stun: 29, push: 7, hitstop: 7 }, {
+    field: sonic(36, 75, 22, 12, 23, 30),
+  }),
+  echoSplit_light: special("echoSplit", "sonic", [10, 1, 19], 0, noBox, {}, { echoSplit: 1 }),
+  echoSplit_medium: special("echoSplit", "sonic", [16, 8, 23], 0, noBox, {}, { echoSplit: 2 }),
+  echoHarmony_light: special("echoHarmony", "sonic", [8, 1, 20], 34, noBox, { stun: 23, push: 3.5 }, {
+    echoHarmony: 1, field: sonic(30, 70, 17, 12, 10, 24),
+  }),
+  echoHarmony_medium: special("echoHarmony", "sonic", [17, 1, 30], 51, noBox, {
+    stun: 30, push: 5.3, launch: -7, cancels: ["omnitrix"], cancelWindow: { fromTick: 18, toTick: 44 },
+  }, { echoHarmony: 2, field: sonic(34, 76, 25, 13, 16, 32) }),
+};
+
+const echoAssists = {
+  echoCopyJab: special("echoCopyJab", "sonic", [0, 1, 0], 8, noBox, { stun: 8, push: 1.5, hitstop: 2, meterGain: 0 }, {
+    field: { ...sonic(18, 62, 12, 0, 2, 17), type: "sonicAssist" },
+  }),
+  echoCopyWave: special("echoCopyWave", "sonic", [0, 1, 0], 12, noBox, { stun: 12, push: 2.7, hitstop: 3, meterGain: 0 }, {
+    field: { ...sonic(24, 70, 15, 13, 11, 20), type: "sonicAssist" },
+  }),
+};
+
 const commands = {
   xlr8: ["turbo", "cyclone", "lightning"],
   fourArms: ["tackle", "quad", "seismic"],
@@ -451,11 +524,13 @@ const commands = {
   bigChill: ["frostBreath", "iceDive", "ghostFlight"],
   ghostfreak: ["ghostCross", "spectralArms", "ghostPhase"],
   nrg: ["thermal", "armorImpact", "nrgUnseal"],
+  gravattack: ["gravityPull", "gravityRepel", "gravityDomain"],
+  echoEcho: ["sonicCry", "echoSplit", "echoHarmony"],
   nrgReleased: ["radiantShot", "radiantWave", "nrgSeal"],
 } as const;
 const moves: Record<string, Move> = {
   ...xlr8Moves, ...fourArmsMoves, ...heatblastMoves, ...diamondheadMoves, ...humungousaurMoves, ...feedbackMoves,
-  ...bigChillMoves, ...ghostfreakMoves, ...nrgMoves, ...nrgReleasedMoves,
+  ...bigChillMoves, ...ghostfreakMoves, ...nrgMoves, ...nrgReleasedMoves, ...gravattackMoves, ...echoEchoMoves, ...echoAssists,
 };
 
 export function benSpecialCommand(form: string, buffer: CommandBuffer, button: Button) {
@@ -470,7 +545,7 @@ export function benSpecialCommand(form: string, buffer: CommandBuffer, button: B
 export function benObjectMove(id: string) { return moves[id]; }
 
 export function benProjectile(field: BenField) {
-  return ["fireball", "shard", "bolt", "frost", "heat", "beam", "car"].includes(field.type);
+  return ["fireball", "shard", "bolt", "frost", "heat", "beam", "car", "sonic", "sonicAssist"].includes(field.type);
 }
 
 export function benObjectHeight(object: BenObject, field: BenField) {

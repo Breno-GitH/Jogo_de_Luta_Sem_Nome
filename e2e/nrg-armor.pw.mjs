@@ -81,7 +81,7 @@ test("NRG contained uses the new armor attacks in the main arena", async ({ page
           ctx.drawImage(c, 0, 0, output.width, output.height);
           frames.push({ image: output.toDataURL("image/png").split(",")[1],
             clip: c.dataset.animation, move: c.dataset.move, tick: +c.dataset.benMoveTick,
-            x: +c.dataset.rootX, rival: +c.dataset.rivalX, health: +c.dataset.targetHealth,
+            x: +c.dataset.rootX, y: +c.dataset.rootY, rival: +c.dataset.rivalX, health: +c.dataset.targetHealth,
             combo: +c.dataset.combo, facing: +c.dataset.omnitrixFacing, mode: c.dataset.nrgMode,
             state: c.dataset.physicsState, sheet: c.dataset.omnitrixSheet });
           previous = now;
@@ -116,7 +116,7 @@ test("NRG contained uses the new armor attacks in the main arena", async ({ page
         await page.waitForFunction(limit => {
           const c = document.querySelector("canvas");
           return c.dataset.physicsState === "air" && +c.dataset.vy > 0 && +c.dataset.rootY > limit;
-        }, strength === "light" ? 484 : 435);
+        }, strength === "light" ? 510 : 435);
       }
       if (posture === "crouch") await page.keyboard.down("s");
       try { await page.keyboard.press(key, { delay: 32 }); }

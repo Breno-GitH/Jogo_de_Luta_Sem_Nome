@@ -47,13 +47,13 @@ function arena(seat: 0 | 1 = 0) {
 }
 
 describe("Omnitrix with playable forms", () => {
-  it("keeps the eleven ordered entries, nine playable profiles, and Alien X separate", () => {
+  it("keeps the eleven ordered entries, eleven playable profiles, and Alien X separate", () => {
     expect(ONLINE_CHARACTERS).toContain("ben");
     expect(benAliens.map(form => form.name)).toEqual([
       "XLR8", "Quatro Braços", "Feedback", "Gravattack", "Fantasmático", "Friagem",
       "NRG", "Diamante", "Eco Eco", "Chama", "Enormossauro",
     ]);
-    expect(Object.keys(benForms).sort()).toEqual([...playable, "diamondhead", "humungousaur", "feedback", "bigChill", "ghostfreak", "nrg"].sort());
+    expect(Object.keys(benForms).sort()).toEqual([...playable, "diamondhead", "humungousaur", "feedback", "bigChill", "ghostfreak", "nrg", "gravattack", "echoEcho"].sort());
     expect(benAliens.some(form => String(form.id) === alienXSuper.id)).toBe(false);
     expect(alienXSuper.command).toBe("ultimate");
   });
@@ -87,22 +87,11 @@ describe("Omnitrix with playable forms", () => {
     expect(fighter.omnitrix).toMatchObject({ active: "xlr8", selected: "fourArms" });
   });
 
-  it("switches directly across playable forms and refuses the two unavailable ones", () => {
-    const { fighter, transform, select, hold, step, run } = arena();
-    transform("xlr8");
-    transform("fourArms");
-    transform("diamondhead");
-    transform("feedback");
-    transform("humungousaur");
-    transform("heatblast");
-    for (const form of benAliens.filter(form => !benForms[form.id])) {
-      select(form.id);
-      hold();
-      run(omnitrixSwapTicks);
-      step(control(false));
-      expect(fighter.omnitrix).toMatchObject({ active: "heatblast", selected: form.id });
-      expect(fighter.omnitrix?.transition).toBeUndefined();
-    }
+  it("switches directly across all eleven playable forms", () => {
+    const { fighter, transform } = arena();
+    for (const form of benAliens) transform(form.id);
+    transform("gravattack");
+    transform("echoEcho");
     expect(fighter.data).toBe(ben);
   });
 

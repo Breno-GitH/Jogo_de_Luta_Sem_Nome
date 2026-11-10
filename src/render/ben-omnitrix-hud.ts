@@ -129,7 +129,9 @@ export function drawOmnitrixHud(
     ? state.nrgReleased ? ((state.nrgTicks ?? 0) ? `${state.flightTicks ? "VOO" : "LIBERADO"} ${Math.ceil(state.nrgTicks! / 60)}s` : "RECONTENÇÃO")
       : state.nrgCooldown ? `ARMADURA · ${Math.ceil(state.nrgCooldown / 60)}s` : "ARMADURA"
     : state.active === "ghostfreak" ? state.ghostCooldown ? `PESADELO ${(state.ghostCooldown / 60).toFixed(1)}s` : "PESADELO PRONTO"
-      : state.active === "bigChill" ? state.flightUsed ? "VOO GASTO" : "VOO PRONTO" : "";
+      : state.active === "bigChill" ? state.flightUsed ? "VOO GASTO" : "VOO PRONTO"
+        : state.active === "echoEcho" ? `CÓPIAS ${state.echoClones?.filter(clone => !clone.fading).length ?? 0}/2`
+          : state.active === "gravattack" && state.objects.some(object => object.id === "gravityDomain_light") ? "CAMPO ATIVO" : "";
   c.fillText(`ATIVA  ${activeLabel}`, textX, y + 18);
   if (mode) {
     c.textAlign = seat === 0 ? "right" : "left";

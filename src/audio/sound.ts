@@ -11,6 +11,8 @@ export type Cue =
   | "feedbackSpark"
   | "nrgImpact"
   | "nrgMetal"
+  | "gravityPulse"
+  | "sonicWave"
   | "kirinCharge"
   | "kirinThunder"
   | "knuckleSnap"
@@ -28,6 +30,8 @@ export function effectCue(event: HitEvent): Cue {
   if (!event.blocked && (event.ben === "electric" || event.ben === "storm") &&
       (event.kind === "hit" || event.kind === "power")) return "feedbackSpark";
   if (!event.blocked && event.ben === "thermal" && event.kind === "hit") return "nrgImpact";
+  if (!event.blocked && event.ben === "gravity") return "gravityPulse";
+  if (!event.blocked && event.ben === "sonic") return "sonicWave";
   if (event.ben === "metal" && (event.kind === "hit" || event.kind === "counter")) return "nrgMetal";
   if (event.kind === "kirinCharge" || event.kind === "kirinThunder" || event.kind === "knuckleSnap") return event.kind;
   if (event.kind === "chainBind" || event.kind === "chainEscape" || event.kind === "chainWhoosh" || event.kind === "chainImpact") return event.kind;
@@ -257,6 +261,12 @@ export class Sound {
     } else if (cue === "feedbackSpark") {
       tone(620, 94, .11, "square", .13);
       tone(180, 38, .13, "triangle", .27);
+    } else if (cue === "gravityPulse") {
+      tone(108, 45, .17, "sine", .33);
+      tone(221, 94, .12, "triangle", .19, .024);
+    } else if (cue === "sonicWave") {
+      tone(745, 491, .094, "triangle", .24);
+      tone(520, 264, .12, "sine", .21, .04);
     } else if (cue === "nrgMetal") {
       tone(187, 48, .12, "triangle", .43);
       tone(1450, 680, .075, "square", .075);

@@ -1,6 +1,7 @@
 import type { InputFrame, State } from "./types";
 import { benForms } from "./ben-forms";
 import type { BenObject } from "./ben-moves";
+import type { EchoClone } from "./ben-stage7";
 
 export const benId = "ben";
 export const alienXSuper = { id: "alienX", name: "Alien X", command: "ultimate", cost: 100 } as const;
@@ -54,6 +55,8 @@ export interface OmnitrixState {
   absorbWindow?: number;
   absorbCooldown?: number;
   guardHeld?: boolean;
+  echoClones?: EchoClone[];
+  echoCooldown?: number;
 }
 export const omnitrixHoldTicks = 15;
 export const omnitrixSwapTicks = 9;

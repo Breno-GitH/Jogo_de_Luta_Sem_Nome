@@ -23372,6 +23372,96 @@ var nrgReleasedMoves = {
   nrgSeal_medium: special("nrgMode", thermal, [12, 1, 11], 0, noBox, {}, { nrgMode: "seal", air: true }),
   nrgEmergence: special("nrgEmergence", thermal, [0, 1, 8], 0, noBox, {})
 };
+var gravityPulse = (gravityMode, offset, width, height, life) => ({ type: "gravityPulse", gravityMode, offset, width, height, speed: 0, life, activeAge: [2, life - 4] });
+var sonic = (offset, height, width, speed, life, length) => ({ type: "sonic", offset, height, width, speed, life, length });
+var gravattackMoves = {
+  stand_light: blow([7, 4, 12], 29, rect(32, -133, 68, 38), 1, "gravity", { stun: 25, push: 2 }),
+  stand_medium: blow([12, 5, 24], 56, rect(35, -136, 85, 66), 2, "gravity", { stun: 34, push: 2.8, hitstop: 7 }),
+  crouch_light: blow([7, 4, 13], 25, rect(29, -61, 71, 35), 1, "gravity", { level: "low", stun: 24 }),
+  crouch_medium: blow([11, 6, 24], 44, rect(25, -57, 101, 44), 2, "gravity", { level: "low", push: 5, drive: charge(7, 14, 2.5) }),
+  air_light: blow([5, 6, 13], 29, rect(29, -128, 73, 60), 1, "gravity", airLight),
+  air_medium: blow([9, 9, 26], 58, rect(14, -80, 92, 81), 2, "gravity", {
+    level: "high",
+    hopAt: 9,
+    hopVelocity: 6,
+    knockdown: true,
+    cancels: [],
+    hitstop: 8
+  }),
+  gravityPull_light: special("gravityPull", "gravity", [9, 1, 15], 23, noBox, { stun: 31, push: -6.5, hitstop: 3 }, {
+    field: gravityPulse("pull", 116, 150, 137, 11)
+  }),
+  gravityPull_medium: special("gravityPull", "gravity", [17, 1, 29], 42, noBox, {
+    stun: 39,
+    push: -3.7,
+    launch: -13,
+    cancels: ["jump", "omnitrix"],
+    cancelWindow: { fromTick: 18, toTick: 42 }
+  }, { field: gravityPulse("pull", 137, 184, 175, 14) }),
+  gravityRepel_light: special("gravityRepel", "gravity", [10, 1, 22], 45, noBox, { stun: 22, push: 8 }, {
+    field: gravityPulse("repel", 81, 112, 113, 11)
+  }),
+  gravityRepel_medium: special("gravityRepel", "gravity", [21, 1, 35], 67, noBox, {
+    stun: 32,
+    push: 11,
+    launch: -8,
+    knockdown: true,
+    hitstop: 8
+  }, { field: gravityPulse("repel", 19, 236, 149, 15) }),
+  gravityDomain_light: special("gravityDomain", "gravity", [17, 1, 25], 0, noBox, {}, {
+    field: { type: "gravityWell", offset: 123, width: 218, height: 179, speed: 0, life: 180 }
+  }),
+  gravityDomain_medium: special("gravityDomain", "gravity", [16, 13, 29], 71, rect(13, -115, 81, 106), {
+    hopAt: 13,
+    hopVelocity: -4.3,
+    drive: charge(15, 29, 10.5),
+    stun: 27,
+    push: 9,
+    knockdown: true,
+    hitstop: 8
+  })
+};
+var echoEchoMoves = {
+  stand_light: blow([4, 4, 9], 19, rect(13, -79, 53, 29), 1, "speed", { stun: 22, push: 1.8 }),
+  stand_medium: blow([8, 5, 16], 35, rect(16, -80, 70, 40), 2, "sonic", { stun: 29, push: 2.8 }),
+  crouch_light: blow([5, 4, 10], 17, rect(12, -43, 50, 27), 1, "speed", { level: "low", stun: 22 }),
+  crouch_medium: blow([9, 5, 18], 32, rect(15, -44, 76, 36), 2, "sonic", { level: "low", stun: 24 }),
+  air_light: blow([4, 5, 11], 20, rect(12, -81, 54, 47), 1, "speed", airLight),
+  air_medium: blow([7, 6, 17], 37, rect(15, -66, 71, 66), 2, "sonic", {
+    level: "high",
+    airHold: 2,
+    stun: 24,
+    cancels: ["special"]
+  }),
+  sonicCry_light: special("sonicCry", "sonic", [7, 1, 15], 34, noBox, { stun: 23, push: 3.8 }, {
+    air: true,
+    field: sonic(31, 73, 14, 14, 13, 18)
+  }),
+  sonicCry_medium: special("sonicCry", "sonic", [14, 1, 25], 53, noBox, { stun: 29, push: 7, hitstop: 7 }, {
+    field: sonic(36, 75, 22, 12, 23, 30)
+  }),
+  echoSplit_light: special("echoSplit", "sonic", [10, 1, 19], 0, noBox, {}, { echoSplit: 1 }),
+  echoSplit_medium: special("echoSplit", "sonic", [16, 8, 23], 0, noBox, {}, { echoSplit: 2 }),
+  echoHarmony_light: special("echoHarmony", "sonic", [8, 1, 20], 34, noBox, { stun: 23, push: 3.5 }, {
+    echoHarmony: 1,
+    field: sonic(30, 70, 17, 12, 10, 24)
+  }),
+  echoHarmony_medium: special("echoHarmony", "sonic", [17, 1, 30], 51, noBox, {
+    stun: 30,
+    push: 5.3,
+    launch: -7,
+    cancels: ["omnitrix"],
+    cancelWindow: { fromTick: 18, toTick: 44 }
+  }, { echoHarmony: 2, field: sonic(34, 76, 25, 13, 16, 32) })
+};
+var echoAssists = {
+  echoCopyJab: special("echoCopyJab", "sonic", [0, 1, 0], 8, noBox, { stun: 8, push: 1.5, hitstop: 2, meterGain: 0 }, {
+    field: { ...sonic(18, 62, 12, 0, 2, 17), type: "sonicAssist" }
+  }),
+  echoCopyWave: special("echoCopyWave", "sonic", [0, 1, 0], 12, noBox, { stun: 12, push: 2.7, hitstop: 3, meterGain: 0 }, {
+    field: { ...sonic(24, 70, 15, 13, 11, 20), type: "sonicAssist" }
+  })
+};
 var commands = {
   xlr8: ["turbo", "cyclone", "lightning"],
   fourArms: ["tackle", "quad", "seismic"],
@@ -23382,6 +23472,8 @@ var commands = {
   bigChill: ["frostBreath", "iceDive", "ghostFlight"],
   ghostfreak: ["ghostCross", "spectralArms", "ghostPhase"],
   nrg: ["thermal", "armorImpact", "nrgUnseal"],
+  gravattack: ["gravityPull", "gravityRepel", "gravityDomain"],
+  echoEcho: ["sonicCry", "echoSplit", "echoHarmony"],
   nrgReleased: ["radiantShot", "radiantWave", "nrgSeal"]
 };
 var moves = {
@@ -23394,7 +23486,10 @@ var moves = {
   ...bigChillMoves,
   ...ghostfreakMoves,
   ...nrgMoves,
-  ...nrgReleasedMoves
+  ...nrgReleasedMoves,
+  ...gravattackMoves,
+  ...echoEchoMoves,
+  ...echoAssists
 };
 function benSpecialCommand(form, buffer, button) {
   if (button !== "light" && button !== "medium") return;
@@ -23408,7 +23503,7 @@ function benObjectMove(id) {
   return moves[id];
 }
 function benProjectile(field) {
-  return ["fireball", "shard", "bolt", "frost", "heat", "beam", "car"].includes(field.type);
+  return ["fireball", "shard", "bolt", "frost", "heat", "beam", "car", "sonic", "sonicAssist"].includes(field.type);
 }
 function benObjectHeight(object, field) {
   if (field.type === "spikes") return Math.round(field.height * Math.max(0, Math.min(1, object.age / 5)));
@@ -23587,6 +23682,32 @@ var benForms = {
       backdash: [4, 8, 11, 13, 14, 13, 11, 9, 7, 5, 3, 2]
     }
   }, 51, 146, 1.03, ghostfreakMoves, grab(73, 30, 9, 53, 21), "spectral", 8),
+  gravattack: stage6Body({
+    speed: 3.5,
+    jump: -13,
+    gravity: 0.72,
+    locomotion: {
+      backSpeed: 2.65,
+      airSpeed: 3.5,
+      jumpStartup: 8,
+      landingTicks: 11,
+      dashForward: [3, 6, 9, 12, 13, 13, 11, 9, 7, 5, 3, 2],
+      backdash: [3, 5, 7, 9, 9, 8, 7, 6, 5, 3, 2, 1]
+    }
+  }, 91, 180, 0.95, gravattackMoves, grab(91, 54, 10, 70, 30), "gravity", 9),
+  echoEcho: stage6Body({
+    speed: 6.25,
+    jump: -14.3,
+    gravity: 0.69,
+    locomotion: {
+      backSpeed: 4.8,
+      airSpeed: 5.9,
+      jumpStartup: 5,
+      landingTicks: 7,
+      dashForward: [5, 9, 13, 16, 16, 15, 13, 10, 7, 5, 3],
+      backdash: [4, 8, 11, 13, 12, 10, 8, 6, 4, 2]
+    }
+  }, 43, 101, 1.06, echoEchoMoves, grab(64, 14, 7, 49, 20), "sonic", 7),
   nrg: stage6Body({
     speed: 3.4,
     jump: -12.4,
@@ -24180,6 +24301,120 @@ function feedbackConductorContact(move, tick) {
       x: tip.x + 8 * (tip.x - back.x) / n,
       y: tip.y + 8 * (tip.y - back.y) / n
     }, r: 6 };
+  });
+}
+
+// src/engine/ben-stage7.ts
+var clamp7 = (x, a, b) => Math.max(a, Math.min(b, x));
+var cloneLife = 236;
+var emergeTicks = 8;
+var fadeTicks = 9;
+function echoCloneHurtbox(clone2, floor3) {
+  return { x: clone2.x - 18, y: floor3 - 94, w: 36, h: 94 };
+}
+function hitEchoClones(owner, shapes, floor3, reachable) {
+  let hit = false;
+  for (const clone2 of owner.omnitrix?.echoClones ?? []) {
+    if (clone2.fading || clone2.age < emergeTicks || !shapes.some((shape) => reachable(shape, clone2.x) && shapeHitsRect(shape, echoCloneHurtbox(clone2, floor3)))) continue;
+    clone2.fading = fadeTicks;
+    delete clone2.action;
+    hit = true;
+  }
+  return hit;
+}
+function clearStage7(owner) {
+  const watch = owner.omnitrix;
+  if (!watch) return;
+  delete watch.echoClones;
+  watch.objects = watch.objects.filter(({ id }) => {
+    const type = benObjectMove(id)?.ben?.field?.type;
+    return type !== "gravityWell" && type !== "gravityPulse" && type !== "sonic" && type !== "sonicAssist";
+  });
+}
+function gravityAt(owner, x, y, floor3) {
+  if (owner.omnitrix?.active !== "gravattack") return;
+  return owner.omnitrix.objects.find((object) => {
+    const field = benObjectMove(object.id)?.ben?.field;
+    return field?.type === "gravityWell" && object.age > 0 && object.age < field.life && Math.abs(x - object.x) < field.width / 2 && y >= floor3 - field.height && y <= floor3;
+  });
+}
+function planetoid(f) {
+  return f.state === "attack" && f.moveId === "gravityDomain_medium" && f.stateFrame >= 13 && f.stateFrame < 34;
+}
+function tickEchoClones(owner, target, frame, floor3, obstructed) {
+  const watch = owner.omnitrix;
+  if (watch?.active !== "echoEcho") return;
+  const move = owner.state === "attack" ? owner.move : void 0;
+  const age = owner.stateFrame;
+  const clones = watch.echoClones ??= [];
+  const split = move?.ben?.echoSplit;
+  if (move && split && (age === move.startup || split === 2 && age === move.startup + 7) && clones.length < 2) {
+    const slot = clones.some((clone2) => clone2.slot === 0) ? 1 : 0;
+    const positions = slot === 0 ? [-66, 70, -99, 104] : [77, -116, 116, -89];
+    const x = positions.map((offset) => clamp7(owner.x + offset * owner.facing, 26, 1254)).find((point) => Math.abs(point - owner.x) >= 36 && Math.abs(point - target.x) >= 26 && clones.every((clone2) => Math.abs(clone2.x - point) >= 41) && !obstructed(point));
+    if (x !== void 0) clones.push({
+      id: frame * 2 + slot,
+      slot,
+      x,
+      age: 0,
+      fading: 0,
+      cooldown: 0,
+      facing: owner.facing,
+      moving: false
+    });
+    watch.echoCooldown = 93;
+  }
+  const ready = clones.filter((clone2) => clone2.age >= emergeTicks && !clone2.fading && !clone2.cooldown && !clone2.action);
+  if (move && age === move.startup && owner.moveId === "stand_light") {
+    const helper = ready.find((clone2) => Math.abs(clone2.x - target.x) <= 63 && Math.abs(target.y - floor3) <= 45);
+    if (helper) helper.action = { kind: "jab", tick: -4, aim: target.x };
+  }
+  if (move?.ben?.echoHarmony && age === move.startup) {
+    const range = move.ben.echoHarmony === 2 ? 245 : 173;
+    const center = clamp7(owner.x + owner.facing * (move.ben.echoHarmony === 2 ? 127 : 83), 30, 1250);
+    ready.filter((clone2) => Math.abs(clone2.x - owner.x) < range).forEach((clone2, i) => {
+      clone2.action = { kind: "wave", tick: -6 - i * 6, aim: center };
+    });
+  }
+  watch.echoClones = clones.filter((clone2) => {
+    clone2.moving = false;
+    if (clone2.fading) return --clone2.fading > 0;
+    if (++clone2.age >= cloneLife) {
+      clone2.fading = fadeTicks;
+      delete clone2.action;
+      return true;
+    }
+    if (clone2.cooldown > 0) clone2.cooldown--;
+    if (clone2.age < emergeTicks) return true;
+    if (clone2.action) {
+      const action = clone2.action;
+      clone2.facing = action.aim >= clone2.x ? 1 : -1;
+      if (++action.tick === 4) {
+        const id = action.kind === "jab" ? "echoCopyJab" : "echoCopyWave";
+        const field = benObjectMove(id).ben.field;
+        watch.objects.push({
+          id,
+          sourceClone: clone2.id,
+          x: clamp7(clone2.x + clone2.facing * field.offset, 12, 1268),
+          y: floor3 - field.height,
+          direction: clone2.facing,
+          age: 0,
+          spent: false,
+          cast: frame
+        });
+        clone2.cooldown = action.kind === "jab" ? 35 : 29;
+      }
+      if (action.tick >= 14) delete clone2.action;
+      return true;
+    }
+    const desired = clamp7(owner.x + (clone2.slot === 0 ? -65 : 76) * owner.facing, 26, 1254);
+    const next = clone2.x + clamp7(desired - clone2.x, -4, 4);
+    if (Math.abs(next - owner.x) >= 25 && Math.abs(next - target.x) >= 25 && clones.every((other) => other === clone2 || other.fading || Math.abs(other.x - next) >= 31) && !obstructed(next)) {
+      clone2.moving = Math.abs(next - clone2.x) > 1;
+      clone2.x = next;
+    }
+    clone2.facing = target.x < clone2.x ? -1 : 1;
+    return true;
   });
 }
 
@@ -25170,15 +25405,15 @@ var jetStartupClip = {
   frames: initial.map(([name]) => luffy_jet_poses_default[name].frame),
   durations: initial.map(([, ticks]) => ticks)
 };
-var clamp7 = (v, low, high) => Math.max(low, Math.min(high, v));
-var linear = (t, from, to) => clamp7((t - from) / (to - from), 0, 1);
+var clamp8 = (v, low, high) => Math.max(low, Math.min(high, v));
+var linear = (t, from, to) => clamp8((t - from) / (to - from), 0, 1);
 var ease5 = (v) => v * v * (3 - 2 * v);
 var mix6 = (a, b, v) => a + (b - a) * v;
 var interp = (a, b, v) => ({
   x: mix6(a.x, b.x, v),
   y: mix6(a.y, b.y, v)
 });
-var bound = (x) => clamp7(x, 40, 1240);
+var bound = (x) => clamp8(x, 40, 1240);
 function arm(cel, tip, radius = 7, bend = 0, slot = 0) {
   const joints = luffy_jet_poses_default[cel].joints;
   const root = joints[slot] ?? joints[0];
@@ -25404,7 +25639,7 @@ function jetScene(s) {
     camera: {
       scale,
       x: mix6(
-        clamp7(midX, visibleHalfWidth, 1280 - visibleHalfWidth),
+        clamp8(midX, visibleHalfWidth, 1280 - visibleHalfWidth),
         640,
         release
       ),
@@ -25597,6 +25832,7 @@ var Fighter = class {
   }
   hurtboxes() {
     if (gokuInvisible(this)) return [];
+    if (planetoid(this)) return [worldRect({ x: -50, y: -118, w: 105, h: 116 }, this.x, this.y, this.facing)];
     const lift = this.stand?.s.ownerLiftFrame ?? -1;
     const pose = this.state === "attack" && this.move ? poseAt(this.move, this.stateFrame) : void 0;
     const neutral2 = this.benForm?.hurtboxes ?? this.data.hurtboxes;
@@ -25803,6 +26039,7 @@ var Fighter = class {
     const ben2 = m.ben;
     if (ben2?.grow && watch?.growthCooldown) return false;
     if (ben2?.nrgMode === "release" && watch?.nrgCooldown) return false;
+    if (ben2?.echoSplit && (watch?.echoCooldown || (watch?.echoClones?.length ?? 0) >= 2)) return false;
     if (ben2?.technique === "ghostPhase" && watch?.ghostCooldown) return false;
     if (ben2?.airUse === "flight" && watch?.flightUsed || ben2?.airUse === "dive" && watch?.diveUsed) return false;
     if (m.ben?.technique && this.omnitrix) {
@@ -26160,7 +26397,8 @@ var Fighter = class {
           this.vx = this.connected ? 0 : this.facing * chidoriVelocity(this.stateFrame, winged(this));
         else if (move.drive)
           this.vx = (!this.connected || this.hitConfirmed && move.ben?.follow) && this.stateFrame >= move.drive.from && this.stateFrame < move.drive.to ? this.facing * (this.connected && move.ben?.follow ? move.ben.follow : move.drive.speed) : 0;
-        if (move.hopAt === this.stateFrame) this.vy = move.hopVelocity ?? 0;
+        if (move.hopAt === this.stateFrame)
+          this.vy = (move.hopVelocity ?? 0) + (planetoid(this) ? input.up ? -2 : input.down ? 1.4 : 0 : 0);
         const age = this.stateFrame;
         if (move.ben?.aerialMotion === "dive") {
           if (age === 3 && !this.airborne) this.vy = -8;
@@ -26417,6 +26655,14 @@ var Match = class {
     this.fighters.forEach((f, i) => {
       if (this.temporal.isFrozen(i)) return;
       const other = this.fighters[1 - i];
+      const well = f.airborne && !["hitstun", "blockstun", "ko", "getup"].includes(f.state) && !this.temporal.isFrozen(other.id) ? gravityAt(other, f.x, f.y, FLOOR2) : void 0;
+      if (well && !this.benWalls().some((w) => this.benWallBetween(
+        w,
+        well.x,
+        f.x,
+        { x: Math.min(well.x, f.x), y: f.y - 60, w: Math.abs(well.x - f.x), h: 62 }
+      )))
+        f.vy = Math.min(14, f.vy + 0.72);
       f.guardIntent = inputs[i].direction === -f.facing && !f.airborne && Math.abs(f.x - other.x) < 200;
       tickSasukeCurse(f);
       const fallingDrop = f.y < FLOOR2 && f.state === "attack" && !!(f.move?.ben?.landingImpact || f.move?.ben?.leap);
@@ -26466,6 +26712,8 @@ var Match = class {
       if (this.temporal.isFrozen(i)) return null;
       const shapes = f.attackShapes(beforeMovement[i]);
       const target = this.fighters[1 - i];
+      if (shapes.length && f.canConnect && f.move?.damage && f.move.kind !== "grab")
+        this.strikeEchoClones(f, target, shapes, crystalWalls);
       const groundedGrab = f.move?.level === "throw" || f.move?.ben?.captureStrike;
       const illegalGrab = groundedGrab && (f.data.id === "kaneki" ? !canKaguneCapture(f, target, "ground") : target.airborne || target.state === "blockstun" || target.state === "hitstun" && !(f.move?.ben?.commandGrab && target.combo > 0 && target.combo <= 2 && f.omnitrix?.usedSpecials.includes(f.move?.ben?.technique ?? "quad")));
       const phasedPhysical = target.benPhase?.physicalOnly && f.move && !f.move.ben?.field && !f.move.stand && !isSuperMove(f.move) && f.move.level !== "throw";
@@ -26569,7 +26817,7 @@ var Match = class {
     const frozen = this.temporal.isFrozen(target.id);
     const guarding = target.input.direction === -target.facing && !target.airborne && ["idle", "walk", "crouch", "landing", "blockstun"].includes(
       target.state
-    ) && (!(m.ben?.field || ["knives", "ki", "kamehameha"].includes(m.special ?? "") || m.special && isSasukeSpecial(m.special) && sasukeTechniques[m.special].shots) || direction === -target.facing);
+    ) && (!(m.ben?.field || ["knives", "ki", "kamehameha"].includes(m.special ?? "") || m.special && isSasukeSpecial(m.special) && sasukeTechniques[m.special].shots) || direction === -target.facing || m.ben?.field?.type === "sonicAssist");
     const blocked = guarding && m.level !== "throw" && !isSuperMove(m) && (m.level !== "low" || target.input.down) && (m.level !== "high" || !target.input.down);
     let damage2 = blocked ? 0 : Math.round(
       m.damage * (m.ben && !m.ben.field && f.benScale > 1 ? 1.07 : 1) * Math.max(
@@ -26746,13 +26994,9 @@ var Match = class {
         return false;
       const target = this.fighters[1 - p3.owner], owner = this.fighters[p3.owner];
       const tip = p3.facing * 14;
-      if (this.damageBenWalls(
-        [{ a: { x: p3.previousX - tip, y: p3.previousY }, b: { x: p3.x + tip, y: p3.y }, r: 2 }],
-        p3.damage,
-        this.benWalls(),
-        `knife:${p3.id}`,
-        p3.owner
-      )) return false;
+      const shape = { a: { x: p3.previousX - tip, y: p3.previousY }, b: { x: p3.x + tip, y: p3.y }, r: 2 };
+      const walls = this.benWalls();
+      if (this.damageBenWalls([shape], p3.damage, walls, `knife:${p3.id}`, p3.owner) || this.strikeEchoClones(owner, target, [shape], walls)) return false;
       if (target.knockedDown || target.invulnerable || !projectileHits(p3, target.hurtboxes()))
         return true;
       const source = owner.data.specialMoves?.[p3.move];
@@ -26905,7 +27149,8 @@ var Match = class {
         b: { x: p3.x, y: p3.y },
         r: p3.radius
       };
-      if (this.damageBenWalls([shape], move.damage, this.benWalls(), `energy:${p3.id}`, p3.owner)) return false;
+      const walls = this.benWalls();
+      if (this.damageBenWalls([shape], move.damage, walls, `energy:${p3.id}`, p3.owner) || this.strikeEchoClones(owner, target, [shape], walls)) return false;
       if (target.knockedDown || target.invulnerable) return true;
       const hurt = target.hurtboxes().find((r) => shapeHitsRect(shape, r));
       if (hurt) {
@@ -26996,6 +27241,7 @@ var Match = class {
     if (watch.growthCooldown > 0) watch.growthCooldown--;
     if (watch.ghostCooldown) watch.ghostCooldown--;
     if (watch.nrgCooldown) watch.nrgCooldown--;
+    if (watch.echoCooldown) watch.echoCooldown--;
     const current = f.state === "attack" ? f.move : void 0;
     if (!f.airborne && !current?.ben?.airUse && !current?.ben?.lift) {
       delete watch.flightUsed;
@@ -27149,6 +27395,15 @@ var Match = class {
     this.events.at(-1).ben = "electric";
     return true;
   }
+  strikeEchoClones(owner, target, shapes, walls) {
+    if (this.temporal.isFrozen(target.id)) return false;
+    return hitEchoClones(
+      target,
+      shapes,
+      FLOOR2,
+      (shape, x) => !walls.some((w) => this.benWallBetween(w, owner.x, x, shape))
+    );
+  }
   stepBenObjects() {
     for (const owner of this.fighters) {
       const watch = owner.omnitrix;
@@ -27158,6 +27413,7 @@ var Match = class {
       const cast = move?.ben?.field;
       if (cast && move && owner.stateFrame === move.startup) this.spawnBenField(owner, target, cast);
       const walls = this.benWalls();
+      tickEchoClones(owner, target, this.combatFrame, FLOOR2, (x) => walls.some((w) => this.benWallSolid(w) && (Math.abs(w.object.x - x) <= w.field.width / 2 + 19 || this.benWallBetween(w, owner.x, x, { x: Math.min(owner.x, x), y: FLOOR2 - 95, w: Math.abs(x - owner.x), h: 95 }))));
       watch.objects = watch.objects.filter((object, index) => {
         const projectile2 = benObjectMove(object.id);
         const field = projectile2?.ben?.field;
@@ -27165,7 +27421,9 @@ var Match = class {
         if (object.impactAge !== void 0) return ++object.impactAge < 15;
         if (projectile2.ben?.nightmare && (owner.state !== "attack" || owner.moveId !== object.id)) return false;
         if (++object.age > field.life + (object.power ? 6 : 0)) return false;
-        if (object.age <= 0 || field.type === "wall") return true;
+        if (object.age <= 0 || field.type === "wall" || field.type === "gravityWell") return true;
+        if (["fireball", "bolt", "shard", "frost", "sonic"].includes(field.type) && gravityAt(target, object.x, object.y, FLOOR2))
+          object.vy = Math.min(7, (object.vy ?? 0) + 0.48);
         const before = { x: object.x, y: object.y };
         object.x += object.direction * (field.type === "spectralHand" && object.vy ? 6 : field.speed);
         object.y += object.vy ?? 0;
@@ -27216,7 +27474,9 @@ var Match = class {
         const missile = benProjectile(field);
         if (missile && this.damageBenWalls([shape], damage2, walls, `ben:${owner.id}:${object.cast}:${index}`, owner.id))
           return field.type === "car" ? crash() : false;
-        if (this.capture || target.knockedDown || target.invulnerable || target.health <= 0) return true;
+        if (field.type === "gravityPulse" && walls.some((w) => this.benWallBetween(w, owner.x, target.x, shape))) return true;
+        if (damage2 && this.strikeEchoClones(owner, target, [shape], walls) && missile && field.type !== "beam") return false;
+        if (this.capture || target.knockedDown || target.invulnerable || target.health <= 0 || field.type === "sonicAssist" && (target.combo >= 5 || owner.omnitrix?.active !== "echoEcho")) return true;
         const hurt = target.hurtboxes().find((box) => shapeHitsRect(shape, box));
         if (!hurt) return true;
         object.spent = true;
@@ -27225,7 +27485,7 @@ var Match = class {
             if (sibling.id === object.id && sibling.cast === object.cast && sibling !== object)
               sibling.spent = true;
         }
-        const direction = field.type === "lightning" || field.type === "spectralHand" ? -target.facing : field.type === "pillar" && target.x !== object.x ? Math.sign(target.x - object.x) : object.direction;
+        const direction = field.type === "lightning" || field.type === "spectralHand" ? -target.facing : (field.type === "pillar" || field.gravityMode === "repel") && target.x !== object.x ? Math.sign(target.x - object.x) : object.direction;
         if (field.type === "spectralHand" && projectile2.ben?.nightmare && !this.benBlocked(target, projectile2, direction) && !this.temporal.isFrozen(target.id) && target.combo < (owner.data.combatLimits?.maxHits ?? 9)) {
           for (const sibling of watch.objects)
             if (sibling.cast === object.cast && sibling.id === object.id) sibling.spent = true;
@@ -27235,7 +27495,7 @@ var Match = class {
         }
         const energy = field.energy ?? (field.type === "fireball" ? object.id.endsWith("_medium") ? 2 : 1 : 0);
         if (energy && this.absorbBen(target, energy, damage2, direction)) return false;
-        const impact = object.power ? { ...projectile2, damage: damage2, stun: projectile2.stun + 3, push: projectile2.push + 2 } : { ...projectile2, damage: damage2 };
+        const impact = object.power ? { ...projectile2, damage: damage2, stun: projectile2.stun + 3, push: projectile2.push + 2 } : field.type === "sonicAssist" && target.combo ? { ...projectile2, damage: damage2, stun: Math.max(projectile2.stun, Math.min(16, target.stun)), launch: target.airborne ? target.vy * 0.65 : 0 } : { ...projectile2, damage: damage2 };
         const beamX = field.type === "beam" ? target.x : object.x;
         const contactX = Math.max(hurt.x, Math.min(beamX, hurt.x + hurt.w));
         const impactY = field.type === "beam" ? Math.max(hurt.y, Math.min(
@@ -27305,6 +27565,7 @@ var Match = class {
     const form = benForms[to];
     if (!form || !this.placeBenBody(fighter, rival, form)) return false;
     const watch = fighter.omnitrix;
+    if (watch.active === "gravattack" || watch.active === "echoEcho") clearStage7(fighter);
     if (watch.nrgReleased) {
       watch.nrgReleased = false;
       delete watch.flightTicks;
@@ -28183,6 +28444,7 @@ var Match = class {
         f.chill = void 0;
         if (f.omnitrix) {
           f.omnitrix.objects.length = 0;
+          delete f.omnitrix.echoClones;
           if (f.omnitrix.nrgReleased) {
             f.omnitrix.nrgReleased = false;
             f.omnitrix.nrgTicks = 0;

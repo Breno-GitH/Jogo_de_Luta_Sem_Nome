@@ -3,7 +3,7 @@ import { drawTestArena } from "./arena";
 import benArt from "../data/ben-art.json";
 import { benAnimation, benAnimationSets, benFlameAnchor, feedbackHeadAnchor, feedbackStormTips } from "./ben-animations";
 import { drawBenAlienFx, drawBenSilhouette } from "./ben-alien-fx";
-import { benReformSheets, drawBenAttackFx, drawBenContact, drawBenFields, drawFeedbackCables, drawFeedbackGrip, drawBenChill, drawSpectralArms, drawHeldBenCar, drawBenGhostGround } from "./ben-combat-fx";
+import { benReformSheets, drawBenAttackFx, drawBenContact, drawBenFields, drawEchoClones, drawStage7Core, drawFeedbackCables, drawFeedbackGrip, drawBenChill, drawSpectralArms, drawHeldBenCar, drawBenGhostGround } from "./ben-combat-fx";
 import { benGhostDepth } from "../engine/ben-rework";
 import { benAliens, benId, omnitrixCanBrowse, omnitrixHoldTicks } from "../engine/ben-omnitrix";
 import { drawOmnitrixFlash, drawOmnitrixHud } from "./ben-omnitrix-hud";
@@ -551,6 +551,7 @@ export class Renderer {
     };
     for (const f of match.fighters)
       if (f.stand?.transform.depth === 0) drawStand(f);
+    if (!match.cinematicActive) drawEchoClones(c, match, this.sprites, this.debug, this.effects);
     // Keep the held opponent readable between the two converging shells.
     const centipedeWrap = kakuja?.phase === "capture" || kakuja?.phase === "descent";
     const order = centipede ? (centipedeWrap ? [centipede.attacker, centipede.victim] : [centipede.victim, centipede.attacker]) : jet ? [jet.victim, jet.attacker] : fury
@@ -667,6 +668,7 @@ export class Renderer {
         const frame = this.presentations[i].animator.frame();
         drawBenAlienFx(c, f, match.frame, benFlameAnchor(sprite.sheet, frame));
         drawBenAttackFx(c, f, match.frame, feedbackStormTips(sprite.sheet, frame));
+        drawStage7Core(c, f, frame, match.frame);
         drawHeldBenCar(c, f, this.sprites);
         if (f.omnitrix.transition) {
           const transition = f.omnitrix.transition;
@@ -844,6 +846,8 @@ export class Renderer {
       benCapture: m.capture?.ben?.moveId ?? "",
       benCaptureTick: m.capture?.ben ? m.capture.tick : "",
       benMoveTick: ben?.state === "attack" ? ben.stateFrame : "",
+      echoClones: ben?.omnitrix?.echoClones?.filter(clone => !clone.fading).length ?? 0,
+      gravityWell: ben?.omnitrix?.objects.some(object => object.id === "gravityDomain_light") ?? false,
       benObjects: omnitrix?.objects.map(object => object.id + ":" + (object.impactAge ?? object.age)).join(",") ?? "",
       p1Chill: m.fighters[0].chill?.freeze ?? 0,
       p2Chill: m.fighters[1].chill?.freeze ?? 0,

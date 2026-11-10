@@ -1,6 +1,6 @@
 import type { BenAlien } from "./ben-omnitrix";
 import type { CharacterData, Move } from "./types";
-import { xlr8Moves, fourArmsMoves, heatblastMoves, diamondheadMoves, humungousaurMoves, feedbackMoves, bigChillMoves, ghostfreakMoves, nrgMoves, nrgReleasedMoves, type BenEffect } from "./ben-moves";
+import { xlr8Moves, fourArmsMoves, heatblastMoves, diamondheadMoves, humungousaurMoves, feedbackMoves, bigChillMoves, ghostfreakMoves, nrgMoves, nrgReleasedMoves, gravattackMoves, echoEchoMoves, type BenEffect } from "./ben-moves";
 
 export type BenGrab = NonNullable<CharacterData["grabSequence"]> & { carry?: number; reverse?: boolean; clip?: string; knockdown?: boolean;
   scene?: "hunt" | "nightmare"; impacts?: readonly number[]; pursuit?: boolean;
@@ -87,6 +87,22 @@ export const benForms: Partial<Record<BenAlien, BenForm>> = {
       backdash: [4, 8, 11, 13, 14, 13, 11, 9, 7, 5, 3, 2],
     },
   }, 51, 146, 1.03, ghostfreakMoves, grab(73, 30, 9, 53, 21), "spectral", 8),
+  gravattack: stage6Body({
+    speed: 3.5, jump: -13, gravity: .72,
+    locomotion: {
+      backSpeed: 2.65, airSpeed: 3.5, jumpStartup: 8, landingTicks: 11,
+      dashForward: [3, 6, 9, 12, 13, 13, 11, 9, 7, 5, 3, 2],
+      backdash: [3, 5, 7, 9, 9, 8, 7, 6, 5, 3, 2, 1],
+    },
+  }, 91, 180, .95, gravattackMoves, grab(91, 54, 10, 70, 30), "gravity", 9),
+  echoEcho: stage6Body({
+    speed: 6.25, jump: -14.3, gravity: .69,
+    locomotion: {
+      backSpeed: 4.8, airSpeed: 5.9, jumpStartup: 5, landingTicks: 7,
+      dashForward: [5, 9, 13, 16, 16, 15, 13, 10, 7, 5, 3],
+      backdash: [4, 8, 11, 13, 12, 10, 8, 6, 4, 2],
+    },
+  }, 43, 101, 1.06, echoEchoMoves, grab(64, 14, 7, 49, 20), "sonic", 7),
   nrg: stage6Body({
     speed: 3.4, jump: -12.4, gravity: .91,
     locomotion: {

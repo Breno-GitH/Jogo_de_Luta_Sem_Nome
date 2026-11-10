@@ -7,6 +7,7 @@ import nrgArmor from "../data/nrg-armor-art.json";
 import anatomy from "../data/ben-body-art.json";
 import stage6 from "../data/ben-stage6-combat.json";
 import reform from "../data/ben-reform-art.json";
+import stage7 from "../data/ben-stage7-art.json";
 import { benFormBalance } from "../engine/ben-moves";
 import type { BenAlien } from "../engine/ben-omnitrix";
 import type { Fighter } from "../engine/combat";
@@ -33,6 +34,7 @@ function withReform(data: AnimationData, clips: AnimationData["clips"]): Animati
 const released = anatomy.nrgReleased;
 const newerForms: Partial<Record<BenAlien, AnimationData>> = {
   ...stage5.forms,
+  ...stage7,
   bigChill: stage6.bigChill,
   ghostfreak: withReform(stage6.ghostfreak, reform.clips.ghostfreak),
   nrg: withReform(anatomy.nrg, Object.fromEntries(
@@ -106,8 +108,10 @@ export function tickBenAnimation(f: Fighter, animator: Animator) {
     if (f.airborne && !f.input.up && f.move?.ben?.field?.aim === "heat" && animator.hasClip(clip + "Air")) clip += "Air";
   }
   else if (f.benForm) {
-    if ((f.knockedDown || f.state === "ko" || f.state === "defeat") && !f.airborne && animator.hasClip("downed")) clip = "downed";
-    else if (f.state === "hitstun" && animator.hasClip("damage")) clip = "damage";
+    if (f.state === "getup" && animator.hasClip("getup")) clip = "getup";
+    else if ((f.knockedDown || f.state === "ko" || f.state === "defeat") && !f.airborne && animator.hasClip("downed")) clip = "downed";
+    else if ((f.state === "hitstun" || (f.state === "grabbed" &&
+        (f.omnitrix?.active === "gravattack" || f.omnitrix?.active === "echoEcho"))) && animator.hasClip("damage")) clip = "damage";
     else if (f.state === "blockstun" && animator.hasClip("guardStand")) clip = f.blockCrouched ? "guardCrouch" : "guardStand";
     else if (f.state === "grabbing") clip = animator.hasClip(f.actionClip) ? f.actionClip : "grabHold";
     else if (f.state === "throwRecover") clip = animator.hasClip(f.actionClip) ? f.actionClip : "throwRecover";

@@ -1,4 +1,4 @@
-import type { Fighter, Match } from "../engine/combat";
+import { FLOOR, type Fighter, type Match } from "../engine/combat";
 import { benGrabFor } from "../engine/ben-forms";
 import { feedbackConductorContact, feedbackConductorPaths, feedbackGripPaths } from "../engine/feedback-conductor";
 import { benBoltLength, feedbackCablePaths, benObjectHeight, benObjectMove, benObjectShape, spectralPaths } from "../engine/ben-moves";
@@ -7,6 +7,10 @@ import type { Point } from "../engine/types";
 import reform from "../data/ben-reform-art.json";
 import feedbackAntennae from "../data/feedback-antennae.json";
 import { benGhostDepth } from "../engine/ben-rework";
+import { echoCloneHurtbox } from "../engine/ben-stage7";
+import { Animator } from "./animator";
+import { benAnimation } from "./ben-animations";
+import stage7 from "../data/ben-stage7-art.json";
 
 export const benReformSheets = Object.values(reform.props).map(prop => prop.sheet);
 type BenTextures = ReadonlyMap<string, HTMLImageElement>;
@@ -17,6 +21,9 @@ const dust = ["#ffebc4", "#dfc49c", "#ad886b", "#776054"];
 const crystal = ["#dbfff0", "#9cf2d6", "#4dc2aa", "#1f625e"];
 const specter = ["#f6e9ff", "#c7a9db", "#88749e", "#564366"];
 const electric = ["#fffbd1", "#ffe37a", "#ffc646", "#7ed963"];
+const gravity = ["#ffe6cc", "#ff8c65", "#b95076", "#6f345f"];
+const sonic = ["#f6fff3", "#c8f6b8", "#68dbb2", "#2d867b"];
+const cloneAnimator = new Animator(benAnimation("echoEcho"));
 
 function polygon(c: CanvasRenderingContext2D, fill: string, points: [number, number][]) {
   c.beginPath();
@@ -500,6 +507,62 @@ export function drawFeedbackGrip(c: CanvasRenderingContext2D, f: Fighter, match:
   }
 }
 
+const gravCore: Partial<Record<number, Point>> = stage7.gravattack.core;
+
+export function drawStage7Core(c: CanvasRenderingContext2D, f: Fighter, frame: number, clock: number) {
+  const core = f.omnitrix?.active === "gravattack" ? gravCore[frame] : undefined;
+  if (!core) return;
+  const cast = f.state === "attack" && f.moveId.startsWith("gravity");
+  const size = cast ? 10 + Math.round(3 * Math.sin(clock * .31)) : 4;
+  c.save();
+  c.globalAlpha = cast ? .34 : .16 + Math.sin(clock * .12) * .08;
+  c.fillStyle = "#ff544a";
+  c.fillRect(core.x - size, core.y - 2, size * 2, 4);
+  c.fillRect(core.x - 2, core.y - size, 4, size * 2);
+  c.fillStyle = "#fff0bb";
+  c.fillRect(core.x - 1, core.y - 1, 2, 2);
+  c.restore();
+}
+
+export function drawEchoClones(c: CanvasRenderingContext2D, match: Match, textures: BenTextures, debug: boolean, effects: boolean) {
+  for (const f of match.fighters) for (const clone of f.omnitrix?.echoClones ?? []) {
+    const action = clone.action;
+    const clip = clone.fading ? "cloneFade" : clone.age < 8 ? "cloneArrival" :
+      action?.kind === "jab" ? "cloneJab" : action ? "cloneWave" : clone.moving ?
+        (Math.sign(f.x + (clone.slot === 0 ? -65 : 76) * f.facing - clone.x) === clone.facing ? "walkForward" : "walkBack") : "idle";
+    cloneAnimator.update(clip);
+    cloneAnimator.seekTick(clone.fading ? 9 - clone.fading : action ? action.tick + 1 : clone.age + clone.slot * 5);
+    const sprite = cloneAnimator.sprite();
+    const image = textures.get(sprite.sheet);
+    if (!image) continue;
+    c.save();
+    c.translate(Math.round(clone.x), FLOOR);
+    c.scale(clone.facing * sprite.scale, sprite.scale);
+    c.globalAlpha = .86 * Math.min(1, (clone.age + 2) / 8, clone.fading ? clone.fading / 9 : 1);
+    c.drawImage(image, sprite.x, sprite.y, sprite.width, sprite.height,
+      -sprite.pivot.x, -sprite.pivot.y, sprite.width, sprite.height);
+    c.restore();
+    if (effects && (clone.fading || clone.age < 8)) {
+      c.save();
+      const age = clone.fading ? 9 - clone.fading : clone.age;
+      c.globalAlpha = .7 * (1 - age / 10);
+      c.strokeStyle = sonic[1];
+      c.lineWidth = 2;
+      c.beginPath();
+      c.ellipse(Math.round(clone.x), FLOOR - 49, 10 + age * 3, 19 + age * 3, 0, 0, Math.PI * 2);
+      c.stroke();
+      c.restore();
+    }
+    if (debug) {
+      const box = echoCloneHurtbox(clone, FLOOR);
+      c.save();
+      c.strokeStyle = sonic[2];
+      c.strokeRect(box.x, box.y, box.w, box.h);
+      c.restore();
+    }
+  }
+}
+
 export function drawBenFields(c: CanvasRenderingContext2D, match: Match, debug: boolean, textures: BenTextures) {
   c.save();
   for (const f of match.fighters) for (const obj of f.omnitrix?.objects ?? []) {
@@ -541,6 +604,46 @@ export function drawBenFields(c: CanvasRenderingContext2D, match: Match, debug: 
       c.globalAlpha = Math.max(.16, Math.min(1, age / start + .15, (field.life - age) / (field.life - end)));
       prop(c, textures, "hands", airborne ? (obj.direction > 0 ? 2 : 3) : (field.width < 54 ? 0 : 1),
         x, y - height + (airborne ? 0 : age < start ? 18 : 0), (airborne ? 1 : obj.direction) * scale, scale);
+      c.restore();
+    }
+    if (field.type === "gravityWell" || field.type === "gravityPulse") {
+      const well = field.type === "gravityWell";
+      const progress = well ? Math.min(1, age / 11) : Math.min(1, age / 4);
+      c.save();
+      c.globalAlpha = well ? Math.min(.74, (field.life - age) / 15) : Math.max(.12, (field.life - age) / field.life);
+      groundPulse(c, x, y, age % 19, field.width * .5 * progress, gravity);
+      const stroke = (index: number) => {
+        const phase = (age * .09 + index * .38) % 1;
+        const p = well || field.gravityMode === "pull" ? 1 - phase : phase;
+        const span = field.width * (.16 + .31 * p) * progress;
+        const altitude = field.height * (.12 + .75 * index / 4);
+        c.strokeStyle = gravity[index % gravity.length];
+        c.lineWidth = index === 0 ? 3 : 1;
+        c.beginPath();
+        c.ellipse(Math.round(x), Math.round(y - altitude), Math.max(1, span), 3 + span * .1, 0, index * .8, index * .8 + Math.PI * 1.6);
+        c.stroke();
+        if (well) {
+          const angle = age * (.07 + index * .012) + index * 2.2;
+          c.fillStyle = gravity[index % 2];
+          c.fillRect(Math.round(x + Math.cos(angle) * span), Math.round(y - altitude + Math.sin(angle) * 9), 3, 3);
+        }
+      };
+      for (let i = 0; i < (well ? 5 : 3); i++) stroke(i);
+      c.restore();
+    }
+    if ((field.type === "sonic" || field.type === "sonicAssist") && !obj.spent) {
+      const radius = field.width;
+      const length = benBoltLength(obj, field);
+      c.save();
+      for (let i = 2; i >= 0; i--) {
+        c.strokeStyle = sonic[i];
+        c.globalAlpha = 1 - i * .23;
+        c.lineWidth = i === 0 ? 2 : 3;
+        c.beginPath();
+        c.ellipse(Math.round(x - obj.direction * i * length / 3), Math.round(y),
+          Math.max(2, radius * (.32 - i * .06)), radius * (1 - i * .22), 0, 0, Math.PI * 2);
+        c.stroke();
+      }
       c.restore();
     }
     if (field.type === "fireball") fire(c, x, y, field.width, obj.direction, age);
@@ -628,6 +731,7 @@ export function drawBenContact(c: CanvasRenderingContext2D, match: Match) {
     const palette = ["speed", "tail", "wind", "step", "ice"].includes(e.ben) ? cold :
       e.ben === "spectral" || e.ben === "nightmare" ? specter :
       e.ben === "metal" ? ["#fff5d4", "#ffc86b", "#becfce", "#596a72"] :
+      e.ben === "gravity" ? gravity : e.ben === "sonic" ? sonic :
       e.ben === "crystal" ? crystal : e.ben === "electric" || e.ben === "storm" ? electric :
       e.ben === "power" || e.ben === "quake" || e.ben === "colossus" ? dust : hot;
     const age = (e.total ?? 16) - e.life;
