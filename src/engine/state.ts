@@ -27,6 +27,7 @@ const fighterKeys = [
   "comboAge",
   "comboAirHits",
   "combo",
+  "lightHitsInCombo",
   "knockedDown",
   "dashDirection",
   "jumpDirection",

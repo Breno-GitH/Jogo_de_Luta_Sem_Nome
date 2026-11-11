@@ -25,6 +25,7 @@ import {
 import { CommandBuffer } from "./input";
 import { MOVEMENT_TIMING } from "./movement";
 import { combatPace, pacedCharacter } from "./pace";
+import { antiLightCombo, isLimitedLightNormal } from "./anti-light-combo";
 import cinematics from "../data/cinematics.json";
 import { reactionBoxes, reactionFor } from "./lifecycle";
 import { isSuperMove, poseAt, phaseAt } from "./moves";
@@ -111,6 +112,7 @@ export class Fighter {
   comboAge = 0;
   comboAirHits = 0;
   combo = 0;
+  lightHitsInCombo = 0;
   knockedDown = false;
   dashDirection = 1;
   jumpDirection = 0;
@@ -780,7 +782,7 @@ export class Fighter {
                 : "idle",
           );
           this.combo = 0;
-          this.comboAge = this.comboAirHits = 0;
+          this.comboAge = this.comboAirHits = this.lightHitsInCombo = 0;
           this.knockedDown = false;
         }
       }
@@ -1655,6 +1657,10 @@ export class Match {
     curseFx = winged(f),
     swordCapture = false,
   ) {
+    const limitedLight = isLimitedLightNormal(f.data.id, moveId);
+    // After the third normal-light hit, further J attacks cannot re-hit the
+    // victim until they recover. This also protects cornered opponents.
+    if (limitedLight && target.combo > 0 && target.lightHitsInCombo >= antiLightCombo.maxHits) return;
     const frozen = this.temporal.isFrozen(target.id);
     const guarding =
       target.input.direction === -target.facing &&
@@ -1735,9 +1741,25 @@ export class Match {
           }
         }
       }
-      if (!target.combo) target.comboAge = target.comboAirHits = 0;
+      if (!target.combo) {
+        target.comboAge = target.comboAirHits = 0;
+        target.lightHitsInCombo = 0;
+      }
       target.combo++;
       if (target.airborne || m.launch < 0) target.comboAirHits++;
+      if (limitedLight) {
+        target.lightHitsInCombo++;
+        if (target.lightHitsInCombo >= antiLightCombo.maxHits) {
+          // Force a genuine knock-away rather than only damage scaling.
+          // The knockdown and light-hit lockout together stop corner loops.
+          reaction.vx = direction * antiLightCombo.push;
+          reaction.vy = antiLightCombo.launch;
+          reaction.stun = Math.max(reaction.stun, antiLightCombo.stun);
+          reaction.launch = true;
+          reaction.knockdown = true;
+          reaction.strength = 3;
+        }
+      }
       if (target.airborne && !m.knockdown && !m.super)
         reaction.stun += combatPace.combo.airExtensionStun;
       if (m.ben && target.combo > 4) reaction.stun = Math.max(9, reaction.stun - (target.combo - 4) * 3);
