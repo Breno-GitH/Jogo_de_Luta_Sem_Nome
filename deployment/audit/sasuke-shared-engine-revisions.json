@@ -7,8 +7,8 @@
     },
     "src/engine/combat.ts": {
       "baseline": "ed1676686f0e2b68ab9e730a4f1e58a5d99c6d0b4146e956b2aaaf6d02eb5f7b",
-      "current": "0c4722c3dfb336962cd4d21bfdfaf66de29195ffd3b72002ea8ec99b61e32bde",
-      "reason": "Recognize Sasuke-only command branches and integrate deterministic releases, contacts and storm presentation with the shared combat pipeline."
+      "current": "f02f4d4561ba751fd9debb493f01921511452a18d43acafb6e5596cd5167f36b",
+      "reason": "Integrate Sasuke special trajectories, radial hitboxes, Curse Mark, Kirin and the shared Super guard rule."
     },
     "src/engine/types.ts": {
       "baseline": "f11f713bbf8e86186d53542d53ed343fc3d8e3ded8a3d4d1b6971cbc56c95c96",
@@ -17,8 +17,13 @@
     },
     "src/engine/state.ts": {
       "baseline": "1c97abf7a8f7b7ad163bf91b0f63a54292d51766803bd010f7e3a5f8b8328ac2",
-      "current": "ac31aee76bb08f31ac1d9a2a970f03091a1f7c351cd80141a25ad5d6583db7d6",
-      "reason": "Include deterministic Sasuke storm expiry in authoritative snapshots."
+      "current": "09c7b6b5a8fa20c2eaa499d3f5a9758f69d8ae2fd00bb54632b4bd5aa6c387bd",
+      "reason": "Serialize Sasuke storm, Curse Mark and the locked Kirin variant in authoritative snapshots."
+    },
+    "src/engine/moves.ts": {
+      "baseline": "0710fa2804dc0a201632625fad3c53a105d05b470632f482d599067aacc5be41",
+      "current": "aa1e8edfc88bddb8ab8a46c32cf90fdd0b35d4bb1c36d13fe25e3fef217b0fc7",
+      "reason": "Identify both configured Supers and the legacy Samurai Super for the shared guard rule."
     }
   }
 }

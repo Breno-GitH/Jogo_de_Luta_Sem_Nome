@@ -1,0 +1,9 @@
+{
+  "cost": 100,
+  "minimumComboScale": 0.62,
+  "duration": 221,
+  "opening": { "holds": [13, 5, 34], "damage": 34, "hitstop": 6, "stun": 24, "blockstun": 14, "push": 2.4 },
+  "phases": { "prepare": 0, "storm": 24, "reveal": 55, "command": 102, "dive": 135, "impact": 147, "clear": 176 },
+  "hits": [{ "tick": 147, "kind": "ground", "damage": 286, "hold": 11 }],
+  "weather": { "maximum": 4, "contributions": { "gokakyu": 1, "hosenka": 1, "goryuka": 3 } }
+}

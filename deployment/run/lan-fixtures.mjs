@@ -17794,12 +17794,12 @@ function unionBounds(rects) {
     h: Math.max(...rects.map((r) => r.y + r.h)) - y
   };
 }
-function worldRect(rect, x, y, facing) {
+function worldRect(rect2, x, y, facing) {
   return {
-    x: x + (facing === 1 ? rect.x : -rect.x - rect.w),
-    y: y + rect.y,
-    w: rect.w,
-    h: rect.h
+    x: x + (facing === 1 ? rect2.x : -rect2.x - rect2.w),
+    y: y + rect2.y,
+    w: rect2.w,
+    h: rect2.h
   };
 }
 function worldCapsule(capsule, x, y, facing) {
@@ -17809,22 +17809,22 @@ function worldCapsule(capsule, x, y, facing) {
     r: capsule.r
   };
 }
-function pointRectDistance(p, r) {
+function pointRectDistance(p3, r) {
   return Math.hypot(
-    Math.max(r.x - p.x, 0, p.x - r.x - r.w),
-    Math.max(r.y - p.y, 0, p.y - r.y - r.h)
+    Math.max(r.x - p3.x, 0, p3.x - r.x - r.w),
+    Math.max(r.y - p3.y, 0, p3.y - r.y - r.h)
   );
 }
-function pointSegmentDistance(p, a, b) {
+function pointSegmentDistance(p3, a, b) {
   const dx = b.x - a.x, dy = b.y - a.y;
   const t = Math.max(
     0,
     Math.min(
       1,
-      ((p.x - a.x) * dx + (p.y - a.y) * dy) / (dx * dx + dy * dy || 1)
+      ((p3.x - a.x) * dx + (p3.y - a.y) * dy) / (dx * dx + dy * dy || 1)
     )
   );
-  return Math.hypot(p.x - a.x - t * dx, p.y - a.y - t * dy);
+  return Math.hypot(p3.x - a.x - t * dx, p3.y - a.y - t * dy);
 }
 function segmentCrossesRect(a, b, r) {
   let low = 0, high = 1;
@@ -17851,13 +17851,13 @@ function shapeHitsRect(shape, r) {
     pointRectDistance(shape.a, r),
     pointRectDistance(shape.b, r)
   );
-  for (const p of [
+  for (const p3 of [
     { x: r.x, y: r.y },
     { x: r.x + r.w, y: r.y },
     { x: r.x, y: r.y + r.h },
     { x: r.x + r.w, y: r.y + r.h }
   ])
-    distance = Math.min(distance, pointSegmentDistance(p, shape.a, shape.b));
+    distance = Math.min(distance, pointSegmentDistance(p3, shape.a, shape.b));
   return distance <= shape.r;
 }
 
@@ -17903,12 +17903,12 @@ function animationTick(move, tick) {
     return old.startup + (tick - move.startup) * old.active / move.active;
   return old.startup + old.active + (tick - move.startup - move.active) * old.recovery / move.recovery;
 }
-function retime(move, startup2, active2, recovery2) {
+function retime(move, startup3, active3, recovery3) {
   const out = {
     ...move,
-    startup: startup2,
-    active: active2,
-    recovery: recovery2,
+    startup: startup3,
+    active: active3,
+    recovery: recovery3,
     visualTiming: {
       startup: move.startup,
       active: move.active,
@@ -17916,7 +17916,7 @@ function retime(move, startup2, active2, recovery2) {
     }
   };
   const tick = (t) => Math.round(
-    t < move.startup ? t * startup2 / move.startup : t < move.startup + move.active ? startup2 + (t - move.startup) * active2 / move.active : startup2 + active2 + (t - move.startup - move.active) * recovery2 / move.recovery
+    t < move.startup ? t * startup3 / move.startup : t < move.startup + move.active ? startup3 + (t - move.startup) * active3 / move.active : startup3 + active3 + (t - move.startup - move.active) * recovery3 / move.recovery
   );
   if (move.hitWindows)
     out.hitWindows = move.hitWindows.map((w) => ({
@@ -17945,7 +17945,7 @@ function pacedCharacter(source) {
   const id = source.id, mobility = combat_pace_default.mobility[id];
   if (!mobility) return source;
   const tuning = combat_pace_default.normals[id];
-  const moves = Object.fromEntries(
+  const moves2 = Object.fromEntries(
     Object.entries(source.moves).map(([key, m]) => {
       if (!/^(stand|crouch|air)_(light|medium|heavy)$/.test(key))
         return [key, m];
@@ -17980,7 +17980,7 @@ function pacedCharacter(source) {
   const result = {
     ...source,
     speed: mobility.speed,
-    moves,
+    moves: moves2,
     combatLimits: combat_pace_default.combo,
     airChaseSpeed: mobility.chaseSpeed,
     airChaseTicks: mobility.chaseTicks,
@@ -18017,6 +18017,7 @@ function pacedCharacter(source) {
 }
 
 // src/engine/moves.ts
+var isSuperMove = (move) => !!(move?.super || move?.kind === "ultimate");
 function poseAt(move, tick) {
   tick = animationTick(move, tick);
   let time = 0;
@@ -18086,7 +18087,7 @@ var CombatStand = class {
     this.s.bridgeClip = chain ? this.data.actions[key] ? key : "comboTransition" : void 0;
     let front = timeline.front;
     const first = this.data.actions[timeline.clip].poses.find(
-      (p) => p.hitboxes?.length
+      (p3) => p3.hitboxes?.length
     )?.hitboxes?.[0];
     if (targetX !== void 0 && first) {
       const b = shapeBounds(first), gap = (targetX - owner.x) * owner.facing;
@@ -18265,7 +18266,7 @@ var CombatStand = class {
         const t = owner.move ? animationTick(owner.move, owner.stateFrame) : owner.stateFrame, move = s.timeline;
         if ((owner.move?.special === "rush" || owner.move?.super) && owner.opponent) {
           const centers = this.data.actions[move.clip].poses.flatMap(
-            (p) => (p.hitboxes ?? []).map((shape) => {
+            (p3) => (p3.hitboxes ?? []).map((shape) => {
               const b = shapeBounds(shape);
               return b.x + b.w / 2;
             })
@@ -18283,14 +18284,14 @@ var CombatStand = class {
             )
           };
         }
-        const progress2 = Math.max(
+        const progress3 = Math.max(
           0,
           Math.min(1, (t - move.approachAt) / move.approachTicks)
         );
-        const ease3 = progress2 * progress2 * (3 - 2 * progress2);
-        const targetX2 = owner.x + (s.fromX + (move.front.x - s.fromX) * ease3) * s.facing;
+        const ease6 = progress3 * progress3 * (3 - 2 * progress3);
+        const targetX2 = owner.x + (s.fromX + (move.front.x - s.fromX) * ease6) * s.facing;
         s.x = owner.move?.special === "rush" || owner.move?.super ? s.x + Math.max(-16, Math.min(16, targetX2 - s.x)) : targetX2;
-        s.y = owner.y + s.fromY + (move.front.y - s.fromY) * ease3;
+        s.y = owner.y + s.fromY + (move.front.y - s.fromY) * ease6;
         s.depth = (s.x - owner.x) * owner.facing > 8 ? 20 : 0;
         s.clip = t < move.approachAt ? "standIdle" : t < move.punchAt ? "forwardAttackMovement" : t < move.recoverAt ? move.clip : move.recoveryClip ?? "attackRecovery";
         s.clipTick = t < move.approachAt ? t : t < move.punchAt ? Math.floor((t - move.approachAt) * 9 / move.approachTicks) : t < move.recoverAt ? t - move.punchAt : t - move.recoverAt;
@@ -18316,9 +18317,9 @@ var CombatStand = class {
         s.returnFrame = 0;
         s.facing = owner.facing;
       }
-      const progress2 = Math.min(1, ++s.returnFrame / s.returnDuration), ease3 = progress2 * progress2 * (3 - 2 * progress2);
-      s.x = owner.x + s.fromX + (this.data.neutral.x * owner.facing - s.fromX) * ease3;
-      s.y = owner.y + s.fromY + (this.data.neutral.y - s.fromY) * ease3;
+      const progress3 = Math.min(1, ++s.returnFrame / s.returnDuration), ease6 = progress3 * progress3 * (3 - 2 * progress3);
+      s.x = owner.x + s.fromX + (this.data.neutral.x * owner.facing - s.fromX) * ease6;
+      s.y = owner.y + s.fromY + (this.data.neutral.y - s.fromY) * ease6;
       s.facing = owner.facing;
       s.depth = (s.x - owner.x) * owner.facing > 8 ? 20 : 0;
       s.clip = s.returnClip ?? "returnBehind";
@@ -18327,7 +18328,7 @@ var CombatStand = class {
         returnTicks - 1,
         Math.floor((s.returnFrame - 1) * returnTicks / s.returnDuration)
       );
-      if (progress2 === 1) {
+      if (progress3 === 1) {
         s.mode = "follow";
         s.moveId = "";
         s.timeline = void 0;
@@ -18482,11 +18483,11 @@ var TemporalController = class {
     this.s.pending = [null, null];
     return pending;
   }
-  budget(damage) {
+  budget(damage2) {
     if (this.s.hits >= this.config.maximumHits || this.s.damage >= this.config.maximumDamage)
       return 0;
     const scaled = Math.round(
-      damage * Math.max(
+      damage2 * Math.max(
         this.config.minimumDamageScale,
         this.config.damageScale - this.s.hits * this.config.damageDecayPerHit
       )
@@ -18512,13 +18513,13 @@ var TemporalController = class {
 };
 
 // src/engine/projectiles.ts
-function projectileHits(p, boxes) {
-  const tip = p.facing * 14;
+function projectileHits(p3, boxes) {
+  const tip = p3.facing * 14;
   return boxes.some(
     (box) => shapeHitsRect(
       {
-        a: { x: p.previousX - tip, y: p.previousY },
-        b: { x: p.x + tip, y: p.y },
+        a: { x: p3.previousX - tip, y: p3.previousY },
+        b: { x: p3.x + tip, y: p3.y },
         r: 2
       },
       box
@@ -18676,14 +18677,14 @@ function canStartGokuSpecial(f, id) {
     return (free || airAllowed && f.hitConfirmed && canCancelGokuSpecial(f)) && (airAllowed || f.gokuTeleportLock === 0) && (!airAllowed || f.gokuAirTeleportsUsed < combat_pace_default.airTeleport.maximumPerJumpOrCombo && (move.gokuStrength !== "heavy" || validAirChase(f)));
   if (!free && !canCancelGokuSpecial(f)) return false;
   if (move.projectile && f.match.kiProjectiles.filter(
-    (p) => p.owner === f.id && p.state === "flight"
+    (p3) => p3.owner === f.id && p3.state === "flight"
   ).length + move.projectile.releases.length > goku_specials_default.projectiles.maximumPerOwner)
     return false;
   return true;
 }
 var clamp = (x) => Math.max(40, Math.min(1240, x));
 function teleportDestination(f) {
-  const strength = f.move?.gokuStrength ?? "light", c = goku_specials_default.teleport[strength], other = f.opponent;
+  const strength = f.move?.gokuStrength ?? "light", c2 = goku_specials_default.teleport[strength], other = f.opponent;
   if (f.move?.airTeleport) {
     const cfg = combat_pace_default.airTeleport;
     if (strength === "heavy" && !validAirChase(f)) return;
@@ -18707,7 +18708,7 @@ function teleportDestination(f) {
     }
     return { x: x2, y: y2 };
   }
-  let x = f.x + f.facing * c.distance, y = f.y;
+  let x = f.x + f.facing * c2.distance, y = f.y;
   if (strength === "medium") {
     const medium = goku_specials_default.teleport.medium, behind = other.x + f.facing * medium.distance;
     x = Math.abs(other.x - f.x) <= medium.targetRange && behind >= 40 && behind <= 1240 ? behind : f.x + f.facing * medium.fallbackDistance;
@@ -18800,49 +18801,49 @@ function roadPhase(tick) {
   return result;
 }
 function roadScene(s) {
-  const t = s.tick, p = road_roller_default.phases, phase = roadPhase(t), f = s.facing;
+  const t = s.tick, p3 = road_roller_default.phases, phase = roadPhase(t), f = s.facing;
   let ax = s.originX, ay = 580, ac = "roadUltimateStart", at = t;
   let sx = lerp(
     s.standOriginX,
     ax - 30 * f,
-    ease(progress(t, 0, p.preparation))
-  ), sy = lerp(s.standOriginY, 562, ease(progress(t, 0, p.preparation))), sc = "roadUltimateStart", st = t, depth = 0;
+    ease(progress(t, 0, p3.preparation))
+  ), sy = lerp(s.standOriginY, 562, ease(progress(t, 0, p3.preparation))), sc = "roadUltimateStart", st = t, depth = 0;
   let oy = 580, objectClip = "roadBase", objectTick = 0, visible = false;
   const perchX = clamp2(s.rollerX - 50 * f, 60, 1220), perchY = 455;
-  if (t >= p.preparation && t < p.ascent) {
+  if (t >= p3.preparation && t < p3.ascent) {
     ac = "roadFlyingPreparation";
-    at = t - p.preparation;
+    at = t - p3.preparation;
     sc = "roadFlyingPreparation";
     st = at;
   }
-  if (t >= p.ascent && t < p.offscreen) {
-    const u2 = progress(t, p.ascent, p.offscreen);
+  if (t >= p3.ascent && t < p3.offscreen) {
+    const u2 = progress(t, p3.ascent, p3.offscreen);
     ax = lerp(s.originX, perchX, ease(u2));
     ay = 580 - 920 * u2 * u2;
     ac = "roadFlyingUp";
-    at = t - p.ascent;
+    at = t - p3.ascent;
     sc = "roadFlyingUp";
     st = at;
     sx = ax - 30 * f;
     sy = ay - 22;
   }
-  if (t >= p.offscreen && t < p.descent) {
+  if (t >= p3.offscreen && t < p3.descent) {
     ax = perchX;
     ay = -340;
     sx = ax - 30 * f;
     sy = -370;
     ac = "roadFlyingUp";
     sc = "roadFlyingUp";
-    at = t - p.ascent;
+    at = t - p3.ascent;
     st = at;
   }
-  if (t >= p.descent && t < p.impact) {
-    const u2 = progress(t, p.descent, p.impact);
+  if (t >= p3.descent && t < p3.impact) {
+    const u2 = progress(t, p3.descent, p3.impact);
     oy = lerp(-220, 580, u2 * u2);
     ax = perchX;
     ay = oy - 64;
     ac = "roadReturning";
-    at = t - p.descent;
+    at = t - p3.descent;
     sx = s.rollerX - f * 110;
     sy = oy - 75;
     sc = "roadCarrying";
@@ -18852,66 +18853,66 @@ function roadScene(s) {
     objectClip = "roadFalling";
     objectTick = at;
   }
-  if (t >= p.impact && t < p.explosion) {
+  if (t >= p3.impact && t < p3.explosion) {
     visible = true;
     ax = perchX;
     ay = perchY;
-    ac = t < p.barrage ? "roadImpactPose" : "roadRollerPose";
-    at = t - (t < p.barrage ? p.impact : p.barrage);
-    const grip = ease(progress(t, p.impact, p.barrage));
+    ac = t < p3.barrage ? "roadImpactPose" : "roadRollerPose";
+    at = t - (t < p3.barrage ? p3.impact : p3.barrage);
+    const grip = ease(progress(t, p3.impact, p3.barrage));
     sx = lerp(s.rollerX - f * 110, s.rollerX + f * 30, grip);
     sy = lerp(505, 570, grip);
     depth = 20;
-    sc = t < p.barrage ? "roadReposition" : t < p.barrage + 12 ? "roadFirstPunch" : t < p.finisher ? "roadBarrage" : "roadFinalHeavy";
-    st = t < p.barrage ? t - p.impact : t < p.finisher ? t - p.barrage : t - p.finisher;
-    objectClip = t < p.barrage ? "roadImpact" : "roadPunched";
-    objectTick = t - (t < p.barrage ? p.impact : p.barrage);
+    sc = t < p3.barrage ? "roadReposition" : t < p3.barrage + 12 ? "roadFirstPunch" : t < p3.finisher ? "roadBarrage" : "roadFinalHeavy";
+    st = t < p3.barrage ? t - p3.impact : t < p3.finisher ? t - p3.barrage : t - p3.finisher;
+    objectClip = t < p3.barrage ? "roadImpact" : "roadPunched";
+    objectTick = t - (t < p3.barrage ? p3.impact : p3.barrage);
   }
-  if (t >= p.explosion && t < p.landing) {
-    const u2 = ease(progress(t, p.explosion, p.landing));
+  if (t >= p3.explosion && t < p3.landing) {
+    const u2 = ease(progress(t, p3.explosion, p3.landing));
     ax = lerp(perchX, s.landingX, u2);
     ay = lerp(perchY, 580, u2);
     ac = "roadUltimateFinish";
-    at = t - p.explosion;
+    at = t - p3.explosion;
     sx = lerp(s.rollerX + f * 30, s.landingX - 30 * f, u2);
     sy = lerp(570, 562, u2);
     sc = "roadUltimateRecovery";
-    st = t - p.explosion;
+    st = t - p3.explosion;
     depth = u2 > 0.6 ? 0 : 20;
-    visible = t < p.smoke + 4;
+    visible = t < p3.smoke + 4;
     objectClip = "roadExplosion";
-    objectTick = t - p.explosion;
+    objectTick = t - p3.explosion;
   }
-  if (t >= p.landing) {
+  if (t >= p3.landing) {
     ax = s.landingX;
     ay = 580;
-    ac = t < p.finish ? "roadUltimateFinish" : "roadReturnIdle";
-    at = t - (t < p.finish ? p.explosion : p.finish);
+    ac = t < p3.finish ? "roadUltimateFinish" : "roadReturnIdle";
+    at = t - (t < p3.finish ? p3.explosion : p3.finish);
     sx = ax - 30 * f;
     sy = 562;
     sc = "roadReturnBehind";
-    st = t - p.landing;
+    st = t - p3.landing;
     depth = 0;
   }
-  const scale = t < p.offscreen || t >= p.descent && t < p.landing ? 2 : 1;
+  const scale = t < p3.offscreen || t >= p3.descent && t < p3.landing ? 2 : 1;
   const cx = clamp2(
-    t < p.descent ? (s.originX + s.targetX) / 2 : s.rollerX,
+    t < p3.descent ? (s.originX + s.targetX) / 2 : s.rollerX,
     640 / scale,
     1280 - 640 / scale
   );
   let cy = 580;
-  if (t >= p.ascent && t < p.offscreen)
-    cy -= 100 * ease(progress(t, p.ascent, p.offscreen));
+  if (t >= p3.ascent && t < p3.offscreen)
+    cy -= 100 * ease(progress(t, p3.ascent, p3.offscreen));
   let shake = 0;
   for (const hit of [
-    p.impact,
+    p3.impact,
     ...road_roller_default.punchTicks,
     road_roller_default.finalPunchTick,
-    p.explosion
+    p3.explosion
   ]) {
     const age = t - hit;
     if (age >= 0 && age < road_roller_default.shake.length)
-      shake += road_roller_default.shake[age] * (hit === p.explosion ? 1.4 : hit === p.impact ? 1 : 0.35);
+      shake += road_roller_default.shake[age] * (hit === p3.explosion ? 1.4 : hit === p3.impact ? 1 : 0.35);
   }
   return {
     phase,
@@ -18926,9 +18927,9 @@ function roadScene(s) {
     },
     victim: {
       x: s.targetX,
-      y: lerp(s.targetY ?? 580, 580, ease(progress(t, 0, p.preparation))),
-      clip: t < p.impact ? "damageMedium" : "downed",
-      tick: t < p.impact ? t % 12 : t - p.impact
+      y: lerp(s.targetY ?? 580, 580, ease(progress(t, 0, p3.preparation))),
+      clip: t < p3.impact ? "damageMedium" : "downed",
+      tick: t < p3.impact ? t % 12 : t - p3.impact
     },
     camera: {
       scale,
@@ -19145,7 +19146,7 @@ function track(t, keys) {
   return { x: k[1], y: k[2] };
 }
 function furyScene(s) {
-  const t = s.tick, f = s.facing, p = goku_fury_default.phases;
+  const t = s.tick, f = s.facing, p3 = goku_fury_default.phases;
   const stage = clamp3(s.targetX, 310, 970), endX = clamp3(stage + 60 * f, 180, 1100);
   const keys = [
     [0, s.targetX, s.targetY],
@@ -19172,8 +19173,8 @@ function furyScene(s) {
   let clip2 = "furyFirstPunch", tick = 14, facing = f, hidden = false;
   let x = s.originX, y = 580;
   const aim = (name, at, side = f, ground = false) => {
-    const target = track(at, keys), c = furyContacts[name] ?? furyContacts.furyAirPunch;
-    return { x: target.x - c.x * side, y: ground ? 580 : target.y - 78 - c.y };
+    const target = track(at, keys), c2 = furyContacts[name] ?? furyContacts.furyAirPunch;
+    return { x: target.x - c2.x * side, y: ground ? 580 : target.y - 78 - c2.y };
   };
   const contact = (name, hitTick, offset, start, previous, ground = false) => {
     clip2 = name;
@@ -19297,7 +19298,7 @@ function furyScene(s) {
   }
   x = clamp3(x, 42, 1238);
   let phase = "ground";
-  for (const [name, start] of Object.entries(p)) if (t >= start) phase = name;
+  for (const [name, start] of Object.entries(p3)) if (t >= start) phase = name;
   let vc = t >= 330 ? "downed" : t < 34 ? "damageMedium" : t < 60 ? "launched" : t < 224 ? "damageAir" : "falling";
   const lastHit = goku_fury_default.hits.filter((h) => h.tick <= t).at(-1)?.tick ?? 0;
   if (t >= 278 && t < 330) vc = "damageAir";
@@ -19629,7 +19630,7 @@ function reactionBoxes(f) {
   if (!state) return;
   const sequence2 = f.data.reactions?.[state.clip];
   if (!sequence2) return;
-  const total = sequence2.poses.reduce((sum, p) => sum + p.ticks, 0);
+  const total = sequence2.poses.reduce((sum, p3) => sum + p3.ticks, 0);
   let time = sequence2.loop ? state.tick % total : Math.min(state.tick, total - 1);
   for (const pose of sequence2.poses) {
     if (time < pose.ticks) return pose.hurtboxes;
@@ -19989,8 +19990,8 @@ var variants = {
 function luffyFootPose(id, length) {
   const spec = variants[id] ?? variants.stand_medium;
   const t = Math.max(0, Math.min(1, (length - 17) / 46));
-  const p = t * t * (3 - 2 * t);
-  const angle = -0.62 + (spec.angle + 0.62) * p;
+  const p3 = t * t * (3 - 2 * t);
+  const angle = -0.62 + (spec.angle + 0.62) * p3;
   return { ...spec, cos: Math.cos(angle), sin: Math.sin(angle) };
 }
 function luffyFootPoint(ankle, axis, pose, x, y) {
@@ -20004,7 +20005,7 @@ function luffyFootPoint(ankle, axis, pose, x, y) {
 }
 
 // src/engine/elastic.ts
-var pixel = (p) => ({ x: Math.round(p.x), y: Math.round(p.y) });
+var pixel = (p3) => ({ x: Math.round(p3.x), y: Math.round(p3.y) });
 function elasticGeometry(pose) {
   const finite = [
     pose.root.x,
@@ -20061,14 +20062,14 @@ function buildMove(id, spec) {
     cancels
   } = spec;
   const total = (from, to) => holds.slice(from, to).reduce((sum, ticks) => sum + ticks, 0);
-  const startup2 = total(0, first);
-  const active2 = total(first, end);
-  const recovery2 = total(end, holds.length);
+  const startup3 = total(0, first);
+  const active3 = total(first, end);
+  const recovery3 = total(end, holds.length);
   return {
     ...spec,
-    startup: startup2,
-    active: active2,
-    recovery: recovery2,
+    startup: startup3,
+    active: active3,
+    recovery: recovery3,
     rank: id.endsWith("_light") ? 1 : id.endsWith("_medium") ? 2 : 3,
     launch: "launch" in spec ? spec.launch : 0,
     kind: "strike",
@@ -20079,8 +20080,8 @@ function buildMove(id, spec) {
       hurtboxes: normalPoses[id][index].hurtboxes
     })),
     cancelWindow: {
-      fromTick: startup2,
-      toTick: startup2 + active2 + Math.min(8, recovery2 - 1)
+      fromTick: startup3,
+      toTick: startup3 + active3 + Math.min(8, recovery3 - 1)
     },
     cancels: [...cancels, ...!id.startsWith("air_") ? ["special"] : []],
     cancelMoves: cancels.map((button) => id.replace(/_[^_]+$/, "_" + button))
@@ -20103,10 +20104,10 @@ function limbAt(actor, spec, tick) {
   const [x, y, bend] = spec.track[startIndex];
   const next = spec.track[Math.min(startIndex + 1, spec.track.length - 1)];
   const release = firstRecovery ? t < 0.5 ? t * 2 : t * 2 - 1 : t;
-  const fraction = atPeak ? 0 : frame >= end ? release * (2 - release) : t;
+  const fraction2 = atPeak ? 0 : frame >= end ? release * (2 - release) : t;
   const tip = {
-    x: x + (next[0] - x) * fraction,
-    y: y + (next[1] - y) * fraction
+    x: x + (next[0] - x) * fraction2,
+    y: y + (next[1] - y) * fraction2
   };
   const foot = spec.kind === "foot";
   const [jointX, jointY] = normalPoses[actor.moveId][frame].joint;
@@ -20116,7 +20117,7 @@ function limbAt(actor, spec, tick) {
       actor,
       root,
       tip,
-      bend + (next[2] - bend) * fraction,
+      bend + (next[2] - bend) * fraction2,
       foot,
       Math.max(
         ...spec.track.map(([px, py]) => Math.hypot(px - root.x, py - root.y))
@@ -20199,26 +20200,26 @@ function luffySpecialCommand(buffer, button) {
   const motion = buffer.gokuSpecial(button);
   return motion === "ki" ? "pistol" : motion === "kamehameha" ? "gatling" : motion === "teleport" ? "bazooka" : void 0;
 }
-function bodyFrame(name, tick, startup2, active2) {
-  if (tick < startup2) return tick < Math.ceil(startup2 * 0.55) ? 0 : 1;
-  if (tick >= startup2 + active2) return 3;
+function bodyFrame(name, tick, startup3, active3) {
+  if (tick < startup3) return tick < Math.ceil(startup3 * 0.55) ? 0 : 1;
+  if (tick >= startup3 + active3) return 3;
   if (name === "gatling")
-    return 1 + Math.floor((tick - startup2) / pulseTicks) % 2;
-  return tick - startup2 < 2 ? 1 : 2;
+    return 1 + Math.floor((tick - startup3) / pulseTicks) % 2;
+  return tick - startup3 < 2 ? 1 : 2;
 }
 var luffySpecialMoves = {};
 for (const name of luffySpecialNames) {
   const spec = luffy_specials_default[name];
   for (const [index, strength] of strengths.entries()) {
     const id = name + "_" + strength;
-    const startup2 = spec.startup[index], active2 = spec.active[index], recovery2 = spec.recovery[index];
+    const startup3 = spec.startup[index], active3 = spec.active[index], recovery3 = spec.recovery[index];
     specByMove.set(id, { name, rank: index });
     luffySpecialMoves[id] = {
       special: name,
       kind: "strike",
-      startup: startup2,
-      active: active2,
-      recovery: recovery2,
+      startup: startup3,
+      active: active3,
+      recovery: recovery3,
       damage: spec.damage[index],
       stun: spec.stun[index],
       blockstun: spec.blockstun[index],
@@ -20230,18 +20231,18 @@ for (const name of luffySpecialNames) {
       level: "mid",
       cancels: [],
       box: { x: 0, y: 0, w: 0, h: 0 },
-      poses: Array.from({ length: startup2 + active2 + recovery2 }, (_, tick) => ({
+      poses: Array.from({ length: startup3 + active3 + recovery3 }, (_, tick) => ({
         ticks: 1,
-        phase: tick < startup2 ? "startup" : tick < startup2 + active2 ? "active" : "recovery",
-        hurtboxes: data[name][bodyFrame(name, tick, startup2, active2)].hurtboxes
+        phase: tick < startup3 ? "startup" : tick < startup3 + active3 ? "active" : "recovery",
+        hurtboxes: data[name][bodyFrame(name, tick, startup3, active3)].hurtboxes
       })),
       ...name === "gatling" ? {
         hitWindows: Array.from(
-          { length: active2 / pulseTicks },
+          { length: active3 / pulseTicks },
           (_, pulse) => ({
             id: pulse,
-            fromTick: startup2 + pulse * pulseTicks + 1,
-            toTick: startup2 + pulse * pulseTicks + 5
+            fromTick: startup3 + pulse * pulseTicks + 1,
+            toTick: startup3 + pulse * pulseTicks + 5
           })
         )
       } : {}
@@ -20260,13 +20261,13 @@ function limbsAt(actor, name, rank, tick) {
     0,
     Math.min(1, (after - move.active) / (move.recovery * 0.77))
   );
-  const progress2 = name === "gatling" ? live ? [0, 0.33, 0.67, 0.91, 1, 0.48][within] : after >= move.active ? 0.38 * (1 - recoil) : 0 : after < 0 ? 0 : live ? Math.min(1, (after + 1) / (name === "pistol" ? 6 : 4)) : (1 - recoil) ** 2;
+  const progress3 = name === "gatling" ? live ? [0, 0.33, 0.67, 0.91, 1, 0.48][within] : after >= move.active ? 0.38 * (1 - recoil) : 0 : after < 0 ? 0 : live ? Math.min(1, (after + 1) / (name === "pistol" ? 6 : 4)) : (1 - recoil) ** 2;
   const front = name === "gatling" ? pulse % 2 : 0;
   const depth = name === "bazooka" || name === "gatling" ? 2 : 1;
   return Array.from({ length: depth }, (_, side) => {
     const [x, y] = data[name][frame].joints[side];
     const driving = name !== "gatling" || side === front;
-    const extent = driving ? progress2 : 0;
+    const extent = driving ? progress3 : 0;
     const tucked = x + (after < 0 ? 5 - 20 * (tick / move.startup) : 12);
     const punchHeight = name === "gatling" ? -88 + (pulse % 3 - 1) * 7 : name === "bazooka" ? -80 + side * 10 : -88;
     const length = range - (name === "gatling" ? pulse % 3 * 5 : side * 4);
@@ -20298,12 +20299,12 @@ function luffyAttackLimbs(actor) {
     return limb ? [{ ...limb, rear: false, trail: false, driving: false }] : [];
   }
   const current = limbsAt(actor, spec.name, spec.rank, actor.stateFrame);
-  const active2 = actor.stateFrame >= actor.move.startup && actor.stateFrame < actor.move.startup + actor.move.active && (!actor.move.hitWindows || actor.move.hitWindows.some(
+  const active3 = actor.stateFrame >= actor.move.startup && actor.stateFrame < actor.move.startup + actor.move.active && (!actor.move.hitWindows || actor.move.hitWindows.some(
     (w) => actor.stateFrame >= w.fromTick && actor.stateFrame < w.toTick
   ));
-  const previous = active2 && actor.stateFrame ? limbsAt(actor, spec.name, spec.rank, actor.stateFrame - 1) : [];
+  const previous = active3 && actor.stateFrame ? limbsAt(actor, spec.name, spec.rank, actor.stateFrame - 1) : [];
   return current.map((limb, i) => {
-    const hitboxes = active2 && limb.driving ? [limb.terminal] : [];
+    const hitboxes = active3 && limb.driving ? [limb.terminal] : [];
     const prev = previous[i]?.terminal;
     if (prev && hitboxes.length && prev.b.x < limb.terminal.b.x) {
       hitboxes.push({ a: prev.a, b: limb.terminal.a, r: limb.terminal.r });
@@ -20429,6 +20430,130 @@ var sasuke_specials_default = {
 // src/data/sasuke-special-frames.json
 var sasuke_special_frames_default = { senbon: [{ hurtboxes: [{ x: -11, y: -122, w: 35, h: 29 }, { x: -30, y: -93, w: 71, h: 47 }, { x: -39, y: -46, w: 84, h: 46 }] }, { hurtboxes: [{ x: -20, y: -123, w: 48, h: 30 }, { x: -30, y: -93, w: 79, h: 46 }, { x: -35, y: -47, w: 83, h: 47 }], release: { x: 42, y: -75 } }, { hurtboxes: [{ x: -6, y: -121, w: 35, h: 29 }, { x: -26, y: -92, w: 83, h: 46 }, { x: -35, y: -46, w: 83, h: 46 }], release: { x: 62, y: -85 } }, { hurtboxes: [{ x: -10, y: -122, w: 34, h: 29 }, { x: -26, y: -93, w: 62, h: 47 }, { x: -39, y: -46, w: 83, h: 46 }] }], eiso: [{ hurtboxes: [{ x: -8, y: -118, w: 36, h: 28 }, { x: -25, y: -90, w: 67, h: 45 }, { x: -45, y: -45, w: 98, h: 45 }] }, { hurtboxes: [{ x: -33, y: -120, w: 64, h: 29 }, { x: -34, y: -91, w: 77, h: 45 }, { x: -45, y: -46, w: 101, h: 46 }], release: { x: -10, y: -96 } }, { hurtboxes: [{ x: 4, y: -113, w: 37, h: 27 }, { x: -18, y: -86, w: 75, h: 43 }, { x: -45, y: -43, w: 102, h: 43 }], release: { x: 76, y: -79 } }, { hurtboxes: [{ x: -6, y: -119, w: 34, h: 29 }, { x: -21, y: -90, w: 63, h: 45 }, { x: -45, y: -45, w: 96, h: 45 }] }], chidori: [{ hurtboxes: [{ x: -9, y: -103, w: 42, h: 25 }, { x: -36, y: -78, w: 76, h: 39 }, { x: -45, y: -39, w: 79, h: 39 }] }, { hurtboxes: [{ x: -1, y: -110, w: 42, h: 26 }, { x: -29, y: -84, w: 74, h: 42 }, { x: -45, y: -42, w: 85, h: 42 }], release: { x: 39, y: -65 } }, { hurtboxes: [{ x: 6, y: -105, w: 47, h: 25 }, { x: -26, y: -80, w: 83, h: 40 }, { x: -45, y: -40, w: 102, h: 39 }], release: { x: 82, y: -73 } }, { hurtboxes: [{ x: -13, y: -119, w: 38, h: 29 }, { x: -29, y: -90, w: 66, h: 45 }, { x: -42, y: -45, w: 92, h: 45 }] }], gokakyu: [{ hurtboxes: [{ x: -16, y: -127, w: 32, h: 30 }, { x: -25, y: -97, w: 54, h: 49 }, { x: -39, y: -48, w: 83, h: 48 }] }, { hurtboxes: [{ x: -19, y: -128, w: 33, h: 31 }, { x: -26, y: -97, w: 53, h: 48 }, { x: -38, y: -49, w: 81, h: 49 }], release: { x: 9, y: -104 } }, { hurtboxes: [{ x: -3, y: -117, w: 41, h: 28 }, { x: -34, y: -89, w: 74, h: 45 }, { x: -43, y: -44, w: 91, h: 44 }], release: { x: 32, y: -90 } }, { hurtboxes: [{ x: -14, y: -126, w: 35, h: 30 }, { x: -29, y: -96, w: 74, h: 48 }, { x: -38, y: -48, w: 82, h: 48 }] }], hosenka: [{ hurtboxes: [{ x: -14, y: -126, w: 32, h: 30 }, { x: -25, y: -96, w: 58, h: 48 }, { x: -28, y: -48, w: 53, h: 48 }] }, { hurtboxes: [{ x: -16, y: -127, w: 32, h: 30 }, { x: -29, y: -97, w: 63, h: 49 }, { x: -30, y: -48, w: 54, h: 48 }], release: { x: 10, y: -101 } }, { hurtboxes: [{ x: -8, y: -121, w: 38, h: 29 }, { x: -34, y: -92, w: 71, h: 46 }, { x: -32, y: -46, w: 59, h: 46 }], release: { x: 24, y: -96 } }, { hurtboxes: [{ x: -13, y: -125, w: 34, h: 30 }, { x: -27, y: -95, w: 69, h: 47 }, { x: -34, y: -48, w: 57, h: 48 }] }], goryuka: [{ hurtboxes: [{ x: -22, y: -122, w: 44, h: 29 }, { x: -34, y: -93, w: 72, h: 47 }, { x: -45, y: -46, w: 101, h: 46 }] }, { hurtboxes: [{ x: -21, y: -125, w: 35, h: 30 }, { x: -30, y: -95, w: 62, h: 47 }, { x: -45, y: -48, w: 99, h: 48 }], release: { x: 7, y: -110 } }, { hurtboxes: [{ x: -22, y: -125, w: 40, h: 30 }, { x: -25, y: -95, w: 62, h: 47 }, { x: -45, y: -48, w: 102, h: 48 }], release: { x: 9, y: -111 } }, { hurtboxes: [{ x: -14, y: -122, w: 33, h: 29 }, { x: -34, y: -93, w: 75, h: 47 }, { x: -45, y: -46, w: 98, h: 46 }] }], serpents: [{ hurtboxes: [{ x: -23, y: -120, w: 53, h: 29 }, { x: -45, y: -91, w: 87, h: 45 }, { x: -45, y: -46, w: 102, h: 46 }] }, { hurtboxes: [{ x: -17, y: -126, w: 66, h: 30 }, { x: -39, y: -96, w: 81, h: 48 }, { x: -45, y: -48, w: 102, h: 48 }], release: { x: 39, y: -104 } }, { hurtboxes: [{ x: -32, y: -116, w: 70, h: 28 }, { x: -37, y: -88, w: 94, h: 44 }, { x: -45, y: -44, w: 102, h: 44 }], release: { x: 68, y: -45 } }, { hurtboxes: [{ x: -20, y: -126, w: 41, h: 30 }, { x: -38, y: -96, w: 78, h: 48 }, { x: -45, y: -48, w: 102, h: 48 }] }], nagashi: [{ hurtboxes: [{ x: -23, y: -130, w: 43, h: 31 }, { x: -39, y: -99, w: 71, h: 50 }, { x: -45, y: -49, w: 102, h: 49 }] }, { hurtboxes: [{ x: -30, y: -113, w: 58, h: 27 }, { x: -45, y: -86, w: 80, h: 43 }, { x: -45, y: -43, w: 102, h: 43 }], release: { x: -10, y: -65 } }, { hurtboxes: [{ x: -23, y: -115, w: 48, h: 28 }, { x: -45, y: -87, w: 102, h: 43 }, { x: -45, y: -44, w: 102, h: 44 }], release: { x: -2, y: -62 } }, { hurtboxes: [{ x: -24, y: -129, w: 42, h: 31 }, { x: -40, y: -98, w: 70, h: 49 }, { x: -45, y: -49, w: 102, h: 49 }] }] };
 
+// src/data/sasuke-polish.json
+var sasuke_polish_default = {
+  goryuka: {
+    arenaWidth: 1280,
+    cycles: 5,
+    minimumWavelength: 155,
+    heightOffset: -8,
+    leadIn: 42,
+    bodyLength: 192,
+    offensiveLength: 104,
+    headRadius: 28,
+    exitPadding: 42,
+    maximumLife: 205,
+    base: { speed: 12.5, amplitude: 77 },
+    curse: { speed: 14, amplitude: 91 }
+  },
+  chidori: {
+    base: {
+      holds: [4, 4, 3, 5, 6, 25],
+      drive: [6, 10, 14, 19, 22, 23, 23, 22, 21, 20, 18, 16, 13, 10],
+      hitstop: 12,
+      push: 8.2
+    },
+    curse: {
+      holds: [4, 4, 3, 5, 6, 27],
+      drive: [7, 12, 16, 21, 24, 25, 25, 24, 23, 22, 20, 18, 15, 12],
+      hitstop: 14,
+      push: 9
+    }
+  },
+  nagashi: {
+    base: { reach: 115, height: 147, holds: [4, 5, 8, 29], stun: 46 },
+    curse: { reach: 135, height: 158, holds: [9, 8, 31], stun: 49 }
+  }
+};
+
+// src/data/sasuke-polish-art.json
+var sasuke_polish_art_default = { chidori: [{ release: { x: 38, y: -35 }, hurtboxes: [{ x: -12, y: -107, w: 49, h: 32 }, { x: -28, y: -78, w: 61, h: 42 }, { x: -43, y: -45, w: 91, h: 45 }] }, { release: { x: 63, y: -38 }, hurtboxes: [{ x: -12, y: -107, w: 49, h: 32 }, { x: -28, y: -78, w: 61, h: 42 }, { x: -43, y: -45, w: 91, h: 45 }] }, { release: { x: 70, y: -51 }, hurtboxes: [{ x: -12, y: -107, w: 49, h: 32 }, { x: -28, y: -78, w: 61, h: 42 }, { x: -43, y: -45, w: 91, h: 45 }] }, { release: { x: 76, y: -67 }, hurtboxes: [{ x: -12, y: -107, w: 49, h: 32 }, { x: -28, y: -78, w: 61, h: 42 }, { x: -43, y: -45, w: 91, h: 45 }] }, { release: { x: 84, y: -93 }, hurtboxes: [{ x: -12, y: -126, w: 49, h: 32 }, { x: -28, y: -97, w: 61, h: 42 }, { x: -43, y: -45, w: 91, h: 45 }] }, { release: { x: 38, y: -97 }, hurtboxes: [{ x: -12, y: -126, w: 49, h: 32 }, { x: -28, y: -97, w: 61, h: 42 }, { x: -43, y: -45, w: 91, h: 45 }] }], chidoriCurse: [{ release: { x: 49, y: -44 }, hurtboxes: [{ x: -12, y: -107, w: 49, h: 32 }, { x: -28, y: -78, w: 61, h: 42 }, { x: -43, y: -45, w: 91, h: 45 }] }, { release: { x: 59, y: -35 }, hurtboxes: [{ x: -12, y: -107, w: 49, h: 32 }, { x: -28, y: -78, w: 61, h: 42 }, { x: -43, y: -45, w: 91, h: 45 }] }, { release: { x: 61, y: -35 }, hurtboxes: [{ x: -12, y: -107, w: 49, h: 32 }, { x: -28, y: -78, w: 61, h: 42 }, { x: -43, y: -45, w: 91, h: 45 }] }, { release: { x: 71, y: -51 }, hurtboxes: [{ x: -12, y: -107, w: 49, h: 32 }, { x: -28, y: -78, w: 61, h: 42 }, { x: -43, y: -45, w: 91, h: 45 }] }, { release: { x: 85, y: -99 }, hurtboxes: [{ x: -12, y: -126, w: 49, h: 32 }, { x: -28, y: -97, w: 61, h: 42 }, { x: -43, y: -45, w: 91, h: 45 }] }, { release: { x: 39, y: -80 }, hurtboxes: [{ x: -12, y: -126, w: 49, h: 32 }, { x: -28, y: -97, w: 61, h: 42 }, { x: -43, y: -45, w: 91, h: 45 }] }], fire: [{ x: 91, y: 45 }, { x: 91, y: 53 }, { x: 92, y: 65 }, { x: 90, y: 47 }, { x: 91, y: 55 }, { x: 91, y: 66 }], blackDragon: [{ x: 484, y: 153 }, { x: 484, y: 163 }, { x: 480, y: 263 }, { x: 480, y: 301 }], blackSky: [{ x: 256, y: 182 }, { x: 256, y: 182 }, { x: 256, y: 283 }, { x: 256, y: 235 }] };
+
+// src/engine/sasuke-polish.ts
+var fire = sasuke_polish_default.goryuka;
+function fireDragonWave(origin, facing, cursed) {
+  const span = Math.max(0, facing > 0 ? fire.arenaWidth - origin.x : origin.x);
+  const style = cursed ? fire.curse : fire.base;
+  return {
+    origin,
+    facing,
+    distance: 0,
+    struck: false,
+    period: Math.max(fire.minimumWavelength, span / fire.cycles),
+    amplitude: Math.min(
+      style.amplitude * Math.min(1, span / 580),
+      557 - origin.y
+    ),
+    limit: span + fire.bodyLength + fire.exitPadding
+  };
+}
+function fireDragonPoint(w, distance) {
+  const t = Math.max(0, distance);
+  const ramp = Math.min(1, t / fire.leadIn);
+  const envelope = ramp * ramp * (3 - 2 * ramp);
+  return {
+    x: w.origin.x + t * w.facing,
+    y: w.origin.y + envelope * (fire.heightOffset - w.amplitude * Math.sin(t * 2 * Math.PI / w.period))
+  };
+}
+function fireDragonVolumes(w, previous, radius) {
+  const point = fireDragonPoint(w, w.distance);
+  const hit = [{ a: previous, b: point, r: radius }];
+  const span = Math.min(w.distance, fire.offensiveLength);
+  for (let i = 0; i < span; i += 16) {
+    hit.push({
+      a: fireDragonPoint(w, w.distance - i),
+      b: fireDragonPoint(w, w.distance - Math.min(span, i + 16)),
+      r: Math.max(10, radius * (0.71 - i / 340))
+    });
+  }
+  return hit;
+}
+function chidoriProfile(cursed) {
+  return cursed ? sasuke_polish_default.chidori.curse : sasuke_polish_default.chidori.base;
+}
+function chidoriMove(base, cursed) {
+  const { holds, hitstop, push } = chidoriProfile(cursed);
+  const cels = cursed ? sasuke_polish_art_default.chidoriCurse : sasuke_polish_art_default.chidori;
+  return {
+    ...base,
+    hitstop,
+    push,
+    launch: -2.4,
+    drive: void 0,
+    startup: holds[0] + holds[1] + holds[2],
+    active: holds[3] + holds[4],
+    recovery: holds[5],
+    poses: holds.map((ticks, i) => ({
+      ...cels[i],
+      ticks,
+      phase: i < 3 ? "startup" : i < 5 ? "active" : "recovery"
+    }))
+  };
+}
+var chidoriVelocity = (tick, cursed) => chidoriProfile(cursed).drive[tick - 8] ?? 0;
+function nagashiProfile(cursed) {
+  return cursed ? sasuke_polish_default.nagashi.curse : sasuke_polish_default.nagashi.base;
+}
+function nagashiVolumes(age, cursed) {
+  const { reach, height } = nagashiProfile(cursed);
+  const growth = 0.56 + 0.44 * Math.max(0, Math.min(1, (age + 1) / 3));
+  const root = { x: 0, y: -64 };
+  return [-1, 1].flatMap((side) => [
+    { a: root, b: { x: side * reach * growth, y: -63 }, r: 14 },
+    {
+      a: { x: 0, y: -84 },
+      b: { x: side * reach * 0.68 * growth, y: -height },
+      r: 13
+    },
+    {
+      a: { x: 0, y: -43 },
+      b: { x: side * reach * 0.83 * growth, y: -14 },
+      r: 13
+    }
+  ]);
+}
+
 // src/engine/sasuke-specials.ts
 var sasukeSpecialBalance = sasuke_specials_default;
 var sasukeTechniques = sasuke_specials_default.techniques;
@@ -20441,7 +20566,7 @@ function isSasukeSpecial(id) {
 var commandMoves = {
   ki: { light: "senbon", medium: "eiso", heavy: "chidori" },
   kamehameha: { light: "gokakyu", medium: "hosenka", heavy: "goryuka" },
-  teleport: { light: "serpents", medium: "nagashi", heavy: "reserved" }
+  teleport: { light: "serpents", medium: "nagashi", heavy: "curse" }
 };
 function sasukeSpecialCommand(buffer, button) {
   if (button !== "light" && button !== "medium" && button !== "heavy") return;
@@ -20480,35 +20605,586 @@ function sasukeSpecialContact(id, elapsed, facing, rootX) {
 var sasukeSpecialMoves = Object.fromEntries(
   sasukeSpecialIds.map((id) => {
     const {
-      holds,
+      holds: originalHolds,
       shots: _shots,
       reach: _reach,
       ...stats
     } = sasukeTechniques[id];
-    const [seal, gather, active2, recovery2] = holds;
+    const nagashi = id === "nagashi" ? nagashiProfile(false) : void 0;
+    const holds = nagashi?.holds ?? originalHolds;
+    const [seal, gather, active3, recovery3] = holds;
     const poses = holds.map((ticks, index) => ({
       ticks,
       phase: index < 2 ? "startup" : index === 2 ? "active" : "recovery",
       ...bodyCels[id][index]
     }));
+    const move = {
+      ...stats,
+      ...nagashi ? { stun: nagashi.stun } : {},
+      special: id,
+      startup: seal + gather,
+      active: active3,
+      recovery: recovery3,
+      kind: "strike",
+      rank: id === "senbon" || id === "hosenka" || id === "serpents" ? 1 : 2,
+      level: "mid",
+      box: { x: 0, y: 0, w: 0, h: 0 },
+      cancels: [],
+      poses
+    };
+    return [id, id === "chidori" ? chidoriMove(move, false) : move];
+  })
+);
+
+// src/data/sasuke-curse.json
+var sasuke_curse_default = {
+  durationTicks: 780,
+  cooldownTicks: 1080,
+  damageMultiplier: 1.15,
+  movementMultiplier: 1.1,
+  activationHolds: [6, 6, 6, 5, 5, 5],
+  reversionHolds: [6, 6, 5],
+  airBurst: { speeds: [8, 12, 14, 13, 10, 8, 6.82], fallCap: 3.2 },
+  normalTimings: {
+    stand_light: [4, 4, 12],
+    stand_medium: [6, 5, 15],
+    stand_heavy: [10, 6, 23],
+    crouch_light: [4, 4, 12],
+    crouch_medium: [7, 5, 16],
+    crouch_heavy: [10, 6, 22],
+    air_light: [4, 4, 10],
+    air_medium: [6, 5, 12],
+    air_heavy: [9, 6, 16]
+  },
+  specials: {
+    senbon: {
+      holds: [9, 11, 18],
+      shots: [
+        { at: 0, speed: 25, rise: -0.9, radius: 5, life: 31 },
+        { at: 3, speed: 27, rise: -0.22, radius: 5, life: 31 },
+        { at: 6, speed: 28, rise: 0.33, radius: 5, life: 31 },
+        { at: 9, speed: 26, rise: 0.9, radius: 5, life: 31 }
+      ]
+    },
+    eiso: { holds: [11, 7, 32], reach: 238, push: 6.1 },
+    chidori: { holds: [11, 8, 25], push: 8, hitstop: 11, drive: { from: 6, to: 18, speed: 12.8 } },
+    gokakyu: {
+      holds: [11, 8, 23],
+      shots: [{ at: 0, speed: 13.5, rise: 0.35, radius: 29, life: 75 }]
+    },
+    hosenka: {
+      holds: [13, 17, 24],
+      shots: [
+        { at: 0, speed: 13, rise: -2.6, radius: 13, life: 60 },
+        { at: 4, speed: 16, rise: -0.8, radius: 14, life: 57 },
+        { at: 8, speed: 15, rise: 0.65, radius: 14, life: 57 },
+        { at: 12, speed: 13, rise: 1.95, radius: 13, life: 60 }
+      ]
+    },
+    goryuka: {
+      holds: [17, 10, 32],
+      shots: [{ at: 0, speed: 16, rise: -5.2, radius: 37, life: 67 }]
+    },
+    serpents: {
+      holds: [12, 9, 21],
+      stun: 46,
+      shots: [{ at: 0, speed: 15, rise: 0.55, radius: 17, life: 18 }]
+    },
+    nagashi: { holds: [9, 6, 26], stun: 43, blockstun: 13 }
+  }
+};
+
+// src/data/sasuke-curse-frames.json
+var sasuke_curse_frames_default = { clips: { idle: { frames: [0, 1, 2, 1], holds: [8, 8, 8, 8] }, walkForward: { frames: [3, 4, 5, 4], holds: [4, 4, 4, 4] }, walkBack: { frames: [6, 7, 8, 7], holds: [5, 4, 5, 4] }, dashForward: { frames: [9, 15, 12], holds: [4, 4, 4] }, backdash: { frames: [10, 14, 16], holds: [5, 4, 3] }, airBurst: { frames: [15], holds: [7] }, crouchStart: { frames: [11], holds: [6] }, crouchIdle: { frames: [11], holds: [7] }, crouchEnd: { frames: [11, 16], holds: [3, 3] }, jumpStart: { frames: [11, 12], holds: [2, 3] }, jumpRise: { frames: [12, 13], holds: [5, 6] }, jumpApex: { frames: [13], holds: [5] }, jumpFall: { frames: [13, 14], holds: [6, 5] }, landing: { frames: [14, 11, 16], holds: [2, 2, 3] }, guardStand: { frames: [16], holds: [6] }, guardImpactStand: { frames: [16, 17, 16], holds: [3, 4, 4] }, guardCrouch: { frames: [11], holds: [6] }, guardImpactCrouch: { frames: [11, 16, 11], holds: [3, 4, 4] }, damageLight: { frames: [17, 16], holds: [8, 9] }, damageMedium: { frames: [17, 16], holds: [8, 9] }, damageHeavy: { frames: [17, 16], holds: [8, 9] }, grabbed: { frames: [17, 16], holds: [8, 9] }, damageCrouch: { frames: [17, 11], holds: [8, 9] }, damageAir: { frames: [69], holds: [10] }, launched: { frames: [69], holds: [10] }, falling: { frames: [69], holds: [10] }, downed: { frames: [70], holds: [15] }, getup: { frames: [70, 71], holds: [7, 12] }, taunt: { frames: [1, 2], holds: [15, 15] }, stand_light: { frames: [18, 19, 20], holds: [4, 4, 12] }, stand_medium: { frames: [21, 22, 23], holds: [6, 5, 15] }, stand_heavy: { frames: [24, 25, 26], holds: [10, 6, 23] }, crouch_light: { frames: [27, 28, 29], holds: [4, 4, 12] }, crouch_medium: { frames: [30, 31, 32], holds: [7, 5, 16] }, crouch_heavy: { frames: [33, 34, 35], holds: [10, 6, 22] }, air_light: { frames: [36, 37, 38], holds: [4, 4, 10] }, air_medium: { frames: [39, 40, 41], holds: [6, 5, 12] }, air_heavy: { frames: [42, 43, 44], holds: [9, 6, 16] }, senbon: { frames: [45, 46, 47], holds: [9, 11, 18] }, eiso: { frames: [48, 49, 50], holds: [11, 7, 32] }, chidori: { frames: [51, 52, 53], holds: [11, 8, 25] }, gokakyu: { frames: [54, 55, 56], holds: [11, 8, 23] }, hosenka: { frames: [57, 58, 59], holds: [13, 17, 24] }, goryuka: { frames: [60, 61, 62], holds: [17, 10, 32] }, serpents: { frames: [63, 64, 65], holds: [12, 9, 21] }, nagashi: { frames: [66, 67, 68], holds: [9, 6, 26] }, curse_awaken: { frames: [72, 73, 74, 75, 76, 77], holds: [6, 6, 6, 5, 5, 5] }, curse_revert: { frames: [78, 79, 80], holds: [6, 6, 5] } }, cels: [{ hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -97, w: 38, h: 26 }, { x: -25, y: -72, w: 54, h: 53 }, { x: -32, y: -19, w: 70, h: 19 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }], hitboxes: [{ a: { x: 30, y: -89 }, b: { x: 69, y: -91 }, r: 10 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }], hitboxes: [{ a: { x: 41, y: -74 }, b: { x: 78, y: -77 }, r: 12 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }], hitboxes: [{ a: { x: 32, y: -75 }, b: { x: 126, y: -103 }, r: 13 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -97, w: 38, h: 26 }, { x: -25, y: -72, w: 54, h: 53 }, { x: -32, y: -19, w: 70, h: 19 }] }, { hurtboxes: [{ x: -14, y: -97, w: 38, h: 26 }, { x: -25, y: -72, w: 54, h: 53 }, { x: -32, y: -19, w: 70, h: 19 }], hitboxes: [{ a: { x: 37, y: -66 }, b: { x: 62, y: -64 }, r: 10 }] }, { hurtboxes: [{ x: -14, y: -97, w: 38, h: 26 }, { x: -25, y: -72, w: 54, h: 53 }, { x: -32, y: -19, w: 70, h: 19 }] }, { hurtboxes: [{ x: -14, y: -97, w: 38, h: 26 }, { x: -25, y: -72, w: 54, h: 53 }, { x: -32, y: -19, w: 70, h: 19 }] }, { hurtboxes: [{ x: -14, y: -97, w: 38, h: 26 }, { x: -25, y: -72, w: 54, h: 53 }, { x: -32, y: -19, w: 70, h: 19 }], hitboxes: [{ a: { x: 55, y: -20 }, b: { x: 78, y: -13 }, r: 10 }] }, { hurtboxes: [{ x: -14, y: -97, w: 38, h: 26 }, { x: -25, y: -72, w: 54, h: 53 }, { x: -32, y: -19, w: 70, h: 19 }] }, { hurtboxes: [{ x: -14, y: -97, w: 38, h: 26 }, { x: -25, y: -72, w: 54, h: 53 }, { x: -32, y: -19, w: 70, h: 19 }] }, { hurtboxes: [{ x: -14, y: -97, w: 38, h: 26 }, { x: -25, y: -72, w: 54, h: 53 }, { x: -32, y: -19, w: 70, h: 19 }], hitboxes: [{ a: { x: 18, y: -89 }, b: { x: 53, y: -114 }, r: 15 }] }, { hurtboxes: [{ x: -14, y: -97, w: 38, h: 26 }, { x: -25, y: -72, w: 54, h: 53 }, { x: -32, y: -19, w: 70, h: 19 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }], hitboxes: [{ a: { x: 27, y: -86 }, b: { x: 55, y: -90 }, r: 11 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }], hitboxes: [{ a: { x: 45, y: -81 }, b: { x: 77, y: -86 }, r: 13 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }], hitboxes: [{ a: { x: 46, y: -41 }, b: { x: 71, y: -24 }, r: 15 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }], release: { x: 17, y: -98 } }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }], release: { x: 48, y: -100 } }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }], release: { x: -6, y: -97 } }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }], release: { x: 65, y: -89 } }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }], release: { x: -4, y: -27 } }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }], release: { x: 73, y: -72 } }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }], release: { x: 17, y: -105 } }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }], release: { x: 20, y: -101 } }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }], release: { x: 17, y: -114 } }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }], release: { x: 31, y: -96 } }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }], release: { x: 60, y: -77 } }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }], release: { x: -10, y: -47 } }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }], release: { x: -1, y: -90 } }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -35, y: -31, w: 87, h: 31 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }, { hurtboxes: [{ x: -14, y: -125, w: 38, h: 26 }, { x: -25, y: -100, w: 54, h: 53 }, { x: -32, y: -47, w: 70, h: 47 }] }] };
+
+// src/data/sasuke-throw-boxes.json
+var sasuke_throw_boxes_default = {
+  base: {
+    x: 57,
+    y: -101,
+    w: 27,
+    h: 24
+  },
+  curse: {
+    x: 59,
+    y: -101,
+    w: 27,
+    h: 24
+  }
+};
+
+// src/engine/sasuke-grab.ts
+var damage = 105;
+var startup = 7;
+var active = 4;
+var recovery = 19;
+var sasukeThrow = {
+  kind: "grab",
+  level: "throw",
+  startup,
+  active,
+  recovery,
+  damage,
+  stun: 36,
+  blockstun: 0,
+  push: 0,
+  launch: 0,
+  rank: 0,
+  cancels: [],
+  box: sasuke_throw_boxes_default.base
+};
+var sasukeCurseThrow = { ...sasukeThrow, box: sasuke_throw_boxes_default.curse };
+var sasukeGrab = {
+  startFromContact: true,
+  duration: 22,
+  hitTick: 14,
+  damage,
+  recoveryTicks: 14,
+  victimTrack: [
+    { tick: 0, x: 74, y: 0, clip: "grabbed" },
+    { tick: 4, x: 65, y: -3, clip: "grabbed" },
+    { tick: 9, x: 61, y: -11, clip: "grabbed" },
+    { tick: 13, x: 76, y: -24, clip: "grabbed" },
+    { tick: 14, x: 88, y: -25, clip: "damageAir" },
+    { tick: 21, x: 135, y: -13, clip: "falling" }
+  ],
+  release: { vx: 7.5, vy: -2, stun: 36 }
+};
+
+// src/data/sasuke.json
+var sasuke_default = {
+  id: "sasuke",
+  name: "Sasuke Uchiha \xB7 Hebi",
+  health: 1e3,
+  speed: 4.65,
+  jump: -16.9,
+  gravity: 0.73,
+  meterGainScale: 0,
+  airChaseSpeed: 6.6,
+  airChaseTicks: 10,
+  locomotion: {
+    backSpeed: 3.65,
+    airSpeed: 6.2,
+    jumpStartup: 5,
+    landingTicks: 7,
+    dashForward: [3, 7, 13, 18, 19, 17, 15, 13, 10, 6, 3, 0],
+    backdash: [3, 8, 13, 16, 16, 15, 13, 11, 8, 5, 2, 0]
+  },
+  combatLimits: { maxHits: 11, maxAirHits: 6, maxTicks: 280 }
+};
+
+// src/data/sasuke-frames.json
+var sasuke_frames_default = { movement: { idle: [0, 1, 2, 3, 4, 5], walkForward: [6, 7, 8, 9, 10, 11], walkBack: [12, 13, 14, 15, 16, 17], dashForward: [18, 19, 20, 21, 22], backdash: [23, 24, 25, 26, 27], crouchStart: [28, 29], crouchIdle: [30, 31], crouchEnd: [32, 33], jumpStart: [34, 35, 36], jumpRise: [37, 38], jumpApex: [39], jumpFall: [40, 41], landing: [42, 43, 44] }, normals: { stand_light: [{ hurtboxes: [{ x: -15, y: -131, w: 35, h: 28 }, { x: -29, y: -103, w: 64, h: 36 }, { x: -38, y: -67, w: 70, h: 33 }, { x: -37, y: -34, w: 82, h: 34 }], frame: 0 }, { hurtboxes: [{ x: -14, y: -131, w: 35, h: 28 }, { x: -31, y: -103, w: 94, h: 36 }, { x: -38, y: -67, w: 69, h: 33 }, { x: -36, y: -34, w: 81, h: 34 }], hitboxes: [{ a: { x: 33, y: -96 }, b: { x: 59, y: -97 }, r: 8 }], frame: 1 }, { hurtboxes: [{ x: -16, y: -130, w: 35, h: 27 }, { x: -30, y: -103, w: 77, h: 37 }, { x: -35, y: -66, w: 68, h: 32 }, { x: -34, y: -34, w: 80, h: 34 }], frame: 2 }, { hurtboxes: [{ x: -17, y: -131, w: 34, h: 28 }, { x: -31, y: -103, w: 69, h: 36 }, { x: -36, y: -67, w: 68, h: 33 }, { x: -36, y: -34, w: 81, h: 34 }], frame: 3 }], stand_medium: [{ hurtboxes: [{ x: -16, y: -133, w: 35, h: 28 }, { x: -27, y: -105, w: 68, h: 37 }, { x: -24, y: -68, w: 65, h: 33 }, { x: -11, y: -35, w: 41, h: 35 }], frame: 4 }, { hurtboxes: [{ x: -24, y: -131, w: 36, h: 28 }, { x: -35, y: -103, w: 100, h: 36 }, { x: -27, y: -67, w: 72, h: 33 }, { x: -18, y: -34, w: 23, h: 34 }], hitboxes: [{ a: { x: 52, y: -79 }, b: { x: 73, y: -80 }, r: 9 }], frame: 5 }, { hurtboxes: [{ x: -23, y: -132, w: 35, h: 28 }, { x: -29, y: -104, w: 62, h: 37 }, { x: -32, y: -67, w: 64, h: 33 }, { x: -19, y: -34, w: 41, h: 34 }], frame: 6 }, { hurtboxes: [{ x: -20, y: -130, w: 35, h: 27 }, { x: -33, y: -103, w: 69, h: 37 }, { x: -38, y: -66, w: 67, h: 32 }, { x: -37, y: -34, w: 80, h: 34 }], frame: 7 }], stand_heavy: [{ hurtboxes: [{ x: -8, y: -130, w: 35, h: 27 }, { x: -25, y: -103, w: 63, h: 37 }, { x: -56, y: -66, w: 91, h: 32 }, { x: -39, y: -34, w: 87, h: 34 }], frame: 8 }, { hurtboxes: [{ x: -7, y: -130, w: 35, h: 27 }, { x: -17, y: -103, w: 72, h: 37 }, { x: -35, y: -66, w: 70, h: 32 }, { x: -35, y: -34, w: 87, h: 34 }], blade: { a: { x: 54, y: -87 }, b: { x: 107, y: -87 }, r: 7 }, frame: 9 }, { hurtboxes: [{ x: -11, y: -131, w: 35, h: 28 }, { x: -22, y: -103, w: 56, h: 36 }, { x: -39, y: -67, w: 97, h: 33 }, { x: -43, y: -34, w: 89, h: 34 }], blade: { a: { x: 33, y: -57 }, b: { x: 85, y: -35 }, r: 7 }, frame: 10 }, { hurtboxes: [{ x: -17, y: -130, w: 34, h: 27 }, { x: -28, y: -103, w: 61, h: 37 }, { x: -39, y: -66, w: 66, h: 32 }, { x: -41, y: -34, w: 83, h: 34 }], frame: 11 }], crouch_light: [{ hurtboxes: [{ x: -16, y: -95, w: 58, h: 20 }, { x: -29, y: -75, w: 71, h: 27 }, { x: -42, y: -48, w: 87, h: 23 }, { x: -32, y: -25, w: 77, h: 25 }], frame: 12 }, { hurtboxes: [{ x: 19, y: -94, w: 35, h: 20 }, { x: -14, y: -74, w: 79, h: 26 }, { x: -35, y: -48, w: 100, h: 24 }, { x: -23, y: -24, w: 72, h: 24 }], hitboxes: [{ a: { x: 61, y: -52 }, b: { x: 85, y: -50 }, r: 8 }], frame: 13 }, { hurtboxes: [{ x: 6, y: -97, w: 36, h: 20 }, { x: -24, y: -77, w: 66, h: 28 }, { x: -41, y: -49, w: 89, h: 24 }, { x: -33, y: -25, w: 76, h: 25 }], frame: 14 }, { hurtboxes: [{ x: 0, y: -98, w: 35, h: 21 }, { x: -28, y: -77, w: 81, h: 27 }, { x: -43, y: -50, w: 88, h: 25 }, { x: -34, y: -25, w: 74, h: 25 }], frame: 15 }], crouch_medium: [{ hurtboxes: [{ x: -3, y: -100, w: 46, h: 21 }, { x: -24, y: -79, w: 86, h: 28 }, { x: -35, y: -51, w: 83, h: 25 }, { x: -34, y: -26, w: 62, h: 26 }], frame: 16 }, { hurtboxes: [{ x: -2, y: -97, w: 36, h: 20 }, { x: -33, y: -77, w: 87, h: 28 }, { x: -40, y: -49, w: 99, h: 24 }, { x: -31, y: -25, w: 96, h: 25 }], hitboxes: [{ a: { x: 52, y: -12 }, b: { x: 74, y: -9 }, r: 8 }], frame: 17 }, { hurtboxes: [{ x: 3, y: -100, w: 36, h: 21 }, { x: -27, y: -79, w: 82, h: 28 }, { x: -35, y: -51, w: 82, h: 25 }, { x: -35, y: -26, w: 77, h: 26 }], frame: 18 }, { hurtboxes: [{ x: 2, y: -99, w: 36, h: 21 }, { x: -27, y: -78, w: 84, h: 28 }, { x: -37, y: -50, w: 86, h: 24 }, { x: -37, y: -26, w: 80, h: 26 }], frame: 19 }], crouch_heavy: [{ hurtboxes: [{ x: -4, y: -105, w: 37, h: 22 }, { x: -28, y: -83, w: 83, h: 29 }, { x: -46, y: -54, w: 101, h: 27 }, { x: -40, y: -27, w: 81, h: 27 }], frame: 20 }, { hurtboxes: [{ x: 1, y: -114, w: 64, h: 24 }, { x: -19, y: -90, w: 61, h: 32 }, { x: -36, y: -58, w: 80, h: 28 }, { x: -36, y: -30, w: 87, h: 30 }], blade: { a: { x: 42, y: -79 }, b: { x: 92, y: -101 }, r: 7 }, frame: 21 }, { hurtboxes: [{ x: -11, y: -129, w: 66, h: 27 }, { x: -25, y: -102, w: 76, h: 36 }, { x: -32, y: -66, w: 75, h: 32 }, { x: -41, y: -34, w: 94, h: 34 }], blade: { a: { x: 51, y: -102 }, b: { x: 86, y: -127 }, r: 7 }, frame: 22 }, { hurtboxes: [{ x: -2, y: -118, w: 35, h: 25 }, { x: -20, y: -93, w: 52, h: 33 }, { x: -35, y: -60, w: 79, h: 29 }, { x: -39, y: -31, w: 87, h: 31 }], frame: 23 }], air_light: [{ hurtboxes: [{ x: -9, y: -133, w: 38, h: 27 }, { x: -28, y: -106, w: 68, h: 36 }, { x: -35, y: -70, w: 71, h: 32 }, { x: -35, y: -38, w: 56, h: 33 }], frame: 24 }, { hurtboxes: [{ x: -2, y: -132, w: 38, h: 26 }, { x: -24, y: -106, w: 89, h: 36 }, { x: -33, y: -70, w: 72, h: 31 }, { x: -32, y: -39, w: 53, h: 33 }], hitboxes: [{ a: { x: 37, y: -100 }, b: { x: 72, y: -99 }, r: 8 }], frame: 25 }, { hurtboxes: [{ x: -8, y: -129, w: 36, h: 26 }, { x: -31, y: -103, w: 72, h: 34 }, { x: -36, y: -69, w: 73, h: 31 }, { x: -29, y: -38, w: 48, h: 32 }], frame: 26 }, { hurtboxes: [{ x: -11, y: -130, w: 36, h: 26 }, { x: -28, y: -104, w: 55, h: 34 }, { x: -35, y: -70, w: 66, h: 30 }, { x: -22, y: -40, w: 41, h: 32 }], frame: 27 }], air_medium: [{ hurtboxes: [{ x: -15, y: -129, w: 38, h: 27 }, { x: -34, y: -102, w: 76, h: 36 }, { x: -28, y: -66, w: 66, h: 32 }, { x: -11, y: -34, w: 37, h: 34 }], frame: 28 }, { hurtboxes: [{ x: -8, y: -130, w: 35, h: 25 }, { x: -33, y: -105, w: 98, h: 33 }, { x: -34, y: -72, w: 99, h: 30 }, { x: -25, y: -42, w: 52, h: 31 }], hitboxes: [{ a: { x: 59, y: -73 }, b: { x: 86, y: -75 }, r: 9 }], frame: 29 }, { hurtboxes: [{ x: -7, y: -129, w: 34, h: 24 }, { x: -30, y: -105, w: 74, h: 31 }, { x: -33, y: -74, w: 74, h: 28 }, { x: -33, y: -46, w: 64, h: 29 }], frame: 30 }, { hurtboxes: [{ x: -9, y: -128, w: 35, h: 24 }, { x: -25, y: -104, w: 59, h: 32 }, { x: -31, y: -72, w: 67, h: 29 }, { x: -31, y: -43, w: 61, h: 30 }], frame: 31 }], air_heavy: [{ hurtboxes: [{ x: -26, y: -149, w: 69, h: 31 }, { x: -34, y: -118, w: 90, h: 42 }, { x: -37, y: -76, w: 92, h: 37 }, { x: -37, y: -39, w: 61, h: 39 }], frame: 32 }, { hurtboxes: [{ x: -7, y: -126, w: 45, h: 25 }, { x: -20, y: -101, w: 74, h: 34 }, { x: -37, y: -67, w: 78, h: 30 }, { x: -33, y: -37, w: 43, h: 31 }], blade: { a: { x: 39, y: -57 }, b: { x: 81, y: -29 }, r: 7 }, frame: 33 }, { hurtboxes: [{ x: -7, y: -128, w: 38, h: 27 }, { x: -25, y: -101, w: 71, h: 36 }, { x: -39, y: -65, w: 78, h: 32 }, { x: -34, y: -33, w: 93, h: 33 }], blade: { a: { x: 34, y: -47 }, b: { x: 70, y: -11 }, r: 7 }, frame: 34 }, { hurtboxes: [{ x: -12, y: -133, w: 34, h: 28 }, { x: -30, y: -105, w: 68, h: 37 }, { x: -42, y: -68, w: 69, h: 33 }, { x: -42, y: -35, w: 49, h: 35 }], frame: 35 }] }, reactions: { guardStand: [{ hurtboxes: [{ x: -17, y: -129, w: 46, h: 27 }, { x: -21, y: -102, w: 50, h: 36 }, { x: -37, y: -66, w: 71, h: 32 }, { x: -38, y: -34, w: 81, h: 34 }], frame: 0 }], guardImpactStand: [{ hurtboxes: [{ x: -45, y: -125, w: 60, h: 26 }, { x: -35, y: -99, w: 53, h: 35 }, { x: -35, y: -64, w: 73, h: 32 }, { x: -35, y: -32, w: 87, h: 32 }], frame: 1 }, { hurtboxes: [{ x: -17, y: -129, w: 46, h: 27 }, { x: -21, y: -102, w: 50, h: 36 }, { x: -37, y: -66, w: 71, h: 32 }, { x: -38, y: -34, w: 81, h: 34 }], frame: 0 }], guardCrouch: [{ hurtboxes: [{ x: -4, y: -100, w: 45, h: 21 }, { x: -19, y: -79, w: 60, h: 28 }, { x: -39, y: -51, w: 79, h: 25 }, { x: -34, y: -26, w: 77, h: 26 }], frame: 2 }], guardImpactCrouch: [{ hurtboxes: [{ x: -44, y: -102, w: 54, h: 21 }, { x: -38, y: -81, w: 69, h: 29 }, { x: -36, y: -52, w: 75, h: 25 }, { x: -42, y: -27, w: 89, h: 27 }], frame: 3 }, { hurtboxes: [{ x: -4, y: -100, w: 45, h: 21 }, { x: -19, y: -79, w: 60, h: 28 }, { x: -39, y: -51, w: 79, h: 25 }, { x: -34, y: -26, w: 77, h: 26 }], frame: 2 }], damageLight: [{ hurtboxes: [{ x: -29, y: -128, w: 42, h: 27 }, { x: -32, y: -101, w: 72, h: 36 }, { x: -35, y: -65, w: 73, h: 32 }, { x: -36, y: -33, w: 86, h: 33 }], frame: 4 }, { hurtboxes: [{ x: -45, y: -125, w: 60, h: 26 }, { x: -35, y: -99, w: 53, h: 35 }, { x: -35, y: -64, w: 73, h: 32 }, { x: -35, y: -32, w: 87, h: 32 }], frame: 1 }], damageMedium: [{ hurtboxes: [{ x: -53, y: -126, w: 88, h: 26 }, { x: -49, y: -100, w: 87, h: 36 }, { x: -31, y: -64, w: 74, h: 31 }, { x: -30, y: -33, w: 88, h: 33 }], frame: 5 }, { hurtboxes: [{ x: -29, y: -128, w: 42, h: 27 }, { x: -32, y: -101, w: 72, h: 36 }, { x: -35, y: -65, w: 73, h: 32 }, { x: -36, y: -33, w: 86, h: 33 }], frame: 4 }], damageHeavy: [{ hurtboxes: [{ x: -53, y: -126, w: 88, h: 26 }, { x: -49, y: -100, w: 87, h: 36 }, { x: -31, y: -64, w: 74, h: 31 }, { x: -30, y: -33, w: 88, h: 33 }], frame: 5 }, { hurtboxes: [{ x: -29, y: -128, w: 42, h: 27 }, { x: -32, y: -101, w: 72, h: 36 }, { x: -35, y: -65, w: 73, h: 32 }, { x: -36, y: -33, w: 86, h: 33 }], frame: 4 }], damageCrouch: [{ hurtboxes: [{ x: -44, y: -102, w: 54, h: 21 }, { x: -38, y: -81, w: 69, h: 29 }, { x: -36, y: -52, w: 75, h: 25 }, { x: -42, y: -27, w: 89, h: 27 }], frame: 3 }, { hurtboxes: [{ x: -4, y: -100, w: 45, h: 21 }, { x: -19, y: -79, w: 60, h: 28 }, { x: -39, y: -51, w: 79, h: 25 }, { x: -34, y: -26, w: 77, h: 26 }], frame: 2 }], damageAir: [{ hurtboxes: [{ x: -51, y: -129, w: 81, h: 22 }, { x: -50, y: -107, w: 89, h: 30 }, { x: -41, y: -77, w: 103, h: 27 }, { x: -36, y: -50, w: 93, h: 28 }], frame: 6 }, { hurtboxes: [{ x: -58, y: -91, w: 76, h: 18 }, { x: -58, y: -73, w: 116, h: 23 }, { x: -42, y: -50, w: 107, h: 21 }, { x: -21, y: -29, w: 86, h: 22 }], frame: 7 }], launched: [{ hurtboxes: [{ x: -51, y: -129, w: 81, h: 22 }, { x: -50, y: -107, w: 89, h: 30 }, { x: -41, y: -77, w: 103, h: 27 }, { x: -36, y: -50, w: 93, h: 28 }], frame: 6 }, { hurtboxes: [{ x: -58, y: -91, w: 76, h: 18 }, { x: -58, y: -73, w: 116, h: 23 }, { x: -42, y: -50, w: 107, h: 21 }, { x: -21, y: -29, w: 86, h: 22 }], frame: 7 }], falling: [{ hurtboxes: [{ x: -58, y: -91, w: 76, h: 18 }, { x: -58, y: -73, w: 116, h: 23 }, { x: -42, y: -50, w: 107, h: 21 }, { x: -21, y: -29, w: 86, h: 22 }], frame: 7 }], downed: [{ hurtboxes: [{ x: -58, y: -49, w: 75, h: 10 }, { x: -58, y: -39, w: 122, h: 14 }, { x: -58, y: -25, w: 123, h: 12 }, { x: -58, y: -13, w: 123, h: 13 }], frame: 8 }], getup: [{ hurtboxes: [{ x: -9, y: -90, w: 57, h: 19 }, { x: -25, y: -71, w: 73, h: 25 }, { x: -43, y: -46, w: 79, h: 23 }, { x: -41, y: -23, w: 91, h: 23 }], frame: 9 }, { hurtboxes: [{ x: -9, y: -103, w: 52, h: 22 }, { x: -24, y: -81, w: 67, h: 28 }, { x: -41, y: -53, w: 85, h: 26 }, { x: -31, y: -27, w: 76, h: 27 }], frame: 10 }, { hurtboxes: [{ x: 1, y: -94, w: 47, h: 20 }, { x: -22, y: -74, w: 70, h: 26 }, { x: -41, y: -48, w: 75, h: 24 }, { x: -43, y: -24, w: 89, h: 24 }], frame: 11 }], grabbed: [{ hurtboxes: [{ x: -53, y: -126, w: 88, h: 26 }, { x: -49, y: -100, w: 87, h: 36 }, { x: -31, y: -64, w: 74, h: 31 }, { x: -30, y: -33, w: 88, h: 33 }], frame: 5 }], ko: [{ hurtboxes: [{ x: 1, y: -94, w: 47, h: 20 }, { x: -22, y: -74, w: 70, h: 26 }, { x: -41, y: -48, w: 75, h: 24 }, { x: -43, y: -24, w: 89, h: 24 }], frame: 11 }, { hurtboxes: [{ x: -58, y: -49, w: 75, h: 10 }, { x: -58, y: -39, w: 122, h: 14 }, { x: -58, y: -25, w: 123, h: 12 }, { x: -58, y: -13, w: 123, h: 13 }], frame: 8 }], defeat: [{ hurtboxes: [{ x: -58, y: -49, w: 75, h: 10 }, { x: -58, y: -39, w: 122, h: 14 }, { x: -58, y: -25, w: 123, h: 12 }, { x: -58, y: -13, w: 123, h: 13 }], frame: 8 }], entrance: [{ hurtboxes: [{ x: -12, y: -124, w: 33, h: 26 }, { x: -28, y: -98, w: 71, h: 35 }, { x: -40, y: -63, w: 68, h: 31 }, { x: -42, y: -32, w: 85, h: 32 }], frame: 12 }, { hurtboxes: [{ x: -10, y: -125, w: 30, h: 26 }, { x: -28, y: -99, w: 70, h: 35 }, { x: -42, y: -64, w: 65, h: 32 }, { x: -39, y: -32, w: 61, h: 32 }], frame: 13 }, { hurtboxes: [{ x: -7, y: -126, w: 31, h: 26 }, { x: -22, y: -100, w: 66, h: 36 }, { x: -39, y: -64, w: 66, h: 31 }, { x: -36, y: -33, w: 61, h: 33 }], frame: 14 }, { hurtboxes: [{ x: -6, y: -126, w: 30, h: 26 }, { x: -21, y: -100, w: 66, h: 36 }, { x: -39, y: -64, w: 65, h: 31 }, { x: -31, y: -33, w: 70, h: 33 }], frame: 15 }, { hurtboxes: [{ x: -8, y: -129, w: 28, h: 27 }, { x: -30, y: -102, w: 75, h: 36 }, { x: -36, y: -66, w: 66, h: 32 }, { x: -35, y: -34, w: 75, h: 34 }], frame: 16 }], victory: [{ hurtboxes: [{ x: -8, y: -129, w: 28, h: 27 }, { x: -30, y: -102, w: 75, h: 36 }, { x: -36, y: -66, w: 66, h: 32 }, { x: -35, y: -34, w: 75, h: 34 }], frame: 16 }, { hurtboxes: [{ x: -13, y: -131, w: 32, h: 28 }, { x: -30, y: -103, w: 74, h: 36 }, { x: -37, y: -67, w: 65, h: 33 }, { x: -36, y: -34, w: 75, h: 34 }], frame: 18 }], taunt: [{ hurtboxes: [{ x: -8, y: -129, w: 28, h: 27 }, { x: -30, y: -102, w: 75, h: 36 }, { x: -36, y: -66, w: 66, h: 32 }, { x: -35, y: -34, w: 75, h: 34 }], frame: 16 }, { hurtboxes: [{ x: -13, y: -131, w: 32, h: 28 }, { x: -30, y: -103, w: 74, h: 36 }, { x: -37, y: -67, w: 65, h: 33 }, { x: -36, y: -34, w: 75, h: 34 }], frame: 18 }, { hurtboxes: [{ x: -8, y: -125, w: 28, h: 26 }, { x: -30, y: -99, w: 74, h: 35 }, { x: -36, y: -64, w: 66, h: 32 }, { x: -36, y: -32, w: 75, h: 32 }], frame: 17 }] } };
+
+// src/data/sasuke-clips.json
+var sasuke_clips_default = {
+  idle: [9, 8, 8, 8, 9, 10],
+  walkForward: [4, 4, 4, 4, 4, 4],
+  walkBack: [5, 4, 5, 5, 4, 5],
+  dashForward: [2, 2, 3, 3, 2],
+  backdash: [2, 2, 3, 3, 2],
+  crouchStart: [3, 3],
+  crouchIdle: [9, 10],
+  crouchEnd: [3, 3],
+  jumpStart: [2, 2, 1],
+  jumpRise: [6, 8],
+  jumpApex: [9],
+  jumpFall: [8, 6],
+  landing: [2, 3, 2],
+  guardStand: [9],
+  guardImpactStand: [6, 4],
+  guardCrouch: [9],
+  guardImpactCrouch: [6, 4],
+  damageLight: [7, 8],
+  damageMedium: [8, 10],
+  damageHeavy: [12, 10],
+  damageCrouch: [7, 9],
+  damageAir: [8, 9],
+  launched: [10, 10],
+  falling: [10],
+  downed: [26],
+  getup: [7, 7, 6],
+  grabbed: [9],
+  ko: [7, 48],
+  defeat: [44],
+  entrance: [5, 5, 5, 7, 24],
+  victory: [10, 30],
+  taunt: [14, 10, 12]
+};
+
+// src/data/sasuke-normals.json
+var sasuke_normals_default = {
+  stand_light: { holds: [4, 3, 5, 8], activeFrames: [1, 2], damage: 35, stun: 22, blockstun: 10, push: 1.2, launch: 0, hitstop: 4, level: "mid" },
+  stand_medium: { holds: [7, 4, 6, 10], activeFrames: [1, 2], damage: 59, stun: 27, blockstun: 13, push: 1.9, launch: 0, hitstop: 6, level: "mid" },
+  stand_heavy: { holds: [11, 3, 3, 22], activeFrames: [1, 3], damage: 88, stun: 26, blockstun: 16, push: 4.4, launch: 0, hitstop: 8, level: "mid" },
+  crouch_light: { holds: [4, 3, 5, 8], activeFrames: [1, 2], damage: 32, stun: 21, blockstun: 10, push: 1.1, launch: 0, hitstop: 4, level: "low" },
+  crouch_medium: { holds: [7, 4, 6, 11], activeFrames: [1, 2], damage: 55, stun: 27, blockstun: 13, push: 1.9, launch: 0, hitstop: 6, level: "low" },
+  crouch_heavy: { holds: [10, 3, 3, 20], activeFrames: [1, 3], damage: 73, stun: 34, blockstun: 15, push: 2.7, launch: -13.5, hitstop: 7, level: "mid" },
+  air_light: { holds: [4, 3, 4, 7], activeFrames: [1, 2], damage: 33, stun: 22, blockstun: 10, push: 1.1, launch: -4.3, hitstop: 4, level: "high", airHold: -3.8 },
+  air_medium: { holds: [6, 4, 5, 8], activeFrames: [1, 2], damage: 56, stun: 25, blockstun: 13, push: 2, launch: -3.7, hitstop: 6, level: "high", airHold: -3.4 },
+  air_heavy: { holds: [9, 3, 3, 14], activeFrames: [1, 3], damage: 82, stun: 30, blockstun: 15, push: 3.5, launch: 7, hitstop: 8, level: "high", knockdown: true }
+};
+
+// src/data/sasuke-kirin.json
+var sasuke_kirin_default = {
+  cost: 100,
+  minimumComboScale: 0.62,
+  duration: 221,
+  opening: { holds: [13, 5, 34], damage: 34, hitstop: 6, stun: 24, blockstun: 14, push: 2.4 },
+  phases: { prepare: 0, storm: 24, reveal: 55, command: 102, dive: 135, impact: 147, clear: 176 },
+  hits: [{ tick: 147, kind: "ground", damage: 286, hold: 11 }],
+  weather: { maximum: 4, contributions: { gokakyu: 1, hosenka: 1, goryuka: 3 } }
+};
+
+// src/data/sasuke-kirin-art.json
+var sasuke_kirin_art_default = { base: [{ hurtboxes: [{ x: -15, y: -126, w: 38, h: 30 }, { x: -28, y: -96, w: 58, h: 49 }, { x: -44, y: -47, w: 91, h: 47 }] }, { hurtboxes: [{ x: -15, y: -126, w: 38, h: 30 }, { x: -28, y: -96, w: 58, h: 49 }, { x: -44, y: -47, w: 91, h: 47 }], hitboxes: [{ a: { x: 41, y: -90 }, b: { x: 63, y: -94 }, r: 12 }] }, { hurtboxes: [{ x: -15, y: -126, w: 38, h: 30 }, { x: -28, y: -96, w: 58, h: 49 }, { x: -44, y: -47, w: 91, h: 47 }] }, { hurtboxes: [{ x: -15, y: -126, w: 38, h: 30 }, { x: -28, y: -96, w: 58, h: 49 }, { x: -44, y: -47, w: 91, h: 47 }] }, { hurtboxes: [{ x: -15, y: -126, w: 38, h: 30 }, { x: -28, y: -96, w: 58, h: 49 }, { x: -44, y: -47, w: 91, h: 47 }] }, { hurtboxes: [{ x: -15, y: -126, w: 38, h: 30 }, { x: -28, y: -96, w: 58, h: 49 }, { x: -44, y: -47, w: 91, h: 47 }] }, { hurtboxes: [{ x: -15, y: -126, w: 38, h: 30 }, { x: -28, y: -96, w: 58, h: 49 }, { x: -44, y: -47, w: 91, h: 47 }] }, { hurtboxes: [{ x: -15, y: -126, w: 38, h: 30 }, { x: -28, y: -96, w: 58, h: 49 }, { x: -44, y: -47, w: 91, h: 47 }] }, { hurtboxes: [{ x: -15, y: -126, w: 38, h: 30 }, { x: -28, y: -96, w: 58, h: 49 }, { x: -44, y: -47, w: 91, h: 47 }] }], curse: [{ hurtboxes: [{ x: -15, y: -126, w: 38, h: 30 }, { x: -28, y: -96, w: 58, h: 49 }, { x: -44, y: -47, w: 91, h: 47 }] }, { hurtboxes: [{ x: -15, y: -126, w: 38, h: 30 }, { x: -28, y: -96, w: 58, h: 49 }, { x: -44, y: -47, w: 91, h: 47 }], hitboxes: [{ a: { x: 48, y: -84 }, b: { x: 70, y: -88 }, r: 12 }] }, { hurtboxes: [{ x: -15, y: -126, w: 38, h: 30 }, { x: -28, y: -96, w: 58, h: 49 }, { x: -44, y: -47, w: 91, h: 47 }] }, { hurtboxes: [{ x: -15, y: -126, w: 38, h: 30 }, { x: -28, y: -96, w: 58, h: 49 }, { x: -44, y: -47, w: 91, h: 47 }] }, { hurtboxes: [{ x: -15, y: -126, w: 38, h: 30 }, { x: -28, y: -96, w: 58, h: 49 }, { x: -44, y: -47, w: 91, h: 47 }] }, { hurtboxes: [{ x: -15, y: -126, w: 38, h: 30 }, { x: -28, y: -96, w: 58, h: 49 }, { x: -44, y: -47, w: 91, h: 47 }] }, { hurtboxes: [{ x: -15, y: -126, w: 38, h: 30 }, { x: -28, y: -96, w: 58, h: 49 }, { x: -44, y: -47, w: 91, h: 47 }] }, { hurtboxes: [{ x: -15, y: -126, w: 38, h: 30 }, { x: -28, y: -96, w: 58, h: 49 }, { x: -44, y: -47, w: 91, h: 47 }] }, { hurtboxes: [{ x: -15, y: -126, w: 38, h: 30 }, { x: -28, y: -96, w: 58, h: 49 }, { x: -44, y: -47, w: 91, h: 47 }] }], dragon: [{ x: 484, y: 155 }, { x: 484, y: 163 }, { x: 480, y: 261 }, { x: 470, y: 301 }], sky: [{ x: 256, y: 182 }, { x: 256, y: 181 }, { x: 256, y: 270 }, { x: 256, y: 229 }] };
+
+// src/engine/sasuke-kirin.ts
+var kirinId = "kirin_start";
+function opener(cursed) {
+  const { holds, ...stats } = sasuke_kirin_default.opening;
+  const [startup3, active3, recovery3] = holds;
+  const cels = cursed ? sasuke_kirin_art_default.curse : sasuke_kirin_art_default.base;
+  return {
+    ...stats,
+    startup: startup3,
+    active: active3,
+    recovery: recovery3,
+    kind: "kirin",
+    super: true,
+    cost: sasuke_kirin_default.cost,
+    meterGain: 0,
+    rank: 3,
+    level: "mid",
+    launch: 0,
+    cancels: [],
+    box: { x: 0, y: 0, w: 0, h: 0 },
+    poses: holds.map((ticks, i) => ({
+      ...cels[i],
+      ticks,
+      phase: i === 0 ? "startup" : i === 1 ? "active" : "recovery"
+    }))
+  };
+}
+var kirinOpener = opener(false);
+var kirinCurseOpener = opener(true);
+function canStartKirin(f) {
+  const phase = f.sasukeCurse?.phase;
+  return f.meter >= f.meterMaximum && !f.airborne && !f.match?.capture && (!phase || phase === "active" || phase === "cooldown") && (["idle", "walk", "crouch", "dash", "landing", "jumpStart"].includes(f.state) || f.hitConfirmed && f.canSuperCancel());
+}
+var clamp4 = (v, a, b) => Math.max(a, Math.min(b, v));
+var mix2 = (a, b, t) => a + (b - a) * t;
+var progress2 = (t, a, b) => clamp4((t - a) / (b - a), 0, 1);
+var smooth2 = (t) => t * t * (3 - 2 * t);
+var floor = 580;
+var p = sasuke_kirin_default.phases;
+function kirinScene(s) {
+  const t = s.tick, f = s.facing;
+  const land = smooth2(progress2(t, 0, 14));
+  const afterImpact = t - p.impact;
+  const recoil = smooth2(progress2(t, p.impact, p.impact + 13));
+  const targetX = clamp4(s.targetX + 33 * f * recoil, 40, 1240);
+  const actor = {
+    x: s.originX,
+    y: floor,
+    facing: f,
+    clip: t < p.command ? "kirinPrepare" : t < p.dive ? "kirinCommand" : "kirinRelease",
+    tick: t < p.command ? t : t < p.dive ? t - p.command : t - p.dive
+  };
+  const victim = {
+    x: targetX,
+    y: mix2(s.targetY, floor, land) - (afterImpact >= 0 && afterImpact < 16 ? 34 * Math.sin(Math.PI * afterImpact / 16) : 0),
+    facing: -f,
+    clip: t < p.impact ? "damageMedium" : afterImpact < 16 ? "damageAir" : "downed",
+    tick: t < p.impact ? Math.min(7, t) : afterImpact < 16 ? afterImpact : afterImpact - 16
+  };
+  const phase = t < p.storm ? "prepare" : t < p.reveal ? "storm" : t < p.command ? "reveal" : t < p.dive ? "command" : t < p.impact ? "dive" : t < p.clear ? "impact" : "clear";
+  const center = (s.originX + s.targetX) / 2;
+  const keys = [
+    [0, 640, 360, 1],
+    [p.storm - 1, s.originX + f * 25, 449, 1.3],
+    [p.storm + 16, s.targetX, 229, 1.08],
+    [p.command - 1, s.targetX, 240, 1.07],
+    [p.command + 5, s.originX + f * 9, 445, 1.39],
+    [p.dive - 1, center, 421, 1.26],
+    [p.dive + 6, s.targetX, 347, 1.08],
+    [p.impact + 5, s.targetX, 464, 1.24],
+    [p.clear, center, 411, 1.13],
+    [sasuke_kirin_default.duration, 640, 360, 1]
+  ];
+  const next = keys.findIndex((k) => t <= k[0]);
+  const a = keys[Math.max(0, next - 1)], b = keys[Math.max(0, next)];
+  const u2 = a === b ? 0 : smooth2(progress2(t, a[0], b[0]));
+  const scale = mix2(a[3], b[3], u2);
+  const shake = afterImpact >= 0 ? Math.max(0, 12 - afterImpact) : 0;
+  const facing = s.targetX < 420 ? -1 : s.targetX > 860 ? 1 : f;
+  const descent = progress2(t, p.dive, p.impact);
+  const dragon = {
+    visible: phase === "reveal" || phase === "dive" || afterImpact === 0,
+    cel: t < p.dive ? Math.floor(Math.max(0, t - p.reveal) / 13) % 2 : descent < 0.45 ? 2 : 3,
+    alpha: t < p.dive ? smooth2(progress2(t, p.reveal, p.reveal + 17)) : 1,
+    facing,
+    x: t < p.dive ? clamp4(s.targetX + facing * 160, 390, 890) + Math.sin((t - p.reveal) * 0.16) * 16 : mix2(clamp4(s.targetX - facing * 174, 130, 1150), s.targetX, descent),
+    y: t < p.dive ? 223 + 8 * Math.sin(t * 0.12) : mix2(164, floor - 53, descent ** 2.25),
+    scale: t < p.dive ? 1.23 + Math.sin(t * 0.19) * 0.028 : mix2(1.1, 1.4, descent)
+  };
+  const clear = 1 - smooth2(progress2(t, p.clear, sasuke_kirin_default.duration));
+  const clouds = Math.min(1, 0.18 * s.storm + smooth2(progress2(t, 0, p.reveal))) * clear;
+  return {
+    attacker: actor,
+    victim,
+    phase,
+    dragon,
+    clouds,
+    camera: {
+      x: clamp4(mix2(a[1], b[1], u2), 640 / scale, 1280 - 640 / scale),
+      y: mix2(a[2], b[2], u2),
+      scale,
+      shakeX: shake * ((t + s.hold) % 2 ? 1 : -1),
+      shakeY: Math.floor(shake * 0.42) * ((t + s.hold) % 3 ? 1 : -1)
+    }
+  };
+}
+
+// src/engine/sasuke-data.ts
+var sasukeFrames = sasuke_frames_default;
+var sasukeMoves = Object.fromEntries(
+  Object.keys(sasuke_normals_default).map((id) => {
+    const {
+      holds,
+      activeFrames: [first, end],
+      ...stats
+    } = sasuke_normals_default[id];
+    const [stance, weight] = id.split("_");
+    const rank = weight === "light" ? 1 : weight === "medium" ? 2 : 3;
+    const duration = (start, stop) => holds.slice(start, stop).reduce((a, b) => a + b, 0);
+    const startup3 = duration(0, first), active3 = duration(first, end);
+    const recovery3 = duration(end, holds.length);
+    const next = rank === 1 ? "medium" : rank === 2 ? "heavy" : void 0;
     return [
       id,
       {
         ...stats,
-        special: id,
-        startup: seal + gather,
-        active: active2,
-        recovery: recovery2,
+        startup: startup3,
+        active: active3,
+        recovery: recovery3,
+        rank,
         kind: "strike",
-        rank: id === "senbon" || id === "hosenka" || id === "serpents" ? 1 : 2,
-        level: "mid",
         box: { x: 0, y: 0, w: 0, h: 0 },
-        cancels: [],
-        poses
+        cancels: [
+          ...next ? [next] : id === "crouch_heavy" ? ["jump"] : [],
+          ...stance !== "air" ? ["special"] : []
+        ],
+        cancelMoves: next ? [`${stance}_${next}`] : [],
+        cancelWindow: {
+          fromTick: startup3,
+          toTick: startup3 + active3 + (id === "crouch_heavy" ? 9 : 6)
+        },
+        poses: sasukeFrames.normals[id].map(({ frame: _, ...cel }, index) => ({
+          ...cel,
+          ticks: holds[index],
+          phase: index < first ? "startup" : index < end ? "active" : "recovery"
+        }))
       }
     ];
   })
 );
+var sasuke = {
+  ...sasuke_default,
+  moves: { ...sasukeMoves, throw: sasukeThrow },
+  grabSequence: sasukeGrab,
+  specialMoves: sasukeSpecialMoves,
+  superMoves: { [kirinId]: kirinOpener },
+  meterMaximum: sasuke_kirin_default.cost,
+  meterGainScale: 1,
+  lifecycle: {
+    entranceDistance: 58,
+    entranceWalkTicks: 20,
+    entranceSpeed: 2.9,
+    tauntTicks: 36,
+    getupTicks: 20,
+    koTicks: 55
+  },
+  hurtboxes: {
+    standing: [
+      { x: -18, y: -127, w: 40, h: 29 },
+      { x: -25, y: -99, w: 58, h: 53 },
+      { x: -31, y: -46, w: 68, h: 46 }
+    ],
+    crouching: [
+      { x: -13, y: -83, w: 35, h: 29 },
+      { x: -31, y: -56, w: 70, h: 55 }
+    ],
+    air: [
+      { x: -20, y: -119, w: 43, h: 31 },
+      { x: -29, y: -89, w: 62, h: 77 }
+    ]
+  },
+  reactions: Object.fromEntries(
+    Object.entries(sasukeFrames.reactions).map(([id, cels]) => [
+      id,
+      {
+        loop: id === "guardStand" || id === "guardCrouch" || id === "falling",
+        poses: cels.map((cel, index) => ({
+          ticks: sasuke_clips_default[id][index],
+          hurtboxes: cel.hurtboxes
+        }))
+      }
+    ])
+  )
+};
+
+// src/engine/sasuke-curse.ts
+var sasukeCurseArt = sasuke_curse_frames_default;
+var curseAwaken = "curse_awaken";
+var curseRevert = "curse_revert";
+var winged = (f) => f.sasukeCurse?.phase === "active" || f.sasukeCurse?.phase === "ending";
+var sasukeCurseMovement = (f) => f.sasukeCurse?.phase === "active" ? sasuke_curse_default.movementMultiplier : 1;
+var curseSpecials = sasuke_curse_default.specials;
+function poseSequence(id, holds, attack) {
+  return holds.map((ticks, i) => ({
+    ticks,
+    phase: !attack ? "recovery" : i === 0 ? "startup" : i === 1 ? "active" : "recovery",
+    ...sasukeCurseArt.cels[sasukeCurseArt.clips[id].frames[i]]
+  }));
+}
+function poweredMove(id, base, holds, extra = {}) {
+  const [startup3, active3, recovery3] = holds;
+  return {
+    ...base,
+    ...extra,
+    damage: Math.round(base.damage * sasuke_curse_default.damageMultiplier),
+    startup: startup3,
+    active: active3,
+    recovery: recovery3,
+    cancelWindow: base.cancelWindow && {
+      fromTick: startup3,
+      toTick: startup3 + active3 + (base.cancelWindow.toTick - base.startup - base.active)
+    },
+    poses: poseSequence(id, holds, true)
+  };
+}
+var sasukeCurseMoves = Object.fromEntries([
+  ...Object.entries(sasuke_curse_default.normalTimings).map(([id, holds]) => {
+    const base = sasukeMoves[id];
+    const extra = id === "crouch_heavy" ? { launch: -14.4, stun: 37, push: 2.3, hitstop: 8 } : id === "air_medium" ? { airHold: -3.8, launch: -4.2, push: 1.8 } : id === "air_heavy" ? { launch: 9, hitstop: 9 } : id === "stand_heavy" ? { push: 4.7, hitstop: 9 } : {};
+    return [id, poweredMove(id, base, holds, extra)];
+  }),
+  ...Object.entries(curseSpecials).map(([id, { holds, shots: _, reach: _reach, ...stats }]) => {
+    const nagashi = id === "nagashi" ? nagashiProfile(true) : void 0;
+    const move = poweredMove(
+      id,
+      sasukeSpecialMoves[id],
+      nagashi?.holds ?? holds,
+      nagashi ? { ...stats, stun: nagashi.stun } : stats
+    );
+    return [id, id === "chidori" ? chidoriMove(move, true) : move];
+  })
+]);
+var transitions = Object.fromEntries(
+  [[curseAwaken, sasuke_curse_default.activationHolds], [curseRevert, sasuke_curse_default.reversionHolds]].map(([id, holds]) => {
+    const timing = holds;
+    return [id, {
+      kind: "curseTransition",
+      startup: 0,
+      active: 0,
+      recovery: timing.reduce((a, b) => a + b, 0),
+      damage: 0,
+      stun: 0,
+      blockstun: 0,
+      hitstop: 0,
+      push: 0,
+      launch: 0,
+      rank: 0,
+      level: "mid",
+      cancels: [],
+      box: { x: 0, y: 0, w: 0, h: 0 },
+      poses: poseSequence(id, timing, false)
+    }];
+  })
+);
+function curseMove(f, id) {
+  if (f.data.id !== "sasuke") return;
+  if (id === curseAwaken || id === curseRevert) return transitions[id];
+  if (winged(f)) return id === "throw" ? sasukeCurseThrow : sasukeCurseMoves[id];
+}
+var grounded = (f) => !f.airborne && (f.state === "idle" || f.state === "walk" || f.state === "crouch" || f.state === "landing");
+function canAwaken(f) {
+  return f.data.id === "sasuke" && !f.sasukeCurse && grounded(f);
+}
+function startCurse(f) {
+  if (!canAwaken(f) || !f.attack(curseAwaken)) return;
+  f.sasukeCurse = { phase: "awakening", remaining: 0, airBurstUsed: false, airBurstTick: 0 };
+}
+function cooldown(s) {
+  s.phase = "cooldown";
+  s.remaining = sasuke_curse_default.cooldownTicks;
+  s.airBurstUsed = false;
+  s.airBurstTick = 0;
+}
+function tickSasukeCurse(f) {
+  const s = f.sasukeCurse;
+  if (!s) return;
+  if (s.phase === "cooldown") {
+    if (--s.remaining <= 0) f.sasukeCurse = void 0;
+    return;
+  }
+  if (s.phase === "awakening" || s.phase === "reverting") {
+    const id = s.phase === "awakening" ? curseAwaken : curseRevert;
+    if (f.state !== "attack" || f.moveId !== id) {
+      cooldown(s);
+    } else if (f.stateFrame + 1 >= transitions[id].recovery) {
+      f.setState("idle");
+      if (id === curseAwaken) {
+        s.phase = "active";
+        s.remaining = sasuke_curse_default.durationTicks;
+      } else cooldown(s);
+    }
+    return;
+  }
+  if (s.phase === "active" && --s.remaining <= 0) {
+    s.phase = "ending";
+    s.airBurstTick = 0;
+  }
+  if (!f.airborne) {
+    s.airBurstUsed = false;
+    s.airBurstTick = 0;
+  } else if (f.state !== "air") s.airBurstTick = 0;
+  if (s.phase === "ending" && grounded(f) && f.attack(curseRevert)) {
+    f.buffer.clear();
+    s.phase = "reverting";
+  }
+}
+function tickSasukeAirBurst(f) {
+  const s = f.sasukeCurse;
+  if (s?.phase !== "active" || f.state !== "air" || !f.airborne) return false;
+  const { speeds, fallCap } = sasuke_curse_default.airBurst;
+  if (!s.airBurstUsed && f.input.direction * f.facing >= 0 && f.buffer.consume("dash")) {
+    s.airBurstUsed = true;
+    s.airBurstTick = 1;
+    f.airChaseTicks = 0;
+    f.vy = Math.min(f.vy, fallCap);
+  }
+  if (!s.airBurstTick) return false;
+  f.vx = speeds[s.airBurstTick - 1] * f.facing;
+  s.airBurstTick = s.airBurstTick < speeds.length ? s.airBurstTick + 1 : 0;
+  return true;
+}
+function curseSpecialContact(id, age, facing, rootX, origin) {
+  if (id === "eiso") {
+    const reach = curseSpecials.eiso.reach;
+    const edge = facing > 0 ? 1280 - rootX : rootX;
+    const x = Math.min(edge, origin.x + (reach - origin.x) * Math.min(1, (age + 1) / 4));
+    return [{ a: origin, b: { x: Math.max(origin.x, x), y: origin.y - 8 }, r: 12 }];
+  }
+  if (id === "chidori") return [{ a: { x: origin.x - 19, y: origin.y + 4 }, b: origin, r: 23 }];
+  if (id === "nagashi") return [
+    { a: { x: -68, y: -54 }, b: { x: 73, y: -54 }, r: 23 },
+    { a: { x: -48, y: -91 }, b: { x: 50, y: -91 }, r: 17 },
+    { a: { x: -39, y: -24 }, b: { x: 42, y: -24 }, r: 19 }
+  ];
+  return [];
+}
 
 // src/data/luffy-secondary-poses.json
 var luffy_secondary_poses_default = { guardStandA: { frame: 0, hurtboxes: [{ x: -20, y: -127, w: 54, h: 28 }, { x: -22, y: -99, w: 58, h: 33 }, { x: -23, y: -66, w: 58, h: 30 }, { x: -33, y: -36, w: 75, h: 36 }] }, guardStandB: { frame: 1, hurtboxes: [{ x: -25, y: -123, w: 57, h: 27 }, { x: -26, y: -96, w: 56, h: 32 }, { x: -30, y: -64, w: 68, h: 30 }, { x: -45, y: -34, w: 89, h: 34 }] }, guardLowA: { frame: 2, hurtboxes: [{ x: -19, y: -108, w: 49, h: 24 }, { x: -23, y: -84, w: 50, h: 28 }, { x: -28, y: -56, w: 66, h: 26 }, { x: -35, y: -30, w: 73, h: 30 }] }, guardLowB: { frame: 3, hurtboxes: [{ x: -19, y: -99, w: 50, h: 22 }, { x: -21, y: -77, w: 54, h: 26 }, { x: -26, y: -51, w: 63, h: 23 }, { x: -28, y: -28, w: 64, h: 28 }] }, guardStandHitA: { frame: 4, hurtboxes: [{ x: -37, y: -131, w: 50, h: 29 }, { x: -42, y: -102, w: 54, h: 34 }, { x: -31, y: -68, w: 59, h: 31 }, { x: -44, y: -37, w: 79, h: 37 }] }, guardStandHitB: { frame: 5, hurtboxes: [{ x: -48, y: -121, w: 54, h: 27 }, { x: -51, y: -94, w: 60, h: 31 }, { x: -34, y: -63, w: 68, h: 29 }, { x: -52, y: -34, w: 91, h: 34 }] }, guardLowHitA: { frame: 6, hurtboxes: [{ x: -39, y: -108, w: 48, h: 24 }, { x: -45, y: -84, w: 55, h: 28 }, { x: -37, y: -56, w: 72, h: 26 }, { x: -38, y: -30, w: 73, h: 30 }] }, guardLowHitB: { frame: 7, hurtboxes: [{ x: -26, y: -95, w: 57, h: 21 }, { x: -27, y: -74, w: 58, h: 25 }, { x: -33, y: -49, w: 64, h: 22 }, { x: -36, y: -27, w: 69, h: 27 }] }, guardExit: { frame: 8, hurtboxes: [{ x: -25, y: -124, w: 48, h: 27 }, { x: -32, y: -97, w: 72, h: 33 }, { x: -33, y: -64, w: 69, h: 29 }, { x: -42, y: -35, w: 79, h: 35 }] }, hitLight: { frame: 9, hurtboxes: [{ x: -26, y: -125, w: 41, h: 28 }, { x: -30, y: -97, w: 58, h: 32 }, { x: -36, y: -65, w: 67, h: 30 }, { x: -32, y: -35, w: 66, h: 35 }] }, hitMedium: { frame: 10, hurtboxes: [{ x: -44, y: -118, w: 62, h: 26 }, { x: -48, y: -92, w: 67, h: 31 }, { x: -46, y: -61, w: 76, h: 28 }, { x: -44, y: -33, w: 77, h: 33 }] }, hitHeavy: { frame: 11, hurtboxes: [{ x: -56, y: -122, w: 44, h: 27 }, { x: -49, y: -95, w: 85, h: 32 }, { x: -57, y: -63, w: 88, h: 29 }, { x: -43, y: -34, w: 75, h: 34 }] }, hitLow: { frame: 12, hurtboxes: [{ x: -19, y: -95, w: 57, h: 21 }, { x: -26, y: -74, w: 61, h: 25 }, { x: -30, y: -49, w: 64, h: 22 }, { x: -36, y: -27, w: 63, h: 27 }] }, hitAir: { frame: 13, hurtboxes: [{ x: -25, y: -94, w: 57, h: 21 }, { x: -30, y: -73, w: 58, h: 24 }, { x: -30, y: -49, w: 60, h: 23 }, { x: -15, y: -26, w: 32, h: 26 }] }, launched: { frame: 14, hurtboxes: [{ x: -48, y: -129, w: 55, h: 28 }, { x: -40, y: -101, w: 77, h: 34 }, { x: -44, y: -67, w: 71, h: 31 }, { x: -30, y: -36, w: 45, h: 36 }] }, airKnockback: { frame: 15, hurtboxes: [{ x: -42, y: -99, w: 72, h: 22 }, { x: -51, y: -77, w: 87, h: 26 }, { x: -42, y: -51, w: 104, h: 23 }, { x: -17, y: -28, w: 75, h: 28 }] }, falling: { frame: 16, hurtboxes: [{ x: -41, y: -98, w: 79, h: 22 }, { x: -47, y: -76, w: 81, h: 25 }, { x: -48, y: -51, w: 107, h: 24 }, { x: -57, y: -27, w: 105, h: 27 }] }, downed: { frame: 17, hurtboxes: [{ x: -57, y: -50, w: 98, h: 11 }, { x: -64, y: -39, w: 112, h: 13 }, { x: -64, y: -26, w: 125, h: 12 }, { x: -63, y: -14, w: 128, h: 14 }] }, getupStart: { frame: 18, hurtboxes: [{ x: -25, y: -82, w: 47, h: 18 }, { x: -32, y: -64, w: 70, h: 21 }, { x: -37, y: -43, w: 73, h: 20 }, { x: -51, y: -23, w: 102, h: 23 }] }, getupEnd: { frame: 19, hurtboxes: [{ x: -21, y: -101, w: 55, h: 22 }, { x: -32, y: -79, w: 62, h: 26 }, { x: -35, y: -53, w: 60, h: 25 }, { x: -43, y: -28, w: 70, h: 28 }] }, ko: { frame: 20, hurtboxes: [{ x: -71, y: -37, w: 137, h: 8 }, { x: -72, y: -29, w: 142, h: 10 }, { x: -72, y: -19, w: 142, h: 9 }, { x: -66, y: -10, w: 134, h: 10 }] }, entryWalk: { frame: 21, hurtboxes: [{ x: -26, y: -128, w: 43, h: 28 }, { x: -29, y: -100, w: 61, h: 33 }, { x: -34, y: -67, w: 64, h: 31 }, { x: -40, y: -36, w: 80, h: 36 }] }, entryReady: { frame: 22, hurtboxes: [{ x: -26, y: -130, w: 53, h: 29 }, { x: -30, y: -101, w: 58, h: 33 }, { x: -26, y: -68, w: 49, h: 32 }, { x: -35, y: -36, w: 68, h: 36 }] }, tauntBeckon: { frame: 23, hurtboxes: [{ x: -17, y: -113, w: 72, h: 25 }, { x: -26, y: -88, w: 82, h: 29 }, { x: -31, y: -59, w: 55, h: 27 }, { x: -41, y: -32, w: 71, h: 32 }] }, tauntGrin: { frame: 24, hurtboxes: [{ x: -25, y: -132, w: 52, h: 29 }, { x: -33, y: -103, w: 66, h: 34 }, { x: -25, y: -69, w: 49, h: 32 }, { x: -34, y: -37, w: 70, h: 37 }] }, victoryJump: { frame: 25, hurtboxes: [{ x: -33, y: -119, w: 62, h: 23 }, { x: -28, y: -96, w: 51, h: 26 }, { x: -24, y: -70, w: 58, h: 25 }, { x: -30, y: -45, w: 62, h: 29 }] }, victoryCheer: { frame: 26, hurtboxes: [{ x: -29, y: -136, w: 52, h: 30 }, { x: -38, y: -106, w: 50, h: 35 }, { x: -39, y: -71, w: 60, h: 33 }, { x: -41, y: -38, w: 78, h: 38 }] }, defeatKneel: { frame: 27, hurtboxes: [{ x: -10, y: -82, w: 55, h: 18 }, { x: -19, y: -64, w: 64, h: 21 }, { x: -20, y: -43, w: 58, h: 20 }, { x: -47, y: -23, w: 90, h: 23 }] }, defeatGround: { frame: 28, hurtboxes: [{ x: -14, y: -44, w: 62, h: 10 }, { x: -30, y: -34, w: 83, h: 11 }, { x: -58, y: -23, w: 111, h: 11 }, { x: -62, y: -12, w: 124, h: 12 }] }, throwPrep: { frame: 29, hurtboxes: [{ x: -41, y: -116, w: 59, h: 26 }, { x: -44, y: -90, w: 97, h: 30 }, { x: -37, y: -60, w: 65, h: 28 }, { x: -48, y: -32, w: 97, h: 32 }] }, throwReach: { frame: 30, hurtboxes: [{ x: -15, y: -99, w: 94, h: 22 }, { x: -28, y: -77, w: 68, h: 26 }, { x: -30, y: -51, w: 72, h: 23 }, { x: -53, y: -28, w: 107, h: 28 }], joint: [27, -68] }, throwRelease: { frame: 31, hurtboxes: [{ x: -21, y: -118, w: 31, h: 26 }, { x: -46, y: -92, w: 73, h: 31 }, { x: -30, y: -61, w: 67, h: 28 }, { x: -48, y: -33, w: 107, h: 33 }] }, throwRecover: { frame: 32, hurtboxes: [{ x: -20, y: -110, w: 53, h: 24 }, { x: -30, y: -86, w: 75, h: 29 }, { x: -38, y: -57, w: 83, h: 26 }, { x: -53, y: -31, w: 106, h: 31 }] } };
@@ -20527,11 +21203,11 @@ function sequence(cels, loop = false) {
   };
 }
 var reachAt = 4;
-var startup = 7;
-var active = 4;
-var retractAt = startup + active;
+var startup2 = 7;
+var active2 = 4;
+var retractAt = startup2 + active2;
 var armHome = retractAt + 8;
-var recovery = 23;
+var recovery2 = 23;
 var releaseAt = 12;
 var releasePoseAt = 16;
 var luffySecondaryClips = {
@@ -20618,7 +21294,7 @@ var luffySecondaryClips = {
   throw: sequence([
     ["throwPrep", reachAt],
     ["throwReach", armHome - reachAt],
-    ["throwRecover", startup + active + recovery - armHome]
+    ["throwRecover", startup2 + active2 + recovery2 - armHome]
   ]),
   grabHold: sequence([
     ["throwReach", releasePoseAt],
@@ -20632,9 +21308,9 @@ var luffySecondaryClips = {
 var luffyThrow = {
   kind: "grab",
   level: "throw",
-  startup,
-  active,
-  recovery,
+  startup: startup2,
+  active: active2,
+  recovery: recovery2,
   damage: 112,
   stun: 38,
   blockstun: 0,
@@ -20691,7 +21367,7 @@ function luffyGrabLimb(actor) {
       x: wrist.x + (90 - wrist.x) * length,
       y: wrist.y + (-84 - wrist.y) * length
     };
-    activeHand = tick >= startup && tick < retractAt;
+    activeHand = tick >= startup2 && tick < retractAt;
   } else if (actor.state === "grabbing" && actor.match?.capture?.kind === "grab") {
     if (tick >= releasePoseAt || !actor.opponent) return;
     const victim = actor.opponent;
@@ -20705,6 +21381,3041 @@ function luffyGrabLimb(actor) {
   } else return;
   const limb = buildLuffyLimb(actor, { x, y }, tip, 7, false, 120);
   return { ...limb, palm: true, hitboxes: activeHand ? [limb.terminal] : [] };
+}
+
+// src/engine/kaneki-chain-expansion.ts
+var expandedFinishes = {
+  rinkakuCombo: {
+    keys: [[5, 9, 0, 54, 6], [10, 16, 0, 51, 10], [15, 23, 0, 47, 14], [21, 28, 0, 58, 12], [28, 31, 0, 118, 19]],
+    beats: [{ at: 10, damage: 13 }, { at: 15, damage: 17 }],
+    hit: 21,
+    damage: 45,
+    recovery: 12,
+    stop: 7,
+    push: 7,
+    launch: -3,
+    limbs: 2
+  },
+  redSpiral: {
+    keys: [[6, 0, 0, 45, 25], [13, 4, 0, -43, 89], [20, -6, 0, -53, 35], [29, 10, 0, 81, 52], [36, 13, 0, 188, 24]],
+    hit: 29,
+    damage: 91,
+    recovery: 18,
+    stop: 9,
+    push: 12,
+    launch: -4,
+    limbs: 2
+  },
+  centipedeDrop: {
+    keys: [[9, -8, 0, 54, 17], [17, -10, 42, 46, 43], [29, -2, 235, 41, 218], [39, 10, 348, 39, 290], [48, 20, 315, 33, 240], [57, 29, 229, 27, 175], [68, 39, 57, 24, 0], [74, 34, 0, 44, 0], [82, 22, 0, 56, 0]],
+    hit: 68,
+    damage: 135,
+    recovery: 22,
+    stop: 13,
+    push: 3,
+    launch: 0,
+    slam: true,
+    limbs: 4
+  },
+  quickSwing: {
+    keys: [[4, 0, 0, 0, 36], [10, -5, 0, -18, 68], [17, 0, 0, 70, 56], [24, 2, 0, 130, 34]],
+    hit: 17,
+    damage: 60,
+    recovery: 10,
+    stop: 6,
+    push: 9,
+    launch: -3,
+    limbs: 1,
+    relativeGap: true
+  },
+  doubleSwing: {
+    keys: [[7, 0, 0, -34, 50], [15, -5, 0, 25, 103], [22, -7, 0, -48, 63], [30, 2, 0, 18, 133], [38, 6, 0, 120, 71], [46, 9, 0, 198, 36]],
+    hit: 38,
+    damage: 91,
+    recovery: 17,
+    stop: 9,
+    push: 12,
+    launch: -4,
+    limbs: 2,
+    relativeGap: true
+  },
+  redCatapult: {
+    keys: [[8, -5, 0, -24, 53], [17, -11, 0, -68, 91], [27, 4, 0, 25, 165], [35, 13, 0, 123, 132], [46, 17, 0, 251, 83]],
+    hit: 35,
+    damage: 120,
+    recovery: 23,
+    stop: 11,
+    push: 15,
+    launch: -3,
+    limbs: 4,
+    relativeGap: true
+  },
+  aerialSnatch: {
+    keys: [[5, 9, 42, 65, 128], [12, 28, 131, 46, 151], [18, 43, 133, 57, 117], [23, 49, 75, 93, 43], [32, 53, 0, 127, 16]],
+    hit: 18,
+    damage: 62,
+    recovery: 12,
+    stop: 7,
+    push: 6,
+    launch: 3,
+    limbs: 1
+  },
+  rinkakuCyclone: {
+    keys: [[7, 11, 74, 59, 133], [14, 30, 153, 51, 202], [21, 32, 180, -62, 195], [27, 28, 148, -47, 112], [35, 46, 117, 87, 155], [49, 54, 0, 221, 60]],
+    hit: 35,
+    damage: 93,
+    recovery: 18,
+    stop: 9,
+    push: 13,
+    launch: -2,
+    limbs: 3
+  },
+  centipedeMeteor: {
+    keys: [[6, 22, 63, 66, 133], [16, 53, 197, 55, 230], [25, 73, 310, 43, 290], [34, 70, 332, 38, 270], [42, 88, 254, 31, 196], [53, 138, 63, 24, 0], [60, 136, 0, 49, 0], [70, 119, 0, 60, 0]],
+    hit: 53,
+    damage: 153,
+    recovery: 29,
+    stop: 15,
+    push: 4,
+    launch: 0,
+    slam: true,
+    limbs: 4
+  },
+  swordsRecall: {
+    keys: [[7, 3, 0, 84, 46], [12, 8, 0, 51, 17], [18, 13, 0, 52, 2], [22, 12, 0, 58, 0]],
+    hit: 18,
+    damage: 22,
+    recovery: 6,
+    stop: 5,
+    push: 0.7,
+    launch: 0,
+    follow: "ground",
+    limbs: 2
+  },
+  swordsSide: {
+    keys: [[7, -7, 0, 74, 54], [15, 8, 0, 119, 72], [23, 15, 0, 234, 34]],
+    hit: 15,
+    damage: 29,
+    recovery: 15,
+    stop: 8,
+    push: 13,
+    launch: -3,
+    limbs: 4
+  },
+  swordsRise: {
+    keys: [[6, 3, 0, 69, 29], [13, 8, 0, 64, 72], [19, 10, 0, 69, 87]],
+    hit: 13,
+    damage: 24,
+    recovery: 12,
+    stop: 7,
+    push: 1,
+    launch: -8,
+    follow: "air",
+    limbs: 2
+  },
+  rushReel: {
+    keys: [[4, 4, 0, 68, 10], [9, 9, 0, 50, 3], [13, 7, 0, 56, 0]],
+    hit: 9,
+    damage: 36,
+    recovery: 5,
+    stop: 5,
+    push: 0.6,
+    launch: 0,
+    follow: "ground",
+    limbs: 1
+  },
+  rushQuickThrow: {
+    keys: [[5, 3, 0, 52, 24], [11, 8, 0, 104, 38], [17, 9, 0, 141, 15]],
+    hit: 11,
+    damage: 62,
+    recovery: 10,
+    stop: 6,
+    push: 7,
+    launch: -3,
+    limbs: 1
+  },
+  rushShortLift: {
+    keys: [[5, 3, 0, 60, 17], [10, 5, 0, 51, 47], [16, 7, 0, 62, 51]],
+    hit: 10,
+    damage: 43,
+    recovery: 10,
+    stop: 5,
+    push: 0.9,
+    launch: -7,
+    follow: "air",
+    limbs: 2
+  },
+  rushCrossover: {
+    keys: [[6, 7, 0, 59, 33], [13, 15, 0, 12, 109], [20, 16, 0, -67, 77], [27, 15, 0, -87, 8]],
+    hit: 20,
+    damage: 53,
+    recovery: 13,
+    stop: 7,
+    push: -5,
+    launch: -2,
+    limbs: 2
+  },
+  rushSpinThrow: {
+    keys: [[7, 3, 0, 42, 27], [14, -4, 0, -41, 84], [20, 8, 0, 72, 102], [30, 18, 0, 183, 37]],
+    hit: 20,
+    damage: 89,
+    recovery: 16,
+    stop: 8,
+    push: 11,
+    launch: -4,
+    limbs: 2
+  },
+  rushAirSet: {
+    keys: [[6, 9, 0, 54, 29], [13, 14, 0, 61, 84], [20, 18, 0, 74, 113]],
+    hit: 13,
+    damage: 56,
+    recovery: 13,
+    stop: 7,
+    push: 1.2,
+    launch: -10,
+    follow: "air",
+    limbs: 2
+  },
+  rushDragStrike: {
+    keys: [[6, -5, 0, 64, 24], [14, 8, 0, 47, 13], [21, 16, 0, 61, 0], [26, 12, 0, 68, 0]],
+    beats: [{ at: 14, damage: 22 }],
+    hit: 21,
+    damage: 55,
+    recovery: 12,
+    stop: 8,
+    push: 1.5,
+    launch: 0,
+    follow: "ground",
+    limbs: 3
+  },
+  rushHeavyThrow: {
+    keys: [[8, -6, 0, 46, 24], [16, -5, 0, -34, 99], [23, 10, 0, 119, 91], [33, 16, 0, 229, 38]],
+    hit: 23,
+    damage: 118,
+    recovery: 21,
+    stop: 11,
+    push: 14,
+    launch: -4,
+    limbs: 3
+  },
+  rushSlam: {
+    keys: [[8, 7, 0, 54, 27], [17, 24, 129, 49, 112], [24, 39, 168, 44, 137], [30, 50, 143, 36, 110], [39, 77, 53, 22, 0], [47, 76, 0, 48, 0], [53, 61, 0, 61, 0]],
+    hit: 39,
+    damage: 122,
+    recovery: 26,
+    stop: 13,
+    push: 4,
+    launch: 0,
+    slam: true,
+    limbs: 4
+  }
+};
+var expandedNames = {
+  rinkakuCombo: "Rinkaku Combo",
+  redSpiral: "Red Spiral",
+  centipedeDrop: "Centipede Drop",
+  quickSwing: "Quick Swing",
+  doubleSwing: "Double Swing",
+  redCatapult: "Red Catapult",
+  aerialSnatch: "Aerial Snatch",
+  rinkakuCyclone: "Rinkaku Cyclone",
+  centipedeMeteor: "Centipede Meteor",
+  swordsRecall: "Recolhimento",
+  swordsSide: "Arremesso Lateral",
+  swordsRise: "Arremesso Ascendente",
+  rushReel: "Pux\xE3o de Investida",
+  rushQuickThrow: "Arremesso R\xE1pido",
+  rushShortLift: "Lan\xE7amento Curto",
+  rushCrossover: "Reposicionamento",
+  rushSpinThrow: "Arremesso Girat\xF3rio",
+  rushAirSet: "Lan\xE7amento A\xE9reo",
+  rushDragStrike: "Arrasto Rinkaku",
+  rushHeavyThrow: "Arremesso Pesado",
+  rushSlam: "Arremesso Descendente"
+};
+
+// src/engine/kaneki-chain.ts
+var chainFirstTicks = 30;
+var chainSecondTicks = 36;
+var chainWindup = 4;
+var chainBufferTicks = 6;
+var chainEscapeTicks = 9;
+var kaguneGrabLimit = 300;
+var resistanceGoal = 3;
+var resistanceInterval = 12;
+var chainButtons = ["light", "medium", "heavy"];
+var chainNames = {
+  ...expandedNames,
+  embrace: "Abra\xE7o Rinkaku",
+  pendulum: "P\xEAndulo Vermelho",
+  centipede: "Queda da Centopeia",
+  lasso: "La\xE7o A\xE9reo",
+  spin: "Arremesso Girat\xF3rio",
+  meteor: "Queda Mete\xF3rica",
+  release: "Arremesso de sa\xEDda"
+};
+function chainPick(pressed) {
+  const picks = chainButtons.filter((button) => pressed.includes(button));
+  return picks.length === 1 ? picks[0] : void 0;
+}
+var grabOptions = {
+  pull: ["rinkakuCombo", "redSpiral", "centipedeDrop"],
+  throw: ["quickSwing", "doubleSwing", "redCatapult"],
+  launch: ["aerialSnatch", "rinkakuCyclone", "centipedeMeteor"]
+};
+var swordsOptions = ["swordsRecall", "swordsSide", "swordsRise"];
+var rushOptions = [
+  ["rushReel", "rushQuickThrow", "rushShortLift"],
+  ["rushCrossover", "rushSpinThrow", "rushAirSet"],
+  ["rushDragStrike", "rushHeavyThrow", "rushSlam"]
+];
+var directChain = (s) => s.origin === "fourSwords" || s.origin === "rinkakuRush";
+function chainWindow(s, second = false) {
+  if (s.origin === "kaguneGrab") return kaguneGrabLimit;
+  if (s.origin === "rinkakuRush") return [20, 26, 30][s.rank];
+  if (s.origin === "fourSwords") return 23;
+  return second ? chainSecondTicks : chainFirstTicks;
+}
+function chainFinisher(chain, button, starter) {
+  const index = chainButtons.indexOf(button);
+  if (chain.origin === "fourSwords") return swordsOptions[index];
+  if (chain.origin === "rinkakuRush") return rushOptions[chain.rank][index];
+  if (!starter) return;
+  if (chain.origin === "kaguneGrab") return grabOptions[starter][index];
+  if (starter === "pull") return ["embrace", "pendulum", "centipede"][index];
+  if (starter === "launch") return ["lasso", "spin", "meteor"][index];
+}
+var resistanceButton = (s) => chainButtons[(s.rank + (s.resistance ?? 0)) % chainButtons.length];
+function canResistChain(s, tick) {
+  return s.origin === "kaguneGrab" && (s.phase === "connected" || s.phase === "choice1" || s.phase === "choice2" || s.phase === "finisher" && !!s.finish && !!chainFinishes[s.finish].slam && tick - s.since < 9);
+}
+var chainFinishes = {
+  ...expandedFinishes,
+  embrace: {
+    keys: [
+      [5, 5, 0, 43, 15],
+      [9, 10, 0, 44, 20],
+      [15, 14, 0, 77, 24],
+      [22, 10, 0, 109, 9]
+    ],
+    hit: 15,
+    damage: 61,
+    recovery: 11,
+    stop: 6,
+    push: 6,
+    launch: -3
+  },
+  pendulum: {
+    keys: [
+      [6, 0, 0, 42, 43],
+      [14, -8, 0, -43, 117],
+      [22, 2, 0, 31, 85],
+      [27, 13, 0, 95, 43],
+      [34, 11, 0, 168, 27]
+    ],
+    hit: 27,
+    damage: 87,
+    recovery: 16,
+    stop: 8,
+    push: 11,
+    launch: -3.5
+  },
+  centipede: {
+    keys: [
+      [9, 0, 0, 53, 34],
+      [20, 0, 150, 45, 134],
+      [34, 0, 325, 40, 290],
+      [41, 0, 323, 32, 254],
+      [49, 1, 258, 27, 181],
+      [60, 4, 55, 18, 0],
+      [66, -5, 0, 39, 0],
+      [73, -15, 0, 43, 0]
+    ],
+    hit: 60,
+    damage: 131,
+    recovery: 20,
+    stop: 12,
+    push: 2,
+    launch: 0,
+    slam: true
+  },
+  lasso: {
+    keys: [
+      [6, 11, 46, 62, 120],
+      [12, 25, 119, 47, 139],
+      [19, 31, 122, 47, 110],
+      [24, 34, 84, 64, 45],
+      [35, 32, 0, 100, 6]
+    ],
+    hit: 19,
+    damage: 55,
+    recovery: 10,
+    stop: 6,
+    push: 4,
+    launch: 2
+  },
+  spin: {
+    keys: [
+      [8, 15, 78, 52, 117],
+      [16, 33, 174, 43, 157],
+      [23, 37, 186, -48, 204],
+      [28, 44, 146, 42, 162],
+      [33, 47, 111, 114, 123],
+      [47, 49, 0, 207, 36]
+    ],
+    hit: 33,
+    damage: 79,
+    recovery: 17,
+    stop: 8,
+    push: 12,
+    launch: -1.5
+  },
+  meteor: {
+    keys: [
+      [7, 21, 74, 60, 133],
+      [17, 50, 208, 52, 209],
+      [25, 63, 279, 37, 248],
+      [32, 62, 278, 37, 247],
+      [40, 80, 231, 34, 185],
+      [50, 122, 59, 19, 0],
+      [57, 118, 0, 43, 0],
+      [65, 108, 0, 48, 0]
+    ],
+    hit: 50,
+    damage: 137,
+    recovery: 26,
+    stop: 14,
+    push: 3,
+    launch: 0,
+    slam: true
+  },
+  release: {
+    keys: [
+      [7, 0, 0, 54, 24],
+      [14, 2, 0, 120, 18],
+      [20, 0, 0, 151, 8]
+    ],
+    hit: 14,
+    damage: 51,
+    recovery: 14,
+    stop: 6,
+    push: 7,
+    launch: -3
+  }
+};
+var chainBoundX = (x) => Math.round(Math.max(40, Math.min(1240, x)));
+var ease2 = (t) => t * t * (3 - 2 * t);
+var mix3 = (a, b, t) => a + (b - a) * t;
+function chainPose(route, from, age, facing, floor3) {
+  const finish = chainFinishes[route];
+  const end = finish.keys.at(-1)[0];
+  const startGap = (from.victim.x - from.actor.x) * facing;
+  const keys = [
+    [
+      0,
+      0,
+      floor3 - from.actor.y,
+      startGap,
+      floor3 - from.victim.y
+    ],
+    ...finish.keys.map(([tick, x2, y2, gap2, targetY]) => [tick, x2, y2, gap2 + (finish.relativeGap ? startGap : 0), targetY])
+  ];
+  const index = keys.findIndex((key) => key[0] >= age);
+  const next = keys[Math.max(1, index < 0 ? keys.length - 1 : index)];
+  const prev = keys[keys.indexOf(next) - 1];
+  const t = Math.max(0, Math.min(1, (age - prev[0]) / (next[0] - prev[0])));
+  const f = finish.slam && next[0] === finish.hit ? t * t : ease2(t);
+  const x = chainBoundX(from.actor.x + mix3(prev[1], next[1], f) * facing);
+  const y = Math.round(floor3 - mix3(prev[2], next[2], f));
+  const gap = mix3(prev[3], next[3], f) * facing;
+  return {
+    actor: { x, y },
+    victim: {
+      x: chainBoundX(x + gap),
+      y: Math.round(floor3 - mix3(prev[4], next[4], f))
+    },
+    end,
+    clip: route === "release" ? "kaguneThrow" : "chain_" + route,
+    victimClip: finish.slam && age >= finish.hit ? "downed" : age >= finish.hit ? "damageAir" : y < floor3 - 30 || prev[4] > 65 ? "launched" : "grabbed"
+  };
+}
+
+// src/engine/kagune.ts
+var kaguneIds = [
+  "upperRear",
+  "upperFront",
+  "lowerRear",
+  "lowerFront"
+];
+var p2 = (x, y) => ({ x, y });
+var profiles = {
+  upperRear: {
+    root: p2(-3, -4),
+    neck: p2(-22, 3),
+    folded: [p2(-14, -3), p2(-26, -21), p2(-16, -30)],
+    ready: [p2(-49, 11), p2(-111, -14), p2(-88, -69)],
+    extended: [p2(-59, -50), p2(48, -107), p2(174, -60)],
+    width: 15,
+    tempo: 124,
+    offset: 9,
+    hook: -7
+  },
+  upperFront: {
+    root: p2(0, -4),
+    neck: p2(-23, -5),
+    folded: [p2(-9, -14), p2(-1, -33), p2(10, -26)],
+    ready: [p2(-36, -39), p2(1, -87), p2(89, -62)],
+    extended: [p2(-19, -59), p2(78, -91), p2(204, -59)],
+    width: 13,
+    tempo: 109,
+    offset: 34,
+    hook: 6
+  },
+  lowerRear: {
+    root: p2(-4, 3),
+    neck: p2(-19, 10),
+    folded: [p2(-14, 10), p2(-27, 5), p2(-30, -7)],
+    ready: [p2(-52, 30), p2(-112, 55), p2(-144, 39)],
+    extended: [p2(-63, 49), p2(53, 58), p2(185, 15)],
+    width: 17,
+    tempo: 143,
+    offset: 58,
+    hook: 7
+  },
+  lowerFront: {
+    root: p2(0, 4),
+    neck: p2(-10, 16),
+    folded: [p2(-11, 17), p2(9, 26), p2(20, 16)],
+    ready: [p2(-14, 45), p2(55, 53), p2(102, 16)],
+    extended: [p2(-8, 48), p2(82, 39), p2(223, 7)],
+    width: 14,
+    tempo: 131,
+    offset: 89,
+    hook: -6
+  }
+};
+function samplePath(nodes) {
+  const spine = [nodes[0]];
+  for (let i = 0; i < nodes.length - 1; i++) {
+    const a = nodes[i - 1] ?? nodes[i], b = nodes[i];
+    const c2 = nodes[i + 1], d = nodes[i + 2] ?? c2;
+    for (let j = 1; j <= 8; j++) {
+      const t = j / 8, t2 = t * t, t3 = t2 * t;
+      const coordinate = (axis) => b[axis] + (c2[axis] - a[axis]) * 0.5 * t + (2 * a[axis] - 5 * b[axis] + 4 * c2[axis] - d[axis]) * 0.5 * t2 + (3 * b[axis] - a[axis] - 3 * c2[axis] + d[axis]) * 0.5 * t3;
+      spine.push(p2(coordinate("x"), coordinate("y")));
+    }
+  }
+  return spine;
+}
+function directedKagune(id, lumbar, facing, reach, bend, floor3, underground = false) {
+  const profile = profiles[id];
+  const origin = p2(lumbar.x + profile.root.x * facing, lumbar.y + profile.root.y);
+  const depth = floor3 - origin.y;
+  const nodes = underground ? [
+    p2(0, 0),
+    p2(3, depth - 12),
+    p2(17, depth + 16),
+    p2(reach.x * 0.58, depth + 22),
+    p2(reach.x - 8, depth + 13),
+    reach
+  ] : [
+    p2(0, 0),
+    p2(-15, bend * 0.31),
+    p2(reach.x * 0.28, reach.y * 0.28 + bend),
+    p2(reach.x * 0.71, reach.y * 0.75 + bend * 0.52),
+    reach
+  ];
+  const spine = samplePath(nodes).map((pt, i, list) => {
+    const y = origin.y + pt.y;
+    const t = i / (list.length - 1);
+    return p2(
+      origin.x + pt.x * facing,
+      underground ? y : Math.min(y, floor3 - Math.max(7, profile.width * (1 - t) ** 0.59 + 2))
+    );
+  });
+  const widths = spine.map((_, i) => Math.max(0.45, profile.width * (1 - i / (spine.length - 1)) ** 0.59));
+  let length = 0;
+  for (let i = 1; i < spine.length; i++)
+    length += Math.hypot(spine[i].x - spine[i - 1].x, spine[i].y - spine[i - 1].y);
+  return {
+    id,
+    origin,
+    spine,
+    radius: widths,
+    hook: profile.hook * facing,
+    length,
+    tip: spine.at(-1),
+    phase: "extended",
+    motion: "grabConnected",
+    layer: "behind",
+    floorClip: underground ? floor3 : void 0
+  };
+}
+
+// src/engine/kaneki-centipede.ts
+var centipedeId = "centipede";
+var centipedeConfig = {
+  cost: 100,
+  startup: 27,
+  active: 8,
+  recovery: 32,
+  reach: 184,
+  duration: 452,
+  minimumComboScale: 0.45,
+  phases: {
+    rush: 60,
+    zigzag: 108,
+    wall: 205,
+    plant: 226,
+    rebound: 232,
+    capture: 257,
+    ascend: 287,
+    windup: 325,
+    descent: 343,
+    ground: 367,
+    return: 397,
+    base: 435
+  },
+  hits: [
+    { tick: 82, damage: 16, kind: "lash", limb: "shellFront", hold: 2 },
+    { tick: 113, damage: 17, kind: "lash", limb: "lowerFront" },
+    { tick: 143, damage: 20, kind: "lash", limb: "upperRear", hold: 2 },
+    { tick: 169, damage: 16, kind: "lash", limb: "shellRear" },
+    { tick: 196, damage: 21, kind: "lash", limb: "lowerRear", hold: 2 },
+    { tick: 246, damage: 24, kind: "lash", limb: "shellFront", hold: 4 },
+    { tick: 275, damage: 24, kind: "grip", limb: "both", hold: 3 },
+    { tick: 291, damage: 23, kind: "launch", limb: "both", hold: 3 },
+    { tick: 352, damage: 28, kind: "lash", limb: "both", hold: 4 },
+    { tick: 367, damage: 130, kind: "ground", limb: "both", hold: 16 }
+  ]
+};
+var c = centipedeConfig;
+var centipedeMove = {
+  kind: centipedeId,
+  super: true,
+  cost: c.cost,
+  startup: c.startup,
+  active: c.active,
+  recovery: c.recovery,
+  damage: 24,
+  hitstop: 6,
+  stun: 24,
+  blockstun: 0,
+  push: 0,
+  launch: 0,
+  level: "mid",
+  rank: 5,
+  cancels: [],
+  meterGain: 0,
+  box: { x: 0, y: 0, w: 0, h: 0 }
+};
+function canStartCentipede(f) {
+  return f.match?.phase === "fight" && !f.match.cinematicActive && !f.match.capture && f.meter >= c.cost && !f.airborne && (["idle", "walk", "crouch", "dash", "landing", "jumpStart"].includes(f.state) || f.hitConfirmed && f.canSuperCancel());
+}
+function centipedeConversion(match, capture, tick = capture?.tick ?? 0) {
+  if (match.phase !== "fight" || match.cinematicActive || capture !== match.capture) return;
+  const chain = capture?.kaneki?.chain;
+  if (!capture || !chain || chain.origin === "fourSwords" || chain.phase !== "choice1" && chain.phase !== "choice2") return;
+  const age = tick - chain.since;
+  if (age >= chainWindow(chain, chain.phase === "choice2")) return;
+  if (chain.origin === "kaguneGrab" && (match.frame - chain.started >= kaguneGrabLimit || (chain.resistance ?? 0) >= resistanceGoal)) return;
+  const a = match.fighters[capture.attacker], b = match.fighters[capture.victim];
+  if (a.data.id !== "kaneki" || a.state !== "grabbing" || a.health <= 0 || a.meter < c.cost || b.state !== "grabbed" || b.health <= 0 || match.temporal.isFrozen(a.id)) return;
+  return chain.origin;
+}
+var clamp5 = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
+var unit = (n) => clamp5(n, 0, 1);
+var centipedeEase = (n) => {
+  const t = unit(n);
+  return t * t * (3 - 2 * t);
+};
+var mix4 = (a, b, t) => a + (b - a) * t;
+var FLOOR = 580;
+function openerReach(t) {
+  if (t < c.startup) return 24 + 19 * centipedeEase((t - 12) / (c.startup - 12));
+  if (t < c.startup + c.active) return mix4(43, c.reach, (t - c.startup) / (c.active - 1));
+  return c.reach * (1 - centipedeEase((t - c.startup - c.active) / 13));
+}
+function centipedeOpener(f) {
+  if (f.moveId !== centipedeId || f.state !== "attack") return;
+  const t = f.stateFrame;
+  if (t < 12 || t >= c.startup + c.active + 13) return;
+  const side = f.facing;
+  const root = { x: f.x - 9 * side, y: f.y - 67 };
+  return directedKagune("lowerFront", root, side, { x: openerReach(t), y: -5 }, -42, FLOOR);
+}
+function centipedeContact(f) {
+  const pose = centipedeOpener(f);
+  if (!pose) return [];
+  const t = f.stateFrame;
+  const length = Math.max(16, t > c.startup ? openerReach(t) - openerReach(t - 1) : 0);
+  return [{ a: { x: pose.tip.x - f.facing * length, y: pose.tip.y }, b: pose.tip, r: 18 }];
+}
+var attacks = [
+  [60, -103, 0, 42, 0],
+  [68, -112, 0, 43, 0],
+  [76, -48, 0, 43, 0],
+  [82, 7, 0, 49, 5],
+  [91, 119, 0, 66, 7],
+  [101, 174, 0, 65, 0],
+  [108, 151, 0, 65, 0],
+  [113, 108, 0, 59, 8],
+  [123, 67, 0, 42, 0],
+  [133, -54, 110, 42, 0],
+  [143, 2, 112, 41, 18],
+  [155, 103, 6, 58, 2],
+  [161, 153, 0, 55, 0],
+  [169, 96, 0, 48, 17],
+  [179, -24, 0, 33, 4],
+  [186, -130, 0, 32, 0],
+  [196, -23, 0, 37, 8],
+  [205, 87, 22, 55, 0]
+];
+var tracks = [
+  [0, "centipedeTransform"],
+  [60, "centipedeFrenzyPounce"],
+  [73, "centipedeFrenzyBound"],
+  [91, "centipedeRushBrake"],
+  [105, "centipedeRushCross"],
+  [120, "centipedeReboundLeap"],
+  [137, "centipedeAttackDiagonal"],
+  [153, "centipedeFrenzyLand"],
+  [160, "centipedeRushCross"],
+  [179, "centipedeRushBrake"],
+  [186, "centipedeFrenzyPounce"],
+  [193, "centipedeRushCross"],
+  [205, "centipedeFrenzyBound"],
+  [218, "centipedeWallPlant"],
+  [232, "centipedeWallRebound"],
+  [248, "centipedeFrenzyLand"],
+  [257, "centipedeSeize"],
+  [287, "centipedeLaunch"],
+  [305, "centipedeAscend"],
+  [325, "centipedeWindup"],
+  [343, "centipedeDescent"],
+  [367, "centipedeImpact"],
+  [381, "centipedeFrenzyLand"],
+  [397, "centipedeFrenzyLook"],
+  [435, "centipedeBase"]
+];
+var phases = [
+  [0, "transformation"],
+  [c.phases.rush, "rush"],
+  [c.phases.zigzag, "zigzag"],
+  [c.phases.wall, "wall"],
+  [c.phases.capture, "capture"],
+  [c.phases.ascend, "ascend"],
+  [c.phases.windup, "windup"],
+  [c.phases.descent, "descent"],
+  [c.phases.ground, "impact"],
+  [c.phases.return, "return"]
+];
+function centipedeScene(s) {
+  const t = clamp5(s.tick, 0, c.duration), p3 = c.phases;
+  const center = clamp5((s.originX + s.targetX) / 2, 282, 998);
+  const wall = center < 640 || center === 640 && s.facing < 0 ? 40 : 1240;
+  const wallSide = wall === 40 ? -1 : 1;
+  const edgeDirection = wallSide * s.facing;
+  const braced = (wall - wallSide * 37 - center) * s.facing;
+  const from = [
+    0,
+    (s.originX - center) * s.facing,
+    FLOOR - s.originY,
+    (s.targetX - center) * s.facing,
+    FLOOR - s.targetY
+  ];
+  const early = [35, from[1] * 0.92, from[2] * 0.68, from[3] * 0.89, from[4] * 0.66];
+  const afterWall = 80 - edgeDirection * 84;
+  const keys = [
+    from,
+    early,
+    ...attacks,
+    [214, mix4(87, braced, 0.52), 119, 55, 0],
+    [226, braced, 185, 55, 0],
+    [232, braced, 185, 55, 0],
+    [238, mix4(braced, 55, 0.46), 156, 55, 0],
+    [246, 55 + edgeDirection * 54, 52, 63, 19],
+    [254, afterWall, 0, 80, 0],
+    [266, afterWall - edgeDirection * 12, 0, 80, 0],
+    [275, afterWall, 0, 80, 18],
+    [287, afterWall + edgeDirection * 13, 0, 77, 45],
+    [291, afterWall + edgeDirection * 20, 24, 76, 122],
+    [301, 76 - edgeDirection * 41, 136, 77, 234],
+    [311, 77 - edgeDirection * 24, 288, 78, 303],
+    [325, 77 - edgeDirection * 14, 406, 80, 314],
+    [343, 80 - edgeDirection * 21, 413, 81, 285],
+    [352, 81 - edgeDirection * 12, 351, 83, 241],
+    [367, 85 - edgeDirection * 12, 55, 88, 0],
+    [379, 82 - edgeDirection * 54, 0, 102, 0],
+    [397, 80 - edgeDirection * 63, 0, 111, 0],
+    [435, 80 - edgeDirection * 63, 0, 111, 0],
+    [452, 80 - edgeDirection * 63, 0, 111, 0]
+  ];
+  const segment = Math.max(1, keys.findIndex((k) => t <= k[0]));
+  const a = keys[segment - 1], b = keys[segment];
+  const f = unit((t - a[0]) / (b[0] - a[0]));
+  const accelerating = t >= p3.descent && t <= p3.ground;
+  const fA = accelerating ? f * (0.47 + 0.53 * f) : t >= 68 && t <= 96 || t >= 205 && t <= 226 || t >= 232 && t <= 254 ? f : centipedeEase(f);
+  const worldX = (x) => clamp5(center + x * s.facing, 40, 1240);
+  const ax = t ? Math.round(worldX(mix4(a[1], b[1], fA))) : s.originX;
+  const ay = t ? Math.round(FLOOR - mix4(a[2], b[2], fA)) : s.originY;
+  const bx = t ? Math.round(worldX(mix4(a[3], b[3], f))) : s.targetX;
+  const by = t ? Math.round(FLOOR - mix4(a[4], b[4], accelerating ? f * (0.42 + 0.58 * f) : centipedeEase(f))) : s.targetY;
+  const look = Math.abs(bx - ax) < 8 ? s.facing : bx > ax ? 1 : -1;
+  const facing = t < 95 || t >= 129 && t < 158 || t >= 185 && t < p3.wall ? s.facing : t < 129 || t < 185 && t >= 158 ? -s.facing : t >= p3.wall && t < 218 ? wallSide : t >= 218 && t < p3.capture ? -wallSide : look;
+  const armor = centipedeEase((t - 10) / 47) * (1 - centipedeEase((t - 412) / 31));
+  const phaseEnd = phases.findIndex(([at2]) => at2 > t);
+  const trackEnd = tracks.findIndex(([at2]) => at2 > t);
+  const [, phase] = phases.at(phaseEnd < 0 ? -1 : phaseEnd - 1);
+  const [at, clip2] = tracks.at(trackEnd < 0 ? -1 : trackEnd - 1);
+  const exit = 1 - centipedeEase((t - 416) / 36);
+  const wide = centipedeEase((t - 202) / 16) * (1 - centipedeEase((t - 241) / 22));
+  const fly = centipedeEase((FLOOR - Math.min(ay, by) - 55) / 315);
+  const close = centipedeEase(t / 26) * (1 - centipedeEase((t - 36) / 24));
+  const stare = centipedeEase((t - p3.windup) / 9) * (1 - centipedeEase((t - p3.descent) / 13));
+  const ending = centipedeEase((t - p3.return) / 17) * (1 - centipedeEase((t - 423) / 17));
+  const scale = 1 + (0.21 * close - 0.08 * armor - 0.14 * wide - 0.09 * fly + 0.075 * stare + 0.13 * ending) * exit;
+  const focusX = mix4((ax + bx) / 2 - facing * 22 * armor, ax, close * 0.64 + stare * 0.35 + ending * 0.48);
+  const bounds = scale >= 1 ? 640 / scale : 522;
+  const cameraX = mix4(640, clamp5(focusX, bounds, 1280 - bounds), exit * (1 - 0.68 * wide));
+  const shake = t >= p3.ground && t < p3.ground + 17 ? Math.round(17 * (1 - (t - p3.ground) / 17) * (s.hold ? s.hold / 16 : 0.58)) : 0;
+  const tremor = [0, -1, 1, -1, 0, 1][(t + s.hold) % 6];
+  return {
+    phase,
+    armor,
+    wall,
+    attacker: { x: ax, y: ay, facing, clip: clip2, tick: t - at },
+    victim: { x: bx, y: by, facing: -look, clip: t >= p3.ground ? "downed" : by < FLOOR - 28 ? "damageAir" : t >= 82 && t < 257 ? "damageHeavy" : "grabbed", tick: t },
+    camera: {
+      x: cameraX,
+      y: 360 + exit * (65 * close - 136 * fly - 35 * wide - 28 * stare + 22 * ending),
+      scale,
+      shakeX: tremor * shake,
+      shakeY: Math.round(tremor * shake * 0.33)
+    }
+  };
+}
+function centipedePhaseCue(tick) {
+  if (tick === 16 || tick === 48) return "transform";
+  if (tick === 73) return "lash";
+  if (tick === centipedeConfig.phases.plant) return "wall";
+  if (tick === 262) return "grip";
+  if (tick === centipedeConfig.phases.descent) return "fall";
+  if (tick === 421) return "release";
+}
+
+// src/data/kaneki-motion.json
+var kaneki_motion_default = {
+  id: "kaneki",
+  name: "Kaneki Ken",
+  health: 1e3,
+  speed: 5.2,
+  jump: -16.1,
+  gravity: 0.76,
+  locomotion: {
+    backSpeed: 4.15,
+    airSpeed: 6.15,
+    jumpStartup: 5,
+    landingTicks: 7,
+    dashForward: [2, 6, 12, 17, 20, 21, 19, 16, 14, 11, 7, 4, 1, 0],
+    backdash: [2, 7, 13, 17, 18, 17, 15, 12, 10, 7, 4, 2, 0, 0]
+  },
+  moves: {}
+};
+
+// src/engine/kaneki-motion.ts
+var kanekiMotion = kaneki_motion_default;
+
+// src/data/kaneki-combat-art.json
+var kaneki_combat_art_default = { clips: { stand_light: { sheet: "kaneki/combat.png", columns: 6, frames: [0, 1, 2, 3, 4, 5], durations: [1, 1, 1, 1, 1, 1], ticks: 1, loop: false }, stand_medium: { sheet: "kaneki/combat.png", columns: 6, frames: [6, 7, 8, 9, 10, 11], durations: [1, 1, 1, 1, 1, 1], ticks: 1, loop: false }, stand_heavy: { sheet: "kaneki/combat.png", columns: 6, frames: [12, 13, 14, 15, 16, 17], durations: [1, 1, 1, 1, 1, 1], ticks: 1, loop: false }, crouch_light: { sheet: "kaneki/combat.png", columns: 6, frames: [18, 19, 20, 21, 22, 23], durations: [1, 1, 1, 1, 1, 1], ticks: 1, loop: false }, crouch_medium: { sheet: "kaneki/combat.png", columns: 6, frames: [24, 25, 26, 27, 28, 29], durations: [1, 1, 1, 1, 1, 1], ticks: 1, loop: false }, crouch_heavy: { sheet: "kaneki/combat.png", columns: 6, frames: [30, 31, 32, 33, 34, 35], durations: [1, 1, 1, 1, 1, 1], ticks: 1, loop: false }, air_light: { sheet: "kaneki/combat.png", columns: 6, frames: [36, 37, 38, 39, 40, 41], durations: [1, 1, 1, 1, 1, 1], ticks: 1, loop: false }, air_medium: { sheet: "kaneki/combat.png", columns: 6, frames: [42, 43, 44, 45, 46, 47], durations: [1, 1, 1, 1, 1, 1], ticks: 1, loop: false }, air_heavy: { sheet: "kaneki/combat.png", columns: 6, frames: [48, 49, 50, 51, 52, 53], durations: [1, 1, 1, 1, 1, 1], ticks: 1, loop: false }, grabStartup: { sheet: "kaneki/combat.png", columns: 6, frames: [54, 55], durations: [7, 7], ticks: 1, loop: false }, grabMiss: { sheet: "kaneki/combat.png", columns: 6, frames: [65, 64], durations: [12, 11], ticks: 1, loop: false }, grabConnected: { sheet: "kaneki/combat.png", columns: 6, frames: [56], durations: [4], ticks: 1, loop: false }, grabHold: { sheet: "kaneki/combat.png", columns: 6, frames: [57], durations: [24], ticks: 1, loop: false }, kagunePull: { sheet: "kaneki/combat.png", columns: 6, frames: [58, 59], durations: [6, 7], ticks: 1, loop: false }, kaguneThrow: { sheet: "kaneki/combat.png", columns: 6, frames: [60, 61], durations: [7, 8], ticks: 1, loop: false }, kaguneLaunch: { sheet: "kaneki/combat.png", columns: 6, frames: [62, 63], durations: [6, 8], ticks: 1, loop: false }, grabRecovery: { sheet: "kaneki/combat.png", columns: 6, frames: [64], durations: [15], ticks: 1, loop: false }, guardStand: { sheet: "kaneki/combat.png", columns: 6, frames: [66], durations: [8], ticks: 1, loop: true }, guardCrouch: { sheet: "kaneki/combat.png", columns: 6, frames: [67], durations: [8], ticks: 1, loop: true }, guardImpactStand: { sheet: "kaneki/combat.png", columns: 6, frames: [68, 66], durations: [5, 8], ticks: 1, loop: false }, guardImpactCrouch: { sheet: "kaneki/combat.png", columns: 6, frames: [69, 67], durations: [5, 8], ticks: 1, loop: false }, damageLight: { sheet: "kaneki/combat.png", columns: 6, frames: [68], durations: [10], ticks: 1, loop: false }, damageMedium: { sheet: "kaneki/combat.png", columns: 6, frames: [68, 70], durations: [6, 12], ticks: 1, loop: false }, damageHeavy: { sheet: "kaneki/combat.png", columns: 6, frames: [70], durations: [18], ticks: 1, loop: false }, damageCrouch: { sheet: "kaneki/combat.png", columns: 6, frames: [69], durations: [13], ticks: 1, loop: false }, damageAir: { sheet: "kaneki/combat.png", columns: 6, frames: [71], durations: [14], ticks: 1, loop: false }, launched: { sheet: "kaneki/combat.png", columns: 6, frames: [72], durations: [13], ticks: 1, loop: false }, falling: { sheet: "kaneki/combat.png", columns: 6, frames: [73], durations: [12], ticks: 1, loop: true }, downed: { sheet: "kaneki/combat.png", columns: 6, frames: [74], durations: [25], ticks: 1, loop: false }, getup: { sheet: "kaneki/combat.png", columns: 6, frames: [75, 67, 66], durations: [9, 7, 4], ticks: 1, loop: false }, ko: { sheet: "kaneki/combat.png", columns: 6, frames: [74, 76], durations: [8, 42], ticks: 1, loop: false }, defeat: { sheet: "kaneki/combat.png", columns: 6, frames: [76], durations: [40], ticks: 1, loop: false }, grabbed: { sheet: "kaneki/combat.png", columns: 6, frames: [68], durations: [12], ticks: 1, loop: false }, entrance: { sheet: "kaneki/combat.png", columns: 6, frames: [77], durations: [24], ticks: 1, loop: false }, victory: { sheet: "kaneki/combat.png", columns: 6, frames: [77], durations: [38], ticks: 1, loop: false }, taunt: { sheet: "kaneki/combat.png", columns: 6, frames: [77], durations: [30], ticks: 1, loop: false } }, lumbar: [{ x: -8, y: -65 }, { x: -8, y: -65 }, { x: -7, y: -65 }, { x: -8, y: -66 }, { x: -8, y: -66 }, { x: -8, y: -65 }, { x: -8, y: -65 }, { x: -8, y: -66 }, { x: -8, y: -65 }, { x: -6, y: -65 }, { x: -8, y: -66 }, { x: -8, y: -66 }, { x: -8, y: -65 }, { x: -8, y: -65 }, { x: -8, y: -65 }, { x: -8, y: -66 }, { x: -8, y: -65 }, { x: -8, y: -65 }, { x: -8, y: -34 }, { x: -8, y: -35 }, { x: -8, y: -35 }, { x: -8, y: -34 }, { x: -8, y: -35 }, { x: -8, y: -34 }, { x: -8, y: -27 }, { x: -8, y: -26 }, { x: -8, y: -27 }, { x: -8, y: -27 }, { x: -8, y: -26 }, { x: -8, y: -27 }, { x: -8, y: -27 }, { x: -8, y: -26 }, { x: -4, y: -26 }, { x: -8, y: -43 }, { x: -8, y: -44 }, { x: -8, y: -26 }, { x: -8, y: -70 }, { x: -8, y: -70 }, { x: -8, y: -70 }, { x: -8, y: -70 }, { x: -8, y: -70 }, { x: -8, y: -70 }, { x: -8, y: -70 }, { x: -8, y: -70 }, { x: -8, y: -70 }, { x: -8, y: -70 }, { x: -8, y: -70 }, { x: -8, y: -70 }, { x: -8, y: -70 }, { x: -8, y: -70 }, { x: -8, y: -70 }, { x: -8, y: -70 }, { x: -8, y: -70 }, { x: -8, y: -70 }, { x: -8, y: -65 }, { x: -7, y: -64 }, { x: -8, y: -65 }, { x: -8, y: -65 }, { x: -8, y: -66 }, { x: -8, y: -66 }, { x: -8, y: -66 }, { x: -8, y: -65 }, { x: -8, y: -65 }, { x: -6, y: -65 }, { x: -8, y: -66 }, { x: -8, y: -65 }, { x: -8, y: -58 }, { x: -8, y: -40 }, { x: -8, y: -57 }, { x: -8, y: -42 }, { x: -15, y: -56 }, { x: -8, y: -40 }, { x: -13, y: -44 }, { x: -8, y: -39 }, { x: -8, y: -19 }, { x: -8, y: -37 }, { x: -8, y: -16 }, { x: -6, y: -58 }], normals: { stand_light: { frames: [0, 1, 2, 3, 4, 5], hit: { a: { x: 38, y: -89 }, b: { x: 58, y: -89 }, r: 12 } }, stand_medium: { frames: [6, 7, 8, 9, 10, 11], hit: { a: { x: 55, y: -81 }, b: { x: 75, y: -81 }, r: 13 } }, stand_heavy: { frames: [12, 13, 14, 15, 16, 17], hit: null }, crouch_light: { frames: [18, 19, 20, 21, 22, 23], hit: { a: { x: 40, y: -66 }, b: { x: 60, y: -66 }, r: 12 } }, crouch_medium: { frames: [24, 25, 26, 27, 28, 29], hit: { a: { x: 54, y: -10 }, b: { x: 74, y: -10 }, r: 13 } }, crouch_heavy: { frames: [30, 31, 32, 33, 34, 35], hit: null }, air_light: { frames: [36, 37, 38, 39, 40, 41], hit: { a: { x: 42, y: -86 }, b: { x: 62, y: -86 }, r: 12 } }, air_medium: { frames: [42, 43, 44, 45, 46, 47], hit: { a: { x: 42, y: -25 }, b: { x: 62, y: -18 }, r: 13 } }, air_heavy: { frames: [48, 49, 50, 51, 52, 53], hit: null } } };
+
+// src/data/kaneki-chain-art.json
+var kaneki_chain_art_default = { clips: { chain_centipede: { sheet: "kaneki/chain-centipede.png", columns: 4, frames: [0, 1, 2, 3, 4, 5, 6, 7], durations: [10, 8, 13, 10, 12, 8, 7, 10], ticks: 1, loop: false }, chain_meteor: { sheet: "kaneki/chain-meteor.png", columns: 4, frames: [0, 1, 2, 3, 4, 5, 6, 7], durations: [6, 8, 10, 9, 8, 10, 7, 12], ticks: 1, loop: false }, chain_embrace: { sheet: "kaneki/chain-links.png", columns: 4, frames: [0, 1, 0], durations: [13, 6, 7], ticks: 1, loop: false }, chain_pendulum: { sheet: "kaneki/chain-links.png", columns: 4, frames: [2, 3, 0], durations: [23, 7, 8], ticks: 1, loop: false }, chain_lasso: { sheet: "kaneki/chain-links.png", columns: 4, frames: [4, 5, 4], durations: [15, 9, 14], ticks: 1, loop: false }, chain_spin: { sheet: "kaneki/chain-links.png", columns: 4, frames: [6, 7, 5], durations: [28, 9, 14], ticks: 1, loop: false } }, lumbar: { "kaneki/chain-centipede.png": [{ x: -9, y: -47 }, { x: -9, y: -70 }, { x: -9, y: -64 }, { x: -9, y: -71 }, { x: -9, y: -57 }, { x: -9, y: -58 }, { x: -9, y: -65 }, { x: -9, y: -70 }], "kaneki/chain-meteor.png": [{ x: -9, y: -79 }, { x: -9, y: -60 }, { x: -9, y: -56 }, { x: -9, y: -52 }, { x: -9, y: -62 }, { x: -9, y: -58 }, { x: -9, y: -46 }, { x: -9, y: -54 }], "kaneki/chain-links.png": [{ x: -9, y: -71 }, { x: -9, y: -69 }, { x: -9, y: -74 }, { x: -9, y: -70 }, { x: -9, y: -67 }, { x: -9, y: -71 }, { x: -9, y: -59 }, { x: -9, y: -63 }] } };
+
+// src/data/kaneki-stage5-art.json
+var kaneki_stage5_art_default = { clips: { chain_rinkakuCombo: { sheet: "kaneki/stage5-grab-pull.png", columns: 3, frames: [0, 1, 2], durations: [9, 10, 11], ticks: 1, loop: false }, chain_redSpiral: { sheet: "kaneki/stage5-grab-pull.png", columns: 3, frames: [3, 4, 5], durations: [13, 14, 12], ticks: 1, loop: false }, chain_centipedeDrop: { sheet: "kaneki/stage5-grab-pull.png", columns: 3, frames: [6, 7, 9, 10, 11, 12, 8], durations: [12, 14, 10, 12, 12, 10, 17], ticks: 1, loop: false }, chain_quickSwing: { sheet: "kaneki/stage5-grab-swing.png", columns: 3, frames: [0, 1, 2], durations: [10, 10, 7], ticks: 1, loop: false }, chain_doubleSwing: { sheet: "kaneki/stage5-grab-swing.png", columns: 3, frames: [3, 4, 5], durations: [14, 24, 11], ticks: 1, loop: false }, chain_redCatapult: { sheet: "kaneki/stage5-grab-swing.png", columns: 3, frames: [6, 7, 8], durations: [14, 24, 12], ticks: 1, loop: false }, chain_aerialSnatch: { sheet: "kaneki/stage5-grab-air.png", columns: 3, frames: [0, 1, 2], durations: [12, 12, 11], ticks: 1, loop: false }, chain_rinkakuCyclone: { sheet: "kaneki/stage5-grab-air.png", columns: 3, frames: [3, 4, 5], durations: [15, 17, 20], ticks: 1, loop: false }, chain_centipedeMeteor: { sheet: "kaneki/stage5-grab-air.png", columns: 3, frames: [6, 9, 10, 11, 7, 12, 8], durations: [7, 10, 9, 12, 14, 6, 15], ticks: 1, loop: false }, chain_swordsRecall: { sheet: "kaneki/stage5-swords.png", columns: 3, frames: [0, 1, 2], durations: [9, 10, 7], ticks: 1, loop: false }, chain_swordsSide: { sheet: "kaneki/stage5-swords.png", columns: 3, frames: [3, 4, 5], durations: [11, 8, 8], ticks: 1, loop: false }, chain_swordsRise: { sheet: "kaneki/stage5-swords.png", columns: 3, frames: [6, 7, 8], durations: [9, 7, 7], ticks: 1, loop: false }, chain_rushReel: { sheet: "kaneki/stage5-rush-light.png", columns: 3, frames: [0, 1, 2], durations: [5, 5, 6], ticks: 1, loop: false }, chain_rushQuickThrow: { sheet: "kaneki/stage5-rush-light.png", columns: 3, frames: [3, 4, 5], durations: [8, 5, 8], ticks: 1, loop: false }, chain_rushShortLift: { sheet: "kaneki/stage5-rush-light.png", columns: 3, frames: [6, 7, 8], durations: [7, 6, 7], ticks: 1, loop: false }, chain_rushCrossover: { sheet: "kaneki/stage5-rush-medium.png", columns: 3, frames: [0, 1, 2], durations: [9, 11, 10], ticks: 1, loop: false }, chain_rushSpinThrow: { sheet: "kaneki/stage5-rush-medium.png", columns: 3, frames: [3, 4, 5], durations: [12, 12, 10], ticks: 1, loop: false }, chain_rushAirSet: { sheet: "kaneki/stage5-rush-medium.png", columns: 3, frames: [6, 7, 8], durations: [8, 8, 8], ticks: 1, loop: false }, chain_rushDragStrike: { sheet: "kaneki/stage5-rush-heavy.png", columns: 3, frames: [0, 1, 2], durations: [10, 13, 7], ticks: 1, loop: false }, chain_rushHeavyThrow: { sheet: "kaneki/stage5-rush-heavy.png", columns: 3, frames: [3, 4, 5], durations: [12, 15, 10], ticks: 1, loop: false }, chain_rushSlam: { sheet: "kaneki/stage5-rush-heavy.png", columns: 3, frames: [6, 9, 10, 7, 8], durations: [7, 12, 11, 12, 15], ticks: 1, loop: false } }, lumbar: { "kaneki/stage5-grab-pull.png": [{ x: -9, y: -62 }, { x: -9, y: -63 }, { x: -9, y: -63 }, { x: -9, y: -72 }, { x: -9, y: -65 }, { x: -9, y: -67 }, { x: -9, y: -56 }, { x: -9, y: -71 }, { x: -9, y: -57 }, { x: -9, y: -64 }, { x: -9, y: -71 }, { x: -9, y: -57 }, { x: -9, y: -58 }], "kaneki/stage5-grab-swing.png": [{ x: -9, y: -64 }, { x: -9, y: -64 }, { x: -9, y: -61 }, { x: -9, y: -63 }, { x: -9, y: -69 }, { x: -9, y: -64 }, { x: -9, y: -56 }, { x: -9, y: -68 }, { x: -9, y: -64 }], "kaneki/stage5-grab-air.png": [{ x: -9, y: -66 }, { x: -9, y: -57 }, { x: -9, y: -57 }, { x: -9, y: -66 }, { x: -9, y: -63 }, { x: -9, y: -70 }, { x: -9, y: -51 }, { x: -9, y: -57 }, { x: -9, y: -44 }, { x: -9, y: -60 }, { x: -9, y: -56 }, { x: -9, y: -52 }, { x: -9, y: -58 }], "kaneki/stage5-swords.png": [{ x: -9, y: -64 }, { x: -9, y: -63 }, { x: -9, y: -64 }, { x: -9, y: -67 }, { x: -9, y: -67 }, { x: -9, y: -66 }, { x: -9, y: -63 }, { x: -9, y: -76 }, { x: -9, y: -72 }], "kaneki/stage5-rush-light.png": [{ x: -9, y: -55 }, { x: -9, y: -61 }, { x: -9, y: -65 }, { x: -9, y: -64 }, { x: -9, y: -64 }, { x: -9, y: -62 }, { x: -9, y: -64 }, { x: -9, y: -68 }, { x: -9, y: -68 }], "kaneki/stage5-rush-medium.png": [{ x: -9, y: -66 }, { x: -9, y: -64 }, { x: -9, y: -67 }, { x: -9, y: -57 }, { x: -9, y: -60 }, { x: -9, y: -60 }, { x: -9, y: -60 }, { x: -9, y: -74 }, { x: -9, y: -60 }], "kaneki/stage5-rush-heavy.png": [{ x: -9, y: -60 }, { x: -9, y: -61 }, { x: -9, y: -63 }, { x: -9, y: -59 }, { x: -9, y: -63 }, { x: -9, y: -68 }, { x: -9, y: -51 }, { x: -9, y: -63 }, { x: -9, y: -49 }, { x: -9, y: -70 }, { x: -9, y: -57 }] } };
+
+// src/data/kaneki-special-art.json
+var kaneki_special_art_default = { clips: { fourSwords_light: { sheet: "kaneki/specials.png", columns: 6, frames: [0, 2, 8], durations: [10, 6, 22], ticks: 1, loop: false }, rinkakuRush_light: { sheet: "kaneki/specials.png", columns: 6, frames: [9, 10, 11, 12], durations: [4, 3, 7, 16], ticks: 1, loop: false }, rushFinish_light: { sheet: "kaneki/specials.png", columns: 6, frames: [21, 22, 23], durations: [6, 6, 6], ticks: 1, loop: false }, fourSwords_medium: { sheet: "kaneki/specials.png", columns: 6, frames: [1, 2, 8], durations: [15, 7, 28], ticks: 1, loop: false }, rinkakuRush_medium: { sheet: "kaneki/specials.png", columns: 6, frames: [13, 14, 15, 16], durations: [8, 3, 9, 23], ticks: 1, loop: false }, rushFinish_medium: { sheet: "kaneki/specials.png", columns: 6, frames: [22, 21, 23], durations: [8, 7, 9], ticks: 1, loop: false }, fourSwords_heavy: { sheet: "kaneki/specials.png", columns: 6, frames: [2, 2, 8], durations: [21, 8, 35], ticks: 1, loop: false }, rinkakuRush_heavy: { sheet: "kaneki/specials.png", columns: 6, frames: [17, 18, 19, 20], durations: [13, 3, 11, 31], ticks: 1, loop: false }, rushFinish_heavy: { sheet: "kaneki/specials.png", columns: 6, frames: [24, 25, 26], durations: [10, 9, 11], ticks: 1, loop: false }, swordsHold: { sheet: "kaneki/specials.png", columns: 6, frames: [2, 3], durations: [3, 16], ticks: 1, loop: false }, swordsSnap: { sheet: "kaneki/specials.png", columns: 6, frames: [27, 28, 29], durations: [4, 5, 5], ticks: 1, loop: false }, swordsDrive: { sheet: "kaneki/specials.png", columns: 6, frames: [6, 7, 6], durations: [4, 4, 7], ticks: 1, loop: false }, swordsHeavy: { sheet: "kaneki/specials.png", columns: 6, frames: [6, 7, 2, 7], durations: [4, 6, 4, 6], ticks: 1, loop: false }, swordsThrow: { sheet: "kaneki/specials.png", columns: 6, frames: [7, 8], durations: [5, 14], ticks: 1, loop: false } }, lumbar: [{ x: -8, y: -51 }, { x: -8, y: -47 }, { x: -8, y: -44 }, { x: -8, y: -62 }, { x: -8, y: -63 }, { x: -8, y: -63 }, { x: -8, y: -56 }, { x: -8, y: -51 }, { x: -8, y: -49 }, { x: -8, y: -62 }, { x: -8, y: -60 }, { x: -8, y: -60 }, { x: -8, y: -55 }, { x: -8, y: -58 }, { x: -8, y: -58 }, { x: -8, y: -58 }, { x: -8, y: -54 }, { x: -8, y: -50 }, { x: -8, y: -51 }, { x: -8, y: -50 }, { x: -8, y: -49 }, { x: -8, y: -61 }, { x: -8, y: -60 }, { x: -8, y: -60 }, { x: -8, y: -53 }, { x: -8, y: -58 }, { x: -8, y: -57 }, { x: -8, y: -65 }, { x: -8, y: -65 }, { x: -8, y: -64 }] };
+
+// src/engine/kaneki-specials.ts
+var kanekiSpecialArt = kaneki_special_art_default;
+var kanekiStrengths = ["light", "medium", "heavy"];
+var families = {
+  kaguneGrab: [
+    { startup: 15, active: 7, recovery: 25, reach: 278, damage: 0 },
+    { startup: 20, active: 8, recovery: 32, reach: 330, damage: 0 },
+    { startup: 27, active: 9, recovery: 43, reach: 382, damage: 0 }
+  ],
+  fourSwords: [
+    { startup: 10, active: 6, recovery: 22, reach: 112, damage: 18 },
+    { startup: 15, active: 7, recovery: 28, reach: 158, damage: 24 },
+    { startup: 21, active: 8, recovery: 35, reach: 213, damage: 32 }
+  ],
+  rinkakuRush: [
+    { startup: 7, active: 7, recovery: 16, reach: 84, damage: 44 },
+    { startup: 11, active: 9, recovery: 23, reach: 100, damage: 59 },
+    { startup: 16, active: 11, recovery: 31, reach: 122, damage: 76 }
+  ]
+};
+var techniques = /* @__PURE__ */ new Map();
+var kanekiSpecialMoves = {};
+for (const family of Object.keys(families)) {
+  for (const [rank, strength] of kanekiStrengths.entries()) {
+    const id = `${family}_${strength}`;
+    const spec = { ...families[family][rank], id, family, strength, rank };
+    techniques.set(id, spec);
+    kanekiSpecialMoves[id] = {
+      ...spec,
+      rank: rank + 1,
+      special: family,
+      kind: family === "kaguneGrab" ? "grab" : "strike",
+      level: family === "kaguneGrab" ? "throw" : "mid",
+      stun: 20 + rank * 3,
+      blockstun: 10 + rank * 2,
+      hitstop: 5 + rank * 2,
+      push: family === "fourSwords" ? 2 : 3 + rank * 1.2,
+      launch: 0,
+      box: family === "rinkakuRush" ? { x: 14, y: -100, w: 54, h: 56 } : { x: 0, y: 0, w: 0, h: 0 },
+      cancels: [],
+      ...family === "rinkakuRush" ? {
+        drive: { from: spec.startup - 3, to: spec.startup + spec.active, speed: [10, 14, 17][rank] }
+      } : {}
+    };
+  }
+}
+var kanekiTechnique = (id) => id ? techniques.get(id) : void 0;
+var kanekiTechniques = [...techniques.values()];
+var motions = { ki: "kaguneGrab", kamehameha: "fourSwords", teleport: "rinkakuRush" };
+function kanekiSpecialCommand(buffer, button) {
+  if (button !== "light" && button !== "medium" && button !== "heavy") return;
+  const motion = buffer.gokuSpecial(button, 25, 7, 20, 1);
+  if (motion) return kanekiTechnique(`${motions[motion]}_${button}`);
+}
+var swords = [
+  { snap: 11, strikes: [15, 20, 26], damage: [13, 14, 31], end: 35, travel: 71, push: 7.1, lift: 32, stop: 7 },
+  { snap: 15, strikes: [20, 26, 33], damage: [17, 19, 45], end: 43, travel: 105, push: 9.2, lift: 42, stop: 9 },
+  { snap: 19, strikes: [25, 32, 41], damage: [24, 26, 60], end: 53, travel: 145, push: 12, lift: 53, stop: 12 }
+];
+var rush = [
+  { end: 18, damage: 65, travel: 69, push: 5.7, lift: 19, stop: 6, recovery: 9 },
+  { end: 24, damage: 89, travel: 118, push: 8.6, lift: 32, stop: 8, recovery: 14 },
+  { end: 30, damage: 119, travel: 161, push: 12.8, lift: 48, stop: 11, recovery: 20 }
+];
+var swordProfile = (rank) => swords[rank];
+var rushProfile = (rank) => rush[rank];
+var rushTipLive = (rank, activeAge) => activeAge >= (rank === 2 ? 3 : 2);
+var fraction = (n) => Math.max(0, Math.min(1, n));
+var ease3 = (n) => {
+  const t = fraction(n);
+  return t * t * (3 - 2 * t);
+};
+function kanekiSpecialScene(id, tick, origin, contact, facing) {
+  const t = kanekiTechnique(id);
+  const rank = t.rank;
+  if (t.family === "fourSwords") {
+    const p4 = swordProfile(rank), first = p4.strikes[0], last = p4.strikes[2];
+    const push = ease3((tick - last) / (p4.end - 1 - last));
+    const float = ease3(tick / 9);
+    const recoil = p4.strikes.reduce((sum, strike2) => sum + Math.max(0, 1 - Math.abs(tick - strike2) / 4) * (rank + 1) * 2, 0);
+    const snapStart = p4.snap - 4;
+    const strike = p4.strikes.findIndex((at) => at === tick);
+    const clip2 = tick < snapStart ? "swordsHold" : tick < p4.snap + 8 ? "swordsSnap" : tick < last - 2 ? rank === 2 ? "swordsHeavy" : "swordsDrive" : "swordsThrow";
+    const clipTick = clip2 === "swordsHold" ? tick : clip2 === "swordsSnap" ? tick - snapStart : clip2 === "swordsThrow" ? tick - last + 2 : tick - p4.snap - 8;
+    return {
+      clip: clip2,
+      clipTick,
+      end: p4.end,
+      impact: strike >= 0 ? p4.damage[strike] : 0,
+      strength: strike === 2 ? 3 : 2,
+      snap: tick === p4.snap,
+      flash: Math.abs(tick - last) < 2 ? 0.12 + rank * 0.07 : 0,
+      snapPose: clip2 === "swordsSnap" ? clipTick < 4 ? 0 : clipTick < 9 ? 1 : 2 : void 0,
+      victim: {
+        x: contact.x + facing * (p4.travel * push + recoil),
+        y: contact.y - p4.lift * float - recoil * 0.8 + 15 * push
+      },
+      hurt: tick < first ? "launched" : tick >= last ? "falling" : "damageAir",
+      push: p4.push,
+      lift: -4 - rank * 0.6,
+      recovery: 14 + rank * 5,
+      stop: strike === 2 ? p4.stop : strike >= 0 ? 2 : 0
+    };
+  }
+  const p3 = rushProfile(rank);
+  const tossAt = Math.floor(p3.end * 0.66);
+  const reel = ease3(tick / (rank === 0 ? 7 : 9));
+  const toss = ease3((tick - tossAt + 1) / (p3.end - tossAt));
+  const gap = (contact.x - origin.x) * facing;
+  const start = rank === 0 ? 55 : rank === 1 ? 67 : 76;
+  const x = gap + (start - gap) * reel + p3.travel * toss;
+  const rise = fraction((tick + 1) / (p3.end + 4));
+  return {
+    clip: `rushFinish_${t.strength}`,
+    clipTick: tick,
+    end: p3.end,
+    impact: tick === tossAt ? p3.damage : 0,
+    strength: rank === 2 ? 3 : 2,
+    snap: false,
+    snapPose: void 0,
+    flash: tick === tossAt && rank === 2 ? 0.13 : 0,
+    victim: { x: origin.x + facing * x, y: contact.y - p3.lift * 4 * rise * (1 - rise) },
+    hurt: tick < tossAt ? "grabbed" : "damageAir",
+    push: p3.push,
+    lift: -3 - rank,
+    recovery: p3.recovery,
+    stop: tick === tossAt ? p3.stop : 0
+  };
+}
+
+// src/engine/kaneki-combat.ts
+var kanekiChainArt = {
+  clips: { ...kaneki_chain_art_default.clips, ...kaneki_stage5_art_default.clips },
+  lumbar: { ...kaneki_chain_art_default.lumbar, ...kaneki_stage5_art_default.lumbar }
+};
+var captureWindow = 24;
+var captureWindup = 4;
+var kaguneRoutes = {
+  pull: {
+    duration: 13,
+    damage: 27,
+    stun: 28,
+    push: 0,
+    launch: 0,
+    knockdown: false
+  },
+  throw: {
+    duration: 15,
+    damage: 92,
+    stun: 36,
+    push: 9,
+    launch: -4,
+    knockdown: true
+  },
+  launch: {
+    duration: 14,
+    damage: 54,
+    stun: 36,
+    push: 0.8,
+    launch: -14,
+    knockdown: false
+  }
+};
+function kaguneChoice(pressed) {
+  const button = pressed.find(
+    (key) => key === "light" || key === "medium" || key === "heavy"
+  );
+  return button === "light" ? "pull" : button === "medium" ? "throw" : button === "heavy" ? "launch" : void 0;
+}
+var body = {
+  stand: [
+    { x: -18, y: -128, w: 36, h: 33 },
+    { x: -24, y: -95, w: 51, h: 52 },
+    { x: -32, y: -43, w: 64, h: 43 }
+  ],
+  crouch: [
+    { x: -19, y: -89, w: 44, h: 34 },
+    { x: -34, y: -55, w: 75, h: 55 }
+  ],
+  air: [
+    { x: -19, y: -117, w: 37, h: 31 },
+    { x: -30, y: -86, w: 62, h: 74 }
+  ]
+};
+var timings = {
+  stand_light: [4, 4, 11, 32, 18, 9, 1.2, 5],
+  stand_medium: [7, 5, 15, 58, 23, 12, 1.9, 6],
+  stand_heavy: [10, 6, 22, 82, 26, 14, 4.2, 9],
+  crouch_light: [4, 4, 11, 28, 18, 9, 0.9, 5],
+  crouch_medium: [7, 5, 16, 52, 24, 12, 1.5, 6],
+  crouch_heavy: [10, 6, 24, 73, 36, 14, 1.15, 8],
+  air_light: [4, 4, 9, 32, 20, 9, 1, 5],
+  air_medium: [7, 5, 12, 53, 24, 11, 1.4, 7],
+  air_heavy: [10, 6, 20, 77, 29, 13, 4.1, 9]
+};
+var kanekiNormalIds = Object.keys(timings);
+var kanekiHolds = (startup3, active3, recovery3) => [
+  1,
+  Math.floor(startup3 / 2),
+  startup3 - Math.floor(startup3 / 2) - 1,
+  active3,
+  Math.floor(recovery3 / 2),
+  Math.ceil(recovery3 / 2)
+];
+var normalMoves = Object.fromEntries(
+  kanekiNormalIds.map((id) => {
+    const [startup3, active3, recovery3, damage2, stun, blockstun, push, hitstop] = timings[id];
+    const [stance, strength] = id.split("_");
+    const rank = strength === "light" ? 1 : strength === "medium" ? 2 : 3;
+    const cancels = rank === 1 ? ["medium"] : rank === 2 ? ["heavy", ...stance === "stand" ? ["throw"] : []] : id === "crouch_heavy" ? ["jump"] : [];
+    if (stance !== "air" && rank >= 2) cancels.push("special");
+    const frames = kaneki_combat_art_default.normals[id];
+    const move = {
+      startup: startup3,
+      active: active3,
+      recovery: recovery3,
+      damage: damage2,
+      stun,
+      blockstun,
+      push,
+      hitstop,
+      rank,
+      cancels,
+      cancelWindow: { fromTick: startup3, toTick: startup3 + active3 + 8 },
+      cancelMoves: rank === 1 ? [stance + "_medium"] : rank === 2 ? [stance + "_heavy", ...stance === "stand" ? ["throw"] : []] : [],
+      level: stance === "crouch" ? "low" : stance === "air" ? "high" : "mid",
+      launch: id === "crouch_heavy" ? -13.6 : id === "air_light" ? -3.2 : id === "air_medium" ? -4.6 : id === "air_heavy" ? 8 : 0,
+      airHold: stance === "air" && rank < 3 ? -1.8 : void 0,
+      knockdown: id === "air_heavy",
+      box: { x: 0, y: 0, w: 0, h: 0 },
+      poses: kanekiHolds(startup3, active3, recovery3).map((ticks, index) => ({
+        ticks,
+        phase: index < 3 ? "startup" : index === 3 ? "active" : "recovery",
+        hurtboxes: body[stance],
+        hitboxes: index === 3 && frames.hit ? [frames.hit] : []
+      }))
+    };
+    return [id, move];
+  })
+);
+var empty = { x: 0, y: 0, w: 0, h: 0 };
+var throwMove = {
+  kind: "grab",
+  level: "throw",
+  startup: 10,
+  active: 4,
+  recovery: 23,
+  box: empty,
+  damage: 0,
+  stun: 0,
+  blockstun: 0,
+  push: 0,
+  launch: 0,
+  rank: 0,
+  cancels: []
+};
+var launchLink = {
+  ...throwMove,
+  kind: "strike",
+  level: "mid",
+  startup: 0,
+  active: 0,
+  recovery: 14,
+  cancels: ["jump"],
+  cancelWindow: { fromTick: 0, toTick: 12 }
+};
+var pullLink = { ...launchLink, recovery: 4, cancels: [] };
+var kaneki = {
+  ...kanekiMotion,
+  moves: {
+    ...normalMoves,
+    throw: throwMove,
+    captureLaunchLink: launchLink,
+    capturePullLink: pullLink
+  },
+  specialMoves: kanekiSpecialMoves,
+  superMoves: { [centipedeId]: centipedeMove },
+  combatLimits: { maxHits: 8, maxAirHits: 5, maxTicks: 205 },
+  hurtboxes: { standing: body.stand, crouching: body.crouch, air: body.air },
+  lifecycle: {
+    entranceDistance: 0,
+    entranceSpeed: 0,
+    entranceWalkTicks: 0,
+    tauntTicks: 30,
+    getupTicks: 20,
+    koTicks: 50
+  },
+  grabSequence: {
+    duration: 15,
+    hitTick: 14,
+    damage: 92,
+    recoveryTicks: 15,
+    victimTrack: [],
+    release: { vx: 9, vy: -4, stun: 36 }
+  }
+};
+function canKaguneCapture(f, target, source) {
+  if (target.kanekiCaptured || target.invulnerable || target.knockedDown || target.health <= 0 || target.match?.temporal.isFrozen(target.id))
+    return false;
+  const limit = kaneki.combatLimits;
+  if (target.combo >= limit.maxHits - 1 || target.comboAge >= limit.maxTicks || target.comboAirHits >= limit.maxAirHits - 1)
+    return false;
+  if (source === "air") {
+    return f.airborne && target.airborne && target.state === "hitstun" && target.combo >= 2 && f.stateFrame < f.move.startup + 3;
+  }
+  return !f.airborne && !target.airborne && target.state !== "blockstun" && (target.state !== "hitstun" || !!f.kanekiThrowLink);
+}
+var kaguneFraction = (x) => Math.max(0, Math.min(1, x));
+var round = Math.round;
+var blend = (from, to, amount) => round(from + (to - from) * amount);
+var curve = (t) => t * t * (3 - 2 * t);
+function kaguneVictimPosition(seq, actorX, actorY, age) {
+  const s = seq.kaneki;
+  const route = s.route;
+  const forward = route === "pull" ? 54 : route === "launch" ? 66 : Math.max(121, (s.x - actorX) * s.direction + 38);
+  const endY = route === "pull" ? actorY : actorY - (route === "launch" ? 25 : 17);
+  const t = curve(kaguneFraction(age / (kaguneRoutes[route].duration - 1)));
+  const arc = route === "throw" ? 24 : route === "launch" ? 14 : 0;
+  return {
+    x: Math.max(
+      40,
+      Math.min(1240, blend(s.x, actorX + s.direction * forward, t))
+    ),
+    y: blend(s.y, endY, t) - round(arc * 4 * t * (1 - t))
+  };
+}
+function kanekiCombatClip(f) {
+  if (f.data.id !== "kaneki") return;
+  if (f.state === "cinematic" && f.actionClip.startsWith(centipedeId))
+    return { name: f.actionClip, tick: f.stateFrame };
+  if (f.state === "attack") {
+    if (f.moveId === centipedeId) return { name: "centipedeActivation", tick: f.stateFrame };
+    const spec = kanekiTechnique(f.moveId);
+    if (spec?.family === "kaguneGrab") {
+      const end = spec.startup + spec.active;
+      const tick = f.stateFrame;
+      return tick < end ? { name: "grabStartup", tick: Math.floor(14 * tick / end) } : { name: "grabMiss", tick: Math.floor(23 * (tick - end) / spec.recovery) };
+    }
+    if (spec) return { name: spec.id, tick: f.stateFrame };
+    if (f.moveId === "throw")
+      return {
+        name: f.stateFrame < throwMove.startup + throwMove.active ? "grabStartup" : "grabMiss",
+        tick: f.stateFrame < throwMove.startup + throwMove.active ? f.stateFrame : f.stateFrame - throwMove.startup - throwMove.active
+      };
+    if (f.moveId === "captureLaunchLink" || f.moveId === "capturePullLink")
+      return { name: "grabRecovery", tick: f.stateFrame };
+    if (Object.hasOwn(timings, f.moveId))
+      return { name: f.moveId, tick: f.stateFrame };
+  }
+  if (f.state === "grabbing" && f.match?.capture?.kaneki)
+    return { name: f.actionClip, tick: f.stateFrame };
+  if (f.state === "throwRecover")
+    return { name: f.actionClip || "grabRecovery", tick: f.stateFrame };
+}
+function kanekiTechniqueCaptureTick(capture, hold = false) {
+  const chain = capture.kaneki?.chain;
+  if (!chain) return;
+  const tick = Math.max(0, capture.tick - 1);
+  if (chain.phase === "opener" || chain.phase === "outro") return Math.max(0, tick - chain.since);
+  if (hold && chain.origin === "fourSwords" && chain.phase === "choice1") return swordProfile(chain.rank).strikes[2];
+}
+function kaguneGrabReach(spec, tick) {
+  const end = spec.startup + spec.active;
+  if (tick < spec.startup) return 22 + 17 * curve(kaguneFraction(tick / spec.startup));
+  if (tick < end) return 39 + (spec.reach - 39) * (tick - spec.startup) / (spec.active - 1);
+  return spec.reach * (1 - curve(kaguneFraction((tick - end) / (spec.recovery - 3))));
+}
+function kanekiOffensiveKagunes(f, floor3, originOverride) {
+  const opener2 = centipedeOpener(f);
+  if (f.moveId === centipedeId) return opener2 ? [opener2] : [];
+  if (f.match?.centipede?.attacker === f.id) return [];
+  const clip2 = kanekiCombatClip(f);
+  if (!clip2) return [];
+  const s = f.match?.capture?.kaneki;
+  const side = f.facing;
+  const bank = Object.hasOwn(kanekiSpecialArt.clips, clip2.name) ? kanekiSpecialArt : kaneki_combat_art_default;
+  const data2 = bank.clips[clip2.name];
+  const chainClip = kanekiChainArt.clips[clip2.name];
+  const origin = originOverride ?? (chainClip ? kanekiChainArt.lumbar[chainClip.sheet][chainClip.frames[clipFrame(chainClip.durations, clip2.tick)]] : bank.lumbar[data2.frames[clipFrame(data2.durations, clip2.tick)]]);
+  const root = { x: f.x + origin.x * side, y: f.y + origin.y };
+  const limb = (id, x, y, bend, burrow = false) => directedKagune(
+    id,
+    root,
+    side,
+    {
+      x: Math.max(
+        side > 0 ? 2 - root.x : root.x - 1278,
+        Math.min(side > 0 ? 1278 - root.x : root.x - 2, x)
+      ),
+      y
+    },
+    bend,
+    floor3,
+    burrow
+  );
+  const spec = kanekiTechnique(f.moveId);
+  const cap = f.state === "grabbing" ? f.match?.capture : void 0;
+  const captured = cap && kanekiTechnique(s?.specialId);
+  const chain = s?.chain;
+  if (s && cap && f.opponent && chain?.finish) {
+    const age = Math.max(0, cap.tick - 1 - chain.since);
+    const finish = chainFinishes[chain.finish];
+    if (age > finish.hit + 6) return [];
+    const victim = f.opponent;
+    const x = (victim.x - root.x) * side;
+    const y = victim.y - root.y - 65;
+    const tighten = 1 - 0.64 * kaguneFraction((age - finish.hit) / 7);
+    const limbs = [limb(s.limb, (x - 12) * tighten, y * tighten, chain.finish === "lasso" ? -55 : -28)];
+    const count = finish.limbs ?? (finish.slam ? 4 : chain.finish === "lasso" || chain.finish === "release" ? 1 : 2);
+    if (count >= 2) {
+      const other = s.limb === "upperFront" ? "lowerFront" : "upperFront";
+      limbs.push(limb(other, (x + 8) * tighten, (y + 13) * tighten, chain.finish === "spin" ? -66 : 31));
+    }
+    if (count >= 3) {
+      for (const id of kaguneIds.filter((id2) => !limbs.some((limb2) => limb2.id === id2)).slice(0, count - 2)) {
+        const upper = id.startsWith("upper");
+        limbs.push(limb(id, (x + (upper ? -29 : 18)) * tighten, (y + (upper ? -24 : 32)) * tighten, upper ? -74 : 40));
+      }
+    }
+    return limbs;
+  }
+  const sceneTick = cap && kanekiTechniqueCaptureTick(cap, true);
+  if (s && cap && captured && f.opponent && sceneTick !== void 0) {
+    const tick2 = sceneTick;
+    const x = Math.max(25, (f.opponent.x - root.x) * side - 14);
+    const y = f.opponent.y - root.y - 64;
+    if (captured.family === "fourSwords") {
+      const p3 = swordProfile(captured.rank);
+      const result2 = [limb("lowerRear", x, y + 20, 15, true)];
+      const order = ["upperFront", "lowerFront", "upperRear"];
+      for (const [i, id] of order.entries()) {
+        const elapsed = tick2 - p3.strikes[i];
+        if (elapsed < -5) continue;
+        const t = tick2 >= p3.strikes[2] ? 1 : elapsed <= 0 ? 0.22 + 0.78 * curve((elapsed + 5) / 5) : 1 - 0.52 * kaguneFraction(elapsed / 6);
+        result2.push(limb(id, x * t, y + [7, 19, -14][i] * (1 - t), [-47, 38, -77][i]));
+      }
+      return result2;
+    }
+    const result = [limb(s.limb, x, y, -29 - captured.rank * 5)];
+    if (captured.rank === 2 && tick2 >= Math.floor(rushProfile(2).end * 0.4)) {
+      result.push(limb("lowerRear", x - 3, y + 16, 26), limb("upperRear", x - 8, y - 12, -62));
+    }
+    return result;
+  }
+  if (s && f.state === "grabbing" && f.opponent) {
+    const victim = f.opponent;
+    const nearSide = (victim.x - root.x) * side - 14;
+    const tipY = victim.y - 76 - root.y;
+    const id = s.limb;
+    const primary = limb(id, nearSide, tipY, s.route === "throw" ? -37 : -22);
+    return s.route === "launch" || chain?.origin === "kaguneGrab" && s.route === "throw" ? [
+      primary,
+      limb(
+        id === "upperFront" ? "upperRear" : "upperFront",
+        nearSide - 5,
+        tipY + 20,
+        -55
+      )
+    ] : [primary];
+  }
+  const move = f.move;
+  if (!move || !spec && !["stand_heavy", "crouch_heavy", "air_heavy", "throw"].includes(f.moveId))
+    return [];
+  const tick = f.stateFrame;
+  const attackEnd = move.startup + move.active;
+  if (spec?.family === "fourSwords") {
+    const travel = tick < spec.startup ? curve(kaguneFraction((tick - 1) / (spec.startup - 1))) : tick < attackEnd ? 1 : 1 - curve(kaguneFraction((tick - attackEnd) / 12));
+    if (travel <= 0 && tick >= attackEnd) return [];
+    const age = tick - spec.startup;
+    const h = age < 0 ? -11 : age < spec.active ? Math.min(93, 27 + age * 13) : 84 * travel;
+    const end = f.kanekiBurrowX ?? f.x + side * spec.reach;
+    return [limb("lowerRear", 22 + ((end - root.x) * side - 22) * travel, floor3 - root.y - h, 0, true)];
+  }
+  if (spec?.family === "rinkakuRush") {
+    const age = tick - spec.startup;
+    const retract = tick < attackEnd ? 1 : 1 - curve(kaguneFraction((tick - attackEnd) / 9));
+    if (retract <= 0) return [];
+    const x = (31 + (spec.reach - 31) * kaguneFraction((age + 3) / (spec.active + 1))) * retract;
+    const drift = Math.min(25, Math.abs(f.vx) * 1.4) * retract;
+    const wave = [-3, 0, 3, 4, 3, 0, -3, -4][tick % 8];
+    return [
+      limb("upperFront", x, -24 + wave, -23),
+      limb("upperRear", -59 - drift, -65 - wave, -35),
+      limb("lowerRear", -91 - drift, 20 + wave, 29),
+      limb("lowerFront", -46 - drift, 33 - wave, 17)
+    ];
+  }
+  if (spec?.family === "kaguneGrab") {
+    const reach = kaguneGrabReach(spec, tick);
+    return reach > 0 ? [limb(f.kanekiLimb ?? "lowerFront", reach, -5, -32)] : [];
+  }
+  const isGrab = f.moveId === "throw";
+  const firstReach = isGrab ? 0.48 : 0.57;
+  const extend = tick < move.startup ? 0.22 + (firstReach - 0.22) * curve(kaguneFraction((tick - 2) / (move.startup - 2))) : tick < attackEnd ? firstReach + (1 - firstReach) * kaguneFraction((tick - move.startup) / (move.active - 1)) : 1 - curve(kaguneFraction((tick - attackEnd) / (move.recovery - 3)));
+  if (extend <= 0) return [];
+  if (f.moveId === "crouch_heavy") {
+    const rise = kaguneFraction((tick - move.startup + 2) / 7);
+    const late = kaguneFraction((tick - 4) / (move.startup - 2));
+    return [
+      limb("lowerRear", 102 * extend, -19 - rise * 66, -30),
+      limb("upperFront", 87 * extend * late, -21 - rise * 82, -49)
+    ];
+  }
+  if (f.moveId === "air_heavy")
+    return [
+      limb(f.kanekiLimb ?? "upperRear", 130 * extend, 17 + 48 * extend, -30)
+    ];
+  if (isGrab)
+    return [
+      limb(f.kanekiLimb ?? "lowerFront", 147 * extend, 2 - 8 * extend, -30)
+    ];
+  return [
+    limb(
+      "upperFront",
+      126 * extend,
+      -21 + Math.min(0, tick - move.startup) * 2,
+      -27
+    )
+  ];
+}
+function kanekiSpecialShapes(f, floor3) {
+  const spec = kanekiTechnique(f.moveId);
+  if (!spec) return;
+  const pose = kanekiOffensiveKagunes(f, floor3)[0];
+  const age = f.stateFrame - spec.startup;
+  if (spec.family === "rinkakuRush") {
+    const body2 = worldRect(f.move.box, f.x, f.y, f.facing);
+    return pose && rushTipLive(spec.rank, age) ? [{ a: pose.spine.at(-3), b: pose.tip, r: 11 }, body2] : [body2];
+  }
+  if (!pose) return [];
+  const rootward = pose.spine.at(-5);
+  const dx = rootward.x - pose.tip.x, dy = rootward.y - pose.tip.y;
+  const length = Math.hypot(dx, dy);
+  const depth = spec.family === "kaguneGrab" && age > 0 ? Math.max(18, kaguneGrabReach(spec, f.stateFrame) - kaguneGrabReach(spec, f.stateFrame - 1)) : 18;
+  const end = length > depth ? { x: pose.tip.x + dx * depth / length, y: pose.tip.y + dy * depth / length } : length > 0 ? { x: pose.tip.x - f.facing * depth, y: pose.tip.y + dy } : rootward;
+  const a = spec.family === "fourSwords" ? { x: pose.tip.x, y: Math.min(floor3 - 5, pose.tip.y + 23) } : end;
+  return [{ a, b: pose.tip, r: spec.family === "kaguneGrab" ? 16 : 13 + spec.rank }];
+}
+function clipFrame(holds, tick) {
+  let index = 0;
+  while (index < holds.length - 1 && tick >= holds[index])
+    tick -= holds[index++];
+  return index;
+}
+
+// src/engine/ben-moves.ts
+var benFormBalance = {
+  growth: {
+    1: { scale: 1.2, ticks: 228, cooldown: 190 },
+    2: { scale: 1.35, ticks: 345, cooldown: 225 }
+  },
+  energy: { capacity: 100, retention: 600, lightSpend: 25, mediumSpend: 50 }
+};
+function blow(timings2, damage2, box, rank, effect, options = {}) {
+  const [startup3, active3, recovery3] = timings2;
+  return {
+    startup: startup3,
+    active: active3,
+    recovery: recovery3,
+    damage: damage2,
+    box,
+    rank,
+    level: "mid",
+    stun: rank === 1 ? 17 : 23,
+    blockstun: rank === 1 ? 8 : 12,
+    hitstop: rank === 1 ? 3 : 5,
+    push: rank === 1 ? 2.4 : 4.4,
+    launch: 0,
+    cancels: rank === 1 ? ["medium"] : ["special"],
+    ben: { effect },
+    cancelWindow: { fromTick: startup3, toTick: startup3 + active3 + 7 },
+    ...options
+  };
+}
+var rect = (x, y, w, h) => ({ x, y, w, h });
+var noBox = rect(0, 0, 0, 0);
+function special(technique, effect, timing, damage2, box, options = {}, flags = {}) {
+  return blow(timing, damage2, box, 3, effect, { cancels: [], ...options, ben: { technique, effect, ...flags } });
+}
+function windows(...hits) {
+  return hits.map(([fromTick, toTick, values], id) => ({ id, fromTick, toTick, ...values }));
+}
+var charge = (from, to, speed) => ({ from, to, speed });
+var xlr8Moves = {
+  stand_light: blow([4, 3, 9], 22, rect(25, -108, 59, 23), 1, "speed"),
+  stand_medium: blow([7, 4, 16], 38, rect(24, -105, 96, 34), 2, "tail", { stun: 22 }),
+  crouch_light: blow([5, 3, 10], 19, rect(20, -45, 54, 24), 1, "speed", { level: "low" }),
+  crouch_medium: blow([8, 6, 24], 32, rect(19, -33, 72, 31), 2, "speed", {
+    drive: charge(4, 14, 10),
+    level: "low",
+    stun: 23,
+    blockstun: 10
+  }),
+  air_light: blow([4, 5, 10], 22, rect(19, -106, 62, 38), 1, "speed", { level: "high", airHold: -1 }),
+  air_medium: blow([7, 7, 17], 40, rect(20, -69, 85, 59), 2, "tail", {
+    level: "high",
+    drive: charge(5, 15, 8),
+    hopAt: 7,
+    hopVelocity: 6,
+    cancels: []
+  }),
+  turbo_light: special("turbo", "speed", [6, 8, 23], 45, rect(12, -111, 66, 62), {
+    drive: charge(4, 14, 16),
+    push: 2.5,
+    stun: 38,
+    blockstun: 10,
+    hitstop: 4,
+    cancels: ["omnitrix"],
+    cancelWindow: { fromTick: 10, toTick: 31 }
+  }),
+  turbo_medium: special("turbo", "speed", [9, 16, 28], 26, rect(11, -113, 71, 65), {
+    drive: charge(4, 25, 22),
+    push: 2,
+    stun: 20,
+    blockstun: 11,
+    hitstop: 3,
+    hitWindows: windows([9, 13], [15, 19, { damage: 24 }], [21, 25, { damage: 30, push: 6 }])
+  }, { confirmHits: true, follow: 6 }),
+  cyclone_light: special("cyclone", "wind", [7, 5, 18], 43, rect(-36, -111, 113, 81), { push: 8 }),
+  cyclone_medium: special("cyclone", "wind", [11, 14, 28], 28, rect(-52, -132, 154, 105), {
+    hitWindows: windows([11, 15], [16, 19, { damage: 18 }], [21, 25, { damage: 31, launch: -13, stun: 36, push: 2 }]),
+    push: 2,
+    hitstop: 3,
+    cancels: ["jump", "omnitrix"],
+    cancelWindow: { fromTick: 24, toTick: 41 }
+  }),
+  lightning_light: special("lightning", "step", [4, 10, 17], 0, noBox, { drive: charge(4, 14, -17) }),
+  lightning_medium: special("lightning", "step", [5, 13, 23], 0, noBox, { drive: charge(5, 18, 20) }, { cross: true })
+};
+var fourArmsMoves = {
+  stand_light: blow([5, 8, 13], 20, rect(36, -130, 77, 47), 1, "power", {
+    hitWindows: windows([5, 8], [10, 13, { damage: 22 }]),
+    cancels: ["medium", "special"],
+    hitstop: 3,
+    stun: 20
+  }),
+  stand_medium: blow([10, 5, 22], 55, rect(35, -111, 79, 47), 2, "power", { push: 5, stun: 29 }),
+  crouch_light: blow([6, 4, 13], 25, rect(22, -60, 66, 34), 1, "power", { level: "low", stun: 23 }),
+  crouch_medium: blow([11, 5, 25], 46, rect(16, -55, 99, 50), 2, "power", { level: "low", push: 6 }),
+  air_light: blow([6, 5, 14], 30, rect(29, -123, 73, 42), 1, "power", { level: "high" }),
+  air_medium: blow([11, 6, 24], 57, rect(24, -89, 75, 73), 2, "power", { level: "high", knockdown: true, cancels: [] }),
+  tackle_light: special("tackle", "power", [9, 7, 22], 52, rect(25, -125, 72, 86), {
+    drive: charge(5, 16, 11),
+    push: 7,
+    hitstop: 6
+  }),
+  tackle_medium: special("tackle", "power", [15, 10, 32], 78, rect(25, -133, 82, 95), {
+    drive: charge(7, 25, 15),
+    push: 12,
+    launch: -6,
+    knockdown: true,
+    hitstop: 9
+  }),
+  quad_light: special("quad", "power", [8, 3, 28], 0, rect(22, -124, 55, 53), {
+    kind: "grab",
+    level: "throw"
+  }, { commandGrab: true }),
+  quad_medium: special("quad", "power", [15, 4, 38], 0, rect(26, -129, 64, 62), {
+    kind: "grab",
+    level: "throw",
+    drive: charge(7, 16, 4)
+  }, { commandGrab: true }),
+  seismic_light: special("seismic", "quake", [10, 1, 26], 44, noBox, {
+    level: "low",
+    push: 9,
+    hitstop: 5
+  }, { field: { type: "quake", offset: 40, height: 32, width: 48, speed: 8, life: 10 } }),
+  seismic_medium: special("seismic", "quake", [17, 1, 37], 64, noBox, {
+    level: "low",
+    push: 4,
+    launch: -14.5,
+    stun: 39,
+    hitstop: 8,
+    cancels: ["omnitrix"],
+    cancelWindow: { fromTick: 18, toTick: 39 }
+  }, { field: { type: "quake", offset: 45, height: 49, width: 63, speed: 10, life: 16 } })
+};
+var heatblastMoves = {
+  stand_light: blow([5, 3, 11], 25, rect(24, -101, 64, 27), 1, "flame"),
+  stand_medium: blow([8, 5, 18], 44, rect(26, -105, 80, 36), 2, "flame", { stun: 25 }),
+  crouch_light: blow([5, 3, 12], 22, rect(22, -47, 62, 32), 1, "flame", { level: "low", stun: 20 }),
+  crouch_medium: blow([9, 5, 21], 36, rect(19, -49, 78, 44), 2, "flame", { level: "low" }),
+  air_light: blow([5, 5, 12], 26, rect(24, -104, 65, 42), 1, "flame", { level: "high" }),
+  air_medium: blow([8, 8, 19], 45, rect(22, -66, 83, 61), 2, "boost", {
+    level: "high",
+    drive: charge(5, 17, 6.5),
+    hopAt: 8,
+    hopVelocity: 7,
+    cancels: []
+  }),
+  fireball_light: special("fireball", "fireball", [8, 1, 17], 36, noBox, {
+    level: "mid",
+    push: 5,
+    stun: 27
+  }, { field: { type: "fireball", offset: 45, height: 90, width: 15, speed: 18, life: 60 } }),
+  fireball_medium: special("fireball", "fireball", [15, 1, 33], 58, noBox, {
+    push: 8,
+    hitstop: 7
+  }, { field: { type: "fireball", offset: 55, height: 91, width: 27, speed: 10, life: 78 } }),
+  pillar_light: special("pillar", "pillar", [10, 1, 23], 46, noBox, {
+    launch: -10,
+    push: 2,
+    stun: 29
+  }, { field: { type: "pillar", offset: 80, height: 158, width: 46, speed: 0, life: 11 } }),
+  pillar_medium: special("pillar", "pillar", [18, 1, 31], 65, noBox, {
+    launch: -13,
+    push: 4,
+    stun: 38,
+    hitstop: 7
+  }, { field: { type: "pillar", offset: 217, height: 229, width: 69, speed: 0, life: 16 } }),
+  propulsion_light: special("propulsion", "boost", [7, 9, 21], 46, rect(18, -111, 67, 72), {
+    drive: charge(5, 16, 13),
+    push: 7
+  }),
+  propulsion_medium: special("propulsion", "boost", [10, 13, 29], 62, rect(7, -126, 83, 112), {
+    drive: charge(8, 23, 11),
+    hopAt: 10,
+    hopVelocity: -11.5,
+    launch: -13,
+    push: 3,
+    stun: 35,
+    cancels: ["omnitrix"],
+    cancelWindow: { fromTick: 15, toTick: 32 }
+  }, { land: true })
+};
+var diamondheadMoves = {
+  stand_light: blow([5, 4, 12], 26, rect(27, -110, 65, 28), 1, "crystal"),
+  stand_medium: blow([9, 5, 19], 48, rect(25, -110, 105, 33), 2, "crystal", { stun: 31 }),
+  crouch_light: blow([6, 4, 11], 24, rect(23, -53, 70, 29), 1, "crystal", { level: "low", stun: 23 }),
+  crouch_medium: blow([10, 6, 21], 39, rect(21, -48, 102, 38), 2, "crystal", { level: "low", push: 6 }),
+  air_light: blow([5, 5, 12], 27, rect(23, -108, 69, 37), 1, "crystal", { level: "high" }),
+  air_medium: blow([9, 7, 20], 47, rect(22, -81, 90, 68), 2, "crystal", { level: "high", push: 6, cancels: [] }),
+  spikes_light: special("spikes", "crystal", [9, 1, 23], 42, noBox, { stun: 27, push: 5 }, {
+    field: {
+      type: "spikes",
+      offset: 70,
+      height: 91,
+      width: 38,
+      speed: 0,
+      life: 19,
+      pattern: [{}, { offset: 37, delay: 3 }, { offset: 74, delay: 6 }]
+    }
+  }),
+  spikes_medium: special("spikes", "crystal", [15, 1, 34], 65, noBox, {
+    launch: -14,
+    push: 3,
+    stun: 42,
+    hitstop: 6,
+    cancels: ["jump", "omnitrix"],
+    cancelWindow: { fromTick: 16, toTick: 42 }
+  }, {
+    field: {
+      type: "spikes",
+      offset: 83,
+      height: 138,
+      width: 46,
+      speed: 0,
+      life: 24,
+      pattern: [{}, { offset: 47, delay: 3 }, { offset: 94, delay: 6 }, { offset: 141, delay: 9 }]
+    }
+  }),
+  wall_light: special("wall", "crystal", [9, 1, 23], 0, noBox, {}, {
+    field: { type: "wall", offset: 112, height: 94, width: 29, speed: 0, life: 108, durability: 55 }
+  }),
+  wall_medium: special("wall", "crystal", [17, 1, 33], 0, noBox, {}, {
+    field: { type: "wall", offset: 127, height: 139, width: 43, speed: 0, life: 168, durability: 116 }
+  }),
+  shards_light: special("shards", "crystal", [8, 1, 21], 37, noBox, { stun: 26, push: 5 }, {
+    field: { type: "shard", offset: 49, height: 96, width: 11, speed: 19, life: 54 }
+  }),
+  shards_medium: special("shards", "crystal", [15, 1, 32], 53, noBox, { stun: 32, push: 7 }, {
+    field: {
+      type: "shard",
+      offset: 52,
+      height: 91,
+      width: 12,
+      speed: 15,
+      life: 63,
+      pattern: [{ vy: -4.7 }, { vy: 0 }, { vy: 3.6 }]
+    }
+  })
+};
+var humungousaurMoves = {
+  stand_light: blow([6, 4, 13], 31, rect(35, -126, 81, 40), 1, "colossus", { stun: 23 }),
+  stand_medium: blow([10, 5, 22], 57, rect(28, -116, 118, 47), 2, "tail", { stun: 32, push: 5 }),
+  crouch_light: blow([6, 4, 14], 29, rect(32, -57, 75, 40), 1, "colossus", { level: "low", stun: 25 }),
+  crouch_medium: blow([12, 6, 25], 49, rect(21, -53, 125, 45), 2, "tail", { level: "low", push: 6 }),
+  air_light: blow([6, 5, 15], 32, rect(37, -131, 79, 49), 1, "colossus", { level: "high" }),
+  air_medium: blow([10, 10, 24], 61, rect(14, -81, 89, 81), 2, "colossus", {
+    level: "high",
+    hopAt: 10,
+    hopVelocity: 11,
+    knockdown: true,
+    cancels: [],
+    ben: { effect: "colossus", landingImpact: true }
+  }),
+  colossal_light: special("colossal", "colossus", [42, 5, 19], 61, rect(-61, -31, 123, 31), {
+    push: 7,
+    hitstop: 7,
+    blockstun: 12
+  }, { leap: { takeoff: 7, speed: 9.4, reach: 142 } }),
+  colossal_medium: special("colossal", "colossus", [66, 7, 34], 91, rect(-96, -43, 193, 43), {
+    push: 10,
+    launch: -5,
+    hitstop: 9,
+    knockdown: true,
+    blockstun: 16
+  }, { leap: { takeoff: 14, speed: 16.1, reach: 334 } }),
+  car_light: special("car", "car", [21, 5, 30], 79, rect(32, -95, 132, 95), {
+    push: 9,
+    stun: 32,
+    hitstop: 8
+  }, { carSlam: true }),
+  car_medium: special("car", "car", [29, 1, 35], 92, noBox, { push: 12, stun: 35, hitstop: 9 }, {
+    field: { type: "car", offset: 80, height: 123, width: 61, speed: 15, life: 64, gravity: 0.55, pattern: [{ vy: -4.9 }] }
+  }),
+  tailspin_light: special("tailspin", "tail", [9, 7, 25], 49, rect(25, -91, 135, 53), { push: 7 }),
+  tailspin_medium: special("tailspin", "tail", [16, 9, 37], 73, rect(-14, -100, 178, 62), {
+    push: 3.5,
+    launch: -14,
+    stun: 42,
+    hitstop: 8,
+    cancels: ["omnitrix"],
+    cancelWindow: { fromTick: 19, toTick: 43 }
+  }),
+  growth_light: special("growth", "colossus", [12, 1, 23], 0, noBox, {}, { grow: 1 }),
+  growth_medium: special("growth", "colossus", [21, 1, 35], 0, noBox, {}, { grow: 2 })
+};
+var feedbackMoves = {
+  stand_light: blow([4, 4, 9], 24, rect(20, -107, 59, 29), 1, "power", { stun: 19 }),
+  stand_medium: blow([8, 5, 16], 43, rect(23, -109, 91, 38), 2, "electric", {
+    stun: 29,
+    ben: { effect: "electric", chargeGain: 5 }
+  }),
+  crouch_light: blow([5, 4, 10], 21, rect(19, -53, 62, 28), 1, "power", { level: "low", stun: 23 }),
+  crouch_medium: blow([9, 5, 18], 39, rect(21, -53, 99, 38), 2, "electric", {
+    level: "low",
+    stun: 28,
+    push: 3.2,
+    ben: { effect: "electric", chargeGain: 4 }
+  }),
+  air_light: blow([4, 5, 10], 24, rect(19, -102, 68, 43), 1, "power", { level: "high", airHold: -2, stun: 20 }),
+  air_medium: blow([7, 7, 19], 47, rect(22, -88, 88, 79), 2, "electric", {
+    level: "high",
+    launch: 3,
+    cancels: [],
+    ben: { effect: "electric", chargeGain: 5 }
+  }),
+  storm_light: special("storm", "storm", [12, 1, 30], 24, noBox, { push: 3, stun: 17, hitstop: 4 }, {
+    field: {
+      type: "lightning",
+      offset: 101,
+      height: 580,
+      width: 36,
+      speed: 0,
+      life: 25,
+      activeAge: [9, 14],
+      pattern: [{}, { offset: 87, delay: 8 }, { offset: 174, delay: 16 }]
+    }
+  }),
+  storm_medium: special("storm", "storm", [21, 1, 37], 37, noBox, { push: 4, stun: 21, hitstop: 5 }, {
+    field: {
+      type: "lightning",
+      offset: 121,
+      height: 580,
+      width: 69,
+      speed: 0,
+      life: 30,
+      activeAge: [12, 19],
+      pattern: [{}, { offset: 118, delay: 11 }, { offset: 238, delay: 23 }]
+    }
+  }),
+  conductor_light: special("conductor", "electric", [8, 8, 24], 0, noBox, { kind: "grab" }, {
+    cable: "horizontal",
+    captureStrike: true,
+    commandGrab: true
+  }),
+  conductor_medium: special("conductor", "electric", [15, 10, 33], 0, noBox, { kind: "grab" }, {
+    cable: "wide",
+    captureStrike: true,
+    commandGrab: true
+  }),
+  discharge_light: special("discharge", "electric", [7, 1, 18], 39, noBox, { push: 5.5, stun: 25 }, {
+    field: { type: "bolt", offset: 58, height: 94, width: 14, speed: 23, life: 36, energy: 1, length: 26, spendCharge: true }
+  }),
+  discharge_medium: special("discharge", "electric", [16, 1, 32], 64, noBox, {
+    push: 10,
+    stun: 34,
+    hitstop: 8,
+    drive: charge(16, 22, -1.6)
+  }, {
+    field: { type: "beam", offset: 64, height: 97, width: 16, speed: 0, life: 16, energy: 2, length: 350, spendCharge: true }
+  }),
+  absorb_light: special("absorb", "electric", [4, 9, 25], 0, noBox, {}, { absorb: 2 }),
+  absorb_medium: special("absorb", "electric", [7, 7, 28], 0, noBox, {}, { counter: true }),
+  feedback_counter: special("counter-response", "electric", [0, 1, 13], 49, noBox, {
+    push: 4.2,
+    stun: 34,
+    hitstop: 7,
+    meterGain: 7
+  }),
+  cables_light: special("cables", "electric", [8, 8, 21], 37, noBox, {
+    push: -2.2,
+    stun: 25,
+    blockstun: 10,
+    hitstop: 4
+  }, { cable: "horizontal", chargeGain: 10 }),
+  cables_medium: special("cables", "electric", [12, 11, 29], 45, noBox, {
+    push: 1.8,
+    launch: -14.5,
+    stun: 42,
+    blockstun: 11,
+    hitstop: 5,
+    cancels: ["jump"],
+    cancelWindow: { fromTick: 12, toTick: 31 }
+  }, { cable: "upper", chargeGain: 13 })
+};
+var benStage6Balance = {
+  frostLimit: 100,
+  frostHold: 105,
+  freezeTicks: 16,
+  frostImmunity: 165,
+  ghostCooldown: 65,
+  nrgDuration: 660,
+  nrgCooldown: 180
+};
+var ice = "ice";
+var spectral = "spectral";
+var thermal = "thermal";
+var airLight = { level: "high", airHold: -1.6 };
+var airMedium = { level: "high", cancels: ["special"] };
+var cold = (amount) => ({ effect: ice, cold: amount });
+var projectile = (type, offset, height, width, speed, life, energy, length, vy = 0) => ({
+  type,
+  offset,
+  height,
+  width,
+  speed,
+  life,
+  energy,
+  length,
+  ...vy ? { pattern: [{ vy }] } : {}
+});
+var bigChillMoves = {
+  stand_light: blow([5, 4, 11], 23, rect(18, -121, 61, 33), 1, ice, { stun: 22 }),
+  stand_medium: blow([8, 6, 17], 41, rect(19, -128, 89, 64), 2, ice, { stun: 30, push: 3, ben: cold(16) }),
+  crouch_light: blow([5, 4, 11], 22, rect(18, -51, 62, 30), 1, ice, { level: "low", stun: 22 }),
+  crouch_medium: blow([9, 5, 20], 38, rect(19, -37, 89, 33), 2, ice, { level: "low", ben: cold(22) }),
+  air_light: blow([4, 6, 11], 27, rect(19, -110, 67, 48), 1, ice, { ...airLight, stun: 25 }),
+  air_medium: blow([7, 7, 17], 43, rect(20, -116, 108, 84), 2, ice, { ...airMedium, airHold: -1.7, stun: 29, ben: cold(17) }),
+  frostBreath_light: special("frostBreath", ice, [8, 1, 19], 42, noBox, { stun: 28, push: 4 }, {
+    cold: 30,
+    field: projectile("frost", 39, 121, 13, 17, 17, 1, 32)
+  }),
+  frostBreath_medium: special("frostBreath", ice, [15, 1, 27], 60, noBox, {
+    stun: 35,
+    launch: -12,
+    push: 3,
+    cancels: ["jump", "omnitrix"],
+    cancelWindow: { fromTick: 15, toTick: 37 }
+  }, { cold: 56, field: projectile("frost", 43, 115, 29, 13, 22, 2, 63) }),
+  iceDive_light: special("iceDive", ice, [9, 10, 22], 49, rect(18, -78, 80, 78), {
+    drive: charge(6, 20, 9),
+    push: 5,
+    blockstun: 11,
+    stun: 27
+  }, { air: true, airUse: "dive", aerialMotion: "dive", cold: 20 }),
+  iceDive_medium: special("iceDive", ice, [14, 14, 32], 67, rect(19, -102, 104, 107), {
+    drive: charge(8, 26, 12),
+    push: 9,
+    blockstun: 15,
+    knockdown: true
+  }, { air: true, airUse: "dive", aerialMotion: "dive", cold: 34 }),
+  ghostFlight_light: special("ghostFlight", ice, [5, 25, 13], 0, noBox, {}, {
+    air: true,
+    airUse: "flight",
+    aerialMotion: "glide"
+  }),
+  ghostFlight_medium: special("ghostFlight", ice, [6, 12, 22], 0, noBox, {
+    drive: charge(6, 18, 13)
+  }, { air: true, airUse: "flight", aerialMotion: "glide", cross: true, phase: { from: 8, to: 14, physicalOnly: true } })
+};
+var ghostfreakMoves = {
+  stand_light: blow([5, 4, 10], 23, rect(19, -119, 65, 37), 1, spectral, { stun: 23 }),
+  stand_medium: blow([8, 6, 17], 41, rect(20, -113, 99, 51), 2, spectral, { stun: 31, push: 2.6 }),
+  crouch_light: blow([5, 4, 10], 22, rect(17, -57, 63, 35), 1, spectral, { level: "low", stun: 23 }),
+  crouch_medium: blow([10, 6, 19], 41, rect(19, -50, 100, 38), 2, spectral, { level: "low" }),
+  air_light: blow([5, 5, 11], 23, rect(20, -109, 71, 51), 1, spectral, airLight),
+  air_medium: blow([8, 6, 21], 47, rect(22, -97, 90, 78), 2, spectral, { ...airMedium, launch: 3 }),
+  ghostCross_light: special("ghostCross", spectral, [17, 6, 21], 49, rect(13, -139, 74, 111), {
+    push: 3,
+    launch: -5,
+    stun: 27
+  }, { burrow: { from: 6, to: 13, reach: 109 }, phase: { from: 6, to: 13 } }),
+  ghostCross_medium: special("ghostCross", spectral, [27, 7, 31], 64, rect(13, -160, 84, 132), {
+    push: 3,
+    launch: -15,
+    stun: 40,
+    cancels: ["jump"],
+    cancelWindow: { fromTick: 27, toTick: 44 }
+  }, { burrow: { from: 8, to: 22, reach: 215 }, phase: { from: 8, to: 22 } }),
+  spectralArms_light: special("spectralArms", spectral, [9, 6, 22], 0, noBox, { kind: "grab" }, {
+    spectralReach: 85,
+    commandGrab: true,
+    captureStrike: true
+  }),
+  spectralArms_medium: special("spectralArms", spectral, [16, 8, 34], 0, noBox, { kind: "grab" }, {
+    spectralReach: 133,
+    commandGrab: true,
+    captureStrike: true
+  }),
+  ghostPhase_light: special("ghostPhase", "nightmare", [13, 1, 49], 12, noBox, { push: 0, stun: 13, hitstop: 4 }, {
+    nightmare: true,
+    phase: { from: 13, to: 29 },
+    field: {
+      type: "spectralHand",
+      offset: 77,
+      height: 78,
+      width: 50,
+      speed: 0,
+      life: 25,
+      activeAge: [8, 15],
+      pattern: [{}, { offset: 112, delay: 11 }, { offset: 170, delay: 21, height: 150, direction: -1, vy: 4 }]
+    }
+  }),
+  ghostPhase_medium: special("ghostPhase", "nightmare", [20, 1, 65], 15, noBox, { push: 0, stun: 15, hitstop: 5 }, {
+    nightmare: true,
+    phase: { from: 20, to: 42 },
+    field: {
+      type: "spectralHand",
+      offset: 88,
+      height: 97,
+      width: 58,
+      speed: 0,
+      life: 28,
+      activeAge: [10, 18],
+      pattern: [
+        {},
+        { offset: 113, delay: 10 },
+        { offset: 217, delay: 20 },
+        { offset: 275, delay: 32, height: 180, direction: -1, vy: 5 },
+        { offset: 144, delay: 44, height: 148, vy: 4 }
+      ]
+    }
+  })
+};
+var nrgMoves = {
+  stand_light: blow([6, 4, 12], 28, rect(29, -135, 63, 34), 1, "metal", { stun: 25, push: 2.4 }),
+  stand_medium: blow([11, 5, 23], 53, rect(27, -136, 74, 36), 2, "metal", {
+    stun: 35,
+    push: 2.8,
+    hitstop: 6,
+    cancelWindow: { fromTick: 11, toTick: 22 }
+  }),
+  crouch_light: blow([7, 4, 13], 25, rect(25, -108, 63, 32), 1, "metal", { level: "low", stun: 25 }),
+  crouch_medium: blow([12, 5, 26], 48, rect(29, -48, 79, 45), 2, "metal", {
+    level: "low",
+    push: 5.6,
+    hitstop: 6
+  }),
+  air_light: blow([6, 5, 15], 31, rect(27, -137, 76, 34), 1, "metal", airLight),
+  air_medium: blow([8, 10, 25], 58, rect(18, -71, 58, 71), 2, "metal", {
+    level: "high",
+    hopAt: 8,
+    hopVelocity: 6,
+    knockdown: true,
+    hitstop: 8,
+    cancels: []
+  }),
+  thermal_light: special("thermal", thermal, [10, 1, 20], 46, noBox, { stun: 25, push: 5 }, {
+    field: projectile("beam", 48, 95, 11, 0, 9, 1, 188)
+  }),
+  thermal_medium: special("thermal", thermal, [19, 1, 33], 70, noBox, { stun: 34, push: 9, hitstop: 8 }, {
+    field: projectile("beam", 51, 119, 19, 0, 18, 2, 298)
+  }),
+  armorImpact_light: special("armorImpact", "metal", [9, 7, 24], 50, rect(25, -128, 48, 56), {
+    drive: charge(5, 15, 7),
+    stun: 25,
+    blockstun: 10,
+    push: 7.8,
+    hitstop: 7
+  }),
+  armorImpact_medium: special("armorImpact", "metal", [17, 5, 33], 74, rect(28, -94, 64, 54), {
+    level: "high",
+    stun: 31,
+    blockstun: 14,
+    push: 6.5,
+    hitstop: 9,
+    knockdown: true
+  }),
+  nrgUnseal_light: special("nrgMode", thermal, [18, 1, 8], 0, noBox, {}, { nrgMode: "release" }),
+  armorCounter_medium: special("armorCounter", "metal", [5, 8, 29], 0, noBox, {}, { armorCounter: true }),
+  nrgCounterShove: blow([3, 4, 25], 45, rect(28, -133, 87, 47), 3, "metal", {
+    stun: 29,
+    push: 11,
+    hitstop: 7,
+    cancels: []
+  }),
+  nrgLock: special("nrgLock", thermal, [0, 1, 10], 0, noBox, {})
+};
+var nrgReleasedMoves = {
+  stand_light: blow([4, 4, 10], 23, rect(17, -121, 63, 40), 1, thermal, { stun: 23 }),
+  stand_medium: blow([8, 5, 16], 44, rect(23, -117, 103, 50), 2, thermal, { stun: 29, push: 3.2 }),
+  crouch_light: blow([5, 4, 10], 22, rect(18, -55, 64, 33), 1, thermal, { level: "low", stun: 23 }),
+  crouch_medium: blow([9, 6, 17], 40, rect(16, -53, 106, 44), 2, thermal, { level: "low" }),
+  air_light: blow([5, 5, 11], 25, rect(20, -108, 73, 55), 1, thermal, { ...airLight, stun: 25, cancels: ["medium", "special"] }),
+  air_medium: blow([7, 7, 18], 45, rect(20, -104, 98, 88), 2, thermal, { ...airMedium, airHold: -2, stun: 26 }),
+  radiantShot_light: special("thermal", thermal, [7, 1, 18], 40, noBox, { stun: 26, push: 4 }, {
+    air: true,
+    field: { ...projectile("beam", 63, 106, 10, 0, 8, 1, 234), aim: "heat" }
+  }),
+  radiantShot_medium: special("thermal", thermal, [17, 1, 36], 68, noBox, { stun: 36, push: 11, hitstop: 8 }, {
+    air: true,
+    field: { ...projectile("beam", 64, 106, 17, 0, 16, 2, 335), aim: "heat" }
+  }),
+  radiantWave_light: special("nuclear", thermal, [8, 1, 20], 41, noBox, { stun: 27, push: 5 }, {
+    air: true,
+    field: {
+      ...projectile("heat", 28, 90, 13, 5, 25, 1, 22),
+      aim: "rain",
+      pattern: [{ vy: 12 }, { offset: 38, delay: 5, vy: 13 }, { offset: 76, delay: 10, vy: 14 }]
+    }
+  }),
+  radiantWave_medium: special("nuclear", thermal, [15, 10, 28], 63, rect(-55, -142, 201, 138), {
+    stun: 31,
+    push: 8,
+    knockdown: true
+  }),
+  nrgSeal_light: special("nrgMode", thermal, [4, 12, 18], 0, noBox, {
+    drive: charge(4, 16, 13)
+  }, { air: true, lift: true }),
+  nrgSeal_medium: special("nrgMode", thermal, [12, 1, 11], 0, noBox, {}, { nrgMode: "seal", air: true }),
+  nrgEmergence: special("nrgEmergence", thermal, [0, 1, 8], 0, noBox, {})
+};
+var gravityPulse = (gravityMode, offset, width, height, life) => ({ type: "gravityPulse", gravityMode, offset, width, height, speed: 0, life, activeAge: [2, life - 4] });
+var sonic = (offset, height, width, speed, life, length) => ({ type: "sonic", offset, height, width, speed, life, length });
+var gravattackMoves = {
+  stand_light: blow([7, 4, 12], 29, rect(32, -133, 68, 38), 1, "gravity", { stun: 25, push: 2 }),
+  stand_medium: blow([12, 5, 24], 56, rect(35, -136, 85, 66), 2, "gravity", { stun: 34, push: 2.8, hitstop: 7 }),
+  crouch_light: blow([7, 4, 13], 25, rect(29, -61, 71, 35), 1, "gravity", { level: "low", stun: 24 }),
+  crouch_medium: blow([11, 6, 24], 44, rect(25, -57, 101, 44), 2, "gravity", { level: "low", push: 5, drive: charge(7, 14, 2.5) }),
+  air_light: blow([5, 6, 13], 29, rect(29, -128, 73, 60), 1, "gravity", airLight),
+  air_medium: blow([9, 9, 26], 58, rect(14, -80, 92, 81), 2, "gravity", {
+    level: "high",
+    hopAt: 9,
+    hopVelocity: 6,
+    knockdown: true,
+    cancels: [],
+    hitstop: 8
+  }),
+  gravityPull_light: special("gravityPull", "gravity", [9, 1, 15], 23, noBox, { stun: 31, push: -6.5, hitstop: 3 }, {
+    field: gravityPulse("pull", 116, 150, 137, 11)
+  }),
+  gravityPull_medium: special("gravityPull", "gravity", [17, 1, 29], 42, noBox, {
+    stun: 39,
+    push: -3.7,
+    launch: -13,
+    cancels: ["jump", "omnitrix"],
+    cancelWindow: { fromTick: 18, toTick: 42 }
+  }, { field: gravityPulse("pull", 137, 184, 175, 14) }),
+  gravityRepel_light: special("gravityRepel", "gravity", [10, 1, 22], 45, noBox, { stun: 22, push: 8 }, {
+    field: gravityPulse("repel", 81, 112, 113, 11)
+  }),
+  gravityRepel_medium: special("gravityRepel", "gravity", [21, 1, 35], 67, noBox, {
+    stun: 32,
+    push: 11,
+    launch: -8,
+    knockdown: true,
+    hitstop: 8
+  }, { field: gravityPulse("repel", 19, 236, 149, 15) }),
+  gravityDomain_light: special("gravityDomain", "gravity", [17, 1, 25], 0, noBox, {}, {
+    field: { type: "gravityWell", offset: 123, width: 218, height: 179, speed: 0, life: 180 }
+  }),
+  gravityDomain_medium: special("gravityDomain", "gravity", [16, 13, 29], 71, rect(13, -115, 81, 106), {
+    hopAt: 13,
+    hopVelocity: -4.3,
+    drive: charge(15, 29, 10.5),
+    stun: 27,
+    push: 9,
+    knockdown: true,
+    hitstop: 8
+  })
+};
+var echoEchoMoves = {
+  stand_light: blow([4, 4, 9], 19, rect(13, -79, 53, 29), 1, "speed", { stun: 22, push: 1.8 }),
+  stand_medium: blow([8, 5, 16], 35, rect(16, -80, 70, 40), 2, "sonic", { stun: 29, push: 2.8 }),
+  crouch_light: blow([5, 4, 10], 17, rect(12, -43, 50, 27), 1, "speed", { level: "low", stun: 22 }),
+  crouch_medium: blow([9, 5, 18], 32, rect(15, -44, 76, 36), 2, "sonic", { level: "low", stun: 24 }),
+  air_light: blow([4, 5, 11], 20, rect(12, -81, 54, 47), 1, "speed", airLight),
+  air_medium: blow([7, 6, 17], 37, rect(15, -66, 71, 66), 2, "sonic", {
+    level: "high",
+    airHold: 2,
+    stun: 24,
+    cancels: ["special"]
+  }),
+  sonicCry_light: special("sonicCry", "sonic", [7, 1, 15], 34, noBox, { stun: 23, push: 3.8 }, {
+    air: true,
+    field: sonic(31, 73, 14, 14, 13, 18)
+  }),
+  sonicCry_medium: special("sonicCry", "sonic", [14, 1, 25], 53, noBox, { stun: 29, push: 7, hitstop: 7 }, {
+    field: sonic(36, 75, 22, 12, 23, 30)
+  }),
+  echoSplit_light: special("echoSplit", "sonic", [10, 1, 19], 0, noBox, {}, { echoSplit: 1 }),
+  echoSplit_medium: special("echoSplit", "sonic", [16, 8, 23], 0, noBox, {}, { echoSplit: 2 }),
+  echoHarmony_light: special("echoHarmony", "sonic", [8, 1, 20], 34, noBox, { stun: 23, push: 3.5 }, {
+    echoHarmony: 1,
+    field: sonic(30, 70, 17, 12, 10, 24)
+  }),
+  echoHarmony_medium: special("echoHarmony", "sonic", [17, 1, 30], 51, noBox, {
+    stun: 30,
+    push: 5.3,
+    launch: -7,
+    cancels: ["omnitrix"],
+    cancelWindow: { fromTick: 18, toTick: 44 }
+  }, { echoHarmony: 2, field: sonic(34, 76, 25, 13, 16, 32) })
+};
+var echoAssists = {
+  echoCopyJab: special("echoCopyJab", "sonic", [0, 1, 0], 8, noBox, { stun: 8, push: 1.5, hitstop: 2, meterGain: 0 }, {
+    field: { ...sonic(18, 62, 12, 0, 2, 17), type: "sonicAssist" }
+  }),
+  echoCopyWave: special("echoCopyWave", "sonic", [0, 1, 0], 12, noBox, { stun: 12, push: 2.7, hitstop: 3, meterGain: 0 }, {
+    field: { ...sonic(24, 70, 15, 13, 11, 20), type: "sonicAssist" }
+  })
+};
+var commands = {
+  xlr8: ["turbo", "cyclone", "lightning"],
+  fourArms: ["tackle", "quad", "seismic"],
+  heatblast: ["fireball", "pillar", "propulsion"],
+  diamondhead: ["spikes", "wall", "shards"],
+  humungousaur: ["colossal", "car", "growth"],
+  feedback: ["storm", "conductor", "discharge"],
+  bigChill: ["frostBreath", "iceDive", "ghostFlight"],
+  ghostfreak: ["ghostCross", "spectralArms", "ghostPhase"],
+  nrg: ["thermal", "armorImpact", "nrgUnseal"],
+  gravattack: ["gravityPull", "gravityRepel", "gravityDomain"],
+  echoEcho: ["sonicCry", "echoSplit", "echoHarmony"],
+  nrgReleased: ["radiantShot", "radiantWave", "nrgSeal"]
+};
+var moves = {
+  ...xlr8Moves,
+  ...fourArmsMoves,
+  ...heatblastMoves,
+  ...diamondheadMoves,
+  ...humungousaurMoves,
+  ...feedbackMoves,
+  ...bigChillMoves,
+  ...ghostfreakMoves,
+  ...nrgMoves,
+  ...nrgReleasedMoves,
+  ...gravattackMoves,
+  ...echoEchoMoves,
+  ...echoAssists
+};
+function benSpecialCommand(form, buffer, button) {
+  if (button !== "light" && button !== "medium") return;
+  const set = commands[form];
+  const motion = set && buffer.gokuSpecial(button);
+  if (!motion) return;
+  if (form === "nrg" && motion === "teleport" && button === "medium") return "armorCounter_medium";
+  return `${set[motion === "ki" ? 0 : motion === "kamehameha" ? 1 : 2]}_${button}`;
+}
+function benObjectMove(id) {
+  return moves[id];
+}
+function benProjectile(field) {
+  return ["fireball", "shard", "bolt", "frost", "heat", "beam", "car", "sonic", "sonicAssist"].includes(field.type);
+}
+function benObjectHeight(object, field) {
+  if (field.type === "spikes") return Math.round(field.height * Math.max(0, Math.min(1, object.age / 5)));
+  if (field.type === "wall") return Math.round(field.height * Math.max(0, Math.min(1, object.age / 6)));
+  return field.height;
+}
+function benBoltLength(object, field) {
+  return Math.min(field.length ?? 0, object.age * field.speed + 17);
+}
+function benObjectShape(object, field, previousX = object.x, previousY = object.y) {
+  if (field.type === "car") {
+    const scale = object.scale ?? 1;
+    return {
+      x: Math.min(object.x, previousX) - 60 * scale,
+      y: Math.min(object.y, previousY) - 25 * scale,
+      w: 120 * scale + Math.abs(object.x - previousX),
+      h: 50 * scale + Math.abs(object.y - previousY)
+    };
+  }
+  if (field.type === "beam") {
+    const reach = Math.min(field.length ?? 0, object.age * 58);
+    const length = object.aim && object.aim > 0 ? Math.min(reach, Math.max(0, (580 - object.y) / object.aim)) : reach;
+    return {
+      a: { x: object.x, y: object.y },
+      b: { x: object.x + object.direction * length, y: object.y + length * (object.aim ?? 0) },
+      r: field.width + Math.floor((object.power ?? 0) / 12)
+    };
+  }
+  if (field.type === "spectralHand" && object.vy) return {
+    x: Math.min(object.x, previousX) - field.width / 2,
+    y: Math.min(object.y, previousY) - 30,
+    w: field.width + Math.abs(object.x - previousX),
+    h: 59 + Math.abs(object.y - previousY)
+  };
+  if (benProjectile(field)) {
+    const tail = benBoltLength(object, field) * object.direction;
+    const rear = object.direction === 1 ? Math.min(previousX, object.x - tail) : Math.max(previousX, object.x - tail);
+    return {
+      a: { x: rear, y: previousY },
+      b: { x: object.x, y: object.y },
+      r: field.width + Math.floor((object.power ?? 0) / 10)
+    };
+  }
+  const height = benObjectHeight(object, field);
+  return {
+    x: Math.min(previousX, object.x) - field.width / 2,
+    y: object.y - height,
+    w: field.width + Math.abs(object.x - previousX),
+    h: height
+  };
+}
+function spectralPaths(move, frame) {
+  const phase = frame - move.startup;
+  const reach = move.ben.spectralReach;
+  const length = reach * Math.max(0, Math.min(1, (phase + 6) / 6, (move.active + 8 - phase) / 8));
+  return Array.from({ length: reach > 100 ? 2 : 1 }, (_, i) => Array.from({ length: 13 }, (_2, step) => {
+    const t = step / 12;
+    return { x: 19 + length * t, y: -95 + i * 14 + Math.round(Math.sin(t * 5.2 - phase * 0.21) * 26 * t) };
+  }));
+}
+function feedbackCablePaths(kind, frame, move) {
+  const phase = frame - move.startup;
+  const t = Math.max(0, Math.min(1, phase / (move.active - 1)));
+  const extension = phase < 0 ? Math.max(0, 1 + phase / 7) : Math.min(1, Math.max(0, (move.active + 7 - phase) / 7));
+  const upper = kind === "upper";
+  const count = upper || kind === "wide" ? 2 : 1;
+  return Array.from({ length: count }, (_, i) => {
+    const origin = { x: 8 + i * 7, y: -121 + i * 6 };
+    const idle = { x: -21 - i * 11, y: -100 + i * 13 };
+    const tip = upper ? { x: 102 + Math.sin(t * Math.PI) * 25 - i * 27, y: -82 - t * 133 - i * 25 } : { x: (kind === "wide" ? 162 - i * 15 : 98) + Math.sin(t * Math.PI) * 25, y: -96 + i * 28 + Math.sin(t * Math.PI * 1.15) * 11 };
+    const end = { x: idle.x + (tip.x - idle.x) * extension, y: idle.y + (tip.y - idle.y) * extension };
+    const control1 = { x: -33 + i * 12, y: -145 - i * 12 };
+    const control2 = { x: end.x * 0.67, y: end.y + (upper ? 37 + i * 6 : -38) };
+    return Array.from({ length: 17 }, (_2, k) => {
+      const a = k / 16, b = 1 - a;
+      const calc = (axis) => Math.round(b ** 3 * origin[axis] + 3 * b * b * a * control1[axis] + 3 * b * a * a * control2[axis] + a ** 3 * end[axis]);
+      return { x: calc("x"), y: calc("y") };
+    });
+  });
+}
+
+// src/engine/ben-forms.ts
+function throwMove2(startup3, reach, y) {
+  return {
+    startup: startup3,
+    active: 3,
+    recovery: 21,
+    damage: 0,
+    stun: 0,
+    blockstun: 0,
+    push: 0,
+    launch: 0,
+    level: "throw",
+    kind: "grab",
+    rank: 3,
+    cancels: [],
+    hitstop: 0,
+    box: { x: 15, y, w: reach, h: 38 }
+  };
+}
+function grab(damage2, rise, push, separation, duration = 27, reverse = false, carry = 0, clip2) {
+  const hitTick = Math.round(duration * 2 / 3);
+  return {
+    startFromContact: true,
+    duration,
+    hitTick,
+    damage: damage2,
+    recoveryTicks: duration > 28 ? 18 : 12,
+    reverse,
+    carry,
+    clip: clip2,
+    victimTrack: [
+      { tick: 0, x: separation, y: 0, clip: "grabbed" },
+      { tick: Math.round(duration / 3), x: separation, y: -rise, clip: "grabbed" },
+      { tick: hitTick, x: reverse ? -separation : separation + 18, y: -Math.round(rise / 2), clip: "damageAir" },
+      { tick: duration, x: reverse ? -separation - 30 : separation + 32, y: 0, clip: "damageAir" }
+    ],
+    release: { vx: push, vy: -5, stun: 32 }
+  };
+}
+function stage6Body(movement, width, height, damageTaken, moves2, grabStyle, throwEffect, throwStartup) {
+  const body2 = (w, y, h) => ({ x: -Math.round(w / 2), y, w, h });
+  const upper = Math.round(height * 0.54);
+  return {
+    movement,
+    width,
+    pushHeight: Math.round(height * 0.67),
+    damageTaken,
+    throwEffect,
+    hurtboxes: {
+      standing: [body2(width, -height, upper), body2(width - 6, upper - height, height - upper)],
+      crouching: [body2(width + 8, -Math.round(height * 0.69), Math.round(height * 0.69))],
+      air: [body2(width + 2, -height + 12, height - 24)]
+    },
+    moves: { ...moves2, throw: throwMove2(throwStartup, Math.round(width * 0.73) + 12, -105) },
+    grab: grabStyle
+  };
+}
+var nrgReleasedForm = stage6Body({
+  speed: 6.8,
+  jump: -14,
+  gravity: 0.59,
+  locomotion: {
+    backSpeed: 5.1,
+    airSpeed: 6.8,
+    jumpStartup: 5,
+    landingTicks: 7,
+    dashForward: [5, 9, 14, 17, 18, 17, 16, 13, 11, 8, 5, 3],
+    backdash: [4, 7, 11, 13, 14, 13, 11, 9, 7, 5, 3, 2]
+  }
+}, 53, 151, 1.1, nrgReleasedMoves, grab(74, 23, 9, 54, 19), "thermal", 7);
+var benForms = {
+  bigChill: stage6Body({
+    speed: 5.7,
+    jump: -15.4,
+    gravity: 0.58,
+    locomotion: {
+      backSpeed: 4.6,
+      airSpeed: 7.2,
+      jumpStartup: 5,
+      landingTicks: 7,
+      dashForward: [4, 8, 12, 15, 17, 16, 15, 12, 9, 7, 4, 2],
+      backdash: [4, 7, 10, 13, 14, 13, 11, 9, 6, 4, 3, 2]
+    }
+  }, 49, 145, 1.02, bigChillMoves, grab(75, 26, 10, 52, 20), "ice", 7),
+  ghostfreak: stage6Body({
+    speed: 5.9,
+    jump: -13.2,
+    gravity: 0.67,
+    locomotion: {
+      backSpeed: 4.7,
+      airSpeed: 5.6,
+      jumpStartup: 6,
+      landingTicks: 8,
+      dashForward: [5, 9, 14, 18, 18, 16, 14, 12, 8, 6, 4, 2],
+      backdash: [4, 8, 11, 13, 14, 13, 11, 9, 7, 5, 3, 2]
+    }
+  }, 51, 146, 1.03, ghostfreakMoves, grab(73, 30, 9, 53, 21), "spectral", 8),
+  gravattack: stage6Body({
+    speed: 3.5,
+    jump: -13,
+    gravity: 0.72,
+    locomotion: {
+      backSpeed: 2.65,
+      airSpeed: 3.5,
+      jumpStartup: 8,
+      landingTicks: 11,
+      dashForward: [3, 6, 9, 12, 13, 13, 11, 9, 7, 5, 3, 2],
+      backdash: [3, 5, 7, 9, 9, 8, 7, 6, 5, 3, 2, 1]
+    }
+  }, 91, 180, 0.95, gravattackMoves, grab(91, 54, 10, 70, 30), "gravity", 9),
+  echoEcho: stage6Body({
+    speed: 6.25,
+    jump: -14.3,
+    gravity: 0.69,
+    locomotion: {
+      backSpeed: 4.8,
+      airSpeed: 5.9,
+      jumpStartup: 5,
+      landingTicks: 7,
+      dashForward: [5, 9, 13, 16, 16, 15, 13, 10, 7, 5, 3],
+      backdash: [4, 8, 11, 13, 12, 10, 8, 6, 4, 2]
+    }
+  }, 43, 101, 1.06, echoEchoMoves, grab(64, 14, 7, 49, 20), "sonic", 7),
+  nrg: stage6Body({
+    speed: 3.4,
+    jump: -12.4,
+    gravity: 0.91,
+    locomotion: {
+      backSpeed: 2.6,
+      airSpeed: 3.4,
+      jumpStartup: 8,
+      landingTicks: 12,
+      dashForward: [3, 5, 8, 11, 12, 12, 10, 9, 7, 6, 4, 3, 2],
+      backdash: [2, 4, 6, 8, 9, 9, 8, 7, 5, 4, 3, 2, 1]
+    }
+  }, 86, 161, 0.92, nrgMoves, grab(97, 37, 12, 68, 26), "metal", 10),
+  xlr8: {
+    movement: {
+      speed: 8.8,
+      jump: -14.7,
+      gravity: 0.72,
+      locomotion: {
+        backSpeed: 6.2,
+        airSpeed: 7.1,
+        jumpStartup: 5,
+        landingTicks: 7,
+        dashForward: [7, 13, 20, 23, 24, 24, 23, 21, 18, 14, 10, 6],
+        backdash: [5, 10, 15, 18, 18, 17, 15, 12, 9, 7, 5, 3]
+      }
+    },
+    width: 44,
+    pushHeight: 84,
+    damageTaken: 1.06,
+    hurtboxes: {
+      standing: [{ x: -16, y: -133, w: 45, h: 49 }, { x: -23, y: -87, w: 47, h: 87 }],
+      crouching: [{ x: -26, y: -88, w: 57, h: 88 }],
+      air: [{ x: -23, y: -122, w: 52, h: 113 }]
+    },
+    moves: {
+      ...xlr8Moves,
+      throw: throwMove2(7, 48, -108)
+    },
+    grab: grab(70, 30, 11, 48, 17, true, 46)
+  },
+  fourArms: {
+    movement: {
+      speed: 3.6,
+      jump: -15.2,
+      gravity: 0.96,
+      locomotion: {
+        backSpeed: 2.7,
+        airSpeed: 3.4,
+        jumpStartup: 8,
+        landingTicks: 12,
+        dashForward: [2, 3, 5, 8, 11, 13, 13, 12, 11, 9, 7, 6, 4, 2],
+        backdash: [2, 4, 6, 8, 10, 10, 9, 8, 7, 5, 4, 3, 2, 1]
+      }
+    },
+    width: 84,
+    pushHeight: 114,
+    damageTaken: 0.95,
+    hurtboxes: {
+      standing: [
+        { x: -37, y: -163, w: 77, h: 101 },
+        { x: -37, y: -63, w: 76, h: 63 },
+        { x: -51, y: -131, w: 18, h: 52 },
+        { x: 39, y: -132, w: 23, h: 54 }
+      ],
+      crouching: [{ x: -45, y: -112, w: 92, h: 112 }],
+      air: [{ x: -41, y: -153, w: 83, h: 139 }]
+    },
+    moves: {
+      ...fourArmsMoves,
+      throw: throwMove2(11, 63, -105)
+    },
+    grab: grab(102, 48, 10, 69)
+  },
+  heatblast: {
+    movement: {
+      speed: 5.5,
+      jump: -13.8,
+      gravity: 0.65,
+      locomotion: {
+        backSpeed: 4.3,
+        airSpeed: 5,
+        jumpStartup: 6,
+        landingTicks: 8,
+        dashForward: [4, 7, 11, 15, 17, 17, 16, 14, 12, 10, 8, 5, 3],
+        backdash: [4, 6, 10, 13, 14, 14, 13, 11, 9, 7, 5, 4, 2]
+      }
+    },
+    width: 56,
+    pushHeight: 96,
+    damageTaken: 1,
+    hurtboxes: {
+      standing: [{ x: -23, y: -122, w: 52, h: 71 }, { x: -29, y: -52, w: 60, h: 52 }],
+      crouching: [{ x: -30, y: -94, w: 62, h: 94 }],
+      air: [{ x: -29, y: -126, w: 58, h: 113 }]
+    },
+    moves: {
+      ...heatblastMoves,
+      throw: throwMove2(9, 54, -107)
+    },
+    grab: grab(82, 30, 9, 56)
+  },
+  diamondhead: {
+    movement: {
+      speed: 4.9,
+      jump: -13.5,
+      gravity: 0.72,
+      locomotion: {
+        backSpeed: 3.8,
+        airSpeed: 4.6,
+        jumpStartup: 6,
+        landingTicks: 9,
+        dashForward: [4, 6, 9, 12, 14, 14, 13, 11, 9, 7, 5, 3],
+        backdash: [4, 6, 9, 11, 12, 11, 9, 7, 5, 4, 3, 2]
+      }
+    },
+    width: 66,
+    pushHeight: 101,
+    damageTaken: 0.97,
+    hurtboxes: {
+      standing: [{ x: -27, y: -140, w: 57, h: 76 }, { x: -33, y: -65, w: 67, h: 65 }],
+      crouching: [{ x: -35, y: -103, w: 71, h: 103 }],
+      air: [{ x: -31, y: -137, w: 65, h: 126 }]
+    },
+    moves: { ...diamondheadMoves, throw: throwMove2(8, 57, -105) },
+    grab: grab(87, 27, 10, 61, 24),
+    throwEffect: "crystal"
+  },
+  humungousaur: {
+    movement: {
+      speed: 3.4,
+      jump: -12.6,
+      gravity: 0.91,
+      locomotion: {
+        backSpeed: 2.6,
+        airSpeed: 3.1,
+        jumpStartup: 9,
+        landingTicks: 13,
+        dashForward: [2, 3, 5, 8, 11, 12, 12, 11, 10, 8, 6, 5, 4, 3, 2],
+        backdash: [2, 3, 5, 7, 9, 9, 8, 7, 6, 5, 4, 3, 2, 2, 1]
+      }
+    },
+    width: 94,
+    pushHeight: 121,
+    damageTaken: 0.96,
+    hurtboxes: {
+      standing: [{ x: -41, y: -174, w: 91, h: 114 }, { x: -46, y: -62, w: 92, h: 62 }],
+      crouching: [{ x: -48, y: -120, w: 99, h: 120 }],
+      air: [{ x: -45, y: -166, w: 94, h: 154 }]
+    },
+    moves: { ...humungousaurMoves, throw: throwMove2(10, 65, -105) },
+    grab: grab(98, 51, 12, 73, 26, false, 9),
+    throwEffect: "colossus"
+  },
+  feedback: {
+    movement: {
+      speed: 5.8,
+      jump: -14.2,
+      gravity: 0.66,
+      locomotion: {
+        backSpeed: 4.5,
+        airSpeed: 6.3,
+        jumpStartup: 5,
+        landingTicks: 7,
+        dashForward: [5, 9, 13, 16, 17, 17, 15, 13, 10, 8, 5, 3],
+        backdash: [4, 8, 11, 13, 14, 13, 11, 9, 7, 5, 4, 2]
+      }
+    },
+    width: 49,
+    pushHeight: 96,
+    damageTaken: 1.03,
+    hurtboxes: {
+      standing: [{ x: -19, y: -130, w: 39, h: 63 }, { x: -25, y: -70, w: 50, h: 70 }],
+      crouching: [{ x: -27, y: -91, w: 55, h: 91 }],
+      air: [{ x: -22, y: -122, w: 49, h: 108 }]
+    },
+    moves: { ...feedbackMoves, throw: throwMove2(7, 51, -103) },
+    grab: grab(77, 20, 9, 52, 20),
+    throwEffect: "electric"
+  }
+};
+function benGrabFor(form, id) {
+  if (!form) return;
+  if (id === "quad_light") return quadLight;
+  if (id === "quad_medium") return quadMedium;
+  if (id.startsWith("spectralArms_")) return id.endsWith("_medium") ? huntK : huntJ;
+  if (id.startsWith("conductor_")) return id.endsWith("_medium") ? conductorK : conductorJ;
+  if (id.startsWith("ghostPhase_")) return id.endsWith("_medium") ? nightmareK : nightmareJ;
+  return form.grab;
+}
+var conductorJ = { ...grab(58, 15, 9, 64, 20, false, 0, "conductorHold"), impacts: [13] };
+var conductorK = {
+  ...grab(77, 34, 4, 70, 28, false, 0, "conductorHoldK"),
+  impacts: [12, 19],
+  knockdown: false,
+  pursuit: true,
+  release: { vx: 2.7, vy: -16, stun: 41 }
+};
+function spectralSequence(kind, damage2, duration, impacts) {
+  const hunt = kind === "hunt";
+  const peak = Math.round(duration * 0.42);
+  return {
+    ...grab(
+      damage2,
+      hunt ? 96 : 30,
+      hunt ? 8 : 13,
+      70,
+      duration,
+      false,
+      0,
+      kind + (impacts.length > (hunt ? 2 : 3) ? "K" : "J")
+    ),
+    scene: kind,
+    impacts,
+    victimTrack: [
+      { tick: 0, x: 62, y: 0, clip: "grabbed" },
+      { tick: peak, x: 80, y: hunt ? -100 : -23, clip: "damageAir" },
+      { tick: duration - 7, x: 93, y: hunt ? -48 : -29, clip: "damageAir" },
+      { tick: duration, x: 109, y: 0, clip: "damageAir" }
+    ],
+    release: { vx: hunt ? 7 : 12, vy: -4, stun: 33 }
+  };
+}
+var huntJ = spectralSequence("hunt", 65, 33, [15, 28]);
+var huntK = spectralSequence("hunt", 88, 45, [14, 25, 38]);
+var nightmareJ = spectralSequence("nightmare", 79, 37, [16, 23, 31]);
+var nightmareK = spectralSequence("nightmare", 110, 50, [18, 25, 34, 43]);
+var quadLight = grab(113, 29, 7, 64, 22, false, 0, "quad_light_hold");
+var quadMedium = grab(145, 70, 14, 70, 34, false, 0, "quad_medium_hold");
+
+// src/engine/ben-omnitrix.ts
+var benId = "ben";
+var alienXSuper = { id: "alienX", name: "Alien X", command: "ultimate", cost: 100 };
+var benAliens = [
+  { id: "xlr8", name: "XLR8" },
+  { id: "fourArms", name: "Quatro Bra\xE7os" },
+  { id: "feedback", name: "Feedback" },
+  { id: "gravattack", name: "Gravattack" },
+  { id: "ghostfreak", name: "Fantasm\xE1tico" },
+  { id: "bigChill", name: "Friagem" },
+  { id: "nrg", name: "NRG" },
+  { id: "diamondhead", name: "Diamante" },
+  { id: "echoEcho", name: "Eco Eco" },
+  { id: "heatblast", name: "Chama" },
+  { id: "humungousaur", name: "Enormossauro" }
+];
+var omnitrixHoldTicks = 15;
+var omnitrixSwapTicks = 9;
+var omnitrixDialTicks = 8;
+var newOmnitrix = () => ({
+  active: "human",
+  selected: benAliens[0].id,
+  holdTicks: 0,
+  dialTicks: 0,
+  crouchExit: 0,
+  noSpace: 0,
+  usedSpecials: [],
+  comboSwap: false,
+  objects: [],
+  growthCooldown: 0,
+  charge: 0,
+  chargeTicks: 0,
+  absorbFlash: 0
+});
+var omnitrixCanBrowse = (state) => state === "idle" || state === "walk" || state === "crouch" || state === "air" || state === "jumpStart" || state === "landing" || state === "dash" || state === "attack";
+function cancelOmnitrix(state) {
+  state.holdTicks = 0;
+  state.dialTicks = 0;
+  state.crouchExit = 0;
+  delete state.transition;
+}
+function advanceDial(state) {
+  const current = benAliens.findIndex((form) => form.id === state.selected);
+  state.selected = benAliens[(current + 1) % benAliens.length].id;
+  state.dialTicks = omnitrixDialTicks;
+}
+function tickOmnitrix(state, input, canConfirm, place) {
+  if (state.dialTicks > 0) state.dialTicks--;
+  if (state.crouchExit > 0) state.crouchExit--;
+  if (state.noSpace > 0) state.noSpace--;
+  if (state.transition && --state.transition.ticks === 0) {
+    if (canConfirm) {
+      if (place(state.transition.to)) {
+        state.active = state.transition.to;
+        delete state.growth;
+        state.noSpace = 0;
+      } else state.noSpace = 35;
+    }
+    delete state.transition;
+  }
+  if (!input.omnitrix) {
+    state.holdTicks = 0;
+    return;
+  }
+  const edge = input.pressed.includes("heavy");
+  if (edge && state.holdTicks) {
+    if (state.holdTicks < omnitrixHoldTicks) advanceDial(state);
+    state.holdTicks = 0;
+  }
+  if (!input.omnitrix.held) {
+    if (state.holdTicks < omnitrixHoldTicks && (state.holdTicks || edge))
+      advanceDial(state);
+    state.holdTicks = 0;
+    return;
+  }
+  if (!state.holdTicks && !edge) return;
+  if (state.holdTicks === omnitrixHoldTicks) return;
+  if (++state.holdTicks === omnitrixHoldTicks && canConfirm && benForms[state.selected] && !state.transition && state.active !== state.selected)
+    state.transition = { to: state.selected, ticks: omnitrixSwapTicks };
+}
+
+// src/engine/ben-rework.ts
+var nrgFlightBudget = 102;
+var maxHeight = 219;
+var floor2 = 580;
+var clamp6 = (n, min, max) => Math.max(min, Math.min(max, n));
+function benManeuverTarget(f, rival, move) {
+  const leap = move.ben?.leap, burrow = move.ben?.burrow;
+  const reach = leap?.reach ?? burrow?.reach ?? 0;
+  const goal = rival.x - f.facing * (burrow ? 49 : 18);
+  return clamp6(clamp6(goal, f.x - reach, f.x + reach), f.stageInset, 1280 - f.stageInset);
+}
+function driveBenManeuver(f, opponent, move) {
+  const watch = f.omnitrix;
+  const leap = move.ben?.leap, burrow = move.ben?.burrow;
+  const destination = watch.maneuverX ?? f.x;
+  const age = f.stateFrame;
+  if (leap) {
+    if (age === leap.takeoff) f.vy = -leap.speed / Math.sqrt(f.benScale);
+    if (f.airborne && !watch.landingStrike) {
+      const speed = leap.reach > 200 ? 10.3 : 7.2;
+      f.vx = clamp6(destination - f.x, -speed, speed);
+      if (f.vy > 1) f.vy += 0.7 + (f.benScale - 1);
+    } else f.vx = 0;
+  }
+  if (burrow) {
+    f.vx = age >= burrow.from && age < burrow.to ? clamp6(destination - f.x, -15.5, 15.5) : 0;
+    if (age === burrow.to && opponent.x !== f.x) f.facing = opponent.x > f.x ? 1 : -1;
+  }
+}
+function flyNrg(f, input) {
+  const watch = f.omnitrix;
+  if (!watch?.nrgReleased) return;
+  const move = f.state === "attack" ? f.move : void 0;
+  if (move?.ben?.nrgMode === "seal") {
+    watch.flightTicks = 0;
+    if (f.airborne) {
+      f.vy = Math.max(5, f.vy);
+      f.stateFrame = Math.min(f.stateFrame, move.startup);
+    }
+    f.vx = 0;
+    return;
+  }
+  if (!watch.nrgTicks || !["air", "attack"].includes(f.state)) {
+    watch.flightTicks = 0;
+    return;
+  }
+  const thrust = move?.ben?.lift && f.stateFrame === move.startup;
+  if (thrust && (watch.flightTicks || !watch.flightUsed)) {
+    f.vy = -8.5;
+    watch.flightVY = -5.6;
+  }
+  if (!watch.flightUsed && (thrust || f.airborne && input.up && f.state === "air")) {
+    watch.flightUsed = true;
+    watch.flightTicks = nrgFlightBudget;
+  }
+  if (!watch.flightTicks || !f.airborne) return;
+  watch.flightTicks--;
+  const kick2 = move?.ben?.lift && f.stateFrame < move.startup + move.active;
+  const horizontal = kick2 ? (input.direction || f.facing) * 10.8 : input.direction * 6.4;
+  const vertical = input.up ? -5.4 : input.down ? 5.1 : kick2 ? -3.2 : 0;
+  watch.flightVX = input.direction || kick2 ? (watch.flightVX ?? 0) * 0.62 + horizontal * 0.38 : 0;
+  watch.flightVY = input.up || input.down || kick2 ? (watch.flightVY ?? 0) * 0.56 + vertical * 0.44 : 0;
+  f.vx = watch.flightVX;
+  f.vy = Math.max(floor2 - maxHeight - f.y, watch.flightVY) - f.movementData.gravity;
+}
+
+// src/data/feedback-antennae.json
+var feedback_antennae_default = {
+  rest: [
+    [
+      [
+        0,
+        1
+      ],
+      [
+        -12,
+        -13
+      ],
+      [
+        -26,
+        -23
+      ],
+      [
+        -40,
+        -16
+      ],
+      [
+        -52,
+        1
+      ],
+      [
+        -53,
+        21
+      ],
+      [
+        -43,
+        32
+      ],
+      [
+        -31,
+        28
+      ]
+    ],
+    [
+      [
+        2,
+        -1
+      ],
+      [
+        8,
+        -18
+      ],
+      [
+        21,
+        -25
+      ],
+      [
+        34,
+        -17
+      ],
+      [
+        45,
+        0
+      ],
+      [
+        48,
+        21
+      ],
+      [
+        41,
+        34
+      ],
+      [
+        31,
+        30
+      ]
+    ]
+  ],
+  raised: [
+    [
+      [
+        0,
+        0
+      ],
+      [
+        -14,
+        -13
+      ],
+      [
+        -30,
+        -13
+      ],
+      [
+        -41,
+        -24
+      ],
+      [
+        -37,
+        -42
+      ],
+      [
+        -23,
+        -57
+      ],
+      [
+        -14,
+        -67
+      ],
+      [
+        -9,
+        -75
+      ]
+    ],
+    [
+      [
+        2,
+        -1
+      ],
+      [
+        14,
+        -12
+      ],
+      [
+        29,
+        -14
+      ],
+      [
+        38,
+        -26
+      ],
+      [
+        35,
+        -46
+      ],
+      [
+        26,
+        -62
+      ],
+      [
+        20,
+        -72
+      ],
+      [
+        18,
+        -81
+      ]
+    ]
+  ]
+};
+
+// src/engine/feedback-conductor.ts
+var unit2 = (n) => Math.max(0, Math.min(n, 1));
+var ease4 = (n) => unit2(n) ** 2 * (3 - 2 * unit2(n));
+var lerp2 = (a, b, t) => a + (b - a) * t;
+var mix5 = (a, b, t) => ({
+  x: lerp2(a.x, b.x, t),
+  y: lerp2(a.y, b.y, t)
+});
+function feedbackCableSpline(nodes) {
+  const sample = (i) => nodes[Math.max(0, Math.min(i, nodes.length - 1))];
+  return nodes.slice(0, -1).flatMap((b, i) => {
+    const a = sample(i - 1), c2 = sample(i + 1), d = sample(i + 2);
+    return Array.from({ length: 5 }, (_, j) => {
+      const t = j / 5;
+      const at = (k) => 0.5 * (2 * b[k] + (c2[k] - a[k]) * t + (2 * a[k] - 5 * b[k] + 4 * c2[k] - d[k]) * t * t + (3 * b[k] - a[k] - 3 * c2[k] + d[k]) * t * t * t);
+      return { x: at("x"), y: at("y") };
+    });
+  }).concat(nodes.at(-1));
+}
+var defaultHead = { x: 12, y: -120 };
+var resting = (head, side) => feedback_antennae_default.rest[side].map(([x, y]) => ({ x: head.x + x, y: head.y + y }));
+function releasedPath(head, side, end, amount, heavy) {
+  const rest = resting(head, side);
+  const arc = heavy && side === 0 ? -62 : heavy ? -21 : -36;
+  const nodes = [
+    rest[0],
+    { x: head.x + (side ? 10 : -7), y: head.y - (side ? 14 : 22) },
+    { x: head.x + 22, y: head.y - (side ? 22 : 40) },
+    { x: lerp2(head.x, end.x, 0.44), y: end.y + arc },
+    { x: lerp2(head.x, end.x, 0.63), y: end.y + arc * 0.8 },
+    { x: lerp2(head.x, end.x, 0.78), y: end.y + arc * 0.42 },
+    { x: lerp2(head.x, end.x, 0.9), y: end.y + arc * 0.12 },
+    end
+  ];
+  return feedbackCableSpline(rest.map((p3, i) => mix5(p3, nodes[i], amount)));
+}
+function feedbackConductorPaths(move, tick, head = defaultHead) {
+  const phase = tick - move.startup;
+  const heavy = move.ben?.cable === "wide";
+  const windup = heavy ? 6 : 3;
+  const amount = phase < 0 ? 0.69 * ease4((tick - windup) / (move.startup - windup)) : phase < move.active ? 0.69 + 0.31 * ease4(phase / (heavy ? 6 : 4)) : 1 - ease4((phase - move.active) / (heavy ? 14 : 9));
+  const swing = ease4((phase + 2) / Math.max(move.active - 1, 1));
+  return [0, 1].map((side) => {
+    if (!heavy && side === 0)
+      return feedbackCableSpline(resting(head, side).map((p3, i) => ({
+        x: p3.x - i * 1.4 * amount,
+        y: p3.y - i * amount
+      })));
+    const far = heavy && side === 0;
+    const end = {
+      x: (heavy ? far ? 174 : 157 : 115) + (far ? 5 : 8) * swing,
+      y: far ? -108 + 12 * swing : heavy ? -72 - 9 * swing : -91 + 4 * swing
+    };
+    const reach = ease4(amount / 0.69);
+    return releasedPath(defaultHead, side, end, amount, heavy).map((p3, i) => {
+      const weight = 1 - reach * unit2(i / 25);
+      return {
+        x: p3.x + (head.x - defaultHead.x) * weight,
+        y: p3.y + (head.y - defaultHead.y) * weight
+      };
+    });
+  });
+}
+function feedbackConductorContact(move, tick) {
+  const paths = feedbackConductorPaths(move, tick);
+  return (move.ben?.cable === "wide" ? paths : paths.slice(1)).map((points) => {
+    const tip = points.at(-1), back = points.at(-4);
+    const n = Math.hypot(tip.x - back.x, tip.y - back.y) || 1;
+    return { a: tip, b: {
+      x: tip.x + 8 * (tip.x - back.x) / n,
+      y: tip.y + 8 * (tip.y - back.y) / n
+    }, r: 6 };
+  });
+}
+
+// src/engine/ben-stage7.ts
+var clamp7 = (x, a, b) => Math.max(a, Math.min(b, x));
+var cloneLife = 236;
+var emergeTicks = 8;
+var fadeTicks = 9;
+function echoCloneHurtbox(clone2, floor3) {
+  return { x: clone2.x - 18, y: floor3 - 94, w: 36, h: 94 };
+}
+function hitEchoClones(owner, shapes, floor3, reachable) {
+  let hit = false;
+  for (const clone2 of owner.omnitrix?.echoClones ?? []) {
+    if (clone2.fading || clone2.age < emergeTicks || !shapes.some((shape) => reachable(shape, clone2.x) && shapeHitsRect(shape, echoCloneHurtbox(clone2, floor3)))) continue;
+    clone2.fading = fadeTicks;
+    delete clone2.action;
+    hit = true;
+  }
+  return hit;
+}
+function clearStage7(owner) {
+  const watch = owner.omnitrix;
+  if (!watch) return;
+  delete watch.echoClones;
+  watch.objects = watch.objects.filter(({ id }) => {
+    const type = benObjectMove(id)?.ben?.field?.type;
+    return type !== "gravityWell" && type !== "gravityPulse" && type !== "sonic" && type !== "sonicAssist";
+  });
+}
+function gravityAt(owner, x, y, floor3) {
+  if (owner.omnitrix?.active !== "gravattack") return;
+  return owner.omnitrix.objects.find((object) => {
+    const field = benObjectMove(object.id)?.ben?.field;
+    return field?.type === "gravityWell" && object.age > 0 && object.age < field.life && Math.abs(x - object.x) < field.width / 2 && y >= floor3 - field.height && y <= floor3;
+  });
+}
+function planetoid(f) {
+  return f.state === "attack" && f.moveId === "gravityDomain_medium" && f.stateFrame >= 13 && f.stateFrame < 34;
+}
+function tickEchoClones(owner, target, frame, floor3, obstructed) {
+  const watch = owner.omnitrix;
+  if (watch?.active !== "echoEcho") return;
+  const move = owner.state === "attack" ? owner.move : void 0;
+  const age = owner.stateFrame;
+  const clones = watch.echoClones ??= [];
+  const split = move?.ben?.echoSplit;
+  if (move && split && (age === move.startup || split === 2 && age === move.startup + 7) && clones.length < 2) {
+    const slot = clones.some((clone2) => clone2.slot === 0) ? 1 : 0;
+    const positions = slot === 0 ? [-66, 70, -99, 104] : [77, -116, 116, -89];
+    const x = positions.map((offset) => clamp7(owner.x + offset * owner.facing, 26, 1254)).find((point) => Math.abs(point - owner.x) >= 36 && Math.abs(point - target.x) >= 26 && clones.every((clone2) => Math.abs(clone2.x - point) >= 41) && !obstructed(point));
+    if (x !== void 0) clones.push({
+      id: frame * 2 + slot,
+      slot,
+      x,
+      age: 0,
+      fading: 0,
+      cooldown: 0,
+      facing: owner.facing,
+      moving: false
+    });
+    watch.echoCooldown = 93;
+  }
+  const ready = clones.filter((clone2) => clone2.age >= emergeTicks && !clone2.fading && !clone2.cooldown && !clone2.action);
+  if (move && age === move.startup && owner.moveId === "stand_light") {
+    const helper = ready.find((clone2) => Math.abs(clone2.x - target.x) <= 63 && Math.abs(target.y - floor3) <= 45);
+    if (helper) helper.action = { kind: "jab", tick: -4, aim: target.x };
+  }
+  if (move?.ben?.echoHarmony && age === move.startup) {
+    const range = move.ben.echoHarmony === 2 ? 245 : 173;
+    const center = clamp7(owner.x + owner.facing * (move.ben.echoHarmony === 2 ? 127 : 83), 30, 1250);
+    ready.filter((clone2) => Math.abs(clone2.x - owner.x) < range).forEach((clone2, i) => {
+      clone2.action = { kind: "wave", tick: -6 - i * 6, aim: center };
+    });
+  }
+  watch.echoClones = clones.filter((clone2) => {
+    clone2.moving = false;
+    if (clone2.fading) return --clone2.fading > 0;
+    if (++clone2.age >= cloneLife) {
+      clone2.fading = fadeTicks;
+      delete clone2.action;
+      return true;
+    }
+    if (clone2.cooldown > 0) clone2.cooldown--;
+    if (clone2.age < emergeTicks) return true;
+    if (clone2.action) {
+      const action = clone2.action;
+      clone2.facing = action.aim >= clone2.x ? 1 : -1;
+      if (++action.tick === 4) {
+        const id = action.kind === "jab" ? "echoCopyJab" : "echoCopyWave";
+        const field = benObjectMove(id).ben.field;
+        watch.objects.push({
+          id,
+          sourceClone: clone2.id,
+          x: clamp7(clone2.x + clone2.facing * field.offset, 12, 1268),
+          y: floor3 - field.height,
+          direction: clone2.facing,
+          age: 0,
+          spent: false,
+          cast: frame
+        });
+        clone2.cooldown = action.kind === "jab" ? 35 : 29;
+      }
+      if (action.tick >= 14) delete clone2.action;
+      return true;
+    }
+    const desired = clamp7(owner.x + (clone2.slot === 0 ? -65 : 76) * owner.facing, 26, 1254);
+    const next = clone2.x + clamp7(desired - clone2.x, -4, 4);
+    if (Math.abs(next - owner.x) >= 25 && Math.abs(next - target.x) >= 25 && clones.every((other) => other === clone2 || other.fading || Math.abs(other.x - next) >= 31) && !obstructed(next)) {
+      clone2.moving = Math.abs(next - clone2.x) > 1;
+      clone2.x = next;
+    }
+    clone2.facing = target.x < clone2.x ? -1 : 1;
+    return true;
+  });
 }
 
 // src/data/luffy-jet-gigant.json
@@ -21694,15 +25405,15 @@ var jetStartupClip = {
   frames: initial.map(([name]) => luffy_jet_poses_default[name].frame),
   durations: initial.map(([, ticks]) => ticks)
 };
-var clamp4 = (v, low, high) => Math.max(low, Math.min(high, v));
-var linear = (t, from, to) => clamp4((t - from) / (to - from), 0, 1);
-var ease2 = (v) => v * v * (3 - 2 * v);
-var mix2 = (a, b, v) => a + (b - a) * v;
+var clamp8 = (v, low, high) => Math.max(low, Math.min(high, v));
+var linear = (t, from, to) => clamp8((t - from) / (to - from), 0, 1);
+var ease5 = (v) => v * v * (3 - 2 * v);
+var mix6 = (a, b, v) => a + (b - a) * v;
 var interp = (a, b, v) => ({
-  x: mix2(a.x, b.x, v),
-  y: mix2(a.y, b.y, v)
+  x: mix6(a.x, b.x, v),
+  y: mix6(a.y, b.y, v)
 });
-var bound = (x) => clamp4(x, 40, 1240);
+var bound = (x) => clamp8(x, 40, 1240);
 function arm(cel, tip, radius = 7, bend = 0, slot = 0) {
   const joints = luffy_jet_poses_default[cel].joints;
   const root = joints[slot] ?? joints[0];
@@ -21725,9 +25436,9 @@ function jetOpener(f) {
   if (f.state !== "attack" || f.moveId !== jetId) return;
   const t = f.stateFrame;
   if (t < 59 || t >= 76) return;
-  const active2 = t >= luffy_jet_gigant_default.startup && t < luffy_jet_gigant_default.startup + luffy_jet_gigant_default.active;
+  const active3 = t >= luffy_jet_gigant_default.startup && t < luffy_jet_gigant_default.startup + luffy_jet_gigant_default.active;
   const root = luffy_jet_poses_default.pistol.joints[0];
-  const reach = t < luffy_jet_gigant_default.startup ? ease2(linear(t + 1, 59, luffy_jet_gigant_default.startup)) : 1 - ease2(linear(t, luffy_jet_gigant_default.startup + luffy_jet_gigant_default.active - 1, 76));
+  const reach = t < luffy_jet_gigant_default.startup ? ease5(linear(t + 1, 59, luffy_jet_gigant_default.startup)) : 1 - ease5(linear(t, luffy_jet_gigant_default.startup + luffy_jet_gigant_default.active - 1, 76));
   const forward = f.facing > 0 ? 1247 - f.x : f.x - 33;
   const gap = f.opponent ? (f.opponent.x - f.x) * f.facing : 0;
   const extension = Math.min(
@@ -21735,16 +25446,16 @@ function jetOpener(f) {
     forward - 8,
     gap > 0 ? Math.max(root.x + 6, gap - 8) : 144
   );
-  const x = mix2(root.x + 6, extension, reach);
+  const x = mix6(root.x + 6, extension, reach);
   const geometry = arm(
     "pistol",
-    { x, y: mix2(root.y + 3, -89, reach) },
+    { x, y: mix6(root.y + 3, -89, reach) },
     7,
     -3 * reach
   );
   return {
     ...geometry,
-    hitboxes: active2 ? [
+    hitboxes: active3 ? [
       {
         a: geometry.tip,
         b: { x: geometry.tip.x + 9, y: geometry.tip.y },
@@ -21761,46 +25472,46 @@ function track2(t, keys) {
   }
   const [from, x, y] = keys[at - 1];
   const [to, endX, endY] = keys[at];
-  return interp({ x, y }, { x: endX, y: endY }, ease2(linear(t, from, to)));
+  return interp({ x, y }, { x: endX, y: endY }, ease5(linear(t, from, to)));
 }
 var rushHits = luffy_jet_gigant_default.hits.filter((hit) => hit.kind === "gatling");
 function jetScene(s) {
-  const t = s.tick, side = s.facing, floor = 580;
+  const t = s.tick, side = s.facing, floor3 = 580;
   const target = (offset) => bound(s.targetX + side * offset);
   const startGap = Math.max(62, (s.targetX - s.originX) * side);
   const back = (x, gap) => bound(x - side * gap);
   const end = target(237);
   const victim = track2(t, [
     [0, s.targetX, s.targetY],
-    [16, target(14), floor],
-    [32, target(23), floor],
-    [60, target(28), floor],
-    [82, target(108), floor],
-    [92, target(118), floor],
-    [163, target(154), floor],
+    [16, target(14), floor3],
+    [32, target(23), floor3],
+    [60, target(28), floor3],
+    [82, target(108), floor3],
+    [92, target(118), floor3],
+    [163, target(154), floor3],
     [208, target(180), 376],
     [235, target(185), 342],
     [272, target(198), 367],
-    [299, end, floor],
-    [406, end, floor]
+    [299, end, floor3],
+    [406, end, floor3]
   ]);
   const attacker = track2(t, [
-    [0, s.originX, floor],
-    [9, back(target(12), startGap), floor],
-    [16, back(target(14), 88), floor],
-    [32, back(target(23), 95), floor],
-    [49, back(target(27), 107), floor],
-    [60, back(target(28), 101), floor],
-    [69, back(target(64), 136), floor],
-    [88, back(target(114), 101), floor],
-    [163, back(target(154), 86), floor],
-    [180, back(target(160), 101), floor],
-    [221, back(target(182), 174), floor],
+    [0, s.originX, floor3],
+    [9, back(target(12), startGap), floor3],
+    [16, back(target(14), 88), floor3],
+    [32, back(target(23), 95), floor3],
+    [49, back(target(27), 107), floor3],
+    [60, back(target(28), 101), floor3],
+    [69, back(target(64), 136), floor3],
+    [88, back(target(114), 101), floor3],
+    [163, back(target(154), 86), floor3],
+    [180, back(target(160), 101), floor3],
+    [221, back(target(182), 174), floor3],
     [243, back(target(189), 204), 519],
     [272, back(target(198), 240), 493],
     [286, back(end, 223), 511],
-    [319, back(end, 162), floor],
-    [406, back(end, 162), floor]
+    [319, back(end, 162), floor3],
+    [406, back(end, 162), floor3]
   ]);
   const phase = t < 9 ? "jetPistol" : t < 81 ? "jetBazooka" : t < 177 ? "jetGatling" : t < 246 ? "gearThird" : t < 305 ? "gigantPistol" : "return";
   const aim = {
@@ -21819,7 +25530,7 @@ function jetScene(s) {
     );
     limbs.push({ geometry: arm(name, tip, 7, -3 * reach, slot), rear });
   };
-  const pulse = (hit, wind, recovery2) => t < hit ? ease2(linear(t, hit - wind, hit)) : 1 - ease2(linear(t, hit + 1, hit + recovery2));
+  const pulse = (hit, wind, recovery3) => t < hit ? ease5(linear(t, hit - wind, hit)) : 1 - ease5(linear(t, hit + 1, hit + recovery3));
   if (t < 9) {
     cel = "pistol";
     const root = luffy_jet_poses_default.pistol.joints[0];
@@ -21829,7 +25540,7 @@ function jetScene(s) {
         interp(
           s.openingTip,
           { x: root.x + 14, y: root.y + 1 },
-          ease2(linear(t, 1, 9))
+          ease5(linear(t, 1, 9))
         ),
         7,
         -3
@@ -21842,9 +25553,9 @@ function jetScene(s) {
   } else if (t < 73) {
     cel = t < 54 ? "bazookaWindup" : "bazooka";
     if (cel === "bazooka") {
-      const p = pulse(60, 6, 13);
-      strike(cel, p, aim.y - 10, 1, true);
-      strike(cel, p, aim.y + 7);
+      const p3 = pulse(60, 6, 13);
+      strike(cel, p3, aim.y - 10, 1, true);
+      strike(cel, p3, aim.y + 7);
     }
   } else if (t < 154) {
     const index = rushHits.findIndex(
@@ -21860,12 +25571,12 @@ function jetScene(s) {
       );
   } else if (t < 177) {
     cel = "launcher";
-    const p = pulse(163, 8, 13);
+    const p3 = pulse(163, 8, 13);
     const root = luffy_jet_poses_default[cel].joints[0];
     const end2 = { x: aim.x - 2, y: Math.max(-148, aim.y - 14) };
     const geometry = arm(
       cel,
-      interp({ x: root.x + 9, y: root.y - 9 }, end2, p),
+      interp({ x: root.x + 9, y: root.y - 9 }, end2, p3),
       7,
       4
     );
@@ -21881,11 +25592,11 @@ function jetScene(s) {
       y: root.y - 13
     };
     const contact = { x: aim.x - luffy_jet_fists_default[giant].nose + 13, y: aim.y };
-    const advance = t < 272 ? ease2(linear(t, 254, 272)) : 1 - ease2(linear(t, 275, 305));
+    const advance = t < 272 ? ease5(linear(t, 254, 272)) : 1 - ease5(linear(t, 275, 305));
     const tip = interp(windup, contact, advance);
     const geometry = arm(cel, tip, Math.min(12, 7 + giant), -10 * advance);
     geometry.radii = geometry.radii.map(
-      (radius, i, radii) => mix2(radius, luffy_jet_fists_default[giant].wrist, ease2(i / Math.max(1, radii.length - 1)))
+      (radius, i, radii) => mix6(radius, luffy_jet_fists_default[giant].wrist, ease5(i / Math.max(1, radii.length - 1)))
     );
     const reverse = tip.x < root.x;
     if (geometry.centers.length >= 4) {
@@ -21908,8 +25619,8 @@ function jetScene(s) {
   }
   const lastHit = luffy_jet_gigant_default.hits.filter((hit) => hit.tick <= t).at(-1);
   const victimClip = t >= 299 ? "downed" : t >= 272 ? "falling" : t >= 205 ? "damageAir" : t >= 163 ? "launched" : "damageHeavy";
-  const release = ease2(linear(t, 364, luffy_jet_gigant_default.duration));
-  const scale = mix2(mix2(1.48, 1.21, ease2(linear(t, 219, 249))), 1, release);
+  const release = ease5(linear(t, 364, luffy_jet_gigant_default.duration));
+  const scale = mix6(mix6(1.48, 1.21, ease5(linear(t, 219, 249))), 1, release);
   const midX = (attacker.x + victim.x) / 2;
   const visibleHalfWidth = 640 / scale;
   const shake = t === 272 || t === 299 ? (s.hold % 3 - 1) * 7 : t > 299 && t < 313 ? Math.round((313 - t) / 3) * (t % 2 ? 1 : -1) : 0;
@@ -21927,12 +25638,12 @@ function jetScene(s) {
     },
     camera: {
       scale,
-      x: mix2(
-        clamp4(midX, visibleHalfWidth, 1280 - visibleHalfWidth),
+      x: mix6(
+        clamp8(midX, visibleHalfWidth, 1280 - visibleHalfWidth),
         640,
         release
       ),
-      y: mix2(mix2(432, 386, ease2(linear(t, 170, 236))), 360, release),
+      y: mix6(mix6(432, 386, ease5(linear(t, 170, 236))), 360, release),
       shakeX: shake,
       shakeY: -Math.round(shake / 2)
     },
@@ -21942,7 +25653,10 @@ function jetScene(s) {
 
 // src/engine/combat.ts
 var character = pacedCharacter(samurai_default);
-var FLOOR = 580;
+var FLOOR2 = 580;
+function scaledBenBox(box, scale) {
+  return scale === 1 ? box : { x: box.x * scale, y: box.y * scale, w: box.w * scale, h: box.h * scale };
+}
 var Fighter = class {
   constructor(data2, id, x) {
     this.data = data2;
@@ -21950,6 +25664,7 @@ var Fighter = class {
     this.x = x;
     this.homeX = x;
     this.health = data2.health;
+    if (data2.id === benId) this.omnitrix = newOmnitrix();
     this.facing = id === 0 ? 1 : -1;
     Object.defineProperty(this, "opponent", {
       value: void 0,
@@ -21964,7 +25679,7 @@ var Fighter = class {
     if (data2.companion) this.stand = new CombatStand(data2.companion, this);
   }
   x = 0;
-  y = FLOOR;
+  y = FLOOR2;
   vx = 0;
   vy = 0;
   facing = 1;
@@ -21975,6 +25690,11 @@ var Fighter = class {
   stun = 0;
   moveId = "";
   connected = false;
+  kanekiCaptured;
+  kanekiThrowLink;
+  kanekiLimb;
+  kanekiBurrowX;
+  kanekiSpecialRecovery;
   hitConfirmed = false;
   reverseBeatUsed = false;
   hitIds = [];
@@ -21985,10 +25705,14 @@ var Fighter = class {
   dashDirection = 1;
   jumpDirection = 0;
   airChaseTicks = 0;
+  chill;
   gokuTeleportLock = 0;
   gokuAirTeleportUsed = false;
   gokuAirTeleportsUsed = 0;
   gokuCastSerial = 0;
+  sasukeCurse;
+  omnitrix;
+  kirinCursed;
   homeX;
   guardIntent = false;
   blockCrouched = false;
@@ -22001,11 +25725,37 @@ var Fighter = class {
   input = neutral();
   buffer = new CommandBuffer();
   stand;
+  get benForm() {
+    const active3 = this.omnitrix?.active;
+    if (active3 === "nrg" && this.omnitrix?.nrgReleased) return nrgReleasedForm;
+    return active3 && active3 !== "human" ? benForms[active3] : void 0;
+  }
+  get benScale() {
+    const growth = this.omnitrix?.active === "humungousaur" && this.omnitrix.growth;
+    return growth ? benFormBalance.growth[growth.rank].scale : 1;
+  }
+  get movementData() {
+    return this.benForm?.movement ?? this.data;
+  }
+  get normalMoves() {
+    return this.benForm?.moves ?? this.data.moves;
+  }
+  get grabSequence() {
+    return this.benForm?.grab ?? this.data.grabSequence;
+  }
+  get stageInset() {
+    return Math.max(40, (this.benForm?.width ?? 52) * this.benScale / 2);
+  }
   get airborne() {
-    return this.y < FLOOR || this.vy < 0;
+    return this.y < FLOOR2 || this.vy < 0;
   }
   get move() {
-    return this.data.moves[this.moveId] ?? this.data.specialMoves?.[this.moveId] ?? this.data.superMoves?.[this.moveId];
+    return this.lookupMove(this.moveId);
+  }
+  lookupMove(id) {
+    if (id === kirinId && (this.moveId === id ? this.kirinCursed : winged(this)))
+      return kirinCurseOpener;
+    return curseMove(this, id) ?? this.normalMoves[id] ?? this.data.specialMoves?.[id] ?? this.data.superMoves?.[id];
   }
   get temporalActive() {
     return this.match?.temporal.active && this.match.temporal.s.owner === this.id;
@@ -22015,23 +25765,23 @@ var Fighter = class {
   }
   canSpecialCancel() {
     if (this.data.id === "goku") return canCancelGokuSpecial(this);
-    return !this.airborne && !this.move?.special && !this.move?.super && (!["luffy", "sasuke"].includes(this.data.id) || this.hitConfirmed) && this.canCancel("special");
+    return !this.airborne && !this.move?.special && !this.move?.super && (!["luffy", "sasuke", "kaneki"].includes(this.data.id) || this.hitConfirmed) && this.canCancel("special");
   }
   canStartSpecial(id) {
     if (this.data.id === "goku") return canStartGokuSpecial(this, id);
-    const move = this.data.specialMoves?.[id];
+    const move = (winged(this) ? sasukeCurseMoves[id] : void 0) ?? this.data.specialMoves?.[id];
     if (!move || this.airborne || !(["idle", "walk", "crouch", "dash", "landing", "jumpStart"].includes(
       this.state
     ) || this.canSpecialCancel()))
       return false;
     if (move.special === "timeStop" && !this.match?.temporal.canActivate(this.id))
       return false;
-    if (move.projectile && this.match && this.match.projectiles.filter((p) => p.owner === this.id).length + move.projectile.releases.length > dio_specials_default.knives.maximumPerOwner)
+    if (move.projectile && this.match && this.match.projectiles.filter((p3) => p3.owner === this.id).length + move.projectile.releases.length > dio_specials_default.knives.maximumPerOwner)
       return false;
     if (this.data.id === "sasuke" && isSasukeSpecial(id) && this.match) {
-      const shots = sasukeTechniques[id].shots;
+      const shots = (winged(this) ? curseSpecials : sasukeTechniques)[id].shots;
       if (shots && this.match.kiProjectiles.filter(
-        (p) => p.owner === this.id && p.state === "flight"
+        (p3) => p3.owner === this.id && p3.state === "flight"
       ).length + shots.length > sasukeSpecialBalance.maximumProjectiles) return false;
     }
     if (move.stand && !this.stand?.canBegin(this.canSpecialCancel()))
@@ -22060,7 +25810,9 @@ var Fighter = class {
     return this.canSpecialCancel();
   }
   canStartSuper() {
-    if (this.match?.cinematicActive) return false;
+    if (this.match?.cinematicActive || this.omnitrix) return false;
+    if (this.data.id === "kaneki") return canStartCentipede(this);
+    if (this.data.id === "sasuke") return canStartKirin(this);
     if (this.data.id === "luffy")
       return !!this.data.superMoves?.[jetId] && this.meter >= luffy_jet_gigant_default.cost && !this.airborne && !this.match?.capture && (["idle", "walk", "crouch", "dash", "landing", "jumpStart"].includes(this.state) || this.hitConfirmed && this.canSuperCancel());
     if (this.data.id === "samurai") {
@@ -22080,9 +25832,10 @@ var Fighter = class {
   }
   hurtboxes() {
     if (gokuInvisible(this)) return [];
+    if (planetoid(this)) return [worldRect({ x: -50, y: -118, w: 105, h: 116 }, this.x, this.y, this.facing)];
     const lift = this.stand?.s.ownerLiftFrame ?? -1;
     const pose = this.state === "attack" && this.move ? poseAt(this.move, this.stateFrame) : void 0;
-    const neutral2 = this.data.hurtboxes;
+    const neutral2 = this.benForm?.hurtboxes ?? this.data.hurtboxes;
     const jumpPose = lift > 0 && this.airborne && ["air", "attack"].includes(this.state) && this.data.commandTransitions ? poseAt(this.data.commandTransitions.jump, lift - 1) : void 0;
     let boxes = jumpPose?.hurtboxes ?? pose?.hurtboxes ?? reactionBoxes(this) ?? (this.crouching ? neutral2?.crouching : this.airborne ? neutral2?.air : neutral2?.standing) ?? [
       {
@@ -22100,14 +25853,28 @@ var Fighter = class {
       const grip = luffyGrabLimb(this) ?? jetOpener(this);
       if (grip) boxes = [...boxes, ...grip.limbHurtboxes.map(shapeBounds)];
     }
-    return boxes.map((box) => worldRect(box, this.x, this.y, this.facing));
+    const world = boxes.map((box) => worldRect(scaledBenBox(box, this.benScale), this.x, this.y, this.facing));
+    if (this.data.id === "kaneki" && this.state === "attack") {
+      for (const limb of kanekiOffensiveKagunes(this, FLOOR2)) {
+        for (let i = 12; i < limb.spine.length; i += 4) {
+          const a = limb.spine[i - 4], b = limb.spine[i];
+          if ((b.x - this.x) * this.facing < 37 || limb.floorClip !== void 0 && Math.max(a.y, b.y) >= FLOOR2) continue;
+          world.push(shapeBounds({ a, b, r: limb.radius[i - 2] + 1 }));
+        }
+      }
+    }
+    return world;
   }
   get invulnerability() {
     const window2 = this.state === "attack" ? this.move?.invulnerable : void 0;
     return window2 && this.stateFrame >= window2.from && this.stateFrame < window2.to ? window2 : void 0;
   }
+  get benPhase() {
+    const phase = this.state === "attack" ? this.move?.ben?.phase : void 0;
+    return phase && this.stateFrame >= phase.from && this.stateFrame < phase.to ? phase : void 0;
+  }
   get invulnerable() {
-    return gokuInvisible(this) || this.state === "getup" || !!this.invulnerability && !this.invulnerability.upperOnly;
+    return gokuInvisible(this) || this.state === "getup" || Boolean(this.benPhase && !this.benPhase.physicalOnly) || !!this.invulnerability && !this.invulnerability.upperOnly;
   }
   get counterWindow() {
     return this.state === "counter" && this.stateFrame >= cinematics_default.counter.entry && this.stateFrame < cinematics_default.counter.windowEnd;
@@ -22124,8 +25891,10 @@ var Fighter = class {
     return this.move?.hitWindows ? !!this.hitWindow && !this.hitIds.includes(this.hitWindow.id) : !this.connected;
   }
   canCancel(name) {
+    if (this.benForm && !this.hitConfirmed) return false;
+    if (this.sasukeCurse?.phase === "ending") return false;
     const window2 = this.move?.cancelWindow;
-    const reverse = name === "light" && combat_pace_default.cancel.reverseBeatOnHit && this.hitConfirmed && !this.reverseBeatUsed && !this.airborne && this.move?.rank === 2 && !this.move?.special;
+    const reverse = name === "light" && !this.benForm && combat_pace_default.cancel.reverseBeatOnHit && this.hitConfirmed && !this.reverseBeatUsed && !this.airborne && this.move?.rank === 2 && !this.move?.special;
     if (!this.hitConfirmed && (name === "jump" || name === "special" && (this.move?.rank ?? 0) >= 3))
       return false;
     return this.state === "attack" && this.connected && (!!this.move?.cancels.includes(name) || reverse) && (this.hitConfirmed || this.stateFrame <= (this.move?.startup ?? 0) + (this.move?.active ?? 0) + combat_pace_default.cancel.blockTailTicks) && (!window2 || this.stateFrame >= window2.fromTick && this.stateFrame <= window2.toTick);
@@ -22133,38 +25902,100 @@ var Fighter = class {
   canCancelMove(id) {
     return this.canCancel(id.split("_").at(-1)) && (id.endsWith("_light") || !this.move?.cancelMoves || this.move.cancelMoves.includes(id));
   }
-  pushbox() {
-    return { x: this.x - 26, y: this.y - 90, w: 52, h: 90 };
+  pushbox(form = this.benForm, x = this.x, scale = this.benScale) {
+    const w = (form?.width ?? 52) * scale, h = (form?.pushHeight ?? 90) * scale;
+    return { x: x - w / 2, y: this.y - h, w, h };
   }
   hitbox() {
     const shapes = this.attackShapes();
     return shapes.length ? unionBounds(shapes.map(shapeBounds)) : void 0;
   }
-  attackShapes() {
+  attackShapes(previousX = this.x) {
     const m = this.move;
     if (this.state !== "attack" || !m || this.stateFrame < m.startup || this.stateFrame >= m.startup + m.active)
       return [];
+    if (m.ben?.leap && (this.airborne || !this.omnitrix?.landingStrike)) return [];
     const pose = poseAt(m, this.stateFrame);
+    if (this.data.id === "kaneki") {
+      if (m.kind === centipedeId) return centipedeContact(this);
+      const special2 = kanekiSpecialShapes(this, FLOOR2);
+      if (special2) return special2;
+      const limbs2 = kanekiOffensiveKagunes(this, FLOOR2);
+      if (limbs2.length) return limbs2.map((limb) => ({
+        a: limb.spine[limb.spine.length - 5],
+        b: limb.tip,
+        r: this.moveId === "throw" ? 16 : 13
+      }));
+    }
     if (m.hitWindows && !this.hitWindow) return [];
+    if (m.ben?.spectralReach) return spectralPaths(m, this.stateFrame).flatMap(
+      (path) => path.slice(2, -1).map((a, i) => worldCapsule({ a, b: path[i + 3], r: 12 }, this.x, this.y, this.facing))
+    );
+    if (m.ben && (m.ben.field || !m.box.w && !m.ben.cable || m.ben.confirmHits && this.hitWindow?.id && !this.hitConfirmed)) return [];
     if (m.stand) return this.stand?.hitboxes(this) ?? [];
-    if (m.special && isSasukeSpecial(m.special))
-      return sasukeSpecialContact(m.special, this.stateFrame - m.startup, this.facing, this.x).map((shape) => worldCapsule(shape, this.x, this.y, this.facing));
+    if (m.special === "chidori" && pose?.release) {
+      const hand = pose.release;
+      const touch = worldCapsule(
+        { a: { x: hand.x - 17, y: hand.y + 4 }, b: hand, r: winged(this) ? 23 : 20 },
+        this.x,
+        this.y,
+        this.facing
+      );
+      if (previousX !== this.x) return [touch, {
+        a: { x: touch.b.x + previousX - this.x, y: touch.b.y },
+        b: touch.b,
+        r: touch.r
+      }];
+      return [touch];
+    }
+    if (m.special === "nagashi")
+      return nagashiVolumes(this.stateFrame - m.startup, winged(this)).map((shape) => worldCapsule(shape, this.x, this.y, this.facing));
+    if (m.special && isSasukeSpecial(m.special)) {
+      const age = this.stateFrame - m.startup;
+      const shapes = winged(this) && pose?.release ? curseSpecialContact(m.special, age, this.facing, this.x, pose.release) : sasukeSpecialContact(m.special, age, this.facing, this.x);
+      return shapes.map((shape) => worldCapsule(shape, this.x, this.y, this.facing));
+    }
     const limbs = luffyAttackLimbs(this);
     if (limbs.length)
       return limbs.flatMap((limb) => limb.hitboxes.map((shape) => worldCapsule(shape, this.x, this.y, this.facing)));
     if (m.kind === "jetGigant")
       return jetOpener(this)?.hitboxes.map((shape) => worldCapsule(shape, this.x, this.y, this.facing)) ?? [];
+    if (m.ben?.technique === "conductor") return feedbackConductorContact(m, this.stateFrame).map((shape) => worldCapsule(shape, this.x, this.y, this.facing));
+    if (m.ben?.cable) return feedbackCablePaths(m.ben.cable, this.stateFrame, m).flatMap(
+      (points) => points.slice(-4, -1).map((a, i) => worldCapsule(
+        { a, b: points[points.length - 3 + i], r: 12 },
+        this.x,
+        this.y,
+        this.facing
+      ))
+    );
     if (m.kind === "grab") {
       if (this.data.id === "luffy") {
         const grip = luffyGrabLimb(this);
         return grip?.hitboxes.map((shape) => worldCapsule(shape, this.x, this.y, this.facing)) ?? [];
       }
-      return [worldRect(m.box, this.x, this.y, this.facing)];
+      return [worldRect(scaledBenBox(m.box, this.benScale), this.x, this.y, this.facing)];
     }
-    const body = pose?.hitboxes ? pose.hitboxes.map(
+    const body2 = pose?.hitboxes ? pose.hitboxes.map(
       (shape) => "a" in shape ? worldCapsule(shape, this.x, this.y, this.facing) : worldRect(shape, this.x, this.y, this.facing)
-    ) : pose?.blade ? [worldCapsule(pose.blade, this.x, this.y, this.facing)] : pose ? [] : [worldRect(m.box, this.x, this.y, this.facing)];
-    return [...body, ...this.stand?.hitboxes(this) ?? []];
+    ) : pose?.blade ? [worldCapsule(pose.blade, this.x, this.y, this.facing)] : pose ? [] : [worldRect(scaledBenBox(m.box, this.benScale), this.x, this.y, this.facing)];
+    if (m.ben?.effect === "tail") {
+      const { x, y, w, h } = scaledBenBox(m.box, this.benScale);
+      const radius = Math.min(14, h / 3);
+      return [worldCapsule({
+        a: { x: x + radius, y: y + radius },
+        b: { x: x + w - radius, y: y + h - radius },
+        r: radius
+      }, this.x, this.y, this.facing)];
+    }
+    if (m.ben && m.drive && previousX !== this.x) {
+      return body2.map((shape) => {
+        const rect2 = shapeBounds(shape);
+        const delta = previousX - this.x;
+        return { ...rect2, x: rect2.x + Math.min(0, delta), w: rect2.w + Math.abs(delta) };
+      });
+    }
+    return [...body2, ...this.stand?.hitboxes(this) ?? []];
   }
   setState(s, preserveStand = false) {
     if (!preserveStand && (this.state === "attack" || this.stand?.s.mode === "link"))
@@ -22172,21 +26003,50 @@ var Fighter = class {
         this,
         ["hitstun", "blockstun", "ko", "grabbed"].includes(s)
       );
+    if (this.benForm && this.omnitrix) {
+      if (s !== "attack") {
+        delete this.omnitrix.maneuverX;
+        delete this.omnitrix.landingStrike;
+      }
+      if (s === "crouch") this.omnitrix.crouchExit = 0;
+      else if (this.state === "crouch" && (s === "idle" || s === "walk")) this.omnitrix.crouchExit = 5;
+    }
     this.state = s;
+    if (this.omnitrix && !omnitrixCanBrowse(s)) cancelOmnitrix(this.omnitrix);
     this.stand?.react(this);
     this.stateFrame = 0;
     this.reactionPhase = "";
     this.reactionFrame = 0;
     if (s !== "attack") {
+      this.kanekiThrowLink = void 0;
+      this.kanekiLimb = void 0;
+      this.kanekiBurrowX = void 0;
+      if (s !== "throwRecover") this.kanekiSpecialRecovery = void 0;
       this.moveId = "";
+      this.kirinCursed = void 0;
       this.connected = false;
       this.hitConfirmed = false;
       this.hitIds = [];
     }
   }
   attack(id) {
-    const m = this.data.moves[id] ?? this.data.specialMoves?.[id] ?? this.data.superMoves?.[id];
-    if (!m || this.meter < (m.cost ?? 0)) return false;
+    const phase = this.sasukeCurse?.phase;
+    if (id === curseAwaken && !canAwaken(this)) return false;
+    if (id === curseRevert ? phase !== "ending" : phase === "ending") return false;
+    const m = this.lookupMove(id);
+    if (!m || this.meter < (m.cost ?? 0) || this.omnitrix?.transition) return false;
+    const watch = this.omnitrix;
+    const ben2 = m.ben;
+    if (ben2?.grow && watch?.growthCooldown) return false;
+    if (ben2?.nrgMode === "release" && watch?.nrgCooldown) return false;
+    if (ben2?.echoSplit && (watch?.echoCooldown || (watch?.echoClones?.length ?? 0) >= 2)) return false;
+    if (ben2?.technique === "ghostPhase" && watch?.ghostCooldown) return false;
+    if (ben2?.airUse === "flight" && watch?.flightUsed || ben2?.airUse === "dive" && watch?.diveUsed) return false;
+    if (m.ben?.technique && this.omnitrix) {
+      if (this.opponent?.combo && this.omnitrix.usedSpecials.includes(m.ben.technique)) return false;
+      if (m.ben.field && this.omnitrix.objects.some((object) => benObjectMove(object.id)?.ben?.field?.type === m.ben?.field?.type)) return false;
+      if (this.opponent?.combo) this.omnitrix.usedSpecials.push(m.ben.technique);
+    }
     if (m.kind === "ultimate" && !this.canStartSuper()) return false;
     if (m.super && !this.canStartSuper()) return false;
     if (m.special && !this.canStartSpecial(id)) return false;
@@ -22198,8 +26058,25 @@ var Fighter = class {
       this.reverseBeatUsed = true;
     const superLink = m.kind === "gokuFury" && combat_pace_default.cancel.gokuSuperLink && this.canSuperCancel() && this.hitConfirmed && this.opponent?.state === "hitstun";
     this.meter -= m.cost ?? 0;
+    const kaneki2 = this.data.id === "kaneki";
+    const technique = kaneki2 ? kanekiTechnique(id) : void 0;
+    const captureLink = kaneki2 && (id === "throw" || !!technique) && this.state === "attack" && this.hitConfirmed;
     this.setState("attack", chain);
+    this.kanekiThrowLink = captureLink || void 0;
+    this.kanekiLimb = technique?.family === "fourSwords" ? "lowerRear" : technique?.family === "rinkakuRush" ? "upperFront" : kaneki2 && (id === "throw" || technique?.family === "kaguneGrab") ? this.input.down ? "lowerRear" : "lowerFront" : kaneki2 && id === "air_heavy" ? this.vy > 0 ? "upperFront" : "upperRear" : void 0;
+    if (technique?.family === "fourSwords") {
+      const gap = ((this.opponent?.x ?? this.x + this.facing * technique.reach) - this.x) * this.facing;
+      this.kanekiBurrowX = Math.max(8, Math.min(1272, this.x + this.facing * Math.max(42, Math.min(technique.reach, gap - 7))));
+    } else this.kanekiBurrowX = void 0;
     this.moveId = id;
+    if (watch) {
+      if ((ben2?.burrow || ben2?.leap) && this.opponent) watch.maneuverX = benManeuverTarget(this, this.opponent, m);
+      delete watch.landingStrike;
+      if (ben2?.nightmare) watch.ghostCooldown = (id.endsWith("_medium") ? 133 : 86) + m.startup + m.active + m.recovery;
+      if (ben2?.airUse === "flight") watch.flightUsed = true;
+      if (ben2?.airUse === "dive") watch.diveUsed = true;
+    }
+    this.kirinCursed = id === kirinId ? winged(this) : void 0;
     if (this.data.id === "goku" && m.special) {
       this.gokuCastSerial++;
       this.airChaseTicks = 0;
@@ -22222,7 +26099,27 @@ var Fighter = class {
     }
     return true;
   }
+  bufferedBenSpecial(button) {
+    const watch = this.omnitrix;
+    if (!watch || !this.benForm) return;
+    const id = benSpecialCommand(watch.nrgReleased ? "nrgReleased" : watch.active, this.buffer, button);
+    if (id && (!this.airborne || this.lookupMove(id)?.ben?.air)) return id;
+  }
   tick(input, frame, opponent) {
+    const chill = this.chill;
+    if (chill) {
+      if (chill.immune > 0) chill.immune--;
+      if (chill.freeze > 0) chill.freeze--;
+      if (chill.ticks > 0) chill.ticks--;
+      else chill.build = Math.max(0, chill.build - 2);
+      if (!this.combo) chill.used = false;
+      if (!chill.build && !chill.immune && !chill.used) this.chill = void 0;
+    }
+    if (this.omnitrix) {
+      const combatButton = (button) => button !== "heavy" && button !== "ultimate" && (!this.omnitrix.transition || !["light", "medium", "throw"].includes(button));
+      this.buffer.actions = this.buffer.actions.filter((action) => combatButton(action.button));
+      input = { ...input, pressed: input.pressed.filter(combatButton) };
+    }
     if (this.data.id === "goku") {
       this.gokuTeleportLock = Math.max(0, this.gokuTeleportLock - 1);
       if (!this.airborne && ["idle", "walk", "crouch"].includes(this.state) && !opponent.combo) {
@@ -22252,11 +26149,16 @@ var Fighter = class {
       counterRecover: 24,
       getup: this.data.lifecycle?.getupTicks ?? 18,
       ultimateRecover: 18,
-      throwRecover: this.data.grabSequence?.recoveryTicks ?? 12
+      throwRecover: this.kanekiSpecialRecovery ?? this.grabSequence?.recoveryTicks ?? 12
     };
     const lock = locks[this.state];
     if (lock !== void 0) {
       this.vx = 0;
+      if (this.state === "throwRecover" && this.kanekiSpecialRecovery !== void 0 && this.airborne) {
+        this.vy += this.movementData.gravity;
+        this.y = Math.min(FLOOR2, this.y + this.vy);
+        if (this.y === FLOOR2) this.vy = 0;
+      }
       if (this.stateFrame >= lock) {
         this.knockedDown = false;
         this.setState("idle");
@@ -22267,7 +26169,8 @@ var Fighter = class {
       if (this.stateFrame >= 24) this.setState("counterRecover");
       return;
     }
-    if (this.state === "hitstun" || this.state === "blockstun") {
+    if (tickSasukeAirBurst(this)) {
+    } else if (this.state === "hitstun" || this.state === "blockstun") {
       if (--this.stun <= 0) {
         if (this.knockedDown && this.airborne) this.stun = 1;
         else {
@@ -22282,14 +26185,14 @@ var Fighter = class {
     } else {
       if (this.state === "attack" && this.move && this.stateFrame >= this.move.startup + this.move.active + this.move.recovery)
         this.setState(this.airborne ? "air" : "idle");
-      if (this.state === "jumpStart" && this.stateFrame >= (this.data.locomotion?.jumpStartup ?? MOVEMENT_TIMING.jumpStartup)) {
-        this.vy = this.data.jump;
-        this.vx = this.jumpDirection * (this.data.locomotion?.airSpeed ?? this.data.speed);
+      if (this.state === "jumpStart" && this.stateFrame >= (this.movementData.locomotion?.jumpStartup ?? MOVEMENT_TIMING.jumpStartup)) {
+        this.vy = this.movementData.jump;
+        this.vx = this.jumpDirection * (this.movementData.locomotion?.airSpeed ?? this.movementData.speed) * sasukeCurseMovement(this);
         this.setState("air");
       }
-      if (this.state === "landing" && this.stateFrame >= (this.data.locomotion?.landingTicks ?? MOVEMENT_TIMING.landing))
+      if (this.state === "landing" && this.stateFrame >= (this.movementData.locomotion?.landingTicks ?? MOVEMENT_TIMING.landing))
         this.setState("idle");
-      if (this.state === "dash" && this.stateFrame >= (this.data.locomotion?.dashForward.length ?? MOVEMENT_TIMING.dash)) {
+      if (this.state === "dash" && this.stateFrame >= (this.movementData.locomotion?.dashForward.length ?? MOVEMENT_TIMING.dash)) {
         this.setState("idle");
         this.vx = 0;
       }
@@ -22301,7 +26204,7 @@ var Fighter = class {
         (action) => action.button === "ultimate"
       );
       if (superRequested) {
-        const id = this.data.id === "goku" ? "ssj1_fury" : this.data.id === "dio" ? "road_roller" : this.data.id === "luffy" ? jetId : "ultimate_start";
+        const id = this.data.id === "goku" ? "ssj1_fury" : this.data.id === "dio" ? "road_roller" : this.data.id === "luffy" ? jetId : this.data.id === "sasuke" ? kirinId : this.data.id === "kaneki" ? centipedeId : "ultimate_start";
         const move = this.data.moves[id] ?? this.data.superMoves?.[id];
         if (this.canStartSuper()) {
           this.attack(id);
@@ -22312,17 +26215,39 @@ var Fighter = class {
         if (!move || this.meter < (move.cost ?? 100))
           this.buffer.consume("ultimate");
       }
+      if (this.benForm) {
+        for (const button of ["medium", "light"]) {
+          const id = this.bufferedBenSpecial(button);
+          if (!id) continue;
+          if ((free || canCancel("special") && (!this.move?.cancelMoves || this.move.cancelMoves.includes(id))) && this.attack(id)) {
+            this.buffer.consumeSpecial(button);
+            return;
+          }
+          if (free) this.buffer.consumeSpecial(button);
+        }
+      }
+      if (this.data.id === "kaneki") {
+        for (const button of ["heavy", "medium", "light"]) {
+          const technique = kanekiSpecialCommand(this.buffer, button);
+          if (!technique) continue;
+          if (this.attack(technique.id)) {
+            this.buffer.consumeSpecial(button);
+            return;
+          }
+          if (free) this.buffer.consumeSpecial(button);
+        }
+      }
       if (this.data.id === "goku" && this.data.specialMoves) {
         for (const button of ["heavy", "medium", "light"]) {
-          const c = goku_specials_default.commands, special = this.buffer.gokuSpecial(
+          const c2 = goku_specials_default.commands, special2 = this.buffer.gokuSpecial(
             button,
-            c.motionTicks,
-            c.finishTicks,
-            c.doubleDownTicks,
-            c.minimumDownGapTicks
+            c2.motionTicks,
+            c2.finishTicks,
+            c2.doubleDownTicks,
+            c2.minimumDownGapTicks
           );
-          if (!special) continue;
-          const id = special === "teleport" && this.airborne ? button === "heavy" ? "teleport_air" : `teleport_air_${button}` : `${special}_${button}`;
+          if (!special2) continue;
+          const id = special2 === "teleport" && this.airborne ? button === "heavy" ? "teleport_air" : `teleport_air_${button}` : `${special2}_${button}`;
           if (this.canStartSpecial(id)) {
             this.attack(id);
             this.buffer.consumeSpecial(button);
@@ -22338,7 +26263,12 @@ var Fighter = class {
         for (const button of ["heavy", "medium", "light"]) {
           const id = sasukeSpecialCommand(this.buffer, button);
           if (!id) continue;
-          if (id === "reserved" || this.attack(id)) {
+          if (id === "curse") {
+            this.buffer.consumeSpecial(button);
+            startCurse(this);
+            return;
+          }
+          if (this.attack(id)) {
             this.buffer.consumeSpecial(button);
             return;
           }
@@ -22348,9 +26278,9 @@ var Fighter = class {
       }
       if (this.data.id === "luffy" && !this.airborne) {
         for (const button of ["heavy", "medium", "light"]) {
-          const special = luffySpecialCommand(this.buffer, button);
-          if (!special) continue;
-          if (this.attack(`${special}_${button}`)) {
+          const special2 = luffySpecialCommand(this.buffer, button);
+          if (!special2) continue;
+          if (this.attack(`${special2}_${button}`)) {
             this.buffer.consumeSpecial(button);
             return;
           }
@@ -22360,14 +26290,14 @@ var Fighter = class {
       }
       if (this.data.id === "dio" && this.data.specialMoves && !this.airborne) {
         for (const button of ["heavy", "medium", "light"]) {
-          const special = this.buffer.dioSpecial(
+          const special2 = this.buffer.dioSpecial(
             button,
             dio_specials_default.commands.motionTicks,
             dio_specials_default.commands.finishTicks
           );
-          if (!special) continue;
-          const id = special === "timeStop" ? "time_stop" : `${special}_${button}`;
-          if (special === "timeStop" && !this.match?.temporal.canActivate(this.id) || this.canStartSpecial(id)) {
+          if (!special2) continue;
+          const id = special2 === "timeStop" ? "time_stop" : `${special2}_${button}`;
+          if (special2 === "timeStop" && !this.match?.temporal.canActivate(this.id) || this.canStartSpecial(id)) {
             if (this.canStartSpecial(id)) this.attack(id);
             this.buffer.consumeSpecial(button);
             return;
@@ -22382,13 +26312,13 @@ var Fighter = class {
       if ((free || canCancel("jump")) && this.state !== "jumpStart" && !this.airborne && this.buffer.consume("jump")) {
         if (canCancel("jump")) {
           this.vy = Math.min(
-            this.data.jump,
+            this.movementData.jump,
             Math.max(
               -combat_pace_default.cancel.maximumChaseJumpSpeed,
               opponent.vy + (opponent.y - this.y) / combat_pace_default.cancel.chaseCatchTicks
             )
           );
-          this.airChaseTicks = this.data.airChaseTicks ?? 8;
+          this.airChaseTicks = this.move?.ben?.cable === "upper" || this.moveId === "frostBreath_medium" ? 15 : this.data.airChaseTicks ?? 8;
           if (this.stand) {
             this.stand.holdCombo(this);
             this.setState("air", true);
@@ -22401,6 +26331,8 @@ var Fighter = class {
       }
       if (free || this.state === "attack") {
         for (const b of ["throw", "light", "medium", "heavy"]) {
+          if (this.bufferedBenSpecial(b)) continue;
+          if (this.data.id === "kaneki" && kanekiSpecialCommand(this.buffer, b)) continue;
           if (this.data.id === "sasuke" && sasukeSpecialCommand(this.buffer, b)) continue;
           if (this.data.id === "luffy" && !this.airborne && luffySpecialCommand(this.buffer, b))
             continue;
@@ -22414,27 +26346,27 @@ var Fighter = class {
             goku_specials_default.commands.minimumDownGapTicks
           ))
             continue;
-          const special = this.data.id === "samurai" && b !== "throw" && !this.airborne ? this.buffer.special() : void 0;
-          if (!(free || canCancel(special ? "special" : b))) continue;
-          if (b === "throw" && this.airborne) continue;
-          const candidate = special ? `${special}_${b}` : b === "throw" ? "throw" : `${this.airborne ? "air" : input.down ? "crouch" : "stand"}_${b}`;
-          const candidateMove = this.data.moves[candidate];
-          if (this.state === "attack" && this.move?.cancelMoves && !special && !candidate.endsWith("_light") && !this.move.cancelMoves.includes(candidate))
+          const special2 = this.data.id === "samurai" && b !== "throw" && !this.airborne ? this.buffer.special() : void 0;
+          if (!(free || canCancel(special2 ? "special" : b))) continue;
+          if (b === "throw" && (this.airborne || this.data.id === "kaneki" && this.state === "attack" && !this.hitConfirmed)) continue;
+          const candidate = special2 ? `${special2}_${b}` : b === "throw" ? "throw" : `${this.airborne ? "air" : input.down ? "crouch" : "stand"}_${b}`;
+          const candidateMove = this.normalMoves[candidate];
+          if (this.state === "attack" && this.move?.cancelMoves && !special2 && !candidate.endsWith("_light") && !this.move.cancelMoves.includes(candidate))
             continue;
-          if (!special && !candidateMove) continue;
+          if (!special2 && !candidateMove) continue;
           if (candidateMove?.stand && !this.stand?.canBegin(canCancel(b) || this.stand?.s.mode === "link"))
             continue;
           if (this.buffer.consume(b)) {
-            if (special === "counter") {
+            if (special2 === "counter") {
               this.setState("counter");
               this.vx = 0;
               this.buffer.consumeMotion();
               return;
             }
             this.attack(
-              special ? `${special}_${b}` : b === "throw" ? "throw" : `${this.airborne ? "air" : input.down ? "crouch" : "stand"}_${b}`
+              special2 ? `${special2}_${b}` : b === "throw" ? "throw" : `${this.airborne ? "air" : input.down ? "crouch" : "stand"}_${b}`
             );
-            if (special) this.buffer.consumeMotion();
+            if (special2) this.buffer.consumeMotion();
             break;
           }
         }
@@ -22446,53 +26378,79 @@ var Fighter = class {
           this.dashDirection = input.direction;
           this.setState("dash");
         } else {
-          if (this.airborne && this.data.locomotion) {
+          if (this.airborne && this.movementData.locomotion) {
             if (input.direction)
-              this.vx = input.direction * this.data.locomotion.airSpeed;
+              this.vx = input.direction * this.movementData.locomotion.airSpeed * sasukeCurseMovement(this);
           } else
-            this.vx = input.down && !this.airborne ? 0 : input.direction * (input.direction === this.facing ? this.data.speed : this.data.locomotion?.backSpeed ?? this.data.speed);
+            this.vx = input.down && !this.airborne ? 0 : input.direction * (input.direction === this.facing ? this.movementData.speed : this.movementData.locomotion?.backSpeed ?? this.movementData.speed) * sasukeCurseMovement(this);
           const next = this.airborne ? "air" : input.down ? "crouch" : input.direction ? "walk" : "idle";
           if (this.state !== next) this.setState(next);
         }
       }
       if (this.state === "dash") {
-        const profile = this.data.locomotion;
-        this.vx = this.dashDirection * (profile ? (this.dashDirection === this.facing ? profile.dashForward : profile.backdash)[this.stateFrame] : this.dashDirection === this.facing ? 14 : 11);
+        const profile = this.movementData.locomotion;
+        this.vx = this.dashDirection * (profile ? (this.dashDirection === this.facing ? profile.dashForward : profile.backdash)[this.stateFrame] : this.dashDirection === this.facing ? 14 : 11) * sasukeCurseMovement(this);
       }
       if (this.state === "attack" && this.move) {
         const move = this.move;
-        if (move.drive)
-          this.vx = !this.connected && this.stateFrame >= move.drive.from && this.stateFrame < move.drive.to ? this.facing * move.drive.speed : 0;
-        if (move.hopAt === this.stateFrame) this.vy = move.hopVelocity ?? 0;
+        if (move.special === "chidori")
+          this.vx = this.connected ? 0 : this.facing * chidoriVelocity(this.stateFrame, winged(this));
+        else if (move.drive)
+          this.vx = (!this.connected || this.hitConfirmed && move.ben?.follow) && this.stateFrame >= move.drive.from && this.stateFrame < move.drive.to ? this.facing * (this.connected && move.ben?.follow ? move.ben.follow : move.drive.speed) : 0;
+        if (move.hopAt === this.stateFrame)
+          this.vy = (move.hopVelocity ?? 0) + (planetoid(this) ? input.up ? -2 : input.down ? 1.4 : 0 : 0);
+        const age = this.stateFrame;
+        if (move.ben?.aerialMotion === "dive") {
+          if (age === 3 && !this.airborne) this.vy = -8;
+          if (age === move.startup) this.vy = 6;
+        } else if (move.ben?.aerialMotion === "glide" && age >= move.startup && age < move.startup + move.active) {
+          if (age === move.startup) this.vy = this.y > FLOOR2 - 160 ? -5 : 0;
+          if (this.y < FLOOR2 - 192) this.vy = Math.max(0, this.vy);
+          this.vy = Math.min(1.4, this.vy);
+          if (!move.drive) this.vx = input.direction * 5.2;
+        }
+        if (move.ben?.leap || move.ben?.burrow) driveBenManeuver(this, opponent, move);
       }
     }
     if (this.airChaseTicks > 0) {
       if (this.airborne && (this.state === "air" || this.state === "attack")) {
-        const speed = this.data.airChaseSpeed ?? this.data.speed;
+        const speed = (this.data.airChaseSpeed ?? this.movementData.speed) * sasukeCurseMovement(this);
         const gap = (opponent.x - this.x) * this.facing - combat_pace_default.cancel.chaseSpacing;
         this.vx = this.facing * Math.max(-speed, Math.min(speed, gap));
         if (--this.airChaseTicks === 0) {
           this.vx = 0;
-          if (this.vy < this.data.jump)
+          if (this.vy < this.movementData.jump)
             this.vy = -combat_pace_default.cancel.chaseExitUpSpeed;
         }
       } else this.airChaseTicks = 0;
     }
     tickGokuMove(this);
+    flyNrg(this, input);
+    if (this.benScale > 1 && this.state === "walk") this.vx *= 1 / Math.sqrt(this.benScale);
     const wasAirborne = this.airborne;
     if (wasAirborne && !(this.state === "attack" && this.move?.airTeleport && this.stateFrame < this.move.startup + this.move.active)) {
-      this.vy += this.data.gravity;
+      this.vy += this.movementData.gravity;
     }
-    this.x = Math.max(40, Math.min(1240, this.x + this.vx));
+    if (this.chill?.freeze) this.vx = 0;
+    this.x = Math.max(this.stageInset, Math.min(1280 - this.stageInset, this.x + this.vx));
     this.y += this.vy;
-    if (this.y >= FLOOR) {
-      this.y = FLOOR;
+    if (this.y >= FLOOR2) {
+      this.y = FLOOR2;
       this.vy = 0;
+      if (wasAirborne && this.state === "attack" && this.move?.ben?.leap) {
+        this.stateFrame = this.move.startup;
+        this.omnitrix.landingStrike = true;
+        this.vx = 0;
+      }
       if (wasAirborne && (this.data.lifecycle || this.data.id === "goku") && this.state === "hitstun" && this.hitLaunch)
         this.knockedDown = true;
       if (wasAirborne && this.knockedDown) this.stun = Math.max(this.stun, 24);
-      if (wasAirborne && (this.state === "air" || this.state === "attack" && this.moveId.startsWith("air_")))
+      if (wasAirborne && (this.state === "air" || this.state === "attack" && (this.moveId.startsWith("air_") || this.move?.ben?.land))) {
+        const armor = this.omnitrix?.active === "nrg" && !this.omnitrix.nrgReleased;
+        const drop = armor && this.state === "attack" && this.moveId === "air_medium";
         this.setState("landing");
+        if (armor) this.actionClip = drop ? "nrgDropLanding" : "";
+      }
     }
     if (this.state === "hitstun" || this.state === "blockstun") this.vx *= 0.83;
     this.syncReactionClock(false);
@@ -22523,13 +26481,16 @@ var Match = class {
   roadRoller;
   fury;
   jetGigant;
+  kirin;
+  centipede;
   get cinematicActive() {
-    return !!(this.roadRoller || this.fury || this.jetGigant);
+    return !!(this.roadRoller || this.fury || this.jetGigant || this.kirin || this.centipede);
   }
   temporal = new TemporalController();
   projectiles = [];
   kiProjectiles = [];
   sasukeStormUntil = 0;
+  sasukeStormLevel = 0;
   beams = [];
   projectileSerial = 0;
   fighters;
@@ -22596,7 +26557,7 @@ var Match = class {
           this.projectiles = [];
           this.kiProjectiles = [];
           this.beams = [];
-          this.sasukeStormUntil = 0;
+          this.sasukeStormUntil = this.sasukeStormLevel = 0;
           const meter = this.fighters.map((f) => f.meter);
           this.fighters = [
             new Fighter(this.data, 0, 400),
@@ -22619,7 +26580,28 @@ var Match = class {
       for (const f of this.fighters) f.stand?.tick(f);
       return;
     }
-    if (this.fury || this.jetGigant) {
+    this.fighters.forEach((fighter, seat) => {
+      const watch = fighter.omnitrix;
+      if (!watch) return;
+      if (this.cinematicActive || this.capture || this.temporal.isFrozen(seat) || fighter.knockedDown || !omnitrixCanBrowse(fighter.state)) {
+        cancelOmnitrix(watch);
+        return;
+      }
+      const rival = this.fighters[1 - seat];
+      if (!rival.combo) {
+        watch.usedSpecials.length = 0;
+        watch.comboSwap = false;
+      }
+      const inAttack = fighter.state === "attack";
+      const canConfirm = !this.hitstop && (!rival.combo || !watch.comboSwap || !!watch.transition) && (!inAttack || !!watch.transition || fighter.canCancel("omnitrix"));
+      tickOmnitrix(watch, inputs[seat], canConfirm, (to) => {
+        if (!this.placeBenForm(fighter, rival, to)) return false;
+        if (rival.combo) watch.comboSwap = true;
+        fighter.buffer.clear();
+        return true;
+      });
+    });
+    if (this.fury || this.jetGigant || this.kirin || this.centipede) {
       this.stepStagedSuper();
       return;
     }
@@ -22630,8 +26612,30 @@ var Match = class {
     const timeWasActive = this.temporal.beginStep(
       this.hitstop === 0 && !this.capture
     );
+    const chainCapture = this.capture;
+    const longGrab = chainCapture?.kaneki?.chain;
+    if (chainCapture && longGrab?.origin === "kaguneGrab" && this.frame - longGrab.started >= kaguneGrabLimit) {
+      const a2 = this.fighters[chainCapture.attacker], b2 = this.fighters[chainCapture.victim];
+      if (!longGrab.landed && b2.combo < a2.data.combatLimits.maxHits) {
+        this.kanekiChainDamage(chainCapture, a2, b2, "kaguneTimeout", 48, b2.airborne, true);
+        this.effect("hit", b2.x, b2.y - 68, 12);
+      }
+      this.hitstop = 0;
+      this.releaseKanekiChain(a2, b2, 15, 7, -3);
+      this.finishTemporalStep(timeWasActive);
+      return;
+    }
     if (this.hitstop > 0) {
       this.hitstop--;
+      const capture = this.capture;
+      const held = capture?.kaneki;
+      if (capture && held?.chain) {
+        this.bufferChainChoice(held, capture.tick, inputs[capture.attacker], inputs[capture.victim]);
+        if ((held.chain.resistance ?? 0) >= resistanceGoal)
+          this.escapeKanekiChain(this.fighters[capture.attacker], this.fighters[capture.victim]);
+      } else if (capture && held && !held.route && !held.specialId) {
+        held.pending ??= kaguneChoice(inputs[capture.attacker].pressed);
+      }
       if (!this.capture)
         this.fighters.forEach(
           (f, i) => !this.temporal.isFrozen(i) && f.buffer.push(inputs[i], this.combatFrame, f.facing)
@@ -22640,49 +26644,92 @@ var Match = class {
       return;
     }
     if (this.capture) {
-      this.stepCapture();
+      this.stepCapture(inputs);
       for (const f of this.fighters) f.stand?.tick(f);
       this.finishTemporalStep(timeWasActive);
       return;
     }
     if (!this.rules.training && !this.temporal.active) this.timer--;
     this.combatFrame++;
+    const beforeMovement = this.fighters.map((f) => f.x);
     this.fighters.forEach((f, i) => {
       if (this.temporal.isFrozen(i)) return;
       const other = this.fighters[1 - i];
+      const well = f.airborne && !["hitstun", "blockstun", "ko", "getup"].includes(f.state) && !this.temporal.isFrozen(other.id) ? gravityAt(other, f.x, f.y, FLOOR2) : void 0;
+      if (well && !this.benWalls().some((w) => this.benWallBetween(
+        w,
+        well.x,
+        f.x,
+        { x: Math.min(well.x, f.x), y: f.y - 60, w: Math.abs(well.x - f.x), h: 62 }
+      )))
+        f.vy = Math.min(14, f.vy + 0.72);
       f.guardIntent = inputs[i].direction === -f.facing && !f.airborne && Math.abs(f.x - other.x) < 200;
+      tickSasukeCurse(f);
+      const fallingDrop = f.y < FLOOR2 && f.state === "attack" && !!(f.move?.ben?.landingImpact || f.move?.ben?.leap);
       f.tick(inputs[i], this.combatFrame, other);
+      this.tickBenAbilities(f, other, fallingDrop);
+      if (!f.combo) f.kanekiCaptured = void 0;
     });
     for (const f of this.fighters)
       if (!this.temporal.isFrozen(f.id)) f.stand?.tick(f);
     this.stepSpecialReleases();
     for (const f of this.fighters)
-      if (f.state === "attack" && f.stateFrame === 0 && (f.move?.kind === "ultimate" || f.move?.kind === "jetGigant"))
+      if (f.state === "attack" && f.stateFrame === 0 && (f.move?.kind === "ultimate" || f.move?.kind === "jetGigant" || f.move?.kind === "kirin"))
         this.effect("power", f.x, f.y - 80, 20);
+      else if (f.state === "attack" && f.stateFrame === 0 && f.moveId === centipedeId)
+        this.centipedeEffect("activation", f.x, f.y - 74, 21);
     const [a, b] = this.fighters;
+    const crystalWalls = this.benWalls();
+    for (const f of this.fighters) {
+      if (this.temporal.isFrozen(f.id)) continue;
+      this.stopAtBenWalls(f, beforeMovement[f.id], crystalWalls);
+      if (f.move?.kind !== "grab") {
+        const shapes = f.attackShapes(beforeMovement[f.id]);
+        if (shapes.length) this.damageBenWalls(
+          shapes,
+          f.move?.damage ?? 0,
+          crystalWalls,
+          `${f.id}:${this.combatFrame - f.stateFrame}:${f.hitWindow?.id ?? 0}`,
+          f.id
+        );
+      }
+    }
     if (overlaps(a.pushbox(), b.pushbox()) && this.temporal.active) {
       const mover = this.fighters[this.temporal.s.owner], frozen = this.fighters[1 - this.temporal.s.owner];
-      mover.x = frozen.x + (mover.x <= frozen.x ? -52 : 52);
-      mover.x = Math.max(40, Math.min(1240, mover.x));
-    } else if (overlaps(a.pushbox(), b.pushbox())) {
+      const gap = (mover.pushbox().w + frozen.pushbox().w) / 2;
+      mover.x = frozen.x + (mover.x <= frozen.x ? -gap : gap);
+      mover.x = Math.max(mover.stageInset, Math.min(1280 - mover.stageInset, mover.x));
+    } else if (overlaps(a.pushbox(), b.pushbox()) && !this.benCrossing(a, b) && !this.benCrossing(b, a)) {
       const [left, right] = a.x <= b.x ? [a, b] : [b, a];
-      const center = Math.max(66, Math.min(1214, (left.x + right.x) / 2));
-      left.x = center - 26;
-      right.x = center + 26;
+      const leftHalf = left.pushbox().w / 2, rightHalf = right.pushbox().w / 2;
+      const center = Math.max(left.stageInset + leftHalf, Math.min(1280 - right.stageInset - rightHalf, (left.x + right.x) / 2));
+      left.x = center - leftHalf;
+      right.x = center + rightHalf;
     }
+    for (const f of this.fighters)
+      if (!this.temporal.isFrozen(f.id)) this.stopAtBenWalls(f, beforeMovement[f.id], crystalWalls);
     const contacts = this.fighters.map((f, i) => {
       if (this.temporal.isFrozen(i)) return null;
-      const shapes = f.attackShapes();
+      const shapes = f.attackShapes(beforeMovement[i]);
       const target = this.fighters[1 - i];
-      if (!shapes.length || !f.canConnect || target.knockedDown || target.invulnerable || f.move?.level === "throw" && (target.airborne || target.state === "hitstun" || target.state === "blockstun"))
+      if (shapes.length && f.canConnect && f.move?.damage && f.move.kind !== "grab")
+        this.strikeEchoClones(f, target, shapes, crystalWalls);
+      const groundedGrab = f.move?.level === "throw" || f.move?.ben?.captureStrike;
+      const illegalGrab = groundedGrab && (f.data.id === "kaneki" ? !canKaguneCapture(f, target, "ground") : target.airborne || target.state === "blockstun" || target.state === "hitstun" && !(f.move?.ben?.commandGrab && target.combo > 0 && target.combo <= 2 && f.omnitrix?.usedSpecials.includes(f.move?.ben?.technique ?? "quad")));
+      const phasedPhysical = target.benPhase?.physicalOnly && f.move && !f.move.ben?.field && !f.move.stand && !isSuperMove(f.move) && f.move.level !== "throw";
+      if (!shapes.length || !f.canConnect || target.knockedDown || target.invulnerable || phasedPhysical || illegalGrab)
         return null;
       const boxes = target.hurtboxes();
-      const hurtboxes = f.move?.kind === "grab" ? boxes.slice(0, 2) : boxes;
+      const hurtboxes = f.move?.kind === "grab" && f.data.id !== "kaneki" ? boxes.slice(0, 2) : boxes;
       for (const shape of shapes) {
-        const hurt = hurtboxes.find((box) => shapeHitsRect(shape, box));
+        if (crystalWalls.some((w) => this.benWallBetween(w, f.x, target.x, shape))) continue;
+        const rushTip = f.move?.special === "rinkakuRush" && "a" in shape;
+        if (rushTip && !canKaguneCapture(f, target, "ground")) continue;
+        const validBoxes = rushTip || f.move?.special === "kaguneGrab" ? boxes.slice(0, 2) : hurtboxes;
+        const hurt = validBoxes.find((box) => shapeHitsRect(shape, box));
         if (!hurt) continue;
         let impact = f.move?.stand ? shapeBounds(shapes[0]) : void 0;
-        if (f.data.id === "luffy") {
+        if (f.data.id === "luffy" || f.data.id === "kaneki" || f.move?.special === "chidori" || f.move?.ben) {
           const bounds = shapeBounds(shape);
           const x = Math.max(hurt.x, bounds.x), y = Math.max(hurt.y, bounds.y);
           impact = {
@@ -22695,7 +26742,11 @@ var Match = class {
         return {
           f,
           target,
-          move: { ...f.move, ...f.hitWindow },
+          move: {
+            ...f.move,
+            ...f.hitWindow,
+            ...rushTip ? { kind: "grab", level: "throw" } : {}
+          },
           moveId: f.moveId,
           hitId: f.hitWindow?.id ?? 0,
           impact
@@ -22703,19 +26754,20 @@ var Match = class {
       }
       return null;
     });
-    for (const c of contacts) {
-      if (!c) continue;
-      const { f, target, move: m, moveId } = c;
+    for (const c2 of contacts) {
+      if (!c2) continue;
+      const { f, target, move: m, moveId } = c2;
       if (m.super && f.health <= 0) continue;
-      if (m.kind === "jetGigant" && (f.state !== "attack" || f.moveId !== moveId)) continue;
+      if ((m.kind === "jetGigant" || m.kind === "kirin" || m.kind === centipedeId) && (f.state !== "attack" || f.moveId !== moveId)) continue;
       if (this.capture || this.cinematicActive) continue;
       if (m.kind === "grab" && contacts.some(
         (other) => other && other.f === target && other.move.kind !== "grab"
       ))
         continue;
       f.connected = true;
-      f.hitIds.push(c.hitId);
-      if (!this.temporal.isFrozen(target.id) && target.counterWindow && m.level !== "low" && m.level !== "throw" && m.kind !== "ultimate" && m.kind !== "roadRoller" && m.kind !== "jetGigant" && (f.x - target.x) * target.facing > 0) {
+      f.hitIds.push(c2.hitId);
+      if (this.counterWithArmor(target, f, m, moveId, c2.impact) || this.counterWithFeedback(target, f, m)) continue;
+      if (!this.temporal.isFrozen(target.id) && target.counterWindow && m.level !== "low" && m.level !== "throw" && m.kind !== "ultimate" && m.kind !== "roadRoller" && m.kind !== "jetGigant" && m.kind !== centipedeId && (f.x - target.x) * target.facing > 0) {
         f.setState("hitstun");
         f.stun = 12;
         f.reactionStrength = 1;
@@ -22727,15 +26779,29 @@ var Match = class {
         continue;
       }
       if (m.kind === "grab") {
+        if (m.ben?.captureStrike && this.benBlocked(target, m, f.facing)) {
+          this.resolveImpact(f, target, { ...m, level: "mid", blockstun: 11, push: 4 }, moveId, c2.impact);
+          continue;
+        }
         this.beginCapture("grab", f, target);
         continue;
       }
+      if (f.data.id === "kaneki" && moveId === "air_heavy" && canKaguneCapture(f, target, "air") && !contacts.some((other) => other?.f === target)) {
+        this.beginCapture("grab", f, target, "air");
+        continue;
+      }
       const direction = m.special === "nagashi" && target.x !== f.x ? Math.sign(target.x - f.x) : f.facing;
-      this.resolveImpact(f, target, m, moveId, c.impact, direction);
+      const swordCapture = m.special === "fourSwords" && target.combo <= f.data.combatLimits.maxHits - 4 && canKaguneCapture(f, target, "ground") && !contacts.some((other) => other?.f === target);
+      this.resolveImpact(f, target, m, moveId, c2.impact, direction, winged(f), swordCapture);
     }
     if (this.cinematicActive) return;
+    if (this.capture?.kaneki?.specialId) {
+      this.finishTemporalStep(timeWasActive);
+      return;
+    }
     this.stepProjectiles();
     this.stepEnergy();
+    if (!this.capture) this.stepBenObjects();
     for (const f of this.fighters) f.syncReactionClock(false);
     if (this.capture) {
       this.finishTemporalStep(timeWasActive);
@@ -22744,31 +26810,34 @@ var Match = class {
     this.checkRoundEnd();
     this.finishTemporalStep(timeWasActive);
   }
-  resolveImpact(f, target, m, moveId, impact, direction = f.facing) {
+  benBlocked(target, m, direction) {
+    return target.input.direction === -target.facing && !target.airborne && ["idle", "walk", "crouch", "landing", "blockstun"].includes(target.state) && (!m.ben?.field || direction === -target.facing);
+  }
+  resolveImpact(f, target, m, moveId, impact, direction = f.facing, curseFx = winged(f), swordCapture = false) {
     const frozen = this.temporal.isFrozen(target.id);
     const guarding = target.input.direction === -target.facing && !target.airborne && ["idle", "walk", "crouch", "landing", "blockstun"].includes(
       target.state
-    ) && (!(["knives", "ki", "kamehameha"].includes(m.special ?? "") || m.special && isSasukeSpecial(m.special) && sasukeTechniques[m.special].shots) || direction === -target.facing);
-    const blocked = guarding && m.level !== "throw" && (m.level !== "low" || target.input.down) && (m.level !== "high" || !target.input.down);
-    let damage = blocked ? 0 : Math.round(
-      m.damage * Math.max(
+    ) && (!(m.ben?.field || ["knives", "ki", "kamehameha"].includes(m.special ?? "") || m.special && isSasukeSpecial(m.special) && sasukeTechniques[m.special].shots) || direction === -target.facing || m.ben?.field?.type === "sonicAssist");
+    const blocked = guarding && m.level !== "throw" && !isSuperMove(m) && (m.level !== "low" || target.input.down) && (m.level !== "high" || !target.input.down);
+    let damage2 = blocked ? 0 : Math.round(
+      m.damage * (m.ben && !m.ben.field && f.benScale > 1 ? 1.07 : 1) * Math.max(
         combat_pace_default.combo.minimumDamageScale,
         1 - target.combo * combat_pace_default.combo.damageStep
       )
     );
     if (frozen && !blocked && !m.super) {
-      damage = this.temporal.budget(damage);
-      if (!damage) return;
+      damage2 = this.temporal.budget(damage2);
+      if (!damage2) return;
     }
     const applied = this.damage(
       target,
-      damage,
-      ["ultimate", "roadRoller", "gokuFury", "jetGigant"].includes(m.kind ?? "") && !blocked ? 1 : 0
+      damage2,
+      (swordCapture || ["ultimate", "roadRoller", "gokuFury", "jetGigant", "kirin", centipedeId].includes(m.kind ?? "")) && !blocked ? 1 : 0
     );
     const reaction = {
       blocked,
       stun: blocked ? m.blockstun : m.stun,
-      vx: direction * m.push * (blocked ? 1 : 1 + Math.max(0, target.combo - combat_pace_default.combo.pushGrowthAfter) * combat_pace_default.combo.pushGrowth),
+      vx: direction * m.push * (m.ben && !m.ben.field && f.benScale > 1 ? 1.08 : 1) * (blocked ? 1 : 1 + Math.max(0, target.combo - combat_pace_default.combo.pushGrowthAfter) * combat_pace_default.combo.pushGrowth),
       vy: blocked ? 0 : m.launch,
       knockdown: !blocked && !!m.knockdown,
       strength: m.damage <= 50 ? 1 : m.damage <= 90 ? 2 : 3,
@@ -22776,12 +26845,36 @@ var Match = class {
       crouched: target.crouching || target.data.id === "luffy" && !target.airborne && !blocked && m.level === "low"
     };
     if (!blocked) {
-      if (f.state === "attack" && f.moveId === moveId) f.hitConfirmed = true;
+      if (f.state === "attack" && f.moveId === moveId) {
+        if (!f.hitConfirmed && applied > 0 && m.ben?.chargeGain && f.omnitrix?.active === "feedback")
+          this.gainFeedbackCharge(f.omnitrix, m.ben.chargeGain, "contact");
+        f.hitConfirmed = true;
+        if (m.ben?.field) f.connected = true;
+      }
+      if (m.ben?.technique && f.omnitrix && !f.omnitrix.usedSpecials.includes(m.ben.technique))
+        f.omnitrix.usedSpecials.push(m.ben.technique);
+      if (m.ben?.cold && applied > 0 && !frozen && target.health > 0) {
+        const chill = target.chill ??= { build: 0, ticks: 0, freeze: 0, immune: 0, used: false };
+        if (!chill.immune && !chill.used) {
+          const cap = benStage6Balance.frostLimit - Number(reaction.knockdown);
+          chill.build = Math.min(cap, chill.build + m.ben.cold);
+          chill.ticks = benStage6Balance.frostHold;
+          if (chill.build === benStage6Balance.frostLimit) {
+            chill.build = 0;
+            chill.immune = benStage6Balance.frostImmunity;
+            chill.freeze = benStage6Balance.freezeTicks;
+            chill.used = true;
+            reaction.stun = Math.max(reaction.stun, benStage6Balance.freezeTicks + 3);
+            reaction.vx = 0;
+          }
+        }
+      }
       if (!target.combo) target.comboAge = target.comboAirHits = 0;
       target.combo++;
       if (target.airborne || m.launch < 0) target.comboAirHits++;
       if (target.airborne && !m.knockdown && !m.super)
         reaction.stun += combat_pace_default.combo.airExtensionStun;
+      if (m.ben && target.combo > 4) reaction.stun = Math.max(9, reaction.stun - (target.combo - 4) * 3);
       const limit = f.data.combatLimits;
       if (limit && (target.combo >= (m.comboHitLimit ?? limit.maxHits) || target.comboAirHits >= limit.maxAirHits || target.comboAge >= limit.maxTicks)) {
         reaction.knockdown = true;
@@ -22809,6 +26902,9 @@ var Match = class {
     );
     const event = this.events[eventCount];
     if (event) {
+      if (m.ben && !blocked) event.ben = m.ben.effect;
+      if (!blocked && (m.special === "chidori" || m.special === "goryuka"))
+        event.sasuke = { kind: m.special, cursed: curseFx, facing: direction };
       if (f.data.id === "luffy" && !m.super && (m.rank > 1 || m.special)) {
         const style = m.special === "bazooka" ? "double" : m.special === "gatling" ? "rush" : /medium$|crouch_heavy|air_heavy/.test(moveId) && !m.special ? "kick" : "punch";
         event.luffy = { actor: f.id, move: moveId, direction, style };
@@ -22816,11 +26912,12 @@ var Match = class {
       event.strength = m.super || m.kind === "ultimate" || m.rank === 3 || m.knockdown || m.damage >= 90 ? 3 : m.rank === 2 || m.damage >= 55 ? 2 : 1;
       event.total = event.life = event.strength === 1 ? 10 : event.strength === 2 ? 13 : 16;
     }
+    if (swordCapture && !blocked) this.beginCapture("grab", f, target);
     if (m.kind === "ultimate" && !blocked)
       this.beginCapture("ultimate", f, target);
     if (m.kind === "roadRoller" && !blocked) this.beginRoadRoller(f, target);
-    if (!blocked && (m.kind === "gokuFury" || m.kind === "jetGigant"))
-      this.beginStagedSuper(f, target, m.kind === "jetGigant");
+    if (!blocked && (m.kind === "gokuFury" || m.kind === "jetGigant" || m.kind === "kirin" || m.kind === centipedeId))
+      this.beginStagedSuper(f, target, m.kind);
   }
   applyReaction(target, reaction) {
     target.hitCrouched = target.blockCrouched = reaction.crouched;
@@ -22858,7 +26955,7 @@ var Match = class {
       }
       if (!m.projectile) continue;
       for (let i = 0; i < m.projectile.releases.length; i++) {
-        if (m.projectile.releases[i] !== f.stateFrame || this.projectiles.filter((p) => p.owner === f.id).length >= dio_specials_default.knives.maximumPerOwner)
+        if (m.projectile.releases[i] !== f.stateFrame || this.projectiles.filter((p3) => p3.owner === f.id).length >= dio_specials_default.knives.maximumPerOwner)
           continue;
         const hand = poseAt(m, f.stateFrame)?.release;
         const x = f.x + (hand?.x ?? 40) * f.facing, y = f.y + (hand?.y ?? -95);
@@ -22887,26 +26984,30 @@ var Match = class {
   stepProjectiles() {
     if (this.temporal.active && dio_specials_default.timeStop.freezeAllProjectiles)
       return;
-    this.projectiles = this.projectiles.filter((p) => {
-      p.previousX = p.x;
-      p.previousY = p.y;
-      p.x += p.vx;
-      p.y += p.vy;
-      p.age++;
-      if (--p.life <= 0 || p.x < -30 || p.x > 1310 || p.y < -40 || p.y > FLOOR + 20)
+    this.projectiles = this.projectiles.filter((p3) => {
+      p3.previousX = p3.x;
+      p3.previousY = p3.y;
+      p3.x += p3.vx;
+      p3.y += p3.vy;
+      p3.age++;
+      if (--p3.life <= 0 || p3.x < -30 || p3.x > 1310 || p3.y < -40 || p3.y > FLOOR2 + 20)
         return false;
-      const target = this.fighters[1 - p.owner], owner = this.fighters[p.owner];
-      if (target.knockedDown || target.invulnerable || !projectileHits(p, target.hurtboxes()))
+      const target = this.fighters[1 - p3.owner], owner = this.fighters[p3.owner];
+      const tip = p3.facing * 14;
+      const shape = { a: { x: p3.previousX - tip, y: p3.previousY }, b: { x: p3.x + tip, y: p3.y }, r: 2 };
+      const walls = this.benWalls();
+      if (this.damageBenWalls([shape], p3.damage, walls, `knife:${p3.id}`, p3.owner) || this.strikeEchoClones(owner, target, [shape], walls)) return false;
+      if (target.knockedDown || target.invulnerable || !projectileHits(p3, target.hurtboxes()))
         return true;
-      const source = owner.data.specialMoves?.[p.move];
+      const source = owner.data.specialMoves?.[p3.move];
       if (source)
         this.resolveImpact(
           owner,
           target,
-          { ...source, damage: p.damage, stun: p.stun, blockstun: p.blockstun },
-          p.move,
-          { x: p.x - 14, y: p.y - 3, w: 29, h: 6 },
-          p.facing
+          { ...source, damage: p3.damage, stun: p3.stun, blockstun: p3.blockstun },
+          p3.move,
+          { x: p3.x - 14, y: p3.y - 3, w: 29, h: 6 },
+          p3.facing
         );
       return false;
     });
@@ -22916,7 +27017,7 @@ var Match = class {
     if (m.special === "ki" && m.projectile) {
       for (const tick of m.projectile.releases) {
         if (tick !== f.stateFrame || this.kiProjectiles.filter(
-          (p) => p.owner === f.id && p.state === "flight"
+          (p3) => p3.owner === f.id && p3.state === "flight"
         ).length >= goku_specials_default.projectiles.maximumPerOwner)
           continue;
         const point = beamOrigin(f);
@@ -22962,65 +27063,111 @@ var Match = class {
     const age = f.stateFrame - move.startup;
     const origin = poseAt(move, f.stateFrame)?.release;
     if (!origin) return;
-    for (const shot of sasukeTechniques[id].shots ?? []) {
+    const curse = winged(f);
+    for (const shot of (curse ? curseSpecials : sasukeTechniques)[id].shots ?? []) {
       if (shot.at !== age) continue;
       const x = f.x + f.facing * origin.x, y = f.y + origin.y;
+      const wave = id === "goryuka" ? fireDragonWave({ x, y }, f.facing, curse) : void 0;
+      const fire2 = sasuke_polish_default.goryuka;
       this.kiProjectiles.push({
         id: ++this.projectileSerial,
         owner: f.id,
         move: id,
         cast: 0,
+        ...curse ? { curse } : {},
+        ...wave ? { wave } : {},
         x,
         y,
         previousX: x,
         previousY: y,
-        vx: shot.speed * f.facing,
-        vy: shot.rise,
+        vx: (wave ? curse ? fire2.curse.speed : fire2.base.speed : shot.speed) * f.facing,
+        vy: wave ? 0 : shot.rise,
         facing: f.facing,
-        radius: shot.radius,
+        radius: wave ? fire2.headRadius : shot.radius,
         age: 0,
-        life: shot.life,
+        life: wave ? fire2.maximumLife : shot.life,
         state: "flight",
         impactAge: 0
       });
-      if (id === "goryuka") this.sasukeStormUntil = this.combatFrame + sasukeSpecialBalance.stormTicks;
+      const heat = sasuke_kirin_default.weather.contributions[id];
+      if (shot.at === 0 && heat) {
+        const level = this.sasukeStormUntil > this.combatFrame ? this.sasukeStormLevel : 0;
+        this.sasukeStormLevel = Math.min(sasuke_kirin_default.weather.maximum, level + heat);
+        this.sasukeStormUntil = this.combatFrame + sasukeSpecialBalance.stormTicks;
+      }
     }
+  }
+  stepFireDragon(p3) {
+    const w = p3.wave;
+    p3.previousX = p3.x;
+    p3.previousY = p3.y;
+    w.distance += Math.abs(p3.vx);
+    const point = fireDragonPoint(w, w.distance);
+    p3.x = point.x;
+    p3.y = point.y;
+    p3.age++;
+    p3.radius = Math.round(sasuke_polish_default.goryuka.headRadius * Math.min(1, 0.48 + p3.age * 0.095));
+    if (--p3.life <= 0 || w.distance > w.limit) return false;
+    if (w.struck) return true;
+    const shapes = fireDragonVolumes(w, { x: p3.previousX, y: p3.previousY }, p3.radius);
+    const target = this.fighters[1 - p3.owner], owner = this.fighters[p3.owner];
+    const move = p3.curse ? sasukeCurseMoves[p3.move] : owner.data.specialMoves?.[p3.move];
+    if (move && this.damageBenWalls(shapes, move.damage, this.benWalls(), `dragon:${p3.id}`, p3.owner)) return false;
+    if (target.invulnerable || target.knockedDown) return true;
+    const boxes = target.hurtboxes();
+    for (const shape of shapes) {
+      const box = boxes.find((r) => shapeHitsRect(shape, r));
+      if (!box) continue;
+      if (move) {
+        if (this.absorbBen(target, 2, move.damage, p3.facing)) return false;
+        w.struck = true;
+        this.resolveImpact(owner, target, move, p3.move, box, p3.facing, !!p3.curse);
+      }
+      break;
+    }
+    return true;
   }
   stepEnergy() {
     if (!this.kiProjectiles.length && !this.beams.length) return;
     if (this.temporal.active && dio_specials_default.timeStop.freezeAllProjectiles)
       return;
-    this.kiProjectiles = this.kiProjectiles.filter((p) => {
-      if (p.state === "impact")
-        return ++p.impactAge < goku_specials_default.projectiles.impactTicks;
-      p.previousX = p.x;
-      p.previousY = p.y;
-      p.x += p.vx;
-      p.y += p.vy;
-      p.age++;
-      if (--p.life <= 0 || p.x < -40 || p.x > 1320 || p.y < 0 || p.y > FLOOR + 20)
+    this.kiProjectiles = this.kiProjectiles.filter((p3) => {
+      if (p3.wave) return this.stepFireDragon(p3);
+      if (p3.state === "impact")
+        return ++p3.impactAge < goku_specials_default.projectiles.impactTicks;
+      p3.previousX = p3.x;
+      p3.previousY = p3.y;
+      p3.x += p3.vx;
+      p3.y += p3.vy;
+      p3.age++;
+      if (--p3.life <= 0 || p3.x < -40 || p3.x > 1320 || p3.y < 0 || p3.y > FLOOR2 + 20)
         return false;
-      const target = this.fighters[1 - p.owner], owner = this.fighters[p.owner], move = owner.data.specialMoves?.[p.move];
-      if (!move || target.knockedDown || target.invulnerable) return true;
+      const target = this.fighters[1 - p3.owner], owner = this.fighters[p3.owner], move = p3.curse ? sasukeCurseMoves[p3.move] : owner.data.specialMoves?.[p3.move];
+      if (!move) return true;
       const shape = {
-        a: { x: p.previousX, y: p.previousY },
-        b: { x: p.x, y: p.y },
-        r: p.radius
+        a: { x: p3.previousX, y: p3.previousY },
+        b: { x: p3.x, y: p3.y },
+        r: p3.radius
       };
+      const walls = this.benWalls();
+      if (this.damageBenWalls([shape], move.damage, walls, `energy:${p3.id}`, p3.owner) || this.strikeEchoClones(owner, target, [shape], walls)) return false;
+      if (target.knockedDown || target.invulnerable) return true;
       const hurt = target.hurtboxes().find((r) => shapeHitsRect(shape, r));
       if (hurt) {
+        const energy = move.special === "ki" || move.special === "hosenka" || move.special === "gokakyu";
+        if (energy && this.absorbBen(target, p3.radius >= 22 ? 2 : 1, move.damage, p3.facing)) return false;
         let impact = hurt;
-        if (isSasukeSpecial(p.move)) {
-          p.x = Math.max(hurt.x, Math.min(hurt.x + hurt.w, p.x));
-          p.y = Math.max(hurt.y, Math.min(hurt.y + hurt.h, p.y));
-          impact = { x: p.x, y: p.y, w: 0, h: 0 };
-        } else if (owner.gokuCastSerial === p.cast && owner.moveId === p.move) {
+        if (isSasukeSpecial(p3.move)) {
+          p3.x = Math.max(hurt.x, Math.min(hurt.x + hurt.w, p3.x));
+          p3.y = Math.max(hurt.y, Math.min(hurt.y + hurt.h, p3.y));
+          impact = { x: p3.x, y: p3.y, w: 0, h: 0 };
+        } else if (owner.gokuCastSerial === p3.cast && owner.moveId === p3.move) {
           owner.connected = true;
         }
-        this.resolveImpact(owner, target, move, p.move, impact, p.facing);
-        p.state = "impact";
-        p.impactAge = 0;
-        p.vx = p.vy = 0;
+        this.resolveImpact(owner, target, move, p3.move, impact, p3.facing);
+        p3.state = "impact";
+        p3.impactAge = 0;
+        p3.vx = p3.vy = 0;
       }
       return true;
     });
@@ -23044,11 +27191,24 @@ var Match = class {
         Math.min(move.beam.range, b.facing === 1 ? 1280 - b.x : b.x)
       );
       const pulse = Math.floor(b.age / move.beam.interval);
-      if (pulse < move.beam.hits && !b.hitIds.includes(pulse) && !target.invulnerable && !target.knockedDown && target.hurtboxes().some((r) => overlaps(beamBox(b), r))) {
+      const box = beamBox(b);
+      const walls = this.benWalls();
+      const wall = walls.find((w) => w.owner !== b.owner && this.benWallSolid(w) && (w.object.x - b.x) * b.facing > 0 && (target.x - w.object.x) * b.facing > 0 && shapeHitsRect(box, shapeBounds(benObjectShape(w.object, w.field))));
+      if (wall) {
+        this.damageBenWalls([box], move.damage, [wall], `beam:${b.id}:${pulse}`, b.owner);
+        b.length = Math.min(b.length, Math.abs(wall.object.x - b.x));
+      }
+      if (pulse < move.beam.hits && !b.hitIds.includes(pulse) && !wall && !target.invulnerable && !target.knockedDown && target.hurtboxes().some((r) => overlaps(beamBox(b), r))) {
         b.hitIds.push(pulse);
         owner.connected = true;
         b.impactAge = b.age;
-        this.resolveImpact(owner, target, move, b.move, beamBox(b), b.facing);
+        if (this.absorbBen(target, 2, move.damage, b.facing)) {
+          b.state = "dissipate";
+          b.age = 0;
+          b.life = goku_specials_default.projectiles.impactTicks;
+          return true;
+        }
+        this.resolveImpact(owner, target, move, b.move, box, b.facing);
       }
       b.age++;
       if (--b.life <= 0) {
@@ -23059,20 +27219,411 @@ var Match = class {
       return true;
     });
   }
-  damage(target, damage, minimum = 0) {
-    if (this.rules.infiniteHealth?.[target.id]) return damage;
-    const next = Math.max(minimum, target.health - damage), applied = target.health - next;
+  benCrossing(fighter, rival) {
+    const move = fighter.state === "attack" ? fighter.move : void 0;
+    if (move?.ben?.burrow && fighter.benPhase) return true;
+    if (!move?.ben?.cross || !move.drive || fighter.stateFrame < move.drive.from || fighter.stateFrame >= move.drive.to) return false;
+    const gap = (fighter.pushbox().w + rival.pushbox().w) / 2;
+    const exit = rival.x + fighter.facing * gap;
+    return exit >= fighter.stageInset && exit <= 1280 - fighter.stageInset;
+  }
+  tickBenAbilities(f, other, landedFromDrop) {
+    const watch = f.omnitrix;
+    if (!watch) return;
+    if (watch.absorbCooldown) watch.absorbCooldown--;
+    if (watch.absorbWindow) watch.absorbWindow--;
+    if (watch.active === "feedback") {
+      const guard = f.input.direction === -f.facing && !f.airborne && ["idle", "walk", "crouch"].includes(f.state);
+      if (guard && !watch.guardHeld && !watch.absorbCooldown) watch.absorbWindow = 5;
+      if (!guard) watch.absorbWindow = 0;
+      watch.guardHeld = guard;
+    }
+    if (watch.growthCooldown > 0) watch.growthCooldown--;
+    if (watch.ghostCooldown) watch.ghostCooldown--;
+    if (watch.nrgCooldown) watch.nrgCooldown--;
+    if (watch.echoCooldown) watch.echoCooldown--;
+    const current = f.state === "attack" ? f.move : void 0;
+    if (!f.airborne && !current?.ben?.airUse && !current?.ben?.lift) {
+      delete watch.flightUsed;
+      delete watch.flightTicks;
+      delete watch.flightVX;
+      delete watch.flightVY;
+      delete watch.diveUsed;
+    }
+    if (watch.nrgReleased) {
+      watch.nrgTicks = Math.max(0, (watch.nrgTicks ?? 0) - 1);
+      if (!watch.nrgTicks && !watch.transition && ["idle", "walk", "crouch", "landing", "air"].includes(f.state))
+        f.attack("nrgSeal_medium");
+    }
+    if (current?.ben?.nrgMode && !f.airborne && f.stateFrame >= current.startup && f.stateFrame < current.startup + current.active + current.recovery) {
+      const release = current.ben.nrgMode === "release";
+      const next = release ? nrgReleasedForm : benForms.nrg;
+      if (this.placeBenBody(f, other, next, !release)) {
+        watch.objects.length = 0;
+        watch.nrgReleased = release;
+        delete watch.flightTicks;
+        watch.nrgTicks = release ? benStage6Balance.nrgDuration : 0;
+        if (!release) watch.nrgCooldown = benStage6Balance.nrgCooldown;
+        f.buffer.clear();
+        f.attack(release ? "nrgEmergence" : "nrgLock");
+        this.effect("power", f.x, f.y - 95, 20);
+        this.events.at(-1).ben = "thermal";
+      } else watch.noSpace = 35;
+    }
+    if (watch.growth && --watch.growth.ticks === 0) delete watch.growth;
+    if (watch.chargeTicks > 0 && --watch.chargeTicks === 0) watch.charge = 0;
+    if (watch.absorbFlash > 0) watch.absorbFlash--;
+    if (watch.chargeCue && --watch.chargeCue.ticks === 0) delete watch.chargeCue;
+    if (landedFromDrop && f.y === FLOOR2) {
+      this.effect("hit", f.x, FLOOR2 - 4, 15);
+      this.events.at(-1).ben = "colossus";
+    }
+    const move = f.state === "attack" ? f.move : void 0;
+    const rank = move?.ben?.grow;
+    if (!rank || !move || f.stateFrame !== move.startup) return;
+    const growth = benFormBalance.growth[rank];
+    const larger = f.pushbox(f.benForm, f.x, growth.scale);
+    if (larger.x < 0 || larger.x + larger.w > 1280 || overlaps(larger, other.pushbox()) || this.benWalls().some((w) => this.benWallSolid(w) && shapeHitsRect(benObjectShape(w.object, w.field), larger))) {
+      watch.noSpace = 35;
+      return;
+    }
+    watch.growth = { rank, ticks: growth.ticks };
+    watch.growthCooldown = growth.ticks + growth.cooldown;
+    this.effect("power", f.x, FLOOR2 - 11, 20);
+    this.events.at(-1).ben = "colossus";
+  }
+  benWalls() {
+    const walls = [];
+    for (const owner of this.fighters) for (const object of owner.omnitrix?.objects ?? []) {
+      const field = benObjectMove(object.id)?.ben?.field;
+      if (field?.type === "wall") walls.push({ owner: owner.id, object, field });
+    }
+    return walls;
+  }
+  benWallSolid({ object, field }) {
+    return !object.spent && object.age >= 3 && object.age < field.life - 7;
+  }
+  benWallBetween(w, x, otherX, attack) {
+    return this.benWallSolid(w) && (x - w.object.x) * (otherX - w.object.x) < 0 && shapeHitsRect(attack, shapeBounds(benObjectShape(w.object, w.field)));
+  }
+  stopAtBenWalls(f, priorX, walls) {
+    for (const w of walls) {
+      if (!this.benWallSolid(w)) continue;
+      const wall = shapeBounds(benObjectShape(w.object, w.field));
+      const body2 = f.pushbox();
+      if (body2.y >= wall.y + wall.h || f.y <= wall.y) continue;
+      const left = priorX < w.object.x;
+      const limit = left ? wall.x - body2.w / 2 : wall.x + wall.w + body2.w / 2;
+      if (left ? f.x <= limit : f.x >= limit) continue;
+      f.x = limit;
+      if ((left ? 1 : -1) * f.vx > 0) f.vx = 0;
+    }
+  }
+  damageBenWalls(shapes, damage2, walls, key, owner) {
+    let stopped = false;
+    for (const w of walls) {
+      if (w.owner === owner || !this.benWallSolid(w) || !damage2) continue;
+      if (!shapes.some((shape) => shapeHitsRect(shape, shapeBounds(benObjectShape(w.object, w.field))))) continue;
+      stopped = true;
+      if (w.object.hitKeys.includes(key)) continue;
+      w.object.hitKeys.push(key);
+      w.object.durability -= damage2;
+      this.effect("hit", w.object.x, FLOOR2 - w.field.height * 0.52, 12);
+      this.events.at(-1).ben = "crystal";
+      if (w.object.durability <= 0) {
+        w.object.spent = true;
+        w.object.age = Math.max(w.object.age, w.field.life - 8);
+      }
+    }
+    return stopped;
+  }
+  counterWithArmor(defender, attacker, incoming, id, contact) {
+    const watch = defender.omnitrix;
+    if (watch?.active !== "nrg" || watch.nrgReleased || !defender.move?.ben?.armorCounter || defender.attackPhase !== "active" || defender.airborne || attacker.health <= 0 || this.temporal.isFrozen(defender.id) || this.temporal.isFrozen(attacker.id) || incoming.kind === "grab" || incoming.level === "throw" || isSuperMove(incoming) || incoming.stand || incoming.projectile || incoming.beam || incoming.ben?.field || incoming.ben?.cable || incoming.ben?.spectralReach || incoming.special === "nagashi" || incoming.special === "chidori" || incoming.special === "goryuka" || (attacker.x - defender.x) * defender.facing <= 0 || Math.abs(attacker.x - defender.x) > 124 || Math.abs(attacker.y - defender.y) > 70) return false;
+    if (!defender.attack("nrgCounterShove")) return false;
+    defender.buffer.clear();
+    const damage2 = this.damage(defender, Math.round(incoming.damage * 0.25));
+    this.recordHit(attacker, defender, id, damage2);
+    this.effect(
+      "counter",
+      contact ? contact.x + contact.w / 2 : defender.x + defender.facing * 37,
+      contact ? contact.y + contact.h / 2 : defender.y - 95,
+      12
+    );
+    this.events.at(-1).ben = "metal";
+    this.hitstop = Math.max(this.hitstop, 5);
+    if (defender.health > 0) {
+      attacker.setState("hitstun");
+      attacker.stun = 9;
+      attacker.vx = 0;
+      attacker.hitCrouched = false;
+      attacker.hitLaunch = false;
+      attacker.reactionStrength = 1;
+      attacker.syncReactionClock(false);
+    }
+    return true;
+  }
+  counterWithFeedback(defender, attacker, incoming) {
+    if (defender.omnitrix?.active !== "feedback" || !defender.move?.ben?.counter || defender.attackPhase !== "active" || defender.airborne || attacker.health <= 0 || this.temporal.isFrozen(defender.id) || this.temporal.isFrozen(attacker.id) || incoming.kind === "grab" || incoming.level === "throw" || isSuperMove(incoming) || incoming.ben?.cable || incoming.ben?.field || incoming.special === "nagashi" || incoming.special === "chidori" || incoming.stand || (attacker.x - defender.x) * defender.facing <= 0 || Math.abs(attacker.x - defender.x) > 114 || Math.abs(attacker.y - defender.y) > 112) return false;
+    if (!defender.attack("feedback_counter")) return false;
+    defender.buffer.clear();
+    defender.connected = true;
+    this.resolveImpact(defender, attacker, defender.move, "feedback_counter");
+    return true;
+  }
+  gainFeedbackCharge(watch, gain, kind) {
+    const amount = Math.min(gain, benFormBalance.energy.capacity - watch.charge);
+    watch.charge += amount;
+    if (amount > 0 || kind === "absorb") watch.chargeTicks = benFormBalance.energy.retention;
+    if (amount > 0 || kind === "absorb") watch.chargeCue = { kind, amount, ticks: 29 };
+  }
+  absorbBen(target, strength, damage2, direction) {
+    const watch = target.omnitrix, rank = target.move?.ben?.absorb;
+    if (watch?.active !== "feedback" || this.temporal.isFrozen(target.id) || direction !== -target.facing || target.health <= 0 || this.capture) return false;
+    const legacy = rank && strength <= rank && target.attackPhase === "active" && !target.connected;
+    if (!legacy && (!watch.absorbWindow || watch.absorbCooldown || !watch.guardHeld)) return false;
+    this.gainFeedbackCharge(watch, Math.max(25, Math.round(damage2 * 0.72)), "absorb");
+    if (legacy) {
+      const move = target.move;
+      target.connected = true;
+      target.stateFrame = move.startup + move.active + move.recovery - 12;
+    }
+    watch.absorbWindow = 0;
+    watch.absorbCooldown = 35;
+    watch.absorbFlash = 18;
+    this.effect("power", target.x + target.facing * 28, target.y - 98, 18);
+    this.events.at(-1).ben = "electric";
+    return true;
+  }
+  strikeEchoClones(owner, target, shapes, walls) {
+    if (this.temporal.isFrozen(target.id)) return false;
+    return hitEchoClones(
+      target,
+      shapes,
+      FLOOR2,
+      (shape, x) => !walls.some((w) => this.benWallBetween(w, owner.x, x, shape))
+    );
+  }
+  stepBenObjects() {
+    for (const owner of this.fighters) {
+      const watch = owner.omnitrix;
+      if (!watch || this.temporal.isFrozen(owner.id)) continue;
+      const target = this.fighters[1 - owner.id];
+      const move = owner.state === "attack" ? owner.move : void 0;
+      const cast = move?.ben?.field;
+      if (cast && move && owner.stateFrame === move.startup) this.spawnBenField(owner, target, cast);
+      const walls = this.benWalls();
+      tickEchoClones(owner, target, this.combatFrame, FLOOR2, (x) => walls.some((w) => this.benWallSolid(w) && (Math.abs(w.object.x - x) <= w.field.width / 2 + 19 || this.benWallBetween(w, owner.x, x, { x: Math.min(owner.x, x), y: FLOOR2 - 95, w: Math.abs(x - owner.x), h: 95 }))));
+      watch.objects = watch.objects.filter((object, index) => {
+        const projectile2 = benObjectMove(object.id);
+        const field = projectile2?.ben?.field;
+        if (!field) return false;
+        if (object.impactAge !== void 0) return ++object.impactAge < 15;
+        if (projectile2.ben?.nightmare && (owner.state !== "attack" || owner.moveId !== object.id)) return false;
+        if (++object.age > field.life + (object.power ? 6 : 0)) return false;
+        if (object.age <= 0 || field.type === "wall" || field.type === "gravityWell") return true;
+        if (["fireball", "bolt", "shard", "frost", "sonic"].includes(field.type) && gravityAt(target, object.x, object.y, FLOOR2))
+          object.vy = Math.min(7, (object.vy ?? 0) + 0.48);
+        const before = { x: object.x, y: object.y };
+        object.x += object.direction * (field.type === "spectralHand" && object.vy ? 6 : field.speed);
+        object.y += object.vy ?? 0;
+        if (field.gravity) object.vy = (object.vy ?? 0) + field.gravity;
+        if (field.type === "beam") {
+          if (owner.state !== "attack" || owner.moveId !== object.id) return false;
+          const heat = field.aim === "heat" && owner.airborne;
+          const down = heat && !owner.input.up;
+          const offset = down ? field.offset + 7 : field.offset;
+          const height = down ? field.height - 29 : field.height;
+          object.x = Math.max(field.width, Math.min(1280 - field.width, owner.x + object.direction * offset));
+          object.y = owner.y - height;
+          if (heat && object.id.endsWith("medium")) {
+            const angle = owner.input.up ? 0 : owner.input.down ? 1.1 : Math.min(0.99, 0.34 + object.age * 0.05);
+            object.aim = (object.aim ?? 0) * 0.65 + angle * 0.35;
+          }
+        }
+        if (field.type === "lightning" && object.age === field.activeAge?.[0])
+          this.events.push({
+            kind: "hit",
+            x: object.x,
+            y: FLOOR2,
+            life: 5,
+            total: 5,
+            blocked: false,
+            audioOnly: true,
+            ben: "storm"
+          });
+        const crash = () => {
+          object.impactAge = 0;
+          object.spent = true;
+          this.effect("hit", object.x, object.y, 15);
+          this.events.at(-1).ben = "colossus";
+          return true;
+        };
+        if (field.type === "car") {
+          const edge = 60 * (object.scale ?? 1), ground = FLOOR2 - 25 * (object.scale ?? 1);
+          if (object.x <= edge || object.x >= 1280 - edge || object.y >= ground) {
+            object.x = Math.max(edge, Math.min(1280 - edge, object.x));
+            object.y = Math.min(ground, object.y);
+            return crash();
+          }
+        }
+        if (object.x < -60 || object.x > 1340 || object.y < -40 || object.y > FLOOR2 + 16) return false;
+        if (object.spent || field.activeAge && (object.age < field.activeAge[0] || object.age >= field.activeAge[1]) || field.type === "spikes" && object.age >= field.life - 6) return true;
+        const shape = benObjectShape(object, field, before.x, before.y);
+        const damage2 = projectile2.damage + (object.power === 50 ? 13 : object.power ? 8 : 0);
+        const missile = benProjectile(field);
+        if (missile && this.damageBenWalls([shape], damage2, walls, `ben:${owner.id}:${object.cast}:${index}`, owner.id))
+          return field.type === "car" ? crash() : false;
+        if (field.type === "gravityPulse" && walls.some((w) => this.benWallBetween(w, owner.x, target.x, shape))) return true;
+        if (damage2 && this.strikeEchoClones(owner, target, [shape], walls) && missile && field.type !== "beam") return false;
+        if (this.capture || target.knockedDown || target.invulnerable || target.health <= 0 || field.type === "sonicAssist" && (target.combo >= 5 || owner.omnitrix?.active !== "echoEcho")) return true;
+        const hurt = target.hurtboxes().find((box) => shapeHitsRect(shape, box));
+        if (!hurt) return true;
+        object.spent = true;
+        if (object.cast !== void 0 && (field.type === "spikes" || field.type === "shard")) {
+          for (const sibling of watch.objects)
+            if (sibling.id === object.id && sibling.cast === object.cast && sibling !== object)
+              sibling.spent = true;
+        }
+        const direction = field.type === "lightning" || field.type === "spectralHand" ? -target.facing : (field.type === "pillar" || field.gravityMode === "repel") && target.x !== object.x ? Math.sign(target.x - object.x) : object.direction;
+        if (field.type === "spectralHand" && projectile2.ben?.nightmare && !this.benBlocked(target, projectile2, direction) && !this.temporal.isFrozen(target.id) && target.combo < (owner.data.combatLimits?.maxHits ?? 9)) {
+          for (const sibling of watch.objects)
+            if (sibling.cast === object.cast && sibling.id === object.id) sibling.spent = true;
+          if (owner.x !== target.x) owner.facing = owner.x < target.x ? 1 : -1;
+          this.beginCapture("grab", owner, target, "ground", object.id);
+          return false;
+        }
+        const energy = field.energy ?? (field.type === "fireball" ? object.id.endsWith("_medium") ? 2 : 1 : 0);
+        if (energy && this.absorbBen(target, energy, damage2, direction)) return false;
+        const impact = object.power ? { ...projectile2, damage: damage2, stun: projectile2.stun + 3, push: projectile2.push + 2 } : field.type === "sonicAssist" && target.combo ? { ...projectile2, damage: damage2, stun: Math.max(projectile2.stun, Math.min(16, target.stun)), launch: target.airborne ? target.vy * 0.65 : 0 } : { ...projectile2, damage: damage2 };
+        const beamX = field.type === "beam" ? target.x : object.x;
+        const contactX = Math.max(hurt.x, Math.min(beamX, hurt.x + hurt.w));
+        const impactY = field.type === "beam" ? Math.max(hurt.y, Math.min(
+          hurt.y + hurt.h,
+          object.y + Math.abs(contactX - object.x) * (object.aim ?? 0)
+        )) : object.y;
+        this.resolveImpact(owner, target, impact, object.id, {
+          x: contactX,
+          y: missile ? impactY : Math.max(hurt.y, object.y - field.height),
+          w: 0,
+          h: 0
+        }, direction);
+        return field.type === "car" ? crash() : !missile || field.type === "beam";
+      });
+      const revealed = this.capture;
+      if (revealed?.attacker === owner.id && revealed.ben?.moveId.startsWith("ghostPhase_"))
+        watch.objects = watch.objects.filter((object) => object.id !== revealed.ben.moveId);
+    }
+  }
+  spawnBenField(owner, target, field) {
+    const watch = owner.omnitrix;
+    const projectile2 = benProjectile(field);
+    const half = projectile2 ? field.width : field.width / 2;
+    const balance = benFormBalance.energy;
+    const cost = field.energy === 1 ? balance.lightSpend : balance.mediumSpend;
+    const power = (field.spendCharge || field.type === "bolt") && watch.active === "feedback" && watch.charge >= cost ? cost : 0;
+    const origin = owner.x + field.offset * owner.facing;
+    const stormX = Math.max(half, Math.min(1280 - half, origin));
+    const lastStrike = stormX + (field.pattern?.at(-1)?.offset ?? 0) * owner.facing;
+    const stormSide = lastStrike > 1280 - half || lastStrike < half ? -owner.facing : owner.facing;
+    for (const shot of field.pattern ?? [{}]) {
+      const desired = origin + (shot.offset ?? 0) * owner.facing;
+      const placeX = field.type === "lightning" ? stormX + (shot.offset ?? 0) * stormSide : desired;
+      if (field.type === "spikes" && (desired < half || desired > 1280 - half)) continue;
+      const object = {
+        id: owner.moveId,
+        direction: owner.facing * (shot.direction ?? 1),
+        x: Math.max(half, Math.min(1280 - half, placeX)),
+        y: shot.height ? FLOOR2 - shot.height : projectile2 ? owner.y - field.height : FLOOR2,
+        age: -(shot.delay ?? 0),
+        spent: false,
+        cast: this.combatFrame,
+        ...shot.vy || field.type === "car" ? { vy: shot.vy ?? -4.9 } : {},
+        ...field.type === "car" ? { scale: owner.benScale } : {},
+        ...field.aim === "heat" ? { aim: owner.airborne ? owner.input.down ? 0.95 : owner.input.up ? 0 : 0.55 : 0 } : {},
+        ...power ? { power } : {}
+      };
+      if (field.type === "wall") {
+        const bounds = { x: object.x - half - 3, y: FLOOR2 - field.height, w: field.width + 6, h: field.height };
+        const widest = Math.max(owner.pushbox().w, target.pushbox().w);
+        const margin = half + widest / 2 + Math.max(40, widest / 2);
+        if (desired < margin || desired > 1280 - margin || overlaps(bounds, owner.pushbox()) || overlaps(bounds, target.pushbox())) {
+          watch.noSpace = 35;
+          return;
+        }
+        object.durability = field.durability;
+        object.hitKeys = [];
+      }
+      watch.objects.push(object);
+    }
+    if (power) {
+      watch.charge -= power;
+      watch.chargeCue = { kind: "spend", amount: -power, ticks: 29 };
+    }
+  }
+  placeBenForm(fighter, rival, to) {
+    const form = benForms[to];
+    if (!form || !this.placeBenBody(fighter, rival, form)) return false;
+    const watch = fighter.omnitrix;
+    if (watch.active === "gravattack" || watch.active === "echoEcho") clearStage7(fighter);
+    if (watch.nrgReleased) {
+      watch.nrgReleased = false;
+      delete watch.flightTicks;
+      watch.nrgTicks = 0;
+      watch.nrgCooldown = benStage6Balance.nrgCooldown;
+      watch.objects.length = 0;
+    }
+    return true;
+  }
+  placeBenBody(fighter, rival, form, allowPush = false) {
+    const half = form.width / 2, inset = Math.max(40, half);
+    let x = Math.max(inset, Math.min(1280 - inset, fighter.x));
+    const target = rival.pushbox();
+    let rivalX = rival.x;
+    const solidWall = (box) => this.benWalls().some((w) => this.benWallSolid(w) && shapeHitsRect(benObjectShape(w.object, w.field), box));
+    if (overlaps(fighter.pushbox(form, x, 1), target)) {
+      const side = fighter.x <= rival.x ? -1 : 1;
+      const gap = half + target.w / 2;
+      x = rival.x + side * gap;
+      if (x < inset || x > 1280 - inset) {
+        if (!allowPush) return false;
+        x = Math.max(inset, Math.min(1280 - inset, x));
+        rivalX = x - side * gap;
+        if (rivalX < rival.stageInset || rivalX > 1280 - rival.stageInset || solidWall(rival.pushbox(rival.benForm, rivalX))) return false;
+      }
+    }
+    if (solidWall(fighter.pushbox(form, x, 1))) {
+      if (!allowPush) return false;
+      const origin = Math.max(inset, Math.min(1280 - inset, fighter.x));
+      const candidates = Array.from({ length: 33 }, (_, i) => i % 2 ? origin - (i + 1) * 1.5 : origin + i * 1.5);
+      const nearby = candidates.find((candidate) => {
+        const body2 = fighter.pushbox(form, candidate, 1);
+        return candidate >= inset && candidate <= 1280 - inset && !overlaps(body2, target) && !solidWall(body2);
+      });
+      if (nearby === void 0) return false;
+      x = nearby;
+      rivalX = rival.x;
+    }
+    fighter.x = x;
+    rival.x = rivalX;
+    fighter.setState(fighter.airborne ? "air" : "idle");
+    return true;
+  }
+  damage(target, damage2, minimum = 0) {
+    if (target.benForm) damage2 = Math.round(damage2 * target.benForm.damageTaken);
+    if (this.rules.infiniteHealth?.[target.id]) return damage2;
+    const next = Math.max(minimum, target.health - damage2), applied = target.health - next;
     target.health = next;
     return Math.max(0, applied);
   }
-  recordHit(attacker, victim, move, damage, blocked = false) {
+  recordHit(attacker, victim, move, damage2, blocked = false) {
     this.hits.push({
       serial: ++this.hitSerial,
       frame: this.combatFrame,
       attacker: attacker.id,
       victim: victim.id,
       move,
-      damage,
+      damage: damage2,
       blocked,
       combo: victim.combo
     });
@@ -23080,10 +27631,46 @@ var Match = class {
   effect(kind, x, y, life, blocked = false) {
     this.events.push({ kind, x, y, life, total: life, blocked });
   }
-  beginCapture(kind, attacker, victim) {
-    const grab = kind === "grab" ? attacker.data.grabSequence : void 0;
-    const contactX = grab?.startFromContact ? (victim.x - attacker.x) * attacker.facing : void 0;
-    if (grab) {
+  beginCapture(kind, attacker, victim, source = "ground", benMoveOverride) {
+    if (kind === "grab" && attacker.data.id === "kaneki") {
+      const x = victim.x, y = victim.y;
+      const technique2 = kanekiTechnique(attacker.moveId);
+      const limb = attacker.kanekiLimb ?? (source === "air" ? "upperRear" : "lowerFront");
+      attacker.vx = attacker.vy = victim.vx = victim.vy = 0;
+      victim.facing = -attacker.facing;
+      attacker.setState("grabbing");
+      victim.setState("grabbed");
+      victim.kanekiCaptured = true;
+      const swords2 = technique2?.family === "fourSwords";
+      const chain = source === "ground" ? {
+        origin: technique2?.family ?? "universal",
+        rank: technique2?.rank ?? 0,
+        initialCombo: victim.combo,
+        started: this.frame,
+        phase: swords2 ? "opener" : "connected",
+        since: 0
+      } : void 0;
+      attacker.actionClip = swords2 ? kanekiSpecialScene(technique2.id, 0, attacker, victim, attacker.facing).clip : "grabConnected";
+      victim.actionClip = "grabbed";
+      attacker.buffer.clear();
+      victim.buffer.clear();
+      this.capture = {
+        kind,
+        attacker: attacker.id,
+        victim: victim.id,
+        tick: 0,
+        scale: Math.max(combat_pace_default.combo.minimumDamageScale, 1 - victim.combo * combat_pace_default.combo.damageStep),
+        kaneki: { source, limb, x, y, direction: attacker.facing, specialId: technique2?.id, chain }
+      };
+      if (chain && !swords2) this.effect("chainBind", victim.x, victim.y - 72, 10);
+      this.hitstop = Math.max(this.hitstop, 4);
+      return;
+    }
+    const benMove = kind === "grab" && attacker.benForm ? benMoveOverride ?? attacker.moveId : void 0;
+    const grab2 = kind === "grab" ? benGrabFor(attacker.benForm, benMove ?? "") ?? attacker.grabSequence : void 0;
+    const contactX = grab2?.startFromContact ? (victim.x - attacker.x) * attacker.facing : void 0;
+    const contactFrame = benMove?.startsWith("conductor_") ? attacker.stateFrame : void 0;
+    if (grab2) {
       if (contactX === void 0)
         victim.x = Math.max(40, Math.min(1240, attacker.x + attacker.facing * 72));
     } else {
@@ -23091,13 +27678,15 @@ var Match = class {
       attacker.x = center - attacker.facing * 36;
       victim.x = center + attacker.facing * 36;
     }
-    attacker.y = victim.y = FLOOR;
+    const contactY = grab2 && "scene" in grab2 && grab2.scene ? victim.y - FLOOR2 : void 0;
+    attacker.y = FLOOR2;
+    if (contactY === void 0) victim.y = FLOOR2;
     attacker.vx = attacker.vy = victim.vx = victim.vy = 0;
     victim.facing = -attacker.facing;
     victim.health = Math.max(1, victim.health);
     attacker.setState(kind === "grab" ? "grabbing" : "cinematic");
     victim.setState("grabbed");
-    attacker.actionClip = kind === "ultimate" ? "ultimateRush" : "grabHold";
+    attacker.actionClip = kind === "ultimate" ? "ultimateRush" : grab2 && "clip" in grab2 && typeof grab2.clip === "string" ? grab2.clip : "grabHold";
     victim.actionClip = kind === "ultimate" ? "damageMedium" : "grabbed";
     attacker.buffer.clear();
     victim.buffer.clear();
@@ -23107,12 +27696,34 @@ var Match = class {
       victim: victim.id,
       tick: 0,
       scale: Math.max(0.45, 1 - Math.max(0, victim.combo - 1) * 0.08),
-      ...contactX === void 0 ? {} : { contactX }
+      ...contactX === void 0 ? {} : { contactX },
+      ...contactY === void 0 ? {} : { contactY },
+      ...benMove ? { ben: {
+        moveId: benMove,
+        origin: attacker.x,
+        direction: attacker.facing,
+        ...contactFrame === void 0 ? {} : { contactFrame }
+      } } : {}
     };
+    const technique = benMove && benObjectMove(benMove)?.ben?.technique;
+    if (technique && attacker.omnitrix && !attacker.omnitrix.usedSpecials.includes(technique))
+      attacker.omnitrix.usedSpecials.push(technique);
     this.hitstop = Math.max(this.hitstop, kind === "ultimate" ? 12 : 5);
   }
-  beginStagedSuper(a, b, jet) {
-    const config = jet ? luffy_jet_gigant_default : goku_fury_default;
+  centipedeEffect(cue, x, y, life, strength) {
+    this.events.push({
+      kind: "centipede",
+      centipede: { cue, frame: this.frame },
+      x,
+      y,
+      life,
+      total: life,
+      strength,
+      blocked: false
+    });
+  }
+  beginStagedSuper(a, b, kind, source = "strike") {
+    const config = kind === centipedeId ? centipedeConfig : kind === "kirin" ? sasuke_kirin_default : kind === "jetGigant" ? luffy_jet_gigant_default : goku_fury_default;
     const state = {
       attacker: a.id,
       victim: b.id,
@@ -23126,8 +27737,26 @@ var Match = class {
         1 - Math.max(0, b.combo - 1) * 0.08
       )
     };
-    if (jet) this.jetGigant = { ...state, hold: 8, openingTip: jetOpener(a).tip };
-    else this.fury = state;
+    if (kind === "jetGigant") this.jetGigant = { ...state, hold: 8, openingTip: jetOpener(a).tip };
+    else if (kind === "kirin") this.kirin = {
+      ...state,
+      hold: 5,
+      cursed: !!a.kirinCursed,
+      storm: this.sasukeStormUntil > this.combatFrame ? this.sasukeStormLevel : 0
+    };
+    else if (kind === centipedeId) {
+      const grip = this.capture?.kaneki?.limb ?? "lowerFront";
+      this.centipede = {
+        ...state,
+        source,
+        grip,
+        originY: a.y,
+        hold: 0,
+        scale: Math.max(centipedeConfig.minimumComboScale, 1 - Math.max(0, b.combo - (source === "strike" ? 1 : 0)) * combat_pace_default.combo.damageStep)
+      };
+      this.capture = void 0;
+      if (source !== "strike") this.centipedeEffect("activation", a.x, a.y - 74, 20);
+    } else this.fury = state;
     a.setState("cinematic");
     b.setState("grabbed");
     a.vx = a.vy = b.vx = b.vy = 0;
@@ -23139,45 +27768,54 @@ var Match = class {
     this.stageSuper();
   }
   stageSuper() {
-    const s = this.jetGigant ?? this.fury, scene = this.jetGigant ? jetScene(this.jetGigant) : furyScene(s), a = this.fighters[s.attacker], b = this.fighters[s.victim];
-    for (const [f, p] of [
+    const s = this.centipede ?? this.kirin ?? this.jetGigant ?? this.fury, scene = this.centipede ? centipedeScene(this.centipede) : this.kirin ? kirinScene(this.kirin) : this.jetGigant ? jetScene(this.jetGigant) : furyScene(s), a = this.fighters[s.attacker], b = this.fighters[s.victim];
+    for (const [f, p3] of [
       [a, scene.attacker],
       [b, scene.victim]
     ]) {
-      f.x = p.x;
-      f.y = p.y;
-      f.facing = p.facing;
-      f.actionClip = p.clip;
-      f.stateFrame = p.tick;
+      f.x = p3.x;
+      f.y = p3.y;
+      f.facing = p3.facing;
+      f.actionClip = p3.clip;
+      f.stateFrame = p3.tick;
     }
     b.stand?.tick(b);
   }
   stepStagedSuper() {
-    const jet = this.jetGigant;
-    if (jet && jet.hold > 0) {
-      jet.hold--;
+    const jet = this.jetGigant, kirin = this.kirin, centipede = this.centipede;
+    const held = centipede ?? kirin ?? jet;
+    if (held && held.hold > 0) {
+      held.hold--;
       return;
     }
-    const config = jet ? luffy_jet_gigant_default : goku_fury_default;
-    const s = jet ?? this.fury, t = ++s.tick, a = this.fighters[s.attacker], b = this.fighters[s.victim];
+    const config = centipede ? centipedeConfig : kirin ? sasuke_kirin_default : jet ? luffy_jet_gigant_default : goku_fury_default;
+    const s = centipede ?? kirin ?? jet ?? this.fury, t = ++s.tick, a = this.fighters[s.attacker], b = this.fighters[s.victim];
     this.stageSuper();
+    if (kirin && (t === sasuke_kirin_default.phases.storm || t === sasuke_kirin_default.phases.reveal || t === sasuke_kirin_default.phases.dive))
+      this.effect("kirinCharge", a.x, a.y - 130, 9);
+    const cue = centipede && centipedePhaseCue(t);
+    if (cue) this.centipedeEffect(cue, a.x, a.y - 72, 20);
     const hit = config.hits.find((h) => h.tick === t);
     if (hit) {
       const finish = hit.kind === "explosion" || hit.kind === "ground";
-      if (jet && "hold" in hit && typeof hit.hold === "number") jet.hold = hit.hold;
+      if (held && "hold" in hit && typeof hit.hold === "number") held.hold = hit.hold;
       const applied = this.damage(b, Math.round(hit.damage * s.scale), finish ? 0 : 1);
       b.combo++;
-      this.recordHit(a, b, `${jet ? "jet" : "fury"}_${hit.kind}`, applied);
-      b.gainMeter(2);
-      this.effect(
-        !jet && finish ? "roadExplosion" : jet && (finish || hit.kind === "gigant") ? "ultimate" : "hit",
-        b.x,
-        b.y - 78,
-        finish ? 16 : 8
-      );
+      this.recordHit(a, b, `${centipede ? centipedeId : kirin ? "kirin" : jet ? "jet" : "fury"}_${hit.kind}`, applied);
+      if (centipede) {
+        this.centipedeEffect(hit.kind, b.x, finish ? FLOOR2 : b.y - 73, finish ? 37 : 13, finish ? 3 : 2);
+      } else {
+        b.gainMeter(2);
+        this.effect(
+          kirin ? "kirinThunder" : !jet && finish ? "roadExplosion" : jet && (finish || hit.kind === "gigant") ? "ultimate" : "hit",
+          b.x,
+          b.y - 78,
+          finish ? 16 : 8
+        );
+      }
     }
     if (t >= config.duration) {
-      a.y = b.y = FLOOR;
+      a.y = b.y = FLOOR2;
       a.vx = a.vy = b.vx = b.vy = 0;
       a.actionClip = b.actionClip = "";
       a.setState("idle");
@@ -23189,7 +27827,8 @@ var Match = class {
       b.syncReactionClock(false);
       a.buffer.clear();
       b.buffer.clear();
-      this.fury = this.jetGigant = void 0;
+      this.fury = this.jetGigant = this.kirin = this.centipede = void 0;
+      if (kirin) this.sasukeStormUntil = this.sasukeStormLevel = 0;
       this.hitstop = 0;
       this.checkRoundEnd();
     }
@@ -23252,23 +27891,23 @@ var Match = class {
   stepRoadRoller() {
     const s = this.roadRoller, t = ++s.tick, a = this.fighters[s.attacker], b = this.fighters[s.victim];
     this.stageRoadRoller();
-    let damage = 0, label = "";
+    let damage2 = 0, label = "";
     if (t === road_roller_default.phases.impact) {
-      damage = road_roller_default.impactDamage;
+      damage2 = road_roller_default.impactDamage;
       label = "road_impact";
     }
     if (road_roller_default.punchTicks.includes(t)) {
-      damage = road_roller_default.punchDamage;
+      damage2 = road_roller_default.punchDamage;
       label = "road_punch";
     }
     if (t === road_roller_default.phases.explosion) {
-      damage = road_roller_default.finalDamage;
+      damage2 = road_roller_default.finalDamage;
       label = "road_explosion";
     }
-    if (damage) {
+    if (damage2) {
       const applied = this.damage(
         b,
-        Math.round(damage * s.scale),
+        Math.round(damage2 * s.scale),
         label === "road_explosion" ? 0 : 1
       );
       b.combo++;
@@ -23286,13 +27925,13 @@ var Match = class {
     }
     if (t >= road_roller_default.duration) {
       a.x = s.landingX;
-      a.y = FLOOR;
+      a.y = FLOOR2;
       a.vx = a.vy = 0;
       a.actionClip = "";
       a.setState("idle");
       a.stand.s.mode = "follow";
       a.stand.s.x = a.x - 30 * a.facing;
-      a.stand.s.y = FLOOR - 18;
+      a.stand.s.y = FLOOR2 - 18;
       a.stand.s.depth = 0;
       a.stand.s.clip = "standIdle";
       a.stand.s.clipTick = 0;
@@ -23300,7 +27939,7 @@ var Match = class {
       a.stand.s.returnClip = void 0;
       b.actionClip = "";
       b.setState("hitstun");
-      b.y = FLOOR;
+      b.y = FLOOR2;
       b.vy = -5;
       b.vx = s.facing * 5;
       b.stun = 38;
@@ -23316,10 +27955,15 @@ var Match = class {
       this.checkRoundEnd();
     }
   }
-  stepCapture() {
+  stepCapture(inputs) {
     const sequence2 = this.capture;
     const a = this.fighters[sequence2.attacker], b = this.fighters[sequence2.victim];
     const tick = sequence2.tick++;
+    if (sequence2.kaneki) {
+      if (sequence2.kaneki.chain) this.stepKanekiChain(sequence2, a, b, tick, inputs[a.id], inputs[b.id]);
+      else this.stepKanekiCapture(sequence2, a, b, tick, inputs[a.id]);
+      return;
+    }
     a.stateFrame = tick;
     b.stateFrame = tick;
     if (sequence2.kind === "ultimate") {
@@ -23327,13 +27971,13 @@ var Match = class {
       a.stateFrame = tick < 48 ? tick : tick - 48;
       b.actionClip = tick >= cinematics_default.ultimate.finishTick ? "damageHeavy" : "damageMedium";
       b.stateFrame = tick % 15;
-      b.y = FLOOR - (tick >= 54 ? 18 : cinematics_default.ultimate.bob[tick % cinematics_default.ultimate.bob.length]);
+      b.y = FLOOR2 - (tick >= 54 ? 18 : cinematics_default.ultimate.bob[tick % cinematics_default.ultimate.bob.length]);
       const finish = tick === cinematics_default.ultimate.finishTick;
       if (cinematics_default.ultimate.hits.includes(tick) || finish) {
-        const damage = Math.round(
+        const damage2 = Math.round(
           (finish ? cinematics_default.ultimate.finishDamage : cinematics_default.ultimate.damage) * sequence2.scale
         );
-        const applied = this.damage(b, damage, finish ? 0 : 1);
+        const applied = this.damage(b, damage2, finish ? 0 : 1);
         b.combo++;
         this.recordHit(
           a,
@@ -23350,49 +27994,426 @@ var Match = class {
     } else {
       a.actionClip = "grabHold";
       b.actionClip = "grabbed";
-      const grab = a.data.grabSequence ?? cinematics_default.grab;
-      const track3 = a.data.grabSequence?.victimTrack;
+      const ben2 = sequence2.ben;
+      const style = ben2 && benGrabFor(a.benForm, ben2.moveId);
+      const grab2 = style || a.grabSequence || cinematics_default.grab;
+      const track3 = style?.victimTrack ?? a.grabSequence?.victimTrack;
+      if (ben2 && style) {
+        a.actionClip = style.clip ?? "grabHold";
+        const travel = Math.min(1, tick / Math.max(1, style.hitTick));
+        a.x = Math.max(a.stageInset, Math.min(1280 - a.stageInset, ben2.origin + ben2.direction * (style.carry ?? 0) * travel));
+      }
       if (track3?.length) {
         let i = 0;
         while (i + 1 < track3.length && track3[i + 1].tick <= tick) i++;
-        const p = track3[i], q = track3[Math.min(i + 1, track3.length - 1)], t = q.tick === p.tick ? 0 : Math.min(1, (tick - p.tick) / (q.tick - p.tick));
-        const fromX = i === 0 ? sequence2.contactX ?? p.x : p.x;
-        b.x = Math.max(
-          40,
-          Math.min(1240, a.x + a.facing * Math.round(fromX + (q.x - fromX) * t))
-        );
-        b.y = FLOOR + Math.round(p.y + (q.y - p.y) * t);
-        b.actionClip = p.clip;
+        const p3 = track3[i], q = track3[Math.min(i + 1, track3.length - 1)], t = q.tick === p3.tick ? 0 : Math.min(1, (tick - p3.tick) / (q.tick - p3.tick));
+        const contactOffset = sequence2.contactX ?? p3.x;
+        const fromX = i === 0 ? contactOffset : p3.x;
+        const offset = style?.scene === "nightmare" ? (sequence2.contactX ?? 66) + p3.x - 62 + (q.x - p3.x) * t : fromX + (q.x - fromX) * t;
+        const root = style?.scene && ben2 ? ben2.origin : a.x;
+        const direction = style?.scene && ben2 ? ben2.direction : a.facing;
+        b.x = Math.max(40, Math.min(1240, root + direction * Math.round(offset)));
+        const fromY = i === 0 ? sequence2.contactY ?? p3.y : p3.y;
+        b.y = FLOOR2 + Math.round(fromY + (q.y - fromY) * t);
+        b.actionClip = p3.clip;
         let start = i;
-        while (start > 0 && track3[start - 1].clip === p.clip) start--;
+        while (start > 0 && track3[start - 1].clip === p3.clip) start--;
         b.stateFrame = tick - track3[start].tick;
       }
-      if (tick === grab.hitTick) {
-        const applied = this.damage(b, grab.damage);
-        b.combo++;
-        this.recordHit(a, b, "throw", applied);
-        this.effect("hit", b.x, b.y - 75, 12);
-        this.hitstop = 8;
-        a.gainMeter(10);
-        b.gainMeter(5);
+      if (style?.scene === "nightmare" && ben2) {
+        const toward = Math.max(0, Math.min(1, tick / 6));
+        const x = b.x - ben2.direction * 66;
+        a.x = Math.max(a.stageInset, Math.min(1280 - a.stageInset, ben2.origin + (x - ben2.origin) * toward));
+        a.facing = a.x <= b.x ? 1 : -1;
       }
-      if (sequence2.tick >= grab.duration) this.endCapture(sequence2, a, b);
+      if (style?.scene === "hunt" && ben2) {
+        const progress3 = tick / grab2.duration;
+        const side = progress3 < 0.53 ? -ben2.direction : ben2.direction;
+        const approach = Math.min(1, tick / 8);
+        const x = b.x + side * (progress3 < 0.82 ? 52 : 71);
+        a.x = Math.max(a.stageInset, Math.min(
+          1280 - a.stageInset,
+          ben2.origin + (x - ben2.origin) * approach
+        ));
+        a.y = progress3 < 0.82 ? Math.min(FLOOR2, b.y + 13) : Math.min(FLOOR2, b.y + 70);
+        a.facing = b.x > a.x ? 1 : -1;
+      }
+      const strikes = style?.impacts ?? [grab2.hitTick];
+      if (strikes.includes(tick) && (!style?.impacts || b.combo < (a.data.combatLimits?.maxHits ?? 9))) {
+        const applied = this.damage(b, style ? Math.round(grab2.damage * sequence2.scale / strikes.length) : grab2.damage);
+        b.combo++;
+        this.recordHit(a, b, ben2?.moveId ?? "throw", applied);
+        this.effect("hit", b.x, b.y - 75, 12);
+        if (style) this.events.at(-1).ben = style.scene === "nightmare" ? "nightmare" : a.benForm?.throwEffect ?? (a.omnitrix?.active === "heatblast" ? "flame" : a.omnitrix?.active === "xlr8" ? "speed" : "power");
+        if (ben2?.moveId.startsWith("conductor_") && tick === strikes[0] && a.omnitrix)
+          this.gainFeedbackCharge(a.omnitrix, ben2.moveId.endsWith("medium") ? 16 : 12, "contact");
+        this.hitstop = strikes.length > 1 ? 3 : 8;
+        if (tick === strikes.at(-1)) {
+          a.gainMeter(10);
+          b.gainMeter(5);
+        }
+      }
+      if (sequence2.tick >= grab2.duration) this.endCapture(sequence2, a, b);
     }
+  }
+  bufferChainChoice(s, tick, input, defender) {
+    const chain = s.chain;
+    if (input.pressed.includes("ultimate") && centipedeConversion(this, this.capture, tick))
+      chain.superQueued = true;
+    const defense = chainPick(defender.pressed);
+    if (canResistChain(chain, tick) && defense && defense !== chain.defenderLast && this.frame >= (chain.nextResistance ?? 0)) {
+      chain.nextResistance = this.frame + resistanceInterval;
+      if (defense === resistanceButton(chain)) {
+        chain.resistance = (chain.resistance ?? 0) + 1;
+        if (chain.resistance < resistanceGoal) {
+          const b = this.fighters[this.capture.victim];
+          this.effect("chainBind", b.x, b.y - 68, 8);
+        }
+      }
+    }
+    chain.defenderLast = defense;
+    const pick = chainPick(input.pressed);
+    const fresh = pick && pick !== chain.last ? pick : void 0;
+    chain.last = pick;
+    const age = tick - chain.since;
+    if (chain.phase === "connected" || chain.phase === "choice1") {
+      if (age < chainWindow(chain)) chain.queued ??= fresh;
+      return;
+    }
+    const preparing = chain.phase === "action" && !!s.route && age >= kaguneRoutes[s.route].duration - chainBufferTicks;
+    const choosing = chain.phase === "choice2" && age < chainWindow(chain, true);
+    if (!preparing && !choosing) return;
+    if (fresh && chainFinisher(chain, fresh, s.route)) chain.queued ??= fresh;
+    if (choosing && chain.origin === "universal" && !chain.escape && defense)
+      chain.escape = { button: defense, tick };
+  }
+  stepKanekiChain(sequence2, a, b, tick, input, defender) {
+    const s = sequence2.kaneki, chain = s.chain;
+    this.bufferChainChoice(s, tick, input, defender);
+    const escape = chain.escape;
+    const read = chain.phase === "choice2" && tick - chain.since >= chainBufferTicks && chain.queued && escape?.button === chain.queued && tick - escape.tick <= chainEscapeTicks;
+    if ((chain.resistance ?? 0) >= resistanceGoal || read) {
+      this.escapeKanekiChain(a, b);
+      return;
+    }
+    const conversion = chain.superQueued && centipedeConversion(this, sequence2, tick);
+    if (conversion) {
+      a.meter -= centipedeConfig.cost;
+      this.beginStagedSuper(a, b, centipedeId, conversion);
+      return;
+    }
+    if (chain.phase === "opener" || chain.phase === "outro") {
+      this.stepKanekiTechniqueCapture(sequence2, a, b, tick - chain.since, s.specialId);
+      return;
+    }
+    if (chain.phase === "connected") {
+      if (tick < chainWindup) {
+        a.stateFrame = b.stateFrame = tick;
+        return;
+      }
+      chain.phase = "choice1";
+      chain.since = tick;
+    }
+    if (chain.phase === "choice1") {
+      const age2 = tick - chain.since;
+      a.actionClip = chain.origin === "fourSwords" ? "swordsThrow" : "grabHold";
+      a.stateFrame = chain.origin === "fourSwords" ? 2 : age2;
+      if (!chain.queued && age2 < chainWindow(chain)) return;
+      if (directChain(chain)) {
+        if (!chain.queued) {
+          chain.phase = "outro";
+          chain.since = tick - (chain.origin === "fourSwords" ? swordProfile(chain.rank).strikes[2] + 1 : 0);
+          this.stepKanekiTechniqueCapture(sequence2, a, b, tick - chain.since, s.specialId);
+          return;
+        }
+        this.beginKanekiFinisher(chain, chainFinisher(chain, chain.queued), a, b, tick);
+      } else {
+        s.route = chain.queued === "light" ? "pull" : chain.queued === "heavy" ? "launch" : "throw";
+        s.fallback = !chain.queued;
+        chain.queued = void 0;
+        chain.phase = "action";
+        chain.since = tick;
+      }
+    }
+    const route = s.route;
+    if (chain.phase === "action" && route) {
+      const age2 = tick - chain.since;
+      const config2 = kaguneRoutes[route];
+      const pivot = chain.origin === "kaguneGrab" && route === "throw";
+      a.actionClip = route === "pull" ? "kagunePull" : route === "launch" ? "kaguneLaunch" : "kaguneThrow";
+      a.stateFrame = b.stateFrame = age2;
+      const position = kaguneVictimPosition(sequence2, a.x, a.y, age2);
+      const progress3 = age2 / (config2.duration - 1);
+      b.x = pivot ? chainBoundX(s.x + s.direction * Math.round(18 * progress3)) : position.x;
+      b.y = pivot ? Math.round(s.y - (29 * progress3 + 14 * progress3 * (1 - progress3))) : route === "launch" ? position.y - Math.round(88 * progress3 ** 1.5) : position.y;
+      b.actionClip = age2 < 3 ? "grabbed" : route === "launch" ? "launched" : route === "throw" ? "damageAir" : "damageMedium";
+      if (age2 < config2.duration - 1) return;
+      const simpleThrow = route === "throw" && !pivot;
+      this.kanekiChainDamage(sequence2, a, b, a.actionClip, pivot ? 19 : s.fallback ? 78 : config2.damage, route === "launch", simpleThrow);
+      this.effect("hit", b.x, b.y - 74, 12);
+      this.hitstop = simpleThrow ? 7 : 4;
+      if (simpleThrow) {
+        this.releaseKanekiChain(a, b, 15, config2.push, config2.launch);
+        return;
+      }
+      chain.phase = "choice2";
+      chain.since = tick + 1;
+      return;
+    }
+    if (chain.phase === "choice2") {
+      const age2 = tick - chain.since;
+      if (!chain.queued && age2 < chainWindow(chain, true) || age2 < chainBufferTicks) return;
+      const finish = chain.queued ? chainFinisher(chain, chain.queued, route) : void 0;
+      const selected = finish && chainFinishes[finish];
+      const remaining = kaguneGrabLimit - (this.frame - chain.started);
+      const fits = chain.origin !== "kaguneGrab" || !selected || remaining > selected.keys.at(-1)[0] + selected.stop;
+      this.beginKanekiFinisher(chain, fits ? finish ?? "release" : "release", a, b, tick);
+    }
+    const finishId = chain.finish;
+    const config = chainFinishes[finishId];
+    const age = tick - chain.since;
+    const pose = chainPose(finishId, chain.from, age, s.direction, FLOOR2);
+    a.x = pose.actor.x;
+    a.y = pose.actor.y;
+    a.actionClip = pose.clip;
+    a.stateFrame = age;
+    b.x = pose.victim.x;
+    b.y = pose.victim.y;
+    b.facing = b.x >= a.x ? -1 : 1;
+    b.stateFrame = age;
+    b.actionClip = pose.victimClip;
+    const air = route === "launch" || !!config.slam || config.follow === "air";
+    const extra = config.beats?.find((beat) => beat.at === age);
+    const limits = a.data.combatLimits;
+    if (extra && b.combo < limits.maxHits - 1 && (!air || b.comboAirHits < limits.maxAirHits - 1)) {
+      this.kanekiChainDamage(sequence2, a, b, finishId, extra.damage, air, false);
+      this.effect("hit", b.x, b.y - 74, 10);
+    }
+    if (age === config.hit) {
+      this.kanekiChainDamage(sequence2, a, b, finishId, config.damage, air, true);
+      chain.landed = true;
+      const life = config.slam ? 26 : 15;
+      this.events.push({
+        kind: "chainImpact",
+        chain: finishId,
+        strength: config.slam ? 3 : 2,
+        life,
+        total: life,
+        blocked: false,
+        x: b.x,
+        y: config.slam ? FLOOR2 : b.y - 72
+      });
+      this.hitstop = config.stop;
+    }
+    if (age >= pose.end) {
+      const limited = b.combo >= limits.maxHits || b.comboAirHits >= limits.maxAirHits || b.comboAge >= limits.maxTicks;
+      this.releaseKanekiChain(a, b, config.recovery, config.push, config.launch, false, limited ? void 0 : config.follow);
+    }
+  }
+  beginKanekiFinisher(chain, finish, a, b, tick) {
+    chain.finish = finish;
+    chain.phase = "finisher";
+    chain.since = tick;
+    chain.from = { actor: { x: a.x, y: a.y }, victim: { x: b.x, y: b.y } };
+    this.events.push({
+      kind: "chainWhoosh",
+      chain: finish,
+      x: a.x,
+      y: a.y - 85,
+      life: 15,
+      total: 15,
+      blocked: false
+    });
+  }
+  escapeKanekiChain(a, b) {
+    this.effect("chainEscape", b.x, b.y - 73, 15);
+    this.hitstop = 0;
+    this.releaseKanekiChain(a, b, 22, 2, 1, true);
+  }
+  kanekiChainDamage(sequence2, a, b, move, damage2, air, final) {
+    const chain = sequence2.kaneki.chain;
+    const scale = Math.max(
+      combat_pace_default.combo.minimumDamageScale,
+      sequence2.scale - Math.max(0, b.combo - chain.initialCombo) * combat_pace_default.combo.damageStep
+    );
+    const applied = this.damage(b, Math.round(damage2 * scale), final ? 0 : 1);
+    if (!b.combo) b.comboAge = b.comboAirHits = 0;
+    b.combo++;
+    if (air) b.comboAirHits++;
+    this.recordHit(a, b, move, applied);
+    a.gainMeter(5);
+    b.gainMeter(3);
+  }
+  releaseKanekiChain(a, b, recovery3, push, launch, escaped = false, follow) {
+    a.setState("throwRecover");
+    a.kanekiSpecialRecovery = recovery3;
+    a.actionClip = b.actionClip = "";
+    if (follow === "air" && !a.airborne && b.health > 0) {
+      a.attack("captureLaunchLink");
+      a.connected = a.hitConfirmed = true;
+    }
+    this.applyReaction(b, {
+      blocked: false,
+      crouched: false,
+      strength: escaped ? 1 : 3,
+      stun: escaped ? 8 : follow === "ground" ? 24 : 36,
+      vx: a.facing * push,
+      vy: launch,
+      launch: follow === "air",
+      knockdown: !escaped && !follow
+    });
+    a.buffer.clear();
+    b.buffer.clear();
+    this.capture = void 0;
+    this.checkRoundEnd();
+  }
+  stepKanekiCapture(sequence2, a, b, tick, input) {
+    const s = sequence2.kaneki;
+    const technique = kanekiTechnique(s.specialId);
+    if (technique && technique.family !== "kaguneGrab") {
+      this.stepKanekiTechniqueCapture(sequence2, a, b, tick, technique.id);
+      return;
+    }
+    b.stateFrame = tick;
+    if (!s.route) {
+      s.pending ??= kaguneChoice(input.pressed);
+      if (tick < captureWindup) {
+        a.stateFrame = tick;
+        return;
+      }
+      a.actionClip = "grabHold";
+      a.stateFrame = tick - captureWindup;
+      if (!s.pending && tick < captureWindup + captureWindow) return;
+      s.route = s.pending ?? "throw";
+      s.fallback = !s.pending;
+      s.selectedAt = tick;
+    }
+    const route = s.route;
+    const config = kaguneRoutes[route];
+    const age = tick - s.selectedAt;
+    a.actionClip = route === "pull" ? "kagunePull" : route === "throw" ? "kaguneThrow" : "kaguneLaunch";
+    a.stateFrame = age;
+    const position = kaguneVictimPosition(sequence2, a.x, a.y, age);
+    b.x = position.x;
+    b.y = position.y;
+    b.stateFrame = age;
+    b.actionClip = age < 3 ? "grabbed" : route === "pull" ? "damageMedium" : route === "launch" ? "launched" : "damageAir";
+    if (age < config.duration - 1) return;
+    const damage2 = this.damage(b, Math.round((s.fallback ? 78 : config.damage) * sequence2.scale));
+    if (!b.combo) b.comboAge = b.comboAirHits = 0;
+    b.combo++;
+    if (s.source === "air" || route === "launch") b.comboAirHits++;
+    this.recordHit(a, b, a.actionClip, damage2);
+    this.effect("hit", b.x, b.y - 74, 12);
+    this.hitstop = route === "pull" ? 4 : 7;
+    a.gainMeter(8);
+    b.gainMeter(5);
+    a.setState(a.airborne ? "air" : route === "throw" ? "throwRecover" : "idle");
+    a.actionClip = "";
+    if (!a.airborne && route !== "throw") {
+      a.attack(route === "pull" ? "capturePullLink" : "captureLaunchLink");
+      a.connected = a.hitConfirmed = true;
+    }
+    b.actionClip = "";
+    this.applyReaction(b, {
+      blocked: false,
+      crouched: false,
+      strength: route === "pull" ? 1 : 3,
+      stun: config.stun,
+      vx: s.direction * config.push,
+      vy: config.launch,
+      launch: route === "launch",
+      knockdown: config.knockdown
+    });
+    a.buffer.clear();
+    b.buffer.clear();
+    this.capture = void 0;
+    this.checkRoundEnd();
+  }
+  stepKanekiTechniqueCapture(sequence2, a, b, tick, move) {
+    const s = sequence2.kaneki;
+    const scene = kanekiSpecialScene(move, tick, a, s, s.direction);
+    a.actionClip = scene.clip;
+    a.stateFrame = Math.max(0, scene.clipTick);
+    b.x = Math.max(40, Math.min(1240, Math.round(scene.victim.x)));
+    b.y = Math.min(FLOOR2, Math.round(scene.victim.y));
+    b.stateFrame = tick;
+    b.actionClip = scene.hurt;
+    if (scene.snap) {
+      this.events.push({
+        kind: "knuckleSnap",
+        audioOnly: true,
+        knuckleFrame: this.frame,
+        x: a.x + a.facing * 35,
+        y: a.y - 100,
+        life: 6,
+        blocked: false
+      });
+    }
+    if (scene.impact) {
+      const damage2 = this.damage(b, Math.round(scene.impact * sequence2.scale), scene.strength === 3 || scene.clip.startsWith("rushFinish") ? 0 : 1);
+      if (!b.combo) b.comboAge = b.comboAirHits = 0;
+      b.combo++;
+      this.recordHit(a, b, move, damage2);
+      this.events.push({
+        kind: "hit",
+        strength: scene.strength,
+        x: b.x - s.direction * 14,
+        y: b.y - 68,
+        life: 14,
+        total: 14,
+        blocked: false
+      });
+      this.hitstop = Math.max(this.hitstop, scene.stop);
+      if (s.chain?.phase === "opener" && scene.strength === 3) {
+        s.chain.phase = b.health > 0 && b.combo < a.data.combatLimits.maxHits ? "choice1" : "outro";
+        s.chain.since = s.chain.phase === "choice1" ? sequence2.tick : 0;
+        return;
+      }
+    }
+    if (tick < scene.end - 1) return;
+    a.setState("throwRecover");
+    a.kanekiSpecialRecovery = scene.recovery;
+    a.actionClip = "";
+    b.actionClip = "";
+    this.applyReaction(b, {
+      blocked: false,
+      crouched: false,
+      strength: 3,
+      stun: 34,
+      vx: s.direction * scene.push,
+      vy: scene.lift,
+      launch: true,
+      knockdown: true
+    });
+    a.buffer.clear();
+    b.buffer.clear();
+    this.capture = void 0;
+    this.checkRoundEnd();
   }
   endCapture(sequence2, a, b) {
     a.setState(
       sequence2.kind === "ultimate" ? "ultimateRecover" : "throwRecover"
     );
-    a.actionClip = "";
+    const conductor = sequence2.ben?.moveId.startsWith("conductor_") ? sequence2.ben.moveId : "";
+    a.actionClip = conductor ? conductor + "Recover" : "";
     b.setState("hitstun");
     b.actionClip = "";
-    b.knockedDown = true;
+    const style = sequence2.ben && benGrabFor(a.benForm, sequence2.ben.moveId);
+    b.knockedDown = style ? style.knockdown !== false : true;
     b.hitCrouched = false;
-    b.hitLaunch = sequence2.kind === "grab";
+    b.hitLaunch = sequence2.kind === "grab" && b.knockedDown;
     b.reactionStrength = 3;
-    const release = sequence2.kind === "grab" ? a.data.grabSequence?.release : void 0;
+    const release = sequence2.kind === "grab" ? style?.release ?? a.grabSequence?.release : void 0;
+    if (style?.scene === "hunt") a.y = FLOOR2;
+    if (style?.pursuit) {
+      a.setState("idle");
+      a.vy = -12.5;
+      a.airChaseTicks = 15;
+      a.setState("air");
+    }
     b.stun = release?.stun ?? 35;
-    b.vx = a.facing * (release?.vx ?? 8);
+    b.vx = a.facing * (style?.reverse ? -1 : 1) * (release?.vx ?? 8);
     b.vy = release?.vy ?? (sequence2.kind === "ultimate" ? 12 : -6);
     b.syncReactionClock(false);
     a.buffer.clear();
@@ -23417,13 +28438,71 @@ var Match = class {
       }
       this.fighters.forEach((f, i) => {
         f.vx = f.vy = 0;
-        f.y = FLOOR;
+        f.y = FLOOR2;
         f.buffer.clear();
+        f.sasukeCurse = void 0;
+        f.chill = void 0;
+        if (f.omnitrix) {
+          f.omnitrix.objects.length = 0;
+          delete f.omnitrix.echoClones;
+          if (f.omnitrix.nrgReleased) {
+            f.omnitrix.nrgReleased = false;
+            f.omnitrix.nrgTicks = 0;
+          }
+        }
         f.setState(winner < 0 ? "idle" : i === winner ? "victory" : "ko");
       });
       this.phase = "roundEnd";
       this.phaseFrames = 150;
     }
+  }
+};
+
+// src/engine/ben-data.ts
+var jab = {
+  startup: 5,
+  active: 3,
+  recovery: 9,
+  damage: 24,
+  stun: 13,
+  blockstun: 8,
+  push: 3,
+  launch: 0,
+  level: "mid",
+  rank: 1,
+  cancels: ["medium"],
+  hitstop: 3,
+  box: { x: 17, y: -106, w: 30, h: 20 }
+};
+var kick = {
+  startup: 9,
+  active: 4,
+  recovery: 17,
+  damage: 43,
+  stun: 19,
+  blockstun: 11,
+  push: 5,
+  launch: 0,
+  level: "mid",
+  rank: 2,
+  cancels: [],
+  hitstop: 5,
+  box: { x: 21, y: -82, w: 42, h: 25 }
+};
+var ben = {
+  id: benId,
+  name: "Ben Tennyson",
+  health: 1e3,
+  speed: 4.9,
+  jump: -13,
+  gravity: 0.65,
+  meterMaximum: alienXSuper.cost,
+  combatLimits: { maxHits: 9, maxAirHits: 4, maxTicks: 180 },
+  moves: { stand_light: jab, stand_medium: kick },
+  hurtboxes: {
+    standing: [{ x: -19, y: -127, w: 45, h: 74 }, { x: -26, y: -55, w: 53, h: 53 }],
+    crouching: [{ x: -25, y: -86, w: 52, h: 86 }],
+    air: [{ x: -24, y: -124, w: 48, h: 115 }]
   }
 };
 
@@ -127664,11 +132743,11 @@ var furyMove = {
 // src/engine/goku-data.ts
 var airTeleports = Object.fromEntries(
   ["light", "medium", "heavy"].map((strength) => {
-    const c = combat_pace_default.airTeleport[strength], source = goku_special_moves_default.teleport_air;
+    const c2 = combat_pace_default.airTeleport[strength], source = goku_special_moves_default.teleport_air;
     return [
       strength === "heavy" ? "teleport_air" : `teleport_air_${strength}`,
       {
-        ...retime(source, c.startup, c.vanishTicks, c.recovery),
+        ...retime(source, c2.startup, c2.vanishTicks, c2.recovery),
         gokuStrength: strength,
         airTeleport: true,
         commandClip: "teleport_air"
@@ -127687,164 +132766,6 @@ var goku = {
   meterGainScale: goku_fury_default.meterGainScale,
   reactions: { ...goku_default.reactions, ...secondary.reactions },
   reactionClips: { ...goku_default.reactionClips, ...secondary.reactionClips }
-};
-
-// src/data/sasuke.json
-var sasuke_default = {
-  id: "sasuke",
-  name: "Sasuke Uchiha \xB7 Hebi",
-  health: 1e3,
-  speed: 4.65,
-  jump: -16.9,
-  gravity: 0.73,
-  meterGainScale: 0,
-  airChaseSpeed: 6.6,
-  airChaseTicks: 10,
-  locomotion: {
-    backSpeed: 3.65,
-    airSpeed: 6.2,
-    jumpStartup: 5,
-    landingTicks: 7,
-    dashForward: [3, 7, 13, 18, 19, 17, 15, 13, 10, 6, 3, 0],
-    backdash: [3, 8, 13, 16, 16, 15, 13, 11, 8, 5, 2, 0]
-  },
-  combatLimits: { maxHits: 11, maxAirHits: 6, maxTicks: 280 }
-};
-
-// src/data/sasuke-frames.json
-var sasuke_frames_default = { movement: { idle: [0, 1, 2, 3, 4, 5], walkForward: [6, 7, 8, 9, 10, 11], walkBack: [12, 13, 14, 15, 16, 17], dashForward: [18, 19, 20, 21, 22], backdash: [23, 24, 25, 26, 27], crouchStart: [28, 29], crouchIdle: [30, 31], crouchEnd: [32, 33], jumpStart: [34, 35, 36], jumpRise: [37, 38], jumpApex: [39], jumpFall: [40, 41], landing: [42, 43, 44] }, normals: { stand_light: [{ hurtboxes: [{ x: -15, y: -131, w: 35, h: 28 }, { x: -29, y: -103, w: 64, h: 36 }, { x: -38, y: -67, w: 70, h: 33 }, { x: -37, y: -34, w: 82, h: 34 }], frame: 0 }, { hurtboxes: [{ x: -14, y: -131, w: 35, h: 28 }, { x: -31, y: -103, w: 94, h: 36 }, { x: -38, y: -67, w: 69, h: 33 }, { x: -36, y: -34, w: 81, h: 34 }], hitboxes: [{ a: { x: 33, y: -96 }, b: { x: 59, y: -97 }, r: 8 }], frame: 1 }, { hurtboxes: [{ x: -16, y: -130, w: 35, h: 27 }, { x: -30, y: -103, w: 77, h: 37 }, { x: -35, y: -66, w: 68, h: 32 }, { x: -34, y: -34, w: 80, h: 34 }], frame: 2 }, { hurtboxes: [{ x: -17, y: -131, w: 34, h: 28 }, { x: -31, y: -103, w: 69, h: 36 }, { x: -36, y: -67, w: 68, h: 33 }, { x: -36, y: -34, w: 81, h: 34 }], frame: 3 }], stand_medium: [{ hurtboxes: [{ x: -16, y: -133, w: 35, h: 28 }, { x: -27, y: -105, w: 68, h: 37 }, { x: -24, y: -68, w: 65, h: 33 }, { x: -11, y: -35, w: 41, h: 35 }], frame: 4 }, { hurtboxes: [{ x: -24, y: -131, w: 36, h: 28 }, { x: -35, y: -103, w: 100, h: 36 }, { x: -27, y: -67, w: 72, h: 33 }, { x: -18, y: -34, w: 23, h: 34 }], hitboxes: [{ a: { x: 52, y: -79 }, b: { x: 73, y: -80 }, r: 9 }], frame: 5 }, { hurtboxes: [{ x: -23, y: -132, w: 35, h: 28 }, { x: -29, y: -104, w: 62, h: 37 }, { x: -32, y: -67, w: 64, h: 33 }, { x: -19, y: -34, w: 41, h: 34 }], frame: 6 }, { hurtboxes: [{ x: -20, y: -130, w: 35, h: 27 }, { x: -33, y: -103, w: 69, h: 37 }, { x: -38, y: -66, w: 67, h: 32 }, { x: -37, y: -34, w: 80, h: 34 }], frame: 7 }], stand_heavy: [{ hurtboxes: [{ x: -8, y: -130, w: 35, h: 27 }, { x: -25, y: -103, w: 63, h: 37 }, { x: -56, y: -66, w: 91, h: 32 }, { x: -39, y: -34, w: 87, h: 34 }], frame: 8 }, { hurtboxes: [{ x: -7, y: -130, w: 35, h: 27 }, { x: -17, y: -103, w: 72, h: 37 }, { x: -35, y: -66, w: 70, h: 32 }, { x: -35, y: -34, w: 87, h: 34 }], blade: { a: { x: 54, y: -87 }, b: { x: 107, y: -87 }, r: 7 }, frame: 9 }, { hurtboxes: [{ x: -11, y: -131, w: 35, h: 28 }, { x: -22, y: -103, w: 56, h: 36 }, { x: -39, y: -67, w: 97, h: 33 }, { x: -43, y: -34, w: 89, h: 34 }], blade: { a: { x: 33, y: -57 }, b: { x: 85, y: -35 }, r: 7 }, frame: 10 }, { hurtboxes: [{ x: -17, y: -130, w: 34, h: 27 }, { x: -28, y: -103, w: 61, h: 37 }, { x: -39, y: -66, w: 66, h: 32 }, { x: -41, y: -34, w: 83, h: 34 }], frame: 11 }], crouch_light: [{ hurtboxes: [{ x: -16, y: -95, w: 58, h: 20 }, { x: -29, y: -75, w: 71, h: 27 }, { x: -42, y: -48, w: 87, h: 23 }, { x: -32, y: -25, w: 77, h: 25 }], frame: 12 }, { hurtboxes: [{ x: 19, y: -94, w: 35, h: 20 }, { x: -14, y: -74, w: 79, h: 26 }, { x: -35, y: -48, w: 100, h: 24 }, { x: -23, y: -24, w: 72, h: 24 }], hitboxes: [{ a: { x: 61, y: -52 }, b: { x: 85, y: -50 }, r: 8 }], frame: 13 }, { hurtboxes: [{ x: 6, y: -97, w: 36, h: 20 }, { x: -24, y: -77, w: 66, h: 28 }, { x: -41, y: -49, w: 89, h: 24 }, { x: -33, y: -25, w: 76, h: 25 }], frame: 14 }, { hurtboxes: [{ x: 0, y: -98, w: 35, h: 21 }, { x: -28, y: -77, w: 81, h: 27 }, { x: -43, y: -50, w: 88, h: 25 }, { x: -34, y: -25, w: 74, h: 25 }], frame: 15 }], crouch_medium: [{ hurtboxes: [{ x: -3, y: -100, w: 46, h: 21 }, { x: -24, y: -79, w: 86, h: 28 }, { x: -35, y: -51, w: 83, h: 25 }, { x: -34, y: -26, w: 62, h: 26 }], frame: 16 }, { hurtboxes: [{ x: -2, y: -97, w: 36, h: 20 }, { x: -33, y: -77, w: 87, h: 28 }, { x: -40, y: -49, w: 99, h: 24 }, { x: -31, y: -25, w: 96, h: 25 }], hitboxes: [{ a: { x: 52, y: -12 }, b: { x: 74, y: -9 }, r: 8 }], frame: 17 }, { hurtboxes: [{ x: 3, y: -100, w: 36, h: 21 }, { x: -27, y: -79, w: 82, h: 28 }, { x: -35, y: -51, w: 82, h: 25 }, { x: -35, y: -26, w: 77, h: 26 }], frame: 18 }, { hurtboxes: [{ x: 2, y: -99, w: 36, h: 21 }, { x: -27, y: -78, w: 84, h: 28 }, { x: -37, y: -50, w: 86, h: 24 }, { x: -37, y: -26, w: 80, h: 26 }], frame: 19 }], crouch_heavy: [{ hurtboxes: [{ x: -4, y: -105, w: 37, h: 22 }, { x: -28, y: -83, w: 83, h: 29 }, { x: -46, y: -54, w: 101, h: 27 }, { x: -40, y: -27, w: 81, h: 27 }], frame: 20 }, { hurtboxes: [{ x: 1, y: -114, w: 64, h: 24 }, { x: -19, y: -90, w: 61, h: 32 }, { x: -36, y: -58, w: 80, h: 28 }, { x: -36, y: -30, w: 87, h: 30 }], blade: { a: { x: 42, y: -79 }, b: { x: 92, y: -101 }, r: 7 }, frame: 21 }, { hurtboxes: [{ x: -11, y: -129, w: 66, h: 27 }, { x: -25, y: -102, w: 76, h: 36 }, { x: -32, y: -66, w: 75, h: 32 }, { x: -41, y: -34, w: 94, h: 34 }], blade: { a: { x: 51, y: -102 }, b: { x: 86, y: -127 }, r: 7 }, frame: 22 }, { hurtboxes: [{ x: -2, y: -118, w: 35, h: 25 }, { x: -20, y: -93, w: 52, h: 33 }, { x: -35, y: -60, w: 79, h: 29 }, { x: -39, y: -31, w: 87, h: 31 }], frame: 23 }], air_light: [{ hurtboxes: [{ x: -9, y: -133, w: 38, h: 27 }, { x: -28, y: -106, w: 68, h: 36 }, { x: -35, y: -70, w: 71, h: 32 }, { x: -35, y: -38, w: 56, h: 33 }], frame: 24 }, { hurtboxes: [{ x: -2, y: -132, w: 38, h: 26 }, { x: -24, y: -106, w: 89, h: 36 }, { x: -33, y: -70, w: 72, h: 31 }, { x: -32, y: -39, w: 53, h: 33 }], hitboxes: [{ a: { x: 37, y: -100 }, b: { x: 72, y: -99 }, r: 8 }], frame: 25 }, { hurtboxes: [{ x: -8, y: -129, w: 36, h: 26 }, { x: -31, y: -103, w: 72, h: 34 }, { x: -36, y: -69, w: 73, h: 31 }, { x: -29, y: -38, w: 48, h: 32 }], frame: 26 }, { hurtboxes: [{ x: -11, y: -130, w: 36, h: 26 }, { x: -28, y: -104, w: 55, h: 34 }, { x: -35, y: -70, w: 66, h: 30 }, { x: -22, y: -40, w: 41, h: 32 }], frame: 27 }], air_medium: [{ hurtboxes: [{ x: -15, y: -129, w: 38, h: 27 }, { x: -34, y: -102, w: 76, h: 36 }, { x: -28, y: -66, w: 66, h: 32 }, { x: -11, y: -34, w: 37, h: 34 }], frame: 28 }, { hurtboxes: [{ x: -8, y: -130, w: 35, h: 25 }, { x: -33, y: -105, w: 98, h: 33 }, { x: -34, y: -72, w: 99, h: 30 }, { x: -25, y: -42, w: 52, h: 31 }], hitboxes: [{ a: { x: 59, y: -73 }, b: { x: 86, y: -75 }, r: 9 }], frame: 29 }, { hurtboxes: [{ x: -7, y: -129, w: 34, h: 24 }, { x: -30, y: -105, w: 74, h: 31 }, { x: -33, y: -74, w: 74, h: 28 }, { x: -33, y: -46, w: 64, h: 29 }], frame: 30 }, { hurtboxes: [{ x: -9, y: -128, w: 35, h: 24 }, { x: -25, y: -104, w: 59, h: 32 }, { x: -31, y: -72, w: 67, h: 29 }, { x: -31, y: -43, w: 61, h: 30 }], frame: 31 }], air_heavy: [{ hurtboxes: [{ x: -26, y: -149, w: 69, h: 31 }, { x: -34, y: -118, w: 90, h: 42 }, { x: -37, y: -76, w: 92, h: 37 }, { x: -37, y: -39, w: 61, h: 39 }], frame: 32 }, { hurtboxes: [{ x: -7, y: -126, w: 45, h: 25 }, { x: -20, y: -101, w: 74, h: 34 }, { x: -37, y: -67, w: 78, h: 30 }, { x: -33, y: -37, w: 43, h: 31 }], blade: { a: { x: 39, y: -57 }, b: { x: 81, y: -29 }, r: 7 }, frame: 33 }, { hurtboxes: [{ x: -7, y: -128, w: 38, h: 27 }, { x: -25, y: -101, w: 71, h: 36 }, { x: -39, y: -65, w: 78, h: 32 }, { x: -34, y: -33, w: 93, h: 33 }], blade: { a: { x: 34, y: -47 }, b: { x: 70, y: -11 }, r: 7 }, frame: 34 }, { hurtboxes: [{ x: -12, y: -133, w: 34, h: 28 }, { x: -30, y: -105, w: 68, h: 37 }, { x: -42, y: -68, w: 69, h: 33 }, { x: -42, y: -35, w: 49, h: 35 }], frame: 35 }] }, reactions: { guardStand: [{ hurtboxes: [{ x: -17, y: -129, w: 46, h: 27 }, { x: -21, y: -102, w: 50, h: 36 }, { x: -37, y: -66, w: 71, h: 32 }, { x: -38, y: -34, w: 81, h: 34 }], frame: 0 }], guardImpactStand: [{ hurtboxes: [{ x: -45, y: -125, w: 60, h: 26 }, { x: -35, y: -99, w: 53, h: 35 }, { x: -35, y: -64, w: 73, h: 32 }, { x: -35, y: -32, w: 87, h: 32 }], frame: 1 }, { hurtboxes: [{ x: -17, y: -129, w: 46, h: 27 }, { x: -21, y: -102, w: 50, h: 36 }, { x: -37, y: -66, w: 71, h: 32 }, { x: -38, y: -34, w: 81, h: 34 }], frame: 0 }], guardCrouch: [{ hurtboxes: [{ x: -4, y: -100, w: 45, h: 21 }, { x: -19, y: -79, w: 60, h: 28 }, { x: -39, y: -51, w: 79, h: 25 }, { x: -34, y: -26, w: 77, h: 26 }], frame: 2 }], guardImpactCrouch: [{ hurtboxes: [{ x: -44, y: -102, w: 54, h: 21 }, { x: -38, y: -81, w: 69, h: 29 }, { x: -36, y: -52, w: 75, h: 25 }, { x: -42, y: -27, w: 89, h: 27 }], frame: 3 }, { hurtboxes: [{ x: -4, y: -100, w: 45, h: 21 }, { x: -19, y: -79, w: 60, h: 28 }, { x: -39, y: -51, w: 79, h: 25 }, { x: -34, y: -26, w: 77, h: 26 }], frame: 2 }], damageLight: [{ hurtboxes: [{ x: -29, y: -128, w: 42, h: 27 }, { x: -32, y: -101, w: 72, h: 36 }, { x: -35, y: -65, w: 73, h: 32 }, { x: -36, y: -33, w: 86, h: 33 }], frame: 4 }, { hurtboxes: [{ x: -45, y: -125, w: 60, h: 26 }, { x: -35, y: -99, w: 53, h: 35 }, { x: -35, y: -64, w: 73, h: 32 }, { x: -35, y: -32, w: 87, h: 32 }], frame: 1 }], damageMedium: [{ hurtboxes: [{ x: -53, y: -126, w: 88, h: 26 }, { x: -49, y: -100, w: 87, h: 36 }, { x: -31, y: -64, w: 74, h: 31 }, { x: -30, y: -33, w: 88, h: 33 }], frame: 5 }, { hurtboxes: [{ x: -29, y: -128, w: 42, h: 27 }, { x: -32, y: -101, w: 72, h: 36 }, { x: -35, y: -65, w: 73, h: 32 }, { x: -36, y: -33, w: 86, h: 33 }], frame: 4 }], damageHeavy: [{ hurtboxes: [{ x: -53, y: -126, w: 88, h: 26 }, { x: -49, y: -100, w: 87, h: 36 }, { x: -31, y: -64, w: 74, h: 31 }, { x: -30, y: -33, w: 88, h: 33 }], frame: 5 }, { hurtboxes: [{ x: -29, y: -128, w: 42, h: 27 }, { x: -32, y: -101, w: 72, h: 36 }, { x: -35, y: -65, w: 73, h: 32 }, { x: -36, y: -33, w: 86, h: 33 }], frame: 4 }], damageCrouch: [{ hurtboxes: [{ x: -44, y: -102, w: 54, h: 21 }, { x: -38, y: -81, w: 69, h: 29 }, { x: -36, y: -52, w: 75, h: 25 }, { x: -42, y: -27, w: 89, h: 27 }], frame: 3 }, { hurtboxes: [{ x: -4, y: -100, w: 45, h: 21 }, { x: -19, y: -79, w: 60, h: 28 }, { x: -39, y: -51, w: 79, h: 25 }, { x: -34, y: -26, w: 77, h: 26 }], frame: 2 }], damageAir: [{ hurtboxes: [{ x: -51, y: -129, w: 81, h: 22 }, { x: -50, y: -107, w: 89, h: 30 }, { x: -41, y: -77, w: 103, h: 27 }, { x: -36, y: -50, w: 93, h: 28 }], frame: 6 }, { hurtboxes: [{ x: -58, y: -91, w: 76, h: 18 }, { x: -58, y: -73, w: 116, h: 23 }, { x: -42, y: -50, w: 107, h: 21 }, { x: -21, y: -29, w: 86, h: 22 }], frame: 7 }], launched: [{ hurtboxes: [{ x: -51, y: -129, w: 81, h: 22 }, { x: -50, y: -107, w: 89, h: 30 }, { x: -41, y: -77, w: 103, h: 27 }, { x: -36, y: -50, w: 93, h: 28 }], frame: 6 }, { hurtboxes: [{ x: -58, y: -91, w: 76, h: 18 }, { x: -58, y: -73, w: 116, h: 23 }, { x: -42, y: -50, w: 107, h: 21 }, { x: -21, y: -29, w: 86, h: 22 }], frame: 7 }], falling: [{ hurtboxes: [{ x: -58, y: -91, w: 76, h: 18 }, { x: -58, y: -73, w: 116, h: 23 }, { x: -42, y: -50, w: 107, h: 21 }, { x: -21, y: -29, w: 86, h: 22 }], frame: 7 }], downed: [{ hurtboxes: [{ x: -58, y: -49, w: 75, h: 10 }, { x: -58, y: -39, w: 122, h: 14 }, { x: -58, y: -25, w: 123, h: 12 }, { x: -58, y: -13, w: 123, h: 13 }], frame: 8 }], getup: [{ hurtboxes: [{ x: -9, y: -90, w: 57, h: 19 }, { x: -25, y: -71, w: 73, h: 25 }, { x: -43, y: -46, w: 79, h: 23 }, { x: -41, y: -23, w: 91, h: 23 }], frame: 9 }, { hurtboxes: [{ x: -9, y: -103, w: 52, h: 22 }, { x: -24, y: -81, w: 67, h: 28 }, { x: -41, y: -53, w: 85, h: 26 }, { x: -31, y: -27, w: 76, h: 27 }], frame: 10 }, { hurtboxes: [{ x: 1, y: -94, w: 47, h: 20 }, { x: -22, y: -74, w: 70, h: 26 }, { x: -41, y: -48, w: 75, h: 24 }, { x: -43, y: -24, w: 89, h: 24 }], frame: 11 }], grabbed: [{ hurtboxes: [{ x: -53, y: -126, w: 88, h: 26 }, { x: -49, y: -100, w: 87, h: 36 }, { x: -31, y: -64, w: 74, h: 31 }, { x: -30, y: -33, w: 88, h: 33 }], frame: 5 }], ko: [{ hurtboxes: [{ x: 1, y: -94, w: 47, h: 20 }, { x: -22, y: -74, w: 70, h: 26 }, { x: -41, y: -48, w: 75, h: 24 }, { x: -43, y: -24, w: 89, h: 24 }], frame: 11 }, { hurtboxes: [{ x: -58, y: -49, w: 75, h: 10 }, { x: -58, y: -39, w: 122, h: 14 }, { x: -58, y: -25, w: 123, h: 12 }, { x: -58, y: -13, w: 123, h: 13 }], frame: 8 }], defeat: [{ hurtboxes: [{ x: -58, y: -49, w: 75, h: 10 }, { x: -58, y: -39, w: 122, h: 14 }, { x: -58, y: -25, w: 123, h: 12 }, { x: -58, y: -13, w: 123, h: 13 }], frame: 8 }], entrance: [{ hurtboxes: [{ x: -12, y: -124, w: 33, h: 26 }, { x: -28, y: -98, w: 71, h: 35 }, { x: -40, y: -63, w: 68, h: 31 }, { x: -42, y: -32, w: 85, h: 32 }], frame: 12 }, { hurtboxes: [{ x: -10, y: -125, w: 30, h: 26 }, { x: -28, y: -99, w: 70, h: 35 }, { x: -42, y: -64, w: 65, h: 32 }, { x: -39, y: -32, w: 61, h: 32 }], frame: 13 }, { hurtboxes: [{ x: -7, y: -126, w: 31, h: 26 }, { x: -22, y: -100, w: 66, h: 36 }, { x: -39, y: -64, w: 66, h: 31 }, { x: -36, y: -33, w: 61, h: 33 }], frame: 14 }, { hurtboxes: [{ x: -6, y: -126, w: 30, h: 26 }, { x: -21, y: -100, w: 66, h: 36 }, { x: -39, y: -64, w: 65, h: 31 }, { x: -31, y: -33, w: 70, h: 33 }], frame: 15 }, { hurtboxes: [{ x: -8, y: -129, w: 28, h: 27 }, { x: -30, y: -102, w: 75, h: 36 }, { x: -36, y: -66, w: 66, h: 32 }, { x: -35, y: -34, w: 75, h: 34 }], frame: 16 }], victory: [{ hurtboxes: [{ x: -8, y: -129, w: 28, h: 27 }, { x: -30, y: -102, w: 75, h: 36 }, { x: -36, y: -66, w: 66, h: 32 }, { x: -35, y: -34, w: 75, h: 34 }], frame: 16 }, { hurtboxes: [{ x: -13, y: -131, w: 32, h: 28 }, { x: -30, y: -103, w: 74, h: 36 }, { x: -37, y: -67, w: 65, h: 33 }, { x: -36, y: -34, w: 75, h: 34 }], frame: 18 }], taunt: [{ hurtboxes: [{ x: -8, y: -129, w: 28, h: 27 }, { x: -30, y: -102, w: 75, h: 36 }, { x: -36, y: -66, w: 66, h: 32 }, { x: -35, y: -34, w: 75, h: 34 }], frame: 16 }, { hurtboxes: [{ x: -13, y: -131, w: 32, h: 28 }, { x: -30, y: -103, w: 74, h: 36 }, { x: -37, y: -67, w: 65, h: 33 }, { x: -36, y: -34, w: 75, h: 34 }], frame: 18 }, { hurtboxes: [{ x: -8, y: -125, w: 28, h: 26 }, { x: -30, y: -99, w: 74, h: 35 }, { x: -36, y: -64, w: 66, h: 32 }, { x: -36, y: -32, w: 75, h: 32 }], frame: 17 }] } };
-
-// src/data/sasuke-clips.json
-var sasuke_clips_default = {
-  idle: [9, 8, 8, 8, 9, 10],
-  walkForward: [4, 4, 4, 4, 4, 4],
-  walkBack: [5, 4, 5, 5, 4, 5],
-  dashForward: [2, 2, 3, 3, 2],
-  backdash: [2, 2, 3, 3, 2],
-  crouchStart: [3, 3],
-  crouchIdle: [9, 10],
-  crouchEnd: [3, 3],
-  jumpStart: [2, 2, 1],
-  jumpRise: [6, 8],
-  jumpApex: [9],
-  jumpFall: [8, 6],
-  landing: [2, 3, 2],
-  guardStand: [9],
-  guardImpactStand: [6, 4],
-  guardCrouch: [9],
-  guardImpactCrouch: [6, 4],
-  damageLight: [7, 8],
-  damageMedium: [8, 10],
-  damageHeavy: [12, 10],
-  damageCrouch: [7, 9],
-  damageAir: [8, 9],
-  launched: [10, 10],
-  falling: [10],
-  downed: [26],
-  getup: [7, 7, 6],
-  grabbed: [9],
-  ko: [7, 48],
-  defeat: [44],
-  entrance: [5, 5, 5, 7, 24],
-  victory: [10, 30],
-  taunt: [14, 10, 12]
-};
-
-// src/data/sasuke-normals.json
-var sasuke_normals_default = {
-  stand_light: { holds: [4, 3, 5, 8], activeFrames: [1, 2], damage: 35, stun: 22, blockstun: 10, push: 1.2, launch: 0, hitstop: 4, level: "mid" },
-  stand_medium: { holds: [7, 4, 6, 10], activeFrames: [1, 2], damage: 59, stun: 27, blockstun: 13, push: 1.9, launch: 0, hitstop: 6, level: "mid" },
-  stand_heavy: { holds: [11, 3, 3, 22], activeFrames: [1, 3], damage: 88, stun: 26, blockstun: 16, push: 4.4, launch: 0, hitstop: 8, level: "mid" },
-  crouch_light: { holds: [4, 3, 5, 8], activeFrames: [1, 2], damage: 32, stun: 21, blockstun: 10, push: 1.1, launch: 0, hitstop: 4, level: "low" },
-  crouch_medium: { holds: [7, 4, 6, 11], activeFrames: [1, 2], damage: 55, stun: 27, blockstun: 13, push: 1.9, launch: 0, hitstop: 6, level: "low" },
-  crouch_heavy: { holds: [10, 3, 3, 20], activeFrames: [1, 3], damage: 73, stun: 34, blockstun: 15, push: 2.7, launch: -13.5, hitstop: 7, level: "mid" },
-  air_light: { holds: [4, 3, 4, 7], activeFrames: [1, 2], damage: 33, stun: 22, blockstun: 10, push: 1.1, launch: -4.3, hitstop: 4, level: "high", airHold: -3.8 },
-  air_medium: { holds: [6, 4, 5, 8], activeFrames: [1, 2], damage: 56, stun: 25, blockstun: 13, push: 2, launch: -3.7, hitstop: 6, level: "high", airHold: -3.4 },
-  air_heavy: { holds: [9, 3, 3, 14], activeFrames: [1, 3], damage: 82, stun: 30, blockstun: 15, push: 3.5, launch: 7, hitstop: 8, level: "high", knockdown: true }
-};
-
-// src/engine/sasuke-data.ts
-var sasukeFrames = sasuke_frames_default;
-var sasukeMoves = Object.fromEntries(
-  Object.keys(sasuke_normals_default).map((id) => {
-    const {
-      holds,
-      activeFrames: [first, end],
-      ...stats
-    } = sasuke_normals_default[id];
-    const [stance, weight] = id.split("_");
-    const rank = weight === "light" ? 1 : weight === "medium" ? 2 : 3;
-    const duration = (start, stop) => holds.slice(start, stop).reduce((a, b) => a + b, 0);
-    const startup2 = duration(0, first), active2 = duration(first, end);
-    const recovery2 = duration(end, holds.length);
-    const next = rank === 1 ? "medium" : rank === 2 ? "heavy" : void 0;
-    return [
-      id,
-      {
-        ...stats,
-        startup: startup2,
-        active: active2,
-        recovery: recovery2,
-        rank,
-        kind: "strike",
-        box: { x: 0, y: 0, w: 0, h: 0 },
-        cancels: [
-          ...next ? [next] : id === "crouch_heavy" ? ["jump"] : [],
-          ...stance !== "air" ? ["special"] : []
-        ],
-        cancelMoves: next ? [`${stance}_${next}`] : [],
-        cancelWindow: {
-          fromTick: startup2,
-          toTick: startup2 + active2 + (id === "crouch_heavy" ? 9 : 6)
-        },
-        poses: sasukeFrames.normals[id].map(({ frame: _, ...cel }, index) => ({
-          ...cel,
-          ticks: holds[index],
-          phase: index < first ? "startup" : index < end ? "active" : "recovery"
-        }))
-      }
-    ];
-  })
-);
-var sasuke = {
-  ...sasuke_default,
-  moves: sasukeMoves,
-  specialMoves: sasukeSpecialMoves,
-  lifecycle: {
-    entranceDistance: 58,
-    entranceWalkTicks: 20,
-    entranceSpeed: 2.9,
-    tauntTicks: 36,
-    getupTicks: 20,
-    koTicks: 55
-  },
-  hurtboxes: {
-    standing: [
-      { x: -18, y: -127, w: 40, h: 29 },
-      { x: -25, y: -99, w: 58, h: 53 },
-      { x: -31, y: -46, w: 68, h: 46 }
-    ],
-    crouching: [
-      { x: -13, y: -83, w: 35, h: 29 },
-      { x: -31, y: -56, w: 70, h: 55 }
-    ],
-    air: [
-      { x: -20, y: -119, w: 43, h: 31 },
-      { x: -29, y: -89, w: 62, h: 77 }
-    ]
-  },
-  reactions: Object.fromEntries(
-    Object.entries(sasukeFrames.reactions).map(([id, cels]) => [
-      id,
-      {
-        loop: id === "guardStand" || id === "guardCrouch" || id === "falling",
-        poses: cels.map((cel, index) => ({
-          ticks: sasuke_clips_default[id][index],
-          hurtboxes: cel.hurtboxes
-        }))
-      }
-    ])
-  )
 };
 
 // src/data/luffy.json
@@ -241954,6 +246875,8 @@ var characters = {
   samurai: pacedCharacter(samurai_default),
   goku: pacedCharacter(goku),
   sasuke,
+  kaneki,
+  ben,
   luffy: {
     ...luffy_default,
     ...luffySecondary,
@@ -241995,6 +246918,11 @@ var fighterKeys = [
   "stun",
   "moveId",
   "connected",
+  "kanekiCaptured",
+  "kanekiThrowLink",
+  "kanekiLimb",
+  "kanekiBurrowX",
+  "kanekiSpecialRecovery",
   "hitConfirmed",
   "reverseBeatUsed",
   "hitIds",
@@ -242005,10 +246933,13 @@ var fighterKeys = [
   "dashDirection",
   "jumpDirection",
   "airChaseTicks",
+  "chill",
   "gokuTeleportLock",
   "gokuAirTeleportUsed",
   "gokuAirTeleportsUsed",
   "gokuCastSerial",
+  "sasukeCurse",
+  "kirinCursed",
   "homeX",
   "guardIntent",
   "blockCrouched",
@@ -242035,6 +246966,8 @@ var matchKeys = [
   "roadRoller",
   "fury",
   "jetGigant",
+  "kirin",
+  "centipede",
   "hits",
   "hitSerial",
   "rules",
@@ -242042,6 +246975,7 @@ var matchKeys = [
   "projectileSerial",
   "kiProjectiles",
   "sasukeStormUntil",
+  "sasukeStormLevel",
   "beams"
 ];
 var clone = (value) => structuredClone(value);
@@ -242054,7 +246988,8 @@ function snapshot(match) {
       ...Object.fromEntries(fighterKeys.map((key) => [key, clone(f[key])])),
       buffer: f.buffer.snapshot(),
       characterId: f.data.id,
-      ...f.stand ? { stand: clone(f.stand.s) } : {}
+      ...f.stand ? { stand: clone(f.stand.s) } : {},
+      ...f.omnitrix ? { omnitrix: clone(f.omnitrix) } : {}
     })
   );
   state.temporal = clone(match.temporal.s);

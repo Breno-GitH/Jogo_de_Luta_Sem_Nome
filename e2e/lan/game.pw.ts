@@ -152,6 +152,12 @@ async function observe(p: Page) {
           road: canvas.dataset.roadPhase,
           time: canvas.dataset.timeRemaining,
           zoom: canvas.dataset.cameraZoom,
+          chain: canvas.dataset.chainFinish,
+          chainHeight: canvas.dataset.chainHeight,
+          centipede: canvas.dataset.centipedePhase,
+          centipedeSource: canvas.dataset.centipedeSource,
+          knuckle: canvas.dataset.knucklePose,
+          knuckleFrame: canvas.dataset.knuckleFrame,
           p1: canvas.dataset.p1Health,
           p2: canvas.dataset.p2Health,
         };
@@ -176,7 +182,7 @@ async function consistent() {
     )
     .toBe(true);
 }
-async function seed(code: string, distance = 90, meter = 0) {
+async function seed(code: string, distance = 90, meter = 0, configure?: (match: InstanceType<typeof Match>) => void) {
   const r = app.rooms.rooms.get(code)!;
   r.match = new Match(
     characters[r.players[0]!.character!],
@@ -194,6 +200,7 @@ async function seed(code: string, distance = 90, meter = 0) {
       f.stand.s.y = f.y - 18;
     }
   }
+  configure?.(r.match);
   r.status = "playing";
   r.syncs = [];
   app.rooms.sync(r.players[0]!.socketId, r.matchId);
@@ -238,6 +245,7 @@ async function capture(code: string, name: string) {
     expect(ds[0].jetTick).toBe(ds[1].jetTick);
     expect(ds[0].jetFist).toBe(ds[1].jetFist);
     expect(ds[0].roadTick).toBe(ds[1].roadTick);
+    expect(ds[0].kirinVariant).toBe(ds[1].kirinVariant);
     for (let i = 0; i < 2; i++) {
       const data = await [a, b][i]
         .locator("canvas")
@@ -277,7 +285,11 @@ test("Apache aliases, nested labs, static resources and production build are ind
     ]) {
       await a.click(`#${mode}`);
       await a.check(`input[name="character"][value="${character}"]`);
-      if (mode === "versus") await a.selectOption("#difficulty", difficulty);
+      await a.click("#confirm-character");
+      if (mode === "versus") {
+        await a.click("#confirm-character");
+        await a.selectOption("#difficulty", difficulty);
+      } else await expect(a.locator(".tower-floor")).toHaveCount(10);
       await a.click("#fight");
       await expect(a.locator("#app")).toHaveAttribute("data-screen", "fight");
       await expect(a.locator("canvas")).toHaveAttribute(
@@ -288,6 +300,8 @@ test("Apache aliases, nested labs, static resources and production build are ind
     }
     await a.click("#training");
     await a.check('input[name="character"][value="goku"]');
+    await a.click("#confirm-character");
+    await a.click("#confirm-character");
     await a.click("#fight");
     await expect(a.locator("#app")).toHaveAttribute("data-screen", "fight");
     await expect(a.locator("canvas")).toHaveAttribute("data-character", "goku");
@@ -402,6 +416,299 @@ test("rooms validate codes, enforce two seats, confirmation/host start, isolate 
     )
     .toBeGreaterThanOrEqual(3);
   third.disconnect();
+});
+
+test("Ben transforms on seat two and both Apache clients replay the same forms and movement", async () => {
+  const code = await pair("sasuke", "ben");
+  const server = () => app.rooms.rooms.get(code)!.match!.fighters[1];
+  const own = b.locator("canvas");
+  const remoteView = a.locator("canvas");
+  for (const [id, taps] of [["xlr8", 0], ["fourArms", 1], ["heatblast", 8]] as const) {
+    for (let i = 0; i < taps; i++) {
+      const previous = await own.getAttribute("data-omnitrix-selection");
+      await b.keyboard.press("l");
+      await expect(own).not.toHaveAttribute("data-omnitrix-selection", previous);
+    }
+    await expect(own).toHaveAttribute("data-omnitrix-selection", id);
+    await b.keyboard.down("l");
+    await expect.poll(() => server().omnitrix?.active).toBe(id);
+    await b.keyboard.up("l");
+    await expect(own).toHaveAttribute("data-omnitrix-form", id);
+    await expect(remoteView).toHaveAttribute("data-rival-omnitrix-form", id);
+    for (const canvas of [own, remoteView]) {
+      await expect(canvas).toHaveAttribute("data-omnitrix-facing", "-1");
+      await expect(canvas).toHaveAttribute("data-omnitrix-sheet", `ben/${id}/idle.png`);
+    }
+  }
+  const start = server().x;
+  await b.keyboard.down("a");
+  await expect.poll(() => server().x).toBeLessThan(start - 28);
+  await b.keyboard.up("a");
+  await consistent();
+});
+
+test("Ben fires Chama's independent projectile and both Apache clients receive one hit", async () => {
+  const code = await pair("sasuke", "ben");
+  const room = app.rooms.rooms.get(code)!;
+  const canvas = b.locator("canvas");
+  for (let i = 0; i < 9; i++) {
+    const prior = await canvas.getAttribute("data-omnitrix-selection");
+    await b.keyboard.press("l");
+    await expect(canvas).not.toHaveAttribute("data-omnitrix-selection", prior);
+  }
+  await b.keyboard.down("l");
+  await expect.poll(() => room.match!.fighters[1].omnitrix?.active).toBe("heatblast");
+  await b.keyboard.up("l");
+  await expect(a.locator("canvas")).toHaveAttribute("data-rival-omnitrix-form", "heatblast");
+  await b.keyboard.down("s");
+  await b.waitForTimeout(75);
+  await b.keyboard.up("s");
+  await b.keyboard.down("a");
+  await b.keyboard.press("j");
+  await b.keyboard.up("a");
+  await expect.poll(() => room.match!.fighters[1].omnitrix!.objects[0]?.id).toBe("fireball_light");
+  await expect.poll(() => room.match!.fighters[0].health).toBe(964);
+  await expect(a.locator("canvas")).toHaveAttribute("data-p1-health", "964");
+  await expect(b.locator("canvas")).toHaveAttribute("data-p1-health", "964");
+  await consistent();
+});
+
+test("Ben stage 5 shares the crystal wall, growth and absorbed energy over Apache LAN", async () => {
+  const code = await pair("goku", "ben");
+  const own = b.locator("canvas"), other = a.locator("canvas");
+  const room = app.rooms.rooms.get(code)!;
+  const fighter = () => room.match!.fighters[1];
+  async function selectForm(id: string) {
+    for (let i = 0; i < 11 && (await own.getAttribute("data-omnitrix-selection")) !== id; i++) {
+      const prior = await own.getAttribute("data-omnitrix-selection");
+      await b.keyboard.press("l");
+      await expect(own).not.toHaveAttribute("data-omnitrix-selection", prior);
+    }
+    await expect(own).toHaveAttribute("data-omnitrix-selection", id);
+    await b.keyboard.down("l");
+    await expect.poll(() => fighter().omnitrix?.active).toBe(id);
+    await b.keyboard.up("l");
+    await expect(other).toHaveAttribute("data-rival-omnitrix-form", id);
+  }
+  await selectForm("diamondhead");
+  await motion(b, [2, 6], "k");
+  await expect(own).toHaveAttribute("data-ben-walls", "1");
+  await expect(other).toHaveAttribute("data-rival-ben-walls", "1");
+  await expect.poll(() => fighter().state).toBe("idle");
+
+  await selectForm("humungousaur");
+  await motion(b, [2, 5, 2], "k");
+  await expect(own).toHaveAttribute("data-ben-growth", "2");
+  await expect(other).toHaveAttribute("data-rival-ben-growth", "2");
+  await expect(own).toHaveAttribute("data-omnitrix-sheet", /ben\/humungousaur\/growth-2\//);
+  await expect.poll(() => fighter().state).toBe("idle");
+
+  await selectForm("feedback");
+  await expect(other).toHaveAttribute("data-rival-ben-growth", "");
+  // Synchronize a Ki sphere entering an active absorption window. The shared
+  // engine resolves the collision and charge from this state for both clients.
+  await seed(code, 160, 0, match => {
+    const [goku, feedback] = match.fighters;
+    feedback.omnitrix!.active = feedback.omnitrix!.selected = "feedback";
+    feedback.attack("absorb_light");
+    feedback.stateFrame = 3;
+    const move = Object.keys(goku.data.specialMoves!).find(id => goku.data.specialMoves![id].special === "ki")!;
+    match.kiProjectiles.push({ id: ++match.projectileSerial, owner: 0, move, cast: 0,
+      x: feedback.x - 41, previousX: feedback.x - 41, y: 483, previousY: 483,
+      vx: 14, vy: 0, facing: 1, radius: 12, age: 0, life: 25, state: "flight", impactAge: 0 });
+  });
+  await expect.poll(() => fighter().omnitrix?.charge ?? 0).toBeGreaterThan(0);
+  const charge = String(fighter().omnitrix!.charge);
+  await expect(own).toHaveAttribute("data-ben-charge", charge);
+  await expect(other).toHaveAttribute("data-rival-ben-charge", charge);
+  expect(fighter().health).toBe(fighter().data.health);
+  await capture(code, "ben-etapa-5-feedback");
+  await expect.poll(() => fighter().state).toBe("idle");
+  await motion(b, [2, 5, 2], "j");
+  await expect.poll(() => fighter().omnitrix!.charge).toBeLessThan(Number(charge));
+  const remaining = String(fighter().omnitrix!.charge);
+  await expect(own).toHaveAttribute("data-ben-charge", remaining);
+  await expect(other).toHaveAttribute("data-rival-ben-charge", remaining);
+  await expect.poll(() => room.match!.fighters[0].health).toBeLessThan(room.match!.fighters[0].data.health);
+  await consistent();
+});
+
+test("Feedback resolves conductive capture and charge on both LAN clients", async () => {
+  const code = await pair("samurai", "ben");
+  const selectFeedback = (match: InstanceType<typeof Match>) => {
+    const feedback = match.fighters[1];
+    feedback.omnitrix!.active = feedback.omnitrix!.selected = "feedback";
+    return feedback;
+  };
+  const room = await seed(code, 104, 0, selectFeedback);
+  const own = b.locator("canvas"), other = a.locator("canvas");
+  await Promise.all([
+    motion(b, [2, 6], "k"),
+    expect(own).toHaveAttribute("data-ben-capture", "conductor_medium"),
+    expect(other).toHaveAttribute("data-ben-capture", "conductor_medium"),
+  ]);
+  await expect(own).toHaveAttribute("data-ben-charge", "16");
+  await expect(other).toHaveAttribute("data-rival-ben-charge", "16");
+  await expect.poll(() => room.match!.capture).toBeUndefined();
+  const hurt = String(room.match!.fighters[0].health);
+  expect(Number(hurt)).toBeLessThan(room.match!.fighters[0].data.health);
+  for (const view of [own, other]) await expect(view).toHaveAttribute("data-p1-health", hurt);
+  await consistent();
+});
+
+test("Ben Stage 6 transforms and resolves ice, phasing and NRG on both LAN clients", async () => {
+  const code = await pair("ben", "samurai");
+  const room = await seed(code, 135);
+  const own = a.locator("canvas"), remote = b.locator("canvas");
+  const ben = () => room.match!.fighters[0];
+  async function change(id: string) {
+    await expect.poll(() => ben().state).toBe("idle");
+    for (let i = 0; i < 11 && (await own.getAttribute("data-omnitrix-selection")) !== id; i++) {
+      const prior = await own.getAttribute("data-omnitrix-selection");
+      await a.keyboard.press("l");
+      await expect(own).not.toHaveAttribute("data-omnitrix-selection", prior);
+    }
+    await expect(own).toHaveAttribute("data-omnitrix-selection", id);
+    await a.keyboard.down("l");
+    await expect(own).toHaveAttribute("data-omnitrix-form", id);
+    await a.keyboard.up("l");
+    await expect(remote).toHaveAttribute("data-rival-omnitrix-form", id);
+  }
+
+  await change("bigChill");
+  await motion(a, [2, 6], "j");
+  await expect.poll(() => room.match!.fighters[1].chill?.build ?? 0).toBe(30);
+  const hurt = String(room.match!.fighters[1].health);
+  for (const view of [own, remote]) await expect(view).toHaveAttribute("data-p2-health", hurt);
+
+  await change("ghostfreak");
+  await Promise.all([own, remote].map((view, i) => view.evaluate((canvas, name) => {
+    const observe = new MutationObserver(() => {
+      if (canvas.getAttribute(name) !== "active") return;
+      canvas.setAttribute("data-ben-phase-observed", "true");
+      observe.disconnect();
+    });
+    observe.observe(canvas, { attributes: true, attributeFilter: [name] });
+  }, i ? "data-rival-ben-phase" : "data-ben-phase")));
+  await motion(a, [2, 5, 2], "k");
+  for (const view of [own, remote]) await expect(view).toHaveAttribute("data-ben-phase-observed", "true");
+  await expect(own).toHaveAttribute("data-ben-phase", "");
+  await expect(remote).toHaveAttribute("data-rival-ben-phase", "");
+  await seed(code, 91, 0, match => {
+    const watch = match.fighters[0].omnitrix!;
+    watch.active = watch.selected = "ghostfreak";
+  });
+  await Promise.all([
+    motion(a, [2, 5, 2], "j"),
+    ...[own, remote].map(view => expect(view).toHaveAttribute("data-ben-capture", "ghostPhase_light")),
+    ...[own, remote].map(view => expect(view).toHaveAttribute("data-omnitrix-sheet", /zs-skayr/)),
+  ]);
+  await expect.poll(() => room.match!.capture).toBeUndefined();
+  const spectralDamage = room.match!.fighters[1].health;
+  expect(spectralDamage).toBeLessThan(room.match!.fighters[1].data.health);
+
+  await change("nrg");
+  await motion(a, [2, 5, 2], "j");
+  await expect(own).toHaveAttribute("data-nrg-mode", "released");
+  await expect(remote).toHaveAttribute("data-rival-nrg-mode", "released");
+  await expect(own).toHaveAttribute("data-omnitrix-sheet", /ben\/nrgReleased\/stage6-/);
+  await expect.poll(() => ben().state).toBe("idle");
+  await motion(a, [2, 6], "k");
+  await expect.poll(() => room.match!.fighters[1].health).toBeLessThan(spectralDamage);
+  const finalHealth = String(room.match!.fighters[1].health);
+  for (const view of [own, remote]) await expect(view).toHaveAttribute("data-p2-health", finalHealth);
+  await expect.poll(() => ben().state).toBe("idle");
+  await a.keyboard.down("w");
+  try {
+    await expect(own).toHaveAttribute("data-ben-flight", "nrg");
+    await expect(remote).toHaveAttribute("data-ben-flight", "nrg");
+    await expect.poll(() => ben().y).toBeLessThan(485);
+  } finally { await a.keyboard.up("w"); }
+  const currentX = ben().x;
+  await motion(a, [2, 5, 2], "k");
+  await expect.poll(() => ben().omnitrix?.nrgReleased, { timeout: 10000 }).toBe(false);
+  expect(ben().x).toBeCloseTo(currentX, 0);
+  await expect(own).toHaveAttribute("data-nrg-mode", "contained");
+  await expect(remote).toHaveAttribute("data-rival-nrg-mode", "contained");
+  await consistent();
+});
+
+test("NRG armor ram and counterpressure agree on both LAN clients", async ({}, info) => {
+  const code = await pair("ben", "samurai");
+  const contained = (match: InstanceType<typeof Match>) => {
+    const watch = match.fighters[0].omnitrix!;
+    watch.active = watch.selected = "nrg";
+  };
+  const own = a.locator("canvas"), remote = b.locator("canvas");
+  let room = await seed(code, 126, 0, contained);
+  const origin = room.match!.fighters[0].x;
+  await motion(a, [2, 4], "j", 46);
+  await expect.poll(() => room.match!.fighters[1].health).toBeLessThan(1000);
+  expect(room.match!.fighters[0].x).toBeGreaterThan(origin + 20);
+  for (const view of [own, remote])
+    await expect(view).toHaveAttribute("data-p2-health", String(room.match!.fighters[1].health));
+
+  room = await seed(code, 79, 0, match => {
+    contained(match);
+    match.fighters[0].x = 579;
+    match.fighters[0].facing = -1;
+    match.fighters[1].x = 500;
+    match.fighters[1].facing = 1;
+  });
+  await own.evaluate(canvas => {
+    const frames: { image: string; clip?: string; move?: string; x: number; rival: number; health: number; facing: number }[] = [];
+    (window as any).nrgCounterFrames = frames;
+    const dst = document.createElement("canvas");
+    dst.width = 960;
+    dst.height = 540;
+    const ctx = dst.getContext("2d")!;
+    ctx.imageSmoothingEnabled = false;
+    const surface = canvas as HTMLCanvasElement;
+    let previous = -Infinity;
+    function sample(now: number) {
+      if ((window as any).nrgCounterFrames !== frames) return;
+      if (now - previous >= 29) {
+        const d = surface.dataset;
+        ctx.drawImage(surface, 0, 0, 960, 540);
+        frames.push({ image: dst.toDataURL("image/png").split(",")[1], clip: d.animation,
+          move: d.move, x: +d.rootX!, rival: +d.rivalX!, health: +d.p2Health!, facing: +d.omnitrixFacing! });
+        previous = now;
+      }
+      requestAnimationFrame(sample);
+    }
+    requestAnimationFrame(sample);
+  });
+  // Schedule the rival's jab from the command, before the network echo of
+  // the counter stance. Waiting for its DOM update misses the short window.
+  await press(a, "s", 39);
+  await a.waitForTimeout(39);
+  await a.keyboard.down("s");
+  await a.keyboard.down("k");
+  try {
+    await a.waitForTimeout(54);
+    await press(b, "j", 45);
+  } finally {
+    await a.keyboard.up("k");
+    await a.keyboard.up("s");
+  }
+  await expect.poll(() => room.match!.fighters[1].health).toBeLessThan(1000);
+  const health = room.match!.fighters.map(f => f.health);
+  expect(health[0]).toBeGreaterThan(982);
+  expect(health[0]).toBeLessThan(1000);
+  for (const view of [own, remote]) for (let i = 0; i < 2; i++)
+    await expect(view).toHaveAttribute("data-p" + (i + 1) + "-health", String(health[i]));
+  await expect.poll(() => room.match!.fighters[0].state).toBe("idle");
+  await consistent();
+  const frames = await own.evaluate(() => {
+    const frames = (window as any).nrgCounterFrames;
+    (window as any).nrgCounterFrames = null;
+    return frames;
+  });
+  const folder = info.outputPath("counter-hit");
+  mkdirSync(folder, { recursive: true });
+  writeFileSync(folder + "/frames.json", JSON.stringify(frames.map(({ image, ...frame }) => frame)));
+  for (let i = 0; i < frames.length; i++)
+    writeFileSync(folder + "/" + String(i).padStart(3, "0") + ".png", Buffer.from(frames[i].image, "base64"));
 });
 
 test("Sasuke fights with his own normals on both LAN clients", async () => {
@@ -748,8 +1055,11 @@ test("refresh resumes the same room, disconnect terminates safely, lobby reuse, 
       "data-screen",
       "onlineResult",
     );
+  expect(r.result?.score).toEqual([2, 0]);
+  for (const p of [a, b]) await expect(p.locator(".score strong")).toHaveText(["2", "0"]);
   const old = r.matchId;
   await a.click("#online-rematch");
+  expect(r.matchId).toBe(old);
   await b.click("#online-rematch");
   await expect.poll(() => r.matchId).not.toBe(old);
   expect(r.match!.fighters.map((f) => f.data.id)).toEqual(["goku", "dio"]);
@@ -868,5 +1178,317 @@ test("Sasuke Curse Mark activates from keyboard and synchronizes through expiry"
   await expect.poll(() => room.match!.fighters[0].sasukeCurse?.phase, { timeout: 22000 }).toBe("cooldown");
   for (const client of [a, b])
     await expect(client.locator("canvas")).toHaveAttribute("data-p1-curse", "cooldown");
+  await consistent();
+});
+
+test("Sasuke Kirin confirms on R and synchronizes both clients through the storm", async () => {
+  const code = await pair("sasuke", "dio");
+  const room = await seed(code, 57, 100);
+  await press(a, "r");
+  await expect.poll(() => room.match!.kirin?.attacker).toBe(0);
+  expect(room.match!.fighters[0].meter).toBe(0);
+  const timer = room.match!.timer;
+  for (const client of [a,b])
+    await expect(client.locator("canvas")).toHaveAttribute("data-kirin-phase", "reveal");
+  await capture(code, "sasuke-kirin");
+  await consistent();
+  await expect.poll(() => room.match!.fighters[1].health, { timeout: 12000 }).toBe(680);
+  expect(room.match!.timer).toBe(timer);
+  for (const client of [a,b])
+    await expect(client.locator("canvas")).toHaveAttribute("data-p2-health", "680");
+  await expect.poll(
+    () => !room.match!.kirin && room.match!.fighters[1].knockedDown,
+    { intervals: [16], timeout: 8000 },
+  ).toBe(true);
+  for (const client of [a,b])
+    await expect(client.locator("canvas")).toHaveAttribute("data-camera-zoom", "1");
+  await consistent();
+});
+
+test("Sasuke Black Kirin hits through crouching guard and keeps the same variant on both LAN clients", async () => {
+  const code = await pair("sasuke", "samurai");
+  const room = await seed(code, 57, 100);
+  await motion(a, [2, 5, 2], "l", 72);
+  await expect.poll(() => room.match!.fighters[0].sasukeCurse?.phase).toBe("active");
+  await b.keyboard.down("s");
+  await b.keyboard.down("d");
+  await expect.poll(() => room.match!.fighters[1].guardIntent && room.match!.fighters[1].crouching).toBe(true);
+  try {
+    await press(a, "r");
+    await expect.poll(() => room.match!.kirin?.cursed).toBe(true);
+    expect(room.match!.fighters[0].meter).toBe(0);
+    const remaining = room.match!.fighters[0].sasukeCurse!.remaining;
+    await Promise.all([a, b].map(async client => {
+      const canvas = client.locator("canvas");
+      await expect(canvas).toHaveAttribute("data-kirin-variant", "black");
+      await expect(canvas).toHaveAttribute("data-kirin-phase", "reveal");
+    }));
+    await capture(code, "sasuke-kirin-black");
+    await expect.poll(() => room.match!.fighters[1].health, { timeout: 12000 }).toBe(680);
+    expect(room.match!.fighters[0].sasukeCurse!.remaining).toBe(remaining);
+    await Promise.all([a, b].map(async client => {
+      const canvas = client.locator("canvas");
+      await expect(canvas).toHaveAttribute("data-p2-health", "680");
+      await expect(canvas).toHaveAttribute("data-kirin-phase", "none");
+      await expect(canvas).toHaveAttribute("data-camera-zoom", "1");
+    }));
+    await consistent();
+  } finally {
+    await b.keyboard.up("s");
+    await b.keyboard.up("d");
+  }
+});
+
+test("backend outage has a bounded retry window and a usable return to the main menu", async () => {
+  await pair("luffy", "sasuke");
+  await app.close();
+  try {
+    for (const p of [a, b]) {
+      await expect(p.locator("#connection-state")).toHaveText("Conexão indisponível", { timeout: 15000 });
+      await expect(p.locator("#online-error")).toContainText("Servidor indisponível");
+      await expect(p.locator("#create-room")).toBeDisabled();
+    }
+    await b.click("#back");
+    await expect(b.locator("#app")).toHaveAttribute("data-screen", "menu");
+  } finally {
+    await startServer();
+  }
+  await a.click("#reconnect-online");
+  await expect(a.locator("#create-room")).toBeEnabled({ timeout: 10000 });
+  await a.click("#create-room");
+  await expect(a.locator("#lobby-code")).toHaveText(/^[A-Z2-9]{6}$/);
+});
+
+
+test("Sasuke taunts, throws to win a round, rematches and changes character over LAN", async () => {
+  const code = await pair("sasuke", "luffy");
+  const room = await seed(code, 60);
+  await press(a, "t");
+  await expect(a.locator("canvas")).toHaveAttribute("data-animation", "taunt");
+  await expect.poll(() => room.match!.fighters[0].state).toBe("idle");
+  await press(a, "u");
+  for (const client of [a, b])
+    await expect(client.locator("canvas")).toHaveAttribute("data-capture", "grab");
+  await expect.poll(() => room.match!.fighters[1].health).toBe(895);
+  await consistent();
+  await expect.poll(() => room.match!.capture).toBeUndefined();
+
+  for (let round = 0; round < 2; round++) {
+    await expect.poll(() => room.match!.phase, { timeout: 12000 }).toBe("fight");
+    const [actor, victim] = room.match!.fighters;
+    actor.x = 570;
+    victim.x = 630;
+    victim.health = 90;
+    victim.setState("idle");
+    victim.vx = victim.vy = victim.stun = 0;
+    victim.knockedDown = false;
+    victim.y = 580;
+    actor.setState("idle");
+    room.match!.capture = undefined;
+    room.match!.hitstop = 0;
+    room.syncs = [];
+    app.rooms.sync(room.players[0]!.socketId, room.matchId);
+    await press(a, "u");
+    await expect.poll(() => room.match!.phase, { timeout: 5000 }).not.toBe("fight");
+    expect(room.match!.wins[0]).toBe(round + 1);
+  }
+  for (const client of [a, b])
+    await expect(client.locator(".score strong")).toHaveText(["2", "0"]);
+  const previous = room.matchId;
+  await a.click("#online-rematch");
+  expect(room.matchId).toBe(previous);
+  await b.click("#online-rematch");
+  await expect.poll(() => room.matchId).not.toBe(previous);
+  expect(room.match!.fighters.map(f => f.data.id)).toEqual(["sasuke", "luffy"]);
+
+  // The shared room controller permits returning and changing the selection
+  // once the rematch ends. Closing a client here tests that real result path.
+  await browsers[1].close();
+  await expect(a.locator("#app")).toHaveAttribute("data-screen", "onlineResult", { timeout: 12000 });
+  await a.click("#online-lobby");
+  await expect(a.locator("#lobby-code")).toHaveText(code);
+  await a.check("#online-goku");
+  await expect.poll(() => room.players[0]!.character).toBe("goku");
+  expect(room.players[0]!.confirmed).toBe(false);
+});
+
+test("Kaneki capture choice is resolved by the LAN server and replayed by both clients", async () => {
+  const code = await pair("kaneki", "sasuke");
+  const room = await seed(code, 107);
+  const cases = [
+    ["j", 926], ["k", 908], ["l", 899],
+  ] as const;
+  for (const [button, expected] of cases) {
+    if (button !== "j") await seed(code, 107);
+    await press(a, "u");
+    await expect.poll(() => room.match!.capture?.kind).toBe("grab");
+    await a.keyboard.press(button);
+    await expect.poll(() => room.match!.fighters[1].health).toBe(expected);
+    await expect.poll(() => room.match!.capture).toBeUndefined();
+    for (const client of [a, b])
+      await expect(client.locator("canvas")).toHaveAttribute("data-p2-health", String(expected));
+    if (button === "j") await consistent();
+  }
+});
+
+
+test("Kaneki Four Swords replays the pressure pose on both LAN clients", async () => {
+  const code = await pair("kaneki", "sasuke");
+  const room = await seed(code, 107);
+  await motion(a, [2, 4], "k", 55);
+  await expect.poll(() => room.match!.fighters[1].health).toBeLessThan(940);
+  await expect.poll(() => room.match!.capture).toBeUndefined();
+  const health = String(room.match!.fighters[1].health);
+  for (const client of [a, b])
+    await expect(client.locator("canvas")).toHaveAttribute("data-p2-health", health);
+  await consistent();
+  const [left, right] = await Promise.all([a,b].map(client =>
+    client.evaluate(() => (window as any).netRecords)));
+  const shared = Object.keys(left).find(key =>
+    left[key].knuckle === "1" && right[key]?.knuckle === "1" &&
+    left[key].knuckleFrame && right[key].knuckleFrame === left[key].knuckleFrame);
+  expect(shared).toBeTruthy();
+});
+
+
+test("Kaneki chain grab and escape are resolved identically on LAN", async () => {
+  const code = await pair("kaneki", "sasuke");
+  const room = await seed(code, 107);
+  await press(a, "u", 50);
+  await expect.poll(() => room.match!.capture?.kaneki?.chain?.phase, { intervals: [20] }).toBe("choice1");
+  await a.keyboard.press("j");
+  await expect.poll(() => room.match!.capture?.kaneki?.chain?.phase, { intervals: [20] }).toBe("choice2");
+  await a.keyboard.press("l");
+  await Promise.all([a, b].map(async client => {
+    await expect(client.locator("canvas")).toHaveAttribute("data-chain-finish", "centipede");
+    await expect.poll(() => client.locator("canvas").evaluate(c => Number(c.dataset.chainHeight)), { intervals: [20] }).toBeGreaterThan(260);
+  }));
+  await expect.poll(() => room.match!.capture).toBeUndefined();
+  await consistent();
+  for (const client of [a,b]) {
+    await expect(client.locator("canvas")).toHaveAttribute("data-p2-health","852");
+    await expect(client.locator("canvas")).toHaveAttribute("data-camera-zoom","1");
+  }
+
+  await seed(code, 105);
+  await press(a, "u", 50);
+  await expect.poll(() => room.match!.capture?.kaneki?.chain?.phase, { intervals: [20] }).toBe("choice1");
+  await a.keyboard.press("l");
+  await expect.poll(() => room.match!.capture?.kaneki?.chain?.phase, { intervals: [20] }).toBe("choice2");
+  await b.keyboard.press("l");
+  await expect.poll(() => room.match!.capture?.kaneki?.chain?.escape?.button, { intervals: [20] }).toBe("heavy");
+  await a.keyboard.press("l");
+  await expect.poll(() => room.match!.capture).toBeUndefined();
+  for (const client of [a,b])
+    await expect(client.locator("canvas")).toHaveAttribute("data-p2-health","946");
+});
+
+
+test("Kaneki converts U to Centipede on both LAN clients", async () => {
+  const code = await pair("kaneki", "sasuke");
+  const room = await seed(code, 107, 100);
+  const poll = { intervals: [20], timeout: 16000 };
+  await press(a, "u", 50);
+  await expect.poll(() => room.match!.capture?.kaneki?.chain?.phase, poll).toBe("choice1");
+  await a.keyboard.press("r");
+  await expect.poll(() => room.match!.centipede?.source, poll).toBe("universal");
+  expect(room.match!.fighters[0].meter).toBe(0);
+  await Promise.all([a,b].map(async client => {
+    const canvas = client.locator("canvas");
+    await expect(canvas).toHaveAttribute("data-centipede-source","universal");
+    await expect(canvas).toHaveAttribute("data-centipede-phase","wall",{timeout:12000});
+    await expect(canvas).toHaveAttribute("data-centipede-phase","ascend",{timeout:12000});
+    await expect(canvas).toHaveAttribute("data-centipede-phase","impact",{timeout:12000});
+    await expect(canvas).toHaveAttribute("data-camera-zoom","1",{timeout:12000});
+  }));
+  await expect.poll(() => room.match!.centipede, poll).toBeUndefined();
+  const health = String(room.match!.fighters[1].health);
+  expect(Number(health)).toBeLessThan(750);
+  for (const client of [a,b])
+    await expect(client.locator("canvas")).toHaveAttribute("data-p2-health",health);
+  const [left,right] = await Promise.all([a,b].map(client =>
+    client.evaluate(() => (window as any).netRecords)));
+  expect(Object.keys(left).some(k => left[k].centipede === "impact" &&
+    right[k]?.centipede === "impact" && left[k].centipedeSource === right[k].centipedeSource)).toBe(true);
+  await consistent();
+});
+
+test("Kaneki long grab branches and resistance use authoritative LAN inputs", async () => {
+  const code = await pair("kaneki","sasuke");
+  const room = await seed(code,352);
+  await motion(a,[2,6],"l",55);
+  const poll = { intervals:[20] };
+  await expect.poll(() => room.match!.capture?.kaneki?.chain?.origin,poll).toBe("kaguneGrab");
+  await expect.poll(() => room.match!.capture?.kaneki?.chain?.phase,poll).toBe("choice1");
+  await a.keyboard.press("k");
+  await expect.poll(() => room.match!.capture?.kaneki?.chain?.phase,poll).toBe("choice2");
+  await a.keyboard.press("l");
+  await Promise.all([a,b].map(client =>
+    expect(client.locator("canvas")).toHaveAttribute("data-chain-finish","redCatapult")));
+  await expect.poll(() => room.match!.capture,poll).toBeUndefined();
+  for (const client of [a,b])
+    await expect(client.locator("canvas")).toHaveAttribute("data-p2-health","870");
+  await consistent();
+
+  await seed(code,352);
+  await motion(a,[2,6],"l",55);
+  await expect.poll(() => room.match!.capture?.kaneki?.chain?.phase,poll).toBe("choice1");
+  for (const [i,key] of ["l","j","k"].entries()) {
+    await b.keyboard.press(key);
+    if (i < 2) {
+      await expect.poll(() => room.match!.capture?.kaneki?.chain?.resistance,poll).toBe(i+1);
+      await b.waitForTimeout(240);
+    }
+  }
+  await expect.poll(() => room.match!.capture,poll).toBeUndefined();
+  expect(room.match!.fighters[1].health).toBe(1000);
+  for (const client of [a,b])
+    await expect(client.locator("canvas")).toHaveAttribute("data-capture","none");
+});
+
+test("Ben Stage 7 agrees on gravity, the planetoid and Echo's clone attacks", async () => {
+  const code = await pair("ben", "samurai");
+  const room = await seed(code, 145);
+  const own = a.locator("canvas"), remote = b.locator("canvas");
+  const ben = () => room.match!.fighters[0];
+  const samurai = () => room.match!.fighters[1];
+
+  async function change(id: string) {
+    await expect.poll(() => ben().state).toBe("idle");
+    for (let i = 0; i < 11 && (await own.getAttribute("data-omnitrix-selection")) !== id; i++) {
+      const before = await own.getAttribute("data-omnitrix-selection");
+      await press(a, "l", 60);
+      await expect(own).not.toHaveAttribute("data-omnitrix-selection", before);
+    }
+    await expect(own).toHaveAttribute("data-omnitrix-selection", id);
+    await a.keyboard.down("l");
+    try { await expect(own).toHaveAttribute("data-omnitrix-form", id); }
+    finally { await a.keyboard.up("l"); }
+    await expect(remote).toHaveAttribute("data-rival-omnitrix-form", id);
+    for (const view of [own, remote]) await expect(view).toHaveAttribute("data-omnitrix-sheet", `ben/${id}/stage7.png`);
+  }
+
+  await change("gravattack");
+  const startX = samurai().x;
+  await motion(a, [2, 6], "j");
+  await expect.poll(() => samurai().x).toBeLessThan(startX - 12);
+  await expect.poll(() => ben().state).toBe("idle");
+  await motion(a, [2, 5, 2], "j");
+  for (const view of [own, remote]) await expect(view).toHaveAttribute("data-gravity-well", "true");
+  await expect.poll(() => ben().state).toBe("idle");
+  await motion(a, [2, 5, 2], "k", 48);
+  await expect.poll(() => ben().moveId === "gravityDomain_medium" && ben().y < 580).toBe(true);
+
+  await change("echoEcho");
+  await motion(a, [2, 4], "k");
+  for (const view of [own, remote]) await expect(view).toHaveAttribute("data-echo-clones", "2");
+  await expect.poll(() => ben().state).toBe("idle");
+  const before = samurai().health;
+  await motion(a, [2, 5, 2], "k");
+  await expect.poll(() => samurai().health).toBeLessThan(before);
+  await expect.poll(() => ben().state).toBe("idle");
+  for (const view of [own, remote]) await expect(view).toHaveAttribute("data-p2-health", String(samurai().health));
+  await change("gravattack");
+  for (const view of [own, remote]) await expect(view).toHaveAttribute("data-echo-clones", "0");
   await consistent();
 });

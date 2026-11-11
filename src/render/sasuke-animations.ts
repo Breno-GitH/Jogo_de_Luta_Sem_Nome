@@ -1,10 +1,13 @@
+import { sasukeThrowClips } from "../engine/sasuke-grab";
 import {
   sasukeClips,
   sasukeFrames,
   sasukeNormals,
 } from "../engine/sasuke-data";
-import { sasukeSpecialFrames, sasukeSpecialIds, sasukeTechniques } from "../engine/sasuke-specials";
+import { sasukeSpecialFrames, sasukeSpecialIds, sasukeSpecialMoves } from "../engine/sasuke-specials";
 import { curseAwaken, curseRevert, sasukeCurseArt, sasukeCurseBalance, sasukeCurseMoves } from "../engine/sasuke-curse";
+import { chidoriProfile } from "../engine/sasuke-polish";
+import { kirinConfig, kirinId } from "../engine/sasuke-kirin";
 import type { AnimationClip, AnimationData } from "./animator";
 
 const clips: AnimationData["clips"] = {};
@@ -49,7 +52,7 @@ for (const [name, frames] of Object.entries(sasukeFrames.reactions))
   );
 
 for (const id of sasukeSpecialIds)
-  add(id, "specials", sasukeSpecialFrames(id), sasukeTechniques[id].holds);
+  add(id, "specials", sasukeSpecialFrames(id), sasukeSpecialMoves[id].poses!.map(p => p.ticks));
 
 export const sasukeCurseSheet = "sasuke/curse.png";
 export const curseClipName = (name: string) =>
@@ -62,6 +65,55 @@ for (const [name, { frames, holds }] of Object.entries(sasukeCurseArt.clips)) {
         : sasukeCurseMoves[name]?.poses?.map(p => p.ticks) ?? holds,
     frameWidth: 384, frameHeight: 288, columns: 8, pivot: { x: 192, y: 248 },
   };
+}
+
+export const chidoriCurseSheet = "sasuke/chidori-dash-curse.png";
+for (const cursed of [false, true]) {
+  clips[cursed ? curseClipName("chidori") : "chidori"] = {
+    sheet: cursed ? chidoriCurseSheet : "sasuke/chidori-dash.png",
+    frames: [0, 1, 2, 3, 4, 5], durations: chidoriProfile(cursed).holds, ticks: 1, loop: false,
+    frameWidth: 384, frameHeight: 288, columns: 3, pivot: { x: 192, y: 248 },
+  };
+}
+
+export const kirinCurseSheet = "sasuke/kirin-curse.png";
+for (const cursed of [false, true]) {
+  for (const [name, frames, durations] of [
+    [kirinId, [0, 1, 2], kirinConfig.opening.holds],
+    ["kirinPrepare", [3, 4], [17, 120]],
+    ["kirinCommand", [4, 5, 6], [8, 10, 15]],
+    ["kirinRelease", [7, 8], [31, 90]],
+  ] as const) {
+    clips[cursed ? curseClipName(name) : name] = {
+      sheet: cursed ? kirinCurseSheet : "sasuke/kirin-base.png",
+      frames: [...frames], durations: [...durations], ticks: 1, loop: false,
+      frameWidth: 384, frameHeight: 288, columns: 3, pivot: { x: 192, y: 248 },
+    };
+  }
+}
+
+for (const cursed of [false, true]) {
+  const sheet = cursed ? "sasuke/taunt-marca.png" : "sasuke/taunt-hebi.png";
+  clips[cursed ? "curse_taunt" : "taunt"] = {
+    sheet, frames: [0, 1, 2, 1, 0], durations: [5, 6, 14, 6, 5], ticks: 1, loop: false,
+    frameWidth: 384, frameHeight: 288, columns: 3, pivot: { x: 192, y: 248 },
+  };
+}
+export const sasukeWingedSheets = new Set([
+  "sasuke/taunt-marca.png",
+  sasukeCurseSheet,
+  chidoriCurseSheet,
+  kirinCurseSheet,
+  "sasuke/throw-curse.png",
+]);
+for (const [name, { frames, holds }] of Object.entries(sasukeThrowClips)) {
+  for (const cursed of [false, true]) {
+    clips[cursed ? curseClipName(name) : name] = {
+      sheet: cursed ? "sasuke/throw-curse.png" : "sasuke/throw-base.png",
+      frames, durations: holds, ticks: 1, loop: false,
+      frameWidth: 384, frameHeight: 288, columns: 3, pivot: { x: 192, y: 248 },
+    };
+  }
 }
 
 export const sasukeAnimations: AnimationData = {

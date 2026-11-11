@@ -1,7 +1,7 @@
 import type { InputFrame } from "../engine/types";
 import type { MatchState } from "../engine/state";
-export const PROTOCOL = 2;
-export const ONLINE_CHARACTERS = ["samurai", "dio", "goku", "luffy", "sasuke"] as const;
+export const PROTOCOL = 3;
+export const ONLINE_CHARACTERS = ["samurai", "dio", "goku", "luffy", "sasuke", "kaneki", "ben"] as const;
 export type OnlineCharacter = (typeof ONLINE_CHARACTERS)[number];
 export const INPUT_DELAY = 6;
 export const MAX_AHEAD = 90;
@@ -55,6 +55,7 @@ export interface EndPacket {
   matchId: string;
   tick: number;
   winner: Seat | null;
+  score: [number, number];
   reason: "ko" | "time" | "disconnect" | "left" | "inputTimeout" | "desync";
 }
 export type Reply<T = undefined> =
@@ -87,8 +88,19 @@ const buttons = new Set([
   "taunt",
 ]);
 export function validInput(value: unknown): value is InputFrame {
+  if (!value || typeof value !== "object") return false;
+  const keys = ["direction", "down", "pressed"];
+  const extended = "omnitrix" in value;
+  const flying = "up" in value;
+  if (extended) keys.push("omnitrix");
+  if (flying) keys.push("up");
+  if (!exactObject(value, keys) || (flying && typeof value.up !== "boolean")) return false;
+  if (extended) {
+    const control = value.omnitrix;
+    if (!exactObject(control, ["held"]) || typeof control.held !== "boolean")
+      return false;
+  }
   return (
-    exactObject(value, ["direction", "down", "pressed"]) &&
     [-1, 0, 1].includes(value.direction as number) &&
     typeof value.down === "boolean" &&
     Array.isArray(value.pressed) &&

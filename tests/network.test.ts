@@ -209,12 +209,13 @@ describe("authoritative rooms", () => {
     f.service.sync("a", first);
     expect(f.room.matchId).not.toBe(first);
     expect(f.room.match!.fighters[0].health).toBe(777);
-    f.service.sync("b", first);
+    expect(() => f.service.sync("b", first)).toThrow("A partida mudou");
     expect(f.room.syncs).toHaveLength(1);
     for (let i = 0; i < 3; i++) f.service.sync("a", f.room.matchId);
     expect(f.room.status).toBe("closed");
     expect(f.room.result?.winner).toBeNull();
     expect(f.room.result?.reason).toBe("desync");
+    expect(f.room.result?.score).toEqual([0, 0]);
   });
   it("expires idle rooms and permits a new lobby member after a reservation expires", () => {
     let now = 0;

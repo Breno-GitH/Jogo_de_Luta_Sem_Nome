@@ -1,3 +1,5 @@
+import { kaneki } from "./kaneki-combat";
+import { ben } from "./ben-data";
 import samurai from "../data/samurai.json";
 import dio from "../data/dio.json";
 import { goku } from "./goku-data";
@@ -16,11 +18,13 @@ import secondary from "../data/dio-secondary.json";
 import secondaryActions from "../data/the-world-secondary.json";
 import type { CharacterData } from "./types";
 import { pacedCharacter } from "./pace";
-export type CharacterId = "samurai" | "dio" | "goku" | "luffy" | "sasuke";
+export type CharacterId = "samurai" | "dio" | "goku" | "luffy" | "sasuke" | "kaneki" | "ben";
 export const characters: Record<CharacterId, CharacterData> = {
   samurai: pacedCharacter(samurai),
   goku: pacedCharacter(goku),
   sasuke,
+  kaneki,
+  ben,
   luffy: {
     ...luffy,
     ...luffySecondary,

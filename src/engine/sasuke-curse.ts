@@ -1,7 +1,9 @@
 import balance from "../data/sasuke-curse.json";
 import metadata from "../data/sasuke-curse-frames.json";
+import { sasukeCurseThrow } from "./sasuke-grab";
 import { sasukeMoves } from "./sasuke-data";
 import { sasukeSpecialMoves, type SasukeSpecialId } from "./sasuke-specials";
+import { chidoriMove, nagashiProfile } from "./sasuke-polish";
 import type { Fighter } from "./combat";
 import type { Capsule, CombatPose, Move, Point } from "./types";
 
@@ -62,9 +64,12 @@ export const sasukeCurseMoves: Record<string, Move> = Object.fromEntries([
           : id === "stand_heavy" ? { push: 4.7, hitstop: 9 } : {};
     return [id, poweredMove(id, base, holds, extra)];
   }),
-  ...Object.entries(curseSpecials).map(([id, { holds, shots: _, reach: _reach, ...stats }]) =>
-    [id, poweredMove(id, sasukeSpecialMoves[id], holds, stats)],
-  ),
+  ...Object.entries(curseSpecials).map(([id, { holds, shots: _, reach: _reach, ...stats }]) => {
+    const nagashi = id === "nagashi" ? nagashiProfile(true) : undefined;
+    const move = poweredMove(id, sasukeSpecialMoves[id], nagashi?.holds ?? holds,
+      nagashi ? { ...stats, stun: nagashi.stun } : stats);
+    return [id, id === "chidori" ? chidoriMove(move, true) : move];
+  }),
 ]);
 const transitions: Record<string, Move> = Object.fromEntries(
   [[curseAwaken, balance.activationHolds], [curseRevert, balance.reversionHolds]].map(([id, holds]) => {
@@ -81,7 +86,7 @@ const transitions: Record<string, Move> = Object.fromEntries(
 export function curseMove(f: Fighter, id: string) {
   if (f.data.id !== "sasuke") return;
   if (id === curseAwaken || id === curseRevert) return transitions[id];
-  if (winged(f)) return sasukeCurseMoves[id];
+  if (winged(f)) return id === "throw" ? sasukeCurseThrow : sasukeCurseMoves[id];
 }
 
 const grounded = (f: Fighter) => !f.airborne &&

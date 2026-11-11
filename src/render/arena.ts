@@ -1,12 +1,13 @@
 import { FLOOR } from "../engine/combat";
 
 /** Shared original test stage; no fighter sprites or game-state side effects. */
-export function drawTestArena(c: CanvasRenderingContext2D) {
+export function drawTestArena(c: CanvasRenderingContext2D, padding = 0) {
+  const left = -padding, width = 1280 + 2 * padding;
   const bg = c.createLinearGradient(0, 0, 0, 720);
   bg.addColorStop(0, "#101b2b");
   bg.addColorStop(1, "#283a43");
   c.fillStyle = bg;
-  c.fillRect(0, 0, 1280, 720);
+  c.fillRect(left, 0, width, 720);
   c.fillStyle = "#c5c0a3";
   c.beginPath();
   c.arc(990, 195, 53, 0, Math.PI * 2);
@@ -17,11 +18,11 @@ export function drawTestArena(c: CanvasRenderingContext2D) {
     c.fillRect(x, 315 - (i % 3) * 38, 95, 260);
   }
   c.fillStyle = "#1e333f";
-  c.fillRect(0, 450, 1280, 130);
+  c.fillRect(left, 450, width, 130);
   c.fillStyle = "#627577";
-  c.fillRect(0, FLOOR, 1280, 4);
+  c.fillRect(left, FLOOR, width, 4);
   c.fillStyle = "#182731";
-  c.fillRect(0, FLOOR + 4, 1280, 136);
+  c.fillRect(left, FLOOR + 4, width, 136);
   c.strokeStyle = "#30434b";
   c.lineWidth = 1;
   for (let x = -600; x < 1900; x += 100) {
@@ -32,8 +33,8 @@ export function drawTestArena(c: CanvasRenderingContext2D) {
   }
   for (const y of [609, 650, 708]) {
     c.beginPath();
-    c.moveTo(0, y);
-    c.lineTo(1280, y);
+    c.moveTo(left, y);
+    c.lineTo(1280 + padding, y);
     c.stroke();
   }
   c.font = "12px monospace";

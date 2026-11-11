@@ -1,5 +1,9 @@
 import { describe, it, expect } from "vitest";
 import { GameSession } from "../src/game/session";
+import { towerFloors, readTower, saveTower } from "../src/game/tower";
+import { towerScreen, towerResult } from "../src/ui/tower";
+import { characters, type CharacterId } from "../src/engine/characters";
+import { vi } from "vitest";
 import { neutral } from "../src/engine/types";
 import { character } from "../src/engine/combat";
 import { HealthBar } from "../src/render/hud";
@@ -28,44 +32,63 @@ function training() {
 }
 
 describe("Arcade and match flow", () => {
-  it("plays three real best-of-three confrontations with distinct palettes and increasing difficulty", () => {
+  it("plays all ten best-of-three floors with progressively stronger real BOT parameters", () => {
     const session = new GameSession("arcade");
     expect(session.next()).toBe(false);
-    for (const [index, difficulty, palette] of [
-      [0, "easy", "cyan"],
-      [1, "normal", "amber"],
-      [2, "hard", "violet"],
-    ] as const) {
+    const route = [...session.route];
+    let reaction = 27, punish = 0;
+    for (const [index, floor] of towerFloors.entries()) {
       expect(session.stage).toBe(index);
-      expect(session.currentDifficulty).toBe(difficulty);
-      expect(session.palette).toBe(palette);
+      expect(session.currentDifficulty).toBe(floor.tier);
+      expect(session.palette).toBe(floor.palette);
       expect(session.match.wins).toEqual([0, 0]);
-      expect(session.match.fighters[0].health).toBe(1000);
+      expect(session.match.fighters[1].health).toBe(1000);
+      expect(session.bot.profile.reaction).toBeLessThan(reaction);
+      expect(session.bot.profile.punish).toBeGreaterThan(punish);
+      reaction = session.bot.profile.reaction;
+      punish = session.bot.profile.punish;
+      if ("boss" in floor) expect(towerScreen(session, index)).toContain(`data-tower-boss="${floor.boss}"`);
       win(session, 0);
       expect(session.results[index]).toEqual([2, 0]);
-      expect(session.status).toBe(index === 2 ? "victory" : "stageClear");
-      expect(resultScreen(session)).toContain(
-        index === 2 ? "Arcade concluído" : "next-opponent",
-      );
-      expect(session.next()).toBe(index < 2);
+      expect(session.status).toBe(index === 9 ? "victory" : "stageClear");
+      expect(towerResult(session, index + 1)).toContain(index === 9 ? "Torre concluída" : "next-opponent");
+      expect(session.next()).toBe(index < 9);
+      expect(session.route).toEqual(route);
     }
-    expect(session.results).toHaveLength(3);
-    expect(session.stage).toBe(2);
+    expect(session.results).toHaveLength(10);
   });
-  it("defeat allows retrying the current opponent without losing earlier progress", () => {
-    const session = new GameSession("arcade");
-    win(session, 0);
-    session.next();
-    win(session, 1);
-    expect(session.status).toBe("defeat");
-    expect(session.next()).toBe(false);
-    expect(resultScreen(session)).toContain("Derrota");
-    session.restart();
-    expect(session.stage).toBe(1);
-    expect(session.currentDifficulty).toBe("normal");
-    expect(session.status).toBe("playing");
-    expect(session.match.wins).toEqual([0, 0]);
-    expect(session.results[0]).toEqual([2, 0]);
+  it("saves completed floors, retries after defeat, and ignores incompatible progress", () => {
+    const values = new Map();
+    vi.stubGlobal("localStorage", {
+      getItem: (key: string) => values.get(key),
+      setItem: (key: string, value: string) => values.set(key, value),
+    });
+    try {
+      const session = new GameSession("arcade", "normal", "sasuke");
+      win(session, 0);
+      session.next();
+      win(session, 1);
+      expect(session.status).toBe("defeat");
+      expect(session.next()).toBe(false);
+      expect(towerResult(session, 1)).toContain("Derrota no andar 2");
+      saveTower(session.tower!);
+      const { attempt, best } = readTower();
+      expect(best).toBe(1);
+      const resumed = new GameSession("arcade", "normal", "samurai", "dio", attempt);
+      expect(resumed.characterId).toBe("sasuke");
+      expect(resumed.stage).toBe(1);
+      expect(resumed.route).toEqual(session.route);
+      expect(resumed.tower?.losses).toBe(1);
+      expect(resumed.tower?.ticks).toBeGreaterThan(0);
+      expect(resumed.match.wins).toEqual([0, 0]);
+      expect(resumed.results).toEqual([[2, 0]]);
+      saveTower(new GameSession("arcade").tower!);
+      expect(readTower().best).toBe(1);
+      for (const key of values.keys()) values.set(key, JSON.stringify({ attempt: { ...attempt, schema: 2 }, best: 1 }));
+      expect(readTower()).toEqual({ attempt: undefined, best: 1 });
+    } finally {
+      vi.unstubAllGlobals();
+    }
   });
   it("versus keeps selected difficulty on restart and resolves victory and defeat", () => {
     for (const side of [0, 1] as const) {
@@ -78,25 +101,20 @@ describe("Arcade and match flow", () => {
       expect(session.match.rules.training).toBeUndefined();
     }
   });
-  it("offers the same four fighters in every local selection", () => {
-    for (const id of ["samurai", "dio", "goku", "luffy"])
-      expect(selectionScreen("arcade")).toContain(`value="${id}"`);
-    expect(selectionScreen("arcade")).not.toContain('id="difficulty"');
-    expect(selectionScreen("versus")).toContain('value="samurai"');
-  });
-  it("builds three distinct non-mirror opponents for each selected fighter", () => {
-    for (const id of ["samurai", "dio", "goku", "luffy"] as const) {
-      const s = new GameSession("arcade", "easy", id);
-      expect(s.route).toHaveLength(3);
-      expect(new Set(s.route).size).toBe(3);
-      expect(s.route).not.toContain(id);
-      for (const enemy of s.route) {
-        expect(s.match.fighters[1].data.id).toBe(enemy);
-        win(s, 0);
-        if (s.status === "stageClear") expect(s.next()).toBe(true);
-      }
-      expect(s.status).toBe("victory");
+  it("offers all complete fighters and schedules every rival without mirrors or adjacent repeats", () => {
+    const playable = Object.keys(characters) as CharacterId[];
+    const rivals = playable.filter(id => id !== "ben");
+    for (const id of playable) {
+      for (const mode of ["arcade", "versus", "training"] as const)
+        expect(selectionScreen(mode)).toContain(`value="${id}"`);
+      const s = new GameSession("arcade", "normal", id);
+      expect(s.route).toHaveLength(10);
+      expect(new Set(s.route)).toEqual(new Set(rivals.filter(other => other !== id)));
+      expect(s.route.some((other, i) => other === s.route[i - 1])).toBe(false);
+      expect(s.match.fighters[0].data.id).toBe(id);
+      expect(s.match.fighters[1].data.id).toBe(s.route[0]);
     }
+    expect(selectionScreen("arcade")).not.toContain('id="difficulty"');
   });
 });
 

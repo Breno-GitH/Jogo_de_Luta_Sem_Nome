@@ -1,3 +1,4 @@
+import type { KaguneId } from "./kagune";
 import samurai from "../data/samurai.json";
 import { CombatStand } from "./stand-combat";
 import { TemporalController, type DeferredReaction } from "./temporal";
@@ -26,7 +27,7 @@ import { MOVEMENT_TIMING } from "./movement";
 import { combatPace, pacedCharacter } from "./pace";
 import cinematics from "../data/cinematics.json";
 import { reactionBoxes, reactionFor } from "./lifecycle";
-import { poseAt, phaseAt } from "./moves";
+import { isSuperMove, poseAt, phaseAt } from "./moves";
 import { luffyAttackLimbs, luffySpecialCommand } from "./luffy-specials";
 import {
   isSasukeSpecial, sasukeSpecialBalance, sasukeSpecialCommand, sasukeSpecialContact,
@@ -37,7 +38,29 @@ import {
   sasukeCurseMovement, sasukeCurseMoves, startCurse, tickSasukeAirBurst,
   tickSasukeCurse, winged, type SasukeCurseState,
 } from "./sasuke-curse";
+import { canStartKirin, kirinConfig, kirinId, kirinCurseOpener, kirinScene, type KirinState } from "./sasuke-kirin";
+import { chidoriVelocity, fireDragonPoint, fireDragonVolumes, fireDragonWave, nagashiVolumes, sasukePolish } from "./sasuke-polish";
 import { luffyGrabLimb } from "./luffy-secondary";
+import {
+  canKaguneCapture, captureWindow, captureWindup, kaguneChoice, kaguneRoutes,
+  kaguneVictimPosition, kanekiOffensiveKagunes, kanekiSpecialShapes, type KanekiCapture,
+} from "./kaneki-combat";
+import { benId, cancelOmnitrix, newOmnitrix, omnitrixCanBrowse, tickOmnitrix, type BenAlien, type OmnitrixState } from "./ben-omnitrix";
+import { benForms, benGrabFor, nrgReleasedForm, type BenForm } from "./ben-forms";
+import { benManeuverTarget, driveBenManeuver, flyNrg } from "./ben-rework";
+import { feedbackConductorContact } from "./feedback-conductor";
+import { clearStage7, gravityAt, hitEchoClones, planetoid, tickEchoClones } from "./ben-stage7";
+import { feedbackCablePaths, benFormBalance, benObjectMove, benObjectShape, benSpecialCommand,
+  benProjectile, benStage6Balance, spectralPaths,
+  type BenEffect, type BenField, type BenObject } from "./ben-moves";
+import { canStartCentipede, centipedeConfig, centipedeContact, centipedeConversion, centipedeId, centipedePhaseCue, centipedeScene, type CentipedeCue, type CentipedeSource, type CentipedeState } from "./kaneki-centipede";
+import { kanekiSpecialCommand, kanekiSpecialScene, kanekiTechnique, swordProfile } from "./kaneki-specials";
+import {
+  canResistChain, chainBoundX, chainBufferTicks, chainEscapeTicks, chainFinisher, chainFinishes,
+  chainPick, chainPose, chainWindup, chainWindow, directChain, kaguneGrabLimit,
+  resistanceButton, resistanceGoal, resistanceInterval,
+  type Chain, type ChainRoute,
+} from "./kaneki-chain";
 import { jetConfig, jetId, jetOpener, jetScene, type JetState } from "./luffy-jet-gigant";
 import {
   shapeBounds,
@@ -50,6 +73,7 @@ import {
   neutral,
   overlaps,
   type CharacterData,
+  type Button,
   type InputFrame,
   type Move,
   type Rect,
@@ -58,6 +82,11 @@ import {
 } from "./types";
 export const character: CharacterData = pacedCharacter(samurai);
 export const FLOOR = 580;
+type BenWall = { owner: number; object: BenObject; field: BenField };
+function scaledBenBox(box: Rect, scale: number): Rect {
+  return scale === 1 ? box : { x: box.x * scale, y: box.y * scale, w: box.w * scale, h: box.h * scale };
+}
+
 export class Fighter {
   x = 0;
   y = FLOOR;
@@ -71,6 +100,11 @@ export class Fighter {
   stun = 0;
   moveId = "";
   connected = false;
+  kanekiCaptured?: boolean;
+  kanekiThrowLink?: boolean;
+  kanekiLimb?: KaguneId;
+  kanekiBurrowX?: number;
+  kanekiSpecialRecovery?: number;
   hitConfirmed = false;
   reverseBeatUsed = false;
   hitIds: number[] = [];
@@ -81,11 +115,14 @@ export class Fighter {
   dashDirection = 1;
   jumpDirection = 0;
   airChaseTicks = 0;
+  chill?: { build: number; ticks: number; freeze: number; immune: number; used: boolean };
   gokuTeleportLock = 0;
   gokuAirTeleportUsed = false;
   gokuAirTeleportsUsed = 0;
   gokuCastSerial = 0;
   sasukeCurse?: SasukeCurseState;
+  omnitrix?: OmnitrixState;
+  kirinCursed?: boolean;
   homeX: number;
   guardIntent = false;
   blockCrouched = false;
@@ -108,6 +145,7 @@ export class Fighter {
     this.x = x;
     this.homeX = x;
     this.health = data.health;
+    if (data.id === benId) this.omnitrix = newOmnitrix();
     this.facing = id === 0 ? 1 : -1;
     // A runtime link, not serializable combat state. Keeping it non-enumerable
     // avoids a cycle when inspecting/replaying a complete Match as JSON.
@@ -123,6 +161,19 @@ export class Fighter {
     });
     if (data.companion) this.stand = new CombatStand(data.companion, this);
   }
+  get benForm() {
+    const active = this.omnitrix?.active;
+    if (active === "nrg" && this.omnitrix?.nrgReleased) return nrgReleasedForm;
+    return active && active !== "human" ? benForms[active] : undefined;
+  }
+  get benScale() {
+    const growth = this.omnitrix?.active === "humungousaur" && this.omnitrix.growth;
+    return growth ? benFormBalance.growth[growth.rank].scale : 1;
+  }
+  get movementData() { return this.benForm?.movement ?? this.data; }
+  private get normalMoves() { return this.benForm?.moves ?? this.data.moves; }
+  get grabSequence() { return this.benForm?.grab ?? this.data.grabSequence; }
+  get stageInset() { return Math.max(40, (this.benForm?.width ?? 52) * this.benScale / 2); }
   get airborne() {
     return this.y < FLOOR || this.vy < 0;
   }
@@ -130,7 +181,9 @@ export class Fighter {
     return this.lookupMove(this.moveId);
   }
   private lookupMove(id: string) {
-    return curseMove(this, id) ?? this.data.moves[id] ??
+    if (id === kirinId && (this.moveId === id ? this.kirinCursed : winged(this)))
+      return kirinCurseOpener;
+    return curseMove(this, id) ?? this.normalMoves[id] ??
       this.data.specialMoves?.[id] ?? this.data.superMoves?.[id];
   }
   get temporalActive() {
@@ -150,7 +203,7 @@ export class Fighter {
       !this.airborne &&
       !this.move?.special &&
       !this.move?.super &&
-      (!["luffy", "sasuke"].includes(this.data.id) || this.hitConfirmed) &&
+      (!["luffy", "sasuke", "kaneki"].includes(this.data.id) || this.hitConfirmed) &&
       this.canCancel("special")
     );
   }
@@ -228,7 +281,9 @@ export class Fighter {
     return this.canSpecialCancel();
   }
   canStartSuper() {
-    if (this.match?.cinematicActive) return false;
+    if (this.match?.cinematicActive || this.omnitrix) return false;
+    if (this.data.id === "kaneki") return canStartCentipede(this);
+    if (this.data.id === "sasuke") return canStartKirin(this);
     if (this.data.id === "luffy")
       return (
         !!this.data.superMoves?.[jetId] &&
@@ -272,12 +327,13 @@ export class Fighter {
   }
   hurtboxes(): Rect[] {
     if (gokuInvisible(this)) return [];
+    if (planetoid(this)) return [worldRect({ x: -50, y: -118, w: 105, h: 116 }, this.x, this.y, this.facing)];
     const lift = this.stand?.s.ownerLiftFrame ?? -1;
     const pose =
       this.state === "attack" && this.move
         ? poseAt(this.move, this.stateFrame)
         : undefined;
-    const neutral = this.data.hurtboxes;
+    const neutral = this.benForm?.hurtboxes ?? this.data.hurtboxes;
     const jumpPose =
       lift > 0 &&
       this.airborne &&
@@ -308,7 +364,17 @@ export class Fighter {
       const grip = luffyGrabLimb(this) ?? jetOpener(this);
       if (grip) boxes = [...boxes, ...grip.limbHurtboxes.map(shapeBounds)];
     }
-    return boxes.map((box) => worldRect(box, this.x, this.y, this.facing));
+    const world = boxes.map(box => worldRect(scaledBenBox(box, this.benScale), this.x, this.y, this.facing));
+    if (this.data.id === "kaneki" && this.state === "attack") {
+      for (const limb of kanekiOffensiveKagunes(this, FLOOR)) {
+        for (let i = 12; i < limb.spine.length; i += 4) {
+          const a = limb.spine[i - 4], b = limb.spine[i];
+          if ((b.x - this.x) * this.facing < 37 || (limb.floorClip !== undefined && Math.max(a.y, b.y) >= FLOOR)) continue;
+          world.push(shapeBounds({ a, b, r: limb.radius[i - 2] + 1 }));
+        }
+      }
+    }
+    return world;
   }
   get invulnerability() {
     const window =
@@ -319,10 +385,15 @@ export class Fighter {
       ? window
       : undefined;
   }
+  get benPhase() {
+    const phase = this.state === "attack" ? this.move?.ben?.phase : undefined;
+    return phase && this.stateFrame >= phase.from && this.stateFrame < phase.to ? phase : undefined;
+  }
   get invulnerable() {
     return (
       gokuInvisible(this) ||
       this.state === "getup" ||
+      Boolean(this.benPhase && !this.benPhase.physicalOnly) ||
       (!!this.invulnerability && !this.invulnerability.upperOnly)
     );
   }
@@ -349,10 +420,11 @@ export class Fighter {
       : !this.connected;
   }
   canCancel(name: string) {
+    if (this.benForm && !this.hitConfirmed) return false;
     if (this.sasukeCurse?.phase === "ending") return false;
     const window = this.move?.cancelWindow;
     const reverse =
-      name === "light" &&
+      name === "light" && !this.benForm &&
       combatPace.cancel.reverseBeatOnHit &&
       this.hitConfirmed &&
       !this.reverseBeatUsed &&
@@ -386,14 +458,15 @@ export class Fighter {
         this.move.cancelMoves.includes(id))
     );
   }
-  pushbox(): Rect {
-    return { x: this.x - 26, y: this.y - 90, w: 52, h: 90 };
+  pushbox(form = this.benForm, x = this.x, scale = this.benScale): Rect {
+    const w = (form?.width ?? 52) * scale, h = (form?.pushHeight ?? 90) * scale;
+    return { x: x - w / 2, y: this.y - h, w, h };
   }
   hitbox(): Rect | undefined {
     const shapes = this.attackShapes();
     return shapes.length ? unionBounds(shapes.map(shapeBounds)) : undefined;
   }
-  attackShapes(): AttackShape[] {
+  attackShapes(previousX = this.x): AttackShape[] {
     const m = this.move;
     if (
       this.state !== "attack" ||
@@ -402,9 +475,38 @@ export class Fighter {
       this.stateFrame >= m.startup + m.active
     )
       return [];
+    if (m.ben?.leap && (this.airborne || !this.omnitrix?.landingStrike)) return [];
     const pose = poseAt(m, this.stateFrame);
+    if (this.data.id === "kaneki") {
+      if (m.kind === centipedeId) return centipedeContact(this);
+      const special = kanekiSpecialShapes(this, FLOOR);
+      if (special) return special;
+      const limbs = kanekiOffensiveKagunes(this, FLOOR);
+      if (limbs.length) return limbs.map(limb => ({
+        a: limb.spine[limb.spine.length - 5], b: limb.tip,
+        r: this.moveId === "throw" ? 16 : 13,
+      }));
+    }
     if (m.hitWindows && !this.hitWindow) return [];
+    if (m.ben?.spectralReach) return spectralPaths(m, this.stateFrame).flatMap(path =>
+      path.slice(2, -1).map((a, i) => worldCapsule({ a, b: path[i + 3], r: 12 }, this.x, this.y, this.facing)),
+    );
+    if (m.ben && (m.ben.field || !m.box.w && !m.ben.cable || (m.ben.confirmHits && this.hitWindow?.id && !this.hitConfirmed))) return [];
     if (m.stand) return this.stand?.hitboxes(this) ?? [];
+    if (m.special === "chidori" && pose?.release) {
+      const hand = pose.release;
+      const touch = worldCapsule(
+        { a: { x: hand.x - 17, y: hand.y + 4 }, b: hand, r: winged(this) ? 23 : 20 },
+        this.x, this.y, this.facing,
+      );
+      if (previousX !== this.x) return [touch, {
+        a: { x: touch.b.x + previousX - this.x, y: touch.b.y }, b: touch.b, r: touch.r,
+      }];
+      return [touch];
+    }
+    if (m.special === "nagashi")
+      return nagashiVolumes(this.stateFrame - m.startup, winged(this))
+        .map(shape => worldCapsule(shape, this.x, this.y, this.facing));
     if (m.special && isSasukeSpecial(m.special)) {
       const age = this.stateFrame - m.startup;
       const shapes = winged(this) && pose?.release
@@ -417,12 +519,19 @@ export class Fighter {
       return limbs.flatMap(limb => limb.hitboxes.map(shape => worldCapsule(shape, this.x, this.y, this.facing)));
     if (m.kind === "jetGigant")
       return jetOpener(this)?.hitboxes.map(shape => worldCapsule(shape, this.x, this.y, this.facing)) ?? [];
+    if (m.ben?.technique === "conductor") return feedbackConductorContact(m, this.stateFrame)
+      .map(shape => worldCapsule(shape, this.x, this.y, this.facing));
+    if (m.ben?.cable) return feedbackCablePaths(m.ben.cable, this.stateFrame, m).flatMap(points =>
+      points.slice(-4, -1).map((a, i) => worldCapsule(
+        { a, b: points[points.length - 3 + i], r: 12 }, this.x, this.y, this.facing,
+      )),
+    );
     if (m.kind === "grab") {
       if (this.data.id === "luffy") {
         const grip = luffyGrabLimb(this);
         return grip?.hitboxes.map(shape => worldCapsule(shape, this.x, this.y, this.facing)) ?? [];
       }
-      return [worldRect(m.box, this.x, this.y, this.facing)];
+      return [worldRect(scaledBenBox(m.box, this.benScale), this.x, this.y, this.facing)];
     }
     const body = pose?.hitboxes
       ? pose.hitboxes.map((shape) =>
@@ -434,7 +543,20 @@ export class Fighter {
         ? [worldCapsule(pose.blade, this.x, this.y, this.facing)]
         : pose
           ? []
-          : [worldRect(m.box, this.x, this.y, this.facing)];
+          : [worldRect(scaledBenBox(m.box, this.benScale), this.x, this.y, this.facing)];
+    if (m.ben?.effect === "tail") {
+      const { x, y, w, h } = scaledBenBox(m.box, this.benScale);
+      const radius = Math.min(14, h / 3);
+      return [worldCapsule({ a: { x: x + radius, y: y + radius },
+        b: { x: x + w - radius, y: y + h - radius }, r: radius }, this.x, this.y, this.facing)];
+    }
+    if (m.ben && m.drive && previousX !== this.x) {
+      return body.map(shape => {
+        const rect = shapeBounds(shape);
+        const delta = previousX - this.x;
+        return { ...rect, x: rect.x + Math.min(0, delta), w: rect.w + Math.abs(delta) };
+      });
+    }
     return [...body, ...(this.stand?.hitboxes(this) ?? [])];
   }
   setState(s: State, preserveStand = false) {
@@ -446,13 +568,27 @@ export class Fighter {
         this,
         ["hitstun", "blockstun", "ko", "grabbed"].includes(s),
       );
+    if (this.benForm && this.omnitrix) {
+      if (s !== "attack") {
+        delete this.omnitrix.maneuverX;
+        delete this.omnitrix.landingStrike;
+      }
+      if (s === "crouch") this.omnitrix.crouchExit = 0;
+      else if (this.state === "crouch" && (s === "idle" || s === "walk")) this.omnitrix.crouchExit = 5;
+    }
     this.state = s;
+    if (this.omnitrix && !omnitrixCanBrowse(s)) cancelOmnitrix(this.omnitrix);
     this.stand?.react(this);
     this.stateFrame = 0;
     this.reactionPhase = "";
     this.reactionFrame = 0;
     if (s !== "attack") {
+      this.kanekiThrowLink = undefined;
+      this.kanekiLimb = undefined;
+      this.kanekiBurrowX = undefined;
+      if (s !== "throwRecover") this.kanekiSpecialRecovery = undefined;
       this.moveId = "";
+      this.kirinCursed = undefined;
       this.connected = false;
       this.hitConfirmed = false;
       this.hitIds = [];
@@ -463,7 +599,19 @@ export class Fighter {
     if (id === curseAwaken && !canAwaken(this)) return false;
     if (id === curseRevert ? phase !== "ending" : phase === "ending") return false;
     const m = this.lookupMove(id);
-    if (!m || this.meter < (m.cost ?? 0)) return false;
+    if (!m || this.meter < (m.cost ?? 0) || this.omnitrix?.transition) return false;
+    const watch = this.omnitrix;
+    const ben = m.ben;
+    if (ben?.grow && watch?.growthCooldown) return false;
+    if (ben?.nrgMode === "release" && watch?.nrgCooldown) return false;
+    if (ben?.echoSplit && (watch?.echoCooldown || (watch?.echoClones?.length ?? 0) >= 2)) return false;
+    if (ben?.technique === "ghostPhase" && watch?.ghostCooldown) return false;
+    if (ben?.airUse === "flight" && watch?.flightUsed || ben?.airUse === "dive" && watch?.diveUsed) return false;
+    if (m.ben?.technique && this.omnitrix) {
+      if (this.opponent?.combo && this.omnitrix.usedSpecials.includes(m.ben.technique)) return false;
+      if (m.ben.field && this.omnitrix.objects.some(object => benObjectMove(object.id)?.ben?.field?.type === m.ben?.field?.type)) return false;
+      if (this.opponent?.combo) this.omnitrix.usedSpecials.push(m.ben.technique);
+    }
     if (m.kind === "ultimate" && !this.canStartSuper()) return false;
     if (m.super && !this.canStartSuper()) return false;
     if (m.special && !this.canStartSpecial(id)) return false;
@@ -493,8 +641,31 @@ export class Fighter {
       this.hitConfirmed &&
       this.opponent?.state === "hitstun";
     this.meter -= m.cost ?? 0;
+    const kaneki = this.data.id === "kaneki";
+    const technique = kaneki ? kanekiTechnique(id) : undefined;
+    const captureLink = kaneki && (id === "throw" || !!technique) &&
+      this.state === "attack" && this.hitConfirmed;
     this.setState("attack", chain);
+    this.kanekiThrowLink = captureLink || undefined;
+    this.kanekiLimb = technique?.family === "fourSwords" ? "lowerRear"
+      : technique?.family === "rinkakuRush" ? "upperFront"
+      : kaneki && (id === "throw" || technique?.family === "kaguneGrab")
+        ? (this.input.down ? "lowerRear" : "lowerFront")
+        : kaneki && id === "air_heavy" ? (this.vy > 0 ? "upperFront" : "upperRear") : undefined;
+    if (technique?.family === "fourSwords") {
+      const gap = ((this.opponent?.x ?? this.x + this.facing * technique.reach) - this.x) * this.facing;
+      this.kanekiBurrowX = Math.max(8, Math.min(1272, this.x + this.facing *
+        Math.max(42, Math.min(technique.reach, gap - 7))));
+    } else this.kanekiBurrowX = undefined;
     this.moveId = id;
+    if (watch) {
+      if ((ben?.burrow || ben?.leap) && this.opponent) watch.maneuverX = benManeuverTarget(this, this.opponent, m);
+      delete watch.landingStrike;
+      if (ben?.nightmare) watch.ghostCooldown = (id.endsWith("_medium") ? 133 : 86) + m.startup + m.active + m.recovery;
+      if (ben?.airUse === "flight") watch.flightUsed = true;
+      if (ben?.airUse === "dive") watch.diveUsed = true;
+    }
+    this.kirinCursed = id === kirinId ? winged(this) : undefined;
     if (this.data.id === "goku" && m.special) {
       this.gokuCastSerial++;
       this.airChaseTicks = 0;
@@ -517,7 +688,29 @@ export class Fighter {
     }
     return true;
   }
+  private bufferedBenSpecial(button: Button) {
+    const watch = this.omnitrix;
+    if (!watch || !this.benForm) return;
+    const id = benSpecialCommand(watch.nrgReleased ? "nrgReleased" : watch.active, this.buffer, button);
+    if (id && (!this.airborne || this.lookupMove(id)?.ben?.air)) return id;
+  }
+
   tick(input: InputFrame, frame: number, opponent: Fighter) {
+    const chill = this.chill;
+    if (chill) {
+      if (chill.immune > 0) chill.immune--;
+      if (chill.freeze > 0) chill.freeze--;
+      if (chill.ticks > 0) chill.ticks--;
+      else chill.build = Math.max(0, chill.build - 2);
+      if (!this.combo) chill.used = false;
+      if (!chill.build && !chill.immune && !chill.used) this.chill = undefined;
+    }
+    if (this.omnitrix) {
+      const combatButton = (button: Button) => button !== "heavy" && button !== "ultimate" &&
+        (!this.omnitrix!.transition || !["light", "medium", "throw"].includes(button));
+      this.buffer.actions = this.buffer.actions.filter(action => combatButton(action.button));
+      input = { ...input, pressed: input.pressed.filter(combatButton) };
+    }
     if (this.data.id === "goku") {
       this.gokuTeleportLock = Math.max(0, this.gokuTeleportLock - 1);
       if (
@@ -553,11 +746,16 @@ export class Fighter {
       counterRecover: 24,
       getup: this.data.lifecycle?.getupTicks ?? 18,
       ultimateRecover: 18,
-      throwRecover: this.data.grabSequence?.recoveryTicks ?? 12,
+      throwRecover: this.kanekiSpecialRecovery ?? this.grabSequence?.recoveryTicks ?? 12,
     };
     const lock = locks[this.state];
     if (lock !== undefined) {
       this.vx = 0;
+      if (this.state === "throwRecover" && this.kanekiSpecialRecovery !== undefined && this.airborne) {
+        this.vy += this.movementData.gravity;
+        this.y = Math.min(FLOOR, this.y + this.vy);
+        if (this.y === FLOOR) this.vy = 0;
+      }
       if (this.stateFrame >= lock) {
         this.knockedDown = false;
         this.setState("idle");
@@ -597,24 +795,24 @@ export class Fighter {
       if (
         this.state === "jumpStart" &&
         this.stateFrame >=
-          (this.data.locomotion?.jumpStartup ?? MOVEMENT_TIMING.jumpStartup)
+          (this.movementData.locomotion?.jumpStartup ?? MOVEMENT_TIMING.jumpStartup)
       ) {
-        this.vy = this.data.jump;
+        this.vy = this.movementData.jump;
         this.vx =
           this.jumpDirection *
-          (this.data.locomotion?.airSpeed ?? this.data.speed) * sasukeCurseMovement(this);
+          (this.movementData.locomotion?.airSpeed ?? this.movementData.speed) * sasukeCurseMovement(this);
         this.setState("air");
       }
       if (
         this.state === "landing" &&
         this.stateFrame >=
-          (this.data.locomotion?.landingTicks ?? MOVEMENT_TIMING.landing)
+          (this.movementData.locomotion?.landingTicks ?? MOVEMENT_TIMING.landing)
       )
         this.setState("idle");
       if (
         this.state === "dash" &&
         this.stateFrame >=
-          (this.data.locomotion?.dashForward.length ?? MOVEMENT_TIMING.dash)
+          (this.movementData.locomotion?.dashForward.length ?? MOVEMENT_TIMING.dash)
       ) {
         this.setState("idle");
         this.vx = 0;
@@ -633,7 +831,7 @@ export class Fighter {
             ? "ssj1_fury"
             : this.data.id === "dio"
               ? "road_roller"
-              : this.data.id === "luffy" ? jetId : "ultimate_start";
+              : this.data.id === "luffy" ? jetId : this.data.id === "sasuke" ? kirinId : this.data.id === "kaneki" ? centipedeId : "ultimate_start";
         const move = this.data.moves[id] ?? this.data.superMoves?.[id];
         if (this.canStartSuper()) {
           this.attack(id);
@@ -643,6 +841,28 @@ export class Fighter {
         }
         if (!move || this.meter < (move.cost ?? 100))
           this.buffer.consume("ultimate");
+      }
+      if (this.benForm) {
+        for (const button of ["medium", "light"] as const) {
+          const id = this.bufferedBenSpecial(button);
+          if (!id) continue;
+          if ((free || canCancel("special") && (!this.move?.cancelMoves || this.move.cancelMoves.includes(id))) && this.attack(id)) {
+            this.buffer.consumeSpecial(button);
+            return;
+          }
+          if (free) this.buffer.consumeSpecial(button);
+        }
+      }
+      if (this.data.id === "kaneki") {
+        for (const button of ["heavy", "medium", "light"] as const) {
+          const technique = kanekiSpecialCommand(this.buffer, button);
+          if (!technique) continue;
+          if (this.attack(technique.id)) {
+            this.buffer.consumeSpecial(button);
+            return;
+          }
+          if (free) this.buffer.consumeSpecial(button);
+        }
       }
       if (this.data.id === "goku" && this.data.specialMoves) {
         for (const button of ["heavy", "medium", "light"] as const) {
@@ -746,14 +966,14 @@ export class Fighter {
         if (canCancel("jump")) {
           // Preserve the immediate launcher chase used by aerial combos.
           this.vy = Math.min(
-            this.data.jump,
+            this.movementData.jump,
             Math.max(
               -combatPace.cancel.maximumChaseJumpSpeed,
               opponent.vy +
                 (opponent.y - this.y) / combatPace.cancel.chaseCatchTicks,
             ),
           );
-          this.airChaseTicks = this.data.airChaseTicks ?? 8;
+          this.airChaseTicks = this.move?.ben?.cable === "upper" || this.moveId === "frostBreath_medium" ? 15 : this.data.airChaseTicks ?? 8;
           if (this.stand) {
             this.stand.holdCombo(this);
             this.setState("air", true);
@@ -766,6 +986,8 @@ export class Fighter {
       }
       if (free || this.state === "attack") {
         for (const b of ["throw", "light", "medium", "heavy"] as const) {
+          if (this.bufferedBenSpecial(b)) continue;
+          if (this.data.id === "kaneki" && kanekiSpecialCommand(this.buffer, b)) continue;
           if (this.data.id === "sasuke" && sasukeSpecialCommand(this.buffer, b)) continue;
           if (this.data.id === "luffy" && !this.airborne && luffySpecialCommand(this.buffer, b))
             continue;
@@ -793,13 +1015,14 @@ export class Fighter {
               ? this.buffer.special()
               : undefined;
           if (!(free || canCancel(special ? "special" : b))) continue;
-          if (b === "throw" && this.airborne) continue;
+          if (b === "throw" && (this.airborne ||
+            (this.data.id === "kaneki" && this.state === "attack" && !this.hitConfirmed))) continue;
           const candidate = special
             ? `${special}_${b}`
             : b === "throw"
               ? "throw"
               : `${this.airborne ? "air" : input.down ? "crouch" : "stand"}_${b}`;
-          const candidateMove = this.data.moves[candidate];
+          const candidateMove = this.normalMoves[candidate];
           if (
             this.state === "attack" &&
             this.move?.cancelMoves &&
@@ -844,17 +1067,17 @@ export class Fighter {
           this.dashDirection = input.direction;
           this.setState("dash");
         } else {
-          if (this.airborne && this.data.locomotion) {
+          if (this.airborne && this.movementData.locomotion) {
             if (input.direction)
-              this.vx = input.direction * this.data.locomotion.airSpeed * sasukeCurseMovement(this);
+              this.vx = input.direction * this.movementData.locomotion.airSpeed * sasukeCurseMovement(this);
           } else
             this.vx =
               input.down && !this.airborne
                 ? 0
                 : input.direction *
                   (input.direction === this.facing
-                    ? this.data.speed
-                    : (this.data.locomotion?.backSpeed ?? this.data.speed)) * sasukeCurseMovement(this);
+                    ? this.movementData.speed
+                    : (this.movementData.locomotion?.backSpeed ?? this.movementData.speed)) * sasukeCurseMovement(this);
           const next = this.airborne
             ? "air"
             : input.down
@@ -866,7 +1089,7 @@ export class Fighter {
         }
       }
       if (this.state === "dash") {
-        const profile = this.data.locomotion;
+        const profile = this.movementData.locomotion;
         this.vx =
           this.dashDirection *
           (profile
@@ -879,21 +1102,35 @@ export class Fighter {
       }
       if (this.state === "attack" && this.move) {
         const move = this.move;
-        if (move.drive)
+        if (move.special === "chidori")
+          this.vx = this.connected ? 0 : this.facing * chidoriVelocity(this.stateFrame, winged(this));
+        else if (move.drive)
           this.vx =
-            !this.connected &&
+            (!this.connected || this.hitConfirmed && move.ben?.follow) &&
             this.stateFrame >= move.drive.from &&
             this.stateFrame < move.drive.to
-              ? this.facing * move.drive.speed
+              ? this.facing * (this.connected && move.ben?.follow ? move.ben.follow : move.drive.speed)
               : 0;
-        if (move.hopAt === this.stateFrame) this.vy = move.hopVelocity ?? 0;
+        if (move.hopAt === this.stateFrame)
+          this.vy = (move.hopVelocity ?? 0) + (planetoid(this) ? input.up ? -2 : input.down ? 1.4 : 0 : 0);
+        const age = this.stateFrame;
+        if (move.ben?.aerialMotion === "dive") {
+          if (age === 3 && !this.airborne) this.vy = -8;
+          if (age === move.startup) this.vy = 6;
+        } else if (move.ben?.aerialMotion === "glide" && age >= move.startup && age < move.startup + move.active) {
+          if (age === move.startup) this.vy = this.y > FLOOR - 160 ? -5 : 0;
+          if (this.y < FLOOR - 192) this.vy = Math.max(0, this.vy);
+          this.vy = Math.min(1.4, this.vy);
+          if (!move.drive) this.vx = input.direction * 5.2;
+        }
+        if (move.ben?.leap || move.ben?.burrow) driveBenManeuver(this, opponent, move);
       }
     }
     // A launcher jump cancel carries the swordsman forward briefly. This
     // closes the space opened by launch knockback without inflating the blade.
     if (this.airChaseTicks > 0) {
       if (this.airborne && (this.state === "air" || this.state === "attack")) {
-        const speed = (this.data.airChaseSpeed ?? this.data.speed) * sasukeCurseMovement(this);
+        const speed = (this.data.airChaseSpeed ?? this.movementData.speed) * sasukeCurseMovement(this);
         const gap =
           (opponent.x - this.x) * this.facing - combatPace.cancel.chaseSpacing;
         this.vx = this.facing * Math.max(-speed, Math.min(speed, gap));
@@ -901,12 +1138,14 @@ export class Fighter {
           this.vx = 0;
           // A missed pursuit must not retain the boosted launch velocity and
           // carry the fighter offscreen; confirmed air hits use their own hold.
-          if (this.vy < this.data.jump)
+          if (this.vy < this.movementData.jump)
             this.vy = -combatPace.cancel.chaseExitUpSpeed;
         }
       } else this.airChaseTicks = 0;
     }
     tickGokuMove(this);
+    flyNrg(this, input);
+    if (this.benScale > 1 && this.state === "walk") this.vx *= 1 / Math.sqrt(this.benScale);
     const wasAirborne = this.airborne;
     if (
       wasAirborne &&
@@ -916,13 +1155,19 @@ export class Fighter {
         this.stateFrame < this.move.startup + this.move.active
       )
     ) {
-      this.vy += this.data.gravity;
+      this.vy += this.movementData.gravity;
     }
-    this.x = Math.max(40, Math.min(1240, this.x + this.vx));
+    if (this.chill?.freeze) this.vx = 0;
+    this.x = Math.max(this.stageInset, Math.min(1280 - this.stageInset, this.x + this.vx));
     this.y += this.vy;
     if (this.y >= FLOOR) {
       this.y = FLOOR;
       this.vy = 0;
+      if (wasAirborne && this.state === "attack" && this.move?.ben?.leap) {
+        this.stateFrame = this.move.startup;
+        this.omnitrix!.landingStrike = true;
+        this.vx = 0;
+      }
       // Complete Dio's launched reaction on real floor contact. Do not mark
       // an airborne launcher victim downed early: that would prevent juggles.
       if (
@@ -936,9 +1181,13 @@ export class Fighter {
       if (
         wasAirborne &&
         (this.state === "air" ||
-          (this.state === "attack" && this.moveId.startsWith("air_")))
-      )
+          (this.state === "attack" && (this.moveId.startsWith("air_") || this.move?.ben?.land)))
+      ) {
+        const armor = this.omnitrix?.active === "nrg" && !this.omnitrix.nrgReleased;
+        const drop = armor && this.state === "attack" && this.moveId === "air_medium";
         this.setState("landing");
+        if (armor) this.actionClip = drop ? "nrgDropLanding" : "";
+      }
     }
     if (this.state === "hitstun" || this.state === "blockstun") this.vx *= 0.83;
     this.syncReactionClock(false);
@@ -956,9 +1205,13 @@ export class Fighter {
   }
 }
 export interface HitEvent {
+  sasuke?: { kind: "chidori" | "goryuka"; cursed: boolean; facing: number };
   luffy?: { actor: number; move: string; direction: number; style: "kick" | "punch" | "rush" | "double" };
   strength?: number;
   audioOnly?: boolean;
+  knuckleFrame?: number;
+  centipede?: { cue: CentipedeCue; frame: number };
+  chain?: ChainRoute;
   x: number;
   y: number;
   blocked: boolean;
@@ -973,8 +1226,17 @@ export interface HitEvent {
     | "power"
     | "roadImpact"
     | "roadPunch"
-    | "roadExplosion";
+    | "roadExplosion"
+    | "kirinCharge"
+    | "kirinThunder"
+    | "knuckleSnap"
+    | "chainBind"
+    | "chainEscape"
+    | "chainWhoosh"
+    | "chainImpact"
+    | "centipede";
   total?: number;
+  ben?: BenEffect;
 }
 export interface CaptureSequence {
   kind: "ultimate" | "grab";
@@ -983,6 +1245,9 @@ export interface CaptureSequence {
   tick: number;
   scale: number;
   contactX?: number;
+  contactY?: number;
+  ben?: { moveId: string; origin: number; direction: number; contactFrame?: number };
+  kaneki?: KanekiCapture;
 }
 export interface CombatHit {
   serial: number;
@@ -1002,11 +1267,14 @@ export class Match {
   roadRoller?: RoadRollerState;
   fury?: FuryState;
   jetGigant?: JetState;
-  get cinematicActive() { return !!(this.roadRoller || this.fury || this.jetGigant); }
+  kirin?: KirinState;
+  centipede?: CentipedeState;
+  get cinematicActive() { return !!(this.roadRoller || this.fury || this.jetGigant || this.kirin || this.centipede); }
   temporal = new TemporalController();
   projectiles: KnifeProjectile[] = [];
   kiProjectiles: KiProjectile[] = [];
   sasukeStormUntil = 0;
+  sasukeStormLevel = 0;
   beams: KiBeam[] = [];
   projectileSerial = 0;
   fighters: [Fighter, Fighter];
@@ -1092,7 +1360,7 @@ export class Match {
           this.projectiles = [];
           this.kiProjectiles = [];
           this.beams = [];
-          this.sasukeStormUntil = 0;
+          this.sasukeStormUntil = this.sasukeStormLevel = 0;
           const meter = this.fighters.map((f) => f.meter);
           this.fighters = [
             new Fighter(this.data, 0, 400),
@@ -1115,7 +1383,30 @@ export class Match {
       for (const f of this.fighters) f.stand?.tick(f);
       return;
     }
-    if (this.fury || this.jetGigant) {
+    this.fighters.forEach((fighter, seat) => {
+      const watch = fighter.omnitrix;
+      if (!watch) return;
+      if (this.cinematicActive || this.capture || this.temporal.isFrozen(seat) ||
+          fighter.knockedDown || !omnitrixCanBrowse(fighter.state)) {
+        cancelOmnitrix(watch);
+        return;
+      }
+      const rival = this.fighters[1 - seat];
+      if (!rival.combo) {
+        watch.usedSpecials.length = 0;
+        watch.comboSwap = false;
+      }
+      const inAttack = fighter.state === "attack";
+      const canConfirm = !this.hitstop && (!rival.combo || !watch.comboSwap || !!watch.transition) &&
+        (!inAttack || !!watch.transition || fighter.canCancel("omnitrix"));
+      tickOmnitrix(watch, inputs[seat], canConfirm, to => {
+        if (!this.placeBenForm(fighter, rival, to)) return false;
+        if (rival.combo) watch.comboSwap = true;
+        fighter.buffer.clear();
+        return true;
+      });
+    });
+    if (this.fury || this.jetGigant || this.kirin || this.centipede) {
       this.stepStagedSuper();
       return;
     }
@@ -1126,8 +1417,30 @@ export class Match {
     const timeWasActive = this.temporal.beginStep(
       this.hitstop === 0 && !this.capture,
     );
+    const chainCapture = this.capture;
+    const longGrab = chainCapture?.kaneki?.chain;
+    if (chainCapture && longGrab?.origin === "kaguneGrab" && this.frame - longGrab.started >= kaguneGrabLimit) {
+      const a = this.fighters[chainCapture.attacker], b = this.fighters[chainCapture.victim];
+      if (!longGrab.landed && b.combo < a.data.combatLimits!.maxHits) {
+        this.kanekiChainDamage(chainCapture, a, b, "kaguneTimeout", 48, b.airborne, true);
+        this.effect("hit", b.x, b.y - 68, 12);
+      }
+      this.hitstop = 0;
+      this.releaseKanekiChain(a, b, 15, 7, -3);
+      this.finishTemporalStep(timeWasActive);
+      return;
+    }
     if (this.hitstop > 0) {
       this.hitstop--;
+      const capture = this.capture;
+      const held = capture?.kaneki;
+      if (capture && held?.chain) {
+        this.bufferChainChoice(held, capture.tick, inputs[capture.attacker], inputs[capture.victim]);
+        if ((held.chain.resistance ?? 0) >= resistanceGoal)
+          this.escapeKanekiChain(this.fighters[capture.attacker], this.fighters[capture.victim]);
+      } else if (capture && held && !held.route && !held.specialId) {
+        held.pending ??= kaguneChoice(inputs[capture.attacker].pressed);
+      }
       if (!this.capture)
         this.fighters.forEach(
           (f, i) =>
@@ -1138,22 +1451,31 @@ export class Match {
       return;
     }
     if (this.capture) {
-      this.stepCapture();
+      this.stepCapture(inputs);
       for (const f of this.fighters) f.stand?.tick(f);
       this.finishTemporalStep(timeWasActive);
       return;
     }
     if (!this.rules.training && !this.temporal.active) this.timer--;
     this.combatFrame++;
+    const beforeMovement = this.fighters.map(f => f.x);
     this.fighters.forEach((f, i) => {
       if (this.temporal.isFrozen(i)) return;
       const other = this.fighters[1 - i];
+      const well = f.airborne && !["hitstun", "blockstun", "ko", "getup"].includes(f.state) && !this.temporal.isFrozen(other.id)
+        ? gravityAt(other, f.x, f.y, FLOOR) : undefined;
+      if (well && !this.benWalls().some(w => this.benWallBetween(w, well.x, f.x,
+        { x: Math.min(well.x, f.x), y: f.y - 60, w: Math.abs(well.x - f.x), h: 62 })))
+        f.vy = Math.min(14, f.vy + .72);
       f.guardIntent =
         inputs[i].direction === -f.facing &&
         !f.airborne &&
         Math.abs(f.x - other.x) < 200;
       tickSasukeCurse(f);
+      const fallingDrop = f.y < FLOOR && f.state === "attack" && !!(f.move?.ben?.landingImpact || f.move?.ben?.leap);
       f.tick(inputs[i], this.combatFrame, other);
+      this.tickBenAbilities(f, other, fallingDrop);
+      if (!f.combo) f.kanekiCaptured = undefined;
     });
     for (const f of this.fighters)
       if (!this.temporal.isFrozen(f.id)) f.stand?.tick(f);
@@ -1162,40 +1484,67 @@ export class Match {
       if (
         f.state === "attack" &&
         f.stateFrame === 0 &&
-        (f.move?.kind === "ultimate" || f.move?.kind === "jetGigant")
+        (f.move?.kind === "ultimate" || f.move?.kind === "jetGigant" || f.move?.kind === "kirin")
       )
         this.effect("power", f.x, f.y - 80, 20);
+      else if (f.state === "attack" && f.stateFrame === 0 && f.moveId === centipedeId)
+        this.centipedeEffect("activation", f.x, f.y - 74, 21);
     const [a, b] = this.fighters;
+    const crystalWalls = this.benWalls();
+    for (const f of this.fighters) {
+      if (this.temporal.isFrozen(f.id)) continue;
+      this.stopAtBenWalls(f, beforeMovement[f.id], crystalWalls);
+      if (f.move?.kind !== "grab") {
+        const shapes = f.attackShapes(beforeMovement[f.id]);
+        if (shapes.length) this.damageBenWalls(shapes, f.move?.damage ?? 0, crystalWalls,
+          `${f.id}:${this.combatFrame - f.stateFrame}:${f.hitWindow?.id ?? 0}`, f.id);
+      }
+    }
     if (overlaps(a.pushbox(), b.pushbox()) && this.temporal.active) {
       // The frozen actor cannot be pushed. Clamp only the moving actor.
       const mover = this.fighters[this.temporal.s.owner],
         frozen = this.fighters[1 - this.temporal.s.owner];
-      mover.x = frozen.x + (mover.x <= frozen.x ? -52 : 52);
-      mover.x = Math.max(40, Math.min(1240, mover.x));
-    } else if (overlaps(a.pushbox(), b.pushbox())) {
+      const gap = (mover.pushbox().w + frozen.pushbox().w) / 2;
+      mover.x = frozen.x + (mover.x <= frozen.x ? -gap : gap);
+      mover.x = Math.max(mover.stageInset, Math.min(1280 - mover.stageInset, mover.x));
+    } else if (overlaps(a.pushbox(), b.pushbox()) && !this.benCrossing(a, b) && !this.benCrossing(b, a)) {
       const [left, right] = a.x <= b.x ? [a, b] : [b, a];
       // Transfer the full separation to the free side at a wall; clamping
       // each actor independently leaves overlapping pushboxes in the corner.
-      const center = Math.max(66, Math.min(1214, (left.x + right.x) / 2));
-      left.x = center - 26;
-      right.x = center + 26;
+      const leftHalf = left.pushbox().w / 2, rightHalf = right.pushbox().w / 2;
+      const center = Math.max(left.stageInset + leftHalf, Math.min(1280 - right.stageInset - rightHalf, (left.x + right.x) / 2));
+      left.x = center - leftHalf;
+      right.x = center + rightHalf;
     }
+    for (const f of this.fighters)
+      if (!this.temporal.isFrozen(f.id)) this.stopAtBenWalls(f, beforeMovement[f.id], crystalWalls);
     // Capture contacts before resolving so simultaneous attacks can trade.
     const contacts = this.fighters.map((f, i) => {
       if (this.temporal.isFrozen(i)) return null;
-      const shapes = f.attackShapes();
+      const shapes = f.attackShapes(beforeMovement[i]);
       const target = this.fighters[1 - i];
-      if (!shapes.length || !f.canConnect || target.knockedDown || target.invulnerable ||
-          (f.move?.level === "throw" &&
-            (target.airborne || target.state === "hitstun" || target.state === "blockstun")))
+      if (shapes.length && f.canConnect && f.move?.damage && f.move.kind !== "grab")
+        this.strikeEchoClones(f, target, shapes, crystalWalls);
+      const groundedGrab = f.move?.level === "throw" || f.move?.ben?.captureStrike;
+      const illegalGrab = groundedGrab && (f.data.id === "kaneki"
+        ? !canKaguneCapture(f, target, "ground")
+        : target.airborne || target.state === "blockstun" ||
+          target.state === "hitstun" && !(f.move?.ben?.commandGrab && target.combo > 0 && target.combo <= 2 && f.omnitrix?.usedSpecials.includes(f.move?.ben?.technique ?? "quad")));
+      const phasedPhysical = target.benPhase?.physicalOnly && f.move && !f.move.ben?.field &&
+        !f.move.stand && !isSuperMove(f.move) && f.move.level !== "throw";
+      if (!shapes.length || !f.canConnect || target.knockedDown || target.invulnerable || phasedPhysical || illegalGrab)
         return null;
       const boxes = target.hurtboxes();
-      const hurtboxes = f.move?.kind === "grab" ? boxes.slice(0, 2) : boxes;
+      const hurtboxes = f.move?.kind === "grab" && f.data.id !== "kaneki" ? boxes.slice(0, 2) : boxes;
       for (const shape of shapes) {
-        const hurt = hurtboxes.find(box => shapeHitsRect(shape, box));
+        if (crystalWalls.some(w => this.benWallBetween(w, f.x, target.x, shape))) continue;
+        const rushTip = f.move?.special === "rinkakuRush" && "a" in shape;
+        if (rushTip && !canKaguneCapture(f, target, "ground")) continue;
+        const validBoxes = rushTip || f.move?.special === "kaguneGrab" ? boxes.slice(0, 2) : hurtboxes;
+        const hurt = validBoxes.find(box => shapeHitsRect(shape, box));
         if (!hurt) continue;
         let impact = f.move?.stand ? shapeBounds(shapes[0]) : undefined;
-        if (f.data.id === "luffy") {
+        if (f.data.id === "luffy" || f.data.id === "kaneki" || f.move?.special === "chidori" || f.move?.ben) {
           const bounds = shapeBounds(shape);
           const x = Math.max(hurt.x, bounds.x), y = Math.max(hurt.y, bounds.y);
           impact = {
@@ -1205,7 +1554,8 @@ export class Match {
           };
         }
         return {
-          f, target, move: { ...f.move!, ...f.hitWindow },
+          f, target, move: { ...f.move!, ...f.hitWindow,
+            ...(rushTip ? { kind: "grab", level: "throw" } as const : {}) },
           moveId: f.moveId, hitId: f.hitWindow?.id ?? 0, impact,
         };
       }
@@ -1215,7 +1565,7 @@ export class Match {
       if (!c) continue;
       const { f, target, move: m, moveId } = c;
       if (m.super && f.health <= 0) continue;
-      if (m.kind === "jetGigant" && (f.state !== "attack" || f.moveId !== moveId)) continue;
+      if ((m.kind === "jetGigant" || m.kind === "kirin" || m.kind === centipedeId) && (f.state !== "attack" || f.moveId !== moveId)) continue;
       if (this.capture || this.cinematicActive) continue;
       // A strike beats a simultaneous throw; do not capture an actor whose
       // already-sampled strike is about to resolve on this same simulation tick.
@@ -1228,6 +1578,8 @@ export class Match {
         continue;
       f.connected = true;
       f.hitIds.push(c.hitId);
+      if (this.counterWithArmor(target, f, m, moveId, c.impact) ||
+          this.counterWithFeedback(target, f, m)) continue;
       if (
         !this.temporal.isFrozen(target.id) &&
         target.counterWindow &&
@@ -1236,6 +1588,7 @@ export class Match {
         m.kind !== "ultimate" &&
         m.kind !== "roadRoller" &&
         m.kind !== "jetGigant" &&
+        m.kind !== centipedeId &&
         (f.x - target.x) * target.facing > 0
       ) {
         f.setState("hitstun");
@@ -1249,17 +1602,35 @@ export class Match {
         continue;
       }
       if (m.kind === "grab") {
+        if (m.ben?.captureStrike && this.benBlocked(target, m, f.facing)) {
+          this.resolveImpact(f, target, { ...m, level: "mid", blockstun: 11, push: 4 }, moveId, c.impact);
+          continue;
+        }
         this.beginCapture("grab", f, target);
+        continue;
+      }
+      if (f.data.id === "kaneki" && moveId === "air_heavy" && canKaguneCapture(f, target, "air") &&
+          !contacts.some(other => other?.f === target)) {
+        this.beginCapture("grab", f, target, "air");
         continue;
       }
       const direction = m.special === "nagashi" && target.x !== f.x
         ? Math.sign(target.x - f.x)
         : f.facing;
-      this.resolveImpact(f, target, m, moveId, c.impact, direction);
+      const swordCapture = m.special === "fourSwords" &&
+        target.combo <= f.data.combatLimits!.maxHits - 4 &&
+        canKaguneCapture(f, target, "ground") &&
+        !contacts.some(other => other?.f === target);
+      this.resolveImpact(f, target, m, moveId, c.impact, direction, winged(f), swordCapture);
     }
     if (this.cinematicActive) return;
+    if ((this.capture as CaptureSequence | undefined)?.kaneki?.specialId) {
+      this.finishTemporalStep(timeWasActive);
+      return;
+    }
     this.stepProjectiles();
     this.stepEnergy();
+    if (!this.capture) this.stepBenObjects();
     for (const f of this.fighters) f.syncReactionClock(false);
     if (this.capture) {
       this.finishTemporalStep(timeWasActive);
@@ -1268,6 +1639,12 @@ export class Match {
     this.checkRoundEnd();
     this.finishTemporalStep(timeWasActive);
   }
+  private benBlocked(target: Fighter, m: Move, direction: number) {
+    return target.input.direction === -target.facing && !target.airborne &&
+      ["idle", "walk", "crouch", "landing", "blockstun"].includes(target.state) &&
+      (!m.ben?.field || direction === -target.facing);
+  }
+
   private resolveImpact(
     f: Fighter,
     target: Fighter,
@@ -1275,6 +1652,8 @@ export class Match {
     moveId: string,
     impact?: Rect,
     direction = f.facing,
+    curseFx = winged(f),
+    swordCapture = false,
   ) {
     const frozen = this.temporal.isFrozen(target.id);
     const guarding =
@@ -1283,18 +1662,19 @@ export class Match {
       ["idle", "walk", "crouch", "landing", "blockstun"].includes(
         target.state,
       ) &&
-      (!(["knives", "ki", "kamehameha"].includes(m.special ?? "") ||
+      (!(m.ben?.field || ["knives", "ki", "kamehameha"].includes(m.special ?? "") ||
         (m.special && isSasukeSpecial(m.special) && sasukeTechniques[m.special].shots)) ||
-        direction === -target.facing);
+        direction === -target.facing || m.ben?.field?.type === "sonicAssist");
     const blocked =
       guarding &&
       m.level !== "throw" &&
+      !isSuperMove(m) &&
       (m.level !== "low" || target.input.down) &&
       (m.level !== "high" || !target.input.down);
     let damage = blocked
       ? 0
       : Math.round(
-          m.damage *
+          m.damage * (m.ben && !m.ben.field && f.benScale > 1 ? 1.07 : 1) *
             Math.max(
               combatPace.combo.minimumDamageScale,
               1 - target.combo * combatPace.combo.damageStep,
@@ -1307,7 +1687,7 @@ export class Match {
     const applied = this.damage(
       target,
       damage,
-      ["ultimate", "roadRoller", "gokuFury", "jetGigant"].includes(m.kind ?? "") && !blocked
+      (swordCapture || ["ultimate", "roadRoller", "gokuFury", "jetGigant", "kirin", centipedeId].includes(m.kind ?? "")) && !blocked
         ? 1
         : 0,
     );
@@ -1316,7 +1696,7 @@ export class Match {
       stun: blocked ? m.blockstun : m.stun,
       vx:
         direction *
-        m.push *
+        m.push * (m.ben && !m.ben.field && f.benScale > 1 ? 1.08 : 1) *
         (blocked
           ? 1
           : 1 +
@@ -1331,12 +1711,36 @@ export class Match {
         (target.data.id === "luffy" && !target.airborne && !blocked && m.level === "low"),
     };
     if (!blocked) {
-      if (f.state === "attack" && f.moveId === moveId) f.hitConfirmed = true;
+      if (f.state === "attack" && f.moveId === moveId) {
+        if (!f.hitConfirmed && applied > 0 && m.ben?.chargeGain && f.omnitrix?.active === "feedback")
+          this.gainFeedbackCharge(f.omnitrix, m.ben.chargeGain, "contact");
+        f.hitConfirmed = true;
+        if (m.ben?.field) f.connected = true;
+      }
+      if (m.ben?.technique && f.omnitrix && !f.omnitrix.usedSpecials.includes(m.ben.technique))
+        f.omnitrix.usedSpecials.push(m.ben.technique);
+      if (m.ben?.cold && applied > 0 && !frozen && target.health > 0) {
+        const chill = target.chill ??= { build: 0, ticks: 0, freeze: 0, immune: 0, used: false };
+        if (!chill.immune && !chill.used) {
+          const cap = benStage6Balance.frostLimit - Number(reaction.knockdown);
+          chill.build = Math.min(cap, chill.build + m.ben.cold);
+          chill.ticks = benStage6Balance.frostHold;
+          if (chill.build === benStage6Balance.frostLimit) {
+            chill.build = 0;
+            chill.immune = benStage6Balance.frostImmunity;
+            chill.freeze = benStage6Balance.freezeTicks;
+            chill.used = true;
+            reaction.stun = Math.max(reaction.stun, benStage6Balance.freezeTicks + 3);
+            reaction.vx = 0;
+          }
+        }
+      }
       if (!target.combo) target.comboAge = target.comboAirHits = 0;
       target.combo++;
       if (target.airborne || m.launch < 0) target.comboAirHits++;
       if (target.airborne && !m.knockdown && !m.super)
         reaction.stun += combatPace.combo.airExtensionStun;
+      if (m.ben && target.combo > 4) reaction.stun = Math.max(9, reaction.stun - (target.combo - 4) * 3);
       const limit = f.data.combatLimits;
       if (
         limit &&
@@ -1377,6 +1781,9 @@ export class Match {
     );
     const event = this.events[eventCount];
     if (event) {
+      if (m.ben && !blocked) event.ben = m.ben.effect;
+      if (!blocked && (m.special === "chidori" || m.special === "goryuka"))
+        event.sasuke = { kind: m.special, cursed: curseFx, facing: direction };
       if (f.data.id === "luffy" && !m.super && (m.rank > 1 || m.special)) {
         const style = m.special === "bazooka" ? "double"
           : m.special === "gatling" ? "rush"
@@ -1396,11 +1803,12 @@ export class Match {
       event.total = event.life =
         event.strength === 1 ? 10 : event.strength === 2 ? 13 : 16;
     }
+    if (swordCapture && !blocked) this.beginCapture("grab", f, target);
     if (m.kind === "ultimate" && !blocked)
       this.beginCapture("ultimate", f, target);
     if (m.kind === "roadRoller" && !blocked) this.beginRoadRoller(f, target);
-    if (!blocked && (m.kind === "gokuFury" || m.kind === "jetGigant"))
-      this.beginStagedSuper(f, target, m.kind === "jetGigant");
+    if (!blocked && (m.kind === "gokuFury" || m.kind === "jetGigant" || m.kind === "kirin" || m.kind === centipedeId))
+      this.beginStagedSuper(f, target, m.kind);
   }
   private applyReaction(target: Fighter, reaction: DeferredReaction) {
     target.hitCrouched = target.blockCrouched = reaction.crouched;
@@ -1492,6 +1900,11 @@ export class Match {
         return false;
       const target = this.fighters[1 - p.owner],
         owner = this.fighters[p.owner];
+      const tip = p.facing * 14;
+      const shape = { a: { x: p.previousX - tip, y: p.previousY }, b: { x: p.x + tip, y: p.y }, r: 2 };
+      const walls = this.benWalls();
+      if (this.damageBenWalls([shape], p.damage, walls, `knife:${p.id}`, p.owner) ||
+          this.strikeEchoClones(owner, target, [shape], walls)) return false;
       if (
         target.knockedDown ||
         target.invulnerable ||
@@ -1570,30 +1983,69 @@ export class Match {
     for (const shot of (curse ? curseSpecials : sasukeTechniques)[id].shots ?? []) {
       if (shot.at !== age) continue;
       const x = f.x + f.facing * origin.x, y = f.y + origin.y;
+      const wave = id === "goryuka" ? fireDragonWave({ x, y }, f.facing, curse) : undefined;
+      const fire = sasukePolish.goryuka;
       this.kiProjectiles.push({
         id: ++this.projectileSerial,
         owner: f.id,
         move: id,
         cast: 0,
         ...(curse ? { curse } : {}),
+        ...(wave ? { wave } : {}),
         x, y, previousX: x, previousY: y,
-        vx: shot.speed * f.facing,
-        vy: shot.rise,
+        vx: (wave ? (curse ? fire.curse.speed : fire.base.speed) : shot.speed) * f.facing,
+        vy: wave ? 0 : shot.rise,
         facing: f.facing,
-        radius: shot.radius,
+        radius: wave ? fire.headRadius : shot.radius,
         age: 0,
-        life: shot.life,
+        life: wave ? fire.maximumLife : shot.life,
         state: "flight",
         impactAge: 0,
       });
-      if (id === "goryuka") this.sasukeStormUntil = this.combatFrame + sasukeSpecialBalance.stormTicks;
+      const heat = kirinConfig.weather.contributions[id as keyof typeof kirinConfig.weather.contributions];
+      if (shot.at === 0 && heat) {
+        const level = this.sasukeStormUntil > this.combatFrame ? this.sasukeStormLevel : 0;
+        this.sasukeStormLevel = Math.min(kirinConfig.weather.maximum, level + heat);
+        this.sasukeStormUntil = this.combatFrame + sasukeSpecialBalance.stormTicks;
+      }
     }
+  }
+  private stepFireDragon(p: KiProjectile) {
+    const w = p.wave!;
+    p.previousX = p.x;
+    p.previousY = p.y;
+    w.distance += Math.abs(p.vx);
+    const point = fireDragonPoint(w, w.distance);
+    p.x = point.x;
+    p.y = point.y;
+    p.age++;
+    p.radius = Math.round(sasukePolish.goryuka.headRadius * Math.min(1, .48 + p.age * .095));
+    if (--p.life <= 0 || w.distance > w.limit) return false;
+    if (w.struck) return true;
+    const shapes = fireDragonVolumes(w, { x: p.previousX, y: p.previousY }, p.radius);
+    const target = this.fighters[1 - p.owner], owner = this.fighters[p.owner];
+    const move = p.curse ? sasukeCurseMoves[p.move] : owner.data.specialMoves?.[p.move];
+    if (move && this.damageBenWalls(shapes, move.damage, this.benWalls(), `dragon:${p.id}`, p.owner)) return false;
+    if (target.invulnerable || target.knockedDown) return true;
+    const boxes = target.hurtboxes();
+    for (const shape of shapes) {
+      const box = boxes.find(r => shapeHitsRect(shape, r));
+      if (!box) continue;
+      if (move) {
+        if (this.absorbBen(target, 2, move.damage, p.facing)) return false;
+        w.struck = true;
+        this.resolveImpact(owner, target, move, p.move, box, p.facing, !!p.curse);
+      }
+      break;
+    }
+    return true;
   }
   private stepEnergy() {
     if (!this.kiProjectiles.length && !this.beams.length) return;
     if (this.temporal.active && dioBalance.timeStop.freezeAllProjectiles)
       return;
     this.kiProjectiles = this.kiProjectiles.filter((p) => {
+      if (p.wave) return this.stepFireDragon(p);
       if (p.state === "impact")
         return ++p.impactAge < gokuBalance.projectiles.impactTicks;
       p.previousX = p.x;
@@ -1612,14 +2064,20 @@ export class Match {
       const target = this.fighters[1 - p.owner],
         owner = this.fighters[p.owner],
         move = p.curse ? sasukeCurseMoves[p.move] : owner.data.specialMoves?.[p.move];
-      if (!move || target.knockedDown || target.invulnerable) return true;
+      if (!move) return true;
       const shape = {
         a: { x: p.previousX, y: p.previousY },
         b: { x: p.x, y: p.y },
         r: p.radius,
       };
+      const walls = this.benWalls();
+      if (this.damageBenWalls([shape], move.damage, walls, `energy:${p.id}`, p.owner) ||
+          this.strikeEchoClones(owner, target, [shape], walls)) return false;
+      if (target.knockedDown || target.invulnerable) return true;
       const hurt = target.hurtboxes().find((r) => shapeHitsRect(shape, r));
       if (hurt) {
+        const energy = move.special === "ki" || move.special === "hosenka" || move.special === "gokakyu";
+        if (energy && this.absorbBen(target, p.radius >= 22 ? 2 : 1, move.damage, p.facing)) return false;
         let impact = hurt;
         if (isSasukeSpecial(p.move)) {
           p.x = Math.max(hurt.x, Math.min(hurt.x + hurt.w, p.x));
@@ -1662,9 +2120,18 @@ export class Match {
         Math.min(move!.beam!.range, b.facing === 1 ? 1280 - b.x : b.x),
       );
       const pulse = Math.floor(b.age / move!.beam!.interval);
+      const box = beamBox(b);
+      const walls = this.benWalls();
+      const wall = walls.find(w => w.owner !== b.owner && this.benWallSolid(w) &&
+        (w.object.x - b.x) * b.facing > 0 && (target.x - w.object.x) * b.facing > 0 &&
+        shapeHitsRect(box, shapeBounds(benObjectShape(w.object, w.field))));
+      if (wall) {
+        this.damageBenWalls([box], move!.damage, [wall], `beam:${b.id}:${pulse}`, b.owner);
+        b.length = Math.min(b.length, Math.abs(wall.object.x - b.x));
+      }
       if (
         pulse < move!.beam!.hits &&
-        !b.hitIds.includes(pulse) &&
+        !b.hitIds.includes(pulse) && !wall &&
         !target.invulnerable &&
         !target.knockedDown &&
         target.hurtboxes().some((r) => overlaps(beamBox(b), r))
@@ -1672,7 +2139,13 @@ export class Match {
         b.hitIds.push(pulse);
         owner.connected = true;
         b.impactAge = b.age;
-        this.resolveImpact(owner, target, move!, b.move, beamBox(b), b.facing);
+        if (this.absorbBen(target, 2, move!.damage, b.facing)) {
+          b.state = "dissipate";
+          b.age = 0;
+          b.life = gokuBalance.projectiles.impactTicks;
+          return true;
+        }
+        this.resolveImpact(owner, target, move!, b.move, box, b.facing);
       }
       b.age++;
       if (--b.life <= 0) {
@@ -1683,7 +2156,430 @@ export class Match {
       return true;
     });
   }
+  private benCrossing(fighter: Fighter, rival: Fighter) {
+    const move = fighter.state === "attack" ? fighter.move : undefined;
+    if (move?.ben?.burrow && fighter.benPhase) return true;
+    if (!move?.ben?.cross || !move.drive || fighter.stateFrame < move.drive.from || fighter.stateFrame >= move.drive.to) return false;
+    const gap = (fighter.pushbox().w + rival.pushbox().w) / 2;
+    const exit = rival.x + fighter.facing * gap;
+    return exit >= fighter.stageInset && exit <= 1280 - fighter.stageInset;
+  }
+
+  private tickBenAbilities(f: Fighter, other: Fighter, landedFromDrop: boolean) {
+    const watch = f.omnitrix;
+    if (!watch) return;
+    if (watch.absorbCooldown) watch.absorbCooldown--;
+    if (watch.absorbWindow) watch.absorbWindow--;
+    if (watch.active === "feedback") {
+      const guard = f.input.direction === -f.facing && !f.airborne && ["idle", "walk", "crouch"].includes(f.state);
+      if (guard && !watch.guardHeld && !watch.absorbCooldown) watch.absorbWindow = 5;
+      if (!guard) watch.absorbWindow = 0;
+      watch.guardHeld = guard;
+    }
+    if (watch.growthCooldown > 0) watch.growthCooldown--;
+    if (watch.ghostCooldown) watch.ghostCooldown--;
+    if (watch.nrgCooldown) watch.nrgCooldown--;
+    if (watch.echoCooldown) watch.echoCooldown--;
+    const current = f.state === "attack" ? f.move : undefined;
+    if (!f.airborne && !current?.ben?.airUse && !current?.ben?.lift) {
+      delete watch.flightUsed;
+      delete watch.flightTicks;
+      delete watch.flightVX;
+      delete watch.flightVY;
+      delete watch.diveUsed;
+    }
+    if (watch.nrgReleased) {
+      watch.nrgTicks = Math.max(0, (watch.nrgTicks ?? 0) - 1);
+      if (!watch.nrgTicks && !watch.transition && ["idle", "walk", "crouch", "landing", "air"].includes(f.state))
+        f.attack("nrgSeal_medium");
+    }
+    if (current?.ben?.nrgMode && !f.airborne && f.stateFrame >= current.startup && f.stateFrame < current.startup + current.active + current.recovery) {
+      const release = current.ben.nrgMode === "release";
+      const next = release ? nrgReleasedForm : benForms.nrg!;
+      if (this.placeBenBody(f, other, next, !release)) {
+        watch.objects.length = 0;
+        watch.nrgReleased = release;
+        delete watch.flightTicks;
+        watch.nrgTicks = release ? benStage6Balance.nrgDuration : 0;
+        if (!release) watch.nrgCooldown = benStage6Balance.nrgCooldown;
+        f.buffer.clear();
+        f.attack(release ? "nrgEmergence" : "nrgLock");
+        this.effect("power", f.x, f.y - 95, 20);
+        this.events.at(-1)!.ben = "thermal";
+      } else watch.noSpace = 35;
+    }
+    if (watch.growth && --watch.growth.ticks === 0) delete watch.growth;
+    if (watch.chargeTicks > 0 && --watch.chargeTicks === 0) watch.charge = 0;
+    if (watch.absorbFlash > 0) watch.absorbFlash--;
+    if (watch.chargeCue && --watch.chargeCue.ticks === 0) delete watch.chargeCue;
+    if (landedFromDrop && f.y === FLOOR) {
+      this.effect("hit", f.x, FLOOR - 4, 15);
+      this.events.at(-1)!.ben = "colossus";
+    }
+    const move = f.state === "attack" ? f.move : undefined;
+    const rank = move?.ben?.grow;
+    if (!rank || !move || f.stateFrame !== move.startup) return;
+    const growth = benFormBalance.growth[rank];
+    const larger = f.pushbox(f.benForm, f.x, growth.scale);
+    if (larger.x < 0 || larger.x + larger.w > 1280 || overlaps(larger, other.pushbox()) ||
+        this.benWalls().some(w => this.benWallSolid(w) && shapeHitsRect(benObjectShape(w.object, w.field), larger))) {
+      watch.noSpace = 35;
+      return;
+    }
+    watch.growth = { rank, ticks: growth.ticks };
+    watch.growthCooldown = growth.ticks + growth.cooldown;
+    this.effect("power", f.x, FLOOR - 11, 20);
+    this.events.at(-1)!.ben = "colossus";
+  }
+
+  private benWalls(): BenWall[] {
+    const walls: BenWall[] = [];
+    for (const owner of this.fighters) for (const object of owner.omnitrix?.objects ?? []) {
+      const field = benObjectMove(object.id)?.ben?.field;
+      if (field?.type === "wall") walls.push({ owner: owner.id, object, field });
+    }
+    return walls;
+  }
+
+  private benWallSolid({ object, field }: BenWall) {
+    return !object.spent && object.age >= 3 && object.age < field.life - 7;
+  }
+
+  private benWallBetween(w: BenWall, x: number, otherX: number, attack: AttackShape) {
+    return this.benWallSolid(w) && (x - w.object.x) * (otherX - w.object.x) < 0 &&
+      shapeHitsRect(attack, shapeBounds(benObjectShape(w.object, w.field)));
+  }
+
+  private stopAtBenWalls(f: Fighter, priorX: number, walls: BenWall[]) {
+    for (const w of walls) {
+      if (!this.benWallSolid(w)) continue;
+      const wall = shapeBounds(benObjectShape(w.object, w.field));
+      const body = f.pushbox();
+      if (body.y >= wall.y + wall.h || f.y <= wall.y) continue;
+      const left = priorX < w.object.x;
+      const limit = left ? wall.x - body.w / 2 : wall.x + wall.w + body.w / 2;
+      if (left ? f.x <= limit : f.x >= limit) continue;
+      f.x = limit;
+      if ((left ? 1 : -1) * f.vx > 0) f.vx = 0;
+    }
+  }
+
+  private damageBenWalls(shapes: AttackShape[], damage: number, walls: BenWall[], key: string, owner: number) {
+    let stopped = false;
+    for (const w of walls) {
+      if (w.owner === owner || !this.benWallSolid(w) || !damage) continue;
+      if (!shapes.some(shape => shapeHitsRect(shape, shapeBounds(benObjectShape(w.object, w.field))))) continue;
+      stopped = true;
+      if (w.object.hitKeys!.includes(key)) continue;
+      w.object.hitKeys!.push(key);
+      w.object.durability! -= damage;
+      this.effect("hit", w.object.x, FLOOR - w.field.height * .52, 12);
+      this.events.at(-1)!.ben = "crystal";
+      if (w.object.durability! <= 0) {
+        w.object.spent = true;
+        w.object.age = Math.max(w.object.age, w.field.life - 8);
+      }
+    }
+    return stopped;
+  }
+
+  private counterWithArmor(defender: Fighter, attacker: Fighter, incoming: Move, id: string, contact?: Rect) {
+    const watch = defender.omnitrix;
+    if (watch?.active !== "nrg" || watch.nrgReleased || !defender.move?.ben?.armorCounter ||
+        defender.attackPhase !== "active" || defender.airborne || attacker.health <= 0 ||
+        this.temporal.isFrozen(defender.id) || this.temporal.isFrozen(attacker.id) ||
+        incoming.kind === "grab" || incoming.level === "throw" || isSuperMove(incoming) ||
+        incoming.stand || incoming.projectile || incoming.beam || incoming.ben?.field ||
+        incoming.ben?.cable || incoming.ben?.spectralReach ||
+        incoming.special === "nagashi" || incoming.special === "chidori" || incoming.special === "goryuka" ||
+        (attacker.x - defender.x) * defender.facing <= 0 ||
+        Math.abs(attacker.x - defender.x) > 124 || Math.abs(attacker.y - defender.y) > 70) return false;
+    if (!defender.attack("nrgCounterShove")) return false;
+    defender.buffer.clear();
+    const damage = this.damage(defender, Math.round(incoming.damage * .25));
+    this.recordHit(attacker, defender, id, damage);
+    this.effect("counter", contact ? contact.x + contact.w / 2 : defender.x + defender.facing * 37,
+      contact ? contact.y + contact.h / 2 : defender.y - 95, 12);
+    this.events.at(-1)!.ben = "metal";
+    this.hitstop = Math.max(this.hitstop, 5);
+    if (defender.health > 0) {
+      // Brief recoil at the point of contact. The shove itself has its own
+      // startup and hitbox and uses the normal damage and push rules.
+      attacker.setState("hitstun");
+      attacker.stun = 9;
+      attacker.vx = 0;
+      attacker.hitCrouched = false;
+      attacker.hitLaunch = false;
+      attacker.reactionStrength = 1;
+      attacker.syncReactionClock(false);
+    }
+    return true;
+  }
+
+  private counterWithFeedback(defender: Fighter, attacker: Fighter, incoming: Move) {
+    if (defender.omnitrix?.active !== "feedback" || !defender.move?.ben?.counter ||
+        defender.attackPhase !== "active" || defender.airborne || attacker.health <= 0 ||
+        this.temporal.isFrozen(defender.id) || this.temporal.isFrozen(attacker.id) ||
+        incoming.kind === "grab" || incoming.level === "throw" || isSuperMove(incoming) ||
+        incoming.ben?.cable || incoming.ben?.field || incoming.special === "nagashi" ||
+        incoming.special === "chidori" || incoming.stand ||
+        (attacker.x - defender.x) * defender.facing <= 0 ||
+        Math.abs(attacker.x - defender.x) > 114 ||
+        Math.abs(attacker.y - defender.y) > 112) return false;
+    if (!defender.attack("feedback_counter")) return false;
+    defender.buffer.clear();
+    defender.connected = true;
+    this.resolveImpact(defender, attacker, defender.move!, "feedback_counter");
+    return true;
+  }
+
+  private gainFeedbackCharge(watch: OmnitrixState, gain: number, kind: "absorb" | "contact") {
+    const amount = Math.min(gain, benFormBalance.energy.capacity - watch.charge);
+    watch.charge += amount;
+    if (amount > 0 || kind === "absorb") watch.chargeTicks = benFormBalance.energy.retention;
+    if (amount > 0 || kind === "absorb") watch.chargeCue = { kind, amount, ticks: 29 };
+  }
+
+  private absorbBen(target: Fighter, strength: 1 | 2, damage: number, direction: number) {
+    const watch = target.omnitrix, rank = target.move?.ben?.absorb;
+    if (watch?.active !== "feedback" || this.temporal.isFrozen(target.id) ||
+        direction !== -target.facing || target.health <= 0 || this.capture) return false;
+    const legacy = rank && strength <= rank && target.attackPhase === "active" && !target.connected;
+    if (!legacy && (!watch.absorbWindow || watch.absorbCooldown || !watch.guardHeld)) return false;
+    this.gainFeedbackCharge(watch, Math.max(25, Math.round(damage * .72)), "absorb");
+    if (legacy) {
+      const move = target.move!;
+      target.connected = true;
+      target.stateFrame = move.startup + move.active + move.recovery - 12;
+    }
+    watch.absorbWindow = 0;
+    watch.absorbCooldown = 35;
+    watch.absorbFlash = 18;
+    this.effect("power", target.x + target.facing * 28, target.y - 98, 18);
+    this.events.at(-1)!.ben = "electric";
+    return true;
+  }
+
+  private strikeEchoClones(owner: Fighter, target: Fighter, shapes: AttackShape[], walls: BenWall[]) {
+    if (this.temporal.isFrozen(target.id)) return false;
+    return hitEchoClones(target, shapes, FLOOR,
+      (shape, x) => !walls.some(w => this.benWallBetween(w, owner.x, x, shape)));
+  }
+
+  private stepBenObjects() {
+    for (const owner of this.fighters) {
+      const watch = owner.omnitrix;
+      if (!watch || this.temporal.isFrozen(owner.id)) continue;
+      const target = this.fighters[1 - owner.id];
+      const move = owner.state === "attack" ? owner.move : undefined;
+      const cast = move?.ben?.field;
+      if (cast && move && owner.stateFrame === move.startup) this.spawnBenField(owner, target, cast);
+      const walls = this.benWalls();
+      tickEchoClones(owner, target, this.combatFrame, FLOOR, x => walls.some(w => this.benWallSolid(w) &&
+        (Math.abs(w.object.x - x) <= w.field.width / 2 + 19 ||
+          this.benWallBetween(w, owner.x, x, { x: Math.min(owner.x, x), y: FLOOR - 95, w: Math.abs(x - owner.x), h: 95 }))));
+      watch.objects = watch.objects.filter((object, index) => {
+        const projectile = benObjectMove(object.id);
+        const field = projectile?.ben?.field;
+        if (!field) return false;
+        if (object.impactAge !== undefined) return ++object.impactAge < 15;
+        if (projectile.ben?.nightmare && (owner.state !== "attack" || owner.moveId !== object.id)) return false;
+        if (++object.age > field.life + (object.power ? 6 : 0)) return false;
+        if (object.age <= 0 || field.type === "wall" || field.type === "gravityWell") return true;
+        if (["fireball", "bolt", "shard", "frost", "sonic"].includes(field.type) &&
+            gravityAt(target, object.x, object.y, FLOOR))
+          object.vy = Math.min(7, (object.vy ?? 0) + .48);
+        const before = { x: object.x, y: object.y };
+        object.x += object.direction * (field.type === "spectralHand" && object.vy ? 6 : field.speed);
+        object.y += object.vy ?? 0;
+        if (field.gravity) object.vy = (object.vy ?? 0) + field.gravity;
+        if (field.type === "beam") {
+          // A continuous discharge stays on the firing pose while the caster moves.
+          if (owner.state !== "attack" || owner.moveId !== object.id) return false;
+          const heat = field.aim === "heat" && owner.airborne;
+          const down = heat && !owner.input.up;
+          const offset = down ? field.offset + 7 : field.offset;
+          const height = down ? field.height - 29 : field.height;
+          object.x = Math.max(field.width, Math.min(1280 - field.width, owner.x + object.direction * offset));
+          object.y = owner.y - height;
+          if (heat && object.id.endsWith("medium")) {
+            const angle = owner.input.up ? 0 : owner.input.down ? 1.1 :
+              Math.min(.99, .34 + object.age * .05);
+            object.aim = (object.aim ?? 0) * .65 + angle * .35;
+          }
+        }
+        if (field.type === "lightning" && object.age === field.activeAge?.[0])
+          this.events.push({ kind: "hit", x: object.x, y: FLOOR, life: 5, total: 5,
+            blocked: false, audioOnly: true, ben: "storm" });
+        const crash = () => {
+          object.impactAge = 0;
+          object.spent = true;
+          this.effect("hit", object.x, object.y, 15);
+          this.events.at(-1)!.ben = "colossus";
+          return true;
+        };
+        if (field.type === "car") {
+          const edge = 60 * (object.scale ?? 1), ground = FLOOR - 25 * (object.scale ?? 1);
+          if (object.x <= edge || object.x >= 1280 - edge || object.y >= ground) {
+            object.x = Math.max(edge, Math.min(1280 - edge, object.x));
+            object.y = Math.min(ground, object.y);
+            return crash();
+          }
+        }
+        if (object.x < -60 || object.x > 1340 || object.y < -40 || object.y > FLOOR + 16) return false;
+        if (object.spent || (field.activeAge && (object.age < field.activeAge[0] || object.age >= field.activeAge[1])) ||
+            (field.type === "spikes" && object.age >= field.life - 6)) return true;
+        const shape = benObjectShape(object, field, before.x, before.y);
+        const damage = projectile.damage + (object.power === 50 ? 13 : object.power ? 8 : 0);
+        const missile = benProjectile(field);
+        if (missile && this.damageBenWalls([shape], damage, walls, `ben:${owner.id}:${object.cast}:${index}`, owner.id))
+          return field.type === "car" ? crash() : false;
+        if (field.type === "gravityPulse" && walls.some(w => this.benWallBetween(w, owner.x, target.x, shape))) return true;
+        if (damage && this.strikeEchoClones(owner, target, [shape], walls) && missile && field.type !== "beam") return false;
+        if (this.capture || target.knockedDown || target.invulnerable || target.health <= 0 ||
+            field.type === "sonicAssist" && (target.combo >= 5 || owner.omnitrix?.active !== "echoEcho")) return true;
+        const hurt = target.hurtboxes().find(box => shapeHitsRect(shape, box));
+        if (!hurt) return true;
+        object.spent = true;
+        if (object.cast !== undefined && (field.type === "spikes" || field.type === "shard")) {
+          for (const sibling of watch.objects)
+            if (sibling.id === object.id && sibling.cast === object.cast && sibling !== object)
+              sibling.spent = true;
+        }
+        const direction = field.type === "lightning" || field.type === "spectralHand" ? -target.facing
+          : (field.type === "pillar" || field.gravityMode === "repel") && target.x !== object.x
+            ? Math.sign(target.x - object.x) : object.direction;
+        if (field.type === "spectralHand" && projectile.ben?.nightmare &&
+            !this.benBlocked(target, projectile, direction) && !this.temporal.isFrozen(target.id) &&
+            target.combo < (owner.data.combatLimits?.maxHits ?? 9)) {
+          for (const sibling of watch.objects)
+            if (sibling.cast === object.cast && sibling.id === object.id) sibling.spent = true;
+          if (owner.x !== target.x) owner.facing = owner.x < target.x ? 1 : -1;
+          this.beginCapture("grab", owner, target, "ground", object.id);
+          return false;
+        }
+        const energy = field.energy ?? (field.type === "fireball" ? (object.id.endsWith("_medium") ? 2 : 1) : 0);
+        if (energy && this.absorbBen(target, energy, damage, direction)) return false;
+        const impact = object.power
+          ? { ...projectile, damage, stun: projectile.stun + 3, push: projectile.push + 2 }
+          : field.type === "sonicAssist" && target.combo
+            ? { ...projectile, damage, stun: Math.max(projectile.stun, Math.min(16, target.stun)), launch: target.airborne ? target.vy * .65 : 0 }
+            : { ...projectile, damage };
+        const beamX = field.type === "beam" ? target.x : object.x;
+        const contactX = Math.max(hurt.x, Math.min(beamX, hurt.x + hurt.w));
+        const impactY = field.type === "beam" ? Math.max(hurt.y, Math.min(hurt.y + hurt.h,
+          object.y + Math.abs(contactX - object.x) * (object.aim ?? 0))) : object.y;
+        this.resolveImpact(owner, target, impact, object.id, {
+          x: contactX,
+          y: missile ? impactY : Math.max(hurt.y, object.y - field.height),
+          w: 0, h: 0,
+        }, direction);
+        return field.type === "car" ? crash() : !missile || field.type === "beam";
+      });
+      const revealed = this.capture;
+      if (revealed?.attacker === owner.id && revealed.ben?.moveId.startsWith("ghostPhase_"))
+        watch.objects = watch.objects.filter(object => object.id !== revealed.ben!.moveId);
+    }
+  }
+
+  private spawnBenField(owner: Fighter, target: Fighter, field: BenField) {
+    const watch = owner.omnitrix!;
+    const projectile = benProjectile(field);
+    const half = projectile ? field.width : field.width / 2;
+    const balance = benFormBalance.energy;
+    const cost = field.energy === 1 ? balance.lightSpend : balance.mediumSpend;
+    const power = (field.spendCharge || field.type === "bolt") && watch.active === "feedback" && watch.charge >= cost ? cost : 0;
+    const origin = owner.x + field.offset * owner.facing;
+    const stormX = Math.max(half, Math.min(1280 - half, origin));
+    const lastStrike = stormX + (field.pattern?.at(-1)?.offset ?? 0) * owner.facing;
+    const stormSide = lastStrike > 1280 - half || lastStrike < half ? -owner.facing : owner.facing;
+    for (const shot of field.pattern ?? [{}]) {
+      const desired = origin + (shot.offset ?? 0) * owner.facing;
+      const placeX = field.type === "lightning" ? stormX + (shot.offset ?? 0) * stormSide : desired;
+      if (field.type === "spikes" && (desired < half || desired > 1280 - half)) continue;
+      const object: BenObject = {
+        id: owner.moveId, direction: owner.facing * (shot.direction ?? 1),
+        x: Math.max(half, Math.min(1280 - half, placeX)),
+        y: shot.height ? FLOOR - shot.height : projectile ? owner.y - field.height : FLOOR,
+        age: -(shot.delay ?? 0), spent: false, cast: this.combatFrame,
+        ...(shot.vy || field.type === "car" ? { vy: shot.vy ?? -4.9 } : {}),
+        ...(field.type === "car" ? { scale: owner.benScale } : {}),
+        ...(field.aim === "heat" ? { aim: owner.airborne ? owner.input.down ? .95 : owner.input.up ? 0 : .55 : 0 } : {}),
+        ...(power ? { power } : {}),
+      };
+      if (field.type === "wall") {
+        const bounds = { x: object.x - half - 3, y: FLOOR - field.height, w: field.width + 6, h: field.height };
+        const widest = Math.max(owner.pushbox().w, target.pushbox().w);
+        const margin = half + widest / 2 + Math.max(40, widest / 2);
+        if (desired < margin || desired > 1280 - margin || overlaps(bounds, owner.pushbox()) || overlaps(bounds, target.pushbox())) {
+          watch.noSpace = 35;
+          return;
+        }
+        object.durability = field.durability!;
+        object.hitKeys = [];
+      }
+      watch.objects.push(object);
+    }
+    if (power) {
+      watch.charge -= power;
+      watch.chargeCue = { kind: "spend", amount: -power, ticks: 29 };
+    }
+  }
+
+  private placeBenForm(fighter: Fighter, rival: Fighter, to: BenAlien) {
+    const form = benForms[to];
+    if (!form || !this.placeBenBody(fighter, rival, form)) return false;
+    const watch = fighter.omnitrix!;
+    if (watch.active === "gravattack" || watch.active === "echoEcho") clearStage7(fighter);
+    if (watch.nrgReleased) {
+      watch.nrgReleased = false;
+      delete watch.flightTicks;
+      watch.nrgTicks = 0;
+      watch.nrgCooldown = benStage6Balance.nrgCooldown;
+      watch.objects.length = 0;
+    }
+    return true;
+  }
+
+  private placeBenBody(fighter: Fighter, rival: Fighter, form: BenForm, allowPush = false) {
+    const half = form.width / 2, inset = Math.max(40, half);
+    let x = Math.max(inset, Math.min(1280 - inset, fighter.x));
+    const target = rival.pushbox();
+    let rivalX = rival.x;
+    const solidWall = (box: Rect) => this.benWalls().some(w =>
+      this.benWallSolid(w) && shapeHitsRect(benObjectShape(w.object, w.field), box));
+    if (overlaps(fighter.pushbox(form, x, 1), target)) {
+      const side = fighter.x <= rival.x ? -1 : 1;
+      const gap = half + target.w / 2;
+      x = rival.x + side * gap;
+      if (x < inset || x > 1280 - inset) {
+        if (!allowPush) return false;
+        x = Math.max(inset, Math.min(1280 - inset, x));
+        rivalX = x - side * gap;
+        if (rivalX < rival.stageInset || rivalX > 1280 - rival.stageInset ||
+            solidWall(rival.pushbox(rival.benForm, rivalX))) return false;
+      }
+    }
+    if (solidWall(fighter.pushbox(form, x, 1))) {
+      if (!allowPush) return false;
+      const origin = Math.max(inset, Math.min(1280 - inset, fighter.x));
+      const candidates = Array.from({ length: 33 }, (_, i) => i % 2 ? origin - (i + 1) * 1.5 : origin + i * 1.5);
+      const nearby = candidates.find(candidate => {
+        const body = fighter.pushbox(form, candidate, 1);
+        return candidate >= inset && candidate <= 1280 - inset && !overlaps(body, target) && !solidWall(body);
+      });
+      if (nearby === undefined) return false;
+      x = nearby;
+      rivalX = rival.x;
+    }
+    fighter.x = x;
+    rival.x = rivalX;
+    // A switch spends the old dash or jump startup rather than extending it.
+    fighter.setState(fighter.airborne ? "air" : "idle");
+    return true;
+  }
   private damage(target: Fighter, damage: number, minimum = 0) {
+    if (target.benForm) damage = Math.round(damage * target.benForm.damageTaken);
     if (this.rules.infiniteHealth?.[target.id]) return damage;
     const next = Math.max(minimum, target.health - damage),
       applied = target.health - next;
@@ -1721,11 +2617,44 @@ export class Match {
     kind: CaptureSequence["kind"],
     attacker: Fighter,
     victim: Fighter,
+    source: KanekiCapture["source"] = "ground",
+    benMoveOverride?: string,
   ) {
-    const grab = kind === "grab" ? attacker.data.grabSequence : undefined;
+    if (kind === "grab" && attacker.data.id === "kaneki") {
+      const x = victim.x, y = victim.y;
+      const technique = kanekiTechnique(attacker.moveId);
+      const limb = attacker.kanekiLimb ?? (source === "air" ? "upperRear" : "lowerFront");
+      attacker.vx = attacker.vy = victim.vx = victim.vy = 0;
+      victim.facing = -attacker.facing;
+      attacker.setState("grabbing");
+      victim.setState("grabbed");
+      victim.kanekiCaptured = true;
+      const swords = technique?.family === "fourSwords";
+      const chain: Chain | undefined = source === "ground" ? {
+        origin: technique?.family ?? "universal",
+        rank: technique?.rank ?? 0,
+        initialCombo: victim.combo,
+        started: this.frame,
+        phase: swords ? "opener" : "connected",
+        since: 0,
+      } : undefined;
+      attacker.actionClip = swords ? kanekiSpecialScene(technique.id, 0, attacker, victim, attacker.facing).clip : "grabConnected";
+      victim.actionClip = "grabbed";
+      attacker.buffer.clear();
+      victim.buffer.clear();
+      this.capture = { kind, attacker: attacker.id, victim: victim.id, tick: 0,
+        scale: Math.max(combatPace.combo.minimumDamageScale, 1 - victim.combo * combatPace.combo.damageStep),
+        kaneki: { source, limb, x, y, direction: attacker.facing, specialId: technique?.id, chain } };
+      if (chain && !swords) this.effect("chainBind", victim.x, victim.y - 72, 10);
+      this.hitstop = Math.max(this.hitstop, 4);
+      return;
+    }
+    const benMove = kind === "grab" && attacker.benForm ? benMoveOverride ?? attacker.moveId : undefined;
+    const grab = kind === "grab" ? benGrabFor(attacker.benForm, benMove ?? "") ?? attacker.grabSequence : undefined;
     const contactX = grab?.startFromContact
       ? (victim.x - attacker.x) * attacker.facing
       : undefined;
+    const contactFrame = benMove?.startsWith("conductor_") ? attacker.stateFrame : undefined;
     if (grab) {
       // The configurable universal throw keeps its owner anchored, including
       // at a wall. Only the captive follows the authored, bounded trajectory.
@@ -1736,13 +2665,15 @@ export class Match {
       attacker.x = center - attacker.facing * 36;
       victim.x = center + attacker.facing * 36;
     }
-    attacker.y = victim.y = FLOOR;
+    const contactY = (grab && "scene" in grab && grab.scene) ? victim.y - FLOOR : undefined;
+    attacker.y = FLOOR;
+    if (contactY === undefined) victim.y = FLOOR;
     attacker.vx = attacker.vy = victim.vx = victim.vy = 0;
     victim.facing = -attacker.facing;
     victim.health = Math.max(1, victim.health);
     attacker.setState(kind === "grab" ? "grabbing" : "cinematic");
     victim.setState("grabbed");
-    attacker.actionClip = kind === "ultimate" ? "ultimateRush" : "grabHold";
+    attacker.actionClip = kind === "ultimate" ? "ultimateRush" : grab && "clip" in grab && typeof grab.clip === "string" ? grab.clip : "grabHold";
     victim.actionClip = kind === "ultimate" ? "damageMedium" : "grabbed";
     attacker.buffer.clear();
     victim.buffer.clear();
@@ -1753,11 +2684,22 @@ export class Match {
       tick: 0,
       scale: Math.max(0.45, 1 - Math.max(0, victim.combo - 1) * 0.08),
       ...(contactX === undefined ? {} : { contactX }),
+      ...(contactY === undefined ? {} : { contactY }),
+      ...(benMove ? { ben: { moveId: benMove, origin: attacker.x, direction: attacker.facing,
+        ...(contactFrame === undefined ? {} : { contactFrame }) } } : {}),
     };
+    const technique = benMove && benObjectMove(benMove)?.ben?.technique;
+    if (technique && attacker.omnitrix && !attacker.omnitrix.usedSpecials.includes(technique))
+      attacker.omnitrix.usedSpecials.push(technique);
     this.hitstop = Math.max(this.hitstop, kind === "ultimate" ? 12 : 5);
   }
-  private beginStagedSuper(a: Fighter, b: Fighter, jet: boolean) {
-    const config = jet ? jetConfig : furyConfig;
+  private centipedeEffect(cue: CentipedeCue, x: number, y: number, life: number, strength?: number) {
+    this.events.push({ kind: "centipede", centipede: { cue, frame: this.frame }, x, y,
+      life, total: life, strength, blocked: false });
+  }
+  private beginStagedSuper(a: Fighter, b: Fighter, kind: "jetGigant" | "gokuFury" | "kirin" | "centipede",
+    source: CentipedeSource = "strike") {
+    const config = kind === centipedeId ? centipedeConfig : kind === "kirin" ? kirinConfig : kind === "jetGigant" ? jetConfig : furyConfig;
     const state: FuryState = {
       attacker: a.id,
       victim: b.id,
@@ -1771,8 +2713,18 @@ export class Match {
         1 - Math.max(0, b.combo - 1) * 0.08,
       ),
     };
-    if (jet) this.jetGigant = { ...state, hold: 8, openingTip: jetOpener(a)!.tip };
-    else this.fury = state;
+    if (kind === "jetGigant") this.jetGigant = { ...state, hold: 8, openingTip: jetOpener(a)!.tip };
+    else if (kind === "kirin") this.kirin = {
+      ...state, hold: 5, cursed: !!a.kirinCursed,
+      storm: this.sasukeStormUntil > this.combatFrame ? this.sasukeStormLevel : 0,
+    };
+    else if (kind === centipedeId) {
+      const grip = this.capture?.kaneki?.limb ?? "lowerFront";
+      this.centipede = { ...state, source, grip, originY: a.y, hold: 0,
+        scale: Math.max(centipedeConfig.minimumComboScale, 1 - Math.max(0, b.combo - (source === "strike" ? 1 : 0)) * combatPace.combo.damageStep) };
+      this.capture = undefined;
+      if (source !== "strike") this.centipedeEffect("activation", a.x, a.y - 74, 20);
+    } else this.fury = state;
     a.setState("cinematic");
     b.setState("grabbed");
     a.vx = a.vy = b.vx = b.vy = 0;
@@ -1786,8 +2738,9 @@ export class Match {
     this.stageSuper();
   }
   private stageSuper() {
-    const s = (this.jetGigant ?? this.fury)!,
-      scene = this.jetGigant ? jetScene(this.jetGigant) : furyScene(s),
+    const s = (this.centipede ?? this.kirin ?? this.jetGigant ?? this.fury)!,
+      scene = this.centipede ? centipedeScene(this.centipede) : this.kirin ? kirinScene(this.kirin) :
+        this.jetGigant ? jetScene(this.jetGigant) : furyScene(s),
       a = this.fighters[s.attacker],
       b = this.fighters[s.victim];
     for (const [f, p] of [
@@ -1805,31 +2758,40 @@ export class Match {
     b.stand?.tick(b);
   }
   private stepStagedSuper() {
-    const jet = this.jetGigant;
-    if (jet && jet.hold > 0) {
-      jet.hold--;
+    const jet = this.jetGigant, kirin = this.kirin, centipede = this.centipede;
+    const held = centipede ?? kirin ?? jet;
+    if (held && held.hold > 0) {
+      held.hold--;
       return;
     }
-    const config = jet ? jetConfig : furyConfig;
-    const s = (jet ?? this.fury)!,
+    const config = centipede ? centipedeConfig : kirin ? kirinConfig : jet ? jetConfig : furyConfig;
+    const s = (centipede ?? kirin ?? jet ?? this.fury)!,
       t = ++s.tick,
       a = this.fighters[s.attacker],
       b = this.fighters[s.victim];
     this.stageSuper();
+    if (kirin && (t === kirinConfig.phases.storm || t === kirinConfig.phases.reveal || t === kirinConfig.phases.dive))
+      this.effect("kirinCharge", a.x, a.y - 130, 9);
+    const cue = centipede && centipedePhaseCue(t);
+    if (cue) this.centipedeEffect(cue, a.x, a.y - 72, 20);
     const hit = config.hits.find((h) => h.tick === t);
     if (hit) {
       const finish = hit.kind === "explosion" || hit.kind === "ground";
-      if (jet && "hold" in hit && typeof hit.hold === "number") jet.hold = hit.hold;
+      if (held && "hold" in hit && typeof hit.hold === "number") held.hold = hit.hold;
       const applied = this.damage(b, Math.round(hit.damage * s.scale), finish ? 0 : 1);
       b.combo++;
-      this.recordHit(a, b, `${jet ? "jet" : "fury"}_${hit.kind}`, applied);
-      b.gainMeter(2);
-      this.effect(
-        !jet && finish ? "roadExplosion" : jet && (finish || hit.kind === "gigant") ? "ultimate" : "hit",
+      this.recordHit(a, b, `${centipede ? centipedeId : kirin ? "kirin" : jet ? "jet" : "fury"}_${hit.kind}`, applied);
+      if (centipede) {
+        this.centipedeEffect(hit.kind as CentipedeCue, b.x, finish ? FLOOR : b.y - 73, finish ? 37 : 13, finish ? 3 : 2);
+      } else {
+        b.gainMeter(2);
+        this.effect(
+        kirin ? "kirinThunder" : !jet && finish ? "roadExplosion" : jet && (finish || hit.kind === "gigant") ? "ultimate" : "hit",
         b.x,
         b.y - 78,
         finish ? 16 : 8,
-      );
+        );
+      }
     }
     if (t >= config.duration) {
       a.y = b.y = FLOOR;
@@ -1844,7 +2806,8 @@ export class Match {
       b.syncReactionClock(false);
       a.buffer.clear();
       b.buffer.clear();
-      this.fury = this.jetGigant = undefined;
+      this.fury = this.jetGigant = this.kirin = this.centipede = undefined;
+      if (kirin) this.sasukeStormUntil = this.sasukeStormLevel = 0;
       this.hitstop = 0;
       this.checkRoundEnd();
     }
@@ -1985,11 +2948,16 @@ export class Match {
       this.checkRoundEnd();
     }
   }
-  private stepCapture() {
+  private stepCapture(inputs: InputFrame[]) {
     const sequence = this.capture!;
     const a = this.fighters[sequence.attacker],
       b = this.fighters[sequence.victim];
     const tick = sequence.tick++;
+    if (sequence.kaneki) {
+      if (sequence.kaneki.chain) this.stepKanekiChain(sequence, a, b, tick, inputs[a.id], inputs[b.id]);
+      else this.stepKanekiCapture(sequence, a, b, tick, inputs[a.id]);
+      return;
+    }
     a.stateFrame = tick;
     b.stateFrame = tick;
     if (sequence.kind === "ultimate") {
@@ -2032,8 +3000,15 @@ export class Match {
     } else {
       a.actionClip = "grabHold";
       b.actionClip = "grabbed";
-      const grab = a.data.grabSequence ?? cinematics.grab;
-      const track = a.data.grabSequence?.victimTrack;
+      const ben = sequence.ben;
+      const style = ben && benGrabFor(a.benForm, ben.moveId);
+      const grab = style || a.grabSequence || cinematics.grab;
+      const track = style?.victimTrack ?? a.grabSequence?.victimTrack;
+      if (ben && style) {
+        a.actionClip = style.clip ?? "grabHold";
+        const travel = Math.min(1, tick / Math.max(1, style.hitTick));
+        a.x = Math.max(a.stageInset, Math.min(1280 - a.stageInset, ben.origin + ben.direction * (style.carry ?? 0) * travel));
+      }
       if (track?.length) {
         let i = 0;
         while (i + 1 < track.length && track[i + 1].tick <= tick) i++;
@@ -2043,44 +3018,373 @@ export class Match {
             q.tick === p.tick
               ? 0
               : Math.min(1, (tick - p.tick) / (q.tick - p.tick));
-        const fromX = i === 0 ? (sequence.contactX ?? p.x) : p.x;
-        b.x = Math.max(
-          40,
-          Math.min(1240, a.x + a.facing * Math.round(fromX + (q.x - fromX) * t)),
-        );
-        b.y = FLOOR + Math.round(p.y + (q.y - p.y) * t);
+        const contactOffset = sequence.contactX ?? p.x;
+        const fromX = i === 0 ? contactOffset : p.x;
+        const offset = style?.scene === "nightmare"
+          ? (sequence.contactX ?? 66) + p.x - 62 + (q.x - p.x) * t
+          : fromX + (q.x - fromX) * t;
+        const root = style?.scene && ben ? ben.origin : a.x;
+        const direction = style?.scene && ben ? ben.direction : a.facing;
+        b.x = Math.max(40, Math.min(1240, root + direction * Math.round(offset)));
+        const fromY = i === 0 ? sequence.contactY ?? p.y : p.y;
+        b.y = FLOOR + Math.round(fromY + (q.y - fromY) * t);
         b.actionClip = p.clip;
         let start = i;
         while (start > 0 && track[start - 1].clip === p.clip) start--;
         b.stateFrame = tick - track[start].tick;
       }
-      if (tick === grab.hitTick) {
-        const applied = this.damage(b, grab.damage);
+      if (style?.scene === "nightmare" && ben) {
+        const toward = Math.max(0, Math.min(1, tick / 6));
+        const x = b.x - ben.direction * 66;
+        a.x = Math.max(a.stageInset, Math.min(1280 - a.stageInset, ben.origin + (x - ben.origin) * toward));
+        a.facing = a.x <= b.x ? 1 : -1;
+      }
+      if (style?.scene === "hunt" && ben) {
+        const progress = tick / grab.duration;
+        const side = progress < .53 ? -ben.direction : ben.direction;
+        const approach = Math.min(1, tick / 8);
+        const x = b.x + side * (progress < .82 ? 52 : 71);
+        a.x = Math.max(a.stageInset, Math.min(1280 - a.stageInset,
+          ben.origin + (x - ben.origin) * approach));
+        a.y = progress < .82 ? Math.min(FLOOR, b.y + 13) : Math.min(FLOOR, b.y + 70);
+        a.facing = b.x > a.x ? 1 : -1;
+      }
+      const strikes = style?.impacts ?? [grab.hitTick];
+      if (strikes.includes(tick) && (!style?.impacts || b.combo < (a.data.combatLimits?.maxHits ?? 9))) {
+        const applied = this.damage(b, style ? Math.round(grab.damage * sequence.scale / strikes.length) : grab.damage);
         b.combo++;
-        this.recordHit(a, b, "throw", applied);
+        this.recordHit(a, b, ben?.moveId ?? "throw", applied);
         this.effect("hit", b.x, b.y - 75, 12);
-        this.hitstop = 8;
-        a.gainMeter(10);
-        b.gainMeter(5);
+        if (style) this.events.at(-1)!.ben = style.scene === "nightmare" ? "nightmare" :
+          a.benForm?.throwEffect ?? (a.omnitrix?.active === "heatblast" ? "flame" : a.omnitrix?.active === "xlr8" ? "speed" : "power");
+        if (ben?.moveId.startsWith("conductor_") && tick === strikes[0] && a.omnitrix)
+          this.gainFeedbackCharge(a.omnitrix, ben.moveId.endsWith("medium") ? 16 : 12, "contact");
+        this.hitstop = strikes.length > 1 ? 3 : 8;
+        if (tick === strikes.at(-1)) { a.gainMeter(10); b.gainMeter(5); }
       }
       if (sequence.tick >= grab.duration) this.endCapture(sequence, a, b);
     }
+  }
+  private bufferChainChoice(s: KanekiCapture, tick: number, input: InputFrame, defender: InputFrame) {
+    const chain = s.chain!;
+    if (input.pressed.includes("ultimate") && centipedeConversion(this, this.capture, tick))
+      chain.superQueued = true;
+    const defense = chainPick(defender.pressed);
+    if (canResistChain(chain, tick) && defense && defense !== chain.defenderLast &&
+        this.frame >= (chain.nextResistance ?? 0)) {
+      chain.nextResistance = this.frame + resistanceInterval;
+      if (defense === resistanceButton(chain)) {
+        chain.resistance = (chain.resistance ?? 0) + 1;
+        if (chain.resistance < resistanceGoal) {
+          const b = this.fighters[this.capture!.victim];
+          this.effect("chainBind", b.x, b.y - 68, 8);
+        }
+      }
+    }
+    chain.defenderLast = defense;
+    const pick = chainPick(input.pressed);
+    const fresh = pick && pick !== chain.last ? pick : undefined;
+    chain.last = pick;
+    const age = tick - chain.since;
+    if (chain.phase === "connected" || chain.phase === "choice1") {
+      if (age < chainWindow(chain)) chain.queued ??= fresh;
+      return;
+    }
+    const preparing = chain.phase === "action" && !!s.route &&
+      age >= kaguneRoutes[s.route].duration - chainBufferTicks;
+    const choosing = chain.phase === "choice2" && age < chainWindow(chain, true);
+    if (!preparing && !choosing) return;
+    if (fresh && chainFinisher(chain, fresh, s.route)) chain.queued ??= fresh;
+    if (choosing && chain.origin === "universal" && !chain.escape && defense)
+      chain.escape = { button: defense, tick };
+  }
+
+  private stepKanekiChain(sequence: CaptureSequence, a: Fighter, b: Fighter, tick: number, input: InputFrame, defender: InputFrame) {
+    const s = sequence.kaneki!, chain = s.chain!;
+    this.bufferChainChoice(s, tick, input, defender);
+    const escape = chain.escape;
+    const read = chain.phase === "choice2" && tick - chain.since >= chainBufferTicks &&
+      chain.queued && escape?.button === chain.queued && tick - escape.tick <= chainEscapeTicks;
+    if ((chain.resistance ?? 0) >= resistanceGoal || read) {
+      this.escapeKanekiChain(a, b);
+      return;
+    }
+    const conversion = chain.superQueued && centipedeConversion(this, sequence, tick);
+    if (conversion) {
+      a.meter -= centipedeConfig.cost;
+      this.beginStagedSuper(a, b, centipedeId, conversion);
+      return;
+    }
+    if (chain.phase === "opener" || chain.phase === "outro") {
+      this.stepKanekiTechniqueCapture(sequence, a, b, tick - chain.since, s.specialId!);
+      return;
+    }
+    if (chain.phase === "connected") {
+      if (tick < chainWindup) {
+        a.stateFrame = b.stateFrame = tick;
+        return;
+      }
+      chain.phase = "choice1";
+      chain.since = tick;
+    }
+    if (chain.phase === "choice1") {
+      const age = tick - chain.since;
+      a.actionClip = chain.origin === "fourSwords" ? "swordsThrow" : "grabHold";
+      a.stateFrame = chain.origin === "fourSwords" ? 2 : age;
+      if (!chain.queued && age < chainWindow(chain)) return;
+      if (directChain(chain)) {
+        if (!chain.queued) {
+          chain.phase = "outro";
+          chain.since = tick - (chain.origin === "fourSwords" ? swordProfile(chain.rank).strikes[2] + 1 : 0);
+          this.stepKanekiTechniqueCapture(sequence, a, b, tick - chain.since, s.specialId!);
+          return;
+        }
+        this.beginKanekiFinisher(chain, chainFinisher(chain, chain.queued)!, a, b, tick);
+      } else {
+        s.route = chain.queued === "light" ? "pull" : chain.queued === "heavy" ? "launch" : "throw";
+        s.fallback = !chain.queued;
+        chain.queued = undefined;
+        chain.phase = "action";
+        chain.since = tick;
+      }
+    }
+    const route = s.route;
+    if (chain.phase === "action" && route) {
+      const age = tick - chain.since;
+      const config = kaguneRoutes[route];
+      const pivot = chain.origin === "kaguneGrab" && route === "throw";
+      a.actionClip = route === "pull" ? "kagunePull" : route === "launch" ? "kaguneLaunch" : "kaguneThrow";
+      a.stateFrame = b.stateFrame = age;
+      const position = kaguneVictimPosition(sequence, a.x, a.y, age);
+      const progress = age / (config.duration - 1);
+      b.x = pivot ? chainBoundX(s.x + s.direction * Math.round(18 * progress)) : position.x;
+      b.y = pivot ? Math.round(s.y - (29 * progress + 14 * progress * (1 - progress))) :
+        route === "launch" ? position.y - Math.round(88 * progress ** 1.5) : position.y;
+      b.actionClip = age < 3 ? "grabbed" : route === "launch" ? "launched" : route === "throw" ? "damageAir" : "damageMedium";
+      if (age < config.duration - 1) return;
+      const simpleThrow = route === "throw" && !pivot;
+      this.kanekiChainDamage(sequence, a, b, a.actionClip, pivot ? 19 : s.fallback ? 78 : config.damage, route === "launch", simpleThrow);
+      this.effect("hit", b.x, b.y - 74, 12);
+      this.hitstop = simpleThrow ? 7 : 4;
+      if (simpleThrow) {
+        this.releaseKanekiChain(a, b, 15, config.push, config.launch);
+        return;
+      }
+      chain.phase = "choice2";
+      chain.since = tick + 1;
+      return;
+    }
+    if (chain.phase === "choice2") {
+      const age = tick - chain.since;
+      if ((!chain.queued && age < chainWindow(chain, true)) || age < chainBufferTicks) return;
+      const finish = chain.queued ? chainFinisher(chain, chain.queued, route) : undefined;
+      const selected = finish && chainFinishes[finish];
+      const remaining = kaguneGrabLimit - (this.frame - chain.started);
+      const fits = chain.origin !== "kaguneGrab" || !selected ||
+        remaining > selected.keys.at(-1)![0] + selected.stop;
+      this.beginKanekiFinisher(chain, fits ? finish ?? "release" : "release", a, b, tick);
+    }
+    const finishId = chain.finish!;
+    const config = chainFinishes[finishId];
+    const age = tick - chain.since;
+    const pose = chainPose(finishId, chain.from!, age, s.direction, FLOOR);
+    a.x = pose.actor.x;
+    a.y = pose.actor.y;
+    a.actionClip = pose.clip;
+    a.stateFrame = age;
+    b.x = pose.victim.x;
+    b.y = pose.victim.y;
+    b.facing = b.x >= a.x ? -1 : 1;
+    b.stateFrame = age;
+    b.actionClip = pose.victimClip;
+    const air = route === "launch" || !!config.slam || config.follow === "air";
+    const extra = config.beats?.find(beat => beat.at === age);
+    const limits = a.data.combatLimits!;
+    if (extra && b.combo < limits.maxHits - 1 && (!air || b.comboAirHits < limits.maxAirHits - 1)) {
+      this.kanekiChainDamage(sequence, a, b, finishId, extra.damage, air, false);
+      this.effect("hit", b.x, b.y - 74, 10);
+    }
+    if (age === config.hit) {
+      this.kanekiChainDamage(sequence, a, b, finishId, config.damage, air, true);
+      chain.landed = true;
+      const life = config.slam ? 26 : 15;
+      this.events.push({ kind: "chainImpact", chain: finishId, strength: config.slam ? 3 : 2,
+        life, total: life, blocked: false, x: b.x, y: config.slam ? FLOOR : b.y - 72 });
+      this.hitstop = config.stop;
+    }
+    if (age >= pose.end) {
+      const limited = b.combo >= limits.maxHits || b.comboAirHits >= limits.maxAirHits || b.comboAge >= limits.maxTicks;
+      this.releaseKanekiChain(a, b, config.recovery, config.push, config.launch, false, limited ? undefined : config.follow);
+    }
+  }
+
+  private beginKanekiFinisher(chain: Chain, finish: ChainRoute, a: Fighter, b: Fighter, tick: number) {
+    chain.finish = finish;
+    chain.phase = "finisher";
+    chain.since = tick;
+    chain.from = { actor: { x: a.x, y: a.y }, victim: { x: b.x, y: b.y } };
+    this.events.push({ kind: "chainWhoosh", chain: finish, x: a.x, y: a.y - 85,
+      life: 15, total: 15, blocked: false });
+  }
+
+  private escapeKanekiChain(a: Fighter, b: Fighter) {
+    this.effect("chainEscape", b.x, b.y - 73, 15);
+    this.hitstop = 0;
+    this.releaseKanekiChain(a, b, 22, 2, 1, true);
+  }
+
+  private kanekiChainDamage(sequence: CaptureSequence, a: Fighter, b: Fighter, move: string, damage: number, air: boolean, final: boolean) {
+    const chain = sequence.kaneki!.chain!;
+    const scale = Math.max(combatPace.combo.minimumDamageScale,
+      sequence.scale - Math.max(0, b.combo - chain.initialCombo) * combatPace.combo.damageStep);
+    const applied = this.damage(b, Math.round(damage * scale), final ? 0 : 1);
+    if (!b.combo) b.comboAge = b.comboAirHits = 0;
+    b.combo++;
+    if (air) b.comboAirHits++;
+    this.recordHit(a, b, move, applied);
+    a.gainMeter(5);
+    b.gainMeter(3);
+  }
+
+  private releaseKanekiChain(a: Fighter, b: Fighter, recovery: number, push: number, launch: number,
+    escaped = false, follow?: "ground" | "air") {
+    a.setState("throwRecover");
+    a.kanekiSpecialRecovery = recovery;
+    a.actionClip = b.actionClip = "";
+    if (follow === "air" && !a.airborne && b.health > 0) {
+      a.attack("captureLaunchLink");
+      a.connected = a.hitConfirmed = true;
+    }
+    this.applyReaction(b, { blocked: false, crouched: false, strength: escaped ? 1 : 3,
+      stun: escaped ? 8 : follow === "ground" ? 24 : 36, vx: a.facing * push, vy: launch,
+      launch: follow === "air", knockdown: !escaped && !follow });
+    a.buffer.clear();
+    b.buffer.clear();
+    this.capture = undefined;
+    this.checkRoundEnd();
+  }
+
+  private stepKanekiCapture(sequence: CaptureSequence, a: Fighter, b: Fighter, tick: number, input: InputFrame) {
+    const s = sequence.kaneki!;
+    const technique = kanekiTechnique(s.specialId);
+    if (technique && technique.family !== "kaguneGrab") {
+      this.stepKanekiTechniqueCapture(sequence, a, b, tick, technique.id);
+      return;
+    }
+    b.stateFrame = tick;
+    if (!s.route) {
+      s.pending ??= kaguneChoice(input.pressed);
+      if (tick < captureWindup) {
+        a.stateFrame = tick;
+        return;
+      }
+      a.actionClip = "grabHold";
+      a.stateFrame = tick - captureWindup;
+      if (!s.pending && tick < captureWindup + captureWindow) return;
+      s.route = s.pending ?? "throw";
+      s.fallback = !s.pending;
+      s.selectedAt = tick;
+    }
+    const route = s.route;
+    const config = kaguneRoutes[route];
+    const age = tick - s.selectedAt!;
+    a.actionClip = route === "pull" ? "kagunePull" : route === "throw" ? "kaguneThrow" : "kaguneLaunch";
+    a.stateFrame = age;
+    const position = kaguneVictimPosition(sequence, a.x, a.y, age);
+    b.x = position.x;
+    b.y = position.y;
+    b.stateFrame = age;
+    b.actionClip = age < 3 ? "grabbed"
+      : route === "pull" ? "damageMedium" : route === "launch" ? "launched" : "damageAir";
+    if (age < config.duration - 1) return;
+    const damage = this.damage(b, Math.round((s.fallback ? 78 : config.damage) * sequence.scale));
+    if (!b.combo) b.comboAge = b.comboAirHits = 0;
+    b.combo++;
+    if (s.source === "air" || route === "launch") b.comboAirHits++;
+    this.recordHit(a, b, a.actionClip, damage);
+    this.effect("hit", b.x, b.y - 74, 12);
+    this.hitstop = route === "pull" ? 4 : 7;
+    a.gainMeter(8);
+    b.gainMeter(5);
+    a.setState(a.airborne ? "air" : route === "throw" ? "throwRecover" : "idle");
+    a.actionClip = "";
+    if (!a.airborne && route !== "throw") {
+      a.attack(route === "pull" ? "capturePullLink" : "captureLaunchLink");
+      a.connected = a.hitConfirmed = true;
+    }
+    b.actionClip = "";
+    this.applyReaction(b, { blocked: false, crouched: false, strength: route === "pull" ? 1 : 3,
+      stun: config.stun, vx: s.direction * config.push, vy: config.launch,
+      launch: route === "launch", knockdown: config.knockdown });
+    a.buffer.clear();
+    b.buffer.clear();
+    this.capture = undefined;
+    this.checkRoundEnd();
+  }
+  private stepKanekiTechniqueCapture(sequence: CaptureSequence, a: Fighter, b: Fighter, tick: number, move: string) {
+    const s = sequence.kaneki!;
+    const scene = kanekiSpecialScene(move, tick, a, s, s.direction);
+    a.actionClip = scene.clip;
+    a.stateFrame = Math.max(0, scene.clipTick);
+    b.x = Math.max(40, Math.min(1240, Math.round(scene.victim.x)));
+    b.y = Math.min(FLOOR, Math.round(scene.victim.y));
+    b.stateFrame = tick;
+    b.actionClip = scene.hurt;
+
+    if (scene.snap) {
+      this.events.push({ kind: "knuckleSnap", audioOnly: true, knuckleFrame: this.frame,
+        x: a.x + a.facing * 35, y: a.y - 100, life: 6, blocked: false });
+    }
+    if (scene.impact) {
+      const damage = this.damage(b, Math.round(scene.impact * sequence.scale), scene.strength === 3 || scene.clip.startsWith("rushFinish") ? 0 : 1);
+      if (!b.combo) b.comboAge = b.comboAirHits = 0;
+      b.combo++;
+      this.recordHit(a, b, move, damage);
+      this.events.push({ kind: "hit", strength: scene.strength,
+        x: b.x - s.direction * 14, y: b.y - 68, life: 14, total: 14, blocked: false });
+      this.hitstop = Math.max(this.hitstop, scene.stop);
+      if (s.chain?.phase === "opener" && scene.strength === 3) {
+        s.chain.phase = b.health > 0 && b.combo < a.data.combatLimits!.maxHits ? "choice1" : "outro";
+        s.chain.since = s.chain.phase === "choice1" ? sequence.tick : 0;
+        return;
+      }
+    }
+    if (tick < scene.end - 1) return;
+    a.setState("throwRecover");
+    a.kanekiSpecialRecovery = scene.recovery;
+    a.actionClip = "";
+    b.actionClip = "";
+    this.applyReaction(b, { blocked: false, crouched: false, strength: 3,
+      stun: 34, vx: s.direction * scene.push, vy: scene.lift, launch: true, knockdown: true });
+    a.buffer.clear();
+    b.buffer.clear();
+    this.capture = undefined;
+    this.checkRoundEnd();
   }
   private endCapture(sequence: CaptureSequence, a: Fighter, b: Fighter) {
     a.setState(
       sequence.kind === "ultimate" ? "ultimateRecover" : "throwRecover",
     );
-    a.actionClip = "";
+    const conductor = sequence.ben?.moveId.startsWith("conductor_") ? sequence.ben.moveId : "";
+    a.actionClip = conductor ? conductor + "Recover" : "";
     b.setState("hitstun");
     b.actionClip = "";
-    b.knockedDown = true;
+    const style = sequence.ben && benGrabFor(a.benForm, sequence.ben.moveId);
+    b.knockedDown = style ? style.knockdown !== false : true;
     b.hitCrouched = false;
-    b.hitLaunch = sequence.kind === "grab";
+    b.hitLaunch = sequence.kind === "grab" && b.knockedDown;
     b.reactionStrength = 3;
     const release =
-      sequence.kind === "grab" ? a.data.grabSequence?.release : undefined;
+      sequence.kind === "grab" ? (style?.release ?? a.grabSequence?.release) : undefined;
+    if (style?.scene === "hunt") a.y = FLOOR;
+    if (style?.pursuit) {
+      a.setState("idle");
+      a.vy = -12.5;
+      a.airChaseTicks = 15;
+      a.setState("air");
+    }
     b.stun = release?.stun ?? 35;
-    b.vx = a.facing * (release?.vx ?? 8);
+    b.vx = a.facing * (style?.reverse ? -1 : 1) * (release?.vx ?? 8);
     b.vy = release?.vy ?? (sequence.kind === "ultimate" ? 12 : -6);
     b.syncReactionClock(false);
     a.buffer.clear();
@@ -2108,6 +3412,15 @@ export class Match {
         f.y = FLOOR;
         f.buffer.clear();
         f.sasukeCurse = undefined;
+        f.chill = undefined;
+        if (f.omnitrix) {
+          f.omnitrix.objects.length = 0;
+          delete f.omnitrix.echoClones;
+          if (f.omnitrix.nrgReleased) {
+            f.omnitrix.nrgReleased = false;
+            f.omnitrix.nrgTicks = 0;
+          }
+        }
         f.setState(winner < 0 ? "idle" : i === winner ? "victory" : "ko");
       });
       this.phase = "roundEnd";

@@ -1,0 +1,88 @@
+{
+  "sheet": "ben/idle.png",
+  "frameWidth": 256,
+  "frameHeight": 256,
+  "columns": 3,
+  "pivot": {
+    "x": 128,
+    "y": 224
+  },
+  "scale": 1,
+  "watch": [
+    {
+      "x": 23,
+      "y": -82
+    },
+    {
+      "x": 24,
+      "y": -83
+    },
+    {
+      "x": 24,
+      "y": -81
+    },
+    {
+      "x": 20,
+      "y": -84
+    },
+    {
+      "x": 24,
+      "y": -82
+    },
+    {
+      "x": 22,
+      "y": -84
+    }
+  ],
+  "clips": {
+    "idle": {
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "durations": [
+        12,
+        11,
+        12,
+        12,
+        12,
+        11
+      ],
+      "ticks": 1
+    },
+    "stand_light": {
+      "frames": [
+        0,
+        1,
+        2
+      ],
+      "durations": [
+        5,
+        3,
+        9
+      ],
+      "ticks": 1,
+      "sheet": "ben/normals.png",
+      "loop": false
+    },
+    "stand_medium": {
+      "frames": [
+        3,
+        4,
+        5
+      ],
+      "durations": [
+        9,
+        4,
+        17
+      ],
+      "ticks": 1,
+      "sheet": "ben/normals.png",
+      "loop": false
+    }
+  }
+}

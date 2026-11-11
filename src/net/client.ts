@@ -42,6 +42,8 @@ export class OnlineClient {
   private interval: ReturnType<typeof setInterval>;
   private disposed = false;
   private recoverAttempts = 0;
+  private deadline?: ReturnType<typeof setTimeout>;
+  private localInputs: InputFrame[] = [];
   onChange = () => {};
   onReset = () => {};
   onStep = (_match: Match, _frozen: boolean) => {};
@@ -55,12 +57,13 @@ export class OnlineClient {
     this.socket = io(url, {
       path: socketPath,
       autoConnect: false,
-      reconnectionAttempts: 15,
+      reconnectionAttempts: 6,
       reconnectionDelay: 500,
       reconnectionDelayMax: 2000,
-      timeout: 5000,
+      timeout: 3500,
     });
     this.socket.on("connect", () => {
+      this.cancelDeadline();
       this.recoverAttempts = 0;
       this.connected = true;
       this.message = "";
@@ -83,7 +86,9 @@ export class OnlineClient {
         }
       },
     );
+    this.socket.io.on("reconnect_failed", this.connectionUnavailable);
     this.socket.on("connect_error", () => {
+      this.armDeadline();
       this.connected = false;
       this.message = "Não foi possível conectar ao servidor. Tente novamente.";
       this.onChange();
@@ -91,12 +96,17 @@ export class OnlineClient {
     this.socket.on("disconnect", (reason: string) => {
       this.connected = false;
       this.queue.clear();
-      this.reconnecting = !!this.member && !this.disposed;
+      this.localInputs.length = 0;
+      this.reconnecting = !!this.member && !this.disposed && this.socket.active && !this.fatal;
+      if (this.socket.active) this.armDeadline();
       if (!this.fatal)
         this.message =
           reason === "io server disconnect"
             ? "O servidor encerrou esta conexão."
-            : "Conexão perdida. Tentando recuperar sua vaga…";
+            : this.reconnecting
+              ? "Conexão perdida. Tentando recuperar sua vaga…"
+              : "Conexão perdida. Confira o Apache e o backend do anfitrião.";
+      if (reason === "io server disconnect" && !this.fatal) return this.connectionUnavailable();
       this.onChange();
     });
     this.socket.on("room:state", (room: RoomView) => {
@@ -145,7 +155,7 @@ export class OnlineClient {
     });
     this.socket.on("room:expired", () => {
       this.forget();
-      this.fatal = true;
+      this.reconnecting = this.syncing = this.lagging = false;
       this.message = "A sala expirou. Crie ou entre em uma nova sala.";
       this.onChange();
     });
@@ -166,9 +176,27 @@ export class OnlineClient {
         if (!error) this.ping = Math.round(performance.now() - before);
       });
     }, 2000);
+    this.armDeadline();
     this.socket.connect();
   }
-  get canSend() {
+  private cancelDeadline() {
+    clearTimeout(this.deadline);
+    this.deadline = undefined;
+  }
+  private armDeadline() {
+    this.deadline ??= setTimeout(this.connectionUnavailable, this.room?.graceMs ?? 15000);
+  }
+  private connectionUnavailable = () => {
+    this.cancelDeadline();
+    this.connected = false;
+    this.reconnecting = false;
+    this.syncing = false;
+    this.fatal = true;
+    this.message = "Servidor indisponível. Confira o Apache e o backend no computador anfitrião, depois tente novamente.";
+    this.socket.disconnect();
+    this.onChange();
+  };
+  get canControl() {
     return (
       !!this.match &&
       !this.fatal &&
@@ -176,13 +204,15 @@ export class OnlineClient {
       !this.syncing &&
       !this.reconnecting &&
       !this.result &&
-      this.room?.status === "playing" &&
-      this.nextInput <= this.serverTick + CLIENT_LEAD_LIMIT
+      this.room?.status === "playing"
     );
+  }
+  get canSend() {
+    return this.canControl && this.nextInput <= this.serverTick + CLIENT_LEAD_LIMIT;
   }
   get connectionText() {
     return this.fatal
-      ? "Conexão encerrada"
+      ? "Conexão indisponível"
       : !this.connected
         ? this.reconnecting
           ? "Reconectando…"
@@ -236,6 +266,7 @@ export class OnlineClient {
     this.pendingEnd = undefined;
     this.matchId = "";
     this.queue.clear();
+    this.localInputs.length = 0;
     try {
       sessionStorage.removeItem(this.storageKey);
     } catch {}
@@ -296,8 +327,8 @@ export class OnlineClient {
         return;
       }
       this.forget();
-      this.fatal = true;
-      this.reconnecting = false;
+      this.fatal = (error as { code?: string }).code === "versionMismatch";
+      this.reconnecting = this.syncing = this.lagging = false;
       this.message = (error as Error).message;
       this.onChange();
     }
@@ -306,6 +337,7 @@ export class OnlineClient {
     this.fatal = false;
     this.message = "";
     this.socket.disconnect();
+    this.armDeadline();
     this.socket.connect();
   }
   private start(packet: StartPacket) {
@@ -323,6 +355,7 @@ export class OnlineClient {
       this.tick = this.serverTick = packet.tick;
       this.nextInput = packet.tick + packet.delay + 1;
       this.queue.clear();
+      this.localInputs.length = 0;
       this.pendingEnd = undefined;
       this.result = undefined;
       this.syncing = false;
@@ -346,13 +379,21 @@ export class OnlineClient {
       this.onChange();
     }
   }
-  advance(input: InputFrame) {
+  advance(input: InputFrame, controls = true) {
+    if (controls && this.canControl) {
+      this.localInputs.push(input);
+      // Preserve the directional sequence and its button edge during brief
+      // backpressure. Bound the backlog so a longer stall sheds old commands.
+      if (this.localInputs.length > 12) this.localInputs.shift();
+    } else this.localInputs.length = 0;
     if (this.canSend) {
-      this.socket.emit("match:input", {
-        matchId: this.matchId,
-        tick: this.nextInput++,
-        input,
-      });
+      do {
+        this.socket.emit("match:input", {
+          matchId: this.matchId,
+          tick: this.nextInput++,
+          input: this.localInputs.shift() ?? input,
+        });
+      } while (this.localInputs.length && this.canSend);
     }
     if (!this.connected || this.fatal || this.syncing || !this.match) return;
     for (let budget = 0; budget < 4; budget++) {
@@ -400,6 +441,8 @@ export class OnlineClient {
   dispose() {
     this.disposed = true;
     clearInterval(this.interval);
+    this.cancelDeadline();
+    this.socket.io.off("reconnect_failed", this.connectionUnavailable);
     this.forget();
     if (this.connected) this.socket.emit("room:leave", {});
     this.socket.removeAllListeners();

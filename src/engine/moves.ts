@@ -1,6 +1,9 @@
 import type { CombatPose, Move } from "./types";
 import { animationTick } from "./pace";
 
+// Mil Cortes predates the Super flag. All new Supers use Move.super.
+export const isSuperMove = (move?: Move) => !!(move?.super || move?.kind === "ultimate");
+
 export function poseAt(move: Move, tick: number): CombatPose | undefined {
   tick = animationTick(move, tick);
   let time = 0;

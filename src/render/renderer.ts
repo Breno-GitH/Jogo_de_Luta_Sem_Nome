@@ -1,16 +1,33 @@
 import { assetBase } from "../asset-base";
 import { drawTestArena } from "./arena";
+import benArt from "../data/ben-art.json";
+import { benAnimation, benAnimationSets, benFlameAnchor, feedbackHeadAnchor, feedbackStormTips } from "./ben-animations";
+import { drawBenAlienFx, drawBenSilhouette } from "./ben-alien-fx";
+import { benReformSheets, drawBenAttackFx, drawBenContact, drawBenFields, drawEchoClones, drawStage7Core, drawFeedbackCables, drawFeedbackGrip, drawBenChill, drawSpectralArms, drawHeldBenCar, drawBenGhostGround } from "./ben-combat-fx";
+import { benGhostDepth } from "../engine/ben-rework";
+import { benAliens, benId, omnitrixCanBrowse, omnitrixHoldTicks } from "../engine/ben-omnitrix";
+import { drawOmnitrixFlash, drawOmnitrixHud } from "./ben-omnitrix-hud";
 import { drawGokuSpecials, gokuFxSheets } from "./goku-special-fx";
 import { gokuInvisible } from "../engine/goku-specials";
+import { centipedeConfig, centipedeConversion, centipedeName, centipedeScene } from "../engine/kaneki-centipede";
+import { drawCentipedeBackdrop, drawCentipedeWorld } from "./kaneki-centipede-fx";
 import { furyScene } from "../engine/goku-fury";
 import { drawFury, furyFxSheets } from "./goku-fury-fx";
 import { FLOOR, type Match } from "../engine/combat";
 import { Animator, metadata, type AnimationData } from "./animator";
 import dioAnimations from "../data/dio-animations.json";
 import { gokuAnimations } from "./goku-animations";
-import { sasukeAnimations, sasukeCurseSheet } from "./sasuke-animations";
-import { drawSasukeClouds, drawSasukeProjectiles, drawSasukeTechnique, sasukeEffectsSheet } from "./sasuke-special-fx";
+import { kanekiAnimations } from "./kaneki-presentation";
+import { drawKagune } from "./kagune";
+import { captureWindow, captureWindup, kanekiTechniqueCaptureTick } from "../engine/kaneki-combat";
+import { canResistChain, chainButtons, chainFinisher, chainFinishes, chainNames, chainWindow, directChain, kaguneGrabLimit, resistanceButton, resistanceGoal } from "../engine/kaneki-chain";
+import { drawChainEffects } from "./kaneki-chain-effects";
+import { kanekiSpecialNames, kanekiSpecialScene, kanekiTechnique } from "../engine/kaneki-specials";
+import { sasukeAnimations, sasukeWingedSheets } from "./sasuke-animations";
+import { chidoriCamera, drawSasukeContact, drawSasukeProjectiles, drawSasukeTechnique, goryukaHeadSheet, sasukeEffectsSheet } from "./sasuke-special-fx";
 import { drawCurseHud, drawSasukeCurseFX } from "./sasuke-curse-fx";
+import { kirinConfig, kirinId, kirinScene } from "../engine/sasuke-kirin";
+import { drawKirinFlash, drawKirinStorm, drawKirinWorld, kirinEffectsSheets } from "./sasuke-kirin-fx";
 import { drawSasukeCut } from "./sasuke-fx";
 import { luffyAnimations } from "./luffy-animations";
 import { luffyAttackLimbs } from "../engine/luffy-specials";
@@ -22,7 +39,7 @@ import { paintLuffyImpacts, paintLuffyTrails } from "./luffy-special-fx";
 import worldAnimations from "../data/the-world-animations.json";
 import { FighterPresentation } from "./presentation";
 import { drawCombatDebug } from "./debug";
-import { poseAt } from "../engine/moves";
+import { isSuperMove, poseAt } from "../engine/moves";
 import { worldCapsule } from "../engine/geometry";
 import type { Rect } from "../engine/types";
 import { drawEffects } from "./effects";
@@ -55,6 +72,7 @@ export class Renderer {
   effects = true;
   cameraShake = true;
   superKey = "R";
+  chainKeys: readonly string[] = ["J", "K", "L"];
   inspectionZoom = 1;
   inspectionTarget?: 0 | 1;
   opponentPalette: "cyan" | AlternatePalette = "cyan";
@@ -74,6 +92,7 @@ export class Renderer {
   constructor(
     public canvas: HTMLCanvasElement,
     spriteBase = `${assetBase}sprites/`,
+    previewAnimations: AnimationData[] = [],
   ) {
     this.ctx = canvas.getContext("2d")!;
     this.ctx.imageSmoothingEnabled = false;
@@ -81,7 +100,10 @@ export class Renderer {
     const sheets = new Set<string>();
     sheets.add("fx/dio-specials.png");
     sheets.add(sasukeEffectsSheet);
+    sheets.add(goryukaHeadSheet);
+    for (const sheet of kirinEffectsSheets) sheets.add(sheet);
     for (const sheet of gokuFxSheets) sheets.add(sheet);
+    for (const sheet of benReformSheets) sheets.add(sheet);
     for (const sheet of [...furyFxSheets, ...jetFxSheets]) sheets.add(sheet);
     for (const data of [
       metadata,
@@ -89,6 +111,9 @@ export class Renderer {
       gokuAnimations,
       luffyAnimations,
       sasukeAnimations,
+      kanekiAnimations,
+      ...benAnimationSets,
+      ...previewAnimations,
       worldAnimations,
       objectData,
       fxData,
@@ -171,7 +196,7 @@ export class Renderer {
     this.feedback.reset();
     this.healthBars.forEach((bar) => bar.reset());
   }
-  tick(match: Match) {
+  tick(match: Match, benPreview?: Animator) {
     match.fighters.forEach((f, i) => {
       if (this.actors[i] !== f) {
         this.healthBars[i].reset(f.health / f.data.health);
@@ -185,7 +210,8 @@ export class Renderer {
                 ? luffyAnimations
                 : f.data.id === "sasuke"
                   ? sasukeAnimations
-                  : metadata,
+                  : f.data.id === "kaneki" ? kanekiAnimations
+                    : f.data.id === benId ? benArt : metadata,
         );
         if (f.stand) this.standAnimations.set(f, new Animator(worldAnimations));
       }
@@ -199,7 +225,7 @@ export class Renderer {
       if (!match.cinematicActive && match.temporal.isFrozen(i))
         this.frozenActors.add(f);
       else this.frozenActors.delete(f);
-      this.presentations[i].tick(f);
+      this.presentations[i].tick(f, f.data.id === benId ? benPreview : undefined);
       if (f.stand) {
         const animation = this.standAnimations.get(f)!;
         animation.update(f.stand.s.clip);
@@ -215,7 +241,44 @@ export class Renderer {
       furyStage = fury ? furyScene(fury) : undefined;
     const jet = match.jetGigant,
       jetStage = jet ? jetScene(jet) : undefined;
-    const stagedCamera = jet && jetStage ? jetCamera(jetStage, jet) : furyStage?.camera;
+    const kirin = match.kirin, kirinStage = kirin ? kirinScene(kirin) : undefined;
+    const centipede = match.centipede, kakuja = centipede ? centipedeScene(centipede) : undefined;
+    const kanekiCapture = match.capture?.kaneki;
+    const technique = kanekiTechnique(kanekiCapture?.specialId);
+    const grabber = match.capture && match.fighters[match.capture.attacker];
+    const captureTick = Math.max(0, (match.capture?.tick ?? 0) - 1);
+    const chain = kanekiCapture?.chain;
+    const finish = chain?.finish ? chainFinishes[chain.finish] : undefined;
+    const captive = match.capture && match.fighters[match.capture.victim];
+    const age = chain ? captureTick - chain.since : 0;
+    const travel = finish ? Math.max(0, Math.min(1, age / 9, (finish.keys.at(-1)![0] - age) / 9)) : 0;
+    const height = grabber && captive ? FLOOR - Math.min(grabber.y, captive.y) : 0;
+    const scale = 1 + travel * Math.max(0, .12 - height / 3500);
+    const viewWidth = 640 / scale;
+    const chainCamera = grabber && captive && travel > 0 ? {
+      x: Math.max(viewWidth, Math.min(1280 - viewWidth, (grabber.x + captive.x) / 2)),
+      y: 360 - height * .20 * travel, scale, shakeX: 0, shakeY: 0,
+    } : undefined;
+
+    const techniqueTick = match.capture && kanekiTechniqueCaptureTick(match.capture);
+    const kanekiScene = technique && techniqueTick !== undefined && grabber && kanekiCapture
+      ? kanekiSpecialScene(technique.id, techniqueTick, grabber, kanekiCapture, kanekiCapture.direction)
+      : undefined;
+    const spectral = match.capture?.ben?.moveId.startsWith("ghostPhase_") ? match.capture : undefined;
+    const leap = match.fighters.find(f => f.state === "attack" && f.moveId === "colossal_medium" && f.airborne);
+    const reveal = spectral ? Math.min(1, spectral.tick / 8, Math.max(0, (38 - spectral.tick) / 9)) : 0;
+    const benZoom = 1 + reveal * .24;
+    const benView = 640 / benZoom;
+    const benPadding = Math.round(reveal * 125);
+    const benCamera = spectral && reveal > 0 && grabber && captive ? {
+      x: Math.max(benView - benPadding, Math.min(1280 - benView + benPadding, (grabber.x + captive.x) * .5)),
+      y: 360 + reveal * 45, scale: benZoom, shakeX: 0, shakeY: 0,
+    } : leap ? {
+      x: 640, y: 360 - Math.min(50, (FLOOR - leap.y) * .24),
+      scale: 1, shakeX: 0, shakeY: 0,
+    } : undefined;
+    const stagedCamera = kakuja?.camera ?? kirinStage?.camera ?? (jet && jetStage ? jetCamera(jetStage, jet) : furyStage?.camera)
+      ?? chainCamera ?? (this.effects ? chidoriCamera(match) ?? benCamera : undefined);
     const self = match.fighters[this.localSeat],
       other = match.fighters[1 - this.localSeat];
     this.canvas.dataset.animation =
@@ -228,16 +291,32 @@ export class Renderer {
     );
     this.canvas.dataset.physicsState = self.state;
     this.canvas.dataset.rootY = String(self.y);
+    this.canvas.dataset.rootX = String(self.x);
+    this.canvas.dataset.rivalX = String(other.x);
     this.canvas.dataset.move = self.moveId;
     this.canvas.dataset.phase = self.attackPhase ?? "none";
     this.canvas.dataset.combo = String(other.combo);
     this.canvas.dataset.targetHealth = String(other.health);
     this.canvas.dataset.hitstop = String(match.hitstop);
-    this.canvas.dataset.capture = jet ? "jetGigant" : fury
+    this.canvas.dataset.centipedePhase = kakuja?.phase ?? "";
+    this.canvas.dataset.centipedeArmor = String(kakuja?.armor ?? 0);
+    this.canvas.dataset.centipedeSource = centipede?.source ?? "";
+    this.canvas.dataset.centipedeTick = String(centipede?.tick ?? -1);
+    this.canvas.dataset.capture = centipede ? "centipede" : kirin ? "kirin" : jet ? "jetGigant" : fury
       ? "gokuFury"
       : road
         ? "roadRoller"
         : (match.capture?.kind ?? "none");
+    this.canvas.dataset.captureRoute = kanekiCapture?.route ?? (kanekiCapture ? (kanekiScene ? technique!.family : "hold") : "");
+    this.canvas.dataset.chainKeys = this.chainKeys.join("/");
+    this.canvas.dataset.chainPhase = chain?.phase ?? "";
+    this.canvas.dataset.chainOrigin = chain?.origin ?? "";
+    this.canvas.dataset.chainRemaining = String(chain?.origin === "kaguneGrab" ? Math.max(0, kaguneGrabLimit - (match.frame - chain.started)) : "");
+    this.canvas.dataset.chainResistance = String(chain?.resistance ?? "");
+    this.canvas.dataset.chainFinish = chain?.finish ?? "";
+    this.canvas.dataset.chainHeight = String(chain ? height : 0);
+    this.canvas.dataset.knucklePose = String(kanekiScene?.snapPose ?? "");
+    this.canvas.dataset.knuckleFrame = String(match.events.find(e => e.kind === "knuckleSnap")?.knuckleFrame ?? "");
     this.canvas.dataset.meter = String(self.meter);
     this.canvas.dataset.playerHealth = String(self.health);
     this.canvas.dataset.p1Health = String(match.fighters[0].health);
@@ -308,6 +387,12 @@ export class Renderer {
       rollerX: String(scene?.object.x ?? 0),
       rollerY: String(scene?.object.y ?? 0),
       rollerVisible: String(scene?.object.visible ?? false),
+      kirinTick: String(kirin?.tick ?? -1),
+      kirinPhase: kirinStage?.phase ?? "none",
+      kirinDragon: String(kirinStage?.dragon.visible ?? false),
+      kirinCursed: String(kirin?.cursed ?? false),
+      kirinVariant: kirin ? (kirin.cursed ? "black" : "blue") : "none",
+      sasukeStormLevel: String(match.sasukeStormUntil > match.combatFrame ? match.sasukeStormLevel : 0),
       jetTick: String(jet?.tick ?? -1),
       jetPhase: jetStage?.phase ?? "none",
       jetCel: jetStage?.cel ?? "none",
@@ -345,7 +430,7 @@ export class Renderer {
         : 0;
     this.canvas.dataset.impactShake = String(this.effects ? ordinaryShake : 0);
     c.imageSmoothingEnabled = false;
-    if (this.inspectionZoom > 1 || match.cinematicActive) {
+    if (this.inspectionZoom > 1 || match.cinematicActive || stagedCamera) {
       c.fillStyle = "#101b2b";
       c.fillRect(0, 0, 1280, 720);
     }
@@ -363,11 +448,11 @@ export class Renderer {
       c.translate(-Math.round(cam.x), -Math.round(cam.y));
     } else if (
       this.inspectionZoom > 1 &&
-      (!match.capture ||
+      (!match.capture || !!match.capture.kaneki ||
         (match.capture.kind === "grab" &&
           (self.data.id === "goku" || self.data.id === "luffy")))
     ) {
-      const z = this.inspectionZoom,
+      const z = Math.max(1, this.inspectionZoom / Math.max(self.benScale, other.benScale)),
         focus =
           this.inspectionTarget === undefined
             ? undefined
@@ -383,8 +468,17 @@ export class Renderer {
       c.scale(z, z);
       c.translate(-cx, -cy);
     }
-    drawTestArena(c);
-    if (this.effects && !match.cinematicActive) drawSasukeClouds(c, match);
+    drawTestArena(c, benPadding);
+    const nightmare = spectral || match.fighters.some(f => f.state === "attack" && f.move?.ben?.nightmare && benGhostDepth(f) > 30);
+    if (this.effects && nightmare) {
+      const haze = c.createLinearGradient(0, 230, 0, 582);
+      haze.addColorStop(0, "#25133700");
+      haze.addColorStop(1, "#70548a39");
+      c.fillStyle = haze;
+      c.fillRect(-benPadding, 230, 1280 + 2 * benPadding, 352);
+    }
+    if (kakuja && this.effects) drawCentipedeBackdrop(c, kakuja);
+    if (this.effects && (kirinStage || !match.cinematicActive)) drawKirinStorm(c, match, this.sprites, kirinStage);
     if (!match.cinematicActive) drawTimeTint(c, match);
     if (road) drawRoadBackdrop(c, this.sprites, road);
     if (this.effects) drawFury(c, match, this.sprites, "behind");
@@ -457,7 +551,10 @@ export class Renderer {
     };
     for (const f of match.fighters)
       if (f.stand?.transform.depth === 0) drawStand(f);
-    const order = jet ? [jet.victim, jet.attacker] : fury
+    if (!match.cinematicActive) drawEchoClones(c, match, this.sprites, this.debug, this.effects);
+    // Keep the held opponent readable between the two converging shells.
+    const centipedeWrap = kakuja?.phase === "capture" || kakuja?.phase === "descent";
+    const order = centipede ? (centipedeWrap ? [centipede.attacker, centipede.victim] : [centipede.victim, centipede.attacker]) : jet ? [jet.victim, jet.attacker] : fury
       ? [fury.victim, fury.attacker]
       : road
         ? [road.victim, road.attacker]
@@ -472,17 +569,23 @@ export class Renderer {
       c.beginPath();
       c.ellipse(f.x, FLOOR + 5, 55, 12, 0, 0, 7);
       c.fill();
+      const kagunes = this.presentations[i].kagunes(f);
+      const kakujaActor = centipede?.attacker === i;
+      for (const pose of kagunes)
+        if (pose.layer === "behind" || kakujaActor) drawKagune(c, pose, f.facing as 1 | -1);
       c.save();
       c.translate(this.presentations[i].renderRootX(f), Math.round(f.y));
       const sprite = this.presentations[i].animator.sprite();
       c.scale(f.facing * sprite.scale, sprite.scale);
-      if (i === 1 && !sprite.player2Sheet && f.data.id !== "goku" && sprite.sheet !== sasukeCurseSheet)
+      const ghostDepth = benGhostDepth(f);
+      if (this.effects && ghostDepth) drawBenGhostGround(c, f, match.frame);
+      if (i === 1 && !kakujaActor && !sprite.player2Sheet && f.data.id !== benId && f.data.id !== "goku" && !sasukeWingedSheets.has(sprite.sheet))
         c.filter = "hue-rotate(145deg)";
       const original = this.sprites.get(
         i === 1 ? (sprite.player2Sheet ?? sprite.sheet) : sprite.sheet,
       );
       const image =
-        i === 1 && sprite.sheet !== sasukeCurseSheet && (this.opponentPalette !== "cyan" || f.data.id === "goku")
+        i === 1 && !kakujaActor && f.data.id !== benId && !sasukeWingedSheets.has(sprite.sheet) && (this.opponentPalette !== "cyan" || f.data.id === "goku")
           ? (this.variants.get(`${this.opponentPalette}:${sprite.sheet}`) ??
             original)
           : original;
@@ -508,7 +611,7 @@ export class Renderer {
           this.effects &&
           !match.cinematicActive &&
           combatPace.feedback.dashTrails &&
-          (f.state === "dash" || f.airChaseTicks > 0) &&
+          (f.state === "dash" || f.airChaseTicks > 0 || f.move?.special === "rinkakuRush") &&
           Math.abs(f.vx) > 5
         ) {
           for (const back of [2, 1]) {
@@ -528,6 +631,18 @@ export class Renderer {
           }
           c.globalAlpha = 1;
         }
+        c.save();
+        if (f.benPhase) c.globalAlpha = f.benPhase.physicalOnly ? .74 : .46;
+        if (ghostDepth) {
+          c.beginPath();
+          c.rect(-390, -400, 780, 400);
+          c.clip();
+        }
+        if (match.capture?.attacker === i && match.capture.ben?.moveId.startsWith("spectralArms_")) {
+          const hunt = match.capture;
+          const swap = hunt.ben!.moveId.endsWith("medium") ? 24 : 18;
+          if (Math.abs(hunt.tick - swap) < 3) c.globalAlpha = Math.abs(hunt.tick - swap) * .27;
+        }
         c.drawImage(
           image,
           sprite.x,
@@ -535,10 +650,34 @@ export class Renderer {
           sprite.width,
           sprite.height,
           -sprite.pivot.x + rootShift + jetShift,
-          -sprite.pivot.y,
+          -sprite.pivot.y + ghostDepth,
           sprite.width,
           sprite.height,
         );
+        c.restore();
+      }
+      c.globalAlpha = 1;
+      drawSpectralArms(c, f, match);
+      if (f.omnitrix?.active === "feedback") {
+        const animator = this.presentations[i].animator;
+        const anchor = feedbackHeadAnchor(sprite.sheet, animator.frame());
+        drawFeedbackCables(c, f, match.frame, anchor, this.effects);
+        drawFeedbackGrip(c, f, match, anchor, this.effects);
+      }
+      if (this.effects && f.omnitrix) {
+        const frame = this.presentations[i].animator.frame();
+        drawBenAlienFx(c, f, match.frame, benFlameAnchor(sprite.sheet, frame));
+        drawBenAttackFx(c, f, match.frame, feedbackStormTips(sprite.sheet, frame));
+        drawStage7Core(c, f, frame, match.frame);
+        drawHeldBenCar(c, f, this.sprites);
+        if (f.omnitrix.transition) {
+          const transition = f.omnitrix.transition;
+          const next = benAnimation(transition.to);
+          const target = this.sprites.get(next.sheet);
+          if (target) drawBenSilhouette(c, target, next, transition.ticks);
+          const wrist = sprite.sheet === benArt.sheet ? benArt.watch[frame] : undefined;
+          drawOmnitrixFlash(c, transition.ticks, wrist);
+        }
       }
       for (const limb of limbs) if (!limb.rear) paintElastic(c, limb, limb, undefined, finish);
       const grip = luffyGrabLimb(f);
@@ -550,6 +689,8 @@ export class Renderer {
         drawSasukeCurseFX(c, f);
       }
       c.restore();
+      if (!kakujaActor)
+        for (const pose of kagunes) if (pose.layer === "front") drawKagune(c, pose, f.facing as 1 | -1);
       if (this.debug) {
         c.fillStyle = "#e7c56e";
         c.fillRect(Math.round(f.x) - 2, Math.round(f.y) - 2, 4, 4);
@@ -576,20 +717,44 @@ export class Renderer {
     if (!match.cinematicActive) {
       drawGokuSpecials(c, match, this.sprites, this.debug);
       drawSasukeProjectiles(c, match, this.sprites, this.debug);
+      if (this.effects || this.debug) drawBenFields(c, match, this.debug, this.sprites);
     }
-    if (this.effects && !fury && !jet) {
+    if (this.effects && !fury && !jet && !kirin) {
       drawEffects(c, match.events, this.fxImage);
+      drawBenContact(c, match);
+      for (const fighter of match.fighters) drawBenChill(c, fighter);
       paintLuffyImpacts(c, match.events);
+      drawSasukeContact(c, match, this.sprites);
+      drawChainEffects(c, match.events, grabber, chain?.finish, age);
     }
     if (this.effects && !match.cinematicActive)
       drawTemporalEffects(c, match, this.sprites.get("fx/dio-specials.png"));
+    if (this.effects) drawCentipedeWorld(c, match, centipede, kakuja);
+    if (this.effects && kirin && kirinStage) drawKirinWorld(c, kirin, kirinStage, this.sprites);
     if (this.effects && jet && jetStage) drawJetImpact(c, this.sprites, jetStage, jet.tick, jet.hold);
     if (this.effects && road) drawRoadEffects(c, this.sprites, road);
     if (this.effects) drawFury(c, match, this.sprites, "front");
     c.restore();
     c.restore();
     if (jet && this.effects) drawJetScreen(c, jet);
+    if (kirin && this.effects) drawKirinFlash(c, kirin);
+    if (kanekiScene?.flash && this.effects) {
+      c.fillStyle = `rgba(238,75,108,${kanekiScene.flash})`;
+      c.fillRect(0, 0, 1280, 720);
+    }
     this.hud(match);
+    if (match.fighters.some(f => f.state === "attack" && f.stateFrame < 9 && isSuperMove(f.move))) {
+      c.save(); c.textAlign = "center"; c.font = "bold 14px monospace"; c.fillStyle = "#ffd694";
+      c.fillText("SUPER!", 640, 149); c.restore();
+    }
+    if ((kirin && kirin.tick < kirinConfig.phases.storm) || match.fighters.some(f => f.moveId === kirinId && f.stateFrame < 11)) {
+      c.save(); c.font = "bold 29px monospace"; c.textAlign = "center"; c.fillStyle = "#c6edff";
+      c.fillText("K I R I N", 640, 178); c.restore();
+    }
+    if (centipede && centipede.tick < 64) {
+      c.save(); c.font = "bold 23px monospace"; c.textAlign = "center"; c.fillStyle = "#ffb3ad";
+      c.fillText(centipedeName, 640, 177); c.restore();
+    }
     if (self.moveId === "ssj1_fury" && self.stateFrame < 28) {
       c.fillStyle = "#ffe780";
       c.font = "bold 24px monospace";
@@ -630,9 +795,10 @@ export class Renderer {
       c.fillStyle = i === 0 ? "#ffce8c" : "#9be5ef";
       c.font = "italic bold 30px monospace";
       const x = i === 0 ? 55 : 1000;
-      c.fillText(`${stats.comboHits} HITS`, x, 225);
+      const y = match.fighters[i].omnitrix ? 251 : 225;
+      c.fillText(`${stats.comboHits} HITS`, x, y);
       c.font = "14px monospace";
-      c.fillText(`${stats.comboDamage} DANO`, x, 249);
+      c.fillText(`${stats.comboDamage} DANO`, x, y + 24);
       c.restore();
     }
     if (match.capture?.kind === "ultimate") {
@@ -665,6 +831,42 @@ export class Renderer {
   }
   private hud(m: Match) {
     const c = this.ctx;
+    const ben = m.fighters[this.localSeat].omnitrix ? m.fighters[this.localSeat] : m.fighters.find(f => f.omnitrix);
+    const omnitrix = ben?.omnitrix;
+    const rivalWatch = m.fighters[1 - this.localSeat].omnitrix;
+    Object.assign(this.canvas.dataset, {
+      benSeat: ben?.id ?? "",
+      nrgMode: omnitrix?.active === "nrg" ? (omnitrix.nrgReleased ? "released" : "contained") : "",
+      nrgTicks: omnitrix?.nrgTicks ?? "",
+      nrgCooldown: omnitrix?.nrgCooldown ?? 0,
+      rivalNrgMode: rivalWatch?.active === "nrg" ? (rivalWatch.nrgReleased ? "released" : "contained") : "",
+      rivalBenPhase: m.fighters[1 - this.localSeat].benPhase ? "active" : "",
+      benPhase: ben?.benPhase ? "active" : "",
+      benFlight: omnitrix?.flightTicks ? "nrg" : ben?.move?.ben?.aerialMotion ?? "",
+      benCapture: m.capture?.ben?.moveId ?? "",
+      benCaptureTick: m.capture?.ben ? m.capture.tick : "",
+      benMoveTick: ben?.state === "attack" ? ben.stateFrame : "",
+      echoClones: ben?.omnitrix?.echoClones?.filter(clone => !clone.fading).length ?? 0,
+      gravityWell: ben?.omnitrix?.objects.some(object => object.id === "gravityDomain_light") ?? false,
+      benObjects: omnitrix?.objects.map(object => object.id + ":" + (object.impactAge ?? object.age)).join(",") ?? "",
+      p1Chill: m.fighters[0].chill?.freeze ?? 0,
+      p2Chill: m.fighters[1].chill?.freeze ?? 0,
+      omnitrixState: omnitrix?.transition ? "switching" : omnitrix?.holdTicks && omnitrix.holdTicks < omnitrixHoldTicks ? "holding" : omnitrix ? "ready" : "",
+      omnitrixForm: omnitrix?.active ?? "",
+      rivalOmnitrixForm: rivalWatch?.active ?? "",
+      rivalBenGrowth: rivalWatch?.growth?.rank ?? "",
+      rivalBenCharge: rivalWatch?.charge ?? "",
+      rivalBenWalls: rivalWatch?.objects.filter(object => object.durability && !object.spent).length ?? "",
+      omnitrixSheet: ben ? this.presentations[ben.id].animator.sprite().sheet : "",
+      benGrowth: omnitrix?.growth?.rank ?? "",
+      benCharge: omnitrix?.charge ?? "",
+      benWalls: omnitrix?.objects.filter(object => object.durability && !object.spent).length ?? "",
+      omnitrixSelection: omnitrix?.selected ?? "",
+      omnitrixDialTicks: omnitrix?.dialTicks ?? "",
+      omnitrixTransitionTicks: omnitrix?.transition?.ticks ?? "",
+      omnitrixFacing: ben?.facing ?? "",
+      omnitrixName: benAliens.find(form => form.id === omnitrix?.selected)?.name ?? "",
+    });
     for (let i = 0; i < 2; i++) {
       const f = m.fighters[i],
         x = i === 0 ? 50 : 750;
@@ -711,18 +913,22 @@ export class Renderer {
       c.font = "11px monospace";
       c.fillStyle = i === 0 ? "#e5b16b" : "#73cbd5";
       c.fillText(
-        f.data.id === "luffy"
+        f.data.id === benId ? `ALIEN X · RESERVADO · ${this.superKey}` : f.data.id === "kaneki"
+          ? `CENTIPEDE · ${f.meter >= centipedeConfig.cost ? `PRONTA · ${this.superKey}` : Math.floor(100 * f.meter / centipedeConfig.cost) + "%"}`
+          : f.data.id === "luffy"
           ? `JET GIGANT · ${f.meter >= f.meterMaximum ? `PRONTA · ${this.superKey}` : Math.floor((100 * f.meter) / f.meterMaximum) + "%"}`
           : f.data.id === "goku"
             ? `FÚRIA SAIYAJIN · ${f.meter >= f.meterMaximum ? `PRONTA · ${this.superKey}` : Math.floor((100 * f.meter) / f.meterMaximum) + "%"}`
             : f.data.id === "samurai"
               ? `MIL CORTES ${f.meter}%${f.meter >= 100 ? ` · ${this.superKey}` : ""}`
               : f.data.id === "sasuke"
-                ? "TAIJUTSU / RAITON / KATON"
+                ? `KIRIN · ${f.meter >= kirinConfig.cost ? `PRONTA · ${this.superKey}` : Math.floor(100 * f.meter / kirinConfig.cost) + "%"}`
                 : `SUPER ${(f.meter / 100).toFixed(2)} / 2 · ROAD ROLLER · ${this.superKey}`,
         x,
         617,
       );
+      if (f.omnitrix)
+        drawOmnitrixHud(c, f.omnitrix, i, this.chainKeys[2], !omnitrixCanBrowse(f.state) || f.knockedDown || Boolean(m.capture) || m.cinematicActive || m.temporal.isFrozen(i));
       if (f.data.id === "sasuke") drawCurseHud(c, f, x);
       if (f.data.id === "dio") {
         const clock = m.temporal.s.ledger[i];
@@ -766,6 +972,70 @@ export class Renderer {
     c.font = "11px monospace";
     c.fillStyle = "#8d9ca5";
     c.fillText(m.rules.training ? "TREINAMENTO" : this.contextLabel, 640, 124);
+    const capture = m.capture;
+    const tech = kanekiTechnique(capture?.kaneki?.specialId);
+    const chain = capture?.kaneki?.chain;
+    if (capture?.kaneki && chain) {
+      const picking = chain.phase === "choice1" || chain.phase === "choice2" || chain.phase === "connected";
+      const second = chain.phase === "choice2";
+      const long = chain.origin === "kaguneGrab";
+      const finalizing = second || directChain(chain);
+      const route = capture.kaneki.route;
+      const starter = ["PUXAR", long ? "PÊNDULO" : "ARREMESSAR", long ? "SUSPENDER" : "LANÇAR"];
+      const options = chainButtons.flatMap((button, i) => {
+        if (!finalizing) return [`${this.chainKeys[i]}  ${starter[i]}`];
+        const finish = chainFinisher(chain, button, route);
+        return finish ? [`${this.chainKeys[i]}  ${chainNames[finish].toUpperCase()}`] : [];
+      });
+      c.fillStyle = "#18111eea";
+      c.fillRect(340, 136, 600, 44);
+      c.fillStyle = "#ffd2df";
+      c.font = "bold 13px monospace";
+      const view = this.localSeat === capture.victim && this.online;
+      const title = chain.finish ? chainNames[chain.finish].toUpperCase() : chain.phase === "opener" || chain.phase === "outro"
+        ? kanekiSpecialNames[tech!.family].toUpperCase() : picking
+        ? options.join("   ·   ") : capture.kaneki.route === "launch" ? "LANÇAMENTO" :
+          capture.kaneki.route === "pull" ? "PUXÃO RINKAKU" : "ARREMESSO";
+      c.fillText(title, 640, 156, 574);
+      if (picking || long) {
+        const duration = chainWindow(chain, second);
+        const remaining = duration - (long ? m.frame - chain.started : chain.phase === "connected" ? 0 : Math.max(0, capture.tick - chain.since));
+        c.fillStyle = "#f08a9d";
+        c.fillRect(352, 171, 576 * Math.max(0, remaining / duration), 3);
+      }
+      if (centipedeConversion(m, capture) && (!this.online || this.localSeat === capture.attacker)) {
+        c.fillStyle = "#ffbb92";
+        c.font = "bold 11px monospace";
+        c.fillText(`${this.superKey} · CENTIPEDE`, 835, 195);
+      }
+      if (long) {
+        const key = this.chainKeys[chainButtons.indexOf(resistanceButton(chain))];
+        const remaining = Math.max(0, kaguneGrabLimit - (m.frame - chain.started));
+        const instruction = canResistChain(chain, capture.tick) ? ` · PRÓXIMO ${key}` : "";
+        c.fillStyle = "#d0f4ed";
+        c.font = "11px monospace";
+        c.fillText(`${(remaining / 60).toFixed(1)} s · RESISTÊNCIA ${chain.resistance ?? 0}/${resistanceGoal}${instruction}`, 640, 195);
+      } else if (second && view) {
+        c.fillStyle = "#f7d9e3";
+        c.font = "11px monospace";
+        c.fillText(chain.escape ? "TENTATIVA REGISTRADA" : "ESCAPE · LEIA O BOTÃO DE KANEKI · 1 TENTATIVA", 640, 195);
+      }
+    } else if (tech && tech.family !== "kaguneGrab") {
+      c.fillStyle = "#ffd2df";
+      c.font = "bold 17px monospace";
+      c.fillText(kanekiSpecialNames[tech.family].toUpperCase(), 640, 161);
+    } else if (capture?.kaneki) {
+      const route = capture.kaneki.route;
+      c.fillStyle = "#18111e";
+      c.fillRect(440, 138, 400, 49);
+      c.fillStyle = "#ffd2df";
+      c.font = "bold 14px monospace";
+      c.fillText(route ? { pull: "PUXAR", throw: "ARREMESSAR", launch: "LANÇAR" }[route] : "LEVE · PUXAR   MÉDIO · ARREMESSAR   FORTE · LANÇAR", 640, 158);
+      if (!route) {
+        c.fillStyle = "#f08a9d";
+        c.fillRect(451, 174, 378 * Math.max(0, Math.min(1, (captureWindup + captureWindow - capture.tick) / captureWindow)), 3);
+      }
+    }
     c.textAlign = "left";
   }
 }

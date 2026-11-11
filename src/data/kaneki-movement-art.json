@@ -1,0 +1,401 @@
+{
+  "clips": {
+    "walkForward": {
+      "sheet": "kaneki/movement.png",
+      "columns": 6,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "ticks": 1,
+      "durations": [
+        3,
+        4,
+        3,
+        3,
+        4,
+        3
+      ],
+      "loop": true
+    },
+    "walkBack": {
+      "sheet": "kaneki/movement.png",
+      "columns": 6,
+      "frames": [
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "ticks": 1,
+      "durations": [
+        4,
+        4,
+        3,
+        4,
+        4,
+        3
+      ],
+      "loop": true
+    },
+    "dashForward": {
+      "sheet": "kaneki/movement.png",
+      "columns": 6,
+      "frames": [
+        12,
+        13,
+        14,
+        15,
+        16
+      ],
+      "ticks": 1,
+      "durations": [
+        2,
+        3,
+        3,
+        3,
+        3
+      ],
+      "loop": false
+    },
+    "backdash": {
+      "sheet": "kaneki/movement.png",
+      "columns": 6,
+      "frames": [
+        17,
+        18,
+        19,
+        20,
+        21
+      ],
+      "ticks": 1,
+      "durations": [
+        2,
+        3,
+        3,
+        3,
+        3
+      ],
+      "loop": false
+    },
+    "crouchStart": {
+      "sheet": "kaneki/movement.png",
+      "columns": 6,
+      "frames": [
+        22,
+        23
+      ],
+      "ticks": 1,
+      "durations": [
+        3,
+        4
+      ],
+      "loop": false
+    },
+    "crouchIdle": {
+      "sheet": "kaneki/movement.png",
+      "columns": 6,
+      "frames": [
+        24,
+        25
+      ],
+      "ticks": 1,
+      "durations": [
+        13,
+        13
+      ],
+      "loop": true
+    },
+    "crouchEnd": {
+      "sheet": "kaneki/movement.png",
+      "columns": 6,
+      "frames": [
+        26,
+        27
+      ],
+      "ticks": 1,
+      "durations": [
+        4,
+        3
+      ],
+      "loop": false
+    },
+    "jumpStart": {
+      "sheet": "kaneki/movement.png",
+      "columns": 6,
+      "frames": [
+        28,
+        29,
+        30
+      ],
+      "ticks": 1,
+      "durations": [
+        2,
+        2,
+        1
+      ],
+      "loop": false
+    },
+    "jumpRise": {
+      "sheet": "kaneki/movement.png",
+      "columns": 6,
+      "frames": [
+        31,
+        32
+      ],
+      "ticks": 1,
+      "durations": [
+        9,
+        10
+      ],
+      "loop": false
+    },
+    "jumpApex": {
+      "sheet": "kaneki/movement.png",
+      "columns": 6,
+      "frames": [
+        33
+      ],
+      "ticks": 1,
+      "durations": [
+        7
+      ],
+      "loop": false
+    },
+    "jumpFall": {
+      "sheet": "kaneki/movement.png",
+      "columns": 6,
+      "frames": [
+        34,
+        35
+      ],
+      "ticks": 1,
+      "durations": [
+        8,
+        10
+      ],
+      "loop": false
+    },
+    "landing": {
+      "sheet": "kaneki/movement.png",
+      "columns": 6,
+      "frames": [
+        36,
+        37,
+        38
+      ],
+      "ticks": 1,
+      "durations": [
+        2,
+        3,
+        2
+      ],
+      "loop": false
+    }
+  },
+  "lumbar": [
+    {
+      "x": -11,
+      "y": -70
+    },
+    {
+      "x": -13,
+      "y": -71
+    },
+    {
+      "x": -2,
+      "y": -73
+    },
+    {
+      "x": -8,
+      "y": -74
+    },
+    {
+      "x": -13,
+      "y": -71
+    },
+    {
+      "x": 0,
+      "y": -73
+    },
+    {
+      "x": 6,
+      "y": -70
+    },
+    {
+      "x": 6,
+      "y": -73
+    },
+    {
+      "x": 7,
+      "y": -74
+    },
+    {
+      "x": 4,
+      "y": -72
+    },
+    {
+      "x": 7,
+      "y": -71
+    },
+    {
+      "x": 13,
+      "y": -73
+    },
+    {
+      "x": -6,
+      "y": -58
+    },
+    {
+      "x": -3,
+      "y": -61
+    },
+    {
+      "x": -8,
+      "y": -64
+    },
+    {
+      "x": -5,
+      "y": -62
+    },
+    {
+      "x": -12,
+      "y": -64
+    },
+    {
+      "x": -9,
+      "y": -60
+    },
+    {
+      "x": -8,
+      "y": -64
+    },
+    {
+      "x": -8,
+      "y": -69
+    },
+    {
+      "x": -10,
+      "y": -66
+    },
+    {
+      "x": -11,
+      "y": -68
+    },
+    {
+      "x": -8,
+      "y": -71
+    },
+    {
+      "x": -13,
+      "y": -61
+    },
+    {
+      "x": -13,
+      "y": -49
+    },
+    {
+      "x": -13,
+      "y": -49
+    },
+    {
+      "x": -10,
+      "y": -63
+    },
+    {
+      "x": -11,
+      "y": -72
+    },
+    {
+      "x": -7,
+      "y": -70
+    },
+    {
+      "x": -13,
+      "y": -60
+    },
+    {
+      "x": -7,
+      "y": -77
+    },
+    {
+      "x": -8,
+      "y": -79
+    },
+    {
+      "x": -8,
+      "y": -75
+    },
+    {
+      "x": -9,
+      "y": -73
+    },
+    {
+      "x": -7,
+      "y": -73
+    },
+    {
+      "x": -9,
+      "y": -73
+    },
+    {
+      "x": -9,
+      "y": -63
+    },
+    {
+      "x": -15,
+      "y": -58
+    },
+    {
+      "x": -9,
+      "y": -71
+    }
+  ],
+  "planted": [
+    28,
+    12,
+    -8,
+    28,
+    12,
+    -8,
+    -28,
+    -11,
+    5,
+    -28,
+    -11,
+    5,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ]
+}

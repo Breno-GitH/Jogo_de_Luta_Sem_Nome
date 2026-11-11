@@ -1,0 +1,1400 @@
+{
+  "xlr8": {
+    "clips": {
+      "stand_light": {
+        "sheet": "ben/xlr8/combat/stand_light.png",
+        "frameWidth": 352,
+        "frameHeight": 256,
+        "columns": 4,
+        "pivot": {
+          "x": 176,
+          "y": 224
+        },
+        "frames": [
+          0,
+          2,
+          1,
+          3
+        ],
+        "durations": [
+          4,
+          3,
+          3,
+          6
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "stand_medium": {
+        "sheet": "ben/xlr8/combat/stand_medium.png",
+        "frameWidth": 352,
+        "frameHeight": 256,
+        "columns": 4,
+        "pivot": {
+          "x": 176,
+          "y": 224
+        },
+        "frames": [
+          0,
+          2,
+          1,
+          3
+        ],
+        "durations": [
+          7,
+          4,
+          5,
+          11
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "crouch_light": {
+        "sheet": "ben/xlr8/combat/crouch_light.png",
+        "frameWidth": 352,
+        "frameHeight": 256,
+        "columns": 4,
+        "pivot": {
+          "x": 176,
+          "y": 224
+        },
+        "frames": [
+          0,
+          2,
+          1,
+          3
+        ],
+        "durations": [
+          5,
+          3,
+          3,
+          7
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "crouch_medium": {
+        "sheet": "ben/xlr8/combat/crouch_medium.png",
+        "frameWidth": 352,
+        "frameHeight": 256,
+        "columns": 4,
+        "pivot": {
+          "x": 176,
+          "y": 224
+        },
+        "frames": [
+          0,
+          2,
+          1,
+          3
+        ],
+        "durations": [
+          8,
+          6,
+          8,
+          16
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "air_light": {
+        "sheet": "ben/xlr8/combat/air_light.png",
+        "frameWidth": 352,
+        "frameHeight": 256,
+        "columns": 4,
+        "pivot": {
+          "x": 176,
+          "y": 224
+        },
+        "frames": [
+          0,
+          2,
+          1,
+          3
+        ],
+        "durations": [
+          4,
+          5,
+          3,
+          7
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "air_medium": {
+        "sheet": "ben/xlr8/combat/air_medium.png",
+        "frameWidth": 352,
+        "frameHeight": 256,
+        "columns": 4,
+        "pivot": {
+          "x": 176,
+          "y": 224
+        },
+        "frames": [
+          0,
+          2,
+          1,
+          3
+        ],
+        "durations": [
+          7,
+          7,
+          5,
+          12
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "turbo_light": {
+        "sheet": "ben/xlr8/combat/turbo.png",
+        "frameWidth": 352,
+        "frameHeight": 256,
+        "columns": 4,
+        "pivot": {
+          "x": 176,
+          "y": 224
+        },
+        "frames": [
+          0,
+          1,
+          3
+        ],
+        "durations": [
+          6,
+          8,
+          23
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "turbo_medium": {
+        "sheet": "ben/xlr8/combat/turbo.png",
+        "frameWidth": 352,
+        "frameHeight": 256,
+        "columns": 4,
+        "pivot": {
+          "x": 176,
+          "y": 224
+        },
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "durations": [
+          9,
+          8,
+          8,
+          28
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "cyclone_light": {
+        "sheet": "ben/xlr8/combat/cyclone.png",
+        "frameWidth": 352,
+        "frameHeight": 256,
+        "columns": 4,
+        "pivot": {
+          "x": 176,
+          "y": 224
+        },
+        "frames": [
+          0,
+          1,
+          3
+        ],
+        "durations": [
+          7,
+          5,
+          18
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "cyclone_medium": {
+        "sheet": "ben/xlr8/combat/cyclone.png",
+        "frameWidth": 352,
+        "frameHeight": 256,
+        "columns": 4,
+        "pivot": {
+          "x": 176,
+          "y": 224
+        },
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "durations": [
+          11,
+          7,
+          7,
+          28
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "lightning_light": {
+        "sheet": "ben/xlr8/combat/lightning.png",
+        "frameWidth": 352,
+        "frameHeight": 256,
+        "columns": 4,
+        "pivot": {
+          "x": 176,
+          "y": 224
+        },
+        "frames": [
+          0,
+          1,
+          3
+        ],
+        "durations": [
+          4,
+          10,
+          17
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "lightning_medium": {
+        "sheet": "ben/xlr8/combat/lightning.png",
+        "frameWidth": 352,
+        "frameHeight": 256,
+        "columns": 4,
+        "pivot": {
+          "x": 176,
+          "y": 224
+        },
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "durations": [
+          5,
+          6,
+          7,
+          23
+        ],
+        "ticks": 1,
+        "loop": false
+      }
+    },
+    "anchors": {
+      "ben/xlr8/combat/stand_light.png": [
+        {
+          "x": 12,
+          "y": -136
+        },
+        {
+          "x": 14,
+          "y": -134
+        },
+        {
+          "x": 17,
+          "y": -130
+        },
+        {
+          "x": 9,
+          "y": -134
+        }
+      ],
+      "ben/xlr8/combat/stand_medium.png": [
+        {
+          "x": 9,
+          "y": -135
+        },
+        {
+          "x": 8,
+          "y": -135
+        },
+        {
+          "x": 4,
+          "y": -135
+        },
+        {
+          "x": 5,
+          "y": -135
+        }
+      ],
+      "ben/xlr8/combat/crouch_light.png": [
+        {
+          "x": 12,
+          "y": -125
+        },
+        {
+          "x": 4,
+          "y": -116
+        },
+        {
+          "x": 3,
+          "y": -109
+        },
+        {
+          "x": 20,
+          "y": -124
+        }
+      ],
+      "ben/xlr8/combat/crouch_medium.png": [
+        {
+          "x": 19,
+          "y": -131
+        },
+        {
+          "x": -13,
+          "y": -111
+        },
+        {
+          "x": 7,
+          "y": -99
+        },
+        {
+          "x": 22,
+          "y": -129
+        }
+      ],
+      "ben/xlr8/combat/air_light.png": [
+        {
+          "x": 18,
+          "y": -124
+        },
+        {
+          "x": 18,
+          "y": -117
+        },
+        {
+          "x": 34,
+          "y": -121
+        },
+        {
+          "x": 26,
+          "y": -124
+        }
+      ],
+      "ben/xlr8/combat/air_medium.png": [
+        {
+          "x": 21,
+          "y": -139
+        },
+        {
+          "x": 27,
+          "y": -105
+        },
+        {
+          "x": -8,
+          "y": -132
+        },
+        {
+          "x": 22,
+          "y": -133
+        }
+      ],
+      "ben/xlr8/combat/turbo.png": [
+        {
+          "x": 15,
+          "y": -132
+        },
+        {
+          "x": 31,
+          "y": -118
+        },
+        {
+          "x": 46,
+          "y": -112
+        },
+        {
+          "x": 43,
+          "y": -122
+        }
+      ],
+      "ben/xlr8/combat/cyclone.png": [
+        {
+          "x": 8,
+          "y": -133
+        },
+        {
+          "x": 0,
+          "y": -133
+        },
+        {
+          "x": -14,
+          "y": -117
+        },
+        {
+          "x": 4,
+          "y": -128
+        }
+      ],
+      "ben/xlr8/combat/lightning.png": [
+        {
+          "x": 12,
+          "y": -131
+        },
+        {
+          "x": 37,
+          "y": -114
+        },
+        {
+          "x": 53,
+          "y": -96
+        },
+        {
+          "x": 15,
+          "y": -124
+        }
+      ]
+    }
+  },
+  "fourArms": {
+    "clips": {
+      "stand_light": {
+        "sheet": "ben/fourArms/combat/stand_light.png",
+        "frameWidth": 352,
+        "frameHeight": 256,
+        "columns": 4,
+        "pivot": {
+          "x": 176,
+          "y": 224
+        },
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "durations": [
+          5,
+          5,
+          3,
+          13
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "stand_medium": {
+        "sheet": "ben/fourArms/combat/stand_medium.png",
+        "frameWidth": 352,
+        "frameHeight": 256,
+        "columns": 4,
+        "pivot": {
+          "x": 176,
+          "y": 224
+        },
+        "frames": [
+          0,
+          2,
+          1,
+          3
+        ],
+        "durations": [
+          10,
+          5,
+          7,
+          15
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "crouch_light": {
+        "sheet": "ben/fourArms/combat/crouch_light.png",
+        "frameWidth": 352,
+        "frameHeight": 256,
+        "columns": 4,
+        "pivot": {
+          "x": 176,
+          "y": 224
+        },
+        "frames": [
+          0,
+          2,
+          1,
+          3
+        ],
+        "durations": [
+          6,
+          4,
+          4,
+          9
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "crouch_medium": {
+        "sheet": "ben/fourArms/combat/crouch_medium.png",
+        "frameWidth": 352,
+        "frameHeight": 256,
+        "columns": 4,
+        "pivot": {
+          "x": 176,
+          "y": 224
+        },
+        "frames": [
+          0,
+          2,
+          1,
+          3
+        ],
+        "durations": [
+          11,
+          5,
+          8,
+          17
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "air_light": {
+        "sheet": "ben/fourArms/combat/air_light.png",
+        "frameWidth": 352,
+        "frameHeight": 256,
+        "columns": 4,
+        "pivot": {
+          "x": 176,
+          "y": 224
+        },
+        "frames": [
+          0,
+          2,
+          1,
+          3
+        ],
+        "durations": [
+          6,
+          5,
+          4,
+          10
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "air_medium": {
+        "sheet": "ben/fourArms/combat/air_medium.png",
+        "frameWidth": 352,
+        "frameHeight": 256,
+        "columns": 4,
+        "pivot": {
+          "x": 176,
+          "y": 224
+        },
+        "frames": [
+          0,
+          2,
+          1,
+          3
+        ],
+        "durations": [
+          11,
+          6,
+          8,
+          16
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "tackle_light": {
+        "sheet": "ben/fourArms/combat/tackle.png",
+        "frameWidth": 352,
+        "frameHeight": 256,
+        "columns": 4,
+        "pivot": {
+          "x": 176,
+          "y": 224
+        },
+        "frames": [
+          0,
+          1,
+          3
+        ],
+        "durations": [
+          9,
+          7,
+          22
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "tackle_medium": {
+        "sheet": "ben/fourArms/combat/tackle.png",
+        "frameWidth": 352,
+        "frameHeight": 256,
+        "columns": 4,
+        "pivot": {
+          "x": 176,
+          "y": 224
+        },
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "durations": [
+          15,
+          5,
+          5,
+          32
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "quad_light": {
+        "sheet": "ben/fourArms/combat/quad.png",
+        "frameWidth": 352,
+        "frameHeight": 256,
+        "columns": 4,
+        "pivot": {
+          "x": 176,
+          "y": 224
+        },
+        "frames": [
+          0,
+          1,
+          3
+        ],
+        "durations": [
+          8,
+          3,
+          28
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "quad_medium": {
+        "sheet": "ben/fourArms/combat/quad.png",
+        "frameWidth": 352,
+        "frameHeight": 256,
+        "columns": 4,
+        "pivot": {
+          "x": 176,
+          "y": 224
+        },
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "durations": [
+          15,
+          2,
+          2,
+          38
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "quad_light_hold": {
+        "sheet": "ben/fourArms/combat/quad.png",
+        "frameWidth": 352,
+        "frameHeight": 256,
+        "columns": 4,
+        "pivot": {
+          "x": 176,
+          "y": 224
+        },
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "durations": [
+          4,
+          7,
+          6,
+          5
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "quad_medium_hold": {
+        "sheet": "ben/fourArms/combat/quad.png",
+        "frameWidth": 352,
+        "frameHeight": 256,
+        "columns": 4,
+        "pivot": {
+          "x": 176,
+          "y": 224
+        },
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "durations": [
+          6,
+          14,
+          9,
+          5
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "seismic_light": {
+        "sheet": "ben/fourArms/combat/seismic.png",
+        "frameWidth": 352,
+        "frameHeight": 256,
+        "columns": 4,
+        "pivot": {
+          "x": 176,
+          "y": 224
+        },
+        "frames": [
+          0,
+          2,
+          3
+        ],
+        "durations": [
+          10,
+          1,
+          26
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "seismic_medium": {
+        "sheet": "ben/fourArms/combat/seismic.png",
+        "frameWidth": 352,
+        "frameHeight": 256,
+        "columns": 4,
+        "pivot": {
+          "x": 176,
+          "y": 224
+        },
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "durations": [
+          8,
+          9,
+          1,
+          37
+        ],
+        "ticks": 1,
+        "loop": false
+      }
+    },
+    "anchors": {
+      "ben/fourArms/combat/stand_light.png": [
+        {
+          "x": -9,
+          "y": -165
+        },
+        {
+          "x": -19,
+          "y": -165
+        },
+        {
+          "x": -1,
+          "y": -154
+        },
+        {
+          "x": -16,
+          "y": -165
+        }
+      ],
+      "ben/fourArms/combat/stand_medium.png": [
+        {
+          "x": -14,
+          "y": -167
+        },
+        {
+          "x": 53,
+          "y": -150
+        },
+        {
+          "x": 16,
+          "y": -146
+        },
+        {
+          "x": -17,
+          "y": -164
+        }
+      ],
+      "ben/fourArms/combat/crouch_light.png": [
+        {
+          "x": 0,
+          "y": -150
+        },
+        {
+          "x": -12,
+          "y": -142
+        },
+        {
+          "x": -20,
+          "y": -137
+        },
+        {
+          "x": -1,
+          "y": -148
+        }
+      ],
+      "ben/fourArms/combat/crouch_medium.png": [
+        {
+          "x": 1,
+          "y": -158
+        },
+        {
+          "x": -22,
+          "y": -153
+        },
+        {
+          "x": -48,
+          "y": -136
+        },
+        {
+          "x": -13,
+          "y": -157
+        }
+      ],
+      "ben/fourArms/combat/air_light.png": [
+        {
+          "x": -7,
+          "y": -139
+        },
+        {
+          "x": 1,
+          "y": -162
+        },
+        {
+          "x": 9,
+          "y": -147
+        },
+        {
+          "x": -7,
+          "y": -167
+        }
+      ],
+      "ben/fourArms/combat/air_medium.png": [
+        {
+          "x": -15,
+          "y": -152
+        },
+        {
+          "x": 7,
+          "y": -166
+        },
+        {
+          "x": 24,
+          "y": -118
+        },
+        {
+          "x": -16,
+          "y": -155
+        }
+      ],
+      "ben/fourArms/combat/tackle.png": [
+        {
+          "x": 12,
+          "y": -162
+        },
+        {
+          "x": 57,
+          "y": -145
+        },
+        {
+          "x": 58,
+          "y": -134
+        },
+        {
+          "x": 34,
+          "y": -154
+        }
+      ],
+      "ben/fourArms/combat/quad.png": [
+        {
+          "x": 24,
+          "y": -159
+        },
+        {
+          "x": 41,
+          "y": -172
+        },
+        {
+          "x": 111,
+          "y": -163
+        },
+        {
+          "x": 20,
+          "y": -152
+        }
+      ],
+      "ben/fourArms/combat/seismic.png": [
+        {
+          "x": 19,
+          "y": -139
+        },
+        {
+          "x": 13,
+          "y": -135
+        },
+        {
+          "x": 2,
+          "y": -120
+        },
+        {
+          "x": 20,
+          "y": -150
+        }
+      ]
+    }
+  },
+  "heatblast": {
+    "clips": {
+      "stand_light": {
+        "sheet": "ben/heatblast/combat/stand_light.png",
+        "frameWidth": 352,
+        "frameHeight": 256,
+        "columns": 4,
+        "pivot": {
+          "x": 176,
+          "y": 224
+        },
+        "frames": [
+          0,
+          2,
+          1,
+          3
+        ],
+        "durations": [
+          5,
+          3,
+          3,
+          8
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "stand_medium": {
+        "sheet": "ben/heatblast/combat/stand_medium.png",
+        "frameWidth": 352,
+        "frameHeight": 256,
+        "columns": 4,
+        "pivot": {
+          "x": 176,
+          "y": 224
+        },
+        "frames": [
+          0,
+          2,
+          1,
+          3
+        ],
+        "durations": [
+          8,
+          5,
+          6,
+          12
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "crouch_light": {
+        "sheet": "ben/heatblast/combat/crouch_light.png",
+        "frameWidth": 352,
+        "frameHeight": 256,
+        "columns": 4,
+        "pivot": {
+          "x": 176,
+          "y": 224
+        },
+        "frames": [
+          0,
+          2,
+          1,
+          3
+        ],
+        "durations": [
+          5,
+          3,
+          4,
+          8
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "crouch_medium": {
+        "sheet": "ben/heatblast/combat/crouch_medium.png",
+        "frameWidth": 352,
+        "frameHeight": 256,
+        "columns": 4,
+        "pivot": {
+          "x": 176,
+          "y": 224
+        },
+        "frames": [
+          0,
+          2,
+          1,
+          3
+        ],
+        "durations": [
+          9,
+          5,
+          7,
+          14
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "air_light": {
+        "sheet": "ben/heatblast/combat/air_light.png",
+        "frameWidth": 352,
+        "frameHeight": 256,
+        "columns": 4,
+        "pivot": {
+          "x": 176,
+          "y": 224
+        },
+        "frames": [
+          0,
+          2,
+          1,
+          3
+        ],
+        "durations": [
+          5,
+          5,
+          4,
+          8
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "air_medium": {
+        "sheet": "ben/heatblast/combat/air_medium.png",
+        "frameWidth": 352,
+        "frameHeight": 256,
+        "columns": 4,
+        "pivot": {
+          "x": 176,
+          "y": 224
+        },
+        "frames": [
+          0,
+          2,
+          1,
+          3
+        ],
+        "durations": [
+          8,
+          8,
+          6,
+          13
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "fireball_light": {
+        "sheet": "ben/heatblast/combat/fireball.png",
+        "frameWidth": 352,
+        "frameHeight": 256,
+        "columns": 4,
+        "pivot": {
+          "x": 176,
+          "y": 224
+        },
+        "frames": [
+          0,
+          2,
+          3
+        ],
+        "durations": [
+          8,
+          1,
+          17
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "fireball_medium": {
+        "sheet": "ben/heatblast/combat/fireball.png",
+        "frameWidth": 352,
+        "frameHeight": 256,
+        "columns": 4,
+        "pivot": {
+          "x": 176,
+          "y": 224
+        },
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "durations": [
+          7,
+          8,
+          1,
+          33
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "pillar_light": {
+        "sheet": "ben/heatblast/combat/pillar.png",
+        "frameWidth": 352,
+        "frameHeight": 256,
+        "columns": 4,
+        "pivot": {
+          "x": 176,
+          "y": 224
+        },
+        "frames": [
+          0,
+          2,
+          3
+        ],
+        "durations": [
+          10,
+          1,
+          23
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "pillar_medium": {
+        "sheet": "ben/heatblast/combat/pillar.png",
+        "frameWidth": 352,
+        "frameHeight": 256,
+        "columns": 4,
+        "pivot": {
+          "x": 176,
+          "y": 224
+        },
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "durations": [
+          9,
+          9,
+          1,
+          31
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "propulsion_light": {
+        "sheet": "ben/heatblast/combat/propulsion.png",
+        "frameWidth": 352,
+        "frameHeight": 256,
+        "columns": 4,
+        "pivot": {
+          "x": 176,
+          "y": 224
+        },
+        "frames": [
+          0,
+          1,
+          3
+        ],
+        "durations": [
+          7,
+          9,
+          21
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "propulsion_medium": {
+        "sheet": "ben/heatblast/combat/propulsion.png",
+        "frameWidth": 352,
+        "frameHeight": 256,
+        "columns": 4,
+        "pivot": {
+          "x": 176,
+          "y": 224
+        },
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "durations": [
+          10,
+          6,
+          7,
+          29
+        ],
+        "ticks": 1,
+        "loop": false
+      }
+    },
+    "anchors": {
+      "ben/heatblast/combat/stand_light.png": [
+        {
+          "x": 4,
+          "y": -145
+        },
+        {
+          "x": 6,
+          "y": -145
+        },
+        {
+          "x": 2,
+          "y": -142
+        },
+        {
+          "x": 5,
+          "y": -145
+        }
+      ],
+      "ben/heatblast/combat/stand_medium.png": [
+        {
+          "x": 0,
+          "y": -145
+        },
+        {
+          "x": 3,
+          "y": -142
+        },
+        {
+          "x": 1,
+          "y": -138
+        },
+        {
+          "x": 3,
+          "y": -145
+        }
+      ],
+      "ben/heatblast/combat/crouch_light.png": [
+        {
+          "x": 14,
+          "y": -129
+        },
+        {
+          "x": -5,
+          "y": -121
+        },
+        {
+          "x": -1,
+          "y": -114
+        },
+        {
+          "x": 12,
+          "y": -133
+        }
+      ],
+      "ben/heatblast/combat/crouch_medium.png": [
+        {
+          "x": 16,
+          "y": -145
+        },
+        {
+          "x": 10,
+          "y": -142
+        },
+        {
+          "x": 12,
+          "y": -130
+        },
+        {
+          "x": 18,
+          "y": -146
+        }
+      ],
+      "ben/heatblast/combat/air_light.png": [
+        {
+          "x": 19,
+          "y": -142
+        },
+        {
+          "x": 15,
+          "y": -132
+        },
+        {
+          "x": 24,
+          "y": -125
+        },
+        {
+          "x": 14,
+          "y": -130
+        }
+      ],
+      "ben/heatblast/combat/air_medium.png": [
+        {
+          "x": 38,
+          "y": -131
+        },
+        {
+          "x": 42,
+          "y": -133
+        },
+        {
+          "x": 48,
+          "y": -122
+        },
+        {
+          "x": 30,
+          "y": -142
+        }
+      ],
+      "ben/heatblast/combat/fireball.png": [
+        {
+          "x": 1,
+          "y": -142
+        },
+        {
+          "x": -4,
+          "y": -140
+        },
+        {
+          "x": 20,
+          "y": -138
+        },
+        {
+          "x": 3,
+          "y": -140
+        }
+      ],
+      "ben/heatblast/combat/pillar.png": [
+        {
+          "x": 5,
+          "y": -136
+        },
+        {
+          "x": 16,
+          "y": -115
+        },
+        {
+          "x": 10,
+          "y": -111
+        },
+        {
+          "x": 3,
+          "y": -136
+        }
+      ],
+      "ben/heatblast/combat/propulsion.png": [
+        {
+          "x": 13,
+          "y": -119
+        },
+        {
+          "x": 40,
+          "y": -112
+        },
+        {
+          "x": 23,
+          "y": -146
+        },
+        {
+          "x": 3,
+          "y": -145
+        }
+      ]
+    }
+  }
+}

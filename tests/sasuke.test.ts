@@ -13,7 +13,7 @@ import { ONLINE_CHARACTERS } from "../src/net/protocol";
 import { FighterPresentation } from "../src/render/presentation";
 import { sasukeAnimations } from "../src/render/sasuke-animations";
 import { GameSession } from "../src/game/session";
-import { selectionScreen } from "../src/ui/screens";
+import { towerScreen } from "../src/ui/tower";
 
 function bout(side: 1 | -1 = 1, gap = 57, opponent = "samurai") {
   const m = new Match(characters.sasuke, {}, characterById(opponent));
@@ -50,17 +50,17 @@ function bout(side: 1 | -1 = 1, gap = 57, opponent = "samurai") {
 }
 
 describe("Sasuke Hebi", () => {
-  it("uses the common roster, snapshots and three-stage Arcade", () => {
+  it("uses the common roster, snapshots and ten-floor Arcade", () => {
     expect(ONLINE_CHARACTERS).toContain("sasuke");
-    expect(new GameSession("arcade", "normal", "sasuke").route).toHaveLength(3);
-    const arcade = selectionScreen("arcade", "sasuke", "dio", "ready");
-    expect(arcade.match(/<li>/g)).toHaveLength(3);
+    const session = new GameSession("arcade", "normal", "sasuke");
+    expect(session.route).toHaveLength(10);
+    expect(towerScreen(session, 0).match(/data-floor=/g)).toHaveLength(10);
     const { a, m, tick } = bout();
-    a.meter = 100;
+    a.meter = 99;
     tick({ pressed: ["ultimate"] });
     expect(a.moveId).toBe("");
     expect(Object.keys(a.data.specialMoves ?? {})).toHaveLength(8);
-    expect(a.data.superMoves).toBeUndefined();
+    expect(a.data.superMoves?.kirin_start).toBeDefined();
     expect(hashState(snapshot(restore(snapshot(m))))).toBe(
       hashState(snapshot(m)),
     );

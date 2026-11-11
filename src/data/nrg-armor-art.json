@@ -1,0 +1,242 @@
+{
+  "sheet": "ben/nrg/armadura-combate-v1.png",
+  "frameWidth": 234,
+  "frameHeight": 191,
+  "columns": 8,
+  "pivot": {
+    "x": 118,
+    "y": 189
+  },
+  "clips": {
+    "stand_light": {
+      "frames": [
+        12,
+        13,
+        14,
+        15,
+        48
+      ],
+      "durations": [
+        2,
+        4,
+        4,
+        7,
+        5
+      ],
+      "ticks": 1,
+      "loop": false
+    },
+    "stand_medium": {
+      "frames": [
+        16,
+        17,
+        18,
+        19,
+        48
+      ],
+      "durations": [
+        3,
+        8,
+        5,
+        15,
+        8
+      ],
+      "ticks": 1,
+      "loop": false
+    },
+    "crouch_light": {
+      "frames": [
+        20,
+        21,
+        22,
+        23
+      ],
+      "durations": [
+        2,
+        5,
+        4,
+        13
+      ],
+      "ticks": 1,
+      "loop": false
+    },
+    "crouch_medium": {
+      "frames": [
+        24,
+        25,
+        26,
+        27
+      ],
+      "durations": [
+        4,
+        8,
+        5,
+        26
+      ],
+      "ticks": 1,
+      "loop": false
+    },
+    "air_light": {
+      "frames": [
+        28,
+        29,
+        30,
+        31
+      ],
+      "durations": [
+        2,
+        4,
+        5,
+        15
+      ],
+      "ticks": 1,
+      "loop": false
+    },
+    "air_medium": {
+      "frames": [
+        32,
+        33,
+        34,
+        35
+      ],
+      "durations": [
+        2,
+        6,
+        10,
+        25
+      ],
+      "ticks": 1,
+      "loop": false
+    },
+    "armorImpact_light": {
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        48
+      ],
+      "durations": [
+        4,
+        5,
+        7,
+        14,
+        10
+      ],
+      "ticks": 1,
+      "loop": false
+    },
+    "armorImpact_medium": {
+      "frames": [
+        4,
+        5,
+        6,
+        7,
+        48
+      ],
+      "durations": [
+        5,
+        12,
+        5,
+        23,
+        10
+      ],
+      "ticks": 1,
+      "loop": false
+    },
+    "nrgDropLanding": {
+      "frames": [
+        35,
+        20,
+        48
+      ],
+      "durations": [
+        5,
+        4,
+        3
+      ],
+      "ticks": 1,
+      "loop": false
+    },
+    "armorCounter_medium": {
+      "frames": [
+        8,
+        9,
+        11,
+        48
+      ],
+      "durations": [
+        3,
+        10,
+        18,
+        11
+      ],
+      "ticks": 1,
+      "loop": false
+    },
+    "nrgCounterShove": {
+      "frames": [
+        9,
+        10,
+        11,
+        48
+      ],
+      "durations": [
+        3,
+        4,
+        16,
+        9
+      ],
+      "ticks": 1,
+      "loop": false
+    },
+    "throw": {
+      "frames": [
+        36,
+        37,
+        38,
+        39
+      ],
+      "durations": [
+        5,
+        5,
+        3,
+        21
+      ],
+      "ticks": 1,
+      "loop": false
+    },
+    "grabHold": {
+      "frames": [
+        40,
+        41,
+        42,
+        43,
+        44
+      ],
+      "durations": [
+        3,
+        6,
+        8,
+        4,
+        5
+      ],
+      "ticks": 1,
+      "loop": false
+    },
+    "throwRecover": {
+      "frames": [
+        45,
+        46,
+        47
+      ],
+      "durations": [
+        4,
+        4,
+        4
+      ],
+      "ticks": 1,
+      "loop": false
+    }
+  }
+}

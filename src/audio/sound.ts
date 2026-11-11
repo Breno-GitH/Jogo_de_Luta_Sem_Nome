@@ -1,4 +1,6 @@
 import type { Match, HitEvent } from "../engine/combat";
+import type { CentipedeCue } from "../engine/kaneki-centipede";
+import { chainFinishes } from "../engine/kaneki-chain";
 export type Cue =
   | "swing"
   | "hit"
@@ -6,11 +8,33 @@ export type Cue =
   | "guard"
   | "counter"
   | "power"
+  | "feedbackSpark"
+  | "nrgImpact"
+  | "nrgMetal"
+  | "gravityPulse"
+  | "sonicWave"
+  | "kirinCharge"
+  | "kirinThunder"
+  | "knuckleSnap"
+  | "centipede"
+  | "chainBind"
+  | "chainEscape"
+  | "chainWhoosh"
+  | "chainImpact"
   | "round"
   | "fight"
   | "ko"
   | "menu";
 export function effectCue(event: HitEvent): Cue {
+  if (event.centipede) return "centipede";
+  if (!event.blocked && (event.ben === "electric" || event.ben === "storm") &&
+      (event.kind === "hit" || event.kind === "power")) return "feedbackSpark";
+  if (!event.blocked && event.ben === "thermal" && event.kind === "hit") return "nrgImpact";
+  if (!event.blocked && event.ben === "gravity") return "gravityPulse";
+  if (!event.blocked && event.ben === "sonic") return "sonicWave";
+  if (event.ben === "metal" && (event.kind === "hit" || event.kind === "counter")) return "nrgMetal";
+  if (event.kind === "kirinCharge" || event.kind === "kirinThunder" || event.kind === "knuckleSnap") return event.kind;
+  if (event.kind === "chainBind" || event.kind === "chainEscape" || event.kind === "chainWhoosh" || event.kind === "chainImpact") return event.kind;
   return event.kind === "guard"
     ? "guard"
     : event.kind === "counter"
@@ -34,6 +58,9 @@ export class Sound {
   private noise?: AudioBuffer;
   private seen = new WeakSet<HitEvent>();
   private owner?: Match;
+  private lastKnuckleFrame = -1;
+  private lastCentipedeFrame = -1;
+  private onlineRound?: string;
   private moves = ["", ""];
   private message = "";
   private musicGain?: GainNode;
@@ -41,6 +68,11 @@ export class Sound {
   private musicVolume = 0.18;
   private masterVolume = 0.5;
   private musicStep = 0;
+  private bossMusic = false;
+  setBossMusic(value: boolean) {
+    if (value !== this.bossMusic) this.musicStep = 0;
+    this.bossMusic = value;
+  }
   get available() {
     return typeof AudioContext !== "undefined";
   }
@@ -121,7 +153,7 @@ export class Sound {
       !this.musicVolume
     )
       return;
-    const sequence = [
+    const sequence = this.bossMusic ? [33, 45, 36, 45, 40, 48, 41, 47, 33, 45, 36, 48, 39, 46, 40, 47] : [
       45, 52, 57, 60, 45, 52, 59, 64, 41, 48, 53, 57, 43, 50, 55, 59,
     ];
     const osc = ctx.createOscillator(),
@@ -142,7 +174,7 @@ export class Sound {
       env.disconnect();
     };
   }
-  play(cue: Cue) {
+  play(cue: Cue, chain?: HitEvent["chain"], centipede?: CentipedeCue) {
     const ctx = this.context,
       master = this.master;
     if (!this.enabled || !ctx || !master || ctx.state !== "running") return;
@@ -178,18 +210,18 @@ export class Sound {
       };
     };
     if (
-      ["swing", "hit", "heavy", "guard", "counter", "power"].includes(cue) &&
+      ["swing", "hit", "heavy", "guard", "counter", "power", "kirinThunder", "knuckleSnap", "chainWhoosh", "chainImpact", "centipede"].includes(cue) &&
       this.noise
     ) {
       const source = ctx.createBufferSource(),
         filter = ctx.createBiquadFilter(),
         envelope = ctx.createGain();
-      const duration = cue === "swing" ? 0.085 : cue === "heavy" ? 0.16 : 0.1;
+      const duration = centipede === "ground" ? .21 : centipede === "fall" ? .15 : cue === "knuckleSnap" ? 0.026 : cue === "swing" ? 0.085 : cue === "heavy" || cue === "kirinThunder" ? 0.18 : 0.1;
       source.buffer = this.noise;
-      filter.type = cue === "swing" ? "highpass" : "lowpass";
+      filter.type = cue === "knuckleSnap" ? "bandpass" : cue === "swing" ? "highpass" : "lowpass";
       filter.frequency.value =
-        cue === "swing" ? 1700 : cue === "guard" ? 5500 : 1700;
-      envelope.gain.setValueAtTime(cue === "swing" ? 0.18 : 0.45, now);
+        centipede === "ground" ? 580 : centipede === "grip" ? 2650 : cue === "knuckleSnap" ? 2700 : cue === "swing" ? 1700 : cue === "guard" ? 5500 : 1700;
+      envelope.gain.setValueAtTime(cue === "knuckleSnap" ? 0.9 : cue === "swing" ? 0.18 : 0.45, now);
       envelope.gain.exponentialRampToValueAtTime(0.0001, now + duration);
       source.connect(filter);
       filter.connect(envelope);
@@ -202,7 +234,53 @@ export class Sound {
         envelope.disconnect();
       };
     }
-    if (cue === "guard" || cue === "counter")
+    if (cue === "centipede" && centipede) {
+      const strokes: Record<CentipedeCue, [number, number, number, OscillatorType, number]> = {
+        activation: [173,63,.22,"triangle",.36], transform: [96,179,.26,"sawtooth",.15],
+        lash: [509,125,.095,"triangle",.29], launch: [212,484,.18,"square",.16],
+        grip: [257,83,.12,"triangle",.32], fall: [520,59,.34,"sawtooth",.18],
+        ground: [123,28,.48,"triangle",.58], release: [139,45,.19,"sine",.27],
+        wall: [305,52,.15,"square",.17],
+      };
+      tone(...strokes[centipede]);
+      if (centipede === "ground") tone(760,94,.10,"square",.15);
+    } else if (cue === "knuckleSnap") {
+      tone(1200, 550, .027, "triangle", .31);
+    } else if (cue === "chainBind") {
+      tone(310, 96, .075, "triangle", .31);
+    } else if (cue === "chainEscape") {
+      tone(590, 915, .12, "triangle", .26);
+    } else if (cue === "chainWhoosh") {
+      tone(chain === "spin" || chain === "lasso" ? 280 : 147, 420, .11, "sine", .22);
+    } else if (cue === "chainImpact") {
+      const slam = chain && chainFinishes[chain].slam;
+      const toneStart = chain === "meteor" ? 104 : chain === "centipede" ? 128 :
+        chain === "embrace" ? 225 : chain === "pendulum" ? 170 : 205;
+      tone(toneStart, slam ? 39 : 72, slam ? .21 : .095, "triangle", slam ? .51 : .36);
+      if (slam || chain === "spin") tone(380, 80, .08, "square", .12);
+    } else if (cue === "feedbackSpark") {
+      tone(620, 94, .11, "square", .13);
+      tone(180, 38, .13, "triangle", .27);
+    } else if (cue === "gravityPulse") {
+      tone(108, 45, .17, "sine", .33);
+      tone(221, 94, .12, "triangle", .19, .024);
+    } else if (cue === "sonicWave") {
+      tone(745, 491, .094, "triangle", .24);
+      tone(520, 264, .12, "sine", .21, .04);
+    } else if (cue === "nrgMetal") {
+      tone(187, 48, .12, "triangle", .43);
+      tone(1450, 680, .075, "square", .075);
+      tone(780, 350, .14, "sine", .17);
+    } else if (cue === "nrgImpact") {
+      tone(172, 38, .16, "triangle", .38);
+      tone(330, 87, .09, "sawtooth", .09);
+    } else if (cue === "kirinCharge") {
+      tone(91, 47, .42, "triangle", .30);
+      tone(330, 1150, .12, "sawtooth", .075, .12);
+    } else if (cue === "kirinThunder") {
+      tone(146, 34, .52, "triangle", .56);
+      tone(1200, 230, .095, "square", .14);
+    } else if (cue === "guard" || cue === "counter")
       tone(cue === "guard" ? 1250 : 1650, 700, 0.12, "sine", 0.2);
     else if (cue === "hit" || cue === "heavy")
       tone(
@@ -226,17 +304,27 @@ export class Sound {
       tone(330, 110, 0.5, "triangle", 0.2, 0.07);
     } else if (cue === "menu") tone(660, 880, 0.06, "sine", 0.15);
   }
-  tick(match: Match) {
+  tick(match: Match, onlineRound?: string) {
     if (this.owner !== match) {
       this.owner = match;
       this.moves = ["", ""];
       this.message = "";
       this.seen = new WeakSet();
+      if (!onlineRound || onlineRound !== this.onlineRound) this.lastKnuckleFrame = this.lastCentipedeFrame = -1;
+      this.onlineRound = onlineRound;
     }
     for (const event of match.events)
       if (!this.seen.has(event)) {
         this.seen.add(event);
-        this.play(effectCue(event));
+        if (event.knuckleFrame !== undefined) {
+          if (event.knuckleFrame <= this.lastKnuckleFrame) continue;
+          this.lastKnuckleFrame = event.knuckleFrame;
+        }
+        if (event.centipede) {
+          if (event.centipede.frame <= this.lastCentipedeFrame) continue;
+          this.lastCentipedeFrame = event.centipede.frame;
+        }
+        this.play(effectCue(event), event.chain, event.centipede?.cue);
       }
     match.fighters.forEach((f, i) => {
       const move = f.state === "attack" ? f.moveId : "";

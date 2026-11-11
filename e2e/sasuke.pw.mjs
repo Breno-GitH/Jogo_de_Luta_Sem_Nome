@@ -72,11 +72,28 @@ test("Sasuke appears in the roster and uses his own art in Training", async ({
     "sasuke",
     { timeout: 25000 },
   );
+  const arena = page.locator("canvas");
+  await expect(arena).toHaveAttribute("data-match-phase", "fight");
+  await arena.focus();
   await page.keyboard.press("w");
-  await expect(page.locator("canvas")).toHaveAttribute(
-    "data-animation",
-    /jump(Start|Rise|Apex|Fall)/,
-  );
+  await expect(arena).toHaveAttribute("data-animation", /jump(Start|Rise|Apex|Fall)/);
+  await expect(arena).toHaveAttribute("data-animation", "idle");
+  await page.keyboard.press("t");
+  await expect(arena).toHaveAttribute("data-animation", "taunt");
+  await expect(arena).toHaveAttribute("data-animation", "idle");
+
+  await page.keyboard.down("s");
+  await expect(arena).toHaveAttribute("data-physics-state", "crouch");
+  await page.keyboard.up("s");
+  await expect(arena).toHaveAttribute("data-physics-state", "idle");
+  await page.keyboard.down("s");
+  await page.keyboard.down("l");
+  await expect(arena).toHaveAttribute("data-p1-curse", "awakening");
+  await page.keyboard.up("l");
+  await page.keyboard.up("s");
+  await expect(arena).toHaveAttribute("data-p1-curse", "active");
+  await page.keyboard.press("t");
+  await expect(arena).toHaveAttribute("data-animation", "curse_taunt");
 });
 
 test("All eight Sasuke specials render through the live engine", async ({ page }) => {
@@ -88,7 +105,7 @@ test("All eight Sasuke specials render through the live engine", async ({ page }
   });
   await page.goto("art/sasuke.html", { waitUntil: "domcontentloaded" });
   const arena = page.locator("#arena");
-  await expect(arena).toHaveAttribute("data-loaded", "true");
+  await expect(arena).toHaveAttribute("data-loaded", "true", { timeout: 20000 });
   for (const side of [false, true]) {
     await page.locator("#mirror").setChecked(side);
     for (const [id, startup] of [
@@ -118,7 +135,7 @@ test("Sasuke Curse Mark uses the corrected atlas through awakening, combat and r
   page.on("pageerror", error => errors.push(error.message));
   await page.goto("art/sasuke.html", { waitUntil: "domcontentloaded" });
   const arena = page.locator("#arena");
-  await expect(arena).toHaveAttribute("data-loaded", "true");
+  await expect(arena).toHaveAttribute("data-loaded", "true", { timeout: 20000 });
   await page.selectOption("#scenario", "awakening");
   await seek(page, 13);
   await expect(arena).toHaveAttribute("data-animation", "curse_awaken");
@@ -140,4 +157,133 @@ test("Sasuke Curse Mark uses the corrected atlas through awakening, combat and r
   await expect(arena).toHaveAttribute("data-curse-phase", "cooldown");
   await expect(arena).toHaveAttribute("data-animation", "idle");
   expect(errors).toEqual([]);
+});
+
+test("Kirin runs from palm confirm through the dragon impact in both forms", async ({ page }) => {
+  const errors = [];
+  page.on("pageerror", error => errors.push(error.message));
+  await page.goto("art/sasuke.html", { waitUntil: "domcontentloaded" });
+  const arena = page.locator("#arena");
+  await expect(arena).toHaveAttribute("data-loaded", "true", { timeout: 20000 });
+  for (const [mode, cursed] of [["kirin", false], ["powered:kirin", true]]) {
+    await page.locator("#mirror").setChecked(cursed);
+    await page.selectOption("#scenario", mode);
+    await seek(page, 7);
+    await expect(arena).toHaveAttribute("data-animation", cursed ? "curse_kirin_start" : "kirin_start");
+    await seek(page, 55);
+    await expect(arena).toHaveAttribute("data-kirin-phase", "storm");
+    await seek(page, 92);
+    await expect(arena).toHaveAttribute("data-kirin-phase", "reveal");
+    await expect(arena).toHaveAttribute("data-kirin-dragon", "true");
+    await expect(arena).toHaveAttribute("data-kirin-cursed", String(cursed));
+    await expect(arena).toHaveAttribute("data-kirin-variant", cursed ? "black" : "blue");
+    await seek(page, 136);
+    await expect(arena).toHaveAttribute("data-animation", cursed ? "curse_kirinCommand" : "kirinCommand");
+    await seek(page, 156);
+    await expect(arena).toHaveAttribute("data-kirin-phase", "dive");
+    await seek(page, 171);
+    await expect(arena).toHaveAttribute("data-kirin-phase", "impact");
+    await expect(arena).toHaveAttribute("data-target-health", "680");
+    await seek(page, 257);
+    await expect(arena).toHaveAttribute("data-kirin-phase", "none");
+    await expect(arena).toHaveAttribute("data-camera-zoom", "1");
+  }
+  expect(errors).toEqual([]);
+});
+
+test("polished Goryuka, Chidori and Nagashi use the real engine in the lab", async ({ page }) => {
+  const errors = [];
+  page.on("pageerror", error => errors.push(error.message));
+  await page.goto("art/sasuke.html", { waitUntil: "domcontentloaded" });
+  const arena = page.locator("#arena");
+  await expect(arena).toHaveAttribute("data-loaded", "true", { timeout: 20000 });
+  for (const reverse of [false, true]) {
+    await page.locator("#mirror").setChecked(reverse);
+    await page.selectOption("#scenario", "goryukaWave");
+    const samples = [];
+    for (const tick of [38, 42, 46, 50, 54, 58, 62, 66]) {
+      await seek(page, tick);
+      await expect(arena).toHaveAttribute("data-fire-dragon-live", "true");
+      samples.push(await arena.evaluate(c => ({
+        x: Number(c.dataset.fireDragonX), y: Number(c.dataset.fireDragonY),
+      })));
+    }
+    expect(samples.slice(1).every((sample, i) => (sample.x - samples[i].x) * (reverse ? -1 : 1) > 0)).toBe(true);
+    expect(samples.filter((sample, i) => i > 0 && i + 1 < samples.length &&
+      (sample.y - samples[i - 1].y) * (samples[i + 1].y - sample.y) < 0).length).toBeGreaterThanOrEqual(2);
+    await seek(page, 150);
+    await expect(arena).toHaveAttribute("data-fire-dragon-live", "false");
+  }
+  for (const powered of ["", "powered:"]) {
+    await page.selectOption("#scenario", powered + "chidoriFar");
+    await seek(page, 11);
+    await expect(arena).toHaveAttribute("data-animation", powered ? "curse_chidori" : "chidori");
+    let zoomed = false;
+    for (const tick of [19, 22, 25, 28, 31, 34, 37]) {
+      await seek(page, tick);
+      zoomed ||= Number(await arena.getAttribute("data-camera-zoom")) > 1;
+    }
+    expect(zoomed).toBe(true);
+    await seek(page, 85);
+    await expect(arena).toHaveAttribute("data-target-health", powered ? "879" : "895");
+    await expect(arena).toHaveAttribute("data-camera-zoom", "1");
+    await page.selectOption("#scenario", powered + "nagashiField");
+    await seek(page, 65);
+    await expect(arena).toHaveAttribute("data-target-health", powered ? "931" : "940");
+  }
+  expect(errors).toEqual([]);
+});
+
+
+test("Sasuke previews and commands appear in selection, Arcade and Versus BOT", async ({ page }) => {
+  test.setTimeout(60000);
+  await page.goto("./");
+  await page.click("#arcade");
+  await page.check('input[name="character"][value="sasuke"]');
+  await expect(page.locator("#fighter-hero picture source")).toHaveAttribute("srcset", /menu-idle\.webp$/);
+  await expect(page.locator("#fighter-hero")).toContainText("13 s");
+  await expect(page.locator("footer")).toContainText("Agarrão de pulso");
+  await expect(page.locator("footer")).toContainText("Provocação");
+  await page.click("#confirm-character");
+  await expect(page.locator("#app")).toHaveAttribute("data-screen", "tower");
+  await page.click("#fight");
+  await expect(page.locator("canvas")).toHaveAttribute("data-character", "sasuke");
+  await page.goto("./");
+  await page.click("#versus");
+  await page.check('input[name="character"][value="sasuke"]');
+  await page.click("#confirm-character");
+  await page.check('input[name="opponent"][value="luffy"]');
+  await page.click("#confirm-character");
+  await page.click("#fight");
+  await expect(page.locator("#app")).toHaveAttribute("data-screen", "fight");
+  await expect(page.locator("canvas")).toHaveAttribute("aria-label", /Sasuke.+Luffy/);
+});
+
+test("Sasuke's taunt and wrist throw play all three states in both forms", async ({ page }) => {
+  await page.goto("art/sasuke.html");
+  const arena = page.locator("#arena");
+  await expect(arena).toHaveAttribute("data-loaded", "true", { timeout: 20000 });
+  for (const powered of [false, true]) {
+    await page.locator("#mirror").setChecked(powered);
+    const clip = powered ? "curse_" : "";
+    await page.selectOption("#scenario", (powered ? "powered:" : "") + "taunt");
+    await seek(page, 9);
+    await expect(arena).toHaveAttribute("data-animation", clip + "taunt");
+    await seek(page, 17);
+    await expect(arena).toHaveAttribute("data-frame", "2");
+    await page.selectOption("#scenario", (powered ? "powered:" : "") + "throw");
+    await seek(page, 5);
+    await expect(arena).toHaveAttribute("data-animation", clip + "throw");
+    await seek(page, 22);
+    await expect(arena).toHaveAttribute("data-animation", clip + "grabHold");
+    await expect(arena).toHaveAttribute("data-capture", "grab");
+    await seek(page, 48);
+    await expect(arena).toHaveAttribute("data-animation", clip + "throwRecover");
+    await expect(arena).toHaveAttribute("data-target-health", "895");
+    await seek(page, 70);
+    await expect(arena).toHaveAttribute("data-animation", clip + "idle");
+  }
+  await page.selectOption("#scenario", "victory");
+  await seek(page, 20);
+  await expect(arena).toHaveAttribute("data-animation", "victory");
 });

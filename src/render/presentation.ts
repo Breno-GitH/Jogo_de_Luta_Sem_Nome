@@ -1,6 +1,9 @@
 import type { Fighter } from "../engine/combat";
 import { reactionFor } from "../engine/lifecycle";
 import { Animator, metadata, type AnimationData } from "./animator";
+import { benAnimation, feedbackWalkOffset, tickBenAnimation } from "./ben-animations";
+import type { BenAlien } from "../engine/ben-omnitrix";
+import { KanekiPresentation } from "./kaneki-presentation";
 import { SasukePresentation } from "./sasuke-presentation";
 import { LuffyMotionPresentation } from "./luffy-motion";
 import { DioMotionPresentation } from "./dio-motion";
@@ -13,7 +16,10 @@ import { animationTick } from "../engine/pace";
 
 /** Selects visual phases without driving physics from animation frames. */
 export class FighterPresentation {
-  readonly animator: Animator;
+  animator: Animator;
+  private benVisual: "human" | BenAlien | "nrgReleased" = "human";
+  private benGrowth = 0;
+  private kaneki?: KanekiPresentation;
   private sasukeMotion?: SasukePresentation;
   private luffyMotion?: LuffyMotionPresentation;
   private dioMotion?: DioMotionPresentation;
@@ -52,9 +58,35 @@ export class FighterPresentation {
     return this.gokuMotion?.plantedFoot;
   }
   renderRootX(fighter: Fighter) {
-    return this.gokuMotion?.renderRootX(fighter) ?? Math.round(fighter.x);
+    return this.kaneki?.rootX(fighter) ?? this.gokuMotion?.renderRootX(fighter) ??
+      Math.round(fighter.x + feedbackWalkOffset(fighter));
   }
-  tick(fighter: Fighter) {
+  kagunes(fighter: Fighter) {
+    return this.kaneki?.worldKagunes(fighter) ?? [];
+  }
+
+  tick(fighter: Fighter, preview?: Animator) {
+    if (preview) {
+      this.animator = preview;
+      return;
+    }
+    if (fighter.data.id === "ben") {
+      const watch = fighter.omnitrix;
+      const form = watch?.nrgReleased ? "nrgReleased" : watch?.active ?? "human";
+      const growth = fighter.omnitrix?.growth?.rank ?? 0;
+      if (form !== this.benVisual || growth !== this.benGrowth) {
+        this.animator = new Animator(benAnimation(form, growth));
+        this.benVisual = form;
+        this.benGrowth = growth;
+      }
+      tickBenAnimation(fighter, this.animator);
+      return;
+    }
+    if (fighter.data.id === "kaneki") {
+      this.kaneki ??= new KanekiPresentation(fighter, this.animator);
+      this.kaneki.step(fighter);
+      return;
+    }
     if (this.sasukeMotion) {
       this.sasukeMotion.tick(fighter);
       return;

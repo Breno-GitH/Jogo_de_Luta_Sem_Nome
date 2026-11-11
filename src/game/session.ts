@@ -1,74 +1,79 @@
-import opponents from "../data/arcade.json";
 import { Match } from "../engine/combat";
 import { Bot, type Difficulty } from "../engine/bot";
 import type { InputFrame } from "../engine/types";
 import { Training } from "./training";
 import { characterById, type CharacterId } from "../engine/characters";
+import {
+  currentFloor,
+  newTower,
+  towerComplete,
+  towerFloors,
+  towerProfile,
+  type TowerAttempt,
+} from "./tower";
 
 export type Mode = "versus" | "arcade" | "training";
 export type Palette = "cyan" | "amber" | "violet";
-export function arcadeRoute(characterId: CharacterId) {
-  const original: CharacterId[] = ["samurai", "dio", "goku", "luffy"];
-  return original.filter(id => id !== characterId).slice(0, opponents.length);
-}
+
 export class GameSession {
-  match = new Match();
-  bot: Bot;
+  match!: Match;
+  bot!: Bot;
   training = new Training();
   stage = 0;
-  results: number[][] = [];
+  readonly tower?: TowerAttempt;
   status: "playing" | "stageClear" | "victory" | "defeat" = "playing";
   constructor(
     public mode: Mode,
     public difficulty: Difficulty = "normal",
     public characterId: CharacterId = "samurai",
     public opponentCharacterId: CharacterId = "samurai",
+    attempt?: TowerAttempt,
   ) {
-    this.bot = new Bot(this.currentDifficulty);
+    if (mode === "arcade") {
+      this.tower = attempt ?? newTower(characterId);
+      this.characterId = this.tower.fighter;
+      this.stage = currentFloor(this.tower);
+    }
     this.restart();
   }
-  get opponent() {
-    return {
-      ...opponents[this.stage],
-      name: characterById(this.route[this.stage]).name,
-    };
+  get route() {
+    return this.tower?.route ?? [];
   }
-  get route(): CharacterId[] {
-    return arcadeRoute(this.characterId);
+  get results() {
+    return this.tower?.results ?? [];
   }
   get palette(): Palette {
-    return this.mode === "arcade" ? (this.opponent.palette as Palette) : "cyan";
+    return this.tower ? towerFloors[this.stage].palette : "cyan";
   }
   get opponentName() {
     const name = characterById(
-      this.mode === "arcade"
-        ? this.route[this.stage]
-        : this.opponentCharacterId,
+      this.tower ? this.route[this.stage] : this.opponentCharacterId,
     ).name;
-    return this.mode === "arcade"
-      ? this.opponent.name
+    return this.tower
+      ? name
       : this.mode === "training"
         ? `${name} · Treino`
         : `${name} · BOT`;
   }
   get currentDifficulty(): Difficulty {
-    return this.mode === "arcade"
-      ? (this.opponent.difficulty as Difficulty)
-      : this.difficulty;
+    return this.tower ? towerFloors[this.stage].tier : this.difficulty;
   }
   restart() {
     this.match = new Match(
       characterById(this.characterId),
       this.mode === "training" ? { training: true } : {},
-      this.mode === "arcade"
-        ? characterById(this.route[this.stage])
-        : characterById(this.opponentCharacterId),
+      characterById(
+        this.tower ? this.route[this.stage] : this.opponentCharacterId,
+      ),
     );
     this.bot = new Bot(
       this.currentDifficulty,
-      this.mode === "arcade" ? this.opponent.seed : 3417,
+      3417 + this.stage * 1013,
+      1,
+      this.tower ? towerProfile(this.stage) : undefined,
     );
-    this.status = "playing";
+    this.status =
+      this.tower && towerComplete(this.tower) ? "victory" : "playing";
     this.training.damage.reset();
     if (this.mode === "training") {
       this.match.phase = "fight";
@@ -77,13 +82,8 @@ export class GameSession {
     }
   }
   next() {
-    if (
-      this.mode !== "arcade" ||
-      this.status !== "stageClear" ||
-      this.stage >= opponents.length - 1
-    )
-      return false;
-    this.stage++;
+    if (!this.tower || this.status !== "stageClear") return false;
+    this.stage = currentFloor(this.tower);
     this.restart();
     return true;
   }
@@ -99,13 +99,18 @@ export class GameSession {
       this.training.damage.tick(this.match);
       return;
     }
-    if (this.match.phase === "finished") {
-      const won = this.match.wins[0] >= 2;
-      if (this.mode === "arcade" && won) {
-        this.results[this.stage] = [...this.match.wins];
-        this.status =
-          this.stage < opponents.length - 1 ? "stageClear" : "victory";
-      } else this.status = won ? "victory" : "defeat";
-    }
+    if (this.match.phase !== "finished") return;
+    const won = this.match.wins[0] >= 2;
+    if (this.tower) {
+      this.tower.ticks += this.match.frame;
+      if (won)
+        this.tower.results.push([this.match.wins[0], this.match.wins[1]]);
+      else this.tower.losses++;
+      this.status = won
+        ? towerComplete(this.tower)
+          ? "victory"
+          : "stageClear"
+        : "defeat";
+    } else this.status = won ? "victory" : "defeat";
   }
 }

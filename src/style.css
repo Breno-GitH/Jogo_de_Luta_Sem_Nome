@@ -324,8 +324,10 @@ h1 span {
   border-top-color: var(--blue);
 }
 .cast-sasuke {
-  grid-column: span 2;
   border-top-color: #b994e7;
+}
+.cast-kaneki {
+  border-top-color: #dd748c;
 }
 .cast-member img {
   position: absolute;
@@ -1557,3 +1559,41 @@ select {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
+
+/* Arcade tower. Each ledge is a floor, ordered from the summit down. */
+.tower-panel { max-width: 900px; padding: clamp(12px, 2.2cqw, 25px); }
+.tower-heading { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.tower-heading h2 { margin: 5px 0 12px; font-size: clamp(20px, 3.8cqw, 42px); }
+.tower-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .91fr); gap: clamp(8px, 2.2cqw, 27px); }
+.tower-stack { list-style: none; margin: 0; padding: 0 8px; display: grid; gap: 3px; align-content: center; background: linear-gradient(90deg, transparent 4%, #6686af33 4% 6%, #0b1221 6% 94%, #6686af33 94% 96%, transparent 96%); }
+.tower-floor { display: grid; grid-template-columns: 2.2em minmax(0,1fr) auto; align-items: center; gap: .45em; padding: .35em .9em; min-height: 1.7em; clip-path: polygon(8px 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%, 0 8px); border-bottom: 2px solid #0a111e; background: #202b3c; color: #aab7c9; font: clamp(9px, 1.33cqw, 14px) monospace; }
+.tower-floor .floor-name { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.tower-floor .floor-role { text-align: right; font-size: .79em; text-transform: uppercase; }
+.tower-floor .floor-number { font-weight: 900; }
+.tower-floor.cleared { color: #97e6ed; background: #14373d; }
+.tower-floor.current { color: #17151e; background: var(--gold); border-color: #aa6439; box-shadow: inset 0 2px #fff2bd; font-weight: 900; }
+.tower-floor[data-floor="5"]:not(.current) .floor-role { color: #f2bb79; }
+.tower-floor[data-floor="10"]:not(.current) .floor-role { color: #ffaba9; }
+.tower-opponent { text-align: center; background: repeating-linear-gradient(135deg,#ffffff06 0 1px,transparent 1px 7px), linear-gradient(180deg,#162b42,#0a111e); border: 1px solid #476584; padding: 10px; overflow: hidden; }
+.tower-portrait { height: clamp(76px, 16cqw, 200px); display: grid; place-items: center; overflow: hidden; }
+.tower-portrait img { height: 130%; max-width: 100%; object-fit: contain; image-rendering: pixelated; align-self: center; filter: drop-shadow(8px 4px #060912); }
+.tower-opponent h3 { margin: 5px 0; font-size: clamp(14px, 2.7cqw, 28px); }
+.tower-opponent p { font-size: clamp(10px, 1.3cqw, 14px); margin: 7px 0; }
+.tower-opponent small { color: var(--muted); }
+.tower-mini .tower-opponent { border-color: #d29d5c; background-color: #39251a; box-shadow: inset 0 0 35px #b8733660; }
+.tower-final .tower-opponent { border-color: #d77679; box-shadow: inset 0 0 48px #db4f6050; background: radial-gradient(ellipse at 50% 36%, #5e263e, #11192a 70%); }
+.tower-final .tower-portrait img { height: 145%; }
+.tower-final, .tower-champion { border-top-color: #f38580; background: radial-gradient(ellipse at 86% 8%, #502237, #131e30 55%, #0c1423); }
+.tower-champion { border-top-color: var(--gold); background: radial-gradient(ellipse at 42% 10%, #53371c, #131e30 57%, #0c1423); }
+.tower-stats { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 5px; margin: 10px 0; }
+.tower-stats div { padding: 5px; background: #0b1320; border-top: 1px solid #46536e; }
+.tower-stats dt { font: clamp(8px,1.15cqw,12px) monospace; color: var(--muted); text-transform: uppercase; }
+.tower-stats dd { margin: 3px 0 0; font: bold clamp(12px,1.65cqw,17px) monospace; color: var(--gold); }
+@container arena (max-width: 640px) {
+  .tower-opponent p { display: none; }
+  .tower-opponent small { font-size: 9px; }
+  .tower-floor { min-height: 18px; }
+  .tower-panel .button-row { gap: 5px; }
+}
+
+.tower-panel .button-row .text, .tower-resume .button-row .text { width: auto; margin-top: 0; }

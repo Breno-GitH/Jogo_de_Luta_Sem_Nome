@@ -43,7 +43,7 @@ test("Jet Gigant renders the real phase timeline through the end of the round", 
   expect(errors).toEqual([]);
 });
 
-test("R is edge-triggered in Chrome, with separate blocked, whiffed and empty recoveries", async ({ page }) => {
+test("R is edge-triggered in Chrome, confirms through guard and respects whiff and empty stock", async ({ page }) => {
   test.setTimeout(65000);
   await page.goto("art/luffy-jet.html", { waitUntil: "domcontentloaded" });
   const arena = page.locator("#arena");
@@ -51,13 +51,16 @@ test("R is edge-triggered in Chrome, with separate blocked, whiffed and empty re
   for (const mode of ["guard", "whiff", "empty"]) {
     await page.selectOption("#scenario", mode);
     await seek(page, mode === "guard" ? 68 : 88);
-    await expect(arena).toHaveAttribute("data-capture", "none");
-    await expect(arena).toHaveAttribute("data-target-health", "1000");
     await expect(arena).toHaveAttribute("data-meter", "0");
-    if (mode === "guard")
-      await expect(arena).toHaveAttribute("data-target-state", "blockstun");
-    await seek(page, 122);
-    await expect(arena).toHaveAttribute("data-animation", "idle");
+    if (mode === "guard") {
+      await expect(arena).toHaveAttribute("data-capture", "jetGigant");
+      await expect(arena).not.toHaveAttribute("data-target-health", "1000");
+    } else {
+      await expect(arena).toHaveAttribute("data-capture", "none");
+      await expect(arena).toHaveAttribute("data-target-health", "1000");
+      await seek(page, 122);
+      await expect(arena).toHaveAttribute("data-animation", "idle");
+    }
   }
   await page.selectOption("#scenario", "free");
   await arena.focus();

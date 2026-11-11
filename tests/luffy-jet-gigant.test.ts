@@ -67,7 +67,7 @@ describe("Gomu Gomu no Jet Gigant", () => {
     expect(luffy.meter).toBe(100);
   });
 
-  it.each(["whiff", "blocked", "punished"] as const)(
+  it.each(["whiff", "punished"] as const)(
     "spends exactly one bar with a normal %s recovery",
     (result) => {
       const { m, luffy, victim } = fixture(
@@ -82,17 +82,10 @@ describe("Gomu Gomu no Jet Gigant", () => {
       const initialHp = luffy.health;
       if (result === "punished")
         m.step([neutral(), { ...neutral(), pressed: ["light"] }]);
-      const blocked =
-        result === "blocked"
-          ? { ...neutral(), direction: 1 as const }
-          : neutral();
-      let guardHit = false;
       for (let i = 0; i < 138; i++) {
-        m.step([neutral(), i >= 51 ? blocked : neutral()]);
-        guardHit ||= m.hits.some((h) => h.move === jetId && h.blocked);
+        m.step([neutral(), neutral()]);
         expect(m.jetGigant).toBeUndefined();
       }
-      expect(guardHit).toBe(result === "blocked");
       expect(luffy.health < initialHp).toBe(result === "punished");
       expect(victim.health).toBe(victim.data.health);
       expect(luffy.state).toBe("idle");

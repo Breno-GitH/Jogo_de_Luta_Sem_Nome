@@ -15,6 +15,9 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
+        ben: fileURLToPath(new URL("./art/ben.html", import.meta.url)),
+        kaneki: fileURLToPath(new URL("./art/kaneki.html", import.meta.url)),
+        kanekiCombat: fileURLToPath(new URL("./art/kaneki-combat.html", import.meta.url)),
         sasuke: fileURLToPath(new URL("./art/sasuke.html", import.meta.url)),
         luffy: fileURLToPath(new URL("./art/luffy.html", import.meta.url)),
         luffyJet: fileURLToPath(new URL("./art/luffy-jet.html", import.meta.url)),

@@ -1,6 +1,6 @@
 # Salas privadas e netcode
 
-A execução final agora é **Apache/XAMPP + Node em loopback**, com Samurai, Dio/The World e Goku. Instruções atuais de instalação, aliases, proxy, LAN, firewall, criação de sala, confirmação/prontidão, início pelo anfitrião, atualização e testes: [README_LAN.md](README_LAN.md).
+A execução final agora é **Apache/XAMPP + Node em loopback**, com Samurai, Dio/The World, Goku, Luffy e Sasuke Hebi. Instruções atuais de instalação, aliases, proxy, LAN, firewall, criação de sala, confirmação/prontidão, início pelo anfitrião, atualização e testes: [README_LAN.md](README_LAN.md).
 
 `iniciar-multiplayer.bat` inicia o backend interno; `http://localhost/jogo-luta/` abre o jogo. Amigos usam o IP do servidor com o mesmo caminho. A URL Socket.IO usa a origem atual; não há `VITE_ONLINE_URL` a configurar. O modo LAN não publica o Node diretamente nem usa serviços externos.
 
@@ -72,3 +72,7 @@ scripts/build_server.mjs  compilação para Node
 tests/network.test.ts     regras e fronteira Socket.IO
 e2e/online/               testes com dois Chromes
 ```
+
+## Resultado autoritativo e diagnóstico
+
+O protocolo 3 inclui o placar de rounds J1/J2 no pacote de encerramento. Ambos os clientes exibem os valores enviados pelo servidor, inclusive em interrupções. A retomada automática tem prazo limitado e a tentativa manual continua disponível. Use `node scripts/verificar-lan.mjs` para verificar os aliases Apache, o endereço da LAN, as versões e os transportes Socket.IO. Veja o procedimento em [README_LAN.md](README_LAN.md).

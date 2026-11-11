@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ben Tennyson · Laboratório do Omnitrix</title>
+  <style>
+    body { background:#101619; color:#e1eee5; font:16px system-ui,sans-serif; margin:24px auto; width:min(96vw,1280px); }
+    h1 { color:#b9f66b; margin:0 0 8px; }
+    p { margin:8px 0; }
+    button, a { color:#ccffa0; }
+    button { background:#1e302b; border:1px solid #547443; padding:8px 14px; font:inherit; cursor:pointer; }
+    canvas { display:block; width:100%; margin:16px 0; image-rendering:pixelated; }
+    figure { margin:28px 0 0; }
+    figure img { display:block; width:100%; height:auto; margin-top:8px; image-rendering:pixelated; }
+    figcaption { color:#a7c6b8; margin-top:8px; }
+  </style>
+  <script type="module" crossorigin src="../assets/ben-x3xAWaGo.js"></script>
+  <link rel="modulepreload" crossorigin href="../assets/animator-2S-ziDUm.js">
+  <link rel="modulepreload" crossorigin href="../assets/pixel-contour-NT5Irm0G.js">
+  <link rel="modulepreload" crossorigin href="../assets/luffy-special-fx-DkFxpy_L.js">
+  <link rel="modulepreload" crossorigin href="../assets/characters-CXqdlY6g.js">
+  <link rel="modulepreload" crossorigin href="../assets/loop-LRiz5Snv.js">
+  <link rel="modulepreload" crossorigin href="../assets/dio-motion-XU9TMRll.js">
+  <link rel="modulepreload" crossorigin href="../assets/kagune-Muz7sYj1.js">
+  <link rel="modulepreload" crossorigin href="../assets/renderer-F-EVZYnE.js">
+</head>
+<body>
+  <h1>Ben Tennyson · Omniverse</h1>
+  <p>Toque L para avançar. Segure L por ¼ s para confirmar a forma selecionada. No controle, use Y / △.</p>
+  <p>Nas nove formas jogáveis, J e K atacam em pé, agachado ou no ar. Use ↓ →, ↓ ← ou ↓ ↓ + J/K para especiais e U para agarrar. R fica reservado para Alien X.</p>
+  <button type="button" id="seat">Mover Ben para a direita</button>
+  <a href="../">Voltar ao jogo</a>
+  <p>
+    <label for="stage6-model">Prévia visual na arena</label>
+    <select id="stage6-model">
+      <option value="">Treino do Omnitrix</option>
+      <option value="bigChill">Friagem</option>
+      <option value="ghostfreak">Fantasmático</option>
+      <option value="nrg">NRG contido</option>
+      <option value="nrgReleased">NRG liberado</option>
+    </select>
+    <label for="stage6-clip">Animação</label>
+    <select id="stage6-clip" disabled></select>
+    <span id="stage6-status" aria-live="polite"></span>
+  </p>
+  <canvas width="1280" height="720" aria-label="Arena de teste do Omnitrix"></canvas>
+  <p id="playlist" aria-label="Formas do Omnitrix"></p>
+  <output id="status" role="status"></output>
+  <figure>
+    <h2>Modelos da Etapa 5</h2>
+    <a href="../previews/ben/modelos-etapa-5.png"><img id="stage5-models" src="../previews/ben/modelos-etapa-5.png" width="1470" height="327" alt="Diamante, Enormossauro e Feedback ao lado de Ben humano, XLR8, Quatro Braços e Chama na mesma escala"></a>
+    <figcaption>Diamante, Enormossauro e Feedback em poses-base. A imagem em tamanho original mostra os sprites a 1×.</figcaption>
+  </figure>
+  <p>
+    <a href="../previews/ben/combate-etapa-5.png">Mecânicas na arena</a> ·
+    <a href="../previews/ben/movimento-diamondhead-etapa-5.png">Movimento de Diamante</a> ·
+    <a href="../previews/ben/movimento-humungousaur-etapa-5.png">Movimento de Enormossauro</a>
+  </p>
+  <p>
+    <a href="../previews/ben/combo-diamondhead-etapa-5.webp">Combo de Diamante</a> ·
+    <a href="../previews/ben/combo-humungousaur-etapa-5.webp">Combo de Enormossauro</a> ·
+    <a href="../previews/ben/combo-swap-etapa-5.webp">Troca em combo</a>
+  </p>
+  <figure>
+    <h2>Feedback · revisão de combate</h2>
+    <a href="../previews/ben/feedback-chicotes.png"><img src="../previews/ben/feedback-chicotes.png" width="1180" height="555" alt="Chicotes horizontal e antiaéreo com os dois cabos visíveis da preparação à recuperação"></a>
+    <figcaption>Quadros capturados no motor com os efeitos de combate desligados.</figcaption>
+  </figure>
+  <p>
+    <a href="../previews/ben/feedback-idle.png">Idle com pés fixos</a> ·
+    <a href="../previews/ben/feedback-walk.webp">Caminhada</a> ·
+    <a href="../previews/ben/feedback-rework.png">Especiais e HUD</a> ·
+    <a href="../previews/ben/feedback-combo.webp">Combo em pé</a> ·
+    <a href="../previews/ben/feedback-air-combo.webp">Combo aéreo</a>
+  </p>
+  <figure>
+    <h2>Modelos da Etapa 6</h2>
+    <a href="../previews/ben/modelos-etapa-6.png"><img id="stage6-models" src="../previews/ben/modelos-etapa-6.png" width="1216" height="292" alt="Friagem, Fantasmático, NRG contido e NRG liberado em escala de luta"></a>
+    <figcaption>Use o seletor acima da arena para inspecionar os modelos nos dois lados. <a href="../previews/ben/poses-etapa-6.png">Ver asas, garras e poses do NRG</a> · <a href="../previews/ben/nrg-liberacao-etapa-6.png">Liberação pela cúpula no combate</a></figcaption>
+  </figure>
+</body>
+</html>
+

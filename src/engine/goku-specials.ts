@@ -1,4 +1,5 @@
 import balance from "../data/goku-specials.json";
+import type { FireDragonWave } from "./sasuke-polish";
 import type { Fighter } from "./combat";
 import type { Rect } from "./types";
 import { poseAt } from "./moves";
@@ -10,6 +11,7 @@ export interface KiProjectile {
   move: string;
   cast: number;
   curse?: boolean;
+  wave?: FireDragonWave;
   x: number;
   y: number;
   previousX: number;

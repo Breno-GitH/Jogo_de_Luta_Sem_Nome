@@ -410,11 +410,15 @@ export class Rooms {
       direction: payload.input.direction,
       down: payload.input.down,
       pressed: [...payload.input.pressed],
+      ...(room.match?.fighters[seat].omnitrix && payload.input.up ? { up: true } : {}),
+      ...(room.match?.fighters[seat].omnitrix && payload.input.omnitrix
+        ? { omnitrix: { ...payload.input.omnitrix } } : {}),
     });
   }
   sync(socketId: string, matchId: unknown) {
     const { room } = this.player(socketId);
-    if (room.status !== "playing" || matchId !== room.matchId) return;
+    if (room.status !== "playing" || matchId !== room.matchId)
+      fail("staleMatch", "A partida mudou enquanto a sincronização era solicitada.");
     room.syncs = room.syncs.filter((time) => this.now() - time < 30000);
     if (room.syncs.length >= 3) {
       this.close(room, null, "desync");
@@ -455,7 +459,10 @@ export class Rooms {
   private close(room: Room, winner: Seat | null, reason: EndPacket["reason"]) {
     room.status = "closed";
     room.updated = this.now();
-    room.result = { matchId: room.matchId, tick: room.tick, winner, reason };
+    room.result = {
+      matchId: room.matchId, tick: room.tick, winner, reason,
+      score: [room.match!.wins[0], room.match!.wins[1]],
+    };
     this.emit(this.peers(room), "match:end", room.result);
     this.broadcast(room);
   }
@@ -542,6 +549,7 @@ export class Rooms {
             matchId: room.matchId,
             tick,
             winner: room.match!.wins[0] >= 2 ? 0 : 1,
+            score: [room.match!.wins[0], room.match!.wins[1]],
             reason: room.match!.timer <= 0 ? "time" : "ko",
           };
           this.emit(this.peers(room), "match:end", room.result);

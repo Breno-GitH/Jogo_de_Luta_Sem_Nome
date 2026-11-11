@@ -1,3 +1,5 @@
+import type { KanekiFamily } from "./kaneki-specials";
+import type { OmnitrixInput } from "./ben-omnitrix";
 import type { SasukeSpecialId } from "./sasuke-specials";
 
 export type Button =
@@ -12,7 +14,9 @@ export type Button =
 export interface InputFrame {
   direction: -1 | 0 | 1;
   down: boolean;
+  up?: boolean;
   pressed: Button[];
+  omnitrix?: OmnitrixInput;
 }
 export const neutral = (): InputFrame => ({
   direction: 0,
@@ -68,10 +72,11 @@ export interface CombatPose {
   hurtboxes: Rect[];
 }
 export interface Move {
+  ben?: import("./ben-moves").BenMoveMeta;
   visualTiming?: { startup: number; active: number; recovery: number };
   airTeleport?: boolean;
   super?: boolean;
-  special?: "knives" | "rush" | "timeStop" | "ki" | "kamehameha" | "teleport" | "pistol" | "gatling" | "bazooka" | SasukeSpecialId;
+  special?: "knives" | "rush" | "timeStop" | "ki" | "kamehameha" | "teleport" | "pistol" | "gatling" | "bazooka" | SasukeSpecialId | KanekiFamily;
   gokuStrength?: "light" | "medium" | "heavy";
   beam?: { range: number; radius: number; interval: number; hits: number };
   projectile?: {

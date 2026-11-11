@@ -6,7 +6,7 @@ async function start(page) {
   const epoch = new Date("2026-10-30T12:00:00Z");
   await page.clock.install({ time: epoch });
   await page.clock.pauseAt(new Date(epoch.getTime() + 60000));
-  await page.goto("/art/road-roller.html");
+  await page.goto("art/road-roller.html");
   const c = page.locator("#arena");
   await expect(c).toHaveAttribute("data-loaded", "true");
   return c;
@@ -56,7 +56,7 @@ test("Road Roller connects in both directions against both characters and restor
     JSON.stringify(results, null, 2),
   );
 });
-test("insufficient meter, defense and whiff never begin the movie", async ({
+test("a held guard permits confirmation, while insufficient meter or whiff do not", async ({
   page,
 }) => {
   const c = await start(page);
@@ -72,13 +72,11 @@ test("insufficient meter, defense and whiff never begin the movie", async ({
   for (const scenario of ["block", "whiff"]) {
     await run(page, scenario);
     await page.clock.runFor(2200);
-    await expect(c).toHaveAttribute("data-seen", "false");
-    await expect(c).toHaveAttribute("data-damage", "0");
+    await expect(c).toHaveAttribute("data-seen", String(scenario === "block"));
+    if (scenario === "whiff") await expect(c).toHaveAttribute("data-damage", "0");
+    else expect(Number(await c.getAttribute("data-damage"))).toBeGreaterThan(0);
     await expect(c).toHaveAttribute("data-meter", "0");
-    await expect(c).toHaveAttribute(
-      "data-blocks",
-      scenario === "block" ? "1" : "0",
-    );
+    await expect(c).toHaveAttribute("data-blocks", "0");
   }
 });
 test("combo confirmation, K.O., corners and rematch really execute", async ({
@@ -142,7 +140,7 @@ test("the main game accepts R for Road Roller on the keyboard", async ({
   const epoch = new Date("2026-10-30T12:00:00Z");
   await page.clock.install({ time: epoch });
   await page.clock.pauseAt(new Date(epoch.getTime() + 60000));
-  await page.goto("/");
+  await page.goto("./");
   await page.locator("#training").click();
   await page.getByRole("radio", { name: "Selecionar Dio Brando" }).check();
   await page.locator("#fight").click();
@@ -165,7 +163,7 @@ test("all new character drawings are inspectable and the object and FX export ar
   const epoch = new Date("2026-10-30T12:00:00Z");
   await page.clock.install({ time: epoch });
   await page.clock.pauseAt(new Date(epoch.getTime() + 60000));
-  await page.goto("/art/dio.html");
+  await page.goto("art/dio.html");
   const c = page.locator("#preview");
   await expect(c).toHaveAttribute("data-loaded", "true");
   await page.selectOption("#mode", "inspect");

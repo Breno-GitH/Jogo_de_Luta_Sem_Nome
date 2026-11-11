@@ -1,0 +1,11652 @@
+[
+  {
+    "tick": 1,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      1,
+      344.9,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      942.4,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 2,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      2,
+      347.8,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      940.8,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 3,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      3,
+      350.7,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      939.2,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 4,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      4,
+      353.6,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      937.6,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 5,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      5,
+      356.5,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      936,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 6,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      6,
+      359.4,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      934.4,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 7,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      7,
+      362.3,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      932.8,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 8,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      8,
+      365.2,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      931.2,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 9,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      9,
+      368.1,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      929.6,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 10,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      10,
+      371,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      928,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 11,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      11,
+      373.9,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      926.4,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 12,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      12,
+      376.8,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      924.8,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 13,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      13,
+      379.7,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      923.2,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 14,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      14,
+      382.6,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      921.6,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 15,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      15,
+      385.5,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      920,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 16,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      16,
+      388.4,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      918.4,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 17,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      17,
+      391.3,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      916.8,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 18,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      18,
+      394.2,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      915.2,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 19,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      19,
+      397.1,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      913.6,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 20,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      20,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      912,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 21,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      21,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      910.4,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 22,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      22,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      908.8,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 23,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      23,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      907.2,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 24,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      24,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      905.6,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 25,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      25,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      904,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 26,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      26,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      902.4,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 27,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      27,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      900.8,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 28,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      28,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      899.2,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 29,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      29,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      897.6,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 30,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      30,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      896,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 31,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      31,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      894.4,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 32,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      32,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      892.8,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 33,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      33,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      891.2,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 34,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      34,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      889.6,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 35,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      35,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      888,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 36,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      36,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      886.4,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 37,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      37,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      884.8,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 38,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      38,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      883.2,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 39,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      39,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      881.6,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 40,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      40,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 41,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      41,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 42,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      42,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 43,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      43,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 44,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      44,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 45,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      45,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 46,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      46,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 47,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      47,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 48,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      48,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 49,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      49,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 50,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      50,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 51,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      51,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 52,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      52,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 53,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      53,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 54,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      54,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 55,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      55,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 56,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      56,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 57,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      57,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 58,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      58,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 59,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      59,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 60,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      60,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 61,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      61,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 62,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      62,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 63,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      63,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 64,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      64,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 65,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      65,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 66,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      66,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 67,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      67,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 68,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      68,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 69,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      69,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 70,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      70,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 71,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      71,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 72,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      72,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 73,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      73,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 74,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      74,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 75,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      75,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 76,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      76,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 77,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      77,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 78,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      78,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 79,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      79,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 80,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      80,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 81,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      81,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 82,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      82,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 83,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      83,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 84,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      84,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 85,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      85,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 86,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      86,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 87,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      87,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 88,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      88,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 89,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      89,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 90,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      90,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 91,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      91,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 92,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      92,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 93,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      93,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 94,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      94,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 95,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      95,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 96,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      96,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 97,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      97,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 98,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      98,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 99,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "entrance",
+      "",
+      99,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "entrance",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 100,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      0,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "idle",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 101,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      1,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "idle",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 102,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      2,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "idle",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 103,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      3,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "idle",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 104,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      4,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "idle",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 105,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      5,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "idle",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 106,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      6,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "idle",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 107,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      7,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "idle",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 108,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      8,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "idle",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 109,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      9,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "idle",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 110,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      10,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "idle",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 111,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      11,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "idle",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 112,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      12,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "idle",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 113,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      13,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "idle",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 114,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      14,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "idle",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 115,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      15,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "idle",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 116,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      16,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "idle",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 117,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      17,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "idle",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 118,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      18,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "idle",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 119,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      19,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "idle",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 120,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      20,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "idle",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 121,
+    "epoch": "2ba327ba-86c4-4c93-8894-198c0cce6a7f",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      21,
+      400,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "idle",
+      0,
+      880,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 1,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      1,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "idle",
+      0,
+      557,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 2,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      2,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "idle",
+      0,
+      557,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 3,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      3,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "idle",
+      0,
+      557,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 4,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      4,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "idle",
+      0,
+      557,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 5,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      5,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "idle",
+      0,
+      557,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 6,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      6,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "idle",
+      0,
+      557,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 7,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      7,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "idle",
+      0,
+      557,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 8,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      8,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "idle",
+      0,
+      557,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 9,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": [
+        "ultimate"
+      ]
+    },
+    "f": [
+      "attack",
+      "kirin_start",
+      0,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "idle",
+      0,
+      557,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 10,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "attack",
+      "kirin_start",
+      1,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "idle",
+      0,
+      557,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 11,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "attack",
+      "kirin_start",
+      2,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "idle",
+      0,
+      557,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 12,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "attack",
+      "kirin_start",
+      3,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "idle",
+      0,
+      557,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 13,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "attack",
+      "kirin_start",
+      4,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "idle",
+      0,
+      557,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 14,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "attack",
+      "kirin_start",
+      5,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "idle",
+      0,
+      557,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 15,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "attack",
+      "kirin_start",
+      6,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "idle",
+      0,
+      557,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 16,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "attack",
+      "kirin_start",
+      7,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "idle",
+      0,
+      557,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 17,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "attack",
+      "kirin_start",
+      8,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "idle",
+      0,
+      557,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 18,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "attack",
+      "kirin_start",
+      9,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "idle",
+      0,
+      557,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 19,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "attack",
+      "kirin_start",
+      10,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "idle",
+      0,
+      557,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 20,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "attack",
+      "kirin_start",
+      11,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "idle",
+      0,
+      557,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 21,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "attack",
+      "kirin_start",
+      12,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "idle",
+      0,
+      557,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 22,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      0,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 23,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      0,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 24,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      0,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 25,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      0,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 26,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      0,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 27,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      0,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 28,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      1,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 29,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      2,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 30,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      3,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 31,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      4,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 32,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      5,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 33,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      6,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 34,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      7,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 35,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      8,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 36,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      9,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 37,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      10,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 38,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      11,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 39,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      12,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 40,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      13,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 41,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      14,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 42,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      15,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 43,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      16,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 44,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      17,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 45,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      18,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 46,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      19,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 47,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      20,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 48,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      21,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 49,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      22,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 50,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      23,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 51,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      24,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 52,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      25,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 53,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      26,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 54,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      27,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 55,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      28,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 56,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      29,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 57,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      30,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 58,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      31,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 59,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      32,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 60,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      33,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 61,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      34,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 62,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      35,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 63,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      36,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 64,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      37,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 65,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      38,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 66,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      39,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 67,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      40,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 68,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      41,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 69,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      42,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 70,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      43,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 71,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      44,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 72,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      45,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 73,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      46,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 74,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      47,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 75,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      48,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 76,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      49,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 77,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      50,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 78,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      51,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 79,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      52,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 80,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      53,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 81,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      54,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 82,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      55,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 83,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      56,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 84,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      57,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 85,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      58,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 86,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      59,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 87,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      60,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 88,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      61,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 89,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      62,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 90,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      63,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 91,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      64,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 92,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      65,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 93,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      66,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 94,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      67,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 95,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      68,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 96,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      69,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 97,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      70,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 98,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      71,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 99,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      72,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 100,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      73,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 101,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      74,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 102,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      75,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 103,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      76,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 104,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      77,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 105,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      78,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 106,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      79,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 107,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      80,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 108,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      81,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 109,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      82,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 110,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      83,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 111,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      84,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 112,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      85,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 113,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      86,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 114,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      87,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 115,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      88,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 116,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      89,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 117,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      90,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 118,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      91,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 119,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      92,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 120,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      93,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 121,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      94,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 122,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      95,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 123,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      96,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 124,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      97,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 125,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      98,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 126,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      99,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 127,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      100,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 128,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      101,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 129,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      0,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 130,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      1,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 131,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      2,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 132,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      3,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 133,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      4,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 134,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      5,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 135,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      6,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 136,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      7,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 137,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      8,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 138,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      9,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 139,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      10,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 140,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      11,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 141,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      12,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 142,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      13,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 143,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      14,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 144,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      15,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 145,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      16,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 146,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      17,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 147,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      18,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 148,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      19,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 149,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      20,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 150,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      21,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 151,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      22,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 152,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      23,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 153,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      24,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 154,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      25,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 155,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      26,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 156,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      27,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 157,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      28,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 158,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      29,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 159,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      30,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 160,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      31,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 161,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      32,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 162,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      0,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 163,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      1,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 164,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      2,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 165,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      3,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 166,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      4,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 167,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      5,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 168,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      6,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 169,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      7,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 170,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      8,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 171,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      9,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 172,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      10,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 173,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      11,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      1,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 174,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      12,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 175,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      12,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 176,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      12,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 177,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      12,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 178,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      12,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 179,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      12,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 180,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      12,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 181,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      12,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 182,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      12,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 183,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      12,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      557,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 184,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      13,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      557.3705052344105,
+      575.512922593629,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 185,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      14,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      558.4019116977697,
+      571.1982810556029,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 186,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      15,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      559.9740555302685,
+      567.2218846405492,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 187,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      16,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      561.9667728720983,
+      563.7365440327094,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 188,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      17,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      564.2598998634502,
+      560.8761989170415,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 189,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      18,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      566.7332726445153,
+      558.7507707522404,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 190,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      19,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      569.2667273554847,
+      557.4419385507257,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 191,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      20,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      571.7401001365498,
+      557,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 192,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      21,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      574.0332271279017,
+      557.4419385507257,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 193,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      22,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      576.0259444697315,
+      558.7507707522404,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 194,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      23,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      577.5980883022303,
+      560.8761989170415,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 195,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      24,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      578.6294947655895,
+      563.7365440327094,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 196,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      25,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      567.2218846405492,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 197,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      26,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      571.1982810556029,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 198,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      27,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      575.512922593629,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 199,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      28,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 200,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      29,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 201,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      30,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 202,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      31,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 203,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      32,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 204,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      33,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 205,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      34,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 206,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      35,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 207,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      36,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 208,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      37,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 209,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      38,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 210,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      39,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 211,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      40,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 212,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      41,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 213,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      42,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 214,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      43,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 215,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      44,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 216,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      45,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 217,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      46,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 218,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      47,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 219,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      48,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 220,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      49,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 221,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      50,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 222,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      51,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 223,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      52,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 224,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      53,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 225,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      54,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 226,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      55,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 227,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      56,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 228,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      57,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 229,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      58,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 230,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      59,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 231,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      60,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 232,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      61,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 233,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      62,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 234,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      63,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 235,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      64,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 236,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      65,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 237,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      66,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 238,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      67,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 239,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      68,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 240,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      69,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 241,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      70,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 242,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      71,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 243,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      72,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 244,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      73,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 245,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      74,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 246,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      75,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 247,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      76,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 248,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      77,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 249,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      78,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 250,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      79,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 251,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      80,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 252,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      81,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 253,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      82,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 254,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      83,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 255,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      84,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 256,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "cinematic",
+      "",
+      85,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "grabbed",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 257,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      0,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "hitstun",
+      2,
+      579,
+      580,
+      0,
+      24
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 258,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      1,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "hitstun",
+      2,
+      579,
+      580,
+      0,
+      23
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 259,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      2,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "hitstun",
+      2,
+      579,
+      580,
+      0,
+      22
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 260,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      3,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "hitstun",
+      2,
+      579,
+      580,
+      0,
+      21
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 261,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      4,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "hitstun",
+      2,
+      579,
+      580,
+      0,
+      20
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 262,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      5,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "hitstun",
+      2,
+      579,
+      580,
+      0,
+      19
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 263,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      6,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "hitstun",
+      2,
+      579,
+      580,
+      0,
+      18
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 264,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      7,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "hitstun",
+      2,
+      579,
+      580,
+      0,
+      17
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 265,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      8,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "hitstun",
+      2,
+      579,
+      580,
+      0,
+      16
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 266,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      9,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "hitstun",
+      2,
+      579,
+      580,
+      0,
+      15
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 267,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      10,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "hitstun",
+      2,
+      579,
+      580,
+      0,
+      14
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 268,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      11,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "hitstun",
+      2,
+      579,
+      580,
+      0,
+      13
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 269,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      12,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "hitstun",
+      2,
+      579,
+      580,
+      0,
+      12
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 270,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      13,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "hitstun",
+      2,
+      579,
+      580,
+      0,
+      11
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 271,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      14,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "hitstun",
+      2,
+      579,
+      580,
+      0,
+      10
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 272,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      15,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "hitstun",
+      2,
+      579,
+      580,
+      0,
+      9
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 273,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      16,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "hitstun",
+      2,
+      579,
+      580,
+      0,
+      8
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 274,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      17,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "hitstun",
+      2,
+      579,
+      580,
+      0,
+      7
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 275,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      18,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "hitstun",
+      2,
+      579,
+      580,
+      0,
+      6
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 276,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      19,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "hitstun",
+      2,
+      579,
+      580,
+      0,
+      5
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 277,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      20,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "hitstun",
+      2,
+      579,
+      580,
+      0,
+      4
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 278,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      21,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "hitstun",
+      2,
+      579,
+      580,
+      0,
+      3
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 279,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      22,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "hitstun",
+      2,
+      579,
+      580,
+      0,
+      2
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 280,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      23,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "hitstun",
+      2,
+      579,
+      580,
+      0,
+      1
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 281,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      24,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "getup",
+      0,
+      579,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 282,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      25,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "getup",
+      0,
+      579,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 283,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      26,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "getup",
+      0,
+      579,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 284,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      27,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "getup",
+      0,
+      579,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 285,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      28,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "getup",
+      0,
+      579,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 286,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      29,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "getup",
+      0,
+      579,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 287,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      30,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "getup",
+      0,
+      579,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 288,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      31,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "getup",
+      0,
+      579,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 289,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      32,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "getup",
+      0,
+      579,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 290,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      33,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "getup",
+      0,
+      579,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 291,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      34,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "getup",
+      0,
+      579,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 292,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      35,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "getup",
+      0,
+      579,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 293,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      36,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "getup",
+      0,
+      579,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 294,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      37,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "getup",
+      0,
+      579,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  },
+  {
+    "tick": 295,
+    "epoch": "e8c828ed-6ec6-47fd-b0ac-e6f62ea75f93",
+    "input": {
+      "direction": 0,
+      "down": false,
+      "pressed": []
+    },
+    "f": [
+      "idle",
+      "",
+      38,
+      500,
+      580,
+      0,
+      false,
+      0
+    ],
+    "v": [
+      "getup",
+      0,
+      579,
+      580,
+      0,
+      0
+    ],
+    "stop": 0
+  }
+]

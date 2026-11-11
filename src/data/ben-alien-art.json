@@ -1,0 +1,1191 @@
+{
+  "xlr8": {
+    "sheet": "ben/xlr8/idle.png",
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "pivot": {
+      "x": 128,
+      "y": 224
+    },
+    "scale": 1,
+    "columns": 4,
+    "clips": {
+      "idle": {
+        "sheet": "ben/xlr8/idle.png",
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "columns": 4,
+        "durations": [
+          10,
+          11,
+          10,
+          12,
+          10,
+          11
+        ],
+        "ticks": 1,
+        "loop": true
+      },
+      "walkForward": {
+        "sheet": "ben/xlr8/walkForward.png",
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "columns": 4,
+        "durations": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "ticks": 1,
+        "loop": true
+      },
+      "walkBack": {
+        "sheet": "ben/xlr8/walkBack.png",
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "columns": 4,
+        "durations": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "ticks": 1,
+        "loop": true
+      },
+      "dashForward": {
+        "sheet": "ben/xlr8/dashForward.png",
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "columns": 4,
+        "durations": [
+          2,
+          2,
+          3,
+          3,
+          2
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "backdash": {
+        "sheet": "ben/xlr8/backdash.png",
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "columns": 4,
+        "durations": [
+          2,
+          2,
+          3,
+          3,
+          2
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "stand_light": {
+        "sheet": "ben/xlr8/stand_light.png",
+        "frames": [
+          0,
+          1,
+          2
+        ],
+        "columns": 3,
+        "durations": [
+          4,
+          3,
+          10
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "stand_medium": {
+        "sheet": "ben/xlr8/stand_medium.png",
+        "frames": [
+          0,
+          1,
+          2
+        ],
+        "columns": 3,
+        "durations": [
+          8,
+          4,
+          17
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "throw": {
+        "sheet": "ben/xlr8/throw.png",
+        "frames": [
+          0,
+          1
+        ],
+        "columns": 2,
+        "durations": [
+          11,
+          21
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "grabHold": {
+        "sheet": "ben/xlr8/grabHold.png",
+        "frames": [
+          0,
+          1,
+          2
+        ],
+        "columns": 3,
+        "durations": [
+          8,
+          10,
+          9
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "throwRecover": {
+        "sheet": "ben/xlr8/throwRecover.png",
+        "frames": [
+          0
+        ],
+        "columns": 1,
+        "durations": [
+          12
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "crouchStart": {
+        "sheet": "ben/xlr8/crouchStart.png",
+        "frames": [
+          0,
+          1
+        ],
+        "columns": 2,
+        "durations": [
+          3,
+          3
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "crouchIdle": {
+        "sheet": "ben/xlr8/crouchIdle.png",
+        "frames": [
+          0,
+          1
+        ],
+        "columns": 2,
+        "durations": [
+          11,
+          11
+        ],
+        "ticks": 1,
+        "loop": true
+      },
+      "crouchEnd": {
+        "sheet": "ben/xlr8/crouchEnd.png",
+        "frames": [
+          0,
+          1
+        ],
+        "columns": 2,
+        "durations": [
+          2,
+          3
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "jumpStart": {
+        "sheet": "ben/xlr8/jumpStart.png",
+        "frames": [
+          0,
+          1,
+          2
+        ],
+        "columns": 3,
+        "durations": [
+          2,
+          2,
+          1
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "jumpRise": {
+        "sheet": "ben/xlr8/jumpRise.png",
+        "frames": [
+          0,
+          1
+        ],
+        "columns": 2,
+        "durations": [
+          1,
+          1
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "jumpApex": {
+        "sheet": "ben/xlr8/jumpApex.png",
+        "frames": [
+          0
+        ],
+        "columns": 1,
+        "durations": [
+          1
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "jumpFall": {
+        "sheet": "ben/xlr8/jumpFall.png",
+        "frames": [
+          0,
+          1
+        ],
+        "columns": 2,
+        "durations": [
+          1,
+          1
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "landing": {
+        "sheet": "ben/xlr8/landing.png",
+        "frames": [
+          0,
+          1,
+          2
+        ],
+        "columns": 3,
+        "durations": [
+          2,
+          3,
+          2
+        ],
+        "ticks": 1,
+        "loop": false
+      }
+    },
+    "anchors": {}
+  },
+  "fourArms": {
+    "sheet": "ben/fourArms/idle.png",
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "pivot": {
+      "x": 128,
+      "y": 224
+    },
+    "scale": 1,
+    "columns": 4,
+    "clips": {
+      "idle": {
+        "sheet": "ben/fourArms/idle.png",
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "columns": 4,
+        "durations": [
+          10,
+          11,
+          10,
+          12,
+          10,
+          11
+        ],
+        "ticks": 1,
+        "loop": true
+      },
+      "walkForward": {
+        "sheet": "ben/fourArms/walkForward.png",
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "columns": 4,
+        "durations": [
+          5,
+          4,
+          5,
+          5,
+          4,
+          5
+        ],
+        "ticks": 1,
+        "loop": true
+      },
+      "walkBack": {
+        "sheet": "ben/fourArms/walkBack.png",
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "columns": 4,
+        "durations": [
+          5,
+          4,
+          5,
+          5,
+          4,
+          5
+        ],
+        "ticks": 1,
+        "loop": true
+      },
+      "dashForward": {
+        "sheet": "ben/fourArms/dashForward.png",
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "columns": 4,
+        "durations": [
+          3,
+          3,
+          4,
+          2,
+          2
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "backdash": {
+        "sheet": "ben/fourArms/backdash.png",
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "columns": 4,
+        "durations": [
+          3,
+          3,
+          4,
+          2,
+          2
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "stand_light": {
+        "sheet": "ben/fourArms/stand_light.png",
+        "frames": [
+          0,
+          1,
+          2
+        ],
+        "columns": 3,
+        "durations": [
+          6,
+          4,
+          13
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "stand_medium": {
+        "sheet": "ben/fourArms/stand_medium.png",
+        "frames": [
+          0,
+          1,
+          2
+        ],
+        "columns": 3,
+        "durations": [
+          11,
+          5,
+          21
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "throw": {
+        "sheet": "ben/fourArms/throw.png",
+        "frames": [
+          0,
+          1
+        ],
+        "columns": 2,
+        "durations": [
+          13,
+          21
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "grabHold": {
+        "sheet": "ben/fourArms/grabHold.png",
+        "frames": [
+          0,
+          1,
+          2
+        ],
+        "columns": 3,
+        "durations": [
+          8,
+          10,
+          9
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "throwRecover": {
+        "sheet": "ben/fourArms/throwRecover.png",
+        "frames": [
+          0
+        ],
+        "columns": 1,
+        "durations": [
+          12
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "crouchStart": {
+        "sheet": "ben/fourArms/crouchStart.png",
+        "frames": [
+          0,
+          1
+        ],
+        "columns": 2,
+        "durations": [
+          3,
+          3
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "crouchIdle": {
+        "sheet": "ben/fourArms/crouchIdle.png",
+        "frames": [
+          0,
+          1
+        ],
+        "columns": 2,
+        "durations": [
+          11,
+          11
+        ],
+        "ticks": 1,
+        "loop": true
+      },
+      "crouchEnd": {
+        "sheet": "ben/fourArms/crouchEnd.png",
+        "frames": [
+          0,
+          1
+        ],
+        "columns": 2,
+        "durations": [
+          2,
+          3
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "jumpStart": {
+        "sheet": "ben/fourArms/jumpStart.png",
+        "frames": [
+          0,
+          1,
+          2
+        ],
+        "columns": 3,
+        "durations": [
+          3,
+          3,
+          2
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "jumpRise": {
+        "sheet": "ben/fourArms/jumpRise.png",
+        "frames": [
+          0,
+          1
+        ],
+        "columns": 2,
+        "durations": [
+          1,
+          1
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "jumpApex": {
+        "sheet": "ben/fourArms/jumpApex.png",
+        "frames": [
+          0
+        ],
+        "columns": 1,
+        "durations": [
+          1
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "jumpFall": {
+        "sheet": "ben/fourArms/jumpFall.png",
+        "frames": [
+          0,
+          1
+        ],
+        "columns": 2,
+        "durations": [
+          1,
+          1
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "landing": {
+        "sheet": "ben/fourArms/landing.png",
+        "frames": [
+          0,
+          1,
+          2
+        ],
+        "columns": 3,
+        "durations": [
+          3,
+          5,
+          4
+        ],
+        "ticks": 1,
+        "loop": false
+      }
+    },
+    "anchors": {}
+  },
+  "heatblast": {
+    "sheet": "ben/heatblast/idle.png",
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "pivot": {
+      "x": 128,
+      "y": 224
+    },
+    "scale": 1,
+    "columns": 4,
+    "clips": {
+      "idle": {
+        "sheet": "ben/heatblast/idle.png",
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "columns": 4,
+        "durations": [
+          10,
+          11,
+          10,
+          12,
+          10,
+          11
+        ],
+        "ticks": 1,
+        "loop": true
+      },
+      "walkForward": {
+        "sheet": "ben/heatblast/walkForward.png",
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "columns": 4,
+        "durations": [
+          4,
+          4,
+          3,
+          4,
+          4,
+          3
+        ],
+        "ticks": 1,
+        "loop": true
+      },
+      "walkBack": {
+        "sheet": "ben/heatblast/walkBack.png",
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "columns": 4,
+        "durations": [
+          4,
+          4,
+          3,
+          4,
+          4,
+          3
+        ],
+        "ticks": 1,
+        "loop": true
+      },
+      "dashForward": {
+        "sheet": "ben/heatblast/dashForward.png",
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "columns": 4,
+        "durations": [
+          2,
+          3,
+          4,
+          2,
+          2
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "backdash": {
+        "sheet": "ben/heatblast/backdash.png",
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "columns": 4,
+        "durations": [
+          2,
+          3,
+          4,
+          2,
+          2
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "stand_light": {
+        "sheet": "ben/heatblast/stand_light.png",
+        "frames": [
+          0,
+          1,
+          2
+        ],
+        "columns": 3,
+        "durations": [
+          5,
+          3,
+          11
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "stand_medium": {
+        "sheet": "ben/heatblast/stand_medium.png",
+        "frames": [
+          0,
+          1,
+          2
+        ],
+        "columns": 3,
+        "durations": [
+          9,
+          4,
+          18
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "throw": {
+        "sheet": "ben/heatblast/throw.png",
+        "frames": [
+          0,
+          1
+        ],
+        "columns": 2,
+        "durations": [
+          12,
+          21
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "grabHold": {
+        "sheet": "ben/heatblast/grabHold.png",
+        "frames": [
+          0,
+          1,
+          2
+        ],
+        "columns": 3,
+        "durations": [
+          8,
+          10,
+          9
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "throwRecover": {
+        "sheet": "ben/heatblast/throwRecover.png",
+        "frames": [
+          0
+        ],
+        "columns": 1,
+        "durations": [
+          12
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "crouchStart": {
+        "sheet": "ben/heatblast/crouchStart.png",
+        "frames": [
+          0,
+          1
+        ],
+        "columns": 2,
+        "durations": [
+          3,
+          3
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "crouchIdle": {
+        "sheet": "ben/heatblast/crouchIdle.png",
+        "frames": [
+          0,
+          1
+        ],
+        "columns": 2,
+        "durations": [
+          11,
+          11
+        ],
+        "ticks": 1,
+        "loop": true
+      },
+      "crouchEnd": {
+        "sheet": "ben/heatblast/crouchEnd.png",
+        "frames": [
+          0,
+          1
+        ],
+        "columns": 2,
+        "durations": [
+          2,
+          3
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "jumpStart": {
+        "sheet": "ben/heatblast/jumpStart.png",
+        "frames": [
+          0,
+          1,
+          2
+        ],
+        "columns": 3,
+        "durations": [
+          2,
+          2,
+          2
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "jumpRise": {
+        "sheet": "ben/heatblast/jumpRise.png",
+        "frames": [
+          0,
+          1
+        ],
+        "columns": 2,
+        "durations": [
+          1,
+          1
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "jumpApex": {
+        "sheet": "ben/heatblast/jumpApex.png",
+        "frames": [
+          0
+        ],
+        "columns": 1,
+        "durations": [
+          1
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "jumpFall": {
+        "sheet": "ben/heatblast/jumpFall.png",
+        "frames": [
+          0,
+          1
+        ],
+        "columns": 2,
+        "durations": [
+          1,
+          1
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "landing": {
+        "sheet": "ben/heatblast/landing.png",
+        "frames": [
+          0,
+          1,
+          2
+        ],
+        "columns": 3,
+        "durations": [
+          2,
+          3,
+          3
+        ],
+        "ticks": 1,
+        "loop": false
+      }
+    },
+    "anchors": {
+      "ben/heatblast/idle.png": [
+        {
+          "x": 4,
+          "y": -147
+        },
+        {
+          "x": 1,
+          "y": -147
+        },
+        {
+          "x": 10,
+          "y": -134
+        },
+        {
+          "x": 3,
+          "y": -143
+        },
+        {
+          "x": -3,
+          "y": -143
+        },
+        {
+          "x": 3,
+          "y": -148
+        }
+      ],
+      "ben/heatblast/walkForward.png": [
+        {
+          "x": -3,
+          "y": -143
+        },
+        {
+          "x": 8,
+          "y": -136
+        },
+        {
+          "x": 6,
+          "y": -142
+        },
+        {
+          "x": -3,
+          "y": -139
+        },
+        {
+          "x": 9,
+          "y": -143
+        },
+        {
+          "x": 1,
+          "y": -141
+        }
+      ],
+      "ben/heatblast/walkBack.png": [
+        {
+          "x": -9,
+          "y": -136
+        },
+        {
+          "x": -1,
+          "y": -131
+        },
+        {
+          "x": -7,
+          "y": -136
+        },
+        {
+          "x": -5,
+          "y": -133
+        },
+        {
+          "x": 0,
+          "y": -131
+        },
+        {
+          "x": -6,
+          "y": -140
+        }
+      ],
+      "ben/heatblast/dashForward.png": [
+        {
+          "x": 12,
+          "y": -114
+        },
+        {
+          "x": 20,
+          "y": -112
+        },
+        {
+          "x": 34,
+          "y": -126
+        },
+        {
+          "x": 18,
+          "y": -127
+        },
+        {
+          "x": 9,
+          "y": -127
+        }
+      ],
+      "ben/heatblast/backdash.png": [
+        {
+          "x": -21,
+          "y": -130
+        },
+        {
+          "x": -27,
+          "y": -127
+        },
+        {
+          "x": -31,
+          "y": -124
+        },
+        {
+          "x": -25,
+          "y": -124
+        },
+        {
+          "x": -6,
+          "y": -132
+        }
+      ],
+      "ben/heatblast/stand_light.png": [
+        {
+          "x": 2,
+          "y": -140
+        },
+        {
+          "x": -7,
+          "y": -137
+        },
+        {
+          "x": -3,
+          "y": -139
+        }
+      ],
+      "ben/heatblast/stand_medium.png": [
+        {
+          "x": -4,
+          "y": -134
+        },
+        {
+          "x": 4,
+          "y": -128
+        },
+        {
+          "x": 3,
+          "y": -134
+        }
+      ],
+      "ben/heatblast/throw.png": [
+        {
+          "x": -1,
+          "y": -141
+        },
+        {
+          "x": 1,
+          "y": -143
+        }
+      ],
+      "ben/heatblast/grabHold.png": [
+        {
+          "x": -1,
+          "y": -141
+        },
+        {
+          "x": -16,
+          "y": -143
+        },
+        {
+          "x": 1,
+          "y": -143
+        }
+      ],
+      "ben/heatblast/throwRecover.png": [
+        {
+          "x": 1,
+          "y": -143
+        }
+      ],
+      "ben/heatblast/crouchStart.png": [
+        {
+          "x": 13,
+          "y": -147
+        },
+        {
+          "x": 15,
+          "y": -135
+        }
+      ],
+      "ben/heatblast/crouchIdle.png": [
+        {
+          "x": 13,
+          "y": -114
+        },
+        {
+          "x": 18,
+          "y": -108
+        }
+      ],
+      "ben/heatblast/crouchEnd.png": [
+        {
+          "x": 15,
+          "y": -132
+        },
+        {
+          "x": 6,
+          "y": -144
+        }
+      ],
+      "ben/heatblast/jumpStart.png": [
+        {
+          "x": 9,
+          "y": -132
+        },
+        {
+          "x": 11,
+          "y": -117
+        },
+        {
+          "x": 22,
+          "y": -141
+        }
+      ],
+      "ben/heatblast/jumpRise.png": [
+        {
+          "x": 14,
+          "y": -138
+        },
+        {
+          "x": 9,
+          "y": -134
+        }
+      ],
+      "ben/heatblast/jumpApex.png": [
+        {
+          "x": 0,
+          "y": -107
+        }
+      ],
+      "ben/heatblast/jumpFall.png": [
+        {
+          "x": -1,
+          "y": -129
+        },
+        {
+          "x": -8,
+          "y": -139
+        }
+      ],
+      "ben/heatblast/landing.png": [
+        {
+          "x": 5,
+          "y": -130
+        },
+        {
+          "x": 6,
+          "y": -125
+        },
+        {
+          "x": 7,
+          "y": -133
+        }
+      ]
+    }
+  }
+}

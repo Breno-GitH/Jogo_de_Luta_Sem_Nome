@@ -48,6 +48,7 @@
         min-width: 160px;
         flex: 1;
       }
+<<<<<<< HEAD
     </style>
     <script type="module" crossorigin src="../assets/sasuke-CGj3QrG0.js"></script>
     <link rel="modulepreload" crossorigin href="../assets/animator-Dw2NKrpM.js">
@@ -113,3 +114,69 @@
     </p>
   </body>
 </html>
+=======
+    </style>
+  </head>
+  <body>
+    <nav><a href="../">Voltar ao jogo</a></nav>
+    <h1>Sasuke Uchiha · Hebi</h1>
+    <p>
+      Prévia reproduzida pelo motor. No modo livre, use WASD, J/K/L, Shift, U para agarrar e T para provocar. As
+      caixas são as mesmas usadas na luta.
+    </p>
+    <div class="controls">
+      <label
+        >Ensaio
+        <select id="scenario"></select
+      ></label>
+      <label
+        >Velocidade
+        <select id="speed">
+          <option value=".25">¼×</option>
+          <option value=".5">½×</option>
+          <option value="1" selected>1×</option>
+        </select></label
+      >
+      <label><input type="checkbox" id="mirror" /> Espelhar</label>
+      <label><input type="checkbox" id="boxes" /> Caixas</label>
+      <button id="reset">Repetir</button><button id="play">Pausar</button
+      ><button id="step">Avançar um tick</button>
+    </div>
+    <canvas id="arena" width="1280" height="720" tabindex="0"></canvas>
+    <div class="controls">
+      <label for="seek">Linha do tempo</label
+      ><input id="seek" type="range" min="0" max="135" value="0" />
+      <output id="status">Carregando sprites…</output>
+    </div>
+    <p>
+      <a href="../sprites/sasuke/base.png">Base</a> ·
+      <a href="../sprites/sasuke/movement.png">Atlas de movimentos</a> ·
+      <a href="../sprites/sasuke/normals.png">Atlas de ataques</a> ·
+      <a href="../sprites/sasuke/reactions.png">Atlas de reações</a> ·
+      <a href="../sprites/sasuke/throw-base.png">Agarrão base</a> ·
+      <a href="../sprites/sasuke/throw-curse.png">Agarrão Marca II</a> ·
+      <a href="../sprites/sasuke/specials.png">Atlas de especiais</a> ·
+      <a href="../sprites/sasuke/special-effects.png">Efeitos dos especiais</a> ·
+      <a href="../sprites/sasuke/curse.png">Atlas da Marca II</a> ·
+      <a href="../sprites/sasuke/curse-comparison.png">Comparação visual</a> ·
+      <a href="../sprites/sasuke/kirin-effects-contact.png">Efeitos do Kirin azul</a> ·
+      <a href="../sprites/sasuke/kirin-dragon-black.png">Kirin negro</a> ·
+      <a href="../sprites/sasuke/goryuka-heads.png">Cabeças do Gōryūka</a>
+    </p>
+    <p>
+      <a href="../sprites/sasuke/preview-movement.png"
+        >Todos os movimentos em PNG</a
+      >
+      ·
+      <a href="../sprites/sasuke/preview-normals.png"
+        >Todos os ataques em PNG</a
+      >
+      ·
+      <a href="../sprites/sasuke/preview-reactions.png"
+        >Guarda e reações em PNG</a
+      > · <a href="../sprites/sasuke/specials-contact.png">Poses e pontos de emissão dos especiais</a>
+    </p>
+    <script type="module" src="../src/sasuke-lab.ts"></script>
+  </body>
+</html>
+>>>>>>> 1694d1e4dbd0637af09979f898f331d0ca3bed3c
