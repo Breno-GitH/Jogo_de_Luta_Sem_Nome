@@ -1,9 +1,0 @@
-{
-  "source": "actual production browser Canvas captured by Playwright",
-  "frames": 80,
-  "ticksPerSecond": 60,
-  "stableFloorScreenY": 661,
-  "left": "previous drawings, current physics",
-  "right": "revision 2",
-  "sourceTrace": "art/dio/qa/revision/walk-trace.json"
-}

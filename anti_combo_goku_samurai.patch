@@ -1,0 +1,173 @@
+diff --git a/src/engine/combat.ts b/src/engine/combat.ts
+--- a/src/engine/combat.ts
++++ b/src/engine/combat.ts
+@@ -25,6 +25,7 @@
+ import { CommandBuffer } from "./input";
+ import { MOVEMENT_TIMING } from "./movement";
+ import { combatPace, pacedCharacter } from "./pace";
++import { antiLightCombo, isLimitedLightNormal } from "./anti-light-combo";
+ import cinematics from "../data/cinematics.json";
+ import { reactionBoxes, reactionFor } from "./lifecycle";
+ import { isSuperMove, poseAt, phaseAt } from "./moves";
+@@ -111,6 +112,7 @@
+   comboAge = 0;
+   comboAirHits = 0;
+   combo = 0;
++  lightHitsInCombo = 0;
+   knockedDown = false;
+   dashDirection = 1;
+   jumpDirection = 0;
+@@ -780,7 +782,7 @@
+                 : "idle",
+           );
+           this.combo = 0;
+-          this.comboAge = this.comboAirHits = 0;
++          this.comboAge = this.comboAirHits = this.lightHitsInCombo = 0;
+           this.knockedDown = false;
+         }
+       }
+@@ -1655,6 +1657,10 @@
+     curseFx = winged(f),
+     swordCapture = false,
+   ) {
++    const limitedLight = isLimitedLightNormal(f.data.id, moveId);
++    // After the third normal-light hit, further J attacks cannot re-hit the
++    // victim until they recover. This also protects cornered opponents.
++    if (limitedLight && target.combo > 0 && target.lightHitsInCombo >= antiLightCombo.maxHits) return;
+     const frozen = this.temporal.isFrozen(target.id);
+     const guarding =
+       target.input.direction === -target.facing &&
+@@ -1735,9 +1741,25 @@
+           }
+         }
+       }
+-      if (!target.combo) target.comboAge = target.comboAirHits = 0;
++      if (!target.combo) {
++        target.comboAge = target.comboAirHits = 0;
++        target.lightHitsInCombo = 0;
++      }
+       target.combo++;
+       if (target.airborne || m.launch < 0) target.comboAirHits++;
++      if (limitedLight) {
++        target.lightHitsInCombo++;
++        if (target.lightHitsInCombo >= antiLightCombo.maxHits) {
++          // Force a genuine knock-away rather than only damage scaling.
++          // The knockdown and light-hit lockout together stop corner loops.
++          reaction.vx = direction * antiLightCombo.push;
++          reaction.vy = antiLightCombo.launch;
++          reaction.stun = Math.max(reaction.stun, antiLightCombo.stun);
++          reaction.launch = true;
++          reaction.knockdown = true;
++          reaction.strength = 3;
++        }
++      }
+       if (target.airborne && !m.knockdown && !m.super)
+         reaction.stun += combatPace.combo.airExtensionStun;
+       if (m.ben && target.combo > 4) reaction.stun = Math.max(9, reaction.stun - (target.combo - 4) * 3);
+diff --git a/src/engine/state.ts b/src/engine/state.ts
+--- a/src/engine/state.ts
++++ b/src/engine/state.ts
+@@ -27,6 +27,7 @@
+   "comboAge",
+   "comboAirHits",
+   "combo",
++  "lightHitsInCombo",
+   "knockedDown",
+   "dashDirection",
+   "jumpDirection",
+diff --git a/src/engine/anti-light-combo.ts b/src/engine/anti-light-combo.ts
+new file mode 100644
+--- /dev/null
++++ b/src/engine/anti-light-combo.ts
+@@ -0,0 +1,15 @@
++/** Shared deterministic anti-infinite rule for repeated weak normals.
++ * Hits are counted on the defender across standing/crouching/air J attacks.
++ * Mediums, heavies and specials remain available in normal combo routes.
++ */
++export const antiLightCombo = {
++  maxHits: 3,
++  push: 18,
++  launch: -8.5,
++  stun: 30,
++} as const;
++
++export function isLimitedLightNormal(characterId: string, moveId: string): boolean {
++  return (characterId === "goku" || characterId === "samurai") &&
++    /^(stand|crouch|air)_light$/.test(moveId);
++}
+diff --git a/tests/anti-light-combo.test.ts b/tests/anti-light-combo.test.ts
+new file mode 100644
+--- /dev/null
++++ b/tests/anti-light-combo.test.ts
+@@ -0,0 +1,71 @@
++import { describe, expect, it } from "vitest";
++import { Match, FLOOR } from "../src/engine/combat";
++import { characters } from "../src/engine/characters";
++import { antiLightCombo, isLimitedLightNormal } from "../src/engine/anti-light-combo";
++import { neutral } from "../src/engine/types";
++import { snapshot, restore, hashState } from "../src/engine/state";
++
++const step = (match: Match) => match.step([neutral(), neutral()]);
++
++/** Keep both fighters in contact to simulate the worst-case corner mash. */
++function connectLight(match: Match): boolean {
++  const [attacker, defender] = match.fighters;
++  attacker.setState("idle");
++  attacker.x = 600;
++  attacker.y = FLOOR;
++  attacker.vx = attacker.vy = 0;
++  attacker.facing = 1;
++  defender.x = 665;
++  defender.y = FLOOR;
++  defender.vx = defender.vy = 0;
++  defender.facing = -1;
++  if (defender.state === "hitstun") defender.stun = 100;
++  const before = match.hitSerial;
++  expect(attacker.attack("stand_light")).toBe(true);
++  for (let tick = 0; tick < 45; tick++) {
++    step(match);
++    if (match.hitSerial > before) return true;
++  }
++  return false;
++}
++
++describe("anti infinite for repeated weak punches", () => {
++  it("only applies to Goku and Samurai normal J attacks", () => {
++    for (const id of ["samurai", "goku"]) {
++      expect(isLimitedLightNormal(id, "stand_light")).toBe(true);
++      expect(isLimitedLightNormal(id, "crouch_light")).toBe(true);
++      expect(isLimitedLightNormal(id, "air_light")).toBe(true);
++      for (const idMove of ["stand_medium", "stand_heavy", "ki_light", "draw_light"])
++        expect(isLimitedLightNormal(id, idMove)).toBe(false);
++    }
++    expect(isLimitedLightNormal("dio", "stand_light")).toBe(false);
++  });
++
++  it.each(["goku", "samurai"] as const)(
++    "%s ends a run of J hits by launching the opponent, and locks further J hits",
++    id => {
++      const match = new Match(characters[id], { training: true }, characters.samurai);
++      match.phase = "fight";
++      const [attacker, defender] = match.fighters;
++      for (let hit = 1; hit <= antiLightCombo.maxHits; hit++) {
++        expect(connectLight(match), `hit ${hit}`).toBe(true);
++        expect(defender.lightHitsInCombo).toBe(hit);
++        if (hit < antiLightCombo.maxHits) {
++          expect(defender.knockedDown).toBe(false);
++        }
++      }
++      expect(defender.knockedDown).toBe(true);
++      expect(defender.vx).toBeGreaterThanOrEqual(antiLightCombo.push - 1);
++      expect(defender.vy).toBeLessThan(0);
++      expect(connectLight(match)).toBe(false);
++      expect(defender.lightHitsInCombo).toBe(antiLightCombo.maxHits);
++      // Snapshot/restore must preserve the deterministic LAN replay state.
++      expect(hashState(snapshot(restore(snapshot(match))))).toBe(hashState(snapshot(match)));
++      defender.setState("idle");
++      defender.combo = 0;
++      defender.knockedDown = false;
++      expect(connectLight(match)).toBe(true);
++      expect(defender.lightHitsInCombo).toBe(1);
++    },
++  );
++});

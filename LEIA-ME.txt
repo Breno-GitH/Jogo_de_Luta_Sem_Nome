@@ -1,0 +1,24 @@
+M.S.F.D — Anti-infinito de socos fracos (Goku e Samurai)
+========================================================
+Esta atualizacao usa como base o arquivo Jogo_Codigo_Leve.zip enviado anteriormente.
+
+O que muda:
+- Cada oponente pode receber no maximo 3 ataques normais fracos (J) de Goku/Samurai por combo.
+- O terceiro golpe fraco causa uma reacao de arremesso e queda, afastando o oponente.
+- Golpes fracos seguintes nao acertam enquanto o combo nao terminar, inclusive nos cantos.
+- A contagem zera quando a vitima recupera o controle.
+- J -> K -> L e especiais permanecem intactos.
+- O novo contador entra nos snapshots do multiplayer LAN para manter determinismo.
+
+Instalacao (sem sobrescrever outros arquivos):
+1) Faca backup ou um commit de sua pasta M.S.F.D.
+2) Extraia ESTES arquivos para a raiz C:\xampp\htdocs\2025\M.S.F.D, ao lado de package.json.
+3) Execute aplicar-anti-combo.cmd (ou, no PowerShell: git apply --check .\anti_combo_goku_samurai.patch e, depois, git apply .\anti_combo_goku_samurai.patch).
+4) Execute npm.cmd run build:lan e reinicie o backend do multiplayer, se estiver usando LAN.
+5) Para testes: npx.cmd vitest run tests/anti-light-combo.test.ts tests/frenzy.test.ts
+
+IMPORTANTE: se aparecer 'Esta versao do jogo difere do codigo analisado', o script
+nao aplica nada, evitando sobrescrever alteracoes mais recentes. Nesse caso,
+envie o ZIP de codigo atualizado para adaptar a correcao.
+
+NÃO exclua os arquivos originais do jogo nem rode o patch duas vezes.

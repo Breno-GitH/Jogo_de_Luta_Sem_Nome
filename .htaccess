@@ -1,0 +1,7 @@
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /2025/M.S.F.D/
+
+RewriteRule ^dist(/|$) - [L]
+RewriteRule ^(.*)$ dist/$1 [L]
+</IfModule>
