@@ -1,0 +1,30 @@
+{
+  "source": "real existing Match + Renderer canvas, fixed 60 Hz, scripted ordinary InputFrames",
+  "sourceFPS": 20,
+  "previewFPS": 10,
+  "sourceCaptures": 555,
+  "apngFrames": 278,
+  "previewSize": [
+    640,
+    360
+  ],
+  "resize": "exact nearest-neighbor 1/2",
+  "scenarios": [
+    "stand_light",
+    "stand_medium",
+    "stand_heavy",
+    "crouch_light",
+    "crouch_medium",
+    "crouch_heavy",
+    "air_light",
+    "air_medium",
+    "air_heavy",
+    "groundCombo",
+    "crouchCombo",
+    "launcherCombo",
+    "throw",
+    "guardHigh",
+    "hitHeavy"
+  ],
+  "silent": true
+}

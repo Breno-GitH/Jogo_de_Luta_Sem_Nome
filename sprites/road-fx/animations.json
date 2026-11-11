@@ -1,0 +1,177 @@
+{
+  "sheet": "road-fx/explosion.png",
+  "frameWidth": 256,
+  "frameHeight": 256,
+  "pivot": {
+    "x": 128,
+    "y": 224
+  },
+  "clips": {
+    "impactFlash": {
+      "sheet": "road-fx/impactFlash.png",
+      "columns": 5,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        2,
+        2,
+        2
+      ],
+      "loop": false,
+      "pivot": {
+        "x": 128,
+        "y": 128
+      }
+    },
+    "dust": {
+      "sheet": "road-fx/dust.png",
+      "columns": 8,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "ticks": 3,
+      "durations": [
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "loop": false
+    },
+    "smoke": {
+      "sheet": "road-fx/smoke.png",
+      "columns": 10,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "ticks": 4,
+      "durations": [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "loop": false
+    },
+    "speedLines": {
+      "sheet": "road-fx/speedLines.png",
+      "columns": 6,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "ticks": 2,
+      "durations": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "loop": true
+    },
+    "explosion": {
+      "sheet": "road-fx/explosion.png",
+      "columns": 12,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "ticks": 2,
+      "durations": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "loop": false,
+      "pivot": {
+        "x": 128,
+        "y": 140
+      }
+    },
+    "finalImpact": {
+      "sheet": "road-fx/finalImpact.png",
+      "columns": 6,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "ticks": 1,
+      "durations": [
+        1,
+        1,
+        2,
+        2,
+        2,
+        2
+      ],
+      "loop": false,
+      "pivot": {
+        "x": 128,
+        "y": 128
+      }
+    }
+  }
+}
