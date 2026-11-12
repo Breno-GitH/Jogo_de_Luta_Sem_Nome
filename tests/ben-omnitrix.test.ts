@@ -220,12 +220,12 @@ describe("Omnitrix with playable forms", () => {
     expect(snapshot(new Match()).fighters[0]).not.toHaveProperty("omnitrix");
   });
 
-  it("keeps R reserved and L exclusive while Sasuke retains his heavy", () => {
+  it("keeps the Alien X command out of the dial while Sasuke retains his heavy", () => {
     const { fighter, rival, transform, step } = arena();
     transform("xlr8");
-    fighter.meter = 100;
+    fighter.meter = 0;
     step({ ...tap(), pressed: ["heavy", "ultimate"] }, { ...neutral(), pressed: ["heavy"] });
-    expect([fighter.moveId, fighter.meter, rival.moveId]).toEqual(["", 100, "stand_heavy"]);
+    expect([fighter.moveId, fighter.meter, rival.moveId]).toEqual(["", 0, "stand_heavy"]);
     expect(validInput(control(true, ["heavy"]))).toBe(true);
     expect(validInput({ ...tap(), omnitrix: { held: true, form: "xlr8" } })).toBe(false);
   });

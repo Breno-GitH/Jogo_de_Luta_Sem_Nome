@@ -88,7 +88,7 @@ test("Treinamento renders three real form changes and their movement clips", asy
   }
   await select(page, arena, "gravattack");
   await page.keyboard.press("l", { delay: 340 });
-  await expect(arena).toHaveAttribute("data-omnitrix-form", "heatblast");
+  await expect(arena).toHaveAttribute("data-omnitrix-form", "gravattack");
   expect(assetFailures).toEqual([]);
   expect(errors).toEqual([]);
 });
