@@ -76,16 +76,15 @@ try {
     } finally {
         $sha256.Dispose()
     }
-    $installed = (Test-Path -LiteralPath 'node_modules\.package-lock.json') -and
-        (Test-Path -LiteralPath 'node_modules\vite\bin\vite.js')
-    if ($installed -and (Test-Path -LiteralPath $fingerprintFile)) {
-        $installed = [IO.File]::ReadAllText($fingerprintFile) -eq $fingerprint
-    } elseif ($installed) {
-        # An existing npm ci can predate this updater. Reuse it if its inventory matches.
-        & node.exe -e "const a=require('./package-lock.json').packages,b=require('./node_modules/.package-lock.json').packages,f=require('fs');process.exit(Object.entries(a).every(([p,v])=>!p||(!b[p]?v.optional:b[p].version===v.version&&b[p].integrity===v.integrity&&f.existsSync(p+'/package.json'))?0:1)"
-        $installed = $LASTEXITCODE -eq 0
+    & node.exe 'scripts/check-msfd-dependencies.mjs'
+    $installed = $LASTEXITCODE -eq 0
+    if (-not $installed -or ((Test-Path -LiteralPath $fingerprintFile) -and
+        [IO.File]::ReadAllText($fingerprintFile) -ne $fingerprint)) {
+        # Install from the lockfile in place. npm ci would erase the entire local
+        # node_modules tree, including worktrees stored there by older scripts.
+        Invoke-Checked npm.cmd @('install', '--no-save', '--no-audit', '--no-fund')
+        Invoke-Checked node.exe @('scripts/check-msfd-dependencies.mjs')
     }
-    if (-not $installed) { Invoke-Checked npm.cmd @('ci', '--no-audit', '--no-fund') }
     [IO.File]::WriteAllText($fingerprintFile, $fingerprint)
     Invoke-Checked node.exe @('scripts/net_version.mjs')
     Invoke-Checked node.exe @('node_modules/vitest/vitest.mjs', 'run', '--maxWorkers=1',
