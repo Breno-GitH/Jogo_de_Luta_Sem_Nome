@@ -1,8 +1,12 @@
-# Jogo de luta: one production build, two URL aliases. Apache >= 2.4.47.
+# M.S.F.D: one production build, with legacy URL aliases. Apache >= 2.4.47.
 ProxyRequests Off
 ProxyPreserveHost On
 ProxyAddHeaders On
 ProxyTimeout 60
+ProxyPass "/2025/M.S.F.D/socket.io/" "http://127.0.0.1:3001/socket.io/" upgrade=websocket connectiontimeout=3 timeout=60 retry=0
+ProxyPassReverse "/2025/M.S.F.D/socket.io/" "http://127.0.0.1:3001/socket.io/"
+ProxyPass "/2025/M.S.F.D/api/health" "http://127.0.0.1:3001/health" connectiontimeout=3 timeout=5 retry=0
+ProxyPassReverse "/2025/M.S.F.D/api/health" "http://127.0.0.1:3001/health"
 ProxyPass "/jogo-luta/socket.io/" "http://127.0.0.1:3001/socket.io/" upgrade=websocket connectiontimeout=3 timeout=60 retry=0
 ProxyPassReverse "/jogo-luta/socket.io/" "http://127.0.0.1:3001/socket.io/"
 ProxyPass "/2025/Jogo_de_Luta_Sem_Nome/socket.io/" "http://127.0.0.1:3001/socket.io/"
@@ -12,6 +16,8 @@ ProxyPassReverse "/jogo-luta/api/health" "http://127.0.0.1:3001/health"
 ProxyPass "/2025/Jogo_de_Luta_Sem_Nome/api/health" "http://127.0.0.1:3001/health"
 ProxyPassReverse "/2025/Jogo_de_Luta_Sem_Nome/api/health" "http://127.0.0.1:3001/health"
 
+RedirectMatch 302 "^/2025/M\.S\.F\.D$" "/2025/M.S.F.D/"
+Alias "/2025/M.S.F.D/" "@@PROJECT@@/dist/"
 RedirectMatch 302 "^/jogo-luta$" "/jogo-luta/"
 RedirectMatch 302 "^/2025/Jogo_de_Luta_Sem_Nome$" "/2025/Jogo_de_Luta_Sem_Nome/"
 Alias "/jogo-luta/" "@@PROJECT@@/dist/"
@@ -45,7 +51,7 @@ Alias "/2025/Jogo_de_Luta_Sem_Nome/" "@@PROJECT@@/dist/"
         Require all denied
     </FilesMatch>
 </Directory>
-<LocationMatch "^/(jogo-luta|2025/Jogo_de_Luta_Sem_Nome)/(socket\.io/|api/)">
+<LocationMatch "^/(jogo-luta|2025/Jogo_de_Luta_Sem_Nome|2025/M\.S\.F\.D)/(socket\.io/|api/)">
     <RequireAny>
         Require local
         Require ip 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16 fc00::/7 fe80::/10

@@ -1,7 +1,7 @@
 import { networkInterfaces, hostname } from "node:os";
 import { io } from "socket.io-client";
 
-const route = "/2025/Jogo_de_Luta_Sem_Nome/";
+const route = "/2025/M.S.F.D/";
 const local = new URL(route, "http://localhost");
 const alias = new URL("/jogo-luta/", local);
 const ipv4 = Object.entries(networkInterfaces()).flatMap(([name, addresses]) =>

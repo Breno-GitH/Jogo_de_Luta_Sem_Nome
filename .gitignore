@@ -8,3 +8,5 @@ server-dist/
 __pycache__/
 test-results/
 playwright-report/
+deployment/msfd-work/
+deployment/run/msfd-backend.json

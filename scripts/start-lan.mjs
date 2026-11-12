@@ -13,7 +13,7 @@ process.chdir(root);
 if (existsSync(".env")) process.loadEnvFile(".env");
 const port = 3001,
   host = "127.0.0.1",
-  pidFile = "deployment/run/backend.json";
+  pidFile = "deployment/run/msfd-backend.json";
 if (!existsSync("server-dist/server-core.mjs")) {
   console.error("Execute atualizar-xampp.bat antes de iniciar o multiplayer.");
   process.exit(1);
@@ -70,19 +70,20 @@ app.http.listen(port, host, () => {
     pidFile,
     JSON.stringify({
       pid: process.pid,
+      project: process.cwd(),
       host,
       port,
       started: new Date().toISOString(),
     }),
   );
   console.log("Multiplayer LAN ativo. Backend interno em 127.0.0.1:3001.");
-  console.log("No servidor: http://localhost/2025/Jogo_de_Luta_Sem_Nome/");
+  console.log("No servidor: http://localhost/2025/M.S.F.D/");
   for (const entries of Object.values(networkInterfaces()))
     for (const n of entries ?? [])
       if (n.family === "IPv4" && !n.internal)
-        console.log(`Na rede: http://${n.address}/2025/Jogo_de_Luta_Sem_Nome/`);
+        console.log(`Na rede: http://${n.address}/2025/M.S.F.D/`);
   console.log(
-    `Nome do computador (se resolvido pela rede): http://${hostname()}/2025/Jogo_de_Luta_Sem_Nome/`,
+    `Nome do computador (se resolvido pela rede): http://${hostname()}/2025/M.S.F.D/`,
   );
   console.log(
     "Apache precisa estar iniciado no XAMPP. Ctrl+C encerra este backend. Diagnóstico: node scripts/verificar-lan.mjs",

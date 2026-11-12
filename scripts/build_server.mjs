@@ -1,7 +1,10 @@
 import { build } from "esbuild";
+import path from "node:path";
+
+const output = process.argv[2] ?? "server-dist";
 await build({
   entryPoints: ["server/index.ts"],
-  outfile: "server-dist/server.mjs",
+  outfile: path.join(output, "server.mjs"),
   bundle: true,
   platform: "node",
   format: "esm",
@@ -11,7 +14,7 @@ await build({
 });
 await build({
   entryPoints: ["server/server.ts"],
-  outfile: "server-dist/server-core.mjs",
+  outfile: path.join(output, "server-core.mjs"),
   bundle: true,
   platform: "node",
   format: "esm",

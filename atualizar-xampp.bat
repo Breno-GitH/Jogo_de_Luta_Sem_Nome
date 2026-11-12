@@ -8,5 +8,5 @@ if errorlevel 1 (
   exit /b 1
 )
 echo.
-echo Build atualizado. Execute iniciar-multiplayer.bat e abra http://localhost/2025/Jogo_de_Luta_Sem_Nome/
+echo Build atualizado. Execute iniciar-multiplayer.bat e abra http://localhost/2025/M.S.F.D/
 pause
