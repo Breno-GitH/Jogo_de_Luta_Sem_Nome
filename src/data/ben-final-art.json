@@ -1,0 +1,611 @@
+{
+  "human": {
+    "sheet": "ben/human-motion.png",
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "columns": 6,
+    "pivot": {
+      "x": 128,
+      "y": 224
+    },
+    "scale": 1,
+    "clips": {
+      "walkForward": {
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "durations": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "ticks": 1,
+        "loop": true
+      },
+      "walkBack": {
+        "frames": [
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ],
+        "durations": [
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "ticks": 1,
+        "loop": true
+      },
+      "dashForward": {
+        "frames": [
+          16,
+          17,
+          18,
+          19,
+          20
+        ],
+        "durations": [
+          2,
+          2,
+          2,
+          3,
+          3
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "backdash": {
+        "frames": [
+          21,
+          22,
+          23,
+          24,
+          25
+        ],
+        "durations": [
+          2,
+          3,
+          2,
+          2,
+          3
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "crouchStart": {
+        "frames": [
+          26,
+          27
+        ],
+        "durations": [
+          3,
+          3
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "crouchIdle": {
+        "frames": [
+          27
+        ],
+        "durations": [
+          10
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "crouchEnd": {
+        "frames": [
+          27,
+          26
+        ],
+        "durations": [
+          2,
+          3
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "jumpStart": {
+        "frames": [
+          26,
+          28
+        ],
+        "durations": [
+          3,
+          3
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "jumpRise": {
+        "frames": [
+          28,
+          29
+        ],
+        "durations": [
+          1,
+          1
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "jumpApex": {
+        "frames": [
+          30
+        ],
+        "durations": [
+          1
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "jumpFall": {
+        "frames": [
+          31
+        ],
+        "durations": [
+          2
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "landing": {
+        "frames": [
+          32,
+          26
+        ],
+        "durations": [
+          4,
+          4
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "guardStand": {
+        "frames": [
+          33
+        ],
+        "durations": [
+          8
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "guardCrouch": {
+        "frames": [
+          34
+        ],
+        "durations": [
+          8
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "damage": {
+        "frames": [
+          35
+        ],
+        "durations": [
+          12
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "launched": {
+        "frames": [
+          35,
+          31
+        ],
+        "durations": [
+          7,
+          12
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "downed": {
+        "frames": [
+          36
+        ],
+        "durations": [
+          8
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "getup": {
+        "frames": [
+          37,
+          26,
+          38
+        ],
+        "durations": [
+          6,
+          5,
+          4
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "entrance": {
+        "frames": [
+          0,
+          2,
+          4,
+          6,
+          38
+        ],
+        "durations": [
+          4,
+          4,
+          4,
+          4,
+          15
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "taunt": {
+        "frames": [
+          38,
+          39,
+          52,
+          39
+        ],
+        "durations": [
+          5,
+          12,
+          14,
+          13
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "victory": {
+        "frames": [
+          38,
+          39,
+          40
+        ],
+        "durations": [
+          6,
+          8,
+          25
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "crouch_light": {
+        "frames": [
+          41,
+          42,
+          41,
+          27
+        ],
+        "durations": [
+          5,
+          3,
+          4,
+          5
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "crouch_medium": {
+        "frames": [
+          43,
+          44,
+          43,
+          27
+        ],
+        "durations": [
+          10,
+          4,
+          8,
+          12
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "air_light": {
+        "frames": [
+          45,
+          46,
+          45
+        ],
+        "durations": [
+          5,
+          3,
+          9
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "air_medium": {
+        "frames": [
+          47,
+          48,
+          47,
+          31
+        ],
+        "durations": [
+          7,
+          4,
+          7,
+          10
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "throw": {
+        "frames": [
+          49,
+          50,
+          49
+        ],
+        "durations": [
+          8,
+          3,
+          21
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "grabHold": {
+        "frames": [
+          50,
+          49,
+          51,
+          38
+        ],
+        "durations": [
+          6,
+          11,
+          6,
+          3
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "throwRecover": {
+        "frames": [
+          51,
+          49,
+          38
+        ],
+        "durations": [
+          4,
+          5,
+          5
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "omnitrixUse": {
+        "frames": [
+          39,
+          52,
+          49
+        ],
+        "durations": [
+          5,
+          10,
+          6
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "alienX": {
+        "frames": [
+          38,
+          39,
+          52,
+          51,
+          49,
+          38
+        ],
+        "durations": [
+          6,
+          7,
+          10,
+          6,
+          15,
+          24
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "alienXWatch": {
+        "frames": [
+          39,
+          52,
+          49,
+          52
+        ],
+        "durations": [
+          7,
+          10,
+          7,
+          10
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "alienXReturn": {
+        "frames": [
+          52,
+          39,
+          38
+        ],
+        "durations": [
+          7,
+          8,
+          18
+        ],
+        "ticks": 1,
+        "loop": false
+      }
+    }
+  },
+  "nrgWalk": {
+    "sheet": "ben/nrg/walk-final.png",
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "columns": 6,
+    "pivot": {
+      "x": 128,
+      "y": 224
+    },
+    "scale": 1,
+    "clips": {
+      "walkForward": {
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "durations": [
+          5,
+          4,
+          4,
+          4,
+          5,
+          4,
+          4,
+          4
+        ],
+        "ticks": 1,
+        "loop": true
+      },
+      "walkBack": {
+        "frames": [
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ],
+        "durations": [
+          6,
+          5,
+          5,
+          5,
+          6,
+          5,
+          5,
+          5
+        ],
+        "ticks": 1,
+        "loop": true
+      }
+    }
+  },
+  "alienX": {
+    "sheet": "ben/alien-x.png",
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "columns": 6,
+    "pivot": {
+      "x": 128,
+      "y": 224
+    },
+    "scale": 1,
+    "clips": {
+      "idle": {
+        "frames": [
+          3
+        ],
+        "durations": [
+          8
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "alienXReveal": {
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "durations": [
+          7,
+          8,
+          10,
+          10
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "alienXGrasp": {
+        "frames": [
+          3,
+          4,
+          5,
+          6,
+          7,
+          6
+        ],
+        "durations": [
+          8,
+          11,
+          16,
+          16,
+          23,
+          16
+        ],
+        "ticks": 1,
+        "loop": false
+      },
+      "alienXRewrite": {
+        "frames": [
+          7,
+          8,
+          9,
+          10,
+          11
+        ],
+        "durations": [
+          4,
+          13,
+          6,
+          10,
+          10
+        ],
+        "ticks": 1,
+        "loop": false
+      }
+    }
+  }
+}
