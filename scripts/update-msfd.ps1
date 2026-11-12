@@ -69,14 +69,24 @@ try {
     Write-Host "Publicando $current em $commit."
 
     $fingerprintFile = Join-Path $work 'package-lock.sha256'
-    $fingerprint = (Get-FileHash -LiteralPath 'package-lock.json' -Algorithm SHA256).Hash
-    if (-not (Test-Path -LiteralPath 'node_modules\.package-lock.json') -or
-        -not (Test-Path -LiteralPath 'node_modules\vite\bin\vite.js') -or
-        -not (Test-Path -LiteralPath $fingerprintFile) -or
-        [IO.File]::ReadAllText($fingerprintFile) -ne $fingerprint) {
-        Invoke-Checked npm.cmd @('ci', '--no-audit', '--no-fund')
-        [IO.File]::WriteAllText($fingerprintFile, $fingerprint)
+    $sha256 = [Security.Cryptography.SHA256]::Create()
+    try {
+        $fingerprint = [BitConverter]::ToString($sha256.ComputeHash(
+            [IO.File]::ReadAllBytes((Join-Path $root 'package-lock.json')))).Replace('-', '')
+    } finally {
+        $sha256.Dispose()
     }
+    $installed = (Test-Path -LiteralPath 'node_modules\.package-lock.json') -and
+        (Test-Path -LiteralPath 'node_modules\vite\bin\vite.js')
+    if ($installed -and (Test-Path -LiteralPath $fingerprintFile)) {
+        $installed = [IO.File]::ReadAllText($fingerprintFile) -eq $fingerprint
+    } elseif ($installed) {
+        # An existing npm ci can predate this updater. Reuse it if its inventory matches.
+        & node.exe -e "const a=require('./package-lock.json').packages,b=require('./node_modules/.package-lock.json').packages,f=require('fs');process.exit(Object.entries(a).every(([p,v])=>!p||(!b[p]?v.optional:b[p].version===v.version&&b[p].integrity===v.integrity&&f.existsSync(p+'/package.json'))?0:1)"
+        $installed = $LASTEXITCODE -eq 0
+    }
+    if (-not $installed) { Invoke-Checked npm.cmd @('ci', '--no-audit', '--no-fund') }
+    [IO.File]::WriteAllText($fingerprintFile, $fingerprint)
     Invoke-Checked node.exe @('scripts/net_version.mjs')
     Invoke-Checked node.exe @('node_modules/vitest/vitest.mjs', 'run', '--maxWorkers=1',
         'tests/ben-omnitrix.test.ts', 'tests/ben-final.test.ts', 'tests/ben-stage6.test.ts', 'tests/ben-stage7.test.ts')
@@ -87,7 +97,10 @@ try {
         throw "Apache nao respondeu em $Url. Inicie-o no XAMPP e confira o alias M.S.F.D. com configurar-xampp.bat."
     }
 
-    $launchTask = Get-ScheduledTask -ErrorAction SilentlyContinue | Where-Object {
+    $tasks = if (Get-Command Get-ScheduledTask -ErrorAction SilentlyContinue) {
+        Get-ScheduledTask -ErrorAction SilentlyContinue
+    }
+    $launchTask = $tasks | Where-Object {
         $_.Actions | Where-Object {
             ($_.WorkingDirectory -eq $root -and $_.Arguments -match 'scripts[\\/]start-lan\.mjs') -or
             ($_.Arguments -and ($_.Arguments.IndexOf($launcher, [StringComparison]::OrdinalIgnoreCase) -ge 0 -or
