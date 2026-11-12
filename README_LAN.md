@@ -9,9 +9,10 @@ O projeto existente foi adaptado. O Apache serve o frontend de produção; o Nod
 - Projeto editável: `C:\xampp\htdocs\2025\Jogo_de_Luta_Sem_Nome`.
 - Frontend publicado: `C:\xampp\htdocs\2025\Jogo_de_Luta_Sem_Nome\dist`.
 - Endereço curto: [http://localhost/jogo-luta/](http://localhost/jogo-luta/).
-- Endereço principal: [http://localhost/2025/Jogo_de_Luta_Sem_Nome/](http://localhost/2025/Jogo_de_Luta_Sem_Nome/).
+- Endereço principal: [http://localhost/2025/M.S.F.D/](http://localhost/2025/M.S.F.D/).
+- Endereço legado: [http://localhost/2025/Jogo_de_Luta_Sem_Nome/](http://localhost/2025/Jogo_de_Luta_Sem_Nome/).
 
-Os dois endereços são aliases do **mesmo** build. Não há outro jogo nem cópia manual do index. O Apache não publica a raiz de desenvolvimento: `src`, `node_modules`, `.env`, configurações, scripts e backups ficam fora do diretório servido. As URLs de sprites, sons, laboratórios e Socket.IO derivam da origem e do caminho atuais do navegador. Não há IP da LAN fixado no frontend.
+Os três endereços apontam para o **mesmo** build. Não há outro jogo nem cópia manual do index. O Apache não publica a raiz de desenvolvimento: `src`, `node_modules`, `.env`, configurações, scripts e backups ficam fora do diretório servido. As URLs de sprites, sons, laboratórios e Socket.IO derivam da origem e do caminho atuais do navegador. Não há IP da LAN fixado no frontend.
 
 ```text
 src/                     frontend TypeScript, motor e dados editáveis
@@ -24,7 +25,7 @@ dist/                    único frontend publicado pelo Apache
 deployment/
   apache-game.conf.in    modelo de proxy/aliases e restrição de acesso
   backups/               configurações do Apache anteriores à instalação
-  previous-dist/         versão anterior do frontend após atualizar
+  msfd-work/             backup local de dist e server-dist após atualizar
   audit/                 hashes de preservação, capturas e registros de testes
   run/                   metadados locais de execução e fixtures de testes
 scripts/                 build, instalação, inicialização e diagnóstico
@@ -38,7 +39,7 @@ Requer Node.js 22 ou superior, npm e o XAMPP instalado em `C:\xampp`.
 
 1. Abra o painel do XAMPP e inicie **Apache**. MySQL não é necessário.
 2. Execute `iniciar-multiplayer.bat` na raiz do projeto. Mantenha a janela aberta; ela mostra erros e os endereços disponíveis. Ctrl+C encerra o backend. Uma segunda execução detecta o serviço existente e não inicia uma cópia duplicada.
-3. Abra [o jogo no Apache](http://localhost/2025/Jogo_de_Luta_Sem_Nome/).
+3. Abra [o jogo no Apache](http://localhost/2025/M.S.F.D/).
 
 BOT, Arcade, Treinamento e os laboratórios funcionam com o Apache, mesmo com o backend desligado. Contra Amigo precisa dos dois processos. Não execute `npm run dev` para jogar a versão publicada. O Apache foi iniciado e testado durante esta instalação; posteriormente use o painel do XAMPP para iniciar/parar o serviço normalmente.
 
@@ -48,14 +49,18 @@ Nesta máquina foi encontrado **Apache 2.4.58 (Win64)**. Foram ativados `mod_pro
 
 ## Atualizar o jogo após alterações
 
-1. Encerre o backend com Ctrl+C e termine as partidas em andamento.
-2. Execute `atualizar-xampp.bat`, ou `npm run build:lan`.
-3. O processo verifica TypeScript, gera o Vite com caminhos relativos, compila o backend e publica **todo** o novo frontend. O build é preparado fora de `dist`; somente após sucesso substitui o diretório completo. A versão anterior fica em `deployment\previous-dist`. Uma falha na troca restaura o frontend anterior.
-4. Execute `iniciar-multiplayer.bat` e atualize a página nos dois computadores.
+Depois de integrar uma mudança no GitHub, publique-a também na instalação XAMPP. Termine as partidas em andamento, inicie o Apache e execute da raiz do projeto:
 
-O script recusa atualizar se o serviço na porta interna 3001 estiver ativo. Não edite arquivos em `dist` ou `server-dist` manualmente. Reiniciar o backend encerra salas em memória: crie um novo código. O build contém `build-info.json`; a versão deve coincidir com `api/health`. HTML e JSON recebem instrução de revalidação de cache. Use Ctrl+F5 se um navegador ainda guardar recursos antigos.
+```powershell
+git switch main
+.\atualizar-msfd.cmd -Branch main
+```
 
-Se aparecer uma tela branca após a migração e o log mostrar `/src/main.ts` com 404, o navegador ainda está usando o index de desenvolvimento em cache. Acesse `http://localhost/2025/Jogo_de_Luta_Sem_Nome/?apache=production` ou pressione Ctrl+F5. O index publicado deve carregar `assets/game-*.js`, nunca `/src/main.ts`. A verificação reproduzível está em `node scripts/check-apache-page.mjs`, com captura em `deployment/audit/lan/apache-menu.png`.
+O atualizador usa a branch atual e faz avanço rápido para a branch de mesmo nome em `origin`. Se houver alterações locais ou commits ainda sem publicar, preserve-os em outra branch ou stash antes de continuar. O script instala dependências quando o lockfile ou a instalação exigem, roda os testes do Ben, atualiza `dist` e `server-dist` juntos e reinicia o backend que pertence a esta instalação. As salas que estavam em memória precisam ser recriadas. O build anterior fica em `deployment\msfd-work\previous`.
+
+A confirmação consulta o Apache no endereço acima e compara o commit e os hashes dos arquivos servidos com `dist`. O script também verifica a versão do backend e o proxy Socket.IO. Para repetir apenas essa conferência, execute `node scripts/check-msfd-publication.mjs`. Use `node scripts/verificar-lan.mjs` para testar o upgrade WebSocket pelo Apache e o endereço IP da LAN.
+
+Se aparecer uma tela branca após a migração e o log mostrar `/src/main.ts` com 404, o navegador ainda está usando o index de desenvolvimento em cache. Acesse `http://localhost/2025/M.S.F.D/?apache=production` ou pressione Ctrl+F5. O index publicado deve carregar `assets/game-*.js`, nunca `/src/main.ts`. A verificação reproduzível está em `node scripts/check-apache-page.mjs`, com captura em `deployment/audit/lan/apache-menu.png`.
 
 `npm run dev` e `npm run dev:server` continuam disponíveis exclusivamente para desenvolvimento. `npm run build` continua sendo o build genérico; para publicar esta instalação com registro e troca completa use **build:lan**.
 

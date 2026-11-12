@@ -8,11 +8,12 @@ import {
   rmSync,
   cpSync,
   readdirSync,
+  realpathSync,
 } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { get } from "node:http";
-const root = fileURLToPath(new URL("../", import.meta.url));
+const root = realpathSync(fileURLToPath(new URL("../", import.meta.url)));
 process.chdir(root);
 const active = await new Promise((resolve) => {
   const r = get("http://127.0.0.1:3001/health", { timeout: 1000 }, (res) => {
@@ -24,18 +25,28 @@ const active = await new Promise((resolve) => {
 });
 if (active) {
   console.error(
-    "Encerre o backend multiplayer com Ctrl+C antes de atualizar. Nenhuma versao foi publicada.",
+    "Backend LAN ativo. Use atualizar-msfd.cmd para atualizar com reinicio do servico. Nenhuma versao foi publicada.",
   );
   process.exit(1);
 }
-const stage = path.join(root, "deployment", "staging"),
-  client = path.join(stage, "client"),
-  previous = path.join(root, "deployment", "previous-dist"),
-  dist = path.join(root, "dist");
+const work = path.join(root, "deployment", "msfd-work");
+const stage = path.join(work, "staging");
+const client = path.join(stage, "client");
+const server = path.join(stage, "server");
+const previous = path.join(work, "previous");
+const dist = path.join(root, "dist");
+const serverDist = path.join(root, "server-dist");
 function confined(p) {
-  const rel = path.relative(root, p);
-  if (!rel || rel.startsWith("..") || path.isAbsolute(rel))
-    throw Error("Destino fora do projeto: " + p);
+  let existing = p;
+  while (!existsSync(existing)) existing = path.dirname(existing);
+  for (const target of [
+    p,
+    path.resolve(realpathSync(existing), path.relative(existing, p)),
+  ]) {
+    const rel = path.relative(root, target);
+    if (!rel || rel.startsWith("..") || path.isAbsolute(rel))
+      throw Error("Destino fora do projeto: " + p);
+  }
 }
 function clean(p) {
   confined(p);
@@ -82,7 +93,9 @@ try {
   run("scripts/net_version.mjs", []);
   run("node_modules/typescript/bin/tsc", ["--noEmit"]);
   run("node_modules/vite/bin/vite.js", ["build", "--outDir", client]);
-  run("scripts/build_server.mjs", []);
+  run("scripts/build_server.mjs", [server]);
+  const git = spawnSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" });
+  const commit = git.status === 0 ? git.stdout.trim() : null;
   const version = readFileSync("src/net/version.ts", "utf8").match(
     /ENGINE_VERSION = "([^"]+)"/,
   )[1];
@@ -91,28 +104,52 @@ try {
     JSON.stringify(
       {
         version,
+        commit,
         builtAt: new Date().toISOString(),
         base: "relative",
-        aliases: ["/jogo-luta/", "/2025/Jogo_de_Luta_Sem_Nome/"],
+        aliases: [
+          "/2025/M.S.F.D/",
+          "/jogo-luta/",
+          "/2025/Jogo_de_Luta_Sem_Nome/",
+        ],
       },
       null,
       2,
     ),
   );
   clean(previous);
-  confined(dist);
-  if (existsSync(dist)) moveDirectory(dist, previous);
+  mkdirSync(previous);
+  const outputs = [
+    [server, serverDist],
+    [client, dist],
+  ];
+  const backups = [];
+  const published = [];
   try {
-    moveDirectory(client, dist);
-  } catch (e) {
-    if (existsSync(previous)) moveDirectory(previous, dist);
-    throw e;
+    for (const [, target] of outputs) {
+      if (!existsSync(target)) continue;
+      const backup = path.join(previous, path.basename(target));
+      moveDirectory(target, backup);
+      backups.push([backup, target]);
+    }
+    for (const [source, target] of outputs) {
+      moveDirectory(source, target);
+      published.push(target);
+    }
+  } catch (error) {
+    for (const target of published) clean(target);
+    for (const [backup, target] of backups.reverse())
+      moveDirectory(backup, target);
+    throw error;
   }
   clean(stage);
-  console.log("Build publicado para Apache. Versao:", version);
   console.log(
-    "http://localhost/jogo-luta/\nhttp://localhost/2025/Jogo_de_Luta_Sem_Nome/",
+    "Build publicado para Apache. Commit:",
+    commit,
+    "| Motor:",
+    version,
   );
+  console.log("http://localhost/2025/M.S.F.D/");
 } catch (e) {
   console.error(e);
   process.exit(1);

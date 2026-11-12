@@ -6,7 +6,7 @@
 
 **Sasuke Hebi:** [movimentos, combos, sprites e laboratório](SASUKE-HEBI.md).
 
-**XAMPP + LAN:** abra [o jogo no Apache](http://localhost/jogo-luta/), ou [o caminho completo](http://localhost/2025/Jogo_de_Luta_Sem_Nome/). Inicie Apache no XAMPP e execute `iniciar-multiplayer.bat`. Atualize com `atualizar-xampp.bat`. [Instalação, rede, proxy, testes e limites](README_LAN.md). Samurai, Dio/The World, Goku, Luffy, Sasuke Hebi, Kaneki e Ben Tennyson estão disponíveis em salas reais com seleção, confirmação, prontidão e início pelo anfitrião. Não é necessário Vite para jogar.
+**XAMPP + LAN:** abra [M.S.F.D no Apache](http://localhost/2025/M.S.F.D/). Inicie o Apache no XAMPP e execute `atualizar-msfd.cmd` para atualizar e verificar a instalação. O endereço `/jogo-luta/` continua disponível. [Instalação, rede, proxy, testes e limites](README_LAN.md). Samurai, Dio/The World, Goku, Luffy, Sasuke Hebi, Kaneki e Ben Tennyson estão disponíveis em salas reais com seleção, confirmação, prontidão e início pelo anfitrião. Não é necessário Vite para jogar.
 
 **Goku — Fúria Saiyajin:** Super cinematográfica, **R**, uma barra completa com ganho mais lento. Transformação, primeiro soco com confirmação, combo terrestre/aéreo, teletransportes, Kamehameha descendente e retorno gradual à forma base. SSJ1 existe somente nessa sequência. [Executar e inspecionar](http://localhost/jogo-luta/art/goku-fury.html), [PNG/APNG/JSON](http://localhost/jogo-luta/downloads/goku-fury.zip), [gravação real](http://localhost/jogo-luta/previews/goku-fury-gameplay.png), [arquivos, regras, testes e limitações](GOKU-FURIA.md).
 

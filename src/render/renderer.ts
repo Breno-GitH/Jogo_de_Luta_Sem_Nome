@@ -3,7 +3,8 @@ import { drawTestArena } from "./arena";
 import benArt from "../data/ben-art.json";
 import { alienXScene } from "../engine/ben-alien-x";
 import { alienXSuper } from "../engine/ben-omnitrix";
-import { drawAlienXForces, drawAlienXOpener, drawAlienXSpace } from "./ben-alien-x-fx";
+import { alienXBackdrop, alienXCamera, alienXOpenerCamera, drawAlienXForces, drawAlienXOpener, drawAlienXScreen, drawAlienXSpace } from "./ben-alien-x-fx";
+import { portraitSheet, portraitSheets } from "./ben-alien-portraits";
 import { benAnimation, benAnimationSets, benFlameAnchor, feedbackHeadAnchor, feedbackStormTips } from "./ben-animations";
 import { drawBenAlienFx, drawBenSilhouette } from "./ben-alien-fx";
 import { benReformSheets, drawBenAttackFx, drawBenContact, drawBenFields, drawEchoClones, drawStage7Core, drawFeedbackCables, drawFeedbackGrip, drawBenChill, drawSpectralArms, drawHeldBenCar, drawBenGhostGround } from "./ben-combat-fx";
@@ -106,7 +107,7 @@ export class Renderer {
     sheets.add(goryukaHeadSheet);
     for (const sheet of kirinEffectsSheets) sheets.add(sheet);
     for (const sheet of gokuFxSheets) sheets.add(sheet);
-    for (const sheet of benReformSheets) sheets.add(sheet);
+    for (const sheet of [...benReformSheets, ...portraitSheets, alienXBackdrop]) sheets.add(sheet);
     for (const sheet of [...furyFxSheets, ...jetFxSheets]) sheets.add(sheet);
     for (const data of [
       metadata,
@@ -281,7 +282,11 @@ export class Renderer {
       x: 640, y: 360 - Math.min(50, (FLOOR - leap.y) * .24),
       scale: 1, shakeX: 0, shakeY: 0,
     } : undefined;
-    const stagedCamera = reality?.camera ?? kakuja?.camera ?? kirinStage?.camera ?? (jet && jetStage ? jetCamera(jetStage, jet) : furyStage?.camera)
+    const cosmicCamera = reality && alienX ? (this.effects ? alienXCamera(reality, alienX.tick) : reality.camera) : undefined;
+    const openingCamera = this.effects && !match.cinematicActive
+      ? match.fighters.map(alienXOpenerCamera).find(camera => camera !== undefined)
+      : undefined;
+    const stagedCamera = cosmicCamera ?? openingCamera ?? kakuja?.camera ?? kirinStage?.camera ?? (jet && jetStage ? jetCamera(jetStage, jet) : furyStage?.camera)
       ?? chainCamera ?? (this.effects ? chidoriCamera(match) ?? benCamera : undefined);
     const self = match.fighters[this.localSeat],
       other = match.fighters[1 - this.localSeat];
@@ -446,13 +451,12 @@ export class Renderer {
       const cam = stagedCamera;
       c.translate(640 + (this.cameraShake ? cam.shakeX : 0), 360 + (this.cameraShake ? cam.shakeY : 0));
       c.scale(cam.scale, cam.scale);
-      if (reality) c.rotate(reality.camera.angle);
+      if (cosmicCamera) c.rotate(cosmicCamera.angle);
       c.translate(-Math.round(cam.x), -Math.round(cam.y));
     } else if (scene) {
       const cam = scene.camera;
       c.translate(640 + (this.cameraShake ? cam.shakeX : 0), cam.anchorY + (this.cameraShake ? cam.shakeY : 0));
       c.scale(cam.scale, cam.scale);
-      if (reality) c.rotate(reality.camera.angle);
       c.translate(-Math.round(cam.x), -Math.round(cam.y));
     } else if (
       this.inspectionZoom > 1 &&
@@ -477,7 +481,7 @@ export class Renderer {
       c.translate(-cx, -cy);
     }
     drawTestArena(c, benPadding);
-    if (reality && alienX) drawAlienXSpace(c, reality, alienX.tick);
+    if (reality && alienX && this.effects) drawAlienXSpace(c, reality, alienX.tick, this.sprites.get(alienXBackdrop));
     const nightmare = spectral || match.fighters.some(f => f.state === "attack" && f.move?.ben?.nightmare && benGhostDepth(f) > 30);
     if (this.effects && nightmare) {
       const haze = c.createLinearGradient(0, 230, 0, 582);
@@ -746,7 +750,7 @@ export class Renderer {
     if (this.effects && jet && jetStage) drawJetImpact(c, this.sprites, jetStage, jet.tick, jet.hold);
     if (this.effects && road) drawRoadEffects(c, this.sprites, road);
     if (this.effects) drawFury(c, match, this.sprites, "front");
-    if (reality && alienX && this.effects) drawAlienXForces(c, reality, alienX.tick, this.sprites.get(benAnimation("alienX").sheet));
+    if (reality && alienX && this.effects) drawAlienXForces(c, reality, alienX.tick);
     c.restore();
     c.restore();
     if (jet && this.effects) drawJetScreen(c, jet);
@@ -755,9 +759,8 @@ export class Renderer {
       c.fillStyle = `rgba(238,75,108,${kanekiScene.flash})`;
       c.fillRect(0, 0, 1280, 720);
     }
-    if (reality && reality.flash > 0 && this.effects) {
-      c.fillStyle = `rgba(204,248,250,${reality.flash})`;
-      c.fillRect(0, 0, 1280, 720);
+    if (reality && alienX && this.effects) {
+      drawAlienXScreen(c, reality, alienX.tick, this.sprites.get(portraitSheet("alienX")));
     }
     this.hud(match);
     if (alienX && alienX.tick < 73) {
@@ -953,7 +956,9 @@ export class Renderer {
         617,
       );
       if (f.omnitrix)
-        drawOmnitrixHud(c, f.omnitrix, i, this.chainKeys[2], !omnitrixCanBrowse(f.state) || f.knockedDown || Boolean(m.capture) || m.cinematicActive || m.temporal.isFrozen(i));
+        drawOmnitrixHud(c, f.omnitrix, i, this.chainKeys[2],
+          !omnitrixCanBrowse(f.state) || f.knockedDown || Boolean(m.capture) || m.cinematicActive || m.temporal.isFrozen(i),
+          this.sprites.get(portraitSheet(f.omnitrix.selected)));
       if (f.data.id === "sasuke") drawCurseHud(c, f, x);
       if (f.data.id === "dio") {
         const clock = m.temporal.s.ledger[i];
