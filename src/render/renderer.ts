@@ -746,7 +746,7 @@ export class Renderer {
     if (this.effects && jet && jetStage) drawJetImpact(c, this.sprites, jetStage, jet.tick, jet.hold);
     if (this.effects && road) drawRoadEffects(c, this.sprites, road);
     if (this.effects) drawFury(c, match, this.sprites, "front");
-    if (reality && alienX && this.effects) drawAlienXForces(c, reality, alienX.tick);
+    if (reality && alienX && this.effects) drawAlienXForces(c, reality, alienX.tick, this.sprites.get(benAnimation("alienX").sheet));
     c.restore();
     c.restore();
     if (jet && this.effects) drawJetScreen(c, jet);

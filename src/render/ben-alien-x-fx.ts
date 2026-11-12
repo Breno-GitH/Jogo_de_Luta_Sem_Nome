@@ -45,7 +45,7 @@ export function drawAlienXSpace(c: CanvasRenderingContext2D, scene: Scene, tick:
   c.restore();
 }
 
-export function drawAlienXForces(c: CanvasRenderingContext2D, scene: Scene, tick: number) {
+export function drawAlienXForces(c: CanvasRenderingContext2D, scene: Scene, tick: number, alienSheet?: HTMLImageElement) {
   const { victim, attacker, showSpace } = scene;
   c.save();
   if (tick < 50) {
@@ -56,6 +56,19 @@ export function drawAlienXForces(c: CanvasRenderingContext2D, scene: Scene, tick
     c.beginPath();
     c.ellipse(attacker.x + attacker.facing * 22, attacker.y - 80, 12 + life * 18, 8 + life * 19, 0, 0, TAU);
     c.stroke();
+    if (alienSheet && tick >= 7 && tick < 34) {
+      const scale = .28;
+      const width = Math.round(256 * scale);
+      const x = attacker.x + attacker.facing * 29;
+      const y = attacker.y - 102;
+      c.save();
+      c.translate(Math.round(x), Math.round(y));
+      c.scale(attacker.facing, 1);
+      c.globalAlpha = life * (.5 + Math.sin(tick * 1.52) * .15);
+      c.filter = "brightness(0) invert(1) sepia(1) saturate(7) hue-rotate(58deg)";
+      c.drawImage(alienSheet, 3 * 256, 0, 256, 256, -Math.round(128 * scale), -Math.round(224 * scale), width, width);
+      c.restore();
+    }
   }
   if (showSpace > 0) {
     const contraction = Math.max(.12, Math.min(1, (214 - tick) / 27));

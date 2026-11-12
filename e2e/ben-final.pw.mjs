@@ -72,9 +72,12 @@ test("plays Ben, NRG and a confirmed Alien X in production training", async ({ p
   await page.keyboard.press("r");
   await expect(c).toHaveAttribute("data-alien-x-phase", "watch");
   await expect(c).toHaveAttribute("data-omnitrix-sheet", "ben/human-motion.png");
+  await page.waitForFunction(() => Number(document.querySelector("canvas").dataset.alienXTick) >= 15);
+  await c.screenshot({ path: info.outputPath("alien-x-omnitrix.png") });
   await expect(c).toHaveAttribute("data-alien-x-phase", "reveal");
   await expect(c).toHaveAttribute("data-omnitrix-sheet", "ben/alien-x.png");
   await expect(c).toHaveAttribute("data-alien-x-phase", "grasp");
+  await page.waitForFunction(() => Number(document.querySelector("canvas").dataset.alienXTick) >= 162);
   await c.screenshot({ path: info.outputPath("alien-x-dimensao.png") });
   await expect(c).toHaveAttribute("data-alien-x-phase", "");
   await expect(c).toHaveAttribute("data-omnitrix-form", "human");

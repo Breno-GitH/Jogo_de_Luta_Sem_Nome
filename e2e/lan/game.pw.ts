@@ -78,7 +78,8 @@ async function startServer() {
       }
     }),
   );
-  await new Promise<void>((r) => app.http.listen(process.env.BEN_LAN_TEST_URL ? 3188 : 3001, "127.0.0.1", r));
+  const port = process.env.BEN_LAN_TEST_URL ? Number(process.env.BEN_LAN_BACKEND_PORT ?? 3188) : 3001;
+  await new Promise<void>((r) => app.http.listen(port, "127.0.0.1", r));
 }
 test.beforeAll(startServer);
 test.afterAll(async () => {
@@ -1501,6 +1502,11 @@ test("Alien X confirms and restores Ben in both authoritative LAN clients", asyn
     watch.active = watch.selected = "echoEcho";
   });
   const own = a.locator("canvas"), remote = b.locator("canvas");
+  await expect(remote).toHaveAttribute("data-rival-omnitrix-form", "echoEcho");
+  const resyncs = await Promise.all([a, b].map(async page => {
+    await page.evaluate(() => { (window as any).netRecords = {}; });
+    return page.locator("#app").getAttribute("data-resyncs");
+  }));
   await press(a, "r");
   for (const view of [own, remote]) {
     await expect(view).toHaveAttribute("data-alien-x-phase", "reveal");
@@ -1513,5 +1519,6 @@ test("Alien X confirms and restores Ben in both authoritative LAN clients", asyn
   }
   await expect(own).toHaveAttribute("data-omnitrix-form", "human");
   await expect(remote).toHaveAttribute("data-rival-omnitrix-form", "human");
+  for (const [i, page] of [a, b].entries()) await expect(page.locator("#app")).toHaveAttribute("data-resyncs", resyncs[i]!);
   await consistent();
 });

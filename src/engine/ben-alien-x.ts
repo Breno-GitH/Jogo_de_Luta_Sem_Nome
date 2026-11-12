@@ -43,8 +43,8 @@ export function alienXScene(s: AlienXState) {
   const clipStart = t < p.reveal ? 0 : t < p.grasp ? p.reveal : t < p.rewrite ? p.grasp :
     t < p.return ? p.rewrite : p.return;
   const attacker = {
-    x: mix(mix(s.originX, center - 105 * f, departure), s.originX, home),
-    y: floor - 95 * showSpace,
+    x: Math.round(mix(mix(s.originX, center - 105 * f, departure), s.originX, home)),
+    y: Math.round(floor - 95 * showSpace),
     facing: f,
     clip: t < p.reveal ? "alienXWatch" : t < p.grasp ? "alienXReveal" :
       t < p.rewrite ? "alienXGrasp" : t < p.return ? "alienXRewrite" : "alienXReturn",
@@ -53,8 +53,9 @@ export function alienXScene(s: AlienXState) {
   const orbit = Math.sin((t - 102) * .055) * spin;
   const exit = clamp(s.targetX + 82 * f, 55, 1225);
   const victim = {
-    x: mix(mix(s.targetX, center + (126 + 82 * orbit) * f, departure), exit, home),
-    y: mix(s.targetY, floor, ease(t, 0, 48)) - (189 + orbit * 39) * showSpace,
+    // Quantize the authoritative positions, including the trigonometric orbit.
+    x: Math.round(mix(mix(s.targetX, center + (126 + 82 * orbit) * f, departure), exit, home)),
+    y: Math.round(mix(s.targetY, floor, ease(t, 0, 48)) - (189 + orbit * 39) * showSpace),
     facing: -f, clip: showSpace > .2 ? "launched" : "grabbed", tick: t,
   };
   const watchClose = ease(t, 0, 22) * (1 - ease(t, 32, 66));

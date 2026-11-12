@@ -254,6 +254,21 @@ export function drawBenAttackFx(c: CanvasRenderingContext2D, f: Fighter, clock: 
     for (let i = 0; i < 5; i++) fire(c, -10 - i * f.vx * f.facing * .28, 4 + i * 6, 7 - i, 1, clock + i);
   if (!m || !spec) return;
   const phase = f.stateFrame - m.startup;
+  if (f.moveId === "gravityDomain_medium" && Math.abs(f.vx) > 3 && !f.airborne)
+    shards(c, -f.facing * Math.sign(f.vx) * 30, -5, clock % 8, dust, .48);
+  if (f.omnitrix?.active === "echoEcho" && spec.effect === "sonic" && !spec.field && phase >= 0 && phase < 8) {
+    c.save();
+    c.globalAlpha = 1 - phase / 8;
+    for (let ring = 0; ring < 2; ring++) {
+      c.strokeStyle = sonic[ring];
+      c.lineWidth = 2;
+      c.beginPath();
+      c.ellipse(m.box.x + m.box.w * .65 + phase * 2, m.box.y + m.box.h * .47,
+        5 + phase + ring * 4, 8 + phase * 1.2 + ring * 6, 0, -1.35, 1.35);
+      c.stroke();
+    }
+    c.restore();
+  }
   if (f.moveId === "armorImpact_light" && Math.abs(f.vx) > 4 && !f.airborne) {
     for (let i = 0; i < 5; i++) {
       c.fillStyle = dust[i % dust.length];
