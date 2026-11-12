@@ -67,6 +67,7 @@ const matchKeys = [
   "jetGigant",
   "kirin",
   "centipede",
+  "alienX",
   "hits",
   "hitSerial",
   "rules",

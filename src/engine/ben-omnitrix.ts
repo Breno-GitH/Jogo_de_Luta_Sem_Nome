@@ -4,7 +4,7 @@ import type { BenObject } from "./ben-moves";
 import type { EchoClone } from "./ben-stage7";
 
 export const benId = "ben";
-export const alienXSuper = { id: "alienX", name: "Alien X", command: "ultimate", cost: 100 } as const;
+export const alienXSuper = { id: "alienX", name: "Alien X — Reescrita da Realidade", command: "ultimate", cost: 100 } as const;
 export const benAliens = [
   { id: "xlr8", name: "XLR8" },
   { id: "fourArms", name: "Quatro Braços" },

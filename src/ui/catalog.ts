@@ -125,9 +125,9 @@ export function movesContent(id: CharacterId, b: Bindings) {
       `Gravattack|↓ → Atração / Elevação · ↓ ← Repulsão · ↓ ↓ Campo J / Planetoide K`,
       `Eco Eco|↓ → Grito Sônico · ↓ ← Duplicação (até duas cópias) · ↓ ↓ Harmonia Sônica`,
       `Omnitrix|Toque ${keyLabel(b.heavy)} para avançar. Segure por ¼ s para confirmar a forma selecionada.`,
-      `Agarrão em forma alienígena|${keyLabel(b.throw)} · adversário em solo e ao alcance`,
+      `Agarrão|${keyLabel(b.throw)} · adversário em solo e ao alcance`,
       "Controle USB|Y / △ · toque para avançar, segure para confirmar",
-      `Alien X|${keyLabel(b.ultimate)} · uma barra · comando reservado`,
+      `Alien X — Reescrita da Realidade|${keyLabel(b.ultimate)} · uma barra · cinematografia após acerto`,
     ],
     kaneki: [
       `Em pé|${atk} · soco, chute giratório e chicote Kagune`,

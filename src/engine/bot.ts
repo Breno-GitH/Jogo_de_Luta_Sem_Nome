@@ -1,5 +1,6 @@
 import profiles from "../data/bot-profiles.json";
 import { neutral, type Button, type InputFrame, type State } from "./types";
+import { benAliens, omnitrixHoldTicks, omnitrixSwapTicks } from "./ben-omnitrix";
 import type { Fighter, Match } from "./combat";
 import { chainFinisher, type ChainButton } from "./kaneki-chain";
 import { isSuperMove } from "./moves";
@@ -314,7 +315,7 @@ export class Bot {
         return this.choose({ ...neutral(), direction: toward, pressed: ["dash"] }, "perseguir com as asas");
       if (distance < 125 && Math.abs(enemy.y - self.y) < 90)
         return this.choose(
-          { ...neutral(), pressed: [this.chance(0.65) ? "light" : "heavy"] },
+          { ...neutral(), pressed: [this.chance(0.65) ? "light" : self.omnitrix ? "medium" : "heavy"] },
           "cortar no ar",
         );
       return this.choose(
@@ -405,6 +406,33 @@ export class Bot {
         distance > 95 && distance < 235 && this.chance(this.profile.ultimate))
       return this.choose({ ...neutral(), pressed: ["ultimate"] }, "Jet Gigant");
     const closing = enemy.vx * toward < 0;
+    const watch = self.omnitrix;
+    if (watch && distance < 145 && !enemy.airborne && self.canStartSuper() &&
+        (enemy.phase === "recovery" || enemy.state === "hitstun") && this.chance(this.profile.ultimate)) {
+      return this.choose({ ...neutral(), pressed: ["ultimate"] }, "usar Alien X");
+    }
+    if (watch && !watch.transition && distance > 220 && !closing &&
+        this.chance(watch.active === "human" ? .7 : .07)) {
+      const selected = benAliens.findIndex(form => form.id === watch.selected);
+      const skip = 1 + Math.floor(this.random() * (benAliens.length - 1));
+      for (let i = 0; i < (watch.active === "human" ? selected % 4 : skip); i++)
+        this.queue.push({ ...neutral(), pressed: ["heavy"], omnitrix: { held: false } });
+      this.queue.push({ ...neutral(), pressed: ["heavy"], omnitrix: { held: true } });
+      for (let i = 1; i <= omnitrixHoldTicks + omnitrixSwapTicks; i++)
+        this.queue.push({ ...neutral(), omnitrix: { held: true } });
+      this.lastDecision = "ativar Omnitrix";
+      return this.queue.shift()!;
+    }
+    if (watch?.active === "echoEcho" && !watch.echoCooldown && !watch.echoClones?.length &&
+        distance > 125 && distance < 290 && this.chance(this.profile.special)) {
+      this.lastDecision = "duplicar Eco Eco";
+      return this.command([2, 4], "medium", self);
+    }
+    if ((watch?.active === "gravattack" || watch?.active === "echoEcho") &&
+        distance > 100 && distance < 270 && this.chance(this.profile.special)) {
+      this.lastDecision = "controlar distância";
+      return this.command([2, 6], "light", self);
+    }
     if (self.data.id === "kaneki" && !enemy.airborne && this.chance(this.profile.special)) {
       if (enemy.phase === "recovery" && remaining >= 14 && distance >= 62 && distance <= 135 &&
           self.canStartSpecial("fourSwords_medium")) {

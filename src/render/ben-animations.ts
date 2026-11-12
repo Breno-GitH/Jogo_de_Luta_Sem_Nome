@@ -8,6 +8,7 @@ import anatomy from "../data/ben-body-art.json";
 import stage6 from "../data/ben-stage6-combat.json";
 import reform from "../data/ben-reform-art.json";
 import stage7 from "../data/ben-stage7-art.json";
+import finalArt from "../data/ben-final-art.json";
 import { benFormBalance } from "../engine/ben-moves";
 import type { BenAlien } from "../engine/ben-omnitrix";
 import type { Fighter } from "../engine/combat";
@@ -31,6 +32,16 @@ function withReform(data: AnimationData, clips: AnimationData["clips"]): Animati
   return { ...data, clips: { ...data.clips, ...clips } };
 }
 
+const human = withReform(benArt, Object.fromEntries(
+  Object.entries(finalArt.human.clips).map(([name, clip]) => [name, {
+    ...clip, sheet: finalArt.human.sheet, columns: finalArt.human.columns,
+  }]),
+));
+const nrgWalk = Object.fromEntries(Object.entries(finalArt.nrgWalk.clips).map(([name, clip]) => [name, {
+  ...clip, sheet: finalArt.nrgWalk.sheet, columns: finalArt.nrgWalk.columns,
+  frameWidth: finalArt.nrgWalk.frameWidth, frameHeight: finalArt.nrgWalk.frameHeight,
+  pivot: finalArt.nrgWalk.pivot, scale: 1,
+}]));
 const released = anatomy.nrgReleased;
 const newerForms: Partial<Record<BenAlien, AnimationData>> = {
   ...stage5.forms,
@@ -41,7 +52,7 @@ const newerForms: Partial<Record<BenAlien, AnimationData>> = {
     Object.entries(nrgArmor.clips).map(([name, clip]) => [name, {
       ...clip, sheet: nrgArmor.sheet, columns: nrgArmor.columns,
       frameWidth: nrgArmor.frameWidth, frameHeight: nrgArmor.frameHeight, pivot: nrgArmor.pivot,
-    }]),
+    }]).concat(Object.entries(nrgWalk)),
   )),
   humungousaur: withReform(stage5.forms.humungousaur, reform.clips.humungousaur),
   feedback: withReform(anatomy.feedback, Object.fromEntries(
@@ -82,9 +93,10 @@ const grownForms: Partial<Record<number, AnimationData>> = Object.fromEntries(
     ))];
   }),
 );
-export const benAnimationSets = [benArt, ...Object.values(alienArt), ...Object.values(newerForms), ...Object.values(grownForms), released];
-export const benAnimation = (form: "human" | BenAlien | "nrgReleased", growth = 0): AnimationData => {
-  if (form === "human") return benArt;
+export const benAnimationSets = [human, finalArt.alienX, ...Object.values(alienArt), ...Object.values(newerForms), ...Object.values(grownForms), released];
+export const benAnimation = (form: "human" | BenAlien | "nrgReleased" | "alienX", growth = 0): AnimationData => {
+  if (form === "human") return human;
+  if (form === "alienX") return finalArt.alienX;
   if (form === "nrgReleased") return released;
   return (form === "humungousaur" ? grownForms[growth] : undefined) ?? newerForms[form] ?? alienArt[form] ?? benArt;
 };
@@ -96,7 +108,9 @@ export function benFlameAnchor(sheet: string, frame: number) {
 export function tickBenAnimation(f: Fighter, animator: Animator) {
   let clip = "idle";
   let tick = f.stateFrame;
-  if (f.state === "attack" && f.move?.ben?.absorb && f.omnitrix?.absorbFlash && animator.hasClip("absorbConfirm")) {
+  if (f.state === "cinematic" && animator.hasClip(f.actionClip)) clip = f.actionClip;
+  else if (["entrance", "taunt", "victory"].includes(f.state) && animator.hasClip(f.state)) clip = f.state;
+  else if (f.state === "attack" && f.move?.ben?.absorb && f.omnitrix?.absorbFlash && animator.hasClip("absorbConfirm")) {
     clip = "absorbConfirm";
     tick = 18 - f.omnitrix.absorbFlash;
   } else if (f.state === "attack" && animator.hasClip(f.moveId)) {
@@ -107,11 +121,12 @@ export function tickBenAnimation(f: Fighter, animator: Animator) {
     }
     if (f.airborne && !f.input.up && f.move?.ben?.field?.aim === "heat" && animator.hasClip(clip + "Air")) clip += "Air";
   }
-  else if (f.benForm) {
+  else if (f.omnitrix) {
     if (f.state === "getup" && animator.hasClip("getup")) clip = "getup";
     else if ((f.knockedDown || f.state === "ko" || f.state === "defeat") && !f.airborne && animator.hasClip("downed")) clip = "downed";
-    else if ((f.state === "hitstun" || (f.state === "grabbed" &&
-        (f.omnitrix?.active === "gravattack" || f.omnitrix?.active === "echoEcho"))) && animator.hasClip("damage")) clip = "damage";
+    else if (f.state === "grabbed" && animator.hasClip(f.actionClip)) clip = f.actionClip;
+    else if (f.state === "hitstun" && f.airborne && animator.hasClip("launched")) clip = "launched";
+    else if ((f.state === "hitstun" || f.state === "grabbed") && animator.hasClip("damage")) clip = "damage";
     else if (f.state === "blockstun" && animator.hasClip("guardStand")) clip = f.blockCrouched ? "guardCrouch" : "guardStand";
     else if (f.state === "grabbing") clip = animator.hasClip(f.actionClip) ? f.actionClip : "grabHold";
     else if (f.state === "throwRecover") clip = animator.hasClip(f.actionClip) ? f.actionClip : "throwRecover";
@@ -135,6 +150,10 @@ export function tickBenAnimation(f: Fighter, animator: Animator) {
       tick = 5 - f.omnitrix.crouchExit;
     } else if (f.state === "walk") {
       clip = f.input.direction === f.facing ? "walkForward" : "walkBack";
+    } else if (f.state === "idle" && f.omnitrix.active === "human" &&
+        (f.omnitrix.holdTicks || f.omnitrix.dialTicks || f.omnitrix.transition)) {
+      clip = "omnitrixUse";
+      tick = f.omnitrix.holdTicks || (8 - f.omnitrix.dialTicks);
     } else if (f.knockedDown || f.state === "getup" || f.state === "ko" || f.state === "defeat") {
       clip = "crouchIdle";
     }

@@ -133,8 +133,8 @@ def pack(alien, config):
             m=moves[name]
             start=m["startup"]
             if name == "gravityDomain_medium":
-                clip(name,[s[8],s[10],s[11],*s[12:16],s[11],s[10],s[8],0],
-                     [4,5,4,3,3,3,3,4,5,10,14])
+                clip(name,[s[8],s[10],s[11],*s[12:16],*s[12:16],*s[12:16],s[11],s[10],s[8],0],
+                     [4,5,4,*([2]*12),4,5,8,8])
                 continue
             order = poses if strength=="medium" else [poses[0],poses[1],poses[1],poses[3]]
             clip(name,order,[start//3,start-start//3,m["active"]+6,m["recovery"]-6])

@@ -17,7 +17,7 @@ import { animationTick } from "../engine/pace";
 /** Selects visual phases without driving physics from animation frames. */
 export class FighterPresentation {
   animator: Animator;
-  private benVisual: "human" | BenAlien | "nrgReleased" = "human";
+  private benVisual?: "human" | BenAlien | "nrgReleased" | "alienX";
   private benGrowth = 0;
   private kaneki?: KanekiPresentation;
   private sasukeMotion?: SasukePresentation;
@@ -72,7 +72,10 @@ export class FighterPresentation {
     }
     if (fighter.data.id === "ben") {
       const watch = fighter.omnitrix;
-      const form = watch?.nrgReleased ? "nrgReleased" : watch?.active ?? "human";
+      const superState = fighter.match?.alienX;
+      const transformed = superState?.attacker === fighter.id && fighter.state === "cinematic" &&
+        fighter.actionClip !== "alienXWatch" && fighter.actionClip !== "alienXReturn";
+      const form = transformed ? "alienX" : watch?.nrgReleased ? "nrgReleased" : watch?.active ?? "human";
       const growth = fighter.omnitrix?.growth?.rank ?? 0;
       if (form !== this.benVisual || growth !== this.benGrowth) {
         this.animator = new Animator(benAnimation(form, growth));

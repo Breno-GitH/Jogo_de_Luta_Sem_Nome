@@ -7,7 +7,7 @@ import type { Point } from "../engine/types";
 import reform from "../data/ben-reform-art.json";
 import feedbackAntennae from "../data/feedback-antennae.json";
 import { benGhostDepth } from "../engine/ben-rework";
-import { echoCloneHurtbox } from "../engine/ben-stage7";
+import { echoCloneHurtbox, gravityStoneLaunch } from "../engine/ben-stage7";
 import { Animator } from "./animator";
 import { benAnimation } from "./ben-animations";
 import stage7 from "../data/ben-stage7-art.json";
@@ -563,6 +563,19 @@ export function drawEchoClones(c: CanvasRenderingContext2D, match: Match, textur
   }
 }
 
+function drawGravityRock(c: CanvasRenderingContext2D, x: number, y: number, radius: number, angle: number) {
+  c.save();
+  c.translate(Math.round(x), Math.round(y));
+  c.rotate(angle);
+  const r = radius;
+  polygon(c, "#382331", [[-r, 1], [-r * .55, -r * .78], [r * .44, -r], [r, -r * .11], [r * .56, r * .77], [-r * .4, r]]);
+  polygon(c, "#ad634b", [[-r * .67, -.5], [-r * .4, -r * .63], [r * .38, -r * .78],
+    [r * .68, -r * .23], [r * .15, r * .34]]);
+  polygon(c, "#6e3942", [[-r * .69, r * .13], [r * .12, r * .35], [r * .69, -r * .19],
+    [r * .41, r * .66], [-r * .32, r * .74]]);
+  c.restore();
+}
+
 export function drawBenFields(c: CanvasRenderingContext2D, match: Match, debug: boolean, textures: BenTextures) {
   c.save();
   for (const f of match.fighters) for (const obj of f.omnitrix?.objects ?? []) {
@@ -606,6 +619,26 @@ export function drawBenFields(c: CanvasRenderingContext2D, match: Match, debug: 
         x, y - height + (airborne ? 0 : age < start ? 18 : 0), (airborne ? 1 : obj.direction) * scale, scale);
       c.restore();
     }
+    if (field.type === "gravityStone") {
+      const radius = field.width;
+      const launched = age >= gravityStoneLaunch(obj);
+      if (age < 11) {
+        c.strokeStyle = "#442c39";
+        c.lineWidth = 2;
+        c.beginPath();
+        c.moveTo(x - 22, FLOOR);
+        c.lineTo(x - 8, FLOOR - 3);
+        c.lineTo(x + 3, FLOOR + 2);
+        c.lineTo(x + 15, FLOOR - 4);
+        c.lineTo(x + 25, FLOOR);
+        c.stroke();
+      }
+      if (launched) {
+        const tail = x - obj.direction * radius * 2.9;
+        polygon(c, gravity[3], [[tail, y + 2], [x, y - radius * .48], [x, y + radius * .52]]);
+      }
+      drawGravityRock(c, x, y, radius, age * .17 * obj.direction);
+    }
     if (field.type === "gravityWell" || field.type === "gravityPulse") {
       const well = field.type === "gravityWell";
       const progress = well ? Math.min(1, age / 11) : Math.min(1, age / 4);
@@ -629,6 +662,20 @@ export function drawBenFields(c: CanvasRenderingContext2D, match: Match, debug: 
         }
       };
       for (let i = 0; i < (well ? 5 : 3); i++) stroke(i);
+      if (well || field.gravityMode === "pull") {
+        const heavy = !well && field.height > 150;
+        const centerX = !well && !heavy ? f.x + 36 * f.facing : x;
+        const centerY = y - (heavy ? 89 : 58);
+        for (let i = 0; i < (heavy || well ? 5 : 3); i++) {
+          const orbit = age * (well ? .13 : .51) + i * 1.72;
+          const lift = Math.min(1, Math.max(0, (age - i * .6) / (well ? 22 : 5)));
+          const collapse = heavy ? Math.min(1, (field.life - age) / 6) : 1;
+          const span = (well ? 97 : heavy ? 74 : 59) * collapse;
+          drawGravityRock(c, centerX + Math.cos(orbit) * span * (.7 + i * .08),
+            y + (centerY - y) * lift + Math.sin(orbit) * (well ? 22 : 17) * lift,
+            4 + i % 3, orbit);
+        }
+      }
       c.restore();
     }
     if ((field.type === "sonic" || field.type === "sonicAssist") && !obj.spent) {

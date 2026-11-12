@@ -1,4 +1,4 @@
-import { benObjectMove } from "./ben-moves";
+import { benObjectMove, type BenObject } from "./ben-moves";
 import type { Fighter } from "./combat";
 import { shapeHitsRect } from "./geometry";
 import type { AttackShape, Rect } from "./types";
@@ -43,7 +43,7 @@ export function clearStage7(owner: Fighter) {
   delete watch.echoClones;
   watch.objects = watch.objects.filter(({ id }) => {
     const type = benObjectMove(id)?.ben?.field?.type;
-    return type !== "gravityWell" && type !== "gravityPulse" && type !== "sonic" && type !== "sonicAssist";
+    return type !== "gravityWell" && type !== "gravityPulse" && type !== "gravityStone" && type !== "sonic" && type !== "sonicAssist";
   });
 }
 
@@ -57,7 +57,63 @@ export function gravityAt(owner: Fighter, x: number, y: number, floor: number) {
 }
 
 export function planetoid(f: Fighter) {
-  return f.state === "attack" && f.moveId === "gravityDomain_medium" && f.stateFrame >= 13 && f.stateFrame < 34;
+  return f.state === "attack" && f.moveId === "gravityDomain_medium" && f.stateFrame >= 13 && f.stateFrame < 37;
+}
+
+export function drivePlanetoid(f: Fighter) {
+  if (f.state !== "attack" || f.moveId !== "gravityDomain_medium") return;
+  const tick = f.stateFrame;
+  if (tick < 14 || tick > 40) {
+    f.vx = 0;
+    return;
+  }
+  if (tick >= 37 || f.connected) {
+    f.vx *= .59;
+    return;
+  }
+  const speed = Math.min(17, 2 + (tick - 14) * 1.33);
+  const next = f.x + f.facing * speed;
+  if (next < f.stageInset || next > 1280 - f.stageInset) {
+    f.stateFrame = 37;
+    f.vx = -f.facing * Math.min(4.8, speed * .46);
+    return;
+  }
+  f.vx = speed * f.facing;
+}
+
+export function spawnGravityStones(owner: Fighter, frame: number, floor: number) {
+  const medium = owner.moveId === "gravityRepel_medium";
+  const offsets = medium ? [-29, 38, 73, 15] : [28, 57];
+  const id = medium ? "gravityStone_medium" : "gravityStone_light";
+  const watch = owner.omnitrix!;
+  for (const [index, offset] of offsets.entries()) {
+    watch.objects.push({
+      id, fragment: index, age: 0, spent: false, cast: frame,
+      x: clamp(owner.x + offset * owner.facing, 18, 1262), y: floor - 8,
+      direction: owner.facing, vy: -(medium ? 5.1 : 4.3) - index * .45,
+    });
+  }
+}
+
+export function gravityStoneLaunch(object: BenObject) {
+  const medium = object.id === "gravityStone_medium";
+  return (medium ? 16 : 10) + (object.fragment ?? 0) * (medium ? 5 : 3);
+}
+
+export function tickGravityStone(object: BenObject) {
+  const launch = gravityStoneLaunch(object);
+  const index = object.fragment ?? 0;
+  if (object.age < launch) {
+    object.vy = (object.vy ?? 0) * .8;
+    object.y += object.vy;
+    return false;
+  }
+  if (object.age === launch) object.vy = [-.62, -2.8, 1.4, -1.8][index];
+  object.y += object.vy ?? 0;
+  object.vy = (object.vy ?? 0) + .045;
+  const speed = object.id === "gravityStone_medium" ? 13 : 9;
+  object.x += object.direction * Math.min(speed + index * .7, 3 + (object.age - launch) * 3);
+  return true;
 }
 
 export function tickEchoClones(owner: Fighter, target: Fighter, frame: number, floor: number,
