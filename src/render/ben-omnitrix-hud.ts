@@ -4,7 +4,7 @@ import {
 } from "../engine/ben-omnitrix";
 import { benForms } from "../engine/ben-forms";
 import { benFormBalance } from "../engine/ben-moves";
-import { alienPortrait } from "./ben-alien-portraits";
+import { portraitSize } from "./ben-alien-portraits";
 
 const tau = Math.PI * 2;
 const lime = "#b7f86e";
@@ -33,11 +33,11 @@ export function drawOmnitrixHud(
   seat: number,
   key: string,
   locked: boolean,
+  portrait: HTMLImageElement | undefined,
 ) {
   const index = benAliens.findIndex(form => form.id === state.selected);
   const selected = benAliens[index];
   const active = benAliens.find(form => form.id === state.active);
-  const previous = benAliens[(index + benAliens.length - 1) % benAliens.length];
   const wipe = state.dialTicks / omnitrixDialTicks;
   const charging = !locked && state.holdTicks > 0 && state.holdTicks < omnitrixHoldTicks;
   const energy = state.transition ? 1 : charging ? state.holdTicks / omnitrixHoldTicks : 0;
@@ -76,12 +76,16 @@ export function drawOmnitrixHud(
 
   c.beginPath();
   c.arc(x, y, 41, 0, tau);
-  c.fillStyle = "#151f23";
+  c.fillStyle = "#0b1214";
   c.fill();
-  ring(c, x, y, 40, "#253735", 4);
-  ring(c, x, y, 41, "#729086");
-  ring(c, x, y, 35, "#4e665b");
-  ring(c, x, y, 32, "#8acc6b");
+  ring(c, x, y, 40, "#273832", 4);
+  ring(c, x, y, 42, "#708984", 2);
+  ring(c, x, y, 34, "#485f57");
+  ring(c, x, y, 32, "#84d95e", 2);
+  for (const angle of [-Math.PI / 2, Math.PI / 2]) {
+    ring(c, x, y, 41, "#9ede65", 4, angle - .35 + wipe * sign, angle + .35 + wipe * sign);
+    ring(c, x, y, 35, "#b5fa91", 2, angle - .3, angle + .3);
+  }
   if (energy > 0) {
     ring(c, x, y, 40, "#254c39", 4);
     ring(c, x, y, 40, state.transition ? "#ecffd0" : lime, 3, -Math.PI / 2, -Math.PI / 2 + tau * energy);
@@ -100,20 +104,27 @@ export function drawOmnitrixHud(
   c.beginPath();
   c.arc(x, y, 31, 0, tau);
   c.clip();
-  c.fillStyle = "#0b201b";
+  const glass = c.createRadialGradient(x - 6, y - 7, 4, x, y, 38);
+  glass.addColorStop(0, energy > .65 ? "#70a941" : "#416842");
+  glass.addColorStop(.66, "#203d32");
+  glass.addColorStop(1, "#0b201b");
+  c.fillStyle = glass;
   c.fillRect(x - 31, y - 31, 62, 62);
-  c.fillStyle = "#1b352b";
+  c.fillStyle = "#a1dc731b";
   for (let row = -30; row < 31; row += 4)
     c.fillRect(x - 31, y + row, 62, 1);
-  const shift = Math.round(62 * wipe);
-  if (shift) c.drawImage(alienPortrait(previous.id), x - 24 - shift * sign + 62 * sign, y - 24);
-  c.drawImage(alienPortrait(selected.id), x - 24 - shift * sign, y - 24);
-  if (state.transition || wipe > 0) {
-    c.fillStyle = state.transition ? "#beff8c44" : "#9bff6e30";
+  if (portrait?.naturalWidth) {
+    c.drawImage(portrait, x - portraitSize / 2, y - portraitSize / 2);
+  }
+  const pulse = state.transition ? state.transition.ticks / omnitrixSwapTicks : wipe * .6;
+  if (pulse > 0) {
+    const radius = 6 + 30 * (1 - pulse);
+    ring(c, x, y, radius, `rgba(188,255,122,${pulse * .7})`, 2);
+    c.fillStyle = `rgba(181,255,103,${pulse * .17})`;
     c.fillRect(x - 31, y - 31, 62, 62);
   }
   c.restore();
-  hourglass(c, x + 20 * sign - 6, y + 21);
+  hourglass(c, x + 29 * sign - 6, y + 24);
 
   c.textAlign = seat === 0 ? "left" : "right";
   c.font = "bold 11px monospace";

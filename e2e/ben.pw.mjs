@@ -131,7 +131,7 @@ test("Stage 5 masters load in the lab and their portraits render in the Omnitrix
     const drawImage = CanvasRenderingContext2D.prototype.drawImage;
     CanvasRenderingContext2D.prototype.drawImage = function (source, ...args) {
       if (source instanceof HTMLImageElement) {
-        const portrait = /\/sprites\/ben\/([^/]+)\/portrait\.png$/.exec(source.src);
+        const portrait = /\/sprites\/ben\/omnitrix\/([^/]+)\.png$/.exec(source.src);
         if (portrait) window.benPortraitsDrawn.add(portrait[1]);
       }
       return drawImage.call(this, source, ...args);

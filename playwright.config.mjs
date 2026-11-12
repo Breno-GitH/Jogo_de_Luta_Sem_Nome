@@ -9,13 +9,13 @@ export default defineConfig({
   reporter: "list",
   outputDir: "test-results",
   use: {
-    baseURL: "http://127.0.0.1:5173",
+    baseURL: process.env.MSFD_TEST_URL ?? "http://127.0.0.1:5173",
     channel: "chrome",
     headless: true,
     viewport: { width: 1440, height: 1100 },
     screenshot: "only-on-failure",
   },
-  webServer: {
+  webServer: process.env.MSFD_TEST_URL ? undefined : {
     env: { PLAYWRIGHT_NO_HMR: "1" },
     command: `node node_modules/vite/bin/vite.js ${process.env.SAMURAI_TEST_BUILD === "1" ? "preview" : ""} --host 127.0.0.1 --port 5173 --strictPort`,
     url: "http://127.0.0.1:5173",
