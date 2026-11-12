@@ -179,6 +179,7 @@ describe("Stage 7 in the main combat engine", () => {
     ball.motion(2, "medium");
     ball.run(14);
     expect(planetoid(ball.f)).toBe(true);
+    expect(ball.f.y).toBe(FLOOR);
     const bodyTop = (b: typeof a) => Math.min(...b.f.hurtboxes().map(box => box.y)) - b.f.y;
     expect(bodyTop(ball)).toBeGreaterThan(bodyTop(a));
     ball.run(70);

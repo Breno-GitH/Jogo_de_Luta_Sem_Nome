@@ -27,8 +27,8 @@ const ip = Object.values(networkInterfaces())
       !n.internal &&
       /^(192\.168\.|10\.|172\.(1[6-9]|2\d|3[01])\.)/.test(n.address),
   )?.address;
-const local = "http://localhost/jogo-luta/",
-  remote = `http://${ip ?? "localhost"}/2025/Jogo_de_Luta_Sem_Nome/`;
+const local = process.env.BEN_LAN_TEST_URL ?? "http://localhost/jogo-luta/",
+  remote = process.env.BEN_LAN_TEST_URL ?? `http://${ip ?? "localhost"}/2025/Jogo_de_Luta_Sem_Nome/`;
 let app: ReturnType<typeof createGameServer>,
   browsers: Browser[] = [],
   a: Page,
@@ -78,7 +78,8 @@ async function startServer() {
       }
     }),
   );
-  await new Promise<void>((r) => app.http.listen(3001, "127.0.0.1", r));
+  const port = process.env.BEN_LAN_TEST_URL ? Number(process.env.BEN_LAN_BACKEND_PORT ?? 3188) : 3001;
+  await new Promise<void>((r) => app.http.listen(port, "127.0.0.1", r));
 }
 test.beforeAll(startServer);
 test.afterAll(async () => {
@@ -1476,8 +1477,9 @@ test("Ben Stage 7 agrees on gravity, the planetoid and Echo's clone attacks", as
   await motion(a, [2, 5, 2], "j");
   for (const view of [own, remote]) await expect(view).toHaveAttribute("data-gravity-well", "true");
   await expect.poll(() => ben().state).toBe("idle");
+  const rollStart = ben().x;
   await motion(a, [2, 5, 2], "k", 48);
-  await expect.poll(() => ben().moveId === "gravityDomain_medium" && ben().y < 580).toBe(true);
+  await expect.poll(() => ben().moveId === "gravityDomain_medium" && ben().x > rollStart + 12).toBe(true);
 
   await change("echoEcho");
   await motion(a, [2, 4], "k");
@@ -1490,5 +1492,33 @@ test("Ben Stage 7 agrees on gravity, the planetoid and Echo's clone attacks", as
   for (const view of [own, remote]) await expect(view).toHaveAttribute("data-p2-health", String(samurai().health));
   await change("gravattack");
   for (const view of [own, remote]) await expect(view).toHaveAttribute("data-echo-clones", "0");
+  await consistent();
+});
+
+test("Alien X confirms and restores Ben in both authoritative LAN clients", async () => {
+  const code = await pair("ben", "samurai");
+  const room = await seed(code, 112, 100, match => {
+    const watch = match.fighters[0].omnitrix!;
+    watch.active = watch.selected = "echoEcho";
+  });
+  const own = a.locator("canvas"), remote = b.locator("canvas");
+  await expect(remote).toHaveAttribute("data-rival-omnitrix-form", "echoEcho");
+  const resyncs = await Promise.all([a, b].map(async page => {
+    await page.evaluate(() => { (window as any).netRecords = {}; });
+    return page.locator("#app").getAttribute("data-resyncs");
+  }));
+  await press(a, "r");
+  for (const view of [own, remote]) {
+    await expect(view).toHaveAttribute("data-alien-x-phase", "reveal");
+    await expect(view).toHaveAttribute("data-omnitrix-sheet", "ben/alien-x.png");
+  }
+  await expect.poll(() => room.match!.fighters[1].health).toBe(665);
+  for (const view of [own, remote]) {
+    await expect(view).toHaveAttribute("data-alien-x-phase", "");
+    await expect(view).toHaveAttribute("data-p2-health", "665");
+  }
+  await expect(own).toHaveAttribute("data-omnitrix-form", "human");
+  await expect(remote).toHaveAttribute("data-rival-omnitrix-form", "human");
+  for (const [i, page] of [a, b].entries()) await expect(page.locator("#app")).toHaveAttribute("data-resyncs", resyncs[i]!);
   await consistent();
 });

@@ -3,7 +3,7 @@ import type { Button, HitWindow, Move, Point, Rect } from "./types";
 
 export type BenEffect = "speed" | "tail" | "wind" | "step" | "power" | "quake" | "flame" | "fireball" | "pillar" | "boost" | "crystal" | "colossus" | "metal" | "electric" | "ice" | "spectral" | "thermal" | "car" | "storm" | "nightmare" | "gravity" | "sonic";
 export interface BenField {
-  type: "fireball" | "pillar" | "quake" | "spikes" | "wall" | "shard" | "bolt" | "frost" | "heat" | "beam" | "car" | "lightning" | "spectralHand" | "gravityPulse" | "gravityWell" | "sonic" | "sonicAssist";
+  type: "fireball" | "pillar" | "quake" | "spikes" | "wall" | "shard" | "bolt" | "frost" | "heat" | "beam" | "car" | "lightning" | "spectralHand" | "gravityPulse" | "gravityWell" | "gravityStone" | "sonic" | "sonicAssist";
   offset: number;
   height: number;
   width: number;
@@ -67,6 +67,7 @@ export interface BenObject {
   durability?: number;
   hitKeys?: string[];
   sourceClone?: number;
+  fragment?: number;
 }
 
 export const benFormBalance = {
@@ -473,10 +474,10 @@ export const gravattackMoves = {
     stun: 32, push: 11, launch: -8, knockdown: true, hitstop: 8,
   }, { field: gravityPulse("repel", 19, 236, 149, 15) }),
   gravityDomain_light: special("gravityDomain", "gravity", [17, 1, 25], 0, noBox, {}, {
-    field: { type: "gravityWell", offset: 123, width: 218, height: 179, speed: 0, life: 180 },
+    field: { type: "gravityWell", offset: 0, width: 310, height: 179, speed: 0, life: 180 },
   }),
-  gravityDomain_medium: special("gravityDomain", "gravity", [16, 13, 29], 71, rect(13, -115, 81, 106), {
-    hopAt: 13, hopVelocity: -4.3, drive: charge(15, 29, 10.5), stun: 27, push: 9, knockdown: true, hitstop: 8,
+  gravityDomain_medium: special("gravityDomain", "gravity", [16, 21, 25], 71, rect(5, -113, 75, 107), {
+    stun: 30, push: 9, knockdown: true, hitstop: 8,
   }),
 };
 
@@ -505,6 +506,15 @@ export const echoEchoMoves = {
   }, { echoHarmony: 2, field: sonic(34, 76, 25, 13, 16, 32) }),
 };
 
+const gravityStones = {
+  gravityStone_light: special("gravityRepel", "gravity", [0, 1, 0], 10, noBox, {
+    stun: 8, blockstun: 5, push: 2.1, hitstop: 2, meterGain: 0,
+  }, { field: { type: "gravityStone", offset: 0, width: 10, height: 0, speed: 9, life: 45, length: 0 } }),
+  gravityStone_medium: special("gravityRepel", "gravity", [0, 1, 0], 14, noBox, {
+    stun: 10, blockstun: 6, push: 2.7, hitstop: 2, meterGain: 0,
+  }, { field: { type: "gravityStone", offset: 0, width: 13, height: 0, speed: 13, life: 62, length: 0 } }),
+};
+
 const echoAssists = {
   echoCopyJab: special("echoCopyJab", "sonic", [0, 1, 0], 8, noBox, { stun: 8, push: 1.5, hitstop: 2, meterGain: 0 }, {
     field: { ...sonic(18, 62, 12, 0, 2, 17), type: "sonicAssist" },
@@ -530,7 +540,7 @@ const commands = {
 } as const;
 const moves: Record<string, Move> = {
   ...xlr8Moves, ...fourArmsMoves, ...heatblastMoves, ...diamondheadMoves, ...humungousaurMoves, ...feedbackMoves,
-  ...bigChillMoves, ...ghostfreakMoves, ...nrgMoves, ...nrgReleasedMoves, ...gravattackMoves, ...echoEchoMoves, ...echoAssists,
+  ...bigChillMoves, ...ghostfreakMoves, ...nrgMoves, ...nrgReleasedMoves, ...gravattackMoves, ...echoEchoMoves, ...echoAssists, ...gravityStones,
 };
 
 export function benSpecialCommand(form: string, buffer: CommandBuffer, button: Button) {
@@ -545,7 +555,7 @@ export function benSpecialCommand(form: string, buffer: CommandBuffer, button: B
 export function benObjectMove(id: string) { return moves[id]; }
 
 export function benProjectile(field: BenField) {
-  return ["fireball", "shard", "bolt", "frost", "heat", "beam", "car", "sonic", "sonicAssist"].includes(field.type);
+  return ["fireball", "shard", "bolt", "frost", "heat", "beam", "car", "sonic", "sonicAssist", "gravityStone"].includes(field.type);
 }
 
 export function benObjectHeight(object: BenObject, field: BenField) {

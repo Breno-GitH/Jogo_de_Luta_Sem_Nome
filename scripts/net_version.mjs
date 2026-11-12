@@ -2,6 +2,9 @@ import { createHash } from "node:crypto";
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
 const files = [
   "src/engine/ben-data.ts",
+  "src/engine/ben-alien-x.ts",
+  "src/engine/ben-stage7.ts",
+  "src/engine/anti-light-combo.ts",
   "src/engine/ben-rework.ts",
   "src/engine/ben-forms.ts",
   "src/engine/ben-moves.ts",
@@ -96,7 +99,8 @@ const files = [
   "src/net/protocol.ts",
 ];
 const hash = createHash("sha256");
-for (const file of files) hash.update(file).update(readFileSync(file));
+for (const file of files)
+  hash.update(file).update(readFileSync(file, "utf8").replace(/\r\n/g, "\n"));
 const out = "src/net/version.ts",
   content = `// Generated from the shared simulation sources and data.\nexport const ENGINE_VERSION = "${hash.digest("hex").slice(0, 24)}";\n`;
 if (!existsSync(out) || readFileSync(out, "utf8") !== content)

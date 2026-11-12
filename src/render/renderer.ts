@@ -1,6 +1,9 @@
 import { assetBase } from "../asset-base";
 import { drawTestArena } from "./arena";
 import benArt from "../data/ben-art.json";
+import { alienXScene } from "../engine/ben-alien-x";
+import { alienXSuper } from "../engine/ben-omnitrix";
+import { drawAlienXForces, drawAlienXOpener, drawAlienXSpace } from "./ben-alien-x-fx";
 import { benAnimation, benAnimationSets, benFlameAnchor, feedbackHeadAnchor, feedbackStormTips } from "./ben-animations";
 import { drawBenAlienFx, drawBenSilhouette } from "./ben-alien-fx";
 import { benReformSheets, drawBenAttackFx, drawBenContact, drawBenFields, drawEchoClones, drawStage7Core, drawFeedbackCables, drawFeedbackGrip, drawBenChill, drawSpectralArms, drawHeldBenCar, drawBenGhostGround } from "./ben-combat-fx";
@@ -242,6 +245,7 @@ export class Renderer {
     const jet = match.jetGigant,
       jetStage = jet ? jetScene(jet) : undefined;
     const kirin = match.kirin, kirinStage = kirin ? kirinScene(kirin) : undefined;
+    const alienX = match.alienX, reality = alienX && alienXScene(alienX);
     const centipede = match.centipede, kakuja = centipede ? centipedeScene(centipede) : undefined;
     const kanekiCapture = match.capture?.kaneki;
     const technique = kanekiTechnique(kanekiCapture?.specialId);
@@ -277,7 +281,7 @@ export class Renderer {
       x: 640, y: 360 - Math.min(50, (FLOOR - leap.y) * .24),
       scale: 1, shakeX: 0, shakeY: 0,
     } : undefined;
-    const stagedCamera = kakuja?.camera ?? kirinStage?.camera ?? (jet && jetStage ? jetCamera(jetStage, jet) : furyStage?.camera)
+    const stagedCamera = reality?.camera ?? kakuja?.camera ?? kirinStage?.camera ?? (jet && jetStage ? jetCamera(jetStage, jet) : furyStage?.camera)
       ?? chainCamera ?? (this.effects ? chidoriCamera(match) ?? benCamera : undefined);
     const self = match.fighters[this.localSeat],
       other = match.fighters[1 - this.localSeat];
@@ -302,7 +306,9 @@ export class Renderer {
     this.canvas.dataset.centipedeArmor = String(kakuja?.armor ?? 0);
     this.canvas.dataset.centipedeSource = centipede?.source ?? "";
     this.canvas.dataset.centipedeTick = String(centipede?.tick ?? -1);
-    this.canvas.dataset.capture = centipede ? "centipede" : kirin ? "kirin" : jet ? "jetGigant" : fury
+    this.canvas.dataset.alienXPhase = reality?.phase ?? "";
+    this.canvas.dataset.alienXTick = String(alienX?.tick ?? -1);
+    this.canvas.dataset.capture = reality ? "alienX" : centipede ? "centipede" : kirin ? "kirin" : jet ? "jetGigant" : fury
       ? "gokuFury"
       : road
         ? "roadRoller"
@@ -440,11 +446,13 @@ export class Renderer {
       const cam = stagedCamera;
       c.translate(640 + (this.cameraShake ? cam.shakeX : 0), 360 + (this.cameraShake ? cam.shakeY : 0));
       c.scale(cam.scale, cam.scale);
+      if (reality) c.rotate(reality.camera.angle);
       c.translate(-Math.round(cam.x), -Math.round(cam.y));
     } else if (scene) {
       const cam = scene.camera;
       c.translate(640 + (this.cameraShake ? cam.shakeX : 0), cam.anchorY + (this.cameraShake ? cam.shakeY : 0));
       c.scale(cam.scale, cam.scale);
+      if (reality) c.rotate(reality.camera.angle);
       c.translate(-Math.round(cam.x), -Math.round(cam.y));
     } else if (
       this.inspectionZoom > 1 &&
@@ -469,6 +477,7 @@ export class Renderer {
       c.translate(-cx, -cy);
     }
     drawTestArena(c, benPadding);
+    if (reality && alienX) drawAlienXSpace(c, reality, alienX.tick);
     const nightmare = spectral || match.fighters.some(f => f.state === "attack" && f.move?.ben?.nightmare && benGhostDepth(f) > 30);
     if (this.effects && nightmare) {
       const haze = c.createLinearGradient(0, 230, 0, 582);
@@ -565,10 +574,12 @@ export class Renderer {
       if (fury && i === fury.attacker && furyStage?.attacker.hidden) return;
       if (road && i === road.attacker)
         drawRoadObject(c, this.sprites, road, this.debug);
-      c.fillStyle = "#0005";
-      c.beginPath();
-      c.ellipse(f.x, FLOOR + 5, 55, 12, 0, 0, 7);
-      c.fill();
+      if (!reality || reality.showSpace < .6) {
+        c.fillStyle = "#0005";
+        c.beginPath();
+        c.ellipse(f.x, FLOOR + 5, 55, 12, 0, 0, 7);
+        c.fill();
+      }
       const kagunes = this.presentations[i].kagunes(f);
       const kakujaActor = centipede?.attacker === i;
       for (const pose of kagunes)
@@ -716,10 +727,11 @@ export class Renderer {
       drawKnives(c, match, this.sprites.get("fx/dio-specials.png"), this.debug);
     if (!match.cinematicActive) {
       drawGokuSpecials(c, match, this.sprites, this.debug);
+      if (this.effects) for (const f of match.fighters) drawAlienXOpener(c, f);
       drawSasukeProjectiles(c, match, this.sprites, this.debug);
       if (this.effects || this.debug) drawBenFields(c, match, this.debug, this.sprites);
     }
-    if (this.effects && !fury && !jet && !kirin) {
+    if (this.effects && !fury && !jet && !kirin && !reality) {
       drawEffects(c, match.events, this.fxImage);
       drawBenContact(c, match);
       for (const fighter of match.fighters) drawBenChill(c, fighter);
@@ -734,6 +746,7 @@ export class Renderer {
     if (this.effects && jet && jetStage) drawJetImpact(c, this.sprites, jetStage, jet.tick, jet.hold);
     if (this.effects && road) drawRoadEffects(c, this.sprites, road);
     if (this.effects) drawFury(c, match, this.sprites, "front");
+    if (reality && alienX && this.effects) drawAlienXForces(c, reality, alienX.tick, this.sprites.get(benAnimation("alienX").sheet));
     c.restore();
     c.restore();
     if (jet && this.effects) drawJetScreen(c, jet);
@@ -742,7 +755,19 @@ export class Renderer {
       c.fillStyle = `rgba(238,75,108,${kanekiScene.flash})`;
       c.fillRect(0, 0, 1280, 720);
     }
+    if (reality && reality.flash > 0 && this.effects) {
+      c.fillStyle = `rgba(204,248,250,${reality.flash})`;
+      c.fillRect(0, 0, 1280, 720);
+    }
     this.hud(match);
+    if (alienX && alienX.tick < 73) {
+      c.save();
+      c.font = "bold 22px monospace";
+      c.textAlign = "center";
+      c.fillStyle = "#d8ffce";
+      c.fillText(alienXSuper.name.toUpperCase(), 640, 179);
+      c.restore();
+    }
     if (match.fighters.some(f => f.state === "attack" && f.stateFrame < 9 && isSuperMove(f.move))) {
       c.save(); c.textAlign = "center"; c.font = "bold 14px monospace"; c.fillStyle = "#ffd694";
       c.fillText("SUPER!", 640, 149); c.restore();
@@ -913,7 +938,7 @@ export class Renderer {
       c.font = "11px monospace";
       c.fillStyle = i === 0 ? "#e5b16b" : "#73cbd5";
       c.fillText(
-        f.data.id === benId ? `ALIEN X · RESERVADO · ${this.superKey}` : f.data.id === "kaneki"
+        f.data.id === benId ? `ALIEN X · ${f.meter >= f.meterMaximum ? `PRONTA · ${this.superKey}` : Math.floor(100 * f.meter / f.meterMaximum) + "%"}` : f.data.id === "kaneki"
           ? `CENTIPEDE · ${f.meter >= centipedeConfig.cost ? `PRONTA · ${this.superKey}` : Math.floor(100 * f.meter / centipedeConfig.cost) + "%"}`
           : f.data.id === "luffy"
           ? `JET GIGANT · ${f.meter >= f.meterMaximum ? `PRONTA · ${this.superKey}` : Math.floor((100 * f.meter) / f.meterMaximum) + "%"}`
