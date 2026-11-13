@@ -4,7 +4,7 @@
   "frameHeight": 256,
   "columns": 5,
   "pivot": { "x": 128, "y": 224 },
-  "scale": 1,
+  "scale": 1.2,
   "clips": {
     "idle": { "frames": [0], "ticks": 1 },
     "walkForward": { "frames": [1, 2, 3, 4, 5, 6], "ticks": 5 },

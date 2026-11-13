@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import animations from "../src/data/xebec-animations.json";
 import { GameSession } from "../src/game/session";
+import { FLOOR } from "../src/engine/combat";
 import { neutral, type InputFrame } from "../src/engine/types";
 import { FighterPresentation } from "../src/render/presentation";
 import { selectionScreen } from "../src/ui/screens";
@@ -21,7 +22,7 @@ function setup() {
     }
     return { clips: [...clips], frames: [...frames] };
   }
-  return { fighter, advance };
+  return { fighter, advance, view };
 }
 
 describe("Xebec movement preview", () => {
@@ -31,6 +32,24 @@ describe("Xebec movement preview", () => {
     expect(selectionScreen("versus")).not.toContain('value="xebec"');
     expect(selectionScreen("arcade")).not.toContain('value="xebec"');
     expect(ONLINE_CHARACTERS).not.toContain("xebec");
+  });
+
+  it("uses the same enlarged scale and floor pivot across movement clips", () => {
+    const { advance, fighter, view } = setup();
+    for (const clip of Object.keys(animations.clips)) {
+      view.animator.update(clip);
+      expect(view.animator.sprite()).toMatchObject({
+        scale: 1.2,
+        pivot: { x: 128, y: 224 },
+      });
+    }
+    expect(fighter.y).toBe(FLOOR);
+    expect(fighter.hurtbox()).toMatchObject({ y: FLOOR - 154, h: 154 });
+    advance(12, { down: true });
+    expect(fighter.hurtbox()).toMatchObject({ y: FLOOR - 106, h: 106 });
+    advance(12, { pressed: ["jump"] });
+    expect(fighter.airborne).toBe(true);
+    expect(fighter.hurtbox().y).toBeCloseTo(fighter.y - 138);
   });
 
   it("plays six walk poses in each direction and enters, holds and releases crouch", () => {
