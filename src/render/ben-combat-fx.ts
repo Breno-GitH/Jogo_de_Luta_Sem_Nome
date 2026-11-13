@@ -1,7 +1,7 @@
 import { FLOOR, type Fighter, type Match } from "../engine/combat";
 import { benGrabFor } from "../engine/ben-forms";
 import { feedbackConductorContact, feedbackConductorPaths, feedbackGripPaths } from "../engine/feedback-conductor";
-import { benBoltLength, feedbackCablePaths, benObjectHeight, benObjectMove, benObjectShape, spectralPaths } from "../engine/ben-moves";
+import { benBoltLength, feedbackCablePaths, benObjectHeight, benObjectMove, benObjectShape, spectralPaths, type BenField, type BenObject } from "../engine/ben-moves";
 import { shapeBounds } from "../engine/geometry";
 import type { Point } from "../engine/types";
 import reform from "../data/ben-reform-art.json";
@@ -591,6 +591,61 @@ function drawGravityRock(c: CanvasRenderingContext2D, x: number, y: number, radi
   c.restore();
 }
 
+function drawGravityFocus(c: CanvasRenderingContext2D, field: BenField, object: BenObject) {
+  const { x, y, w, h } = shapeBounds(benObjectShape(object, field));
+  const middle = x + w / 2;
+  const floor = y + h;
+  const age = object.age;
+  const heavy = field.gravityFocus === "collapse";
+  const [start, end] = field.activeAge!;
+  const active = age >= start && age < end;
+  const strength = age < start ? Math.max(.2, age / start) : Math.max(.12, (field.life - age) / (field.life - start));
+  c.save();
+  c.globalAlpha = strength;
+  c.strokeStyle = active ? gravity[1] : gravity[2];
+  c.lineWidth = active ? 3 : 1;
+  c.beginPath();
+  c.ellipse(middle, floor - 2, w / 2, heavy ? 12 : 7, 0, 0, Math.PI * 2);
+  c.stroke();
+  if (heavy) {
+    const coreY = y + h * .39;
+    const pinch = age < start ? 1 : Math.max(.18, 1 - (age - start) / 11);
+    for (const [i, tilt] of [-.62, .12, .66].entries()) {
+      c.strokeStyle = gravity[active ? i : i + 1];
+      c.lineWidth = active ? 3 - i * .7 : 1;
+      c.beginPath();
+      c.ellipse(middle, coreY, Math.max(6, w * .46 * pinch), 12 + h * .17 * pinch, tilt, 0, Math.PI * 2);
+      c.stroke();
+    }
+    c.fillStyle = active ? gravity[0] : gravity[2];
+    c.fillRect(Math.round(middle) - 3, Math.round(coreY) - 3, 6, 6);
+    for (let i = 0; i < 6; i++) {
+      const angle = i * 1.05 + age * .19;
+      const rise = Math.min(1, Math.max(0, (age - i) / 7));
+      drawGravityRock(c, middle + Math.cos(angle) * w * .41 * pinch,
+        floor - 6 + (coreY - floor + Math.sin(angle) * 35) * rise, 4 + i % 3, angle);
+    }
+  } else {
+    const edge = middle + object.direction * w * .48;
+    const inner = middle - object.direction * w * .34;
+    for (let i = 0; i < 3; i++) {
+      const altitude = y + h * (.21 + .23 * i);
+      c.strokeStyle = gravity[active ? i : i + 1];
+      c.lineWidth = active ? 3 : 1;
+      c.beginPath();
+      c.moveTo(edge, altitude - 14);
+      c.quadraticCurveTo(middle, altitude + 9, inner, altitude + 12);
+      c.lineTo(inner + object.direction * 11, altitude + 4);
+      c.moveTo(inner, altitude + 12);
+      c.lineTo(inner + object.direction * 13, altitude + 17);
+      c.stroke();
+      drawGravityRock(c, middle + object.direction * (w * (.29 - i * .24)),
+        floor - 6 - Math.min(age * 4, 33 + i * 6), 3 + i, -age * .19 * object.direction);
+    }
+  }
+  c.restore();
+}
+
 export function drawBenFields(c: CanvasRenderingContext2D, match: Match, debug: boolean, textures: BenTextures) {
   c.save();
   for (const f of match.fighters) for (const obj of f.omnitrix?.objects ?? []) {
@@ -654,7 +709,8 @@ export function drawBenFields(c: CanvasRenderingContext2D, match: Match, debug: 
       }
       drawGravityRock(c, x, y, radius, age * .17 * obj.direction);
     }
-    if (field.type === "gravityWell" || field.type === "gravityPulse") {
+    if (field.gravityFocus) drawGravityFocus(c, field, obj);
+    else if (field.type === "gravityWell" || field.type === "gravityPulse") {
       const well = field.type === "gravityWell";
       const progress = well ? Math.min(1, age / 11) : Math.min(1, age / 4);
       c.save();

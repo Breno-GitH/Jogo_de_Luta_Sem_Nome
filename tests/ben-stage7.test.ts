@@ -141,7 +141,7 @@ describe("Stage 7 in the main combat engine", () => {
     expect(pull.target.x).toBeLessThan(start - 18);
     const lift = arena("gravattack", 136, 1);
     lift.motion(0, "medium");
-    lift.run(27);
+    lift.run(34);
     expect(lift.target.y).toBeLessThan(FLOOR - 10);
     const repel = arena("gravattack", 109);
     repel.motion(1, "light");
@@ -156,6 +156,52 @@ describe("Stage 7 in the main combat engine", () => {
     far.motion(0, "medium");
     far.run(65);
     expect(far.hits).toHaveLength(0);
+  });
+
+  it.each([0, 1] as const)("uses a single blockable, inward J sweep on seat %s", seat => {
+    const outer = arena("gravattack", 201, seat);
+    const start = outer.target.x;
+    outer.motion(0, "light");
+    outer.run(35);
+    expect(outer.hits.filter(hit => hit.move === "gravityPull_light")).toHaveLength(1);
+    expect((outer.target.x - start) * outer.sign).toBeLessThan(-25);
+
+    const inner = arena("gravattack", 60, seat);
+    inner.motion(0, "light");
+    inner.run(35);
+    expect(inner.hits.filter(hit => hit.move === "gravityPull_light")).toHaveLength(1);
+
+    const guard = arena("gravattack", 162, seat);
+    const away = { direction: guard.sign };
+    guard.motion(0, "light", away);
+    guard.run(35, {}, away);
+    expect(guard.hits.filter(hit => hit.move === "gravityPull_light").map(hit => hit.blocked)).toEqual([true]);
+  });
+
+  it("telegraphs a fixed K well, allows escape and opens a jump cancel only on hit", () => {
+    const setup = arena("gravattack", 159);
+    setup.motion(0, "medium");
+    for (let tick = 0; tick < 30 && !setup.watch.objects.length; tick++) setup.step();
+    expect(setup.watch.objects[0]?.id).toBe("gravityPull_medium");
+    expect(setup.hits).toHaveLength(0);
+    expect(setup.f.canCancel("jump")).toBe(false);
+    const focalX = setup.watch.objects[0].x;
+    for (let tick = 0; tick < 14 && !setup.f.hitConfirmed; tick++) {
+      setup.step();
+      expect(setup.watch.objects[0]?.x).toBe(focalX);
+    }
+    expect(setup.hits.filter(hit => hit.move === "gravityPull_medium" && hit.damage > 0)).toHaveLength(1);
+    while (setup.match.hitstop) setup.step();
+    expect(setup.f.canCancel("jump")).toBe(true);
+    setup.step({ pressed: ["jump"] });
+    setup.run(8);
+    expect(setup.f.y).toBeLessThan(FLOOR);
+
+    const escape = arena("gravattack", 224);
+    escape.motion(0, "medium");
+    escape.run(9);
+    escape.run(31, {}, { direction: escape.sign });
+    expect(escape.hits).toHaveLength(0);
   });
 
   it("applies a temporary bounded gravity field and returns from the planetoid at the edge", () => {

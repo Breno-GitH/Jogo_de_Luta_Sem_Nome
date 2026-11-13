@@ -2411,7 +2411,8 @@ export class Match {
         const field = projectile?.ben?.field;
         if (!field) return false;
         if (object.impactAge !== undefined) return ++object.impactAge < 15;
-        if (projectile.ben?.nightmare && (owner.state !== "attack" || owner.moveId !== object.id)) return false;
+        if ((projectile.ben?.nightmare || field.gravityFocus && !object.spent) &&
+            (owner.state !== "attack" || owner.moveId !== object.id)) return false;
         if (++object.age > field.life + (object.power ? 6 : 0)) return false;
         if (object.age <= 0 || field.type === "wall" || field.type === "gravityWell") return true;
         if (["fireball", "bolt", "shard", "frost", "sonic"].includes(field.type) &&
@@ -2535,7 +2536,7 @@ export class Match {
       if (field.type === "spikes" && (desired < half || desired > 1280 - half)) continue;
       const object: BenObject = {
         id: owner.moveId, direction: owner.facing * (shot.direction ?? 1),
-        x: Math.max(half, Math.min(1280 - half, placeX)),
+        x: field.gravityFocus ? placeX : Math.max(half, Math.min(1280 - half, placeX)),
         y: shot.height ? FLOOR - shot.height : projectile ? owner.y - field.height : FLOOR,
         age: -(shot.delay ?? 0), spent: false, cast: this.combatFrame,
         ...(shot.vy || field.type === "car" ? { vy: shot.vy ?? -4.9 } : {}),

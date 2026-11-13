@@ -60,6 +60,9 @@ try {
         ...portraits.map((name) => `sprites/ben/omnitrix/${name}`),
         "sprites/ben/alien-x.png",
         "sprites/fx/alien-x-dimension.png",
+        "sprites/fx/alien-x-bellicus.png",
+        "sprites/fx/alien-x-serena.png",
+        "sprites/ben/gravattack/stage7.png",
       ]),
     ].map((path) => verify(path)),
   );

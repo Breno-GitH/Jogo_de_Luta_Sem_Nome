@@ -3,6 +3,10 @@ import type { Fighter } from "../engine/combat";
 
 type Scene = ReturnType<typeof alienXScene>;
 export const alienXBackdrop = "fx/alien-x-dimension.png";
+export const alienXVoices = [
+  "fx/alien-x-bellicus.png",
+  "fx/alien-x-serena.png",
+] as const;
 const tau = Math.PI * 2;
 const impact = alienXConfig.hits[0].tick;
 const { reveal, grasp } = alienXConfig.phases;
@@ -12,21 +16,39 @@ const ease = (t: number, from: number, to: number) =>
   smooth((t - from) / (to - from));
 const mix = (a: number, b: number, t: number) => a + (b - a) * t;
 
+export function alienXVisualPhase(tick: number) {
+  if (tick < 59) return "watch";
+  if (tick < 104) return "void";
+  if (tick < 179) return "council";
+  if (tick < impact) return "collapse";
+  if (tick < 236) return "genesis";
+  if (tick < 268) return "rebuild";
+  return "arena";
+}
+
+const implosion = (tick: number) => ease(tick, 178, impact - 2);
+
 export function alienXCamera(scene: Scene, tick: number) {
   const { attacker, victim, showSpace } = scene;
   const watch = ease(tick, 0, 17) * (1 - ease(tick, reveal, 57));
   const orbit = ease(tick, 103, 166) * (1 - ease(tick, impact, 249));
   const still = ease(tick, 192, 206) * (1 - ease(tick, impact, 229));
+  const creation = ease(tick, impact, impact + 9) * (1 - ease(tick, 233, 263));
   const midpoint = (attacker.x + victim.x) / 2;
   const scale =
-    1 + watch * 0.83 + showSpace * 0.17 + orbit * 0.14 + still * 0.09;
+    1 +
+    watch * 0.83 +
+    showSpace * 0.17 +
+    orbit * 0.14 +
+    still * 0.09 -
+    creation * 0.21;
   const watchX = attacker.x + 37 * attacker.facing;
   const focus = mix(
     mix(640, midpoint + (victim.x - midpoint) * orbit * 0.22, showSpace),
     watchX,
     watch,
   );
-  const margin = (640 / scale) * (1 - 0.32 * showSpace);
+  const margin = Math.min(640, (640 / scale) * (1 - 0.32 * showSpace));
   const recoil =
     tick >= impact && tick < impact + 13 ? 1 - (tick - impact) / 13 : 0;
   return {
@@ -58,7 +80,9 @@ export function drawAlienXSpace(
   tick: number,
   art?: HTMLImageElement,
 ) {
-  const depth = scene.showSpace;
+  // The arena disappears completely into the singularity, then returns in tiles.
+  const depth = ease(tick, 59, 89) * (1 - ease(tick, 234, 267));
+  const collapse = implosion(tick) * (1 - ease(tick, impact, 234));
   const green = ease(tick, 0, 14) * (1 - ease(tick, reveal, 60));
   if (!depth && !green) return;
   c.save();
@@ -67,14 +91,22 @@ export function drawAlienXSpace(
   c.fillRect(-1300, -950, 3900, 2600);
   if (depth > 0) {
     const center = (scene.attacker.x + scene.victim.x) / 2;
-    c.globalAlpha = depth;
+    c.globalAlpha = depth * (1 - collapse * 0.99);
     if (art?.naturalWidth) {
-      const width = 1800;
+      const width = 1800 * (1 - collapse * 0.7);
       const height = (width * art.height) / art.width;
       c.drawImage(
         art,
-        Math.round(center * 0.31 - 488 - (tick - 69) * 0.46),
-        -Math.round(height * 0.24),
+        Math.round(
+          mix(
+            center * 0.31 - 488 - (tick - 69) * 0.46,
+            scene.victim.x - width / 2,
+            collapse,
+          ),
+        ),
+        Math.round(
+          mix(-height * 0.24, scene.victim.y - 72 - height / 2, collapse),
+        ),
         width,
         Math.round(height),
       );
@@ -83,7 +115,7 @@ export function drawAlienXSpace(
     // Three planes travel at different rates as the frame moves through the dimension.
     for (let plane = 0; plane < 3; plane++) {
       c.fillStyle = ["#a2b4df", "#8cacf3", "#c9f0ff"][plane];
-      c.globalAlpha = depth * [0.34, 0.55, 0.7][plane];
+      c.globalAlpha = depth * (1 - collapse) * [0.34, 0.55, 0.7][plane];
       for (let i = 0; i < [90, 45, 15][plane]; i++) {
         const x =
           ((i * 173 +
@@ -97,15 +129,17 @@ export function drawAlienXSpace(
           110 +
           Math.round(plane * Math.sin(tick * 0.019) * 16);
         const size = plane + 1;
-        c.fillRect(x, y, size, size);
+        const starX = Math.round(mix(x, scene.victim.x, collapse));
+        const starY = Math.round(mix(y, scene.victim.y - 72, collapse));
+        c.fillRect(starX, starY, size, size);
         if (plane === 2 && i % 3 === 0) {
-          c.fillRect(x + 1, y - 4, 1, 11);
-          c.fillRect(x - 4, y + 1, 11, 1);
+          c.fillRect(starX + 1, starY - 4, 1, 11);
+          c.fillRect(starX - 4, starY + 1, 11, 1);
         }
       }
     }
 
-    const seam = depth * (1 - depth) * 4;
+    const seam = depth * (1 - depth) * 4 * (1 - ease(tick, 92, 112));
     c.globalAlpha = seam * 0.65;
     c.strokeStyle = "#9d80e5";
     c.lineWidth = 3;
@@ -122,6 +156,36 @@ export function drawAlienXSpace(
       c.stroke();
     }
   }
+  c.restore();
+}
+
+export function drawAlienXRebuild(
+  c: CanvasRenderingContext2D,
+  scene: Scene,
+  tick: number,
+  drawArena: () => void,
+) {
+  if (tick < 234 || tick >= 268) return;
+  const originX = scene.victim.x;
+  const originY = scene.victim.y - 65;
+  const range = ease(tick, 234, 267) * 26;
+  const cell = 48;
+  c.save();
+  c.beginPath();
+  for (let row = 0; row < 15; row++) {
+    for (let col = 0; col < 27; col++) {
+      const x = col * cell,
+        y = row * cell;
+      const distance = Math.hypot(
+        (x + 24 - originX) / cell,
+        (y + 24 - originY) / 45,
+      );
+      if (distance + ((row * 19 + col * 7) % 11) * 0.22 > range) continue;
+      c.rect(x, y, cell, cell);
+    }
+  }
+  c.clip();
+  drawArena();
   c.restore();
 }
 
@@ -256,16 +320,114 @@ export function drawAlienXForces(
   c.restore();
 }
 
+function drawCosmicBirth(
+  c: CanvasRenderingContext2D,
+  scene: Scene,
+  tick: number,
+) {
+  if (tick < 183 || tick >= 257) return;
+  const cam = alienXCamera(scene, tick);
+  const x = Math.round(640 + (scene.victim.x - cam.x) * cam.scale);
+  const y = Math.round(360 + (scene.victim.y - 72 - cam.y) * cam.scale);
+  const t = Math.max(0, (tick - impact) / 42);
+  const expansion = 1 - (1 - unit(t)) ** 3;
+  const collapse = implosion(tick);
+  const light = tick < impact ? collapse * 0.55 : (1 - unit(t)) ** 1.4;
+  c.save();
+  c.globalAlpha = light;
+  c.lineWidth = 2;
+  for (let i = 0; i < 42; i++) {
+    const angle = i * 2.399 + tick * 0.003;
+    const span =
+      tick < impact
+        ? (1 - collapse) * (180 + ((i * 13) % 430))
+        : expansion * (300 + ((i * 13) % 460));
+    const inner = span * (tick < impact ? 0.71 : 0.5 + t * 0.48);
+    c.strokeStyle = ["#afffff", "#d9acff", "#ffd3a3", "#635bfa"][i % 4];
+    const sy = Math.sin(angle) * 0.67,
+      sx = Math.cos(angle);
+    c.beginPath();
+    c.moveTo(x + sx * inner, y + sy * inner);
+    c.lineTo(x + sx * span, y + sy * span);
+    c.stroke();
+    if (tick >= impact)
+      c.fillRect(
+        Math.round(x + sx * span),
+        Math.round(y + sy * span),
+        2 + (i % 3),
+        2,
+      );
+  }
+  if (tick >= impact) {
+    for (let i = 0; i < 4; i++) {
+      const radius = 7 + expansion * (780 - i * 124);
+      c.strokeStyle = ["#f8f4e0", "#d7b0ff", "#b6f3fd", "#6a70ec"][i];
+      c.lineWidth = 2 + (1 - expansion) * 4;
+      ring(c, x, y, radius, radius * (0.42 + i * 0.055), -0.08 + i * 0.043);
+    }
+  }
+  c.restore();
+}
+
+function drawAlienXCouncil(
+  c: CanvasRenderingContext2D,
+  tick: number,
+  faces: readonly (HTMLImageElement | undefined)[],
+) {
+  const presence = ease(tick, 104, 121) * (1 - ease(tick, 164, 183));
+  if (!presence) return;
+  c.save();
+  c.imageSmoothingEnabled = false;
+  c.fillStyle = `rgba(0,10,12,${presence * 0.42})`;
+  c.fillRect(0, 0, 1280, 720);
+  const consent = ease(tick, 151, 164);
+  for (const [i, face] of faces.entries()) {
+    if (!face?.naturalWidth) continue;
+    const x = i ? 1004 : 276;
+    const y = 335 + Math.round(Math.sin(tick * 0.086 + i * 2) * 7);
+    const height = Math.round(195 + presence * 34);
+    const width = Math.round((height * face.width) / face.height);
+    const speaking = i ? ease(tick, 131, 139) : 1 - ease(tick, 132, 141);
+    c.globalAlpha = presence * (0.59 + Math.max(speaking, consent) * 0.38);
+    const halo = c.createRadialGradient(x, y, 28, x, y, 176);
+    halo.addColorStop(0, "#52f58b70");
+    halo.addColorStop(1, "#52f58b00");
+    c.fillStyle = halo;
+    c.fillRect(x - 176, y - 176, 352, 352);
+    c.drawImage(
+      face,
+      Math.round(x - width / 2),
+      Math.round(y - height / 2),
+      width,
+      height,
+    );
+    c.fillStyle = "#bdffd5";
+    c.font = "bold 17px monospace";
+    c.textAlign = "center";
+    c.fillText(i ? "SERENA" : "BELLICUS", x, 477);
+    c.font = "14px monospace";
+    c.fillText(i ? "Que tudo renasça." : "Que tudo se desfaça.", x, 499);
+    if (consent > 0) {
+      c.strokeStyle = "#8bffc2";
+      c.globalAlpha *= consent;
+      c.lineWidth = 2;
+      ring(c, x, y, 131, 135, 0);
+    }
+  }
+  c.restore();
+}
+
 export function drawAlienXScreen(
   c: CanvasRenderingContext2D,
   scene: Scene,
   tick: number,
   portrait?: HTMLImageElement,
+  faces: readonly (HTMLImageElement | undefined)[] = [],
 ) {
   const charge = ease(tick, 2, 12) * (1 - ease(tick, reveal - 3, reveal + 5));
   const flash =
     Math.max(0, 1 - Math.abs(tick - reveal) / 8) * 0.4 +
-    Math.max(0, 1 - Math.abs(tick - impact) / 7) * 0.55;
+    Math.max(0, 1 - Math.abs(tick - impact) / 6) * 0.66;
   const dark =
     ease(tick, 188, 204) * (1 - ease(tick, impact - 1, impact + 5)) * 0.48;
   c.save();
@@ -321,6 +483,8 @@ export function drawAlienXScreen(
     c.font = "bold 12px monospace";
     c.fillText("ALIEN X", x, y + 65);
   }
+  drawAlienXCouncil(c, tick, faces);
+  drawCosmicBirth(c, scene, tick);
   if (flash > 0) {
     c.globalAlpha = flash;
     c.fillStyle = tick < 60 ? "#c9ffb2" : "#dbeaff";

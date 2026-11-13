@@ -63,6 +63,11 @@ def pack(alien, config):
             scale = factor
             if alien == "gravattack" and name == "special" and i >= 12:
                 scale = height*.68 / np.median([im.height for im in images[12:16]])
+            if alien == "gravattack" and name == "move" and 17 <= i <= 22:
+                # The movement sheet's jump cels were drawn at a smaller scale.
+                # Correct uniformly here and leave room for bent knees on launch/landing.
+                stature = (166, 173, 175, 177, 163, 169)
+                scale = stature[i - 17] / source.height
             im = source.resize((round(source.width*scale), round(source.height*scale)), NEAREST)
             im = im.crop(im.getbbox())
             x = round(ROOT_POINT[0] + reference_x - anchor(im,alien))
@@ -105,7 +110,7 @@ def pack(alien, config):
     clip("jumpStart",[a[15],a[17],a[18]],[2,2,2])
     clip("jumpRise",a[18:20],[1,1])
     clip("jumpApex",[a[19]],[1])
-    clip("jumpFall",[a[20],c[12]],[1,1])
+    clip("jumpFall",[a[19],a[20]] if alien == "gravattack" else [a[20],c[12]],[1,1])
     clip("landing",[a[21],a[22],0],[3,4,4])
     clip("guardStand",[a[23]],[8])
     clip("guardCrouch",[c[22]],[8])
@@ -132,6 +137,12 @@ def pack(alien, config):
             name=family+"_"+strength
             m=moves[name]
             start=m["startup"]
+            if name == "gravityPull_light":
+                clip(name, [s[0],s[1],s[2],s[3],0], [3,start-3,7,6,m["recovery"]-12])
+                continue
+            if name == "gravityPull_medium":
+                clip(name, [s[0],s[1],s[2],s[3],0], [5,start+1,9,9,m["recovery"]-8])
+                continue
             if name == "gravityDomain_medium":
                 clip(name,[s[8],s[10],s[11],*s[12:16],*s[12:16],*s[12:16],s[11],s[10],s[8],0],
                      [4,5,4,*([2]*12),4,5,8,8])
@@ -188,5 +199,10 @@ def preview(alien, label, frames):
 
 if __name__ == "__main__":
     data = tuning()
-    result = {name:pack(name,data[name]) for name in SPECS}
+    import sys
+
+    requested = sys.argv[1:] or SPECS
+    result = json.loads(DATA.read_text(encoding="utf8")) if sys.argv[1:] else {}
+    for name in requested:
+        result[name] = pack(name, data[name])
     DATA.write_text(json.dumps(result,indent=2)+"\n",encoding="utf8")

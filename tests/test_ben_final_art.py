@@ -35,6 +35,22 @@ class BenFinalArt(unittest.TestCase):
                     for _, top, _, bottom in bounds:
                         self.assertLessEqual(abs(bottom - top - height), 13, (name, action))
 
+    def test_gravattack_jump_preserves_mass_and_ground_origin(self):
+        stage7 = json.loads((ROOT / "src/data/ben-stage7-art.json").read_text(encoding="utf-8"))
+        manifest = stage7["gravattack"]
+        pivot = manifest["pivot"]["y"]
+        width, height = manifest["frameWidth"], manifest["frameHeight"]
+        cols = manifest["columns"]
+        self.assertEqual(manifest["scale"], 1)
+        with Image.open(ROOT / "public/sprites" / manifest["sheet"]) as atlas:
+            for action in ("jumpRise", "jumpApex", "jumpFall", "landing"):
+                for index in manifest["clips"][action]["frames"]:
+                    x, y = index % cols * width, index // cols * height
+                    box = atlas.crop((x, y, x + width, y + height)).getbbox()
+                    self.assertEqual(box[3], pivot, (action, index))
+                    self.assertGreaterEqual(box[3] - box[1], 163 if action == "landing" else 173)
+                    self.assertLessEqual(box[3] - box[1], 180)
+
     @staticmethod
     def cell(atlas, manifest, index):
         cols = manifest["columns"]

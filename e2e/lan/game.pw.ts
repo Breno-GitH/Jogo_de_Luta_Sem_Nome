@@ -1495,6 +1495,21 @@ test("Ben Stage 7 agrees on gravity, the planetoid and Echo's clone attacks", as
   await consistent();
 });
 
+test("Gravattack's fixed well lifts once and agrees in both LAN clients", async () => {
+  const code = await pair("ben", "samurai");
+  const room = await seed(code, 145, 0, match => {
+    const watch = match.fighters[0].omnitrix!;
+    watch.active = watch.selected = "gravattack";
+  });
+  const own = a.locator("canvas"), remote = b.locator("canvas");
+  await expect(remote).toHaveAttribute("data-rival-omnitrix-form", "gravattack");
+  await motion(a, [2, 6], "k");
+  await expect.poll(() => room.match!.fighters[1].y).toBeLessThan(565);
+  await expect.poll(() => room.match!.fighters[0].state).toBe("idle");
+  for (const view of [own, remote]) await expect(view).toHaveAttribute("data-p2-health", "958");
+  await consistent();
+});
+
 test("Alien X confirms and restores Ben in both authoritative LAN clients", async () => {
   const code = await pair("ben", "samurai");
   const room = await seed(code, 112, 100, match => {
@@ -1512,9 +1527,14 @@ test("Alien X confirms and restores Ben in both authoritative LAN clients", asyn
     await expect(view).toHaveAttribute("data-alien-x-phase", "reveal");
     await expect(view).toHaveAttribute("data-omnitrix-sheet", "ben/alien-x.png");
   }
+  await Promise.all([own, remote].map(view =>
+    expect(view).toHaveAttribute("data-alien-x-visual", "council")));
   await expect.poll(() => room.match!.fighters[1].health).toBe(665);
+  await Promise.all([own, remote].map(view =>
+    expect(view).toHaveAttribute("data-alien-x-visual", "rebuild")));
   for (const view of [own, remote]) {
     await expect(view).toHaveAttribute("data-alien-x-phase", "");
+    await expect(view).toHaveAttribute("data-camera-zoom", "1");
     await expect(view).toHaveAttribute("data-p2-health", "665");
   }
   await expect(own).toHaveAttribute("data-omnitrix-form", "human");

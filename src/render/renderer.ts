@@ -3,7 +3,7 @@ import { drawTestArena } from "./arena";
 import benArt from "../data/ben-art.json";
 import { alienXScene } from "../engine/ben-alien-x";
 import { alienXSuper } from "../engine/ben-omnitrix";
-import { alienXBackdrop, alienXCamera, alienXOpenerCamera, drawAlienXForces, drawAlienXOpener, drawAlienXScreen, drawAlienXSpace } from "./ben-alien-x-fx";
+import { alienXBackdrop, alienXCamera, alienXOpenerCamera, alienXVisualPhase, alienXVoices, drawAlienXForces, drawAlienXOpener, drawAlienXRebuild, drawAlienXScreen, drawAlienXSpace } from "./ben-alien-x-fx";
 import { portraitSheet, portraitSheets } from "./ben-alien-portraits";
 import { benAnimation, benAnimationSets, benFlameAnchor, feedbackHeadAnchor, feedbackStormTips } from "./ben-animations";
 import { drawBenAlienFx, drawBenSilhouette } from "./ben-alien-fx";
@@ -107,7 +107,7 @@ export class Renderer {
     sheets.add(goryukaHeadSheet);
     for (const sheet of kirinEffectsSheets) sheets.add(sheet);
     for (const sheet of gokuFxSheets) sheets.add(sheet);
-    for (const sheet of [...benReformSheets, ...portraitSheets, alienXBackdrop]) sheets.add(sheet);
+    for (const sheet of [...benReformSheets, ...portraitSheets, alienXBackdrop, ...alienXVoices]) sheets.add(sheet);
     for (const sheet of [...furyFxSheets, ...jetFxSheets]) sheets.add(sheet);
     for (const data of [
       metadata,
@@ -312,6 +312,7 @@ export class Renderer {
     this.canvas.dataset.centipedeSource = centipede?.source ?? "";
     this.canvas.dataset.centipedeTick = String(centipede?.tick ?? -1);
     this.canvas.dataset.alienXPhase = reality?.phase ?? "";
+    this.canvas.dataset.alienXVisual = alienX && this.effects ? alienXVisualPhase(alienX.tick) : "";
     this.canvas.dataset.alienXTick = String(alienX?.tick ?? -1);
     this.canvas.dataset.capture = reality ? "alienX" : centipede ? "centipede" : kirin ? "kirin" : jet ? "jetGigant" : fury
       ? "gokuFury"
@@ -481,7 +482,10 @@ export class Renderer {
       c.translate(-cx, -cy);
     }
     drawTestArena(c, benPadding);
-    if (reality && alienX && this.effects) drawAlienXSpace(c, reality, alienX.tick, this.sprites.get(alienXBackdrop));
+    if (reality && alienX && this.effects) {
+      drawAlienXSpace(c, reality, alienX.tick, this.sprites.get(alienXBackdrop));
+      drawAlienXRebuild(c, reality, alienX.tick, () => drawTestArena(c));
+    }
     const nightmare = spectral || match.fighters.some(f => f.state === "attack" && f.move?.ben?.nightmare && benGhostDepth(f) > 30);
     if (this.effects && nightmare) {
       const haze = c.createLinearGradient(0, 230, 0, 582);
@@ -760,7 +764,8 @@ export class Renderer {
       c.fillRect(0, 0, 1280, 720);
     }
     if (reality && alienX && this.effects) {
-      drawAlienXScreen(c, reality, alienX.tick, this.sprites.get(portraitSheet("alienX")));
+      drawAlienXScreen(c, reality, alienX.tick, this.sprites.get(portraitSheet("alienX")),
+        alienXVoices.map(sheet => this.sprites.get(sheet)));
     }
     this.hud(match);
     if (alienX && alienX.tick < 73) {

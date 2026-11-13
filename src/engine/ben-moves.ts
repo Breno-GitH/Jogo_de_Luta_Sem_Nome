@@ -16,6 +16,7 @@ export interface BenField {
   spendCharge?: boolean;
   durability?: number;
   gravityMode?: "pull" | "repel";
+  gravityFocus?: "shear" | "collapse";
   energy?: 1 | 2;
   length?: number;
 }
@@ -461,12 +462,14 @@ export const gravattackMoves = {
   air_medium: blow([9, 9, 26], 58, rect(14, -80, 92, 81), 2, "gravity", {
     level: "high", hopAt: 9, hopVelocity: 6, knockdown: true, cancels: [], hitstop: 8,
   }),
-  gravityPull_light: special("gravityPull", "gravity", [9, 1, 15], 23, noBox, { stun: 31, push: -6.5, hitstop: 3 }, {
-    field: gravityPulse("pull", 116, 150, 137, 11),
-  }),
-  gravityPull_medium: special("gravityPull", "gravity", [17, 1, 29], 42, noBox, {
-    stun: 39, push: -3.7, launch: -13, cancels: ["jump", "omnitrix"], cancelWindow: { fromTick: 18, toTick: 42 },
-  }, { field: gravityPulse("pull", 137, 184, 175, 14) }),
+  // A quick compression sweeps inward. A fixed, telegraphed well rewards a later jump confirm.
+  gravityPull_light: special("gravityPull", "gravity", [8, 1, 16], 24, noBox, {
+    stun: 32, blockstun: 10, push: -7, hitstop: 4,
+  }, { field: { ...gravityPulse("pull", 135, 156, 139, 15), gravityFocus: "shear" } }),
+  gravityPull_medium: special("gravityPull", "gravity", [15, 1, 32], 42, noBox, {
+    stun: 39, blockstun: 12, push: -5.2, launch: -12, hitstop: 6,
+    cancels: ["jump", "omnitrix"], cancelWindow: { fromTick: 21, toTick: 41 },
+  }, { field: { ...gravityPulse("pull", 151, 176, 180, 25), gravityFocus: "collapse", activeAge: [7, 13] } }),
   gravityRepel_light: special("gravityRepel", "gravity", [10, 1, 22], 45, noBox, { stun: 22, push: 8 }, {
     field: gravityPulse("repel", 81, 112, 113, 11),
   }),
@@ -594,6 +597,12 @@ export function benObjectShape(object: BenObject, field: BenField, previousX = o
     };
   }
   const height = benObjectHeight(object, field);
+  if (field.gravityFocus === "shear") {
+    const sweep = Math.max(0, Math.min(1, (object.age - 2) / 6));
+    const width = field.width - 52 * sweep;
+    const x = object.x - object.direction * 58 * sweep;
+    return { x: x - width / 2, y: object.y - height, w: width, h: height };
+  }
   return {
     x: Math.min(previousX, object.x) - field.width / 2,
     y: object.y - height,

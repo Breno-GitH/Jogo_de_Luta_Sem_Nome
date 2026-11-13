@@ -152,13 +152,17 @@ test("plays Ben, NRG and a confirmed Alien X in production training", async ({
   await c.screenshot({ path: info.outputPath("alien-x-omnitrix.png") });
   await expect(c).toHaveAttribute("data-alien-x-phase", "reveal");
   await expect(c).toHaveAttribute("data-omnitrix-sheet", "ben/alien-x.png");
-  await expect(c).toHaveAttribute("data-alien-x-phase", "grasp");
+  await expect(c).toHaveAttribute("data-alien-x-visual", "void");
+  await expect(c).toHaveAttribute("data-alien-x-visual", "council");
   await page.waitForFunction(
-    () => Number(document.querySelector("canvas").dataset.alienXTick) >= 162,
+    () => Number(document.querySelector("canvas").dataset.alienXTick) >= 136,
   );
-  await c.screenshot({ path: info.outputPath("alien-x-dimensao.png") });
-  await expect(c).toHaveAttribute("data-alien-x-phase", "rewrite");
-  await c.screenshot({ path: info.outputPath("alien-x-reescrita.png") });
+  await c.screenshot({ path: info.outputPath("alien-x-conselho.png") });
+  await expect(c).toHaveAttribute("data-alien-x-visual", "collapse");
+  await expect(c).toHaveAttribute("data-alien-x-visual", "genesis");
+  await c.screenshot({ path: info.outputPath("alien-x-big-bang.png") });
+  await expect(c).toHaveAttribute("data-alien-x-visual", "rebuild");
+  await c.screenshot({ path: info.outputPath("alien-x-recriacao.png") });
   await expect(c).toHaveAttribute("data-alien-x-phase", "");
   await expect(c).toHaveAttribute("data-omnitrix-form", "human");
   await expect(c).toHaveAttribute("data-meter", "0");

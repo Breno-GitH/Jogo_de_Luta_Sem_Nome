@@ -138,6 +138,13 @@ test("Gravattack and Echo Echo fight Samurai through the real Omnitrix", async (
   }
 
   await select("gravattack");
+  const jump = await record("gravattack-salto", async () => {
+    await page.keyboard.press("w", { delay: 48 });
+    await expect(canvas).toHaveAttribute("data-physics-state", "air");
+    await idle();
+  });
+  expect(jump.some(frame => frame.clip === "jumpRise")).toBe(true);
+  expect(jump.some(frame => frame.clip === "jumpFall")).toBe(true);
   await walk("gravattack");
   await attack("stand_light", null, "j", 85, 95);
   await attack("gravityPull_light", 0, "j", 137, 152);
