@@ -13,6 +13,7 @@ import gokuSpecialAnimation from "../data/goku-special-animations.json";
 import fury from "../data/goku-fury-animations.json";
 import { GokuCombatPresentation } from "./goku-combat";
 import { animationTick } from "../engine/pace";
+import { xebecId } from "../engine/xebec";
 
 /** Selects visual phases without driving physics from animation frames. */
 export class FighterPresentation {
@@ -162,8 +163,12 @@ export class FighterPresentation {
     const crouched = fighter.state === "crouch";
     const reaction = reactionFor(fighter);
     if (reaction) {
-      clip = reaction.clip;
-      sync = reaction.tick;
+      if (fighter.data.id !== xebecId || this.animator.hasClip(reaction.clip)) {
+        clip = reaction.clip;
+        sync = reaction.tick;
+      } else {
+        clip = fighter.airborne ? "jumpFall" : crouched ? "crouchIdle" : "idle";
+      }
     } else if (fighter.state === "attack") {
       clip =
         fighter.state === "attack" &&
@@ -186,15 +191,14 @@ export class FighterPresentation {
     } else if (fighter.state === "jumpStart" || fighter.state === "landing") {
       clip = fighter.state;
       const definition = metadata.clips[fighter.state];
-      const ticks = definition.frames.reduce(
-        (sum) => sum + definition.ticks,
-        0,
-      );
+      const ticks = definition.frames.length * definition.ticks;
       sync =
-        (fighter.stateFrame * ticks) /
-        (fighter.state === "jumpStart"
-          ? (fighter.data.locomotion?.jumpStartup ?? 4)
-          : (fighter.data.locomotion?.landingTicks ?? 6));
+        fighter.data.id === xebecId
+          ? fighter.stateFrame
+          : (fighter.stateFrame * ticks) /
+            (fighter.state === "jumpStart"
+              ? (fighter.data.locomotion?.jumpStartup ?? 4)
+              : (fighter.data.locomotion?.landingTicks ?? 6));
     } else if (fighter.state === "dash") {
       clip =
         fighter.dashDirection === fighter.facing ? "dashForward" : "backdash";

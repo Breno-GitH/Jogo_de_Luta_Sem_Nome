@@ -1,5 +1,6 @@
 import profiles from "../data/bot-profiles.json";
 import { characters, type CharacterId } from "../engine/characters";
+import { xebecId } from "../engine/xebec";
 import type { BotProfile, Difficulty } from "../engine/bot";
 
 export const towerFloors = [
@@ -80,7 +81,7 @@ export type TowerAttempt = {
 type TowerSave = { attempt: TowerAttempt | undefined; best: number };
 const key = "sem-nome-arcade-tower-v1";
 // Ben can be the Arcade player. Keep the established rival pool unchanged.
-const playableIds = Object.keys(characters) as CharacterId[];
+const playableIds: CharacterId[] = (Object.keys(characters) as CharacterId[]).filter(id => id !== xebecId);
 const ids: CharacterId[] = playableIds.filter(id => id !== "ben");
 export const currentFloor = (attempt: TowerAttempt) =>
   Math.min(attempt.results.length, towerFloors.length - 1);

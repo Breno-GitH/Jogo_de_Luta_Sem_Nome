@@ -30,6 +30,7 @@ import {
   fighterInfo,
   movesContent,
   controlsContent,
+  isPrototype,
 } from "../ui/catalog";
 import { MenuNavigation } from "../ui/navigation";
 import {
@@ -290,6 +291,8 @@ export class GameApp {
     this.bind("back", () => this.menu());
   }
   private selection(mode: Mode, step: SelectStep = "player") {
+    if (mode !== "training" && isPrototype(this.selected))
+      this.selected = "samurai";
     this.selectedMode = mode;
     this.selectStep = step;
     this.show(

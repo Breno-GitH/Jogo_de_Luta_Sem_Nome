@@ -65,6 +65,8 @@ import { DamageTracker } from "../engine/stats";
 import { swapPalette, swapGokuPalette, type AlternatePalette } from "./palette";
 import type { Fighter } from "../engine/combat";
 import { combatPace } from "../engine/pace";
+import { xebecId } from "../engine/xebec";
+import xebecAnimations from "../data/xebec-animations.json";
 export class Renderer {
   private ctx: CanvasRenderingContext2D;
   private sprites = new Map<string, HTMLImageElement>();
@@ -116,6 +118,7 @@ export class Renderer {
       luffyAnimations,
       sasukeAnimations,
       kanekiAnimations,
+      xebecAnimations,
       ...benAnimationSets,
       ...previewAnimations,
       worldAnimations,
@@ -215,7 +218,7 @@ export class Renderer {
                 : f.data.id === "sasuke"
                   ? sasukeAnimations
                   : f.data.id === "kaneki" ? kanekiAnimations
-                    : f.data.id === benId ? benArt : metadata,
+                    : f.data.id === benId ? benArt : f.data.id === xebecId ? xebecAnimations : metadata,
         );
         if (f.stand) this.standAnimations.set(f, new Animator(worldAnimations));
       }
@@ -935,31 +938,33 @@ export class Renderer {
         c.arc(x + 460 - r * 21, 120, 6, 0, 7);
         c.fill();
       }
-      c.fillStyle = "#0b1420";
-      c.fillRect(x, 627, 300, 14);
-      c.fillStyle = i === 0 ? "#e5b16b" : "#73cbd5";
-      c.fillRect(x + 2, 629, (296 * f.meter) / f.meterMaximum, 10);
-      if (f.meterMaximum > 100) {
+      if (f.data.id !== xebecId) {
         c.fillStyle = "#0b1420";
-        c.fillRect(x + 149, 627, 2, 14);
+        c.fillRect(x, 627, 300, 14);
+        c.fillStyle = i === 0 ? "#e5b16b" : "#73cbd5";
+        c.fillRect(x + 2, 629, (296 * f.meter) / f.meterMaximum, 10);
+        if (f.meterMaximum > 100) {
+          c.fillStyle = "#0b1420";
+          c.fillRect(x + 149, 627, 2, 14);
+        }
+        c.font = "11px monospace";
+        c.fillStyle = i === 0 ? "#e5b16b" : "#73cbd5";
+        c.fillText(
+          f.data.id === benId ? `ALIEN X · ${f.meter >= f.meterMaximum ? `PRONTA · ${this.superKey}` : Math.floor(100 * f.meter / f.meterMaximum) + "%"}` : f.data.id === "kaneki"
+            ? `CENTIPEDE · ${f.meter >= centipedeConfig.cost ? `PRONTA · ${this.superKey}` : Math.floor(100 * f.meter / centipedeConfig.cost) + "%"}`
+            : f.data.id === "luffy"
+            ? `JET GIGANT · ${f.meter >= f.meterMaximum ? `PRONTA · ${this.superKey}` : Math.floor((100 * f.meter) / f.meterMaximum) + "%"}`
+            : f.data.id === "goku"
+              ? `FÚRIA SAIYAJIN · ${f.meter >= f.meterMaximum ? `PRONTA · ${this.superKey}` : Math.floor((100 * f.meter) / f.meterMaximum) + "%"}`
+              : f.data.id === "samurai"
+                ? `MIL CORTES ${f.meter}%${f.meter >= 100 ? ` · ${this.superKey}` : ""}`
+                : f.data.id === "sasuke"
+                  ? `KIRIN · ${f.meter >= kirinConfig.cost ? `PRONTA · ${this.superKey}` : Math.floor(100 * f.meter / kirinConfig.cost) + "%"}`
+                  : `SUPER ${(f.meter / 100).toFixed(2)} / 2 · ROAD ROLLER · ${this.superKey}`,
+          x,
+          617,
+        );
       }
-      c.font = "11px monospace";
-      c.fillStyle = i === 0 ? "#e5b16b" : "#73cbd5";
-      c.fillText(
-        f.data.id === benId ? `ALIEN X · ${f.meter >= f.meterMaximum ? `PRONTA · ${this.superKey}` : Math.floor(100 * f.meter / f.meterMaximum) + "%"}` : f.data.id === "kaneki"
-          ? `CENTIPEDE · ${f.meter >= centipedeConfig.cost ? `PRONTA · ${this.superKey}` : Math.floor(100 * f.meter / centipedeConfig.cost) + "%"}`
-          : f.data.id === "luffy"
-          ? `JET GIGANT · ${f.meter >= f.meterMaximum ? `PRONTA · ${this.superKey}` : Math.floor((100 * f.meter) / f.meterMaximum) + "%"}`
-          : f.data.id === "goku"
-            ? `FÚRIA SAIYAJIN · ${f.meter >= f.meterMaximum ? `PRONTA · ${this.superKey}` : Math.floor((100 * f.meter) / f.meterMaximum) + "%"}`
-            : f.data.id === "samurai"
-              ? `MIL CORTES ${f.meter}%${f.meter >= 100 ? ` · ${this.superKey}` : ""}`
-              : f.data.id === "sasuke"
-                ? `KIRIN · ${f.meter >= kirinConfig.cost ? `PRONTA · ${this.superKey}` : Math.floor(100 * f.meter / kirinConfig.cost) + "%"}`
-                : `SUPER ${(f.meter / 100).toFixed(2)} / 2 · ROAD ROLLER · ${this.superKey}`,
-        x,
-        617,
-      );
       if (f.omnitrix)
         drawOmnitrixHud(c, f.omnitrix, i, this.chainKeys[2],
           !omnitrixCanBrowse(f.state) || f.knockedDown || Boolean(m.capture) || m.cinematicActive || m.temporal.isFrozen(i),

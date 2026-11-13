@@ -102,7 +102,7 @@ describe("Arcade and match flow", () => {
     }
   });
   it("offers all complete fighters and schedules every rival without mirrors or adjacent repeats", () => {
-    const playable = Object.keys(characters) as CharacterId[];
+    const playable = (Object.keys(characters) as CharacterId[]).filter(id => id !== "xebec");
     const rivals = playable.filter(id => id !== "ben");
     for (const id of playable) {
       for (const mode of ["arcade", "versus", "training"] as const)

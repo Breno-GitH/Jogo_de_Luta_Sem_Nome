@@ -4,6 +4,7 @@ import type { CharacterId } from "../engine/characters";
 import type { Bindings } from "../game/preferences";
 import { keyLabel } from "../game/preferences";
 import { benId } from "../engine/ben-omnitrix";
+import { xebecId } from "../engine/xebec";
 
 export const roster: {
   id: CharacterId;
@@ -56,8 +57,16 @@ export const roster: {
     style: "Omniverse. Onze alienígenas selecionáveis pelo Omnitrix, cada um com seu estilo de combate.",
     status: "Onze formas cadastradas · transformação com L · especiais próprios · Alien X reservado",
   },
+  {
+    id: xebecId,
+    name: "Rocks D. Xebec",
+    style: "Teste a movimentação do capitão dos Piratas Rocks.",
+    status: "Caminhada · salto · agachamento · dash e backdash",
+    prototype: true,
+  },
 ];
 export const completeRoster = roster.filter(fighter => !fighter.prototype);
+export const isPrototype = (id: CharacterId) => Boolean(fighterInfo(id).prototype);
 export const fighterInfo = (id: CharacterId) =>
   roster.find((c) => c.id === id)!;
 export const fighterImage = (id: CharacterId) =>
@@ -108,8 +117,10 @@ export const actionNames: Record<keyof Bindings, string> = {
   taunt: "Provocar",
 };
 export function movesContent(id: CharacterId, b: Bindings) {
+  if (id === xebecId)
+    return `<p>Prévia de movimentação. ${keyLabel(b.left)} / ${keyLabel(b.right)} para caminhar, ${keyLabel(b.jump)} para pular, ${keyLabel(b.down)} para agachar e ${keyLabel(b.dash)} + direção para dash ou backdash.</p>`;
   const atk = `${keyLabel(b.light)} / ${keyLabel(b.medium)} / ${keyLabel(b.heavy)}`;
-  const moves: Record<CharacterId, string[]> = {
+  const moves: Record<Exclude<CharacterId, typeof xebecId>, string[]> = {
     ben: [
       `Normais das formas jogáveis|${keyLabel(b.light)} / ${keyLabel(b.medium)} em pé, com ${keyLabel(b.down)} ou no ar`,
       `XLR8|↓ → Turbo Rush · ↓ ← Ciclone · ↓ ↓ Deslocamento Relâmpago + ${keyLabel(b.light)} / ${keyLabel(b.medium)}`,

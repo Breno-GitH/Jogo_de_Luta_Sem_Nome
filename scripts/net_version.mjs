@@ -70,6 +70,7 @@ const files = [
   "src/engine/road-roller.ts",
   "src/engine/projectiles.ts",
   "src/engine/characters.ts",
+  "src/engine/xebec.ts",
   "src/engine/goku-data.ts",
   "src/engine/goku-specials.ts",
   "src/engine/goku-fury.ts",
