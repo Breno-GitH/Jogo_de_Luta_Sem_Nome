@@ -1,5 +1,6 @@
 import type { Match, HitEvent } from "../engine/combat";
 import type { CentipedeCue } from "../engine/kaneki-centipede";
+import { pandemonium } from "../engine/xebec-pandemonium";
 import { chainFinishes } from "../engine/kaneki-chain";
 export type Cue =
   | "swing"
@@ -69,6 +70,12 @@ export class Sound {
   private masterVolume = 0.5;
   private musicStep = 0;
   private bossMusic = false;
+  private musicDucked = false;
+  setMusicDucked(value: boolean) {
+    if (this.musicDucked === value) return;
+    this.musicDucked = value;
+    this.applyVolume();
+  }
   setBossMusic(value: boolean) {
     if (value !== this.bossMusic) this.musicStep = 0;
     this.bossMusic = value;
@@ -128,7 +135,7 @@ export class Sound {
       );
     if (this.musicGain && this.context)
       this.musicGain.gain.setTargetAtTime(
-        this.enabled ? this.masterVolume * this.musicVolume * 0.13 : 0,
+        this.enabled ? this.masterVolume * this.musicVolume * (this.musicDucked ? 0.025 : 0.13) : 0,
         this.context.currentTime,
         0.02,
       );
@@ -305,6 +312,7 @@ export class Sound {
     } else if (cue === "menu") tone(660, 880, 0.06, "sine", 0.15);
   }
   tick(match: Match, onlineRound?: string) {
+    this.setMusicDucked(!!match.pandemonium && match.pandemonium.tick < pandemonium.impact);
     if (this.owner !== match) {
       this.owner = match;
       this.moves = ["", ""];

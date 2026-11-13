@@ -67,7 +67,8 @@ import type { Fighter } from "../engine/combat";
 import { combatPace } from "../engine/pace";
 import { xebecId } from "../engine/xebec";
 import { xebecAnimations } from "./xebec-animations";
-import { drawXebecSpecials } from "./xebec-special-fx";
+import { drawPandemoniumSky, drawPandemoniumWorld, drawXebecSpecials } from "./xebec-special-fx";
+import { pandemonium, pandemoniumScene } from "../engine/xebec-pandemonium";
 export class Renderer {
   private ctx: CanvasRenderingContext2D;
   private sprites = new Map<string, HTMLImageElement>();
@@ -245,6 +246,7 @@ export class Renderer {
   draw(match: Match) {
     const road = match.roadRoller,
       scene = road ? roadScene(road) : undefined;
+    const xebecSuper = match.pandemonium, xebecStage = xebecSuper && pandemoniumScene(xebecSuper, FLOOR);
     const fury = match.fury,
       furyStage = fury ? furyScene(fury) : undefined;
     const jet = match.jetGigant,
@@ -290,7 +292,7 @@ export class Renderer {
     const openingCamera = this.effects && !match.cinematicActive
       ? match.fighters.map(alienXOpenerCamera).find(camera => camera !== undefined)
       : undefined;
-    const stagedCamera = cosmicCamera ?? openingCamera ?? kakuja?.camera ?? kirinStage?.camera ?? (jet && jetStage ? jetCamera(jetStage, jet) : furyStage?.camera)
+    const stagedCamera = xebecStage?.camera ?? cosmicCamera ?? openingCamera ?? kakuja?.camera ?? kirinStage?.camera ?? (jet && jetStage ? jetCamera(jetStage, jet) : furyStage?.camera)
       ?? chainCamera ?? (this.effects ? chidoriCamera(match) ?? benCamera : undefined);
     const self = match.fighters[this.localSeat],
       other = match.fighters[1 - this.localSeat];
@@ -318,7 +320,11 @@ export class Renderer {
     this.canvas.dataset.alienXPhase = reality?.phase ?? "";
     this.canvas.dataset.alienXVisual = alienX && this.effects ? alienXVisualPhase(alienX.tick) : "";
     this.canvas.dataset.alienXTick = String(alienX?.tick ?? -1);
-    this.canvas.dataset.capture = reality ? "alienX" : centipede ? "centipede" : kirin ? "kirin" : jet ? "jetGigant" : fury
+    this.canvas.dataset.pandemoniumPhase = xebecStage?.phase ?? "";
+    this.canvas.dataset.pandemoniumTick = String(xebecSuper?.tick ?? -1);
+    this.canvas.dataset.domination = String(self.xebec?.domination ?? "");
+    this.canvas.dataset.xebecEmpowered = String(!!self.xebec?.empowered);
+    this.canvas.dataset.capture = xebecStage ? "pandemonium" : reality ? "alienX" : centipede ? "centipede" : kirin ? "kirin" : jet ? "jetGigant" : fury
       ? "gokuFury"
       : road
         ? "roadRoller"
@@ -498,6 +504,7 @@ export class Renderer {
       c.fillStyle = haze;
       c.fillRect(-benPadding, 230, 1280 + 2 * benPadding, 352);
     }
+    if (xebecStage && this.effects) drawPandemoniumSky(c, match);
     if (kakuja && this.effects) drawCentipedeBackdrop(c, kakuja);
     if (this.effects && (kirinStage || !match.cinematicActive)) drawKirinStorm(c, match, this.sprites, kirinStage);
     if (!match.cinematicActive) drawTimeTint(c, match);
@@ -759,6 +766,7 @@ export class Renderer {
     if (this.effects && jet && jetStage) drawJetImpact(c, this.sprites, jetStage, jet.tick, jet.hold);
     if (this.effects && road) drawRoadEffects(c, this.sprites, road);
     if (this.effects) drawFury(c, match, this.sprites, "front");
+    if (xebecStage && this.effects) drawPandemoniumWorld(c, match);
     if (reality && alienX && this.effects) drawAlienXForces(c, reality, alienX.tick);
     c.restore();
     c.restore();
@@ -773,6 +781,16 @@ export class Renderer {
         alienXVoices.map(sheet => this.sprites.get(sheet)));
     }
     this.hud(match);
+    if (xebecSuper && xebecSuper.tick >= pandemonium.charge && xebecSuper.tick < pandemonium.impact + 13) {
+      c.save();
+      c.textAlign = "center";
+      c.font = "bold 25px monospace";
+      c.fillStyle = "#ffccbe";
+      c.fillText("PANDEMONIUM", 640, 173);
+      c.font = "13px monospace";
+      c.fillText("A MALDIÇÃO DO ABISMO", 640, 194);
+      c.restore();
+    }
     if (alienX && alienX.tick < 73) {
       c.save();
       c.font = "bold 22px monospace";
@@ -940,7 +958,7 @@ export class Renderer {
         c.arc(x + 460 - r * 21, 120, 6, 0, 7);
         c.fill();
       }
-      if (f.data.id !== xebecId) {
+      {
         c.fillStyle = "#0b1420";
         c.fillRect(x, 627, 300, 14);
         c.fillStyle = i === 0 ? "#e5b16b" : "#73cbd5";
@@ -952,7 +970,7 @@ export class Renderer {
         c.font = "11px monospace";
         c.fillStyle = i === 0 ? "#e5b16b" : "#73cbd5";
         c.fillText(
-          f.data.id === benId ? `ALIEN X · ${f.meter >= f.meterMaximum ? `PRONTA · ${this.superKey}` : Math.floor(100 * f.meter / f.meterMaximum) + "%"}` : f.data.id === "kaneki"
+          f.xebec ? `PANDEMONIUM · ${f.meter >= f.meterMaximum ? `PRONTA · ${this.superKey}` : Math.floor(f.meter) + "%"}` : f.data.id === benId ? `ALIEN X · ${f.meter >= f.meterMaximum ? `PRONTA · ${this.superKey}` : Math.floor(100 * f.meter / f.meterMaximum) + "%"}` : f.data.id === "kaneki"
             ? `CENTIPEDE · ${f.meter >= centipedeConfig.cost ? `PRONTA · ${this.superKey}` : Math.floor(100 * f.meter / centipedeConfig.cost) + "%"}`
             : f.data.id === "luffy"
             ? `JET GIGANT · ${f.meter >= f.meterMaximum ? `PRONTA · ${this.superKey}` : Math.floor((100 * f.meter) / f.meterMaximum) + "%"}`
@@ -966,6 +984,16 @@ export class Renderer {
           x,
           617,
         );
+      }
+      if (f.xebec) {
+        const ready = f.xebec.domination === 100;
+        c.font = "bold 11px monospace";
+        c.fillStyle = ready ? "#ffd095" : "#ff8e9e";
+        c.fillText(`DOMINAÇÃO · ${f.xebec.empowered ? "FORTALECIDO" : ready ? `PRONTA · ${this.chainKeys[2]}` : f.xebec.domination + "%"}`, x, 661);
+        c.fillStyle = "#291724";
+        c.fillRect(x, 668, 300, 7);
+        c.fillStyle = ready || f.xebec.empowered ? "#ffd095" : "#ed5271";
+        c.fillRect(x + 1, 669, 298 * (f.xebec.empowered ? 1 : f.xebec.domination / 100), 5);
       }
       if (f.omnitrix)
         drawOmnitrixHud(c, f.omnitrix, i, this.chainKeys[2],

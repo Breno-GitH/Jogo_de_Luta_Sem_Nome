@@ -1,7 +1,7 @@
 import type { InputFrame } from "../engine/types";
 import type { MatchState } from "../engine/state";
 export const PROTOCOL = 3;
-export const ONLINE_CHARACTERS = ["samurai", "dio", "goku", "luffy", "sasuke", "kaneki", "ben"] as const;
+export const ONLINE_CHARACTERS = ["samurai", "dio", "goku", "luffy", "sasuke", "kaneki", "ben", "xebec"] as const;
 export type OnlineCharacter = (typeof ONLINE_CHARACTERS)[number];
 export const INPUT_DELAY = 6;
 export const MAX_AHEAD = 90;

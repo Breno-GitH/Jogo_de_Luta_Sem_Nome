@@ -1,4 +1,4 @@
-import { describe, it, expect, afterEach } from "vitest";
+import { describe, it, expect, afterEach, vi } from "vitest";
 import { Rooms, RoomError } from "../server/rooms";
 import { createGameServer } from "../server/server";
 import { io, type Socket } from "socket.io-client";
@@ -6,6 +6,7 @@ import { Match } from "../src/engine/combat";
 import { snapshot, restore, hashState } from "../src/engine/state";
 import { neutral } from "../src/engine/types";
 import { ENGINE_VERSION } from "../src/net/version";
+import type { StartPacket, StepPacket } from "../src/net/protocol";
 import { normalizeCode, validInput, INPUT_DELAY } from "../src/net/protocol";
 
 function fixture() {
@@ -294,6 +295,78 @@ describe("real Socket.IO server boundary", () => {
     expect(created.data.room.players[0].token).toBeUndefined();
     expect(created.data.token).toHaveLength(64);
   });
+  it("keeps two Socket.IO clients in sync through empowered Rupture and Pandemonium", async () => {
+    const host = await connect(), guest = await connect();
+    const made = await host.timeout(1000).emitWithAck("room:create", { version: ENGINE_VERSION });
+    expect((await guest.timeout(1000).emitWithAck("room:join", {
+      code: made.data.room.code, version: ENGINE_VERSION,
+    })).ok).toBe(true);
+    for (const [socket, character] of [[host, "xebec"], [guest, "samurai"]] as const) {
+      expect((await socket.timeout(1000).emitWithAck("room:select", { character })).ok).toBe(true);
+      expect((await socket.timeout(1000).emitWithAck("room:confirm", {})).ok).toBe(true);
+      expect((await socket.timeout(1000).emitWithAck("room:ready", { ready: true })).ok).toBe(true);
+    }
+    const starts = [host, guest].map(socket => new Promise<StartPacket>(resolve => socket.once("match:start", resolve)));
+    expect((await host.timeout(1000).emitWithAck("room:start", {})).ok).toBe(true);
+    const opening = await Promise.all(starts);
+    const room = app!.rooms.rooms.get(made.data.room.code)!;
+    // Stage both clients from the same server checkpoint, immediately before the inputs under test.
+    const match = room.match!;
+    match.phase = "fight";
+    match.fighters[0].setState("idle");
+    match.fighters[1].setState("idle");
+    match.fighters[0].x = 570;
+    match.fighters[1].x = 675;
+    match.fighters[0].meter = 100;
+    match.fighters[0].xebec!.domination = 100;
+    const players = [host, guest];
+    const checkpoints = players.map(socket => new Promise<StartPacket>(resolve => socket.once("match:start", resolve)));
+    expect((await host.timeout(1000).emitWithAck("match:sync", { matchId: opening[0].matchId })).ok).toBe(true);
+    const copies = (await Promise.all(checkpoints)).map(packet => {
+      expect(packet.state.fighters[0].characterId).toBe("xebec");
+      return restore(packet.state);
+    });
+    const history: string[] = [];
+    let powered = false, projectile = false, phase = false;
+    let now = Date.now();
+    const wallClock = vi.spyOn(Date, "now").mockImplementation(() => now);
+    try {
+    for (let i = 1; i <= 296; i++) {
+      now += 17;
+      const packets = players.map(socket => new Promise<StepPacket>(resolve => socket.once("match:step", resolve)));
+      const frame = neutral();
+      if (i === 1) frame.down = true;
+      if (i === 2) { frame.down = true; frame.direction = 1; }
+      if (i === 3) { frame.direction = 1; frame.pressed = ["heavy"]; }
+      if (i >= 77 && i < 124 && match.fighters[1].x - match.fighters[0].x > 70) frame.direction = 1;
+      if (i === 128) frame.pressed = ["ultimate"];
+      const tick = room.tick + INPUT_DELAY + 1;
+      host.emit("match:input", { matchId: room.matchId, tick, input: frame });
+      guest.emit("match:input", { matchId: room.matchId, tick, input: neutral() });
+      // The ack follows input delivery on each connection before the real Rooms clock advances.
+      await Promise.all(players.map(socket => socket.timeout(1000).emitWithAck("net:ping")));
+      room.nextAt = performance.now() - 1;
+      app!.rooms.pump();
+      expect(room.tick, `step ${i}, status ${room.status}`).toBe(i);
+      const steps = await Promise.all(packets);
+      for (let seat = 0; seat < copies.length; seat++) {
+        copies[seat].step(steps[seat].inputs);
+        expect(hashState(snapshot(copies[seat]))).toBe(steps[seat].hash);
+        expect(steps[seat].hash).toBe(steps[0].hash);
+      }
+      powered ||= match.fighters[0].xebec!.empowered;
+      projectile ||= match.kiProjectiles.some(p => p.move === "xebecExtraShock");
+      phase ||= !!match.pandemonium;
+      history.push(...match.hits.map(h => h.move));
+    }
+    } finally {
+      wallClock.mockRestore();
+    }
+    expect(powered && projectile && phase).toBe(true);
+    expect(history).toContain("pandemonium_finish");
+    expect(match.cinematicActive).toBe(false);
+  }, 15000);
+
   it("does not expose health/results updates and rejects hostile input payloads", async () => {
     const a = await connect(),
       b = await connect();

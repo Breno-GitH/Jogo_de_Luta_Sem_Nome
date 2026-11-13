@@ -1,4 +1,5 @@
 import type { AttackShape, CharacterData, Move } from "./types";
+import { pandemoniumId, pandemoniumOpener } from "./xebec-pandemonium";
 import { makeXebecSpecials } from "./xebec-specials";
 
 export const xebecId = "xebec";
@@ -151,9 +152,10 @@ const moves: Record<string, Move> = Object.fromEntries(
         box: { x: 0, y: 0, w: 0, h: 0 },
         cancels: [
           ...(next ? [next] : id === "crouch_heavy" ? ["jump"] : []),
+          ...(id === "air_light" ? ["heavy"] : []),
           ...(stance !== "air" && rank >= 2 ? ["special"] : []),
         ],
-        cancelMoves: next ? [`${stance}_${next}`] : [],
+        cancelMoves: id === "air_light" ? ["air_medium", "air_heavy"] : next ? [`${stance}_${next}`] : [],
         cancelWindow: {
           fromTick: startup,
           toTick: startup + active + (id === "crouch_heavy" ? 9 : 6),
@@ -189,4 +191,6 @@ export const xebec: CharacterData = {
   hurtboxes: body,
   moves,
   specialMoves: xebecSpecials.moves,
+  superMoves: { [pandemoniumId]: pandemoniumOpener(body.standing) },
+  combatLimits: { maxHits: 12, maxAirHits: 6, maxTicks: 240 },
 };
