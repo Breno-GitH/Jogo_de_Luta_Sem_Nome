@@ -59,6 +59,15 @@ try {
     if (-not $current) { throw 'Escolha uma branch local antes de atualizar.' }
     if ($Branch -and $Branch -ne $current) { throw "Selecione a branch $Branch com git switch antes de executar. Branch atual: $current." }
     $dirty = @(Invoke-Checked git @('status', '--porcelain=v1'))
+    # A local build can regenerate this tracked file. Only reset it when the
+    # generator confirms its exact content and there are no staged changes.
+    if ($dirty.Count -eq 1 -and $dirty[0] -ceq ' M src/net/version.ts') {
+        & node.exe 'scripts/net_version.mjs' '--check'
+        if ($LASTEXITCODE -eq 0) {
+            Invoke-Checked git @('restore', '--worktree', '--', 'src/net/version.ts')
+            $dirty = @(Invoke-Checked git @('status', '--porcelain=v1'))
+        }
+    }
     if ($dirty.Count) { throw "Existem alteracoes locais. Preserve-as em commit ou stash antes de atualizar:`n$($dirty -join "`n")" }
     Invoke-Checked git @('fetch', 'origin')
     $remote = "refs/remotes/origin/$current"

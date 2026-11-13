@@ -104,5 +104,10 @@ for (const file of files)
   hash.update(file).update(readFileSync(file, "utf8").replace(/\r\n/g, "\n"));
 const out = "src/net/version.ts",
   content = `// Generated from the shared simulation sources and data.\nexport const ENGINE_VERSION = "${hash.digest("hex").slice(0, 24)}";\n`;
-if (!existsSync(out) || readFileSync(out, "utf8") !== content)
-  writeFileSync(out, content);
+const existing = existsSync(out) ? readFileSync(out, "utf8") : "";
+const matches = existing.replace(/\r\n/g, "\n") === content;
+if (process.argv.includes("--check")) {
+  process.exitCode = matches ? 0 : 1;
+} else if (!matches) {
+  writeFileSync(out, existing.includes("\r\n") ? content.replace(/\n/g, "\r\n") : content);
+}
