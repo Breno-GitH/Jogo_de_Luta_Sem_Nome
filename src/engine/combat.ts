@@ -31,6 +31,8 @@ import { reactionBoxes, reactionFor } from "./lifecycle";
 import { isSuperMove, poseAt, phaseAt } from "./moves";
 import { alienXConfig, alienXId, alienXScene, canStartAlienX, type AlienXState } from "./ben-alien-x";
 import { luffyAttackLimbs, luffySpecialCommand } from "./luffy-specials";
+import { xebecId } from "./xebec";
+import { isXebecSpecial, xebecSpecialCommand, xebecWaveSizes } from "./xebec-specials";
 import {
   isSasukeSpecial, sasukeSpecialBalance, sasukeSpecialCommand, sasukeSpecialContact,
   sasukeTechniques, type SasukeSpecialId,
@@ -206,7 +208,7 @@ export class Fighter {
       !this.airborne &&
       !this.move?.special &&
       !this.move?.super &&
-      (!["luffy", "sasuke", "kaneki"].includes(this.data.id) || this.hitConfirmed) &&
+      (!["luffy", "sasuke", "kaneki", xebecId].includes(this.data.id) || this.hitConfirmed) &&
       this.canCancel("special")
     );
   }
@@ -242,6 +244,9 @@ export class Fighter {
         (p) => p.owner === this.id && p.state === "flight",
       ).length + shots.length > sasukeSpecialBalance.maximumProjectiles) return false;
     }
+    if (move.special === "xebecWave" && this.match?.kiProjectiles.some(
+      p => p.owner === this.id && p.state === "flight",
+    )) return false;
     if (move.stand && !this.stand?.canBegin(this.canSpecialCancel()))
       return false;
     return true;
@@ -915,6 +920,17 @@ export class Fighter {
           break;
         }
       }
+      if (this.data.id === xebecId) {
+        for (const button of ["heavy", "medium", "light"] as const) {
+          const id = xebecSpecialCommand(this.buffer, button);
+          if (!id) continue;
+          if (this.attack(id)) {
+            this.buffer.consumeSpecial(button);
+            return;
+          }
+          if (free || this.move?.special) this.buffer.consumeSpecial(button);
+        }
+      }
       if (this.data.id === "luffy" && !this.airborne) {
         for (const button of ["heavy", "medium", "light"] as const) {
           const special = luffySpecialCommand(this.buffer, button);
@@ -993,6 +1009,7 @@ export class Fighter {
           if (this.bufferedBenSpecial(b)) continue;
           if (this.data.id === "kaneki" && kanekiSpecialCommand(this.buffer, b)) continue;
           if (this.data.id === "sasuke" && sasukeSpecialCommand(this.buffer, b)) continue;
+          if (this.data.id === xebecId && b !== "throw" && xebecSpecialCommand(this.buffer, b)) continue;
           if (this.data.id === "luffy" && !this.airborne && luffySpecialCommand(this.buffer, b))
             continue;
           if (
@@ -1210,6 +1227,7 @@ export class Fighter {
   }
 }
 export interface HitEvent {
+  xebec?: { rank: number; facing: number };
   sasuke?: { kind: "chidori" | "goryuka"; cursed: boolean; facing: number };
   luffy?: { actor: number; move: string; direction: number; style: "kick" | "punch" | "rush" | "double" };
   strength?: number;
@@ -1550,7 +1568,7 @@ export class Match {
         const hurt = validBoxes.find(box => shapeHitsRect(shape, box));
         if (!hurt) continue;
         let impact = f.move?.stand ? shapeBounds(shapes[0]) : undefined;
-        if (f.data.id === "luffy" || f.data.id === "kaneki" || f.move?.special === "chidori" || f.move?.ben) {
+        if (f.data.id === "luffy" || f.data.id === "kaneki" || f.move?.special === "chidori" || isXebecSpecial(f.move?.special) || f.move?.ben) {
           const bounds = shapeBounds(shape);
           const x = Math.max(hurt.x, bounds.x), y = Math.max(hurt.y, bounds.y);
           impact = {
@@ -1807,6 +1825,7 @@ export class Match {
     );
     const event = this.events[eventCount];
     if (event) {
+      if (isXebecSpecial(m.special)) event.xebec = { rank: m.rank, facing: direction };
       if (m.ben && !blocked) event.ben = m.ben.effect;
       if (!blocked && (m.special === "chidori" || m.special === "goryuka"))
         event.sasuke = { kind: m.special, cursed: curseFx, facing: direction };
@@ -1866,6 +1885,18 @@ export class Match {
       if (m.special && isSasukeSpecial(m.special)) {
         this.spawnSasukeSpecial(f, m, m.special);
         continue;
+      }
+      if (m.special === "xebecWave" && f.stateFrame === m.startup) {
+        const release = poseAt(m, f.stateFrame)?.release;
+        if (!release) continue;
+        const { speed, radius, life } = xebecWaveSizes[m.rank - 1];
+        const x = f.x + f.facing * release.x;
+        const y = f.y + release.y;
+        this.kiProjectiles.push({
+          id: ++this.projectileSerial, owner: f.id, move: f.moveId, cast: 0,
+          x, y, previousX: x, previousY: y, vx: speed * f.facing, vy: 0,
+          facing: f.facing, radius, age: 0, life, state: "flight", impactAge: 0,
+        });
       }
       if (
         m.special === "timeStop" &&
@@ -2105,7 +2136,7 @@ export class Match {
         const energy = move.special === "ki" || move.special === "hosenka" || move.special === "gokakyu";
         if (energy && this.absorbBen(target, p.radius >= 22 ? 2 : 1, move.damage, p.facing)) return false;
         let impact = hurt;
-        if (isSasukeSpecial(p.move)) {
+        if (isSasukeSpecial(p.move) || move.special === "xebecWave") {
           p.x = Math.max(hurt.x, Math.min(hurt.x + hurt.w, p.x));
           p.y = Math.max(hurt.y, Math.min(hurt.y + hurt.h, p.y));
           impact = { x: p.x, y: p.y, w: 0, h: 0 };

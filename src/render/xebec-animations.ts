@@ -1,5 +1,5 @@
 import movement from "../data/xebec-animations.json";
-import { xebecNormals } from "../engine/xebec";
+import { xebecNormals, xebecSpecials } from "../engine/xebec";
 import type { AnimationClip, AnimationData } from "./animator";
 
 const idle: AnimationClip = {
@@ -17,5 +17,15 @@ const normals = Object.fromEntries(
 
 export const xebecAnimations: AnimationData = {
   ...movement,
-  clips: { ...movement.clips, idle, ...normals },
+  clips: {
+    ...movement.clips,
+    idle,
+    ...normals,
+    ...Object.fromEntries(
+      Object.entries(xebecSpecials.art).map(([id, art]) => [
+        id,
+        { ...art, sheet: idle.sheet, ticks: 1, loop: false },
+      ]),
+    ),
+  },
 };

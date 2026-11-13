@@ -1,4 +1,5 @@
 import type { AttackShape, CharacterData, Move } from "./types";
+import { makeXebecSpecials } from "./xebec-specials";
 
 export const xebecId = "xebec";
 
@@ -148,7 +149,10 @@ const moves: Record<string, Move> = Object.fromEntries(
               : "mid",
         kind: "strike",
         box: { x: 0, y: 0, w: 0, h: 0 },
-        cancels: next ? [next] : id === "crouch_heavy" ? ["jump"] : [],
+        cancels: [
+          ...(next ? [next] : id === "crouch_heavy" ? ["jump"] : []),
+          ...(stance !== "air" && rank >= 2 ? ["special"] : []),
+        ],
         cancelMoves: next ? [`${stance}_${next}`] : [],
         cancelWindow: {
           fromTick: startup,
@@ -164,6 +168,8 @@ const moves: Record<string, Move> = Object.fromEntries(
     ];
   }),
 );
+
+export const xebecSpecials = makeXebecSpecials(body.standing, body.crouching);
 
 export const xebec: CharacterData = {
   id: xebecId,
@@ -182,4 +188,5 @@ export const xebec: CharacterData = {
   },
   hurtboxes: body,
   moves,
+  specialMoves: xebecSpecials.moves,
 };

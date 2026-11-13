@@ -67,6 +67,7 @@ import type { Fighter } from "../engine/combat";
 import { combatPace } from "../engine/pace";
 import { xebecId } from "../engine/xebec";
 import { xebecAnimations } from "./xebec-animations";
+import { drawXebecSpecials } from "./xebec-special-fx";
 export class Renderer {
   private ctx: CanvasRenderingContext2D;
   private sprites = new Map<string, HTMLImageElement>();
@@ -740,6 +741,7 @@ export class Renderer {
       drawGokuSpecials(c, match, this.sprites, this.debug);
       if (this.effects) for (const f of match.fighters) drawAlienXOpener(c, f);
       drawSasukeProjectiles(c, match, this.sprites, this.debug);
+      drawXebecSpecials(c, match, this.effects, this.debug);
       if (this.effects || this.debug) drawBenFields(c, match, this.debug, this.sprites);
     }
     if (this.effects && !fury && !jet && !kirin && !reality) {
