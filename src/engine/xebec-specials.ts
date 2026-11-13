@@ -1,122 +1,123 @@
 import type { CommandBuffer } from "./input";
-import type { Capsule, Move, Point, Rect } from "./types";
+import type { AttackShape, Move, Rect } from "./types";
 
-export type XebecSpecial = "xebecRush" | "xebecRising" | "xebecWave";
-type Strength = "light" | "medium" | "heavy";
-const strengths = ["light", "medium", "heavy"] as const;
-const motions = {
-  ki: "xebecRush",
-  kamehameha: "xebecRising",
-  teleport: "xebecWave",
+const commands = {
+  ki: { light: "xebecLightning", medium: "xebecRift", heavy: "xebecRupture" },
+  kamehameha: { light: "xebecIntimidation", medium: "xebecPressure", heavy: "xebecCollision" },
+  teleport: { light: "xebecBrutal", medium: "xebecBreaker", heavy: "xebecConqueror" },
 } as const;
+
+type Strength = keyof typeof commands.ki;
+export type XebecSpecial = (typeof commands)[keyof typeof commands][Strength];
+const specialIds = new Set<string>(Object.values(commands).flatMap(Object.values));
+export const isXebecSpecial = (id?: string): id is XebecSpecial => !!id && specialIds.has(id);
+export const xebecCharged = (id: string) =>
+  id === "xebecRupture" || id === "xebecCollision" || id === "xebecConqueror";
 
 export function xebecSpecialCommand(buffer: CommandBuffer, button: Strength) {
   const motion = buffer.gokuSpecial(button);
-  return motion && `${motions[motion]}_${button}`;
+  return motion && commands[motion][button];
 }
 
-export const isXebecSpecial = (name?: string): name is XebecSpecial =>
-  name === "xebecRush" || name === "xebecRising" || name === "xebecWave";
+export const xebecProjectiles = {
+  xebecRift: { x: 75, y: -120, speed: 21, radius: 25, life: 36 },
+  xebecAftershock: { x: 88, y: -45, speed: 16, radius: 22, life: 18 },
+} as const;
 
-const cut = (a: Point, b: Point, r: number): Capsule => ({ a, b, r });
-const straight = { x: 45, y: -120 };
-const tip = { x: 125, y: -119 };
-const waveOrigin = { x: 102, y: -118 };
+export const xebecProjectile = (id: string) =>
+  Object.hasOwn(xebecProjectiles, id) ? xebecProjectiles[id as keyof typeof xebecProjectiles] : undefined;
+export const xebecRiposte = "xebecRiposte";
 
-export const xebecWaveSizes = [
-  { speed: 17, radius: 17, life: 24 },
-  { speed: 20, radius: 21, life: 30 },
-  { speed: 23, radius: 26, life: 36 },
-] as const;
-
-const techniques = {
-  xebecRush: {
-    frames: [5, 8, 5, 0],
-    startup: [9, 11, 14],
-    active: [5, 6, 7],
-    recovery: [16, 20, 25],
-    damage: [74, 94, 114],
-    shape: cut(straight, tip, 15),
-  },
-  xebecRising: {
-    frames: [11, 14, 11, 9],
-    startup: [6, 8, 11],
-    active: [4, 5, 6],
-    recovery: [20, 25, 31],
-    damage: [69, 87, 105],
-    shape: cut({ x: 36, y: -85 }, { x: 88, y: -163 }, 20),
-  },
-  xebecWave: {
-    frames: [5, 8, 8, 0],
-    startup: [14, 18, 23],
-    active: [3, 4, 5],
-    recovery: [18, 22, 27],
-    damage: [61, 78, 99],
-  },
-} satisfies Record<
-  XebecSpecial,
-  {
-    frames: number[];
-    startup: number[];
-    active: number[];
-    recovery: number[];
-    damage: number[];
-    shape?: Capsule;
-  }
->;
+const box = (x: number, y: number, w: number, h: number): Rect => ({ x, y, w, h });
+const blade = (ax: number, ay: number, bx: number, by: number, r: number): AttackShape =>
+  ({ a: { x: ax, y: ay }, b: { x: bx, y: by }, r });
+const fist = box(23, -128, 62, 38);
+const horizontal = blade(35, -113, 113, -104, 11);
+const descending = blade(32, -136, 91, -34, 14);
+const rising = blade(25, -67, 85, -148, 13);
 
 export function makeXebecSpecials(standing: Rect[], crouching: Rect[]) {
-  const moves: Record<string, Move> = {};
-  const art: Record<string, { frames: number[]; durations: number[] }> = {};
-  for (const [name, spec] of Object.entries(techniques)) {
-    const special = name as XebecSpecial;
-    for (const [i, strength] of strengths.entries()) {
-      const id = `${special}_${strength}`;
-      const startup = spec.startup[i];
-      const active = spec.active[i];
-      const recovery = spec.recovery[i];
-      const retraction = Math.ceil(recovery * 0.4);
-      const durations = [startup, active, retraction, recovery - retraction];
-      const rising = special === "xebecRising";
-      const rush = special === "xebecRush";
-      const launch = rising ? [-11, -13, -15][i] : rush && i === 2 ? -7 : 0;
-      const release = special === "xebecWave" ? waveOrigin : undefined;
-      const shape = "shape" in spec ? spec.shape : undefined;
-      art[id] = { frames: spec.frames, durations };
-      moves[id] = {
-        special,
-        startup,
-        active,
-        recovery,
-        damage: spec.damage[i],
-        stun: rising ? 31 + i * 2 : 21 + i * 3,
-        blockstun: 12 + i * 2,
-        hitstop: 6 + i,
-        push: rising ? 2.5 : 3 + i,
-        launch,
-        knockdown: rush && i === 2,
-        level: "mid",
-        rank: i + 1,
-        cancels: [],
-        box: { x: 0, y: 0, w: 0, h: 0 },
-        ...(rush
-          ? {
-              drive: {
-                from: startup - 4,
-                to: startup + active,
-                speed: [9, 11, 13][i],
-              },
-            }
-          : {}),
-        poses: durations.map((ticks, index) => ({
-          ticks,
-          phase: index === 0 ? "startup" : index === 1 ? "active" : "recovery",
-          hurtboxes: rising && index !== 3 ? crouching : standing,
-          hitboxes: index === 1 && shape ? [shape] : [],
-          ...(index === 1 && release ? { release } : {}),
-        })),
-      };
-    }
+  function move(
+    rank: number, startup: number, active: number, recovery: number,
+    damage: number, contact: AttackShape | undefined, overrides: Partial<Move> = {},
+    second?: { after: number; ticks: number; shape: AttackShape },
+  ): Move {
+    const phases = [
+      { ticks: startup, phase: "startup", hurtboxes: standing, hitboxes: [] },
+      { ticks: second ? second.after : active, phase: "active", hurtboxes: standing,
+        hitboxes: contact ? [contact] : [] },
+      ...(second ? [
+        { ticks: second.ticks, phase: "active", hurtboxes: standing, hitboxes: [second.shape] },
+      ] : []),
+      { ticks: recovery, phase: "recovery", hurtboxes: standing, hitboxes: [] },
+    ];
+    return {
+      startup, active, recovery, rank, damage, box: box(0, 0, 0, 0), level: "mid",
+      stun: 22, blockstun: 12, push: 3, launch: 0, hitstop: 5, cancels: [],
+      poses: phases, ...overrides,
+    };
   }
-  return { moves, art };
+
+  const moves: Record<XebecSpecial, Move> = {
+    xebecLightning: move(1, 8, 5, 14, 62, horizontal, {
+      drive: { from: 3, to: 11, speed: 10.5 }, stun: 24, push: 2.5,
+    }),
+    xebecRift: move(2, 16, 4, 24, 72, undefined, {
+      push: 6, stun: 25, blockstun: 15, hitstop: 7,
+    }),
+    xebecRupture: move(3, 19, 7, 33, 119, descending, {
+      drive: { from: 4, to: 22, speed: 4.4 }, hopAt: 5, hopVelocity: -6.2,
+      stun: 33, launch: -5, push: 10, knockdown: true, hitstop: 9,
+    }),
+    xebecIntimidation: move(1, 6, 4, 20, 28, box(-54, -127, 137, 106), {
+      push: 8, stun: 18, blockstun: 9,
+    }),
+    xebecPressure: move(2, 12, 5, 23, 58, box(37, -132, 115, 82), {
+      drive: { from: 5, to: 11, speed: 2.8 }, push: 9, stun: 23, blockstun: 15, hitstop: 6,
+    }),
+    xebecCollision: move(3, 4, 8, 29, 0, undefined),
+    xebecBrutal: move(1, 7, 4, 15, 51, fist, {
+      drive: { from: 2, to: 10, speed: 7.8 }, push: 1.5, stun: 25,
+    }),
+    xebecBreaker: move(2, 10, 15, 23, 39, fist, {
+      drive: { from: 3, to: 11, speed: 5.4 }, stun: 24, push: 1.1,
+      hitWindows: [
+        { id: 0, fromTick: 10, toTick: 14 },
+        { id: 1, fromTick: 20, toTick: 25, damage: 57, launch: -15, stun: 36, push: 1.7 },
+      ],
+      cancels: ["jump"], cancelWindow: { fromTick: 20, toTick: 31 },
+    }, { after: 10, ticks: 5, shape: rising }),
+    xebecConqueror: move(3, 13, 16, 32, 56, box(21, -132, 71, 57), {
+      drive: { from: 6, to: 14, speed: 6.3 }, stun: 27, push: 1.5,
+      hitstop: 8,
+      hitWindows: [
+        { id: 0, fromTick: 13, toTick: 17 },
+        { id: 1, fromTick: 23, toTick: 29, damage: 82, launch: -7, stun: 34, push: 12, knockdown: true },
+      ],
+    }, { after: 10, ticks: 6, shape: horizontal }),
+  };
+  for (const id of Object.keys(moves) as XebecSpecial[]) moves[id].special = id;
+  // A low launch prep exposes the landing, while the aerial swing extends the torso.
+  moves.xebecRupture.poses![0].hurtboxes = crouching;
+
+  const riposte = move(3, 1, 5, 23, 82, rising, {
+    launch: -10, stun: 33, push: 4, hitstop: 9, cancels: ["special"],
+    cancelWindow: { fromTick: 3, toTick: 15 },
+  });
+  riposte.poses![1].hitboxes = [blade(20, -91, 90, -144, 16)];
+  const conqueror = moves.xebecConqueror;
+  const powered: Partial<Record<string, Move>> = {
+    xebecRupture: { ...moves.xebecRupture, damage: 135, push: 13, hitstop: 11 },
+    xebecRiposte: { ...riposte, damage: 110, launch: -13, push: 7, hitstop: 12 },
+    xebecConqueror: {
+      ...conqueror, hitstop: 10,
+      hitWindows: [conqueror.hitWindows![0], { ...conqueror.hitWindows![1], damage: 110, push: 16 }],
+    },
+  };
+  return {
+    moves,
+    powered,
+    riposte,
+    aftershock: move(3, 0, 1, 0, 31, undefined, { push: 8, stun: 22, hitstop: 5 }),
+  };
 }

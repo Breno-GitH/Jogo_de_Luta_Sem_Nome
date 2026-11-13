@@ -197,6 +197,7 @@ export interface HitWindow {
   push?: number;
   launch?: number;
   airHold?: number;
+  knockdown?: boolean;
 }
 export const overlaps = (a: Rect, b: Rect) =>
   a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;

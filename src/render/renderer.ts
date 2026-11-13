@@ -67,7 +67,8 @@ import type { Fighter } from "../engine/combat";
 import { combatPace } from "../engine/pace";
 import { xebecId } from "../engine/xebec";
 import { xebecAnimations } from "./xebec-animations";
-import { drawXebecSpecials } from "./xebec-special-fx";
+import { drawDomination, drawPandemoniumSky, drawPandemoniumStrike, drawXebecSpecials } from "./xebec-special-fx";
+import { pandemoniumConfig, pandemoniumName, pandemoniumScene } from "../engine/xebec-pandemonium";
 export class Renderer {
   private ctx: CanvasRenderingContext2D;
   private sprites = new Map<string, HTMLImageElement>();
@@ -251,6 +252,7 @@ export class Renderer {
       jetStage = jet ? jetScene(jet) : undefined;
     const kirin = match.kirin, kirinStage = kirin ? kirinScene(kirin) : undefined;
     const alienX = match.alienX, reality = alienX && alienXScene(alienX);
+    const pandemonium = match.pandemonium, abyss = pandemonium && pandemoniumScene(pandemonium);
     const centipede = match.centipede, kakuja = centipede ? centipedeScene(centipede) : undefined;
     const kanekiCapture = match.capture?.kaneki;
     const technique = kanekiTechnique(kanekiCapture?.specialId);
@@ -290,7 +292,7 @@ export class Renderer {
     const openingCamera = this.effects && !match.cinematicActive
       ? match.fighters.map(alienXOpenerCamera).find(camera => camera !== undefined)
       : undefined;
-    const stagedCamera = cosmicCamera ?? openingCamera ?? kakuja?.camera ?? kirinStage?.camera ?? (jet && jetStage ? jetCamera(jetStage, jet) : furyStage?.camera)
+    const stagedCamera = abyss?.camera ?? cosmicCamera ?? openingCamera ?? kakuja?.camera ?? kirinStage?.camera ?? (jet && jetStage ? jetCamera(jetStage, jet) : furyStage?.camera)
       ?? chainCamera ?? (this.effects ? chidoriCamera(match) ?? benCamera : undefined);
     const self = match.fighters[this.localSeat],
       other = match.fighters[1 - this.localSeat];
@@ -318,7 +320,9 @@ export class Renderer {
     this.canvas.dataset.alienXPhase = reality?.phase ?? "";
     this.canvas.dataset.alienXVisual = alienX && this.effects ? alienXVisualPhase(alienX.tick) : "";
     this.canvas.dataset.alienXTick = String(alienX?.tick ?? -1);
-    this.canvas.dataset.capture = reality ? "alienX" : centipede ? "centipede" : kirin ? "kirin" : jet ? "jetGigant" : fury
+    this.canvas.dataset.pandemoniumTick = String(pandemonium?.tick ?? -1);
+    this.canvas.dataset.domination = String(self.domination?.charge ?? "");
+    this.canvas.dataset.capture = abyss ? "pandemonium" : reality ? "alienX" : centipede ? "centipede" : kirin ? "kirin" : jet ? "jetGigant" : fury
       ? "gokuFury"
       : road
         ? "roadRoller"
@@ -486,6 +490,7 @@ export class Renderer {
       c.translate(-cx, -cy);
     }
     drawTestArena(c, benPadding);
+    if (pandemonium && abyss && this.effects) drawPandemoniumSky(c, abyss);
     if (reality && alienX && this.effects) {
       drawAlienXSpace(c, reality, alienX.tick, this.sprites.get(alienXBackdrop));
       drawAlienXRebuild(c, reality, alienX.tick, () => drawTestArena(c));
@@ -744,7 +749,7 @@ export class Renderer {
       drawXebecSpecials(c, match, this.effects, this.debug);
       if (this.effects || this.debug) drawBenFields(c, match, this.debug, this.sprites);
     }
-    if (this.effects && !fury && !jet && !kirin && !reality) {
+    if (this.effects && !fury && !jet && !kirin && !reality && !abyss) {
       drawEffects(c, match.events, this.fxImage);
       drawBenContact(c, match);
       for (const fighter of match.fighters) drawBenChill(c, fighter);
@@ -760,6 +765,7 @@ export class Renderer {
     if (this.effects && road) drawRoadEffects(c, this.sprites, road);
     if (this.effects) drawFury(c, match, this.sprites, "front");
     if (reality && alienX && this.effects) drawAlienXForces(c, reality, alienX.tick);
+    if (pandemonium && abyss && this.effects) drawPandemoniumStrike(c, pandemonium, abyss);
     c.restore();
     c.restore();
     if (jet && this.effects) drawJetScreen(c, jet);
@@ -772,7 +778,18 @@ export class Renderer {
       drawAlienXScreen(c, reality, alienX.tick, this.sprites.get(portraitSheet("alienX")),
         alienXVoices.map(sheet => this.sprites.get(sheet)));
     }
+    if (pandemonium && this.effects) {
+      const age = pandemonium.tick - pandemoniumConfig.hits[0].tick;
+      if (age >= 0 && age < 8) {
+        c.fillStyle = `rgba(255,215,182,${.35 * (1 - age / 8)})`;
+        c.fillRect(0, 0, 1280, 720);
+      }
+    }
     this.hud(match);
+    if (pandemonium && pandemonium.tick < 52) {
+      c.save(); c.font = "bold 23px monospace"; c.textAlign = "center"; c.fillStyle = "#ffb6b0";
+      c.fillText(pandemoniumName, 640, 177); c.restore();
+    }
     if (alienX && alienX.tick < 73) {
       c.save();
       c.font = "bold 22px monospace";
@@ -940,7 +957,7 @@ export class Renderer {
         c.arc(x + 460 - r * 21, 120, 6, 0, 7);
         c.fill();
       }
-      if (f.data.id !== xebecId) {
+      {
         c.fillStyle = "#0b1420";
         c.fillRect(x, 627, 300, 14);
         c.fillStyle = i === 0 ? "#e5b16b" : "#73cbd5";
@@ -952,6 +969,7 @@ export class Renderer {
         c.font = "11px monospace";
         c.fillStyle = i === 0 ? "#e5b16b" : "#73cbd5";
         c.fillText(
+          f.domination ? `PANDEMONIUM · ${f.meter >= pandemoniumConfig.cost ? `PRONTA · ${this.superKey}` : Math.floor(f.meter) + "%"}` :
           f.data.id === benId ? `ALIEN X · ${f.meter >= f.meterMaximum ? `PRONTA · ${this.superKey}` : Math.floor(100 * f.meter / f.meterMaximum) + "%"}` : f.data.id === "kaneki"
             ? `CENTIPEDE · ${f.meter >= centipedeConfig.cost ? `PRONTA · ${this.superKey}` : Math.floor(100 * f.meter / centipedeConfig.cost) + "%"}`
             : f.data.id === "luffy"
@@ -967,6 +985,7 @@ export class Renderer {
           617,
         );
       }
+      if (f.domination) drawDomination(c, f.domination, x, m.frame);
       if (f.omnitrix)
         drawOmnitrixHud(c, f.omnitrix, i, this.chainKeys[2],
           !omnitrixCanBrowse(f.state) || f.knockedDown || Boolean(m.capture) || m.cinematicActive || m.temporal.isFrozen(i),

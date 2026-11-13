@@ -61,8 +61,7 @@ export const roster: {
     id: xebecId,
     name: "Rocks D. Xebec",
     style: "Capitão dos Piratas Rocks. Mistura socos e chutes rápidos com cortes de sabre de maior alcance.",
-    status: "Nove ataques normais e três especiais com versões J/K/L",
-    prototype: true,
+    status: "Nove especiais · Dominação do Conquistador · Pandemonium",
   },
 ];
 export const completeRoster = roster.filter(fighter => !fighter.prototype);
@@ -121,12 +120,14 @@ export function movesContent(id: CharacterId, b: Bindings) {
   const atk = `${light} / ${medium} / ${heavy}`;
   const moves: Record<CharacterId, string[]> = {
     [xebecId]: [
-      `Em pé|${light} Soco direto · ${medium} Chute frontal · ${heavy} Corte horizontal`,
+      `Em pé|${light} Soco direto · ${medium} Golpe de Corpo · ${heavy} Corte horizontal`,
       `Agachado (${keyLabel(b.down)})|${light} Soco baixo · ${medium} Rasteira · ${heavy} Corte ascendente`,
       `No ar|${light} Soco aéreo · ${medium} Chute aéreo · ${heavy} Corte descendente`,
-      `Investida do Capitão|↓ → + ${atk} · avanço com sabre`,
-      `Ascensão dos Rocks|↓ ← + ${atk} · corte antiaéreo que lança o rival`,
-      `Onda de Haki|↓ ↓ + ${atk} · projétil de sabre. Solte baixo entre os toques.`,
+      `Eclipse: Ruptura|↓ → + ${light} Corte Relâmpago · ${medium} Fenda do Abismo · ${heavy} Ruptura Total`,
+      `Haki do Rei Supremo|↓ ← + ${light} Intimidação do Conquistador · ${medium} Pressão do Conquistador · ${heavy} Colisão Soberana`,
+      `Investida dos Rocks|↓ ↓ + ${light} Avanço Brutal · ${medium} Quebra-Mar · ${heavy} Impacto do Conquistador`,
+      `Arremesso dos Rocks|${keyLabel(b.throw)} em curta distância`,
+      `Pandemonium: A Maldição do Abismo|${keyLabel(b.ultimate)} com a barra de Super cheia. A sequência exige confirmação.`,
     ],
     ben: [
       `Normais das formas jogáveis|${keyLabel(b.light)} / ${keyLabel(b.medium)} em pé, com ${keyLabel(b.down)} ou no ar`,
@@ -214,5 +215,5 @@ export function movesContent(id: CharacterId, b: Bindings) {
     })
     .join(
       "",
-    )}</div>${id === benId ? "<p>Onze alienígenas têm normais, agarrão e duas versões por especial. Friagem acumula frio e tem voo limitado. Fantasmático revela Zs’Skayr em acerto confirmado. NRG alterna entre armadura e forma energética. Diamante cria cristais, Enormossauro cresce temporariamente e Feedback absorve projéteis de energia compatíveis no início de uma guarda. Vida e energia são compartilhadas. A troca fica indisponível durante golpes sem janela de cancelamento e reações a dano.</p>" : id === "kaneki" ? "<p>Leve → Médio → Forte. Baixo + Forte → Pular → combo aéreo. Uma captura por combo. U oferece as rotas clássicas. Kagune Grab oferece nove finalizações e até cinco segundos no total. O defensor pode quebrar a captura completando os três comandos de resistência da HUD. Four Swords e a ponta do Rush oferecem finalizações próprias com J/K/L. Solte baixo entre os dois toques do Rush. Centipede assume a Kakuja durante a sequência confirmada e consome uma barra de Super.</p>" : id === xebecId ? "<p>Os especiais são terrestres e dispensam barra. Confirme um médio ou forte no chão para cancelar em especial. Baixo + Forte → Pular abre o combo aéreo.</p>" : "<p>Leve → Médio → Forte. Baixo + Forte → Pular → combo aéreo. Normais podem cancelar em especiais nas janelas de confirmação. Os especiais comuns não gastam Super.</p>"}${id === "goku" ? "<p>Teletransporte no ar: leve avança, médio aparece atrás, forte persegue alvo em combo aéreo. Um uso por salto/combo. Solte baixo entre os dois toques.</p>" : id === "luffy" ? "<p>Os três especiais são terrestres. Normais aéreos continuam elásticos. Solte baixo entre os dois toques do Bazooka. Confirme Médio para Pistol ou Bazooka e Forte para Gatling. O agarrão vence a guarda, mas exige um adversário em solo e ao alcance.</p>" : id === "dio" ? "<p>The World executa todos os normais. Parada do Tempo preserva sua recarga entre rounds. Agarrão próprio indisponível.</p>" : id === "sasuke" ? `<p>${curseDescription} Solte baixo entre os dois toques. Kirin usa a barra de Super e muda de variante conforme a forma na ativação.</p>` : ""}`;
+    )}</div>${id === benId ? "<p>Onze alienígenas têm normais, agarrão e duas versões por especial. Friagem acumula frio e tem voo limitado. Fantasmático revela Zs’Skayr em acerto confirmado. NRG alterna entre armadura e forma energética. Diamante cria cristais, Enormossauro cresce temporariamente e Feedback absorve projéteis de energia compatíveis no início de uma guarda. Vida e energia são compartilhadas. A troca fica indisponível durante golpes sem janela de cancelamento e reações a dano.</p>" : id === "kaneki" ? "<p>Leve → Médio → Forte. Baixo + Forte → Pular → combo aéreo. Uma captura por combo. U oferece as rotas clássicas. Kagune Grab oferece nove finalizações e até cinco segundos no total. O defensor pode quebrar a captura completando os três comandos de resistência da HUD. Four Swords e a ponta do Rush oferecem finalizações próprias com J/K/L. Solte baixo entre os dois toques do Rush. Centipede assume a Kakuja durante a sequência confirmada e consome uma barra de Super.</p>" : id === xebecId ? "<p>Especiais conectados e normais fortes enchem a Dominação. A 100%, o próximo especial com L é fortalecido. O segundo impacto de Quebra-Mar permite cancelar em salto ou Super. Solte baixo entre os dois toques da Investida dos Rocks.</p>" : "<p>Leve → Médio → Forte. Baixo + Forte → Pular → combo aéreo. Normais podem cancelar em especiais nas janelas de confirmação. Os especiais comuns não gastam Super.</p>"}${id === "goku" ? "<p>Teletransporte no ar: leve avança, médio aparece atrás, forte persegue alvo em combo aéreo. Um uso por salto/combo. Solte baixo entre os dois toques.</p>" : id === "luffy" ? "<p>Os três especiais são terrestres. Normais aéreos continuam elásticos. Solte baixo entre os dois toques do Bazooka. Confirme Médio para Pistol ou Bazooka e Forte para Gatling. O agarrão vence a guarda, mas exige um adversário em solo e ao alcance.</p>" : id === "dio" ? "<p>The World executa todos os normais. Parada do Tempo preserva sua recarga entre rounds. Agarrão próprio indisponível.</p>" : id === "sasuke" ? `<p>${curseDescription} Solte baixo entre os dois toques. Kirin usa a barra de Super e muda de variante conforme a forma na ativação.</p>` : ""}`;
 }

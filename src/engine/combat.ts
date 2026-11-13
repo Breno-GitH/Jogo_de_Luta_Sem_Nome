@@ -31,8 +31,9 @@ import { reactionBoxes, reactionFor } from "./lifecycle";
 import { isSuperMove, poseAt, phaseAt } from "./moves";
 import { alienXConfig, alienXId, alienXScene, canStartAlienX, type AlienXState } from "./ben-alien-x";
 import { luffyAttackLimbs, luffySpecialCommand } from "./luffy-specials";
-import { xebecId } from "./xebec";
-import { isXebecSpecial, xebecSpecialCommand, xebecWaveSizes } from "./xebec-specials";
+import { xebecId, xebecSpecials } from "./xebec";
+import { isXebecSpecial, xebecCharged, xebecProjectile, xebecRiposte, xebecSpecialCommand } from "./xebec-specials";
+import { canStartPandemonium, pandemoniumConfig, pandemoniumId, pandemoniumScene, type PandemoniumState } from "./xebec-pandemonium";
 import {
   isSasukeSpecial, sasukeSpecialBalance, sasukeSpecialCommand, sasukeSpecialContact,
   sasukeTechniques, type SasukeSpecialId,
@@ -127,6 +128,7 @@ export class Fighter {
   gokuCastSerial = 0;
   sasukeCurse?: SasukeCurseState;
   omnitrix?: OmnitrixState;
+  domination?: { charge: number; powered: boolean; awarded: boolean; spentFrame?: number };
   kirinCursed?: boolean;
   homeX: number;
   guardIntent = false;
@@ -151,6 +153,7 @@ export class Fighter {
     this.homeX = x;
     this.health = data.health;
     if (data.id === benId) this.omnitrix = newOmnitrix();
+    if (data.id === xebecId) this.domination = { charge: 0, powered: false, awarded: false };
     this.facing = id === 0 ? 1 : -1;
     // A runtime link, not serializable combat state. Keeping it non-enumerable
     // avoids a cycle when inspecting/replaying a complete Match as JSON.
@@ -183,7 +186,8 @@ export class Fighter {
     return this.y < FLOOR || this.vy < 0;
   }
   get move(): Move | undefined {
-    return this.lookupMove(this.moveId);
+    return (this.domination?.powered ? xebecSpecials.powered[this.moveId] : undefined) ??
+      this.lookupMove(this.moveId);
   }
   private lookupMove(id: string) {
     if (id === kirinId && (this.moveId === id ? this.kirinCursed : winged(this)))
@@ -244,7 +248,8 @@ export class Fighter {
         (p) => p.owner === this.id && p.state === "flight",
       ).length + shots.length > sasukeSpecialBalance.maximumProjectiles) return false;
     }
-    if (move.special === "xebecWave" && this.match?.kiProjectiles.some(
+    if (this.moveId === xebecRiposte && this.state === "attack" && id !== "xebecRift") return false;
+    if (id === "xebecRift" && this.match?.kiProjectiles.some(
       p => p.owner === this.id && p.state === "flight",
     )) return false;
     if (move.stand && !this.stand?.canBegin(this.canSpecialCancel()))
@@ -277,6 +282,8 @@ export class Fighter {
       this.move?.super
     )
       return false;
+    if (this.moveId === "xebecBreaker")
+      return this.hitConfirmed && this.hitIds.includes(1) && this.canCancel("jump");
     if (this.move?.special === "rush") {
       const last = this.move.hitWindows?.at(-1);
       return (
@@ -290,6 +297,7 @@ export class Fighter {
   }
   canStartSuper() {
     if (this.match?.cinematicActive) return false;
+    if (this.domination) return canStartPandemonium(this);
     if (this.omnitrix) return canStartAlienX(this);
     if (this.data.id === "kaneki") return canStartCentipede(this);
     if (this.data.id === "sasuke") return canStartKirin(this);
@@ -497,6 +505,7 @@ export class Fighter {
       }));
     }
     if (m.hitWindows && !this.hitWindow) return [];
+    if (this.domination && m.hitWindows && this.hitWindow?.id === 1 && !this.hitConfirmed) return [];
     if (m.ben?.spectralReach) return spectralPaths(m, this.stateFrame).flatMap(path =>
       path.slice(2, -1).map((a, i) => worldCapsule({ a, b: path[i + 3], r: 12 }, this.x, this.y, this.facing)),
     );
@@ -542,6 +551,9 @@ export class Fighter {
       }
       return [worldRect(scaledBenBox(m.box, this.benScale), this.x, this.y, this.facing)];
     }
+    if (m.kind === pandemoniumId && this.domination && this.stateFrame >= m.startup) {
+      return [worldCapsule({ a: { x: 29, y: -126 }, b: { x: 119, y: -118 }, r: 24 }, this.x, this.y, this.facing)];
+    }
     const body = pose?.hitboxes
       ? pose.hitboxes.map((shape) =>
           "a" in shape
@@ -559,7 +571,7 @@ export class Fighter {
       return [worldCapsule({ a: { x: x + radius, y: y + radius },
         b: { x: x + w - radius, y: y + h - radius }, r: radius }, this.x, this.y, this.facing)];
     }
-    if (m.ben && m.drive && previousX !== this.x) {
+    if ((m.ben || this.domination) && m.drive && previousX !== this.x) {
       return body.map(shape => {
         const rect = shapeBounds(shape);
         const delta = previousX - this.x;
@@ -597,6 +609,7 @@ export class Fighter {
       this.kanekiBurrowX = undefined;
       if (s !== "throwRecover") this.kanekiSpecialRecovery = undefined;
       this.moveId = "";
+      if (this.domination) this.domination.powered = false;
       this.kirinCursed = undefined;
       this.connected = false;
       this.hitConfirmed = false;
@@ -667,6 +680,15 @@ export class Fighter {
         Math.max(42, Math.min(technique.reach, gap - 7))));
     } else this.kanekiBurrowX = undefined;
     this.moveId = id;
+    if (this.domination) {
+      const resource = this.domination;
+      resource.powered = id === xebecRiposte ? resource.powered : xebecCharged(id) && resource.charge === 100;
+      resource.awarded = false;
+      if (resource.powered && id !== xebecRiposte) {
+        resource.charge = 0;
+        resource.spentFrame = this.match?.frame;
+      }
+    }
     if (watch) {
       if ((ben?.burrow || ben?.leap) && this.opponent) watch.maneuverX = benManeuverTarget(this, this.opponent, m);
       delete watch.landingStrike;
@@ -840,7 +862,7 @@ export class Fighter {
             ? "ssj1_fury"
             : this.data.id === "dio"
               ? "road_roller"
-              : this.omnitrix ? alienXId : this.data.id === "luffy" ? jetId : this.data.id === "sasuke" ? kirinId : this.data.id === "kaneki" ? centipedeId : "ultimate_start";
+              : this.omnitrix ? alienXId : this.data.id === "luffy" ? jetId : this.data.id === "sasuke" ? kirinId : this.data.id === "kaneki" ? centipedeId : this.domination ? pandemoniumId : "ultimate_start";
         const move = this.data.moves[id] ?? this.data.superMoves?.[id];
         if (this.canStartSuper()) {
           this.attack(id);
@@ -1293,7 +1315,8 @@ export class Match {
   kirin?: KirinState;
   centipede?: CentipedeState;
   alienX?: AlienXState;
-  get cinematicActive() { return !!(this.roadRoller || this.fury || this.jetGigant || this.kirin || this.centipede || this.alienX); }
+  pandemonium?: PandemoniumState;
+  get cinematicActive() { return !!(this.roadRoller || this.fury || this.jetGigant || this.kirin || this.centipede || this.alienX || this.pandemonium); }
   temporal = new TemporalController();
   projectiles: KnifeProjectile[] = [];
   kiProjectiles: KiProjectile[] = [];
@@ -1430,7 +1453,7 @@ export class Match {
         return true;
       });
     });
-    if (this.fury || this.jetGigant || this.kirin || this.centipede || this.alienX) {
+    if (this.fury || this.jetGigant || this.kirin || this.centipede || this.alienX || this.pandemonium) {
       this.stepStagedSuper();
       return;
     }
@@ -1568,7 +1591,7 @@ export class Match {
         const hurt = validBoxes.find(box => shapeHitsRect(shape, box));
         if (!hurt) continue;
         let impact = f.move?.stand ? shapeBounds(shapes[0]) : undefined;
-        if (f.data.id === "luffy" || f.data.id === "kaneki" || f.move?.special === "chidori" || isXebecSpecial(f.move?.special) || f.move?.ben) {
+        if (f.data.id === "luffy" || f.data.id === "kaneki" || f.move?.special === "chidori" || f.domination || f.move?.ben) {
           const bounds = shapeBounds(shape);
           const x = Math.max(hurt.x, bounds.x), y = Math.max(hurt.y, bounds.y);
           impact = {
@@ -1589,7 +1612,7 @@ export class Match {
       if (!c) continue;
       const { f, target, move: m, moveId } = c;
       if (m.super && f.health <= 0) continue;
-      if ((m.kind === "jetGigant" || m.kind === "kirin" || m.kind === centipedeId || m.kind === alienXId) && (f.state !== "attack" || f.moveId !== moveId)) continue;
+      if ((m.kind === "jetGigant" || m.kind === "kirin" || m.kind === centipedeId || m.kind === alienXId || m.kind === pandemoniumId) && (f.state !== "attack" || f.moveId !== moveId)) continue;
       if (this.capture || this.cinematicActive) continue;
       // A strike beats a simultaneous throw; do not capture an actor whose
       // already-sampled strike is about to resolve on this same simulation tick.
@@ -1603,7 +1626,7 @@ export class Match {
       f.connected = true;
       f.hitIds.push(c.hitId);
       if (this.counterWithArmor(target, f, m, moveId, c.impact) ||
-          this.counterWithFeedback(target, f, m)) continue;
+          this.counterWithFeedback(target, f, m) || this.counterWithXebec(target, f, m)) continue;
       if (
         !this.temporal.isFrozen(target.id) &&
         target.counterWindow &&
@@ -1715,7 +1738,7 @@ export class Match {
     const applied = this.damage(
       target,
       damage,
-      (swordCapture || ["ultimate", "roadRoller", "gokuFury", "jetGigant", "kirin", centipedeId, alienXId].includes(m.kind ?? "")) && !blocked
+      (swordCapture || ["ultimate", "roadRoller", "gokuFury", "jetGigant", "kirin", centipedeId, alienXId, pandemoniumId].includes(m.kind ?? "")) && !blocked
         ? 1
         : 0,
     );
@@ -1796,7 +1819,16 @@ export class Match {
         reaction.vy = 10;
         reaction.stun = Math.max(reaction.stun, 30);
       }
-      if (m.kind !== "ultimate" && m.kind !== alienXId) f.gainMeter(m.meterGain ?? 10);
+      if (m.kind !== "ultimate" && m.kind !== alienXId && m.kind !== pandemoniumId) f.gainMeter(m.meterGain ?? 10);
+      const resource = f.domination;
+      if (resource && moveId !== pandemoniumId && moveId !== "xebecAftershock") {
+        const projectile = moveId === "xebecRift";
+        if (projectile || (!resource.awarded && !resource.powered && f.moveId === moveId)) {
+          const gain = moveId === xebecRiposte ? 26 : isXebecSpecial(moveId) ? 18 : m.rank === 3 ? 14 : 0;
+          resource.charge = Math.min(100, resource.charge + gain);
+          if (!projectile) resource.awarded = true;
+        }
+      }
       target.gainMeter(5);
       if (f.airborne && m.airHold !== undefined) f.vy = m.airHold;
     }
@@ -1825,7 +1857,7 @@ export class Match {
     );
     const event = this.events[eventCount];
     if (event) {
-      if (isXebecSpecial(m.special)) event.xebec = { rank: m.rank, facing: direction };
+      if (f.domination) event.xebec = { rank: m.rank, facing: direction };
       if (m.ben && !blocked) event.ben = m.ben.effect;
       if (!blocked && (m.special === "chidori" || m.special === "goryuka"))
         event.sasuke = { kind: m.special, cursed: curseFx, facing: direction };
@@ -1852,7 +1884,7 @@ export class Match {
     if (m.kind === "ultimate" && !blocked)
       this.beginCapture("ultimate", f, target);
     if (m.kind === "roadRoller" && !blocked) this.beginRoadRoller(f, target);
-    if (!blocked && (m.kind === "gokuFury" || m.kind === "jetGigant" || m.kind === "kirin" || m.kind === centipedeId || m.kind === alienXId))
+    if (!blocked && (m.kind === "gokuFury" || m.kind === "jetGigant" || m.kind === "kirin" || m.kind === centipedeId || m.kind === alienXId || m.kind === pandemoniumId))
       this.beginStagedSuper(f, target, m.kind);
   }
   private applyReaction(target: Fighter, reaction: DeferredReaction) {
@@ -1886,14 +1918,15 @@ export class Match {
         this.spawnSasukeSpecial(f, m, m.special);
         continue;
       }
-      if (m.special === "xebecWave" && f.stateFrame === m.startup) {
-        const release = poseAt(m, f.stateFrame)?.release;
-        if (!release) continue;
-        const { speed, radius, life } = xebecWaveSizes[m.rank - 1];
+      const hakiShot = f.domination && (f.stateFrame === m.startup && f.moveId === "xebecRift" ? f.moveId :
+        f.domination.powered && f.moveId === "xebecRupture" && f.stateFrame === m.startup + m.active ? "xebecAftershock" : undefined);
+      const release = hakiShot && xebecProjectile(hakiShot);
+      if (release && hakiShot) {
+        const { speed, radius, life } = release;
         const x = f.x + f.facing * release.x;
         const y = f.y + release.y;
         this.kiProjectiles.push({
-          id: ++this.projectileSerial, owner: f.id, move: f.moveId, cast: 0,
+          id: ++this.projectileSerial, owner: f.id, move: hakiShot, cast: 0,
           x, y, previousX: x, previousY: y, vx: speed * f.facing, vy: 0,
           facing: f.facing, radius, age: 0, life, state: "flight", impactAge: 0,
         });
@@ -2081,7 +2114,7 @@ export class Match {
     if (w.struck) return true;
     const shapes = fireDragonVolumes(w, { x: p.previousX, y: p.previousY }, p.radius);
     const target = this.fighters[1 - p.owner], owner = this.fighters[p.owner];
-    const move = p.curse ? sasukeCurseMoves[p.move] : owner.data.specialMoves?.[p.move];
+    const move = p.move === "xebecAftershock" ? xebecSpecials.aftershock : p.curse ? sasukeCurseMoves[p.move] : owner.data.specialMoves?.[p.move];
     if (move && this.damageBenWalls(shapes, move.damage, this.benWalls(), `dragon:${p.id}`, p.owner)) return false;
     if (target.invulnerable || target.knockedDown) return true;
     const boxes = target.hurtboxes();
@@ -2120,7 +2153,7 @@ export class Match {
         return false;
       const target = this.fighters[1 - p.owner],
         owner = this.fighters[p.owner],
-        move = p.curse ? sasukeCurseMoves[p.move] : owner.data.specialMoves?.[p.move];
+        move = p.move === "xebecAftershock" ? xebecSpecials.aftershock : p.curse ? sasukeCurseMoves[p.move] : owner.data.specialMoves?.[p.move];
       if (!move) return true;
       const shape = {
         a: { x: p.previousX, y: p.previousY },
@@ -2136,7 +2169,7 @@ export class Match {
         const energy = move.special === "ki" || move.special === "hosenka" || move.special === "gokakyu";
         if (energy && this.absorbBen(target, p.radius >= 22 ? 2 : 1, move.damage, p.facing)) return false;
         let impact = hurt;
-        if (isSasukeSpecial(p.move) || move.special === "xebecWave") {
+        if (isSasukeSpecial(p.move) || xebecProjectile(p.move)) {
           p.x = Math.max(hurt.x, Math.min(hurt.x + hurt.w, p.x));
           p.y = Math.max(hurt.y, Math.min(hurt.y + hurt.h, p.y));
           impact = { x: p.x, y: p.y, w: 0, h: 0 };
@@ -2370,6 +2403,26 @@ export class Match {
       attacker.reactionStrength = 1;
       attacker.syncReactionClock(false);
     }
+    return true;
+  }
+
+  private counterWithXebec(defender: Fighter, attacker: Fighter, incoming: Move) {
+    if (!defender.domination || defender.moveId !== "xebecCollision" ||
+        defender.attackPhase !== "active" || attacker.health <= 0 ||
+        this.temporal.isFrozen(defender.id) || this.temporal.isFrozen(attacker.id) ||
+        incoming.level === "throw" || incoming.kind === "grab" || isSuperMove(incoming) ||
+        incoming.stand || incoming.projectile || incoming.beam || incoming.ben?.field ||
+        incoming.ben?.cable || incoming.ben?.spectralReach ||
+        (attacker.x - defender.x) * defender.facing <= 0 ||
+        Math.abs(attacker.x - defender.x) > 105 || Math.abs(attacker.y - defender.y) > 66) return false;
+    if (!defender.attack(xebecRiposte)) return false;
+    defender.buffer.clear();
+    this.applyReaction(attacker, {
+      blocked: false, stun: 12, vx: 0, vy: 0, knockdown: false,
+      strength: 2, launch: false, crouched: false,
+    });
+    this.hitstop = Math.max(this.hitstop, 6);
+    this.effect("counter", defender.x + defender.facing * 43, defender.y - 103, 15);
     return true;
   }
 
@@ -2765,9 +2818,9 @@ export class Match {
     this.events.push({ kind: "centipede", centipede: { cue, frame: this.frame }, x, y,
       life, total: life, strength, blocked: false });
   }
-  private beginStagedSuper(a: Fighter, b: Fighter, kind: "jetGigant" | "gokuFury" | "kirin" | "centipede" | "alienX",
+  private beginStagedSuper(a: Fighter, b: Fighter, kind: "jetGigant" | "gokuFury" | "kirin" | "centipede" | "alienX" | typeof pandemoniumId,
     source: CentipedeSource = "strike") {
-    const config = kind === alienXId ? alienXConfig : kind === centipedeId ? centipedeConfig : kind === "kirin" ? kirinConfig : kind === "jetGigant" ? jetConfig : furyConfig;
+    const config = kind === pandemoniumId ? pandemoniumConfig : kind === alienXId ? alienXConfig : kind === centipedeId ? centipedeConfig : kind === "kirin" ? kirinConfig : kind === "jetGigant" ? jetConfig : furyConfig;
     const state: FuryState = {
       attacker: a.id,
       victim: b.id,
@@ -2806,7 +2859,8 @@ export class Match {
       delete watch.growth;
       delete watch.flightTicks;
       delete watch.landingStrike;
-    } else this.fury = state;
+    } else if (kind === pandemoniumId) this.pandemonium = { ...state, hold: 0 };
+    else this.fury = state;
     a.setState("cinematic");
     b.setState("grabbed");
     a.vx = a.vy = b.vx = b.vy = 0;
@@ -2820,8 +2874,8 @@ export class Match {
     this.stageSuper();
   }
   private stageSuper() {
-    const s = (this.alienX ?? this.centipede ?? this.kirin ?? this.jetGigant ?? this.fury)!,
-      scene = this.alienX ? alienXScene(this.alienX) : this.centipede ? centipedeScene(this.centipede) : this.kirin ? kirinScene(this.kirin) :
+    const s = (this.pandemonium ?? this.alienX ?? this.centipede ?? this.kirin ?? this.jetGigant ?? this.fury)!,
+      scene = this.pandemonium ? pandemoniumScene(this.pandemonium) : this.alienX ? alienXScene(this.alienX) : this.centipede ? centipedeScene(this.centipede) : this.kirin ? kirinScene(this.kirin) :
         this.jetGigant ? jetScene(this.jetGigant) : furyScene(s),
       a = this.fighters[s.attacker],
       b = this.fighters[s.victim];
@@ -2841,14 +2895,14 @@ export class Match {
   }
   private stepStagedSuper() {
     const jet = this.jetGigant, kirin = this.kirin, centipede = this.centipede;
-    const alienX = this.alienX;
-    const held = alienX ?? centipede ?? kirin ?? jet;
+    const { alienX, pandemonium } = this;
+    const held = pandemonium ?? alienX ?? centipede ?? kirin ?? jet;
     if (held && held.hold > 0) {
       held.hold--;
       return;
     }
-    const config = alienX ? alienXConfig : centipede ? centipedeConfig : kirin ? kirinConfig : jet ? jetConfig : furyConfig;
-    const s = (alienX ?? centipede ?? kirin ?? jet ?? this.fury)!,
+    const config = pandemonium ? pandemoniumConfig : alienX ? alienXConfig : centipede ? centipedeConfig : kirin ? kirinConfig : jet ? jetConfig : furyConfig;
+    const s = (pandemonium ?? alienX ?? centipede ?? kirin ?? jet ?? this.fury)!,
       t = ++s.tick,
       a = this.fighters[s.attacker],
       b = this.fighters[s.victim];
@@ -2865,13 +2919,13 @@ export class Match {
       if (held && "hold" in hit && typeof hit.hold === "number") held.hold = hit.hold;
       const applied = this.damage(b, Math.round(hit.damage * s.scale), finish ? 0 : 1);
       b.combo++;
-      this.recordHit(a, b, `${alienX ? alienXId : centipede ? centipedeId : kirin ? "kirin" : jet ? "jet" : "fury"}_${hit.kind}`, applied);
+      this.recordHit(a, b, `${pandemonium ? pandemoniumId : alienX ? alienXId : centipede ? centipedeId : kirin ? "kirin" : jet ? "jet" : "fury"}_${hit.kind}`, applied);
       if (centipede) {
         this.centipedeEffect(hit.kind as CentipedeCue, b.x, finish ? FLOOR : b.y - 73, finish ? 37 : 13, finish ? 3 : 2);
       } else {
         b.gainMeter(2);
         this.effect(
-        alienX ? "ultimate" : kirin ? "kirinThunder" : !jet && finish ? "roadExplosion" : jet && (finish || hit.kind === "gigant") ? "ultimate" : "hit",
+        pandemonium || alienX ? "ultimate" : kirin ? "kirinThunder" : !jet && finish ? "roadExplosion" : jet && (finish || hit.kind === "gigant") ? "ultimate" : "hit",
         b.x,
         b.y - 78,
         finish ? 16 : 8,
@@ -2891,7 +2945,7 @@ export class Match {
       b.syncReactionClock(false);
       a.buffer.clear();
       b.buffer.clear();
-      this.fury = this.jetGigant = this.kirin = this.centipede = this.alienX = undefined;
+      this.fury = this.jetGigant = this.kirin = this.centipede = this.alienX = this.pandemonium = undefined;
       if (alienX) {
         b.vx = 14 * s.facing;
         b.vy = -7;

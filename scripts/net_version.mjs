@@ -72,6 +72,7 @@ const files = [
   "src/engine/characters.ts",
   "src/engine/xebec.ts",
   "src/engine/xebec-specials.ts",
+  "src/engine/xebec-pandemonium.ts",
   "src/engine/goku-data.ts",
   "src/engine/goku-specials.ts",
   "src/engine/goku-fury.ts",
