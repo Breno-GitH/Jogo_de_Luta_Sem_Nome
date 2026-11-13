@@ -66,7 +66,7 @@ import { swapPalette, swapGokuPalette, type AlternatePalette } from "./palette";
 import type { Fighter } from "../engine/combat";
 import { combatPace } from "../engine/pace";
 import { xebecId } from "../engine/xebec";
-import xebecAnimations from "../data/xebec-animations.json";
+import { xebecAnimations } from "./xebec-animations";
 export class Renderer {
   private ctx: CanvasRenderingContext2D;
   private sprites = new Map<string, HTMLImageElement>();

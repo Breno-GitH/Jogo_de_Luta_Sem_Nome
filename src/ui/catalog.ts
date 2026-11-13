@@ -60,8 +60,8 @@ export const roster: {
   {
     id: xebecId,
     name: "Rocks D. Xebec",
-    style: "Teste a movimentação do capitão dos Piratas Rocks.",
-    status: "Caminhada · salto · agachamento · dash e backdash",
+    style: "Capitão dos Piratas Rocks. Mistura socos e chutes rápidos com cortes de sabre de maior alcance.",
+    status: "Movimentação e nove ataques normais",
     prototype: true,
   },
 ];
@@ -117,9 +117,10 @@ export const actionNames: Record<keyof Bindings, string> = {
   taunt: "Provocar",
 };
 export function movesContent(id: CharacterId, b: Bindings) {
+  const [light, medium, heavy] = [b.light, b.medium, b.heavy].map(keyLabel);
   if (id === xebecId)
-    return `<p>Prévia de movimentação. ${keyLabel(b.left)} / ${keyLabel(b.right)} para caminhar, ${keyLabel(b.jump)} para pular, ${keyLabel(b.down)} para agachar e ${keyLabel(b.dash)} + direção para dash ou backdash.</p>`;
-  const atk = `${keyLabel(b.light)} / ${keyLabel(b.medium)} / ${keyLabel(b.heavy)}`;
+    return `<div class="move-list"><div><strong>Em pé</strong><span>${light} Soco direto · ${medium} Chute frontal · ${heavy} Corte horizontal</span></div><div><strong>Agachado (${keyLabel(b.down)})</strong><span>${light} Soco baixo · ${medium} Rasteira · ${heavy} Corte ascendente</span></div><div><strong>No ar</strong><span>${light} Soco aéreo · ${medium} Chute aéreo · ${heavy} Corte descendente</span></div></div><p>Leve → Médio → Forte. Acerte ${keyLabel(b.down)} + ${heavy}, pressione ${keyLabel(b.jump)} e continue no ar.</p>`;
+  const atk = `${light} / ${medium} / ${heavy}`;
   const moves: Record<Exclude<CharacterId, typeof xebecId>, string[]> = {
     ben: [
       `Normais das formas jogáveis|${keyLabel(b.light)} / ${keyLabel(b.medium)} em pé, com ${keyLabel(b.down)} ou no ar`,
