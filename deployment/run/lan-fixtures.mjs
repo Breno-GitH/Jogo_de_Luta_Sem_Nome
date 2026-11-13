@@ -18288,10 +18288,10 @@ var CombatStand = class {
           0,
           Math.min(1, (t - move.approachAt) / move.approachTicks)
         );
-        const ease6 = progress3 * progress3 * (3 - 2 * progress3);
-        const targetX2 = owner.x + (s.fromX + (move.front.x - s.fromX) * ease6) * s.facing;
+        const ease7 = progress3 * progress3 * (3 - 2 * progress3);
+        const targetX2 = owner.x + (s.fromX + (move.front.x - s.fromX) * ease7) * s.facing;
         s.x = owner.move?.special === "rush" || owner.move?.super ? s.x + Math.max(-16, Math.min(16, targetX2 - s.x)) : targetX2;
-        s.y = owner.y + s.fromY + (move.front.y - s.fromY) * ease6;
+        s.y = owner.y + s.fromY + (move.front.y - s.fromY) * ease7;
         s.depth = (s.x - owner.x) * owner.facing > 8 ? 20 : 0;
         s.clip = t < move.approachAt ? "standIdle" : t < move.punchAt ? "forwardAttackMovement" : t < move.recoverAt ? move.clip : move.recoveryClip ?? "attackRecovery";
         s.clipTick = t < move.approachAt ? t : t < move.punchAt ? Math.floor((t - move.approachAt) * 9 / move.approachTicks) : t < move.recoverAt ? t - move.punchAt : t - move.recoverAt;
@@ -18317,9 +18317,9 @@ var CombatStand = class {
         s.returnFrame = 0;
         s.facing = owner.facing;
       }
-      const progress3 = Math.min(1, ++s.returnFrame / s.returnDuration), ease6 = progress3 * progress3 * (3 - 2 * progress3);
-      s.x = owner.x + s.fromX + (this.data.neutral.x * owner.facing - s.fromX) * ease6;
-      s.y = owner.y + s.fromY + (this.data.neutral.y - s.fromY) * ease6;
+      const progress3 = Math.min(1, ++s.returnFrame / s.returnDuration), ease7 = progress3 * progress3 * (3 - 2 * progress3);
+      s.x = owner.x + s.fromX + (this.data.neutral.x * owner.facing - s.fromX) * ease7;
+      s.y = owner.y + s.fromY + (this.data.neutral.y - s.fromY) * ease7;
       s.facing = owner.facing;
       s.depth = (s.x - owner.x) * owner.facing > 8 ? 20 : 0;
       s.clip = s.returnClip ?? "returnBehind";
@@ -19505,6 +19505,17 @@ var MOVEMENT_TIMING = {
   dash: 13
 };
 
+// src/engine/anti-light-combo.ts
+var antiLightCombo = {
+  maxHits: 3,
+  push: 18,
+  launch: -8.5,
+  stun: 30
+};
+function isLimitedLightNormal(characterId, moveId) {
+  return (characterId === "goku" || characterId === "samurai") && /^(stand|crouch|air)_light$/.test(moveId);
+}
+
 // src/data/cinematics.json
 var cinematics_default = {
   ultimate: {
@@ -19636,6 +19647,1353 @@ function reactionBoxes(f) {
     if (time < pose.ticks) return pose.hurtboxes;
     time -= pose.ticks;
   }
+}
+
+// src/engine/ben-moves.ts
+var benFormBalance = {
+  growth: {
+    1: { scale: 1.2, ticks: 228, cooldown: 190 },
+    2: { scale: 1.35, ticks: 345, cooldown: 225 }
+  },
+  energy: { capacity: 100, retention: 600, lightSpend: 25, mediumSpend: 50 }
+};
+function blow(timings2, damage2, box, rank, effect, options = {}) {
+  const [startup3, active3, recovery3] = timings2;
+  return {
+    startup: startup3,
+    active: active3,
+    recovery: recovery3,
+    damage: damage2,
+    box,
+    rank,
+    level: "mid",
+    stun: rank === 1 ? 17 : 23,
+    blockstun: rank === 1 ? 8 : 12,
+    hitstop: rank === 1 ? 3 : 5,
+    push: rank === 1 ? 2.4 : 4.4,
+    launch: 0,
+    cancels: rank === 1 ? ["medium"] : ["special"],
+    ben: { effect },
+    cancelWindow: { fromTick: startup3, toTick: startup3 + active3 + 7 },
+    ...options
+  };
+}
+var rect = (x, y, w, h) => ({ x, y, w, h });
+var noBox = rect(0, 0, 0, 0);
+function special(technique, effect, timing, damage2, box, options = {}, flags = {}) {
+  return blow(timing, damage2, box, 3, effect, { cancels: [], ...options, ben: { technique, effect, ...flags } });
+}
+function windows(...hits) {
+  return hits.map(([fromTick, toTick, values], id) => ({ id, fromTick, toTick, ...values }));
+}
+var charge = (from, to, speed) => ({ from, to, speed });
+var xlr8Moves = {
+  stand_light: blow([4, 3, 9], 22, rect(25, -108, 59, 23), 1, "speed"),
+  stand_medium: blow([7, 4, 16], 38, rect(24, -105, 96, 34), 2, "tail", { stun: 22 }),
+  crouch_light: blow([5, 3, 10], 19, rect(20, -45, 54, 24), 1, "speed", { level: "low" }),
+  crouch_medium: blow([8, 6, 24], 32, rect(19, -33, 72, 31), 2, "speed", {
+    drive: charge(4, 14, 10),
+    level: "low",
+    stun: 23,
+    blockstun: 10
+  }),
+  air_light: blow([4, 5, 10], 22, rect(19, -106, 62, 38), 1, "speed", { level: "high", airHold: -1 }),
+  air_medium: blow([7, 7, 17], 40, rect(20, -69, 85, 59), 2, "tail", {
+    level: "high",
+    drive: charge(5, 15, 8),
+    hopAt: 7,
+    hopVelocity: 6,
+    cancels: []
+  }),
+  turbo_light: special("turbo", "speed", [6, 8, 23], 45, rect(12, -111, 66, 62), {
+    drive: charge(4, 14, 16),
+    push: 2.5,
+    stun: 38,
+    blockstun: 10,
+    hitstop: 4,
+    cancels: ["omnitrix"],
+    cancelWindow: { fromTick: 10, toTick: 31 }
+  }),
+  turbo_medium: special("turbo", "speed", [9, 16, 28], 26, rect(11, -113, 71, 65), {
+    drive: charge(4, 25, 22),
+    push: 2,
+    stun: 20,
+    blockstun: 11,
+    hitstop: 3,
+    hitWindows: windows([9, 13], [15, 19, { damage: 24 }], [21, 25, { damage: 30, push: 6 }])
+  }, { confirmHits: true, follow: 6 }),
+  cyclone_light: special("cyclone", "wind", [7, 5, 18], 43, rect(-36, -111, 113, 81), { push: 8 }),
+  cyclone_medium: special("cyclone", "wind", [11, 14, 28], 28, rect(-52, -132, 154, 105), {
+    hitWindows: windows([11, 15], [16, 19, { damage: 18 }], [21, 25, { damage: 31, launch: -13, stun: 36, push: 2 }]),
+    push: 2,
+    hitstop: 3,
+    cancels: ["jump", "omnitrix"],
+    cancelWindow: { fromTick: 24, toTick: 41 }
+  }),
+  lightning_light: special("lightning", "step", [4, 10, 17], 0, noBox, { drive: charge(4, 14, -17) }),
+  lightning_medium: special("lightning", "step", [5, 13, 23], 0, noBox, { drive: charge(5, 18, 20) }, { cross: true })
+};
+var fourArmsMoves = {
+  stand_light: blow([5, 8, 13], 20, rect(36, -130, 77, 47), 1, "power", {
+    hitWindows: windows([5, 8], [10, 13, { damage: 22 }]),
+    cancels: ["medium", "special"],
+    hitstop: 3,
+    stun: 20
+  }),
+  stand_medium: blow([10, 5, 22], 55, rect(35, -111, 79, 47), 2, "power", { push: 5, stun: 29 }),
+  crouch_light: blow([6, 4, 13], 25, rect(22, -60, 66, 34), 1, "power", { level: "low", stun: 23 }),
+  crouch_medium: blow([11, 5, 25], 46, rect(16, -55, 99, 50), 2, "power", { level: "low", push: 6 }),
+  air_light: blow([6, 5, 14], 30, rect(29, -123, 73, 42), 1, "power", { level: "high" }),
+  air_medium: blow([11, 6, 24], 57, rect(24, -89, 75, 73), 2, "power", { level: "high", knockdown: true, cancels: [] }),
+  tackle_light: special("tackle", "power", [9, 7, 22], 52, rect(25, -125, 72, 86), {
+    drive: charge(5, 16, 11),
+    push: 7,
+    hitstop: 6
+  }),
+  tackle_medium: special("tackle", "power", [15, 10, 32], 78, rect(25, -133, 82, 95), {
+    drive: charge(7, 25, 15),
+    push: 12,
+    launch: -6,
+    knockdown: true,
+    hitstop: 9
+  }),
+  quad_light: special("quad", "power", [8, 3, 28], 0, rect(22, -124, 55, 53), {
+    kind: "grab",
+    level: "throw"
+  }, { commandGrab: true }),
+  quad_medium: special("quad", "power", [15, 4, 38], 0, rect(26, -129, 64, 62), {
+    kind: "grab",
+    level: "throw",
+    drive: charge(7, 16, 4)
+  }, { commandGrab: true }),
+  seismic_light: special("seismic", "quake", [10, 1, 26], 44, noBox, {
+    level: "low",
+    push: 9,
+    hitstop: 5
+  }, { field: { type: "quake", offset: 40, height: 32, width: 48, speed: 8, life: 10 } }),
+  seismic_medium: special("seismic", "quake", [17, 1, 37], 64, noBox, {
+    level: "low",
+    push: 4,
+    launch: -14.5,
+    stun: 39,
+    hitstop: 8,
+    cancels: ["omnitrix"],
+    cancelWindow: { fromTick: 18, toTick: 39 }
+  }, { field: { type: "quake", offset: 45, height: 49, width: 63, speed: 10, life: 16 } })
+};
+var heatblastMoves = {
+  stand_light: blow([5, 3, 11], 25, rect(24, -101, 64, 27), 1, "flame"),
+  stand_medium: blow([8, 5, 18], 44, rect(26, -105, 80, 36), 2, "flame", { stun: 25 }),
+  crouch_light: blow([5, 3, 12], 22, rect(22, -47, 62, 32), 1, "flame", { level: "low", stun: 20 }),
+  crouch_medium: blow([9, 5, 21], 36, rect(19, -49, 78, 44), 2, "flame", { level: "low" }),
+  air_light: blow([5, 5, 12], 26, rect(24, -104, 65, 42), 1, "flame", { level: "high" }),
+  air_medium: blow([8, 8, 19], 45, rect(22, -66, 83, 61), 2, "boost", {
+    level: "high",
+    drive: charge(5, 17, 6.5),
+    hopAt: 8,
+    hopVelocity: 7,
+    cancels: []
+  }),
+  fireball_light: special("fireball", "fireball", [8, 1, 17], 36, noBox, {
+    level: "mid",
+    push: 5,
+    stun: 27
+  }, { field: { type: "fireball", offset: 45, height: 90, width: 15, speed: 18, life: 60 } }),
+  fireball_medium: special("fireball", "fireball", [15, 1, 33], 58, noBox, {
+    push: 8,
+    hitstop: 7
+  }, { field: { type: "fireball", offset: 55, height: 91, width: 27, speed: 10, life: 78 } }),
+  pillar_light: special("pillar", "pillar", [10, 1, 23], 46, noBox, {
+    launch: -10,
+    push: 2,
+    stun: 29
+  }, { field: { type: "pillar", offset: 80, height: 158, width: 46, speed: 0, life: 11 } }),
+  pillar_medium: special("pillar", "pillar", [18, 1, 31], 65, noBox, {
+    launch: -13,
+    push: 4,
+    stun: 38,
+    hitstop: 7
+  }, { field: { type: "pillar", offset: 217, height: 229, width: 69, speed: 0, life: 16 } }),
+  propulsion_light: special("propulsion", "boost", [7, 9, 21], 46, rect(18, -111, 67, 72), {
+    drive: charge(5, 16, 13),
+    push: 7
+  }),
+  propulsion_medium: special("propulsion", "boost", [10, 13, 29], 62, rect(7, -126, 83, 112), {
+    drive: charge(8, 23, 11),
+    hopAt: 10,
+    hopVelocity: -11.5,
+    launch: -13,
+    push: 3,
+    stun: 35,
+    cancels: ["omnitrix"],
+    cancelWindow: { fromTick: 15, toTick: 32 }
+  }, { land: true })
+};
+var diamondheadMoves = {
+  stand_light: blow([5, 4, 12], 26, rect(27, -110, 65, 28), 1, "crystal"),
+  stand_medium: blow([9, 5, 19], 48, rect(25, -110, 105, 33), 2, "crystal", { stun: 31 }),
+  crouch_light: blow([6, 4, 11], 24, rect(23, -53, 70, 29), 1, "crystal", { level: "low", stun: 23 }),
+  crouch_medium: blow([10, 6, 21], 39, rect(21, -48, 102, 38), 2, "crystal", { level: "low", push: 6 }),
+  air_light: blow([5, 5, 12], 27, rect(23, -108, 69, 37), 1, "crystal", { level: "high" }),
+  air_medium: blow([9, 7, 20], 47, rect(22, -81, 90, 68), 2, "crystal", { level: "high", push: 6, cancels: [] }),
+  spikes_light: special("spikes", "crystal", [9, 1, 23], 42, noBox, { stun: 27, push: 5 }, {
+    field: {
+      type: "spikes",
+      offset: 70,
+      height: 91,
+      width: 38,
+      speed: 0,
+      life: 19,
+      pattern: [{}, { offset: 37, delay: 3 }, { offset: 74, delay: 6 }]
+    }
+  }),
+  spikes_medium: special("spikes", "crystal", [15, 1, 34], 65, noBox, {
+    launch: -14,
+    push: 3,
+    stun: 42,
+    hitstop: 6,
+    cancels: ["jump", "omnitrix"],
+    cancelWindow: { fromTick: 16, toTick: 42 }
+  }, {
+    field: {
+      type: "spikes",
+      offset: 83,
+      height: 138,
+      width: 46,
+      speed: 0,
+      life: 24,
+      pattern: [{}, { offset: 47, delay: 3 }, { offset: 94, delay: 6 }, { offset: 141, delay: 9 }]
+    }
+  }),
+  wall_light: special("wall", "crystal", [9, 1, 23], 0, noBox, {}, {
+    field: { type: "wall", offset: 112, height: 94, width: 29, speed: 0, life: 108, durability: 55 }
+  }),
+  wall_medium: special("wall", "crystal", [17, 1, 33], 0, noBox, {}, {
+    field: { type: "wall", offset: 127, height: 139, width: 43, speed: 0, life: 168, durability: 116 }
+  }),
+  shards_light: special("shards", "crystal", [8, 1, 21], 37, noBox, { stun: 26, push: 5 }, {
+    field: { type: "shard", offset: 49, height: 96, width: 11, speed: 19, life: 54 }
+  }),
+  shards_medium: special("shards", "crystal", [15, 1, 32], 53, noBox, { stun: 32, push: 7 }, {
+    field: {
+      type: "shard",
+      offset: 52,
+      height: 91,
+      width: 12,
+      speed: 15,
+      life: 63,
+      pattern: [{ vy: -4.7 }, { vy: 0 }, { vy: 3.6 }]
+    }
+  })
+};
+var humungousaurMoves = {
+  stand_light: blow([6, 4, 13], 31, rect(35, -126, 81, 40), 1, "colossus", { stun: 23 }),
+  stand_medium: blow([10, 5, 22], 57, rect(28, -116, 118, 47), 2, "tail", { stun: 32, push: 5 }),
+  crouch_light: blow([6, 4, 14], 29, rect(32, -57, 75, 40), 1, "colossus", { level: "low", stun: 25 }),
+  crouch_medium: blow([12, 6, 25], 49, rect(21, -53, 125, 45), 2, "tail", { level: "low", push: 6 }),
+  air_light: blow([6, 5, 15], 32, rect(37, -131, 79, 49), 1, "colossus", { level: "high" }),
+  air_medium: blow([10, 10, 24], 61, rect(14, -81, 89, 81), 2, "colossus", {
+    level: "high",
+    hopAt: 10,
+    hopVelocity: 11,
+    knockdown: true,
+    cancels: [],
+    ben: { effect: "colossus", landingImpact: true }
+  }),
+  colossal_light: special("colossal", "colossus", [42, 5, 19], 61, rect(-61, -31, 123, 31), {
+    push: 7,
+    hitstop: 7,
+    blockstun: 12
+  }, { leap: { takeoff: 7, speed: 9.4, reach: 142 } }),
+  colossal_medium: special("colossal", "colossus", [66, 7, 34], 91, rect(-96, -43, 193, 43), {
+    push: 10,
+    launch: -5,
+    hitstop: 9,
+    knockdown: true,
+    blockstun: 16
+  }, { leap: { takeoff: 14, speed: 16.1, reach: 334 } }),
+  car_light: special("car", "car", [21, 5, 30], 79, rect(32, -95, 132, 95), {
+    push: 9,
+    stun: 32,
+    hitstop: 8
+  }, { carSlam: true }),
+  car_medium: special("car", "car", [29, 1, 35], 92, noBox, { push: 12, stun: 35, hitstop: 9 }, {
+    field: { type: "car", offset: 80, height: 123, width: 61, speed: 15, life: 64, gravity: 0.55, pattern: [{ vy: -4.9 }] }
+  }),
+  tailspin_light: special("tailspin", "tail", [9, 7, 25], 49, rect(25, -91, 135, 53), { push: 7 }),
+  tailspin_medium: special("tailspin", "tail", [16, 9, 37], 73, rect(-14, -100, 178, 62), {
+    push: 3.5,
+    launch: -14,
+    stun: 42,
+    hitstop: 8,
+    cancels: ["omnitrix"],
+    cancelWindow: { fromTick: 19, toTick: 43 }
+  }),
+  growth_light: special("growth", "colossus", [12, 1, 23], 0, noBox, {}, { grow: 1 }),
+  growth_medium: special("growth", "colossus", [21, 1, 35], 0, noBox, {}, { grow: 2 })
+};
+var feedbackMoves = {
+  stand_light: blow([4, 4, 9], 24, rect(20, -107, 59, 29), 1, "power", { stun: 19 }),
+  stand_medium: blow([8, 5, 16], 43, rect(23, -109, 91, 38), 2, "electric", {
+    stun: 29,
+    ben: { effect: "electric", chargeGain: 5 }
+  }),
+  crouch_light: blow([5, 4, 10], 21, rect(19, -53, 62, 28), 1, "power", { level: "low", stun: 23 }),
+  crouch_medium: blow([9, 5, 18], 39, rect(21, -53, 99, 38), 2, "electric", {
+    level: "low",
+    stun: 28,
+    push: 3.2,
+    ben: { effect: "electric", chargeGain: 4 }
+  }),
+  air_light: blow([4, 5, 10], 24, rect(19, -102, 68, 43), 1, "power", { level: "high", airHold: -2, stun: 20 }),
+  air_medium: blow([7, 7, 19], 47, rect(22, -88, 88, 79), 2, "electric", {
+    level: "high",
+    launch: 3,
+    cancels: [],
+    ben: { effect: "electric", chargeGain: 5 }
+  }),
+  storm_light: special("storm", "storm", [12, 1, 30], 24, noBox, { push: 3, stun: 17, hitstop: 4 }, {
+    field: {
+      type: "lightning",
+      offset: 101,
+      height: 580,
+      width: 36,
+      speed: 0,
+      life: 25,
+      activeAge: [9, 14],
+      pattern: [{}, { offset: 87, delay: 8 }, { offset: 174, delay: 16 }]
+    }
+  }),
+  storm_medium: special("storm", "storm", [21, 1, 37], 37, noBox, { push: 4, stun: 21, hitstop: 5 }, {
+    field: {
+      type: "lightning",
+      offset: 121,
+      height: 580,
+      width: 69,
+      speed: 0,
+      life: 30,
+      activeAge: [12, 19],
+      pattern: [{}, { offset: 118, delay: 11 }, { offset: 238, delay: 23 }]
+    }
+  }),
+  conductor_light: special("conductor", "electric", [8, 8, 24], 0, noBox, { kind: "grab" }, {
+    cable: "horizontal",
+    captureStrike: true,
+    commandGrab: true
+  }),
+  conductor_medium: special("conductor", "electric", [15, 10, 33], 0, noBox, { kind: "grab" }, {
+    cable: "wide",
+    captureStrike: true,
+    commandGrab: true
+  }),
+  discharge_light: special("discharge", "electric", [7, 1, 18], 39, noBox, { push: 5.5, stun: 25 }, {
+    field: { type: "bolt", offset: 58, height: 94, width: 14, speed: 23, life: 36, energy: 1, length: 26, spendCharge: true }
+  }),
+  discharge_medium: special("discharge", "electric", [16, 1, 32], 64, noBox, {
+    push: 10,
+    stun: 34,
+    hitstop: 8,
+    drive: charge(16, 22, -1.6)
+  }, {
+    field: { type: "beam", offset: 64, height: 97, width: 16, speed: 0, life: 16, energy: 2, length: 350, spendCharge: true }
+  }),
+  absorb_light: special("absorb", "electric", [4, 9, 25], 0, noBox, {}, { absorb: 2 }),
+  absorb_medium: special("absorb", "electric", [7, 7, 28], 0, noBox, {}, { counter: true }),
+  feedback_counter: special("counter-response", "electric", [0, 1, 13], 49, noBox, {
+    push: 4.2,
+    stun: 34,
+    hitstop: 7,
+    meterGain: 7
+  }),
+  cables_light: special("cables", "electric", [8, 8, 21], 37, noBox, {
+    push: -2.2,
+    stun: 25,
+    blockstun: 10,
+    hitstop: 4
+  }, { cable: "horizontal", chargeGain: 10 }),
+  cables_medium: special("cables", "electric", [12, 11, 29], 45, noBox, {
+    push: 1.8,
+    launch: -14.5,
+    stun: 42,
+    blockstun: 11,
+    hitstop: 5,
+    cancels: ["jump"],
+    cancelWindow: { fromTick: 12, toTick: 31 }
+  }, { cable: "upper", chargeGain: 13 })
+};
+var benStage6Balance = {
+  frostLimit: 100,
+  frostHold: 105,
+  freezeTicks: 16,
+  frostImmunity: 165,
+  ghostCooldown: 65,
+  nrgDuration: 660,
+  nrgCooldown: 180
+};
+var ice = "ice";
+var spectral = "spectral";
+var thermal = "thermal";
+var airLight = { level: "high", airHold: -1.6 };
+var airMedium = { level: "high", cancels: ["special"] };
+var cold = (amount) => ({ effect: ice, cold: amount });
+var projectile = (type, offset, height, width, speed, life, energy, length, vy = 0) => ({
+  type,
+  offset,
+  height,
+  width,
+  speed,
+  life,
+  energy,
+  length,
+  ...vy ? { pattern: [{ vy }] } : {}
+});
+var bigChillMoves = {
+  stand_light: blow([5, 4, 11], 23, rect(18, -121, 61, 33), 1, ice, { stun: 22 }),
+  stand_medium: blow([8, 6, 17], 41, rect(19, -128, 89, 64), 2, ice, { stun: 30, push: 3, ben: cold(16) }),
+  crouch_light: blow([5, 4, 11], 22, rect(18, -51, 62, 30), 1, ice, { level: "low", stun: 22 }),
+  crouch_medium: blow([9, 5, 20], 38, rect(19, -37, 89, 33), 2, ice, { level: "low", ben: cold(22) }),
+  air_light: blow([4, 6, 11], 27, rect(19, -110, 67, 48), 1, ice, { ...airLight, stun: 25 }),
+  air_medium: blow([7, 7, 17], 43, rect(20, -116, 108, 84), 2, ice, { ...airMedium, airHold: -1.7, stun: 29, ben: cold(17) }),
+  frostBreath_light: special("frostBreath", ice, [8, 1, 19], 42, noBox, { stun: 28, push: 4 }, {
+    cold: 30,
+    field: projectile("frost", 39, 121, 13, 17, 17, 1, 32)
+  }),
+  frostBreath_medium: special("frostBreath", ice, [15, 1, 27], 60, noBox, {
+    stun: 35,
+    launch: -12,
+    push: 3,
+    cancels: ["jump", "omnitrix"],
+    cancelWindow: { fromTick: 15, toTick: 37 }
+  }, { cold: 56, field: projectile("frost", 43, 115, 29, 13, 22, 2, 63) }),
+  iceDive_light: special("iceDive", ice, [9, 10, 22], 49, rect(18, -78, 80, 78), {
+    drive: charge(6, 20, 9),
+    push: 5,
+    blockstun: 11,
+    stun: 27
+  }, { air: true, airUse: "dive", aerialMotion: "dive", cold: 20 }),
+  iceDive_medium: special("iceDive", ice, [14, 14, 32], 67, rect(19, -102, 104, 107), {
+    drive: charge(8, 26, 12),
+    push: 9,
+    blockstun: 15,
+    knockdown: true
+  }, { air: true, airUse: "dive", aerialMotion: "dive", cold: 34 }),
+  ghostFlight_light: special("ghostFlight", ice, [5, 25, 13], 0, noBox, {}, {
+    air: true,
+    airUse: "flight",
+    aerialMotion: "glide"
+  }),
+  ghostFlight_medium: special("ghostFlight", ice, [6, 12, 22], 0, noBox, {
+    drive: charge(6, 18, 13)
+  }, { air: true, airUse: "flight", aerialMotion: "glide", cross: true, phase: { from: 8, to: 14, physicalOnly: true } })
+};
+var ghostfreakMoves = {
+  stand_light: blow([5, 4, 10], 23, rect(19, -119, 65, 37), 1, spectral, { stun: 23 }),
+  stand_medium: blow([8, 6, 17], 41, rect(20, -113, 99, 51), 2, spectral, { stun: 31, push: 2.6 }),
+  crouch_light: blow([5, 4, 10], 22, rect(17, -57, 63, 35), 1, spectral, { level: "low", stun: 23 }),
+  crouch_medium: blow([10, 6, 19], 41, rect(19, -50, 100, 38), 2, spectral, { level: "low" }),
+  air_light: blow([5, 5, 11], 23, rect(20, -109, 71, 51), 1, spectral, airLight),
+  air_medium: blow([8, 6, 21], 47, rect(22, -97, 90, 78), 2, spectral, { ...airMedium, launch: 3 }),
+  ghostCross_light: special("ghostCross", spectral, [17, 6, 21], 49, rect(13, -139, 74, 111), {
+    push: 3,
+    launch: -5,
+    stun: 27
+  }, { burrow: { from: 6, to: 13, reach: 109 }, phase: { from: 6, to: 13 } }),
+  ghostCross_medium: special("ghostCross", spectral, [27, 7, 31], 64, rect(13, -160, 84, 132), {
+    push: 3,
+    launch: -15,
+    stun: 40,
+    cancels: ["jump"],
+    cancelWindow: { fromTick: 27, toTick: 44 }
+  }, { burrow: { from: 8, to: 22, reach: 215 }, phase: { from: 8, to: 22 } }),
+  spectralArms_light: special("spectralArms", spectral, [9, 6, 22], 0, noBox, { kind: "grab" }, {
+    spectralReach: 85,
+    commandGrab: true,
+    captureStrike: true
+  }),
+  spectralArms_medium: special("spectralArms", spectral, [16, 8, 34], 0, noBox, { kind: "grab" }, {
+    spectralReach: 133,
+    commandGrab: true,
+    captureStrike: true
+  }),
+  ghostPhase_light: special("ghostPhase", "nightmare", [13, 1, 49], 12, noBox, { push: 0, stun: 13, hitstop: 4 }, {
+    nightmare: true,
+    phase: { from: 13, to: 29 },
+    field: {
+      type: "spectralHand",
+      offset: 77,
+      height: 78,
+      width: 50,
+      speed: 0,
+      life: 25,
+      activeAge: [8, 15],
+      pattern: [{}, { offset: 112, delay: 11 }, { offset: 170, delay: 21, height: 150, direction: -1, vy: 4 }]
+    }
+  }),
+  ghostPhase_medium: special("ghostPhase", "nightmare", [20, 1, 65], 15, noBox, { push: 0, stun: 15, hitstop: 5 }, {
+    nightmare: true,
+    phase: { from: 20, to: 42 },
+    field: {
+      type: "spectralHand",
+      offset: 88,
+      height: 97,
+      width: 58,
+      speed: 0,
+      life: 28,
+      activeAge: [10, 18],
+      pattern: [
+        {},
+        { offset: 113, delay: 10 },
+        { offset: 217, delay: 20 },
+        { offset: 275, delay: 32, height: 180, direction: -1, vy: 5 },
+        { offset: 144, delay: 44, height: 148, vy: 4 }
+      ]
+    }
+  })
+};
+var nrgMoves = {
+  stand_light: blow([6, 4, 12], 28, rect(29, -135, 63, 34), 1, "metal", { stun: 25, push: 2.4 }),
+  stand_medium: blow([11, 5, 23], 53, rect(27, -136, 74, 36), 2, "metal", {
+    stun: 35,
+    push: 2.8,
+    hitstop: 6,
+    cancelWindow: { fromTick: 11, toTick: 22 }
+  }),
+  crouch_light: blow([7, 4, 13], 25, rect(25, -108, 63, 32), 1, "metal", { level: "low", stun: 25 }),
+  crouch_medium: blow([12, 5, 26], 48, rect(29, -48, 79, 45), 2, "metal", {
+    level: "low",
+    push: 5.6,
+    hitstop: 6
+  }),
+  air_light: blow([6, 5, 15], 31, rect(27, -137, 76, 34), 1, "metal", airLight),
+  air_medium: blow([8, 10, 25], 58, rect(18, -71, 58, 71), 2, "metal", {
+    level: "high",
+    hopAt: 8,
+    hopVelocity: 6,
+    knockdown: true,
+    hitstop: 8,
+    cancels: []
+  }),
+  thermal_light: special("thermal", thermal, [10, 1, 20], 46, noBox, { stun: 25, push: 5 }, {
+    field: projectile("beam", 48, 95, 11, 0, 9, 1, 188)
+  }),
+  thermal_medium: special("thermal", thermal, [19, 1, 33], 70, noBox, { stun: 34, push: 9, hitstop: 8 }, {
+    field: projectile("beam", 51, 119, 19, 0, 18, 2, 298)
+  }),
+  armorImpact_light: special("armorImpact", "metal", [9, 7, 24], 50, rect(25, -128, 48, 56), {
+    drive: charge(5, 15, 7),
+    stun: 25,
+    blockstun: 10,
+    push: 7.8,
+    hitstop: 7
+  }),
+  armorImpact_medium: special("armorImpact", "metal", [17, 5, 33], 74, rect(28, -94, 64, 54), {
+    level: "high",
+    stun: 31,
+    blockstun: 14,
+    push: 6.5,
+    hitstop: 9,
+    knockdown: true
+  }),
+  nrgUnseal_light: special("nrgMode", thermal, [18, 1, 8], 0, noBox, {}, { nrgMode: "release" }),
+  armorCounter_medium: special("armorCounter", "metal", [5, 8, 29], 0, noBox, {}, { armorCounter: true }),
+  nrgCounterShove: blow([3, 4, 25], 45, rect(28, -133, 87, 47), 3, "metal", {
+    stun: 29,
+    push: 11,
+    hitstop: 7,
+    cancels: []
+  }),
+  nrgLock: special("nrgLock", thermal, [0, 1, 10], 0, noBox, {})
+};
+var nrgReleasedMoves = {
+  stand_light: blow([4, 4, 10], 23, rect(17, -121, 63, 40), 1, thermal, { stun: 23 }),
+  stand_medium: blow([8, 5, 16], 44, rect(23, -117, 103, 50), 2, thermal, { stun: 29, push: 3.2 }),
+  crouch_light: blow([5, 4, 10], 22, rect(18, -55, 64, 33), 1, thermal, { level: "low", stun: 23 }),
+  crouch_medium: blow([9, 6, 17], 40, rect(16, -53, 106, 44), 2, thermal, { level: "low" }),
+  air_light: blow([5, 5, 11], 25, rect(20, -108, 73, 55), 1, thermal, { ...airLight, stun: 25, cancels: ["medium", "special"] }),
+  air_medium: blow([7, 7, 18], 45, rect(20, -104, 98, 88), 2, thermal, { ...airMedium, airHold: -2, stun: 26 }),
+  radiantShot_light: special("thermal", thermal, [7, 1, 18], 40, noBox, { stun: 26, push: 4 }, {
+    air: true,
+    field: { ...projectile("beam", 63, 106, 10, 0, 8, 1, 234), aim: "heat" }
+  }),
+  radiantShot_medium: special("thermal", thermal, [17, 1, 36], 68, noBox, { stun: 36, push: 11, hitstop: 8 }, {
+    air: true,
+    field: { ...projectile("beam", 64, 106, 17, 0, 16, 2, 335), aim: "heat" }
+  }),
+  radiantWave_light: special("nuclear", thermal, [8, 1, 20], 41, noBox, { stun: 27, push: 5 }, {
+    air: true,
+    field: {
+      ...projectile("heat", 28, 90, 13, 5, 25, 1, 22),
+      aim: "rain",
+      pattern: [{ vy: 12 }, { offset: 38, delay: 5, vy: 13 }, { offset: 76, delay: 10, vy: 14 }]
+    }
+  }),
+  radiantWave_medium: special("nuclear", thermal, [15, 10, 28], 63, rect(-55, -142, 201, 138), {
+    stun: 31,
+    push: 8,
+    knockdown: true
+  }),
+  nrgSeal_light: special("nrgMode", thermal, [4, 12, 18], 0, noBox, {
+    drive: charge(4, 16, 13)
+  }, { air: true, lift: true }),
+  nrgSeal_medium: special("nrgMode", thermal, [12, 1, 11], 0, noBox, {}, { nrgMode: "seal", air: true }),
+  nrgEmergence: special("nrgEmergence", thermal, [0, 1, 8], 0, noBox, {})
+};
+var gravityPulse = (gravityMode, offset, width, height, life) => ({ type: "gravityPulse", gravityMode, offset, width, height, speed: 0, life, activeAge: [2, life - 4] });
+var sonic = (offset, height, width, speed, life, length) => ({ type: "sonic", offset, height, width, speed, life, length });
+var gravattackMoves = {
+  stand_light: blow([7, 4, 12], 29, rect(32, -133, 68, 38), 1, "gravity", { stun: 25, push: 2 }),
+  stand_medium: blow([12, 5, 24], 56, rect(35, -136, 85, 66), 2, "gravity", { stun: 34, push: 2.8, hitstop: 7 }),
+  crouch_light: blow([7, 4, 13], 25, rect(29, -61, 71, 35), 1, "gravity", { level: "low", stun: 24 }),
+  crouch_medium: blow([11, 6, 24], 44, rect(25, -57, 101, 44), 2, "gravity", { level: "low", push: 5, drive: charge(7, 14, 2.5) }),
+  air_light: blow([5, 6, 13], 29, rect(29, -128, 73, 60), 1, "gravity", airLight),
+  air_medium: blow([9, 9, 26], 58, rect(14, -80, 92, 81), 2, "gravity", {
+    level: "high",
+    hopAt: 9,
+    hopVelocity: 6,
+    knockdown: true,
+    cancels: [],
+    hitstop: 8
+  }),
+  // A quick compression sweeps inward. A fixed, telegraphed well rewards a later jump confirm.
+  gravityPull_light: special("gravityPull", "gravity", [8, 1, 16], 24, noBox, {
+    stun: 32,
+    blockstun: 10,
+    push: -7,
+    hitstop: 4
+  }, { field: { ...gravityPulse("pull", 135, 156, 139, 15), gravityFocus: "shear" } }),
+  gravityPull_medium: special("gravityPull", "gravity", [15, 1, 32], 42, noBox, {
+    stun: 39,
+    blockstun: 12,
+    push: -5.2,
+    launch: -12,
+    hitstop: 6,
+    cancels: ["jump", "omnitrix"],
+    cancelWindow: { fromTick: 21, toTick: 41 }
+  }, { field: { ...gravityPulse("pull", 151, 176, 180, 25), gravityFocus: "collapse", activeAge: [7, 13] } }),
+  gravityRepel_light: special("gravityRepel", "gravity", [10, 1, 22], 45, noBox, { stun: 22, push: 8 }, {
+    field: gravityPulse("repel", 81, 112, 113, 11)
+  }),
+  gravityRepel_medium: special("gravityRepel", "gravity", [21, 1, 35], 67, noBox, {
+    stun: 32,
+    push: 11,
+    launch: -8,
+    knockdown: true,
+    hitstop: 8
+  }, { field: gravityPulse("repel", 19, 236, 149, 15) }),
+  gravityDomain_light: special("gravityDomain", "gravity", [17, 1, 25], 0, noBox, {}, {
+    field: { type: "gravityWell", offset: 0, width: 310, height: 179, speed: 0, life: 180 }
+  }),
+  gravityDomain_medium: special("gravityDomain", "gravity", [16, 21, 25], 71, rect(5, -113, 75, 107), {
+    stun: 30,
+    push: 9,
+    knockdown: true,
+    hitstop: 8
+  })
+};
+var echoEchoMoves = {
+  stand_light: blow([4, 4, 9], 19, rect(13, -79, 53, 29), 1, "speed", { stun: 22, push: 1.8 }),
+  stand_medium: blow([8, 5, 16], 35, rect(16, -80, 70, 40), 2, "sonic", { stun: 29, push: 2.8 }),
+  crouch_light: blow([5, 4, 10], 17, rect(12, -43, 50, 27), 1, "speed", { level: "low", stun: 22 }),
+  crouch_medium: blow([9, 5, 18], 32, rect(15, -44, 76, 36), 2, "sonic", { level: "low", stun: 24 }),
+  air_light: blow([4, 5, 11], 20, rect(12, -81, 54, 47), 1, "speed", airLight),
+  air_medium: blow([7, 6, 17], 37, rect(15, -66, 71, 66), 2, "sonic", {
+    level: "high",
+    airHold: 2,
+    stun: 24,
+    cancels: ["special"]
+  }),
+  sonicCry_light: special("sonicCry", "sonic", [7, 1, 15], 34, noBox, { stun: 23, push: 3.8 }, {
+    air: true,
+    field: sonic(31, 73, 14, 14, 13, 18)
+  }),
+  sonicCry_medium: special("sonicCry", "sonic", [14, 1, 25], 53, noBox, { stun: 29, push: 7, hitstop: 7 }, {
+    field: sonic(36, 75, 22, 12, 23, 30)
+  }),
+  echoSplit_light: special("echoSplit", "sonic", [10, 1, 19], 0, noBox, {}, { echoSplit: 1 }),
+  echoSplit_medium: special("echoSplit", "sonic", [16, 8, 23], 0, noBox, {}, { echoSplit: 2 }),
+  echoHarmony_light: special("echoHarmony", "sonic", [8, 1, 20], 34, noBox, { stun: 23, push: 3.5 }, {
+    echoHarmony: 1,
+    field: sonic(30, 70, 17, 12, 10, 24)
+  }),
+  echoHarmony_medium: special("echoHarmony", "sonic", [17, 1, 30], 51, noBox, {
+    stun: 30,
+    push: 5.3,
+    launch: -7,
+    cancels: ["omnitrix"],
+    cancelWindow: { fromTick: 18, toTick: 44 }
+  }, { echoHarmony: 2, field: sonic(34, 76, 25, 13, 16, 32) })
+};
+var gravityStones = {
+  gravityStone_light: special("gravityRepel", "gravity", [0, 1, 0], 10, noBox, {
+    stun: 8,
+    blockstun: 5,
+    push: 2.1,
+    hitstop: 2,
+    meterGain: 0
+  }, { field: { type: "gravityStone", offset: 0, width: 10, height: 0, speed: 9, life: 45, length: 0 } }),
+  gravityStone_medium: special("gravityRepel", "gravity", [0, 1, 0], 14, noBox, {
+    stun: 10,
+    blockstun: 6,
+    push: 2.7,
+    hitstop: 2,
+    meterGain: 0
+  }, { field: { type: "gravityStone", offset: 0, width: 13, height: 0, speed: 13, life: 62, length: 0 } })
+};
+var echoAssists = {
+  echoCopyJab: special("echoCopyJab", "sonic", [0, 1, 0], 8, noBox, { stun: 8, push: 1.5, hitstop: 2, meterGain: 0 }, {
+    field: { ...sonic(18, 62, 12, 0, 2, 17), type: "sonicAssist" }
+  }),
+  echoCopyWave: special("echoCopyWave", "sonic", [0, 1, 0], 12, noBox, { stun: 12, push: 2.7, hitstop: 3, meterGain: 0 }, {
+    field: { ...sonic(24, 70, 15, 13, 11, 20), type: "sonicAssist" }
+  })
+};
+var commands = {
+  xlr8: ["turbo", "cyclone", "lightning"],
+  fourArms: ["tackle", "quad", "seismic"],
+  heatblast: ["fireball", "pillar", "propulsion"],
+  diamondhead: ["spikes", "wall", "shards"],
+  humungousaur: ["colossal", "car", "growth"],
+  feedback: ["storm", "conductor", "discharge"],
+  bigChill: ["frostBreath", "iceDive", "ghostFlight"],
+  ghostfreak: ["ghostCross", "spectralArms", "ghostPhase"],
+  nrg: ["thermal", "armorImpact", "nrgUnseal"],
+  gravattack: ["gravityPull", "gravityRepel", "gravityDomain"],
+  echoEcho: ["sonicCry", "echoSplit", "echoHarmony"],
+  nrgReleased: ["radiantShot", "radiantWave", "nrgSeal"]
+};
+var moves = {
+  ...xlr8Moves,
+  ...fourArmsMoves,
+  ...heatblastMoves,
+  ...diamondheadMoves,
+  ...humungousaurMoves,
+  ...feedbackMoves,
+  ...bigChillMoves,
+  ...ghostfreakMoves,
+  ...nrgMoves,
+  ...nrgReleasedMoves,
+  ...gravattackMoves,
+  ...echoEchoMoves,
+  ...echoAssists,
+  ...gravityStones
+};
+function benSpecialCommand(form, buffer, button) {
+  if (button !== "light" && button !== "medium") return;
+  const set = commands[form];
+  const motion = set && buffer.gokuSpecial(button);
+  if (!motion) return;
+  if (form === "nrg" && motion === "teleport" && button === "medium") return "armorCounter_medium";
+  return `${set[motion === "ki" ? 0 : motion === "kamehameha" ? 1 : 2]}_${button}`;
+}
+function benObjectMove(id) {
+  return moves[id];
+}
+function benProjectile(field) {
+  return ["fireball", "shard", "bolt", "frost", "heat", "beam", "car", "sonic", "sonicAssist", "gravityStone"].includes(field.type);
+}
+function benObjectHeight(object, field) {
+  if (field.type === "spikes") return Math.round(field.height * Math.max(0, Math.min(1, object.age / 5)));
+  if (field.type === "wall") return Math.round(field.height * Math.max(0, Math.min(1, object.age / 6)));
+  return field.height;
+}
+function benBoltLength(object, field) {
+  return Math.min(field.length ?? 0, object.age * field.speed + 17);
+}
+function benObjectShape(object, field, previousX = object.x, previousY = object.y) {
+  if (field.type === "car") {
+    const scale = object.scale ?? 1;
+    return {
+      x: Math.min(object.x, previousX) - 60 * scale,
+      y: Math.min(object.y, previousY) - 25 * scale,
+      w: 120 * scale + Math.abs(object.x - previousX),
+      h: 50 * scale + Math.abs(object.y - previousY)
+    };
+  }
+  if (field.type === "beam") {
+    const reach = Math.min(field.length ?? 0, object.age * 58);
+    const length = object.aim && object.aim > 0 ? Math.min(reach, Math.max(0, (580 - object.y) / object.aim)) : reach;
+    return {
+      a: { x: object.x, y: object.y },
+      b: { x: object.x + object.direction * length, y: object.y + length * (object.aim ?? 0) },
+      r: field.width + Math.floor((object.power ?? 0) / 12)
+    };
+  }
+  if (field.type === "spectralHand" && object.vy) return {
+    x: Math.min(object.x, previousX) - field.width / 2,
+    y: Math.min(object.y, previousY) - 30,
+    w: field.width + Math.abs(object.x - previousX),
+    h: 59 + Math.abs(object.y - previousY)
+  };
+  if (benProjectile(field)) {
+    const tail = benBoltLength(object, field) * object.direction;
+    const rear = object.direction === 1 ? Math.min(previousX, object.x - tail) : Math.max(previousX, object.x - tail);
+    return {
+      a: { x: rear, y: previousY },
+      b: { x: object.x, y: object.y },
+      r: field.width + Math.floor((object.power ?? 0) / 10)
+    };
+  }
+  const height = benObjectHeight(object, field);
+  if (field.gravityFocus === "shear") {
+    const sweep2 = Math.max(0, Math.min(1, (object.age - 2) / 6));
+    const width = field.width - 52 * sweep2;
+    const x = object.x - object.direction * 58 * sweep2;
+    return { x: x - width / 2, y: object.y - height, w: width, h: height };
+  }
+  return {
+    x: Math.min(previousX, object.x) - field.width / 2,
+    y: object.y - height,
+    w: field.width + Math.abs(object.x - previousX),
+    h: height
+  };
+}
+function spectralPaths(move, frame) {
+  const phase = frame - move.startup;
+  const reach = move.ben.spectralReach;
+  const length = reach * Math.max(0, Math.min(1, (phase + 6) / 6, (move.active + 8 - phase) / 8));
+  return Array.from({ length: reach > 100 ? 2 : 1 }, (_, i) => Array.from({ length: 13 }, (_2, step) => {
+    const t = step / 12;
+    return { x: 19 + length * t, y: -95 + i * 14 + Math.round(Math.sin(t * 5.2 - phase * 0.21) * 26 * t) };
+  }));
+}
+function feedbackCablePaths(kind, frame, move) {
+  const phase = frame - move.startup;
+  const t = Math.max(0, Math.min(1, phase / (move.active - 1)));
+  const extension = phase < 0 ? Math.max(0, 1 + phase / 7) : Math.min(1, Math.max(0, (move.active + 7 - phase) / 7));
+  const upper = kind === "upper";
+  const count = upper || kind === "wide" ? 2 : 1;
+  return Array.from({ length: count }, (_, i) => {
+    const origin = { x: 8 + i * 7, y: -121 + i * 6 };
+    const idle = { x: -21 - i * 11, y: -100 + i * 13 };
+    const tip = upper ? { x: 102 + Math.sin(t * Math.PI) * 25 - i * 27, y: -82 - t * 133 - i * 25 } : { x: (kind === "wide" ? 162 - i * 15 : 98) + Math.sin(t * Math.PI) * 25, y: -96 + i * 28 + Math.sin(t * Math.PI * 1.15) * 11 };
+    const end = { x: idle.x + (tip.x - idle.x) * extension, y: idle.y + (tip.y - idle.y) * extension };
+    const control1 = { x: -33 + i * 12, y: -145 - i * 12 };
+    const control2 = { x: end.x * 0.67, y: end.y + (upper ? 37 + i * 6 : -38) };
+    return Array.from({ length: 17 }, (_2, k) => {
+      const a = k / 16, b = 1 - a;
+      const calc = (axis) => Math.round(b ** 3 * origin[axis] + 3 * b * b * a * control1[axis] + 3 * b * a * a * control2[axis] + a ** 3 * end[axis]);
+      return { x: calc("x"), y: calc("y") };
+    });
+  });
+}
+
+// src/engine/ben-forms.ts
+function throwMove(startup3, reach, y) {
+  return {
+    startup: startup3,
+    active: 3,
+    recovery: 21,
+    damage: 0,
+    stun: 0,
+    blockstun: 0,
+    push: 0,
+    launch: 0,
+    level: "throw",
+    kind: "grab",
+    rank: 3,
+    cancels: [],
+    hitstop: 0,
+    box: { x: 15, y, w: reach, h: 38 }
+  };
+}
+function grab(damage2, rise, push, separation, duration = 27, reverse = false, carry = 0, clip2) {
+  const hitTick = Math.round(duration * 2 / 3);
+  return {
+    startFromContact: true,
+    duration,
+    hitTick,
+    damage: damage2,
+    recoveryTicks: duration > 28 ? 18 : 12,
+    reverse,
+    carry,
+    clip: clip2,
+    victimTrack: [
+      { tick: 0, x: separation, y: 0, clip: "grabbed" },
+      { tick: Math.round(duration / 3), x: separation, y: -rise, clip: "grabbed" },
+      { tick: hitTick, x: reverse ? -separation : separation + 18, y: -Math.round(rise / 2), clip: "damageAir" },
+      { tick: duration, x: reverse ? -separation - 30 : separation + 32, y: 0, clip: "damageAir" }
+    ],
+    release: { vx: push, vy: -5, stun: 32 }
+  };
+}
+function stage6Body(movement, width, height, damageTaken, moves2, grabStyle, throwEffect, throwStartup) {
+  const body2 = (w, y, h) => ({ x: -Math.round(w / 2), y, w, h });
+  const upper = Math.round(height * 0.54);
+  return {
+    movement,
+    width,
+    pushHeight: Math.round(height * 0.67),
+    damageTaken,
+    throwEffect,
+    hurtboxes: {
+      standing: [body2(width, -height, upper), body2(width - 6, upper - height, height - upper)],
+      crouching: [body2(width + 8, -Math.round(height * 0.69), Math.round(height * 0.69))],
+      air: [body2(width + 2, -height + 12, height - 24)]
+    },
+    moves: { ...moves2, throw: throwMove(throwStartup, Math.round(width * 0.73) + 12, -105) },
+    grab: grabStyle
+  };
+}
+var nrgReleasedForm = stage6Body({
+  speed: 6.8,
+  jump: -14,
+  gravity: 0.59,
+  locomotion: {
+    backSpeed: 5.1,
+    airSpeed: 6.8,
+    jumpStartup: 5,
+    landingTicks: 7,
+    dashForward: [5, 9, 14, 17, 18, 17, 16, 13, 11, 8, 5, 3],
+    backdash: [4, 7, 11, 13, 14, 13, 11, 9, 7, 5, 3, 2]
+  }
+}, 53, 151, 1.1, nrgReleasedMoves, grab(74, 23, 9, 54, 19), "thermal", 7);
+var benForms = {
+  bigChill: stage6Body({
+    speed: 5.7,
+    jump: -15.4,
+    gravity: 0.58,
+    locomotion: {
+      backSpeed: 4.6,
+      airSpeed: 7.2,
+      jumpStartup: 5,
+      landingTicks: 7,
+      dashForward: [4, 8, 12, 15, 17, 16, 15, 12, 9, 7, 4, 2],
+      backdash: [4, 7, 10, 13, 14, 13, 11, 9, 6, 4, 3, 2]
+    }
+  }, 49, 145, 1.02, bigChillMoves, grab(75, 26, 10, 52, 20), "ice", 7),
+  ghostfreak: stage6Body({
+    speed: 5.9,
+    jump: -13.2,
+    gravity: 0.67,
+    locomotion: {
+      backSpeed: 4.7,
+      airSpeed: 5.6,
+      jumpStartup: 6,
+      landingTicks: 8,
+      dashForward: [5, 9, 14, 18, 18, 16, 14, 12, 8, 6, 4, 2],
+      backdash: [4, 8, 11, 13, 14, 13, 11, 9, 7, 5, 3, 2]
+    }
+  }, 51, 146, 1.03, ghostfreakMoves, grab(73, 30, 9, 53, 21), "spectral", 8),
+  gravattack: stage6Body({
+    speed: 3.5,
+    jump: -13,
+    gravity: 0.72,
+    locomotion: {
+      backSpeed: 2.65,
+      airSpeed: 3.5,
+      jumpStartup: 8,
+      landingTicks: 11,
+      dashForward: [3, 6, 9, 12, 13, 13, 11, 9, 7, 5, 3, 2],
+      backdash: [3, 5, 7, 9, 9, 8, 7, 6, 5, 3, 2, 1]
+    }
+  }, 91, 180, 0.95, gravattackMoves, grab(91, 54, 10, 70, 30), "gravity", 9),
+  echoEcho: stage6Body({
+    speed: 6.25,
+    jump: -14.3,
+    gravity: 0.69,
+    locomotion: {
+      backSpeed: 4.8,
+      airSpeed: 5.9,
+      jumpStartup: 5,
+      landingTicks: 7,
+      dashForward: [5, 9, 13, 16, 16, 15, 13, 10, 7, 5, 3],
+      backdash: [4, 8, 11, 13, 12, 10, 8, 6, 4, 2]
+    }
+  }, 43, 101, 1.06, echoEchoMoves, grab(64, 14, 7, 49, 20), "sonic", 7),
+  nrg: stage6Body({
+    speed: 3.4,
+    jump: -12.4,
+    gravity: 0.91,
+    locomotion: {
+      backSpeed: 2.6,
+      airSpeed: 3.4,
+      jumpStartup: 8,
+      landingTicks: 12,
+      dashForward: [3, 5, 8, 11, 12, 12, 10, 9, 7, 6, 4, 3, 2],
+      backdash: [2, 4, 6, 8, 9, 9, 8, 7, 5, 4, 3, 2, 1]
+    }
+  }, 86, 161, 0.92, nrgMoves, grab(97, 37, 12, 68, 26), "metal", 10),
+  xlr8: {
+    movement: {
+      speed: 8.8,
+      jump: -14.7,
+      gravity: 0.72,
+      locomotion: {
+        backSpeed: 6.2,
+        airSpeed: 7.1,
+        jumpStartup: 5,
+        landingTicks: 7,
+        dashForward: [7, 13, 20, 23, 24, 24, 23, 21, 18, 14, 10, 6],
+        backdash: [5, 10, 15, 18, 18, 17, 15, 12, 9, 7, 5, 3]
+      }
+    },
+    width: 44,
+    pushHeight: 84,
+    damageTaken: 1.06,
+    hurtboxes: {
+      standing: [{ x: -16, y: -133, w: 45, h: 49 }, { x: -23, y: -87, w: 47, h: 87 }],
+      crouching: [{ x: -26, y: -88, w: 57, h: 88 }],
+      air: [{ x: -23, y: -122, w: 52, h: 113 }]
+    },
+    moves: {
+      ...xlr8Moves,
+      throw: throwMove(7, 48, -108)
+    },
+    grab: grab(70, 30, 11, 48, 17, true, 46)
+  },
+  fourArms: {
+    movement: {
+      speed: 3.6,
+      jump: -15.2,
+      gravity: 0.96,
+      locomotion: {
+        backSpeed: 2.7,
+        airSpeed: 3.4,
+        jumpStartup: 8,
+        landingTicks: 12,
+        dashForward: [2, 3, 5, 8, 11, 13, 13, 12, 11, 9, 7, 6, 4, 2],
+        backdash: [2, 4, 6, 8, 10, 10, 9, 8, 7, 5, 4, 3, 2, 1]
+      }
+    },
+    width: 84,
+    pushHeight: 114,
+    damageTaken: 0.95,
+    hurtboxes: {
+      standing: [
+        { x: -37, y: -163, w: 77, h: 101 },
+        { x: -37, y: -63, w: 76, h: 63 },
+        { x: -51, y: -131, w: 18, h: 52 },
+        { x: 39, y: -132, w: 23, h: 54 }
+      ],
+      crouching: [{ x: -45, y: -112, w: 92, h: 112 }],
+      air: [{ x: -41, y: -153, w: 83, h: 139 }]
+    },
+    moves: {
+      ...fourArmsMoves,
+      throw: throwMove(11, 63, -105)
+    },
+    grab: grab(102, 48, 10, 69)
+  },
+  heatblast: {
+    movement: {
+      speed: 5.5,
+      jump: -13.8,
+      gravity: 0.65,
+      locomotion: {
+        backSpeed: 4.3,
+        airSpeed: 5,
+        jumpStartup: 6,
+        landingTicks: 8,
+        dashForward: [4, 7, 11, 15, 17, 17, 16, 14, 12, 10, 8, 5, 3],
+        backdash: [4, 6, 10, 13, 14, 14, 13, 11, 9, 7, 5, 4, 2]
+      }
+    },
+    width: 56,
+    pushHeight: 96,
+    damageTaken: 1,
+    hurtboxes: {
+      standing: [{ x: -23, y: -122, w: 52, h: 71 }, { x: -29, y: -52, w: 60, h: 52 }],
+      crouching: [{ x: -30, y: -94, w: 62, h: 94 }],
+      air: [{ x: -29, y: -126, w: 58, h: 113 }]
+    },
+    moves: {
+      ...heatblastMoves,
+      throw: throwMove(9, 54, -107)
+    },
+    grab: grab(82, 30, 9, 56)
+  },
+  diamondhead: {
+    movement: {
+      speed: 4.9,
+      jump: -13.5,
+      gravity: 0.72,
+      locomotion: {
+        backSpeed: 3.8,
+        airSpeed: 4.6,
+        jumpStartup: 6,
+        landingTicks: 9,
+        dashForward: [4, 6, 9, 12, 14, 14, 13, 11, 9, 7, 5, 3],
+        backdash: [4, 6, 9, 11, 12, 11, 9, 7, 5, 4, 3, 2]
+      }
+    },
+    width: 66,
+    pushHeight: 101,
+    damageTaken: 0.97,
+    hurtboxes: {
+      standing: [{ x: -27, y: -140, w: 57, h: 76 }, { x: -33, y: -65, w: 67, h: 65 }],
+      crouching: [{ x: -35, y: -103, w: 71, h: 103 }],
+      air: [{ x: -31, y: -137, w: 65, h: 126 }]
+    },
+    moves: { ...diamondheadMoves, throw: throwMove(8, 57, -105) },
+    grab: grab(87, 27, 10, 61, 24),
+    throwEffect: "crystal"
+  },
+  humungousaur: {
+    movement: {
+      speed: 3.4,
+      jump: -12.6,
+      gravity: 0.91,
+      locomotion: {
+        backSpeed: 2.6,
+        airSpeed: 3.1,
+        jumpStartup: 9,
+        landingTicks: 13,
+        dashForward: [2, 3, 5, 8, 11, 12, 12, 11, 10, 8, 6, 5, 4, 3, 2],
+        backdash: [2, 3, 5, 7, 9, 9, 8, 7, 6, 5, 4, 3, 2, 2, 1]
+      }
+    },
+    width: 94,
+    pushHeight: 121,
+    damageTaken: 0.96,
+    hurtboxes: {
+      standing: [{ x: -41, y: -174, w: 91, h: 114 }, { x: -46, y: -62, w: 92, h: 62 }],
+      crouching: [{ x: -48, y: -120, w: 99, h: 120 }],
+      air: [{ x: -45, y: -166, w: 94, h: 154 }]
+    },
+    moves: { ...humungousaurMoves, throw: throwMove(10, 65, -105) },
+    grab: grab(98, 51, 12, 73, 26, false, 9),
+    throwEffect: "colossus"
+  },
+  feedback: {
+    movement: {
+      speed: 5.8,
+      jump: -14.2,
+      gravity: 0.66,
+      locomotion: {
+        backSpeed: 4.5,
+        airSpeed: 6.3,
+        jumpStartup: 5,
+        landingTicks: 7,
+        dashForward: [5, 9, 13, 16, 17, 17, 15, 13, 10, 8, 5, 3],
+        backdash: [4, 8, 11, 13, 14, 13, 11, 9, 7, 5, 4, 2]
+      }
+    },
+    width: 49,
+    pushHeight: 96,
+    damageTaken: 1.03,
+    hurtboxes: {
+      standing: [{ x: -19, y: -130, w: 39, h: 63 }, { x: -25, y: -70, w: 50, h: 70 }],
+      crouching: [{ x: -27, y: -91, w: 55, h: 91 }],
+      air: [{ x: -22, y: -122, w: 49, h: 108 }]
+    },
+    moves: { ...feedbackMoves, throw: throwMove(7, 51, -103) },
+    grab: grab(77, 20, 9, 52, 20),
+    throwEffect: "electric"
+  }
+};
+function benGrabFor(form, id) {
+  if (!form) return;
+  if (id === "quad_light") return quadLight;
+  if (id === "quad_medium") return quadMedium;
+  if (id.startsWith("spectralArms_")) return id.endsWith("_medium") ? huntK : huntJ;
+  if (id.startsWith("conductor_")) return id.endsWith("_medium") ? conductorK : conductorJ;
+  if (id.startsWith("ghostPhase_")) return id.endsWith("_medium") ? nightmareK : nightmareJ;
+  return form.grab;
+}
+var conductorJ = { ...grab(58, 15, 9, 64, 20, false, 0, "conductorHold"), impacts: [13] };
+var conductorK = {
+  ...grab(77, 34, 4, 70, 28, false, 0, "conductorHoldK"),
+  impacts: [12, 19],
+  knockdown: false,
+  pursuit: true,
+  release: { vx: 2.7, vy: -16, stun: 41 }
+};
+function spectralSequence(kind, damage2, duration, impacts) {
+  const hunt = kind === "hunt";
+  const peak = Math.round(duration * 0.42);
+  return {
+    ...grab(
+      damage2,
+      hunt ? 96 : 30,
+      hunt ? 8 : 13,
+      70,
+      duration,
+      false,
+      0,
+      kind + (impacts.length > (hunt ? 2 : 3) ? "K" : "J")
+    ),
+    scene: kind,
+    impacts,
+    victimTrack: [
+      { tick: 0, x: 62, y: 0, clip: "grabbed" },
+      { tick: peak, x: 80, y: hunt ? -100 : -23, clip: "damageAir" },
+      { tick: duration - 7, x: 93, y: hunt ? -48 : -29, clip: "damageAir" },
+      { tick: duration, x: 109, y: 0, clip: "damageAir" }
+    ],
+    release: { vx: hunt ? 7 : 12, vy: -4, stun: 33 }
+  };
+}
+var huntJ = spectralSequence("hunt", 65, 33, [15, 28]);
+var huntK = spectralSequence("hunt", 88, 45, [14, 25, 38]);
+var nightmareJ = spectralSequence("nightmare", 79, 37, [16, 23, 31]);
+var nightmareK = spectralSequence("nightmare", 110, 50, [18, 25, 34, 43]);
+var quadLight = grab(113, 29, 7, 64, 22, false, 0, "quad_light_hold");
+var quadMedium = grab(145, 70, 14, 70, 34, false, 0, "quad_medium_hold");
+
+// src/engine/ben-omnitrix.ts
+var benId = "ben";
+var alienXSuper = { id: "alienX", name: "Alien X \u2014 Reescrita da Realidade", command: "ultimate", cost: 100 };
+var benAliens = [
+  { id: "xlr8", name: "XLR8" },
+  { id: "fourArms", name: "Quatro Bra\xE7os" },
+  { id: "feedback", name: "Feedback" },
+  { id: "gravattack", name: "Gravattack" },
+  { id: "ghostfreak", name: "Fantasm\xE1tico" },
+  { id: "bigChill", name: "Friagem" },
+  { id: "nrg", name: "NRG" },
+  { id: "diamondhead", name: "Diamante" },
+  { id: "echoEcho", name: "Eco Eco" },
+  { id: "heatblast", name: "Chama" },
+  { id: "humungousaur", name: "Enormossauro" }
+];
+var omnitrixHoldTicks = 15;
+var omnitrixSwapTicks = 9;
+var omnitrixDialTicks = 8;
+var newOmnitrix = () => ({
+  active: "human",
+  selected: benAliens[0].id,
+  holdTicks: 0,
+  dialTicks: 0,
+  crouchExit: 0,
+  noSpace: 0,
+  usedSpecials: [],
+  comboSwap: false,
+  objects: [],
+  growthCooldown: 0,
+  charge: 0,
+  chargeTicks: 0,
+  absorbFlash: 0
+});
+var omnitrixCanBrowse = (state) => state === "idle" || state === "walk" || state === "crouch" || state === "air" || state === "jumpStart" || state === "landing" || state === "dash" || state === "attack";
+function cancelOmnitrix(state) {
+  state.holdTicks = 0;
+  state.dialTicks = 0;
+  state.crouchExit = 0;
+  delete state.transition;
+}
+function advanceDial(state) {
+  const current = benAliens.findIndex((form) => form.id === state.selected);
+  state.selected = benAliens[(current + 1) % benAliens.length].id;
+  state.dialTicks = omnitrixDialTicks;
+}
+function tickOmnitrix(state, input, canConfirm, place) {
+  if (state.dialTicks > 0) state.dialTicks--;
+  if (state.crouchExit > 0) state.crouchExit--;
+  if (state.noSpace > 0) state.noSpace--;
+  if (state.transition && --state.transition.ticks === 0) {
+    if (canConfirm) {
+      if (place(state.transition.to)) {
+        state.active = state.transition.to;
+        delete state.growth;
+        state.noSpace = 0;
+      } else state.noSpace = 35;
+    }
+    delete state.transition;
+  }
+  if (!input.omnitrix) {
+    state.holdTicks = 0;
+    return;
+  }
+  const edge = input.pressed.includes("heavy");
+  if (edge && state.holdTicks) {
+    if (state.holdTicks < omnitrixHoldTicks) advanceDial(state);
+    state.holdTicks = 0;
+  }
+  if (!input.omnitrix.held) {
+    if (state.holdTicks < omnitrixHoldTicks && (state.holdTicks || edge))
+      advanceDial(state);
+    state.holdTicks = 0;
+    return;
+  }
+  if (!state.holdTicks && !edge) return;
+  if (state.holdTicks === omnitrixHoldTicks) return;
+  if (++state.holdTicks === omnitrixHoldTicks && canConfirm && benForms[state.selected] && !state.transition && state.active !== state.selected)
+    state.transition = { to: state.selected, ticks: omnitrixSwapTicks };
+}
+
+// src/engine/ben-alien-x.ts
+var alienXId = alienXSuper.id;
+var alienXConfig = {
+  duration: 286,
+  minimumComboScale: 0.68,
+  phases: { reveal: 34, dimension: 69, grasp: 120, rewrite: 210, return: 253 },
+  hits: [{ tick: 214, damage: 309, kind: "ground", hold: 7 }]
+};
+var alienXMove = {
+  kind: alienXId,
+  super: true,
+  cost: alienXSuper.cost,
+  startup: 23,
+  active: 6,
+  recovery: 39,
+  damage: 26,
+  stun: 16,
+  blockstun: 0,
+  push: 0,
+  launch: 0,
+  rank: 4,
+  level: "mid",
+  cancels: [],
+  hitstop: 6,
+  box: { x: 24, y: -99, w: 152, h: 74 }
+};
+function canStartAlienX(f) {
+  return f.match?.phase === "fight" && !f.match.capture && !f.match.cinematicActive && !f.omnitrix?.transition && !f.airborne && !f.knockedDown && f.meter >= alienXSuper.cost && (["idle", "walk", "dash", "crouch", "landing", "jumpStart"].includes(f.state) || f.hitConfirmed && f.canSuperCancel());
+}
+var floor = 580;
+var clamp4 = (n, min, max) => Math.max(min, Math.min(max, n));
+var ease2 = (t, from, to) => {
+  const progress3 = clamp4((t - from) / (to - from), 0, 1);
+  return progress3 * progress3 * (3 - 2 * progress3);
+};
+var mix2 = (a, b, t) => a + (b - a) * t;
+function alienXScene(s) {
+  const t = s.tick, f = s.facing, p3 = alienXConfig.phases;
+  const center = clamp4(s.targetX - 82 * f, 260, 1020);
+  const departure = ease2(t, p3.dimension, p3.grasp);
+  const home = ease2(t, 235, alienXConfig.duration - 11);
+  const showSpace = ease2(t, 59, 88) * (1 - ease2(t, 219, 248));
+  const spin = ease2(t, 119, 200) * (1 - ease2(t, 203, 229));
+  const clipStart = t < p3.reveal ? 0 : t < p3.grasp ? p3.reveal : t < p3.rewrite ? p3.grasp : t < p3.return ? p3.rewrite : p3.return;
+  const attacker = {
+    x: Math.round(mix2(mix2(s.originX, center - 105 * f, departure), s.originX, home)),
+    y: Math.round(floor - 95 * showSpace),
+    facing: f,
+    clip: t < p3.reveal ? "alienXWatch" : t < p3.grasp ? "alienXReveal" : t < p3.rewrite ? "alienXGrasp" : t < p3.return ? "alienXRewrite" : "alienXReturn",
+    tick: t - clipStart
+  };
+  const orbit = Math.sin((t - 102) * 0.055) * spin;
+  const exit = clamp4(s.targetX + 82 * f, 55, 1225);
+  const victim = {
+    // Quantize the authoritative positions, including the trigonometric orbit.
+    x: Math.round(mix2(mix2(s.targetX, center + (126 + 82 * orbit) * f, departure), exit, home)),
+    y: Math.round(mix2(s.targetY, floor, ease2(t, 0, 48)) - (189 + orbit * 39) * showSpace),
+    facing: -f,
+    clip: showSpace > 0.2 ? "launched" : "grabbed",
+    tick: t
+  };
+  const watchClose = ease2(t, 0, 22) * (1 - ease2(t, 32, 66));
+  const zoom = 1 + 0.44 * watchClose + 0.22 * showSpace;
+  const camera = {
+    x: mix2(
+      640,
+      mix2((attacker.x + victim.x) / 2, attacker.x + 29 * f, watchClose),
+      Math.max(watchClose, showSpace)
+    ),
+    y: mix2(360, mix2(350, floor - 73, watchClose), Math.max(watchClose, showSpace)),
+    scale: zoom,
+    angle: orbit * 0.045,
+    shakeX: t >= 214 && t < 226 ? Math.cos(t * 2.4) * (226 - t) : 0,
+    shakeY: 0
+  };
+  return {
+    attacker,
+    victim,
+    camera,
+    showSpace,
+    phase: t < p3.reveal ? "watch" : t < p3.dimension ? "reveal" : t < p3.grasp ? "dimension" : t < p3.rewrite ? "grasp" : t < p3.return ? "rewrite" : "return",
+    flash: Math.max(0, 1 - Math.abs(t - p3.reveal) / 8) * 0.71 + Math.max(0, 1 - Math.abs(t - 214) / 10) * 0.88
+  };
 }
 
 // src/data/luffy-specials.json
@@ -20872,28 +22230,28 @@ function canStartKirin(f) {
   const phase = f.sasukeCurse?.phase;
   return f.meter >= f.meterMaximum && !f.airborne && !f.match?.capture && (!phase || phase === "active" || phase === "cooldown") && (["idle", "walk", "crouch", "dash", "landing", "jumpStart"].includes(f.state) || f.hitConfirmed && f.canSuperCancel());
 }
-var clamp4 = (v, a, b) => Math.max(a, Math.min(b, v));
-var mix2 = (a, b, t) => a + (b - a) * t;
-var progress2 = (t, a, b) => clamp4((t - a) / (b - a), 0, 1);
+var clamp5 = (v, a, b) => Math.max(a, Math.min(b, v));
+var mix3 = (a, b, t) => a + (b - a) * t;
+var progress2 = (t, a, b) => clamp5((t - a) / (b - a), 0, 1);
 var smooth2 = (t) => t * t * (3 - 2 * t);
-var floor = 580;
+var floor2 = 580;
 var p = sasuke_kirin_default.phases;
 function kirinScene(s) {
   const t = s.tick, f = s.facing;
   const land = smooth2(progress2(t, 0, 14));
   const afterImpact = t - p.impact;
   const recoil = smooth2(progress2(t, p.impact, p.impact + 13));
-  const targetX = clamp4(s.targetX + 33 * f * recoil, 40, 1240);
+  const targetX = clamp5(s.targetX + 33 * f * recoil, 40, 1240);
   const actor = {
     x: s.originX,
-    y: floor,
+    y: floor2,
     facing: f,
     clip: t < p.command ? "kirinPrepare" : t < p.dive ? "kirinCommand" : "kirinRelease",
     tick: t < p.command ? t : t < p.dive ? t - p.command : t - p.dive
   };
   const victim = {
     x: targetX,
-    y: mix2(s.targetY, floor, land) - (afterImpact >= 0 && afterImpact < 16 ? 34 * Math.sin(Math.PI * afterImpact / 16) : 0),
+    y: mix3(s.targetY, floor2, land) - (afterImpact >= 0 && afterImpact < 16 ? 34 * Math.sin(Math.PI * afterImpact / 16) : 0),
     facing: -f,
     clip: t < p.impact ? "damageMedium" : afterImpact < 16 ? "damageAir" : "downed",
     tick: t < p.impact ? Math.min(7, t) : afterImpact < 16 ? afterImpact : afterImpact - 16
@@ -20915,7 +22273,7 @@ function kirinScene(s) {
   const next = keys.findIndex((k) => t <= k[0]);
   const a = keys[Math.max(0, next - 1)], b = keys[Math.max(0, next)];
   const u2 = a === b ? 0 : smooth2(progress2(t, a[0], b[0]));
-  const scale = mix2(a[3], b[3], u2);
+  const scale = mix3(a[3], b[3], u2);
   const shake = afterImpact >= 0 ? Math.max(0, 12 - afterImpact) : 0;
   const facing = s.targetX < 420 ? -1 : s.targetX > 860 ? 1 : f;
   const descent = progress2(t, p.dive, p.impact);
@@ -20924,9 +22282,9 @@ function kirinScene(s) {
     cel: t < p.dive ? Math.floor(Math.max(0, t - p.reveal) / 13) % 2 : descent < 0.45 ? 2 : 3,
     alpha: t < p.dive ? smooth2(progress2(t, p.reveal, p.reveal + 17)) : 1,
     facing,
-    x: t < p.dive ? clamp4(s.targetX + facing * 160, 390, 890) + Math.sin((t - p.reveal) * 0.16) * 16 : mix2(clamp4(s.targetX - facing * 174, 130, 1150), s.targetX, descent),
-    y: t < p.dive ? 223 + 8 * Math.sin(t * 0.12) : mix2(164, floor - 53, descent ** 2.25),
-    scale: t < p.dive ? 1.23 + Math.sin(t * 0.19) * 0.028 : mix2(1.1, 1.4, descent)
+    x: t < p.dive ? clamp5(s.targetX + facing * 160, 390, 890) + Math.sin((t - p.reveal) * 0.16) * 16 : mix3(clamp5(s.targetX - facing * 174, 130, 1150), s.targetX, descent),
+    y: t < p.dive ? 223 + 8 * Math.sin(t * 0.12) : mix3(164, floor2 - 53, descent ** 2.25),
+    scale: t < p.dive ? 1.23 + Math.sin(t * 0.19) * 0.028 : mix3(1.1, 1.4, descent)
   };
   const clear = 1 - smooth2(progress2(t, p.clear, sasuke_kirin_default.duration));
   const clouds = Math.min(1, 0.18 * s.storm + smooth2(progress2(t, 0, p.reveal))) * clear;
@@ -20937,8 +22295,8 @@ function kirinScene(s) {
     dragon,
     clouds,
     camera: {
-      x: clamp4(mix2(a[1], b[1], u2), 640 / scale, 1280 - 640 / scale),
-      y: mix2(a[2], b[2], u2),
+      x: clamp5(mix3(a[1], b[1], u2), 640 / scale, 1280 - 640 / scale),
+      y: mix3(a[2], b[2], u2),
       scale,
       shakeX: shake * ((t + s.hold) % 2 ? 1 : -1),
       shakeY: Math.floor(shake * 0.42) * ((t + s.hold) % 3 ? 1 : -1)
@@ -21804,9 +23162,9 @@ var chainFinishes = {
   }
 };
 var chainBoundX = (x) => Math.round(Math.max(40, Math.min(1240, x)));
-var ease2 = (t) => t * t * (3 - 2 * t);
-var mix3 = (a, b, t) => a + (b - a) * t;
-function chainPose(route, from, age, facing, floor3) {
+var ease3 = (t) => t * t * (3 - 2 * t);
+var mix4 = (a, b, t) => a + (b - a) * t;
+function chainPose(route, from, age, facing, floor4) {
   const finish = chainFinishes[route];
   const end = finish.keys.at(-1)[0];
   const startGap = (from.victim.x - from.actor.x) * facing;
@@ -21814,9 +23172,9 @@ function chainPose(route, from, age, facing, floor3) {
     [
       0,
       0,
-      floor3 - from.actor.y,
+      floor4 - from.actor.y,
       startGap,
-      floor3 - from.victim.y
+      floor4 - from.victim.y
     ],
     ...finish.keys.map(([tick, x2, y2, gap2, targetY]) => [tick, x2, y2, gap2 + (finish.relativeGap ? startGap : 0), targetY])
   ];
@@ -21824,19 +23182,19 @@ function chainPose(route, from, age, facing, floor3) {
   const next = keys[Math.max(1, index < 0 ? keys.length - 1 : index)];
   const prev = keys[keys.indexOf(next) - 1];
   const t = Math.max(0, Math.min(1, (age - prev[0]) / (next[0] - prev[0])));
-  const f = finish.slam && next[0] === finish.hit ? t * t : ease2(t);
-  const x = chainBoundX(from.actor.x + mix3(prev[1], next[1], f) * facing);
-  const y = Math.round(floor3 - mix3(prev[2], next[2], f));
-  const gap = mix3(prev[3], next[3], f) * facing;
+  const f = finish.slam && next[0] === finish.hit ? t * t : ease3(t);
+  const x = chainBoundX(from.actor.x + mix4(prev[1], next[1], f) * facing);
+  const y = Math.round(floor4 - mix4(prev[2], next[2], f));
+  const gap = mix4(prev[3], next[3], f) * facing;
   return {
     actor: { x, y },
     victim: {
       x: chainBoundX(x + gap),
-      y: Math.round(floor3 - mix3(prev[4], next[4], f))
+      y: Math.round(floor4 - mix4(prev[4], next[4], f))
     },
     end,
     clip: route === "release" ? "kaguneThrow" : "chain_" + route,
-    victimClip: finish.slam && age >= finish.hit ? "downed" : age >= finish.hit ? "damageAir" : y < floor3 - 30 || prev[4] > 65 ? "launched" : "grabbed"
+    victimClip: finish.slam && age >= finish.hit ? "downed" : age >= finish.hit ? "damageAir" : y < floor4 - 30 || prev[4] > 65 ? "launched" : "grabbed"
   };
 }
 
@@ -21907,10 +23265,10 @@ function samplePath(nodes) {
   }
   return spine;
 }
-function directedKagune(id, lumbar, facing, reach, bend, floor3, underground = false) {
+function directedKagune(id, lumbar, facing, reach, bend, floor4, underground = false) {
   const profile = profiles[id];
   const origin = p2(lumbar.x + profile.root.x * facing, lumbar.y + profile.root.y);
-  const depth = floor3 - origin.y;
+  const depth = floor4 - origin.y;
   const nodes = underground ? [
     p2(0, 0),
     p2(3, depth - 12),
@@ -21930,7 +23288,7 @@ function directedKagune(id, lumbar, facing, reach, bend, floor3, underground = f
     const t = i / (list.length - 1);
     return p2(
       origin.x + pt.x * facing,
-      underground ? y : Math.min(y, floor3 - Math.max(7, profile.width * (1 - t) ** 0.59 + 2))
+      underground ? y : Math.min(y, floor4 - Math.max(7, profile.width * (1 - t) ** 0.59 + 2))
     );
   });
   const widths = spine.map((_, i) => Math.max(0.45, profile.width * (1 - i / (spine.length - 1)) ** 0.59));
@@ -21948,7 +23306,7 @@ function directedKagune(id, lumbar, facing, reach, bend, floor3, underground = f
     phase: "extended",
     motion: "grabConnected",
     layer: "behind",
-    floorClip: underground ? floor3 : void 0
+    floorClip: underground ? floor4 : void 0
   };
 }
 
@@ -22023,17 +23381,17 @@ function centipedeConversion(match, capture, tick = capture?.tick ?? 0) {
   if (a.data.id !== "kaneki" || a.state !== "grabbing" || a.health <= 0 || a.meter < c.cost || b.state !== "grabbed" || b.health <= 0 || match.temporal.isFrozen(a.id)) return;
   return chain.origin;
 }
-var clamp5 = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
-var unit = (n) => clamp5(n, 0, 1);
+var clamp6 = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
+var unit = (n) => clamp6(n, 0, 1);
 var centipedeEase = (n) => {
   const t = unit(n);
   return t * t * (3 - 2 * t);
 };
-var mix4 = (a, b, t) => a + (b - a) * t;
+var mix5 = (a, b, t) => a + (b - a) * t;
 var FLOOR = 580;
 function openerReach(t) {
   if (t < c.startup) return 24 + 19 * centipedeEase((t - 12) / (c.startup - 12));
-  if (t < c.startup + c.active) return mix4(43, c.reach, (t - c.startup) / (c.active - 1));
+  if (t < c.startup + c.active) return mix5(43, c.reach, (t - c.startup) / (c.active - 1));
   return c.reach * (1 - centipedeEase((t - c.startup - c.active) / 13));
 }
 function centipedeOpener(f) {
@@ -22111,8 +23469,8 @@ var phases = [
   [c.phases.return, "return"]
 ];
 function centipedeScene(s) {
-  const t = clamp5(s.tick, 0, c.duration), p3 = c.phases;
-  const center = clamp5((s.originX + s.targetX) / 2, 282, 998);
+  const t = clamp6(s.tick, 0, c.duration), p3 = c.phases;
+  const center = clamp6((s.originX + s.targetX) / 2, 282, 998);
   const wall = center < 640 || center === 640 && s.facing < 0 ? 40 : 1240;
   const wallSide = wall === 40 ? -1 : 1;
   const edgeDirection = wallSide * s.facing;
@@ -22130,10 +23488,10 @@ function centipedeScene(s) {
     from,
     early,
     ...attacks,
-    [214, mix4(87, braced, 0.52), 119, 55, 0],
+    [214, mix5(87, braced, 0.52), 119, 55, 0],
     [226, braced, 185, 55, 0],
     [232, braced, 185, 55, 0],
-    [238, mix4(braced, 55, 0.46), 156, 55, 0],
+    [238, mix5(braced, 55, 0.46), 156, 55, 0],
     [246, 55 + edgeDirection * 54, 52, 63, 19],
     [254, afterWall, 0, 80, 0],
     [266, afterWall - edgeDirection * 12, 0, 80, 0],
@@ -22156,11 +23514,11 @@ function centipedeScene(s) {
   const f = unit((t - a[0]) / (b[0] - a[0]));
   const accelerating = t >= p3.descent && t <= p3.ground;
   const fA = accelerating ? f * (0.47 + 0.53 * f) : t >= 68 && t <= 96 || t >= 205 && t <= 226 || t >= 232 && t <= 254 ? f : centipedeEase(f);
-  const worldX = (x) => clamp5(center + x * s.facing, 40, 1240);
-  const ax = t ? Math.round(worldX(mix4(a[1], b[1], fA))) : s.originX;
-  const ay = t ? Math.round(FLOOR - mix4(a[2], b[2], fA)) : s.originY;
-  const bx = t ? Math.round(worldX(mix4(a[3], b[3], f))) : s.targetX;
-  const by = t ? Math.round(FLOOR - mix4(a[4], b[4], accelerating ? f * (0.42 + 0.58 * f) : centipedeEase(f))) : s.targetY;
+  const worldX = (x) => clamp6(center + x * s.facing, 40, 1240);
+  const ax = t ? Math.round(worldX(mix5(a[1], b[1], fA))) : s.originX;
+  const ay = t ? Math.round(FLOOR - mix5(a[2], b[2], fA)) : s.originY;
+  const bx = t ? Math.round(worldX(mix5(a[3], b[3], f))) : s.targetX;
+  const by = t ? Math.round(FLOOR - mix5(a[4], b[4], accelerating ? f * (0.42 + 0.58 * f) : centipedeEase(f))) : s.targetY;
   const look = Math.abs(bx - ax) < 8 ? s.facing : bx > ax ? 1 : -1;
   const facing = t < 95 || t >= 129 && t < 158 || t >= 185 && t < p3.wall ? s.facing : t < 129 || t < 185 && t >= 158 ? -s.facing : t >= p3.wall && t < 218 ? wallSide : t >= 218 && t < p3.capture ? -wallSide : look;
   const armor = centipedeEase((t - 10) / 47) * (1 - centipedeEase((t - 412) / 31));
@@ -22175,9 +23533,9 @@ function centipedeScene(s) {
   const stare = centipedeEase((t - p3.windup) / 9) * (1 - centipedeEase((t - p3.descent) / 13));
   const ending = centipedeEase((t - p3.return) / 17) * (1 - centipedeEase((t - 423) / 17));
   const scale = 1 + (0.21 * close - 0.08 * armor - 0.14 * wide - 0.09 * fly + 0.075 * stare + 0.13 * ending) * exit;
-  const focusX = mix4((ax + bx) / 2 - facing * 22 * armor, ax, close * 0.64 + stare * 0.35 + ending * 0.48);
+  const focusX = mix5((ax + bx) / 2 - facing * 22 * armor, ax, close * 0.64 + stare * 0.35 + ending * 0.48);
   const bounds = scale >= 1 ? 640 / scale : 522;
-  const cameraX = mix4(640, clamp5(focusX, bounds, 1280 - bounds), exit * (1 - 0.68 * wide));
+  const cameraX = mix5(640, clamp6(focusX, bounds, 1280 - bounds), exit * (1 - 0.68 * wide));
   const shake = t >= p3.ground && t < p3.ground + 17 ? Math.round(17 * (1 - (t - p3.ground) / 17) * (s.hold ? s.hold / 16 : 0.58)) : 0;
   const tremor = [0, -1, 1, -1, 0, 1][(t + s.hold) % 6];
   return {
@@ -22306,7 +23664,7 @@ var swordProfile = (rank) => swords[rank];
 var rushProfile = (rank) => rush[rank];
 var rushTipLive = (rank, activeAge) => activeAge >= (rank === 2 ? 3 : 2);
 var fraction = (n) => Math.max(0, Math.min(1, n));
-var ease3 = (n) => {
+var ease4 = (n) => {
   const t = fraction(n);
   return t * t * (3 - 2 * t);
 };
@@ -22315,8 +23673,8 @@ function kanekiSpecialScene(id, tick, origin, contact, facing) {
   const rank = t.rank;
   if (t.family === "fourSwords") {
     const p4 = swordProfile(rank), first = p4.strikes[0], last = p4.strikes[2];
-    const push = ease3((tick - last) / (p4.end - 1 - last));
-    const float = ease3(tick / 9);
+    const push = ease4((tick - last) / (p4.end - 1 - last));
+    const float = ease4(tick / 9);
     const recoil = p4.strikes.reduce((sum, strike2) => sum + Math.max(0, 1 - Math.abs(tick - strike2) / 4) * (rank + 1) * 2, 0);
     const snapStart = p4.snap - 4;
     const strike = p4.strikes.findIndex((at) => at === tick);
@@ -22344,8 +23702,8 @@ function kanekiSpecialScene(id, tick, origin, contact, facing) {
   }
   const p3 = rushProfile(rank);
   const tossAt = Math.floor(p3.end * 0.66);
-  const reel = ease3(tick / (rank === 0 ? 7 : 9));
-  const toss = ease3((tick - tossAt + 1) / (p3.end - tossAt));
+  const reel = ease4(tick / (rank === 0 ? 7 : 9));
+  const toss = ease4((tick - tossAt + 1) / (p3.end - tossAt));
   const gap = (contact.x - origin.x) * facing;
   const start = rank === 0 ? 55 : rank === 1 ? 67 : 76;
   const x = gap + (start - gap) * reel + p3.travel * toss;
@@ -22479,7 +23837,7 @@ var normalMoves = Object.fromEntries(
   })
 );
 var empty = { x: 0, y: 0, w: 0, h: 0 };
-var throwMove = {
+var throwMove2 = {
   kind: "grab",
   level: "throw",
   startup: 10,
@@ -22495,7 +23853,7 @@ var throwMove = {
   cancels: []
 };
 var launchLink = {
-  ...throwMove,
+  ...throwMove2,
   kind: "strike",
   level: "mid",
   startup: 0,
@@ -22509,7 +23867,7 @@ var kaneki = {
   ...kanekiMotion,
   moves: {
     ...normalMoves,
-    throw: throwMove,
+    throw: throwMove2,
     captureLaunchLink: launchLink,
     capturePullLink: pullLink
   },
@@ -22579,8 +23937,8 @@ function kanekiCombatClip(f) {
     if (spec) return { name: spec.id, tick: f.stateFrame };
     if (f.moveId === "throw")
       return {
-        name: f.stateFrame < throwMove.startup + throwMove.active ? "grabStartup" : "grabMiss",
-        tick: f.stateFrame < throwMove.startup + throwMove.active ? f.stateFrame : f.stateFrame - throwMove.startup - throwMove.active
+        name: f.stateFrame < throwMove2.startup + throwMove2.active ? "grabStartup" : "grabMiss",
+        tick: f.stateFrame < throwMove2.startup + throwMove2.active ? f.stateFrame : f.stateFrame - throwMove2.startup - throwMove2.active
       };
     if (f.moveId === "captureLaunchLink" || f.moveId === "capturePullLink")
       return { name: "grabRecovery", tick: f.stateFrame };
@@ -22605,7 +23963,7 @@ function kaguneGrabReach(spec, tick) {
   if (tick < end) return 39 + (spec.reach - 39) * (tick - spec.startup) / (spec.active - 1);
   return spec.reach * (1 - curve(kaguneFraction((tick - end) / (spec.recovery - 3))));
 }
-function kanekiOffensiveKagunes(f, floor3, originOverride) {
+function kanekiOffensiveKagunes(f, floor4, originOverride) {
   const opener2 = centipedeOpener(f);
   if (f.moveId === centipedeId) return opener2 ? [opener2] : [];
   if (f.match?.centipede?.attacker === f.id) return [];
@@ -22630,7 +23988,7 @@ function kanekiOffensiveKagunes(f, floor3, originOverride) {
       y
     },
     bend,
-    floor3,
+    floor4,
     burrow
   );
   const spec = kanekiTechnique(f.moveId);
@@ -22709,7 +24067,7 @@ function kanekiOffensiveKagunes(f, floor3, originOverride) {
     const age = tick - spec.startup;
     const h = age < 0 ? -11 : age < spec.active ? Math.min(93, 27 + age * 13) : 84 * travel;
     const end = f.kanekiBurrowX ?? f.x + side * spec.reach;
-    return [limb("lowerRear", 22 + ((end - root.x) * side - 22) * travel, floor3 - root.y - h, 0, true)];
+    return [limb("lowerRear", 22 + ((end - root.x) * side - 22) * travel, floor4 - root.y - h, 0, true)];
   }
   if (spec?.family === "rinkakuRush") {
     const age = tick - spec.startup;
@@ -22758,10 +24116,10 @@ function kanekiOffensiveKagunes(f, floor3, originOverride) {
     )
   ];
 }
-function kanekiSpecialShapes(f, floor3) {
+function kanekiSpecialShapes(f, floor4) {
   const spec = kanekiTechnique(f.moveId);
   if (!spec) return;
-  const pose = kanekiOffensiveKagunes(f, floor3)[0];
+  const pose = kanekiOffensiveKagunes(f, floor4)[0];
   const age = f.stateFrame - spec.startup;
   if (spec.family === "rinkakuRush") {
     const body2 = worldRect(f.move.box, f.x, f.y, f.facing);
@@ -22773,7 +24131,7 @@ function kanekiSpecialShapes(f, floor3) {
   const length = Math.hypot(dx, dy);
   const depth = spec.family === "kaguneGrab" && age > 0 ? Math.max(18, kaguneGrabReach(spec, f.stateFrame) - kaguneGrabReach(spec, f.stateFrame - 1)) : 18;
   const end = length > depth ? { x: pose.tip.x + dx * depth / length, y: pose.tip.y + dy * depth / length } : length > 0 ? { x: pose.tip.x - f.facing * depth, y: pose.tip.y + dy } : rootward;
-  const a = spec.family === "fourSwords" ? { x: pose.tip.x, y: Math.min(floor3 - 5, pose.tip.y + 23) } : end;
+  const a = spec.family === "fourSwords" ? { x: pose.tip.x, y: Math.min(floor4 - 5, pose.tip.y + 23) } : end;
   return [{ a, b: pose.tip, r: spec.family === "kaguneGrab" ? 16 : 13 + spec.rank }];
 }
 function clipFrame(holds, tick) {
@@ -22783,1252 +24141,16 @@ function clipFrame(holds, tick) {
   return index;
 }
 
-// src/engine/ben-moves.ts
-var benFormBalance = {
-  growth: {
-    1: { scale: 1.2, ticks: 228, cooldown: 190 },
-    2: { scale: 1.35, ticks: 345, cooldown: 225 }
-  },
-  energy: { capacity: 100, retention: 600, lightSpend: 25, mediumSpend: 50 }
-};
-function blow(timings2, damage2, box, rank, effect, options = {}) {
-  const [startup3, active3, recovery3] = timings2;
-  return {
-    startup: startup3,
-    active: active3,
-    recovery: recovery3,
-    damage: damage2,
-    box,
-    rank,
-    level: "mid",
-    stun: rank === 1 ? 17 : 23,
-    blockstun: rank === 1 ? 8 : 12,
-    hitstop: rank === 1 ? 3 : 5,
-    push: rank === 1 ? 2.4 : 4.4,
-    launch: 0,
-    cancels: rank === 1 ? ["medium"] : ["special"],
-    ben: { effect },
-    cancelWindow: { fromTick: startup3, toTick: startup3 + active3 + 7 },
-    ...options
-  };
-}
-var rect = (x, y, w, h) => ({ x, y, w, h });
-var noBox = rect(0, 0, 0, 0);
-function special(technique, effect, timing, damage2, box, options = {}, flags = {}) {
-  return blow(timing, damage2, box, 3, effect, { cancels: [], ...options, ben: { technique, effect, ...flags } });
-}
-function windows(...hits) {
-  return hits.map(([fromTick, toTick, values], id) => ({ id, fromTick, toTick, ...values }));
-}
-var charge = (from, to, speed) => ({ from, to, speed });
-var xlr8Moves = {
-  stand_light: blow([4, 3, 9], 22, rect(25, -108, 59, 23), 1, "speed"),
-  stand_medium: blow([7, 4, 16], 38, rect(24, -105, 96, 34), 2, "tail", { stun: 22 }),
-  crouch_light: blow([5, 3, 10], 19, rect(20, -45, 54, 24), 1, "speed", { level: "low" }),
-  crouch_medium: blow([8, 6, 24], 32, rect(19, -33, 72, 31), 2, "speed", {
-    drive: charge(4, 14, 10),
-    level: "low",
-    stun: 23,
-    blockstun: 10
-  }),
-  air_light: blow([4, 5, 10], 22, rect(19, -106, 62, 38), 1, "speed", { level: "high", airHold: -1 }),
-  air_medium: blow([7, 7, 17], 40, rect(20, -69, 85, 59), 2, "tail", {
-    level: "high",
-    drive: charge(5, 15, 8),
-    hopAt: 7,
-    hopVelocity: 6,
-    cancels: []
-  }),
-  turbo_light: special("turbo", "speed", [6, 8, 23], 45, rect(12, -111, 66, 62), {
-    drive: charge(4, 14, 16),
-    push: 2.5,
-    stun: 38,
-    blockstun: 10,
-    hitstop: 4,
-    cancels: ["omnitrix"],
-    cancelWindow: { fromTick: 10, toTick: 31 }
-  }),
-  turbo_medium: special("turbo", "speed", [9, 16, 28], 26, rect(11, -113, 71, 65), {
-    drive: charge(4, 25, 22),
-    push: 2,
-    stun: 20,
-    blockstun: 11,
-    hitstop: 3,
-    hitWindows: windows([9, 13], [15, 19, { damage: 24 }], [21, 25, { damage: 30, push: 6 }])
-  }, { confirmHits: true, follow: 6 }),
-  cyclone_light: special("cyclone", "wind", [7, 5, 18], 43, rect(-36, -111, 113, 81), { push: 8 }),
-  cyclone_medium: special("cyclone", "wind", [11, 14, 28], 28, rect(-52, -132, 154, 105), {
-    hitWindows: windows([11, 15], [16, 19, { damage: 18 }], [21, 25, { damage: 31, launch: -13, stun: 36, push: 2 }]),
-    push: 2,
-    hitstop: 3,
-    cancels: ["jump", "omnitrix"],
-    cancelWindow: { fromTick: 24, toTick: 41 }
-  }),
-  lightning_light: special("lightning", "step", [4, 10, 17], 0, noBox, { drive: charge(4, 14, -17) }),
-  lightning_medium: special("lightning", "step", [5, 13, 23], 0, noBox, { drive: charge(5, 18, 20) }, { cross: true })
-};
-var fourArmsMoves = {
-  stand_light: blow([5, 8, 13], 20, rect(36, -130, 77, 47), 1, "power", {
-    hitWindows: windows([5, 8], [10, 13, { damage: 22 }]),
-    cancels: ["medium", "special"],
-    hitstop: 3,
-    stun: 20
-  }),
-  stand_medium: blow([10, 5, 22], 55, rect(35, -111, 79, 47), 2, "power", { push: 5, stun: 29 }),
-  crouch_light: blow([6, 4, 13], 25, rect(22, -60, 66, 34), 1, "power", { level: "low", stun: 23 }),
-  crouch_medium: blow([11, 5, 25], 46, rect(16, -55, 99, 50), 2, "power", { level: "low", push: 6 }),
-  air_light: blow([6, 5, 14], 30, rect(29, -123, 73, 42), 1, "power", { level: "high" }),
-  air_medium: blow([11, 6, 24], 57, rect(24, -89, 75, 73), 2, "power", { level: "high", knockdown: true, cancels: [] }),
-  tackle_light: special("tackle", "power", [9, 7, 22], 52, rect(25, -125, 72, 86), {
-    drive: charge(5, 16, 11),
-    push: 7,
-    hitstop: 6
-  }),
-  tackle_medium: special("tackle", "power", [15, 10, 32], 78, rect(25, -133, 82, 95), {
-    drive: charge(7, 25, 15),
-    push: 12,
-    launch: -6,
-    knockdown: true,
-    hitstop: 9
-  }),
-  quad_light: special("quad", "power", [8, 3, 28], 0, rect(22, -124, 55, 53), {
-    kind: "grab",
-    level: "throw"
-  }, { commandGrab: true }),
-  quad_medium: special("quad", "power", [15, 4, 38], 0, rect(26, -129, 64, 62), {
-    kind: "grab",
-    level: "throw",
-    drive: charge(7, 16, 4)
-  }, { commandGrab: true }),
-  seismic_light: special("seismic", "quake", [10, 1, 26], 44, noBox, {
-    level: "low",
-    push: 9,
-    hitstop: 5
-  }, { field: { type: "quake", offset: 40, height: 32, width: 48, speed: 8, life: 10 } }),
-  seismic_medium: special("seismic", "quake", [17, 1, 37], 64, noBox, {
-    level: "low",
-    push: 4,
-    launch: -14.5,
-    stun: 39,
-    hitstop: 8,
-    cancels: ["omnitrix"],
-    cancelWindow: { fromTick: 18, toTick: 39 }
-  }, { field: { type: "quake", offset: 45, height: 49, width: 63, speed: 10, life: 16 } })
-};
-var heatblastMoves = {
-  stand_light: blow([5, 3, 11], 25, rect(24, -101, 64, 27), 1, "flame"),
-  stand_medium: blow([8, 5, 18], 44, rect(26, -105, 80, 36), 2, "flame", { stun: 25 }),
-  crouch_light: blow([5, 3, 12], 22, rect(22, -47, 62, 32), 1, "flame", { level: "low", stun: 20 }),
-  crouch_medium: blow([9, 5, 21], 36, rect(19, -49, 78, 44), 2, "flame", { level: "low" }),
-  air_light: blow([5, 5, 12], 26, rect(24, -104, 65, 42), 1, "flame", { level: "high" }),
-  air_medium: blow([8, 8, 19], 45, rect(22, -66, 83, 61), 2, "boost", {
-    level: "high",
-    drive: charge(5, 17, 6.5),
-    hopAt: 8,
-    hopVelocity: 7,
-    cancels: []
-  }),
-  fireball_light: special("fireball", "fireball", [8, 1, 17], 36, noBox, {
-    level: "mid",
-    push: 5,
-    stun: 27
-  }, { field: { type: "fireball", offset: 45, height: 90, width: 15, speed: 18, life: 60 } }),
-  fireball_medium: special("fireball", "fireball", [15, 1, 33], 58, noBox, {
-    push: 8,
-    hitstop: 7
-  }, { field: { type: "fireball", offset: 55, height: 91, width: 27, speed: 10, life: 78 } }),
-  pillar_light: special("pillar", "pillar", [10, 1, 23], 46, noBox, {
-    launch: -10,
-    push: 2,
-    stun: 29
-  }, { field: { type: "pillar", offset: 80, height: 158, width: 46, speed: 0, life: 11 } }),
-  pillar_medium: special("pillar", "pillar", [18, 1, 31], 65, noBox, {
-    launch: -13,
-    push: 4,
-    stun: 38,
-    hitstop: 7
-  }, { field: { type: "pillar", offset: 217, height: 229, width: 69, speed: 0, life: 16 } }),
-  propulsion_light: special("propulsion", "boost", [7, 9, 21], 46, rect(18, -111, 67, 72), {
-    drive: charge(5, 16, 13),
-    push: 7
-  }),
-  propulsion_medium: special("propulsion", "boost", [10, 13, 29], 62, rect(7, -126, 83, 112), {
-    drive: charge(8, 23, 11),
-    hopAt: 10,
-    hopVelocity: -11.5,
-    launch: -13,
-    push: 3,
-    stun: 35,
-    cancels: ["omnitrix"],
-    cancelWindow: { fromTick: 15, toTick: 32 }
-  }, { land: true })
-};
-var diamondheadMoves = {
-  stand_light: blow([5, 4, 12], 26, rect(27, -110, 65, 28), 1, "crystal"),
-  stand_medium: blow([9, 5, 19], 48, rect(25, -110, 105, 33), 2, "crystal", { stun: 31 }),
-  crouch_light: blow([6, 4, 11], 24, rect(23, -53, 70, 29), 1, "crystal", { level: "low", stun: 23 }),
-  crouch_medium: blow([10, 6, 21], 39, rect(21, -48, 102, 38), 2, "crystal", { level: "low", push: 6 }),
-  air_light: blow([5, 5, 12], 27, rect(23, -108, 69, 37), 1, "crystal", { level: "high" }),
-  air_medium: blow([9, 7, 20], 47, rect(22, -81, 90, 68), 2, "crystal", { level: "high", push: 6, cancels: [] }),
-  spikes_light: special("spikes", "crystal", [9, 1, 23], 42, noBox, { stun: 27, push: 5 }, {
-    field: {
-      type: "spikes",
-      offset: 70,
-      height: 91,
-      width: 38,
-      speed: 0,
-      life: 19,
-      pattern: [{}, { offset: 37, delay: 3 }, { offset: 74, delay: 6 }]
-    }
-  }),
-  spikes_medium: special("spikes", "crystal", [15, 1, 34], 65, noBox, {
-    launch: -14,
-    push: 3,
-    stun: 42,
-    hitstop: 6,
-    cancels: ["jump", "omnitrix"],
-    cancelWindow: { fromTick: 16, toTick: 42 }
-  }, {
-    field: {
-      type: "spikes",
-      offset: 83,
-      height: 138,
-      width: 46,
-      speed: 0,
-      life: 24,
-      pattern: [{}, { offset: 47, delay: 3 }, { offset: 94, delay: 6 }, { offset: 141, delay: 9 }]
-    }
-  }),
-  wall_light: special("wall", "crystal", [9, 1, 23], 0, noBox, {}, {
-    field: { type: "wall", offset: 112, height: 94, width: 29, speed: 0, life: 108, durability: 55 }
-  }),
-  wall_medium: special("wall", "crystal", [17, 1, 33], 0, noBox, {}, {
-    field: { type: "wall", offset: 127, height: 139, width: 43, speed: 0, life: 168, durability: 116 }
-  }),
-  shards_light: special("shards", "crystal", [8, 1, 21], 37, noBox, { stun: 26, push: 5 }, {
-    field: { type: "shard", offset: 49, height: 96, width: 11, speed: 19, life: 54 }
-  }),
-  shards_medium: special("shards", "crystal", [15, 1, 32], 53, noBox, { stun: 32, push: 7 }, {
-    field: {
-      type: "shard",
-      offset: 52,
-      height: 91,
-      width: 12,
-      speed: 15,
-      life: 63,
-      pattern: [{ vy: -4.7 }, { vy: 0 }, { vy: 3.6 }]
-    }
-  })
-};
-var humungousaurMoves = {
-  stand_light: blow([6, 4, 13], 31, rect(35, -126, 81, 40), 1, "colossus", { stun: 23 }),
-  stand_medium: blow([10, 5, 22], 57, rect(28, -116, 118, 47), 2, "tail", { stun: 32, push: 5 }),
-  crouch_light: blow([6, 4, 14], 29, rect(32, -57, 75, 40), 1, "colossus", { level: "low", stun: 25 }),
-  crouch_medium: blow([12, 6, 25], 49, rect(21, -53, 125, 45), 2, "tail", { level: "low", push: 6 }),
-  air_light: blow([6, 5, 15], 32, rect(37, -131, 79, 49), 1, "colossus", { level: "high" }),
-  air_medium: blow([10, 10, 24], 61, rect(14, -81, 89, 81), 2, "colossus", {
-    level: "high",
-    hopAt: 10,
-    hopVelocity: 11,
-    knockdown: true,
-    cancels: [],
-    ben: { effect: "colossus", landingImpact: true }
-  }),
-  colossal_light: special("colossal", "colossus", [42, 5, 19], 61, rect(-61, -31, 123, 31), {
-    push: 7,
-    hitstop: 7,
-    blockstun: 12
-  }, { leap: { takeoff: 7, speed: 9.4, reach: 142 } }),
-  colossal_medium: special("colossal", "colossus", [66, 7, 34], 91, rect(-96, -43, 193, 43), {
-    push: 10,
-    launch: -5,
-    hitstop: 9,
-    knockdown: true,
-    blockstun: 16
-  }, { leap: { takeoff: 14, speed: 16.1, reach: 334 } }),
-  car_light: special("car", "car", [21, 5, 30], 79, rect(32, -95, 132, 95), {
-    push: 9,
-    stun: 32,
-    hitstop: 8
-  }, { carSlam: true }),
-  car_medium: special("car", "car", [29, 1, 35], 92, noBox, { push: 12, stun: 35, hitstop: 9 }, {
-    field: { type: "car", offset: 80, height: 123, width: 61, speed: 15, life: 64, gravity: 0.55, pattern: [{ vy: -4.9 }] }
-  }),
-  tailspin_light: special("tailspin", "tail", [9, 7, 25], 49, rect(25, -91, 135, 53), { push: 7 }),
-  tailspin_medium: special("tailspin", "tail", [16, 9, 37], 73, rect(-14, -100, 178, 62), {
-    push: 3.5,
-    launch: -14,
-    stun: 42,
-    hitstop: 8,
-    cancels: ["omnitrix"],
-    cancelWindow: { fromTick: 19, toTick: 43 }
-  }),
-  growth_light: special("growth", "colossus", [12, 1, 23], 0, noBox, {}, { grow: 1 }),
-  growth_medium: special("growth", "colossus", [21, 1, 35], 0, noBox, {}, { grow: 2 })
-};
-var feedbackMoves = {
-  stand_light: blow([4, 4, 9], 24, rect(20, -107, 59, 29), 1, "power", { stun: 19 }),
-  stand_medium: blow([8, 5, 16], 43, rect(23, -109, 91, 38), 2, "electric", {
-    stun: 29,
-    ben: { effect: "electric", chargeGain: 5 }
-  }),
-  crouch_light: blow([5, 4, 10], 21, rect(19, -53, 62, 28), 1, "power", { level: "low", stun: 23 }),
-  crouch_medium: blow([9, 5, 18], 39, rect(21, -53, 99, 38), 2, "electric", {
-    level: "low",
-    stun: 28,
-    push: 3.2,
-    ben: { effect: "electric", chargeGain: 4 }
-  }),
-  air_light: blow([4, 5, 10], 24, rect(19, -102, 68, 43), 1, "power", { level: "high", airHold: -2, stun: 20 }),
-  air_medium: blow([7, 7, 19], 47, rect(22, -88, 88, 79), 2, "electric", {
-    level: "high",
-    launch: 3,
-    cancels: [],
-    ben: { effect: "electric", chargeGain: 5 }
-  }),
-  storm_light: special("storm", "storm", [12, 1, 30], 24, noBox, { push: 3, stun: 17, hitstop: 4 }, {
-    field: {
-      type: "lightning",
-      offset: 101,
-      height: 580,
-      width: 36,
-      speed: 0,
-      life: 25,
-      activeAge: [9, 14],
-      pattern: [{}, { offset: 87, delay: 8 }, { offset: 174, delay: 16 }]
-    }
-  }),
-  storm_medium: special("storm", "storm", [21, 1, 37], 37, noBox, { push: 4, stun: 21, hitstop: 5 }, {
-    field: {
-      type: "lightning",
-      offset: 121,
-      height: 580,
-      width: 69,
-      speed: 0,
-      life: 30,
-      activeAge: [12, 19],
-      pattern: [{}, { offset: 118, delay: 11 }, { offset: 238, delay: 23 }]
-    }
-  }),
-  conductor_light: special("conductor", "electric", [8, 8, 24], 0, noBox, { kind: "grab" }, {
-    cable: "horizontal",
-    captureStrike: true,
-    commandGrab: true
-  }),
-  conductor_medium: special("conductor", "electric", [15, 10, 33], 0, noBox, { kind: "grab" }, {
-    cable: "wide",
-    captureStrike: true,
-    commandGrab: true
-  }),
-  discharge_light: special("discharge", "electric", [7, 1, 18], 39, noBox, { push: 5.5, stun: 25 }, {
-    field: { type: "bolt", offset: 58, height: 94, width: 14, speed: 23, life: 36, energy: 1, length: 26, spendCharge: true }
-  }),
-  discharge_medium: special("discharge", "electric", [16, 1, 32], 64, noBox, {
-    push: 10,
-    stun: 34,
-    hitstop: 8,
-    drive: charge(16, 22, -1.6)
-  }, {
-    field: { type: "beam", offset: 64, height: 97, width: 16, speed: 0, life: 16, energy: 2, length: 350, spendCharge: true }
-  }),
-  absorb_light: special("absorb", "electric", [4, 9, 25], 0, noBox, {}, { absorb: 2 }),
-  absorb_medium: special("absorb", "electric", [7, 7, 28], 0, noBox, {}, { counter: true }),
-  feedback_counter: special("counter-response", "electric", [0, 1, 13], 49, noBox, {
-    push: 4.2,
-    stun: 34,
-    hitstop: 7,
-    meterGain: 7
-  }),
-  cables_light: special("cables", "electric", [8, 8, 21], 37, noBox, {
-    push: -2.2,
-    stun: 25,
-    blockstun: 10,
-    hitstop: 4
-  }, { cable: "horizontal", chargeGain: 10 }),
-  cables_medium: special("cables", "electric", [12, 11, 29], 45, noBox, {
-    push: 1.8,
-    launch: -14.5,
-    stun: 42,
-    blockstun: 11,
-    hitstop: 5,
-    cancels: ["jump"],
-    cancelWindow: { fromTick: 12, toTick: 31 }
-  }, { cable: "upper", chargeGain: 13 })
-};
-var benStage6Balance = {
-  frostLimit: 100,
-  frostHold: 105,
-  freezeTicks: 16,
-  frostImmunity: 165,
-  ghostCooldown: 65,
-  nrgDuration: 660,
-  nrgCooldown: 180
-};
-var ice = "ice";
-var spectral = "spectral";
-var thermal = "thermal";
-var airLight = { level: "high", airHold: -1.6 };
-var airMedium = { level: "high", cancels: ["special"] };
-var cold = (amount) => ({ effect: ice, cold: amount });
-var projectile = (type, offset, height, width, speed, life, energy, length, vy = 0) => ({
-  type,
-  offset,
-  height,
-  width,
-  speed,
-  life,
-  energy,
-  length,
-  ...vy ? { pattern: [{ vy }] } : {}
-});
-var bigChillMoves = {
-  stand_light: blow([5, 4, 11], 23, rect(18, -121, 61, 33), 1, ice, { stun: 22 }),
-  stand_medium: blow([8, 6, 17], 41, rect(19, -128, 89, 64), 2, ice, { stun: 30, push: 3, ben: cold(16) }),
-  crouch_light: blow([5, 4, 11], 22, rect(18, -51, 62, 30), 1, ice, { level: "low", stun: 22 }),
-  crouch_medium: blow([9, 5, 20], 38, rect(19, -37, 89, 33), 2, ice, { level: "low", ben: cold(22) }),
-  air_light: blow([4, 6, 11], 27, rect(19, -110, 67, 48), 1, ice, { ...airLight, stun: 25 }),
-  air_medium: blow([7, 7, 17], 43, rect(20, -116, 108, 84), 2, ice, { ...airMedium, airHold: -1.7, stun: 29, ben: cold(17) }),
-  frostBreath_light: special("frostBreath", ice, [8, 1, 19], 42, noBox, { stun: 28, push: 4 }, {
-    cold: 30,
-    field: projectile("frost", 39, 121, 13, 17, 17, 1, 32)
-  }),
-  frostBreath_medium: special("frostBreath", ice, [15, 1, 27], 60, noBox, {
-    stun: 35,
-    launch: -12,
-    push: 3,
-    cancels: ["jump", "omnitrix"],
-    cancelWindow: { fromTick: 15, toTick: 37 }
-  }, { cold: 56, field: projectile("frost", 43, 115, 29, 13, 22, 2, 63) }),
-  iceDive_light: special("iceDive", ice, [9, 10, 22], 49, rect(18, -78, 80, 78), {
-    drive: charge(6, 20, 9),
-    push: 5,
-    blockstun: 11,
-    stun: 27
-  }, { air: true, airUse: "dive", aerialMotion: "dive", cold: 20 }),
-  iceDive_medium: special("iceDive", ice, [14, 14, 32], 67, rect(19, -102, 104, 107), {
-    drive: charge(8, 26, 12),
-    push: 9,
-    blockstun: 15,
-    knockdown: true
-  }, { air: true, airUse: "dive", aerialMotion: "dive", cold: 34 }),
-  ghostFlight_light: special("ghostFlight", ice, [5, 25, 13], 0, noBox, {}, {
-    air: true,
-    airUse: "flight",
-    aerialMotion: "glide"
-  }),
-  ghostFlight_medium: special("ghostFlight", ice, [6, 12, 22], 0, noBox, {
-    drive: charge(6, 18, 13)
-  }, { air: true, airUse: "flight", aerialMotion: "glide", cross: true, phase: { from: 8, to: 14, physicalOnly: true } })
-};
-var ghostfreakMoves = {
-  stand_light: blow([5, 4, 10], 23, rect(19, -119, 65, 37), 1, spectral, { stun: 23 }),
-  stand_medium: blow([8, 6, 17], 41, rect(20, -113, 99, 51), 2, spectral, { stun: 31, push: 2.6 }),
-  crouch_light: blow([5, 4, 10], 22, rect(17, -57, 63, 35), 1, spectral, { level: "low", stun: 23 }),
-  crouch_medium: blow([10, 6, 19], 41, rect(19, -50, 100, 38), 2, spectral, { level: "low" }),
-  air_light: blow([5, 5, 11], 23, rect(20, -109, 71, 51), 1, spectral, airLight),
-  air_medium: blow([8, 6, 21], 47, rect(22, -97, 90, 78), 2, spectral, { ...airMedium, launch: 3 }),
-  ghostCross_light: special("ghostCross", spectral, [17, 6, 21], 49, rect(13, -139, 74, 111), {
-    push: 3,
-    launch: -5,
-    stun: 27
-  }, { burrow: { from: 6, to: 13, reach: 109 }, phase: { from: 6, to: 13 } }),
-  ghostCross_medium: special("ghostCross", spectral, [27, 7, 31], 64, rect(13, -160, 84, 132), {
-    push: 3,
-    launch: -15,
-    stun: 40,
-    cancels: ["jump"],
-    cancelWindow: { fromTick: 27, toTick: 44 }
-  }, { burrow: { from: 8, to: 22, reach: 215 }, phase: { from: 8, to: 22 } }),
-  spectralArms_light: special("spectralArms", spectral, [9, 6, 22], 0, noBox, { kind: "grab" }, {
-    spectralReach: 85,
-    commandGrab: true,
-    captureStrike: true
-  }),
-  spectralArms_medium: special("spectralArms", spectral, [16, 8, 34], 0, noBox, { kind: "grab" }, {
-    spectralReach: 133,
-    commandGrab: true,
-    captureStrike: true
-  }),
-  ghostPhase_light: special("ghostPhase", "nightmare", [13, 1, 49], 12, noBox, { push: 0, stun: 13, hitstop: 4 }, {
-    nightmare: true,
-    phase: { from: 13, to: 29 },
-    field: {
-      type: "spectralHand",
-      offset: 77,
-      height: 78,
-      width: 50,
-      speed: 0,
-      life: 25,
-      activeAge: [8, 15],
-      pattern: [{}, { offset: 112, delay: 11 }, { offset: 170, delay: 21, height: 150, direction: -1, vy: 4 }]
-    }
-  }),
-  ghostPhase_medium: special("ghostPhase", "nightmare", [20, 1, 65], 15, noBox, { push: 0, stun: 15, hitstop: 5 }, {
-    nightmare: true,
-    phase: { from: 20, to: 42 },
-    field: {
-      type: "spectralHand",
-      offset: 88,
-      height: 97,
-      width: 58,
-      speed: 0,
-      life: 28,
-      activeAge: [10, 18],
-      pattern: [
-        {},
-        { offset: 113, delay: 10 },
-        { offset: 217, delay: 20 },
-        { offset: 275, delay: 32, height: 180, direction: -1, vy: 5 },
-        { offset: 144, delay: 44, height: 148, vy: 4 }
-      ]
-    }
-  })
-};
-var nrgMoves = {
-  stand_light: blow([6, 4, 12], 28, rect(29, -135, 63, 34), 1, "metal", { stun: 25, push: 2.4 }),
-  stand_medium: blow([11, 5, 23], 53, rect(27, -136, 74, 36), 2, "metal", {
-    stun: 35,
-    push: 2.8,
-    hitstop: 6,
-    cancelWindow: { fromTick: 11, toTick: 22 }
-  }),
-  crouch_light: blow([7, 4, 13], 25, rect(25, -108, 63, 32), 1, "metal", { level: "low", stun: 25 }),
-  crouch_medium: blow([12, 5, 26], 48, rect(29, -48, 79, 45), 2, "metal", {
-    level: "low",
-    push: 5.6,
-    hitstop: 6
-  }),
-  air_light: blow([6, 5, 15], 31, rect(27, -137, 76, 34), 1, "metal", airLight),
-  air_medium: blow([8, 10, 25], 58, rect(18, -71, 58, 71), 2, "metal", {
-    level: "high",
-    hopAt: 8,
-    hopVelocity: 6,
-    knockdown: true,
-    hitstop: 8,
-    cancels: []
-  }),
-  thermal_light: special("thermal", thermal, [10, 1, 20], 46, noBox, { stun: 25, push: 5 }, {
-    field: projectile("beam", 48, 95, 11, 0, 9, 1, 188)
-  }),
-  thermal_medium: special("thermal", thermal, [19, 1, 33], 70, noBox, { stun: 34, push: 9, hitstop: 8 }, {
-    field: projectile("beam", 51, 119, 19, 0, 18, 2, 298)
-  }),
-  armorImpact_light: special("armorImpact", "metal", [9, 7, 24], 50, rect(25, -128, 48, 56), {
-    drive: charge(5, 15, 7),
-    stun: 25,
-    blockstun: 10,
-    push: 7.8,
-    hitstop: 7
-  }),
-  armorImpact_medium: special("armorImpact", "metal", [17, 5, 33], 74, rect(28, -94, 64, 54), {
-    level: "high",
-    stun: 31,
-    blockstun: 14,
-    push: 6.5,
-    hitstop: 9,
-    knockdown: true
-  }),
-  nrgUnseal_light: special("nrgMode", thermal, [18, 1, 8], 0, noBox, {}, { nrgMode: "release" }),
-  armorCounter_medium: special("armorCounter", "metal", [5, 8, 29], 0, noBox, {}, { armorCounter: true }),
-  nrgCounterShove: blow([3, 4, 25], 45, rect(28, -133, 87, 47), 3, "metal", {
-    stun: 29,
-    push: 11,
-    hitstop: 7,
-    cancels: []
-  }),
-  nrgLock: special("nrgLock", thermal, [0, 1, 10], 0, noBox, {})
-};
-var nrgReleasedMoves = {
-  stand_light: blow([4, 4, 10], 23, rect(17, -121, 63, 40), 1, thermal, { stun: 23 }),
-  stand_medium: blow([8, 5, 16], 44, rect(23, -117, 103, 50), 2, thermal, { stun: 29, push: 3.2 }),
-  crouch_light: blow([5, 4, 10], 22, rect(18, -55, 64, 33), 1, thermal, { level: "low", stun: 23 }),
-  crouch_medium: blow([9, 6, 17], 40, rect(16, -53, 106, 44), 2, thermal, { level: "low" }),
-  air_light: blow([5, 5, 11], 25, rect(20, -108, 73, 55), 1, thermal, { ...airLight, stun: 25, cancels: ["medium", "special"] }),
-  air_medium: blow([7, 7, 18], 45, rect(20, -104, 98, 88), 2, thermal, { ...airMedium, airHold: -2, stun: 26 }),
-  radiantShot_light: special("thermal", thermal, [7, 1, 18], 40, noBox, { stun: 26, push: 4 }, {
-    air: true,
-    field: { ...projectile("beam", 63, 106, 10, 0, 8, 1, 234), aim: "heat" }
-  }),
-  radiantShot_medium: special("thermal", thermal, [17, 1, 36], 68, noBox, { stun: 36, push: 11, hitstop: 8 }, {
-    air: true,
-    field: { ...projectile("beam", 64, 106, 17, 0, 16, 2, 335), aim: "heat" }
-  }),
-  radiantWave_light: special("nuclear", thermal, [8, 1, 20], 41, noBox, { stun: 27, push: 5 }, {
-    air: true,
-    field: {
-      ...projectile("heat", 28, 90, 13, 5, 25, 1, 22),
-      aim: "rain",
-      pattern: [{ vy: 12 }, { offset: 38, delay: 5, vy: 13 }, { offset: 76, delay: 10, vy: 14 }]
-    }
-  }),
-  radiantWave_medium: special("nuclear", thermal, [15, 10, 28], 63, rect(-55, -142, 201, 138), {
-    stun: 31,
-    push: 8,
-    knockdown: true
-  }),
-  nrgSeal_light: special("nrgMode", thermal, [4, 12, 18], 0, noBox, {
-    drive: charge(4, 16, 13)
-  }, { air: true, lift: true }),
-  nrgSeal_medium: special("nrgMode", thermal, [12, 1, 11], 0, noBox, {}, { nrgMode: "seal", air: true }),
-  nrgEmergence: special("nrgEmergence", thermal, [0, 1, 8], 0, noBox, {})
-};
-var gravityPulse = (gravityMode, offset, width, height, life) => ({ type: "gravityPulse", gravityMode, offset, width, height, speed: 0, life, activeAge: [2, life - 4] });
-var sonic = (offset, height, width, speed, life, length) => ({ type: "sonic", offset, height, width, speed, life, length });
-var gravattackMoves = {
-  stand_light: blow([7, 4, 12], 29, rect(32, -133, 68, 38), 1, "gravity", { stun: 25, push: 2 }),
-  stand_medium: blow([12, 5, 24], 56, rect(35, -136, 85, 66), 2, "gravity", { stun: 34, push: 2.8, hitstop: 7 }),
-  crouch_light: blow([7, 4, 13], 25, rect(29, -61, 71, 35), 1, "gravity", { level: "low", stun: 24 }),
-  crouch_medium: blow([11, 6, 24], 44, rect(25, -57, 101, 44), 2, "gravity", { level: "low", push: 5, drive: charge(7, 14, 2.5) }),
-  air_light: blow([5, 6, 13], 29, rect(29, -128, 73, 60), 1, "gravity", airLight),
-  air_medium: blow([9, 9, 26], 58, rect(14, -80, 92, 81), 2, "gravity", {
-    level: "high",
-    hopAt: 9,
-    hopVelocity: 6,
-    knockdown: true,
-    cancels: [],
-    hitstop: 8
-  }),
-  gravityPull_light: special("gravityPull", "gravity", [9, 1, 15], 23, noBox, { stun: 31, push: -6.5, hitstop: 3 }, {
-    field: gravityPulse("pull", 116, 150, 137, 11)
-  }),
-  gravityPull_medium: special("gravityPull", "gravity", [17, 1, 29], 42, noBox, {
-    stun: 39,
-    push: -3.7,
-    launch: -13,
-    cancels: ["jump", "omnitrix"],
-    cancelWindow: { fromTick: 18, toTick: 42 }
-  }, { field: gravityPulse("pull", 137, 184, 175, 14) }),
-  gravityRepel_light: special("gravityRepel", "gravity", [10, 1, 22], 45, noBox, { stun: 22, push: 8 }, {
-    field: gravityPulse("repel", 81, 112, 113, 11)
-  }),
-  gravityRepel_medium: special("gravityRepel", "gravity", [21, 1, 35], 67, noBox, {
-    stun: 32,
-    push: 11,
-    launch: -8,
-    knockdown: true,
-    hitstop: 8
-  }, { field: gravityPulse("repel", 19, 236, 149, 15) }),
-  gravityDomain_light: special("gravityDomain", "gravity", [17, 1, 25], 0, noBox, {}, {
-    field: { type: "gravityWell", offset: 123, width: 218, height: 179, speed: 0, life: 180 }
-  }),
-  gravityDomain_medium: special("gravityDomain", "gravity", [16, 13, 29], 71, rect(13, -115, 81, 106), {
-    hopAt: 13,
-    hopVelocity: -4.3,
-    drive: charge(15, 29, 10.5),
-    stun: 27,
-    push: 9,
-    knockdown: true,
-    hitstop: 8
-  })
-};
-var echoEchoMoves = {
-  stand_light: blow([4, 4, 9], 19, rect(13, -79, 53, 29), 1, "speed", { stun: 22, push: 1.8 }),
-  stand_medium: blow([8, 5, 16], 35, rect(16, -80, 70, 40), 2, "sonic", { stun: 29, push: 2.8 }),
-  crouch_light: blow([5, 4, 10], 17, rect(12, -43, 50, 27), 1, "speed", { level: "low", stun: 22 }),
-  crouch_medium: blow([9, 5, 18], 32, rect(15, -44, 76, 36), 2, "sonic", { level: "low", stun: 24 }),
-  air_light: blow([4, 5, 11], 20, rect(12, -81, 54, 47), 1, "speed", airLight),
-  air_medium: blow([7, 6, 17], 37, rect(15, -66, 71, 66), 2, "sonic", {
-    level: "high",
-    airHold: 2,
-    stun: 24,
-    cancels: ["special"]
-  }),
-  sonicCry_light: special("sonicCry", "sonic", [7, 1, 15], 34, noBox, { stun: 23, push: 3.8 }, {
-    air: true,
-    field: sonic(31, 73, 14, 14, 13, 18)
-  }),
-  sonicCry_medium: special("sonicCry", "sonic", [14, 1, 25], 53, noBox, { stun: 29, push: 7, hitstop: 7 }, {
-    field: sonic(36, 75, 22, 12, 23, 30)
-  }),
-  echoSplit_light: special("echoSplit", "sonic", [10, 1, 19], 0, noBox, {}, { echoSplit: 1 }),
-  echoSplit_medium: special("echoSplit", "sonic", [16, 8, 23], 0, noBox, {}, { echoSplit: 2 }),
-  echoHarmony_light: special("echoHarmony", "sonic", [8, 1, 20], 34, noBox, { stun: 23, push: 3.5 }, {
-    echoHarmony: 1,
-    field: sonic(30, 70, 17, 12, 10, 24)
-  }),
-  echoHarmony_medium: special("echoHarmony", "sonic", [17, 1, 30], 51, noBox, {
-    stun: 30,
-    push: 5.3,
-    launch: -7,
-    cancels: ["omnitrix"],
-    cancelWindow: { fromTick: 18, toTick: 44 }
-  }, { echoHarmony: 2, field: sonic(34, 76, 25, 13, 16, 32) })
-};
-var echoAssists = {
-  echoCopyJab: special("echoCopyJab", "sonic", [0, 1, 0], 8, noBox, { stun: 8, push: 1.5, hitstop: 2, meterGain: 0 }, {
-    field: { ...sonic(18, 62, 12, 0, 2, 17), type: "sonicAssist" }
-  }),
-  echoCopyWave: special("echoCopyWave", "sonic", [0, 1, 0], 12, noBox, { stun: 12, push: 2.7, hitstop: 3, meterGain: 0 }, {
-    field: { ...sonic(24, 70, 15, 13, 11, 20), type: "sonicAssist" }
-  })
-};
-var commands = {
-  xlr8: ["turbo", "cyclone", "lightning"],
-  fourArms: ["tackle", "quad", "seismic"],
-  heatblast: ["fireball", "pillar", "propulsion"],
-  diamondhead: ["spikes", "wall", "shards"],
-  humungousaur: ["colossal", "car", "growth"],
-  feedback: ["storm", "conductor", "discharge"],
-  bigChill: ["frostBreath", "iceDive", "ghostFlight"],
-  ghostfreak: ["ghostCross", "spectralArms", "ghostPhase"],
-  nrg: ["thermal", "armorImpact", "nrgUnseal"],
-  gravattack: ["gravityPull", "gravityRepel", "gravityDomain"],
-  echoEcho: ["sonicCry", "echoSplit", "echoHarmony"],
-  nrgReleased: ["radiantShot", "radiantWave", "nrgSeal"]
-};
-var moves = {
-  ...xlr8Moves,
-  ...fourArmsMoves,
-  ...heatblastMoves,
-  ...diamondheadMoves,
-  ...humungousaurMoves,
-  ...feedbackMoves,
-  ...bigChillMoves,
-  ...ghostfreakMoves,
-  ...nrgMoves,
-  ...nrgReleasedMoves,
-  ...gravattackMoves,
-  ...echoEchoMoves,
-  ...echoAssists
-};
-function benSpecialCommand(form, buffer, button) {
-  if (button !== "light" && button !== "medium") return;
-  const set = commands[form];
-  const motion = set && buffer.gokuSpecial(button);
-  if (!motion) return;
-  if (form === "nrg" && motion === "teleport" && button === "medium") return "armorCounter_medium";
-  return `${set[motion === "ki" ? 0 : motion === "kamehameha" ? 1 : 2]}_${button}`;
-}
-function benObjectMove(id) {
-  return moves[id];
-}
-function benProjectile(field) {
-  return ["fireball", "shard", "bolt", "frost", "heat", "beam", "car", "sonic", "sonicAssist"].includes(field.type);
-}
-function benObjectHeight(object, field) {
-  if (field.type === "spikes") return Math.round(field.height * Math.max(0, Math.min(1, object.age / 5)));
-  if (field.type === "wall") return Math.round(field.height * Math.max(0, Math.min(1, object.age / 6)));
-  return field.height;
-}
-function benBoltLength(object, field) {
-  return Math.min(field.length ?? 0, object.age * field.speed + 17);
-}
-function benObjectShape(object, field, previousX = object.x, previousY = object.y) {
-  if (field.type === "car") {
-    const scale = object.scale ?? 1;
-    return {
-      x: Math.min(object.x, previousX) - 60 * scale,
-      y: Math.min(object.y, previousY) - 25 * scale,
-      w: 120 * scale + Math.abs(object.x - previousX),
-      h: 50 * scale + Math.abs(object.y - previousY)
-    };
-  }
-  if (field.type === "beam") {
-    const reach = Math.min(field.length ?? 0, object.age * 58);
-    const length = object.aim && object.aim > 0 ? Math.min(reach, Math.max(0, (580 - object.y) / object.aim)) : reach;
-    return {
-      a: { x: object.x, y: object.y },
-      b: { x: object.x + object.direction * length, y: object.y + length * (object.aim ?? 0) },
-      r: field.width + Math.floor((object.power ?? 0) / 12)
-    };
-  }
-  if (field.type === "spectralHand" && object.vy) return {
-    x: Math.min(object.x, previousX) - field.width / 2,
-    y: Math.min(object.y, previousY) - 30,
-    w: field.width + Math.abs(object.x - previousX),
-    h: 59 + Math.abs(object.y - previousY)
-  };
-  if (benProjectile(field)) {
-    const tail = benBoltLength(object, field) * object.direction;
-    const rear = object.direction === 1 ? Math.min(previousX, object.x - tail) : Math.max(previousX, object.x - tail);
-    return {
-      a: { x: rear, y: previousY },
-      b: { x: object.x, y: object.y },
-      r: field.width + Math.floor((object.power ?? 0) / 10)
-    };
-  }
-  const height = benObjectHeight(object, field);
-  return {
-    x: Math.min(previousX, object.x) - field.width / 2,
-    y: object.y - height,
-    w: field.width + Math.abs(object.x - previousX),
-    h: height
-  };
-}
-function spectralPaths(move, frame) {
-  const phase = frame - move.startup;
-  const reach = move.ben.spectralReach;
-  const length = reach * Math.max(0, Math.min(1, (phase + 6) / 6, (move.active + 8 - phase) / 8));
-  return Array.from({ length: reach > 100 ? 2 : 1 }, (_, i) => Array.from({ length: 13 }, (_2, step) => {
-    const t = step / 12;
-    return { x: 19 + length * t, y: -95 + i * 14 + Math.round(Math.sin(t * 5.2 - phase * 0.21) * 26 * t) };
-  }));
-}
-function feedbackCablePaths(kind, frame, move) {
-  const phase = frame - move.startup;
-  const t = Math.max(0, Math.min(1, phase / (move.active - 1)));
-  const extension = phase < 0 ? Math.max(0, 1 + phase / 7) : Math.min(1, Math.max(0, (move.active + 7 - phase) / 7));
-  const upper = kind === "upper";
-  const count = upper || kind === "wide" ? 2 : 1;
-  return Array.from({ length: count }, (_, i) => {
-    const origin = { x: 8 + i * 7, y: -121 + i * 6 };
-    const idle = { x: -21 - i * 11, y: -100 + i * 13 };
-    const tip = upper ? { x: 102 + Math.sin(t * Math.PI) * 25 - i * 27, y: -82 - t * 133 - i * 25 } : { x: (kind === "wide" ? 162 - i * 15 : 98) + Math.sin(t * Math.PI) * 25, y: -96 + i * 28 + Math.sin(t * Math.PI * 1.15) * 11 };
-    const end = { x: idle.x + (tip.x - idle.x) * extension, y: idle.y + (tip.y - idle.y) * extension };
-    const control1 = { x: -33 + i * 12, y: -145 - i * 12 };
-    const control2 = { x: end.x * 0.67, y: end.y + (upper ? 37 + i * 6 : -38) };
-    return Array.from({ length: 17 }, (_2, k) => {
-      const a = k / 16, b = 1 - a;
-      const calc = (axis) => Math.round(b ** 3 * origin[axis] + 3 * b * b * a * control1[axis] + 3 * b * a * a * control2[axis] + a ** 3 * end[axis]);
-      return { x: calc("x"), y: calc("y") };
-    });
-  });
-}
-
-// src/engine/ben-forms.ts
-function throwMove2(startup3, reach, y) {
-  return {
-    startup: startup3,
-    active: 3,
-    recovery: 21,
-    damage: 0,
-    stun: 0,
-    blockstun: 0,
-    push: 0,
-    launch: 0,
-    level: "throw",
-    kind: "grab",
-    rank: 3,
-    cancels: [],
-    hitstop: 0,
-    box: { x: 15, y, w: reach, h: 38 }
-  };
-}
-function grab(damage2, rise, push, separation, duration = 27, reverse = false, carry = 0, clip2) {
-  const hitTick = Math.round(duration * 2 / 3);
-  return {
-    startFromContact: true,
-    duration,
-    hitTick,
-    damage: damage2,
-    recoveryTicks: duration > 28 ? 18 : 12,
-    reverse,
-    carry,
-    clip: clip2,
-    victimTrack: [
-      { tick: 0, x: separation, y: 0, clip: "grabbed" },
-      { tick: Math.round(duration / 3), x: separation, y: -rise, clip: "grabbed" },
-      { tick: hitTick, x: reverse ? -separation : separation + 18, y: -Math.round(rise / 2), clip: "damageAir" },
-      { tick: duration, x: reverse ? -separation - 30 : separation + 32, y: 0, clip: "damageAir" }
-    ],
-    release: { vx: push, vy: -5, stun: 32 }
-  };
-}
-function stage6Body(movement, width, height, damageTaken, moves2, grabStyle, throwEffect, throwStartup) {
-  const body2 = (w, y, h) => ({ x: -Math.round(w / 2), y, w, h });
-  const upper = Math.round(height * 0.54);
-  return {
-    movement,
-    width,
-    pushHeight: Math.round(height * 0.67),
-    damageTaken,
-    throwEffect,
-    hurtboxes: {
-      standing: [body2(width, -height, upper), body2(width - 6, upper - height, height - upper)],
-      crouching: [body2(width + 8, -Math.round(height * 0.69), Math.round(height * 0.69))],
-      air: [body2(width + 2, -height + 12, height - 24)]
-    },
-    moves: { ...moves2, throw: throwMove2(throwStartup, Math.round(width * 0.73) + 12, -105) },
-    grab: grabStyle
-  };
-}
-var nrgReleasedForm = stage6Body({
-  speed: 6.8,
-  jump: -14,
-  gravity: 0.59,
-  locomotion: {
-    backSpeed: 5.1,
-    airSpeed: 6.8,
-    jumpStartup: 5,
-    landingTicks: 7,
-    dashForward: [5, 9, 14, 17, 18, 17, 16, 13, 11, 8, 5, 3],
-    backdash: [4, 7, 11, 13, 14, 13, 11, 9, 7, 5, 3, 2]
-  }
-}, 53, 151, 1.1, nrgReleasedMoves, grab(74, 23, 9, 54, 19), "thermal", 7);
-var benForms = {
-  bigChill: stage6Body({
-    speed: 5.7,
-    jump: -15.4,
-    gravity: 0.58,
-    locomotion: {
-      backSpeed: 4.6,
-      airSpeed: 7.2,
-      jumpStartup: 5,
-      landingTicks: 7,
-      dashForward: [4, 8, 12, 15, 17, 16, 15, 12, 9, 7, 4, 2],
-      backdash: [4, 7, 10, 13, 14, 13, 11, 9, 6, 4, 3, 2]
-    }
-  }, 49, 145, 1.02, bigChillMoves, grab(75, 26, 10, 52, 20), "ice", 7),
-  ghostfreak: stage6Body({
-    speed: 5.9,
-    jump: -13.2,
-    gravity: 0.67,
-    locomotion: {
-      backSpeed: 4.7,
-      airSpeed: 5.6,
-      jumpStartup: 6,
-      landingTicks: 8,
-      dashForward: [5, 9, 14, 18, 18, 16, 14, 12, 8, 6, 4, 2],
-      backdash: [4, 8, 11, 13, 14, 13, 11, 9, 7, 5, 3, 2]
-    }
-  }, 51, 146, 1.03, ghostfreakMoves, grab(73, 30, 9, 53, 21), "spectral", 8),
-  gravattack: stage6Body({
-    speed: 3.5,
-    jump: -13,
-    gravity: 0.72,
-    locomotion: {
-      backSpeed: 2.65,
-      airSpeed: 3.5,
-      jumpStartup: 8,
-      landingTicks: 11,
-      dashForward: [3, 6, 9, 12, 13, 13, 11, 9, 7, 5, 3, 2],
-      backdash: [3, 5, 7, 9, 9, 8, 7, 6, 5, 3, 2, 1]
-    }
-  }, 91, 180, 0.95, gravattackMoves, grab(91, 54, 10, 70, 30), "gravity", 9),
-  echoEcho: stage6Body({
-    speed: 6.25,
-    jump: -14.3,
-    gravity: 0.69,
-    locomotion: {
-      backSpeed: 4.8,
-      airSpeed: 5.9,
-      jumpStartup: 5,
-      landingTicks: 7,
-      dashForward: [5, 9, 13, 16, 16, 15, 13, 10, 7, 5, 3],
-      backdash: [4, 8, 11, 13, 12, 10, 8, 6, 4, 2]
-    }
-  }, 43, 101, 1.06, echoEchoMoves, grab(64, 14, 7, 49, 20), "sonic", 7),
-  nrg: stage6Body({
-    speed: 3.4,
-    jump: -12.4,
-    gravity: 0.91,
-    locomotion: {
-      backSpeed: 2.6,
-      airSpeed: 3.4,
-      jumpStartup: 8,
-      landingTicks: 12,
-      dashForward: [3, 5, 8, 11, 12, 12, 10, 9, 7, 6, 4, 3, 2],
-      backdash: [2, 4, 6, 8, 9, 9, 8, 7, 5, 4, 3, 2, 1]
-    }
-  }, 86, 161, 0.92, nrgMoves, grab(97, 37, 12, 68, 26), "metal", 10),
-  xlr8: {
-    movement: {
-      speed: 8.8,
-      jump: -14.7,
-      gravity: 0.72,
-      locomotion: {
-        backSpeed: 6.2,
-        airSpeed: 7.1,
-        jumpStartup: 5,
-        landingTicks: 7,
-        dashForward: [7, 13, 20, 23, 24, 24, 23, 21, 18, 14, 10, 6],
-        backdash: [5, 10, 15, 18, 18, 17, 15, 12, 9, 7, 5, 3]
-      }
-    },
-    width: 44,
-    pushHeight: 84,
-    damageTaken: 1.06,
-    hurtboxes: {
-      standing: [{ x: -16, y: -133, w: 45, h: 49 }, { x: -23, y: -87, w: 47, h: 87 }],
-      crouching: [{ x: -26, y: -88, w: 57, h: 88 }],
-      air: [{ x: -23, y: -122, w: 52, h: 113 }]
-    },
-    moves: {
-      ...xlr8Moves,
-      throw: throwMove2(7, 48, -108)
-    },
-    grab: grab(70, 30, 11, 48, 17, true, 46)
-  },
-  fourArms: {
-    movement: {
-      speed: 3.6,
-      jump: -15.2,
-      gravity: 0.96,
-      locomotion: {
-        backSpeed: 2.7,
-        airSpeed: 3.4,
-        jumpStartup: 8,
-        landingTicks: 12,
-        dashForward: [2, 3, 5, 8, 11, 13, 13, 12, 11, 9, 7, 6, 4, 2],
-        backdash: [2, 4, 6, 8, 10, 10, 9, 8, 7, 5, 4, 3, 2, 1]
-      }
-    },
-    width: 84,
-    pushHeight: 114,
-    damageTaken: 0.95,
-    hurtboxes: {
-      standing: [
-        { x: -37, y: -163, w: 77, h: 101 },
-        { x: -37, y: -63, w: 76, h: 63 },
-        { x: -51, y: -131, w: 18, h: 52 },
-        { x: 39, y: -132, w: 23, h: 54 }
-      ],
-      crouching: [{ x: -45, y: -112, w: 92, h: 112 }],
-      air: [{ x: -41, y: -153, w: 83, h: 139 }]
-    },
-    moves: {
-      ...fourArmsMoves,
-      throw: throwMove2(11, 63, -105)
-    },
-    grab: grab(102, 48, 10, 69)
-  },
-  heatblast: {
-    movement: {
-      speed: 5.5,
-      jump: -13.8,
-      gravity: 0.65,
-      locomotion: {
-        backSpeed: 4.3,
-        airSpeed: 5,
-        jumpStartup: 6,
-        landingTicks: 8,
-        dashForward: [4, 7, 11, 15, 17, 17, 16, 14, 12, 10, 8, 5, 3],
-        backdash: [4, 6, 10, 13, 14, 14, 13, 11, 9, 7, 5, 4, 2]
-      }
-    },
-    width: 56,
-    pushHeight: 96,
-    damageTaken: 1,
-    hurtboxes: {
-      standing: [{ x: -23, y: -122, w: 52, h: 71 }, { x: -29, y: -52, w: 60, h: 52 }],
-      crouching: [{ x: -30, y: -94, w: 62, h: 94 }],
-      air: [{ x: -29, y: -126, w: 58, h: 113 }]
-    },
-    moves: {
-      ...heatblastMoves,
-      throw: throwMove2(9, 54, -107)
-    },
-    grab: grab(82, 30, 9, 56)
-  },
-  diamondhead: {
-    movement: {
-      speed: 4.9,
-      jump: -13.5,
-      gravity: 0.72,
-      locomotion: {
-        backSpeed: 3.8,
-        airSpeed: 4.6,
-        jumpStartup: 6,
-        landingTicks: 9,
-        dashForward: [4, 6, 9, 12, 14, 14, 13, 11, 9, 7, 5, 3],
-        backdash: [4, 6, 9, 11, 12, 11, 9, 7, 5, 4, 3, 2]
-      }
-    },
-    width: 66,
-    pushHeight: 101,
-    damageTaken: 0.97,
-    hurtboxes: {
-      standing: [{ x: -27, y: -140, w: 57, h: 76 }, { x: -33, y: -65, w: 67, h: 65 }],
-      crouching: [{ x: -35, y: -103, w: 71, h: 103 }],
-      air: [{ x: -31, y: -137, w: 65, h: 126 }]
-    },
-    moves: { ...diamondheadMoves, throw: throwMove2(8, 57, -105) },
-    grab: grab(87, 27, 10, 61, 24),
-    throwEffect: "crystal"
-  },
-  humungousaur: {
-    movement: {
-      speed: 3.4,
-      jump: -12.6,
-      gravity: 0.91,
-      locomotion: {
-        backSpeed: 2.6,
-        airSpeed: 3.1,
-        jumpStartup: 9,
-        landingTicks: 13,
-        dashForward: [2, 3, 5, 8, 11, 12, 12, 11, 10, 8, 6, 5, 4, 3, 2],
-        backdash: [2, 3, 5, 7, 9, 9, 8, 7, 6, 5, 4, 3, 2, 2, 1]
-      }
-    },
-    width: 94,
-    pushHeight: 121,
-    damageTaken: 0.96,
-    hurtboxes: {
-      standing: [{ x: -41, y: -174, w: 91, h: 114 }, { x: -46, y: -62, w: 92, h: 62 }],
-      crouching: [{ x: -48, y: -120, w: 99, h: 120 }],
-      air: [{ x: -45, y: -166, w: 94, h: 154 }]
-    },
-    moves: { ...humungousaurMoves, throw: throwMove2(10, 65, -105) },
-    grab: grab(98, 51, 12, 73, 26, false, 9),
-    throwEffect: "colossus"
-  },
-  feedback: {
-    movement: {
-      speed: 5.8,
-      jump: -14.2,
-      gravity: 0.66,
-      locomotion: {
-        backSpeed: 4.5,
-        airSpeed: 6.3,
-        jumpStartup: 5,
-        landingTicks: 7,
-        dashForward: [5, 9, 13, 16, 17, 17, 15, 13, 10, 8, 5, 3],
-        backdash: [4, 8, 11, 13, 14, 13, 11, 9, 7, 5, 4, 2]
-      }
-    },
-    width: 49,
-    pushHeight: 96,
-    damageTaken: 1.03,
-    hurtboxes: {
-      standing: [{ x: -19, y: -130, w: 39, h: 63 }, { x: -25, y: -70, w: 50, h: 70 }],
-      crouching: [{ x: -27, y: -91, w: 55, h: 91 }],
-      air: [{ x: -22, y: -122, w: 49, h: 108 }]
-    },
-    moves: { ...feedbackMoves, throw: throwMove2(7, 51, -103) },
-    grab: grab(77, 20, 9, 52, 20),
-    throwEffect: "electric"
-  }
-};
-function benGrabFor(form, id) {
-  if (!form) return;
-  if (id === "quad_light") return quadLight;
-  if (id === "quad_medium") return quadMedium;
-  if (id.startsWith("spectralArms_")) return id.endsWith("_medium") ? huntK : huntJ;
-  if (id.startsWith("conductor_")) return id.endsWith("_medium") ? conductorK : conductorJ;
-  if (id.startsWith("ghostPhase_")) return id.endsWith("_medium") ? nightmareK : nightmareJ;
-  return form.grab;
-}
-var conductorJ = { ...grab(58, 15, 9, 64, 20, false, 0, "conductorHold"), impacts: [13] };
-var conductorK = {
-  ...grab(77, 34, 4, 70, 28, false, 0, "conductorHoldK"),
-  impacts: [12, 19],
-  knockdown: false,
-  pursuit: true,
-  release: { vx: 2.7, vy: -16, stun: 41 }
-};
-function spectralSequence(kind, damage2, duration, impacts) {
-  const hunt = kind === "hunt";
-  const peak = Math.round(duration * 0.42);
-  return {
-    ...grab(
-      damage2,
-      hunt ? 96 : 30,
-      hunt ? 8 : 13,
-      70,
-      duration,
-      false,
-      0,
-      kind + (impacts.length > (hunt ? 2 : 3) ? "K" : "J")
-    ),
-    scene: kind,
-    impacts,
-    victimTrack: [
-      { tick: 0, x: 62, y: 0, clip: "grabbed" },
-      { tick: peak, x: 80, y: hunt ? -100 : -23, clip: "damageAir" },
-      { tick: duration - 7, x: 93, y: hunt ? -48 : -29, clip: "damageAir" },
-      { tick: duration, x: 109, y: 0, clip: "damageAir" }
-    ],
-    release: { vx: hunt ? 7 : 12, vy: -4, stun: 33 }
-  };
-}
-var huntJ = spectralSequence("hunt", 65, 33, [15, 28]);
-var huntK = spectralSequence("hunt", 88, 45, [14, 25, 38]);
-var nightmareJ = spectralSequence("nightmare", 79, 37, [16, 23, 31]);
-var nightmareK = spectralSequence("nightmare", 110, 50, [18, 25, 34, 43]);
-var quadLight = grab(113, 29, 7, 64, 22, false, 0, "quad_light_hold");
-var quadMedium = grab(145, 70, 14, 70, 34, false, 0, "quad_medium_hold");
-
-// src/engine/ben-omnitrix.ts
-var benId = "ben";
-var alienXSuper = { id: "alienX", name: "Alien X", command: "ultimate", cost: 100 };
-var benAliens = [
-  { id: "xlr8", name: "XLR8" },
-  { id: "fourArms", name: "Quatro Bra\xE7os" },
-  { id: "feedback", name: "Feedback" },
-  { id: "gravattack", name: "Gravattack" },
-  { id: "ghostfreak", name: "Fantasm\xE1tico" },
-  { id: "bigChill", name: "Friagem" },
-  { id: "nrg", name: "NRG" },
-  { id: "diamondhead", name: "Diamante" },
-  { id: "echoEcho", name: "Eco Eco" },
-  { id: "heatblast", name: "Chama" },
-  { id: "humungousaur", name: "Enormossauro" }
-];
-var omnitrixHoldTicks = 15;
-var omnitrixSwapTicks = 9;
-var omnitrixDialTicks = 8;
-var newOmnitrix = () => ({
-  active: "human",
-  selected: benAliens[0].id,
-  holdTicks: 0,
-  dialTicks: 0,
-  crouchExit: 0,
-  noSpace: 0,
-  usedSpecials: [],
-  comboSwap: false,
-  objects: [],
-  growthCooldown: 0,
-  charge: 0,
-  chargeTicks: 0,
-  absorbFlash: 0
-});
-var omnitrixCanBrowse = (state) => state === "idle" || state === "walk" || state === "crouch" || state === "air" || state === "jumpStart" || state === "landing" || state === "dash" || state === "attack";
-function cancelOmnitrix(state) {
-  state.holdTicks = 0;
-  state.dialTicks = 0;
-  state.crouchExit = 0;
-  delete state.transition;
-}
-function advanceDial(state) {
-  const current = benAliens.findIndex((form) => form.id === state.selected);
-  state.selected = benAliens[(current + 1) % benAliens.length].id;
-  state.dialTicks = omnitrixDialTicks;
-}
-function tickOmnitrix(state, input, canConfirm, place) {
-  if (state.dialTicks > 0) state.dialTicks--;
-  if (state.crouchExit > 0) state.crouchExit--;
-  if (state.noSpace > 0) state.noSpace--;
-  if (state.transition && --state.transition.ticks === 0) {
-    if (canConfirm) {
-      if (place(state.transition.to)) {
-        state.active = state.transition.to;
-        delete state.growth;
-        state.noSpace = 0;
-      } else state.noSpace = 35;
-    }
-    delete state.transition;
-  }
-  if (!input.omnitrix) {
-    state.holdTicks = 0;
-    return;
-  }
-  const edge = input.pressed.includes("heavy");
-  if (edge && state.holdTicks) {
-    if (state.holdTicks < omnitrixHoldTicks) advanceDial(state);
-    state.holdTicks = 0;
-  }
-  if (!input.omnitrix.held) {
-    if (state.holdTicks < omnitrixHoldTicks && (state.holdTicks || edge))
-      advanceDial(state);
-    state.holdTicks = 0;
-    return;
-  }
-  if (!state.holdTicks && !edge) return;
-  if (state.holdTicks === omnitrixHoldTicks) return;
-  if (++state.holdTicks === omnitrixHoldTicks && canConfirm && benForms[state.selected] && !state.transition && state.active !== state.selected)
-    state.transition = { to: state.selected, ticks: omnitrixSwapTicks };
-}
-
 // src/engine/ben-rework.ts
 var nrgFlightBudget = 102;
 var maxHeight = 219;
-var floor2 = 580;
-var clamp6 = (n, min, max) => Math.max(min, Math.min(max, n));
+var floor3 = 580;
+var clamp7 = (n, min, max) => Math.max(min, Math.min(max, n));
 function benManeuverTarget(f, rival, move) {
   const leap = move.ben?.leap, burrow = move.ben?.burrow;
   const reach = leap?.reach ?? burrow?.reach ?? 0;
   const goal = rival.x - f.facing * (burrow ? 49 : 18);
-  return clamp6(clamp6(goal, f.x - reach, f.x + reach), f.stageInset, 1280 - f.stageInset);
+  return clamp7(clamp7(goal, f.x - reach, f.x + reach), f.stageInset, 1280 - f.stageInset);
 }
 function driveBenManeuver(f, opponent, move) {
   const watch = f.omnitrix;
@@ -24039,12 +24161,12 @@ function driveBenManeuver(f, opponent, move) {
     if (age === leap.takeoff) f.vy = -leap.speed / Math.sqrt(f.benScale);
     if (f.airborne && !watch.landingStrike) {
       const speed = leap.reach > 200 ? 10.3 : 7.2;
-      f.vx = clamp6(destination - f.x, -speed, speed);
+      f.vx = clamp7(destination - f.x, -speed, speed);
       if (f.vy > 1) f.vy += 0.7 + (f.benScale - 1);
     } else f.vx = 0;
   }
   if (burrow) {
-    f.vx = age >= burrow.from && age < burrow.to ? clamp6(destination - f.x, -15.5, 15.5) : 0;
+    f.vx = age >= burrow.from && age < burrow.to ? clamp7(destination - f.x, -15.5, 15.5) : 0;
     if (age === burrow.to && opponent.x !== f.x) f.facing = opponent.x > f.x ? 1 : -1;
   }
 }
@@ -24082,7 +24204,7 @@ function flyNrg(f, input) {
   watch.flightVX = input.direction || kick2 ? (watch.flightVX ?? 0) * 0.62 + horizontal * 0.38 : 0;
   watch.flightVY = input.up || input.down || kick2 ? (watch.flightVY ?? 0) * 0.56 + vertical * 0.44 : 0;
   f.vx = watch.flightVX;
-  f.vy = Math.max(floor2 - maxHeight - f.y, watch.flightVY) - f.movementData.gravity;
+  f.vy = Math.max(floor3 - maxHeight - f.y, watch.flightVY) - f.movementData.gravity;
 }
 
 // src/data/feedback-antennae.json
@@ -24231,9 +24353,9 @@ var feedback_antennae_default = {
 
 // src/engine/feedback-conductor.ts
 var unit2 = (n) => Math.max(0, Math.min(n, 1));
-var ease4 = (n) => unit2(n) ** 2 * (3 - 2 * unit2(n));
+var ease5 = (n) => unit2(n) ** 2 * (3 - 2 * unit2(n));
 var lerp2 = (a, b, t) => a + (b - a) * t;
-var mix5 = (a, b, t) => ({
+var mix6 = (a, b, t) => ({
   x: lerp2(a.x, b.x, t),
   y: lerp2(a.y, b.y, t)
 });
@@ -24263,14 +24385,14 @@ function releasedPath(head, side, end, amount, heavy) {
     { x: lerp2(head.x, end.x, 0.9), y: end.y + arc * 0.12 },
     end
   ];
-  return feedbackCableSpline(rest.map((p3, i) => mix5(p3, nodes[i], amount)));
+  return feedbackCableSpline(rest.map((p3, i) => mix6(p3, nodes[i], amount)));
 }
 function feedbackConductorPaths(move, tick, head = defaultHead) {
   const phase = tick - move.startup;
   const heavy = move.ben?.cable === "wide";
   const windup = heavy ? 6 : 3;
-  const amount = phase < 0 ? 0.69 * ease4((tick - windup) / (move.startup - windup)) : phase < move.active ? 0.69 + 0.31 * ease4(phase / (heavy ? 6 : 4)) : 1 - ease4((phase - move.active) / (heavy ? 14 : 9));
-  const swing = ease4((phase + 2) / Math.max(move.active - 1, 1));
+  const amount = phase < 0 ? 0.69 * ease5((tick - windup) / (move.startup - windup)) : phase < move.active ? 0.69 + 0.31 * ease5(phase / (heavy ? 6 : 4)) : 1 - ease5((phase - move.active) / (heavy ? 14 : 9));
+  const swing = ease5((phase + 2) / Math.max(move.active - 1, 1));
   return [0, 1].map((side) => {
     if (!heavy && side === 0)
       return feedbackCableSpline(resting(head, side).map((p3, i) => ({
@@ -24282,7 +24404,7 @@ function feedbackConductorPaths(move, tick, head = defaultHead) {
       x: (heavy ? far ? 174 : 157 : 115) + (far ? 5 : 8) * swing,
       y: far ? -108 + 12 * swing : heavy ? -72 - 9 * swing : -91 + 4 * swing
     };
-    const reach = ease4(amount / 0.69);
+    const reach = ease5(amount / 0.69);
     return releasedPath(defaultHead, side, end, amount, heavy).map((p3, i) => {
       const weight = 1 - reach * unit2(i / 25);
       return {
@@ -24305,17 +24427,17 @@ function feedbackConductorContact(move, tick) {
 }
 
 // src/engine/ben-stage7.ts
-var clamp7 = (x, a, b) => Math.max(a, Math.min(b, x));
+var clamp8 = (x, a, b) => Math.max(a, Math.min(b, x));
 var cloneLife = 236;
 var emergeTicks = 8;
 var fadeTicks = 9;
-function echoCloneHurtbox(clone2, floor3) {
-  return { x: clone2.x - 18, y: floor3 - 94, w: 36, h: 94 };
+function echoCloneHurtbox(clone2, floor4) {
+  return { x: clone2.x - 18, y: floor4 - 94, w: 36, h: 94 };
 }
-function hitEchoClones(owner, shapes, floor3, reachable) {
+function hitEchoClones(owner, shapes, floor4, reachable) {
   let hit = false;
   for (const clone2 of owner.omnitrix?.echoClones ?? []) {
-    if (clone2.fading || clone2.age < emergeTicks || !shapes.some((shape) => reachable(shape, clone2.x) && shapeHitsRect(shape, echoCloneHurtbox(clone2, floor3)))) continue;
+    if (clone2.fading || clone2.age < emergeTicks || !shapes.some((shape) => reachable(shape, clone2.x) && shapeHitsRect(shape, echoCloneHurtbox(clone2, floor4)))) continue;
     clone2.fading = fadeTicks;
     delete clone2.action;
     hit = true;
@@ -24328,20 +24450,78 @@ function clearStage7(owner) {
   delete watch.echoClones;
   watch.objects = watch.objects.filter(({ id }) => {
     const type = benObjectMove(id)?.ben?.field?.type;
-    return type !== "gravityWell" && type !== "gravityPulse" && type !== "sonic" && type !== "sonicAssist";
+    return type !== "gravityWell" && type !== "gravityPulse" && type !== "gravityStone" && type !== "sonic" && type !== "sonicAssist";
   });
 }
-function gravityAt(owner, x, y, floor3) {
+function gravityAt(owner, x, y, floor4) {
   if (owner.omnitrix?.active !== "gravattack") return;
   return owner.omnitrix.objects.find((object) => {
     const field = benObjectMove(object.id)?.ben?.field;
-    return field?.type === "gravityWell" && object.age > 0 && object.age < field.life && Math.abs(x - object.x) < field.width / 2 && y >= floor3 - field.height && y <= floor3;
+    return field?.type === "gravityWell" && object.age > 0 && object.age < field.life && Math.abs(x - object.x) < field.width / 2 && y >= floor4 - field.height && y <= floor4;
   });
 }
 function planetoid(f) {
-  return f.state === "attack" && f.moveId === "gravityDomain_medium" && f.stateFrame >= 13 && f.stateFrame < 34;
+  return f.state === "attack" && f.moveId === "gravityDomain_medium" && f.stateFrame >= 13 && f.stateFrame < 37;
 }
-function tickEchoClones(owner, target, frame, floor3, obstructed) {
+function drivePlanetoid(f) {
+  if (f.state !== "attack" || f.moveId !== "gravityDomain_medium") return;
+  const tick = f.stateFrame;
+  if (tick < 14 || tick > 40) {
+    f.vx = 0;
+    return;
+  }
+  if (tick >= 37 || f.connected) {
+    f.vx *= 0.59;
+    return;
+  }
+  const speed = Math.min(17, 2 + (tick - 14) * 1.33);
+  const next = f.x + f.facing * speed;
+  if (next < f.stageInset || next > 1280 - f.stageInset) {
+    f.stateFrame = 37;
+    f.vx = -f.facing * Math.min(4.8, speed * 0.46);
+    return;
+  }
+  f.vx = speed * f.facing;
+}
+function spawnGravityStones(owner, frame, floor4) {
+  const medium = owner.moveId === "gravityRepel_medium";
+  const offsets = medium ? [-29, 38, 73, 15] : [28, 57];
+  const id = medium ? "gravityStone_medium" : "gravityStone_light";
+  const watch = owner.omnitrix;
+  for (const [index, offset] of offsets.entries()) {
+    watch.objects.push({
+      id,
+      fragment: index,
+      age: 0,
+      spent: false,
+      cast: frame,
+      x: clamp8(owner.x + offset * owner.facing, 18, 1262),
+      y: floor4 - 8,
+      direction: owner.facing,
+      vy: -(medium ? 5.1 : 4.3) - index * 0.45
+    });
+  }
+}
+function gravityStoneLaunch(object) {
+  const medium = object.id === "gravityStone_medium";
+  return (medium ? 16 : 10) + (object.fragment ?? 0) * (medium ? 5 : 3);
+}
+function tickGravityStone(object) {
+  const launch = gravityStoneLaunch(object);
+  const index = object.fragment ?? 0;
+  if (object.age < launch) {
+    object.vy = (object.vy ?? 0) * 0.8;
+    object.y += object.vy;
+    return false;
+  }
+  if (object.age === launch) object.vy = [-0.62, -2.8, 1.4, -1.8][index];
+  object.y += object.vy ?? 0;
+  object.vy = (object.vy ?? 0) + 0.045;
+  const speed = object.id === "gravityStone_medium" ? 13 : 9;
+  object.x += object.direction * Math.min(speed + index * 0.7, 3 + (object.age - launch) * 3);
+  return true;
+}
+function tickEchoClones(owner, target, frame, floor4, obstructed) {
   const watch = owner.omnitrix;
   if (watch?.active !== "echoEcho") return;
   const move = owner.state === "attack" ? owner.move : void 0;
@@ -24351,7 +24531,7 @@ function tickEchoClones(owner, target, frame, floor3, obstructed) {
   if (move && split && (age === move.startup || split === 2 && age === move.startup + 7) && clones.length < 2) {
     const slot = clones.some((clone2) => clone2.slot === 0) ? 1 : 0;
     const positions = slot === 0 ? [-66, 70, -99, 104] : [77, -116, 116, -89];
-    const x = positions.map((offset) => clamp7(owner.x + offset * owner.facing, 26, 1254)).find((point) => Math.abs(point - owner.x) >= 36 && Math.abs(point - target.x) >= 26 && clones.every((clone2) => Math.abs(clone2.x - point) >= 41) && !obstructed(point));
+    const x = positions.map((offset) => clamp8(owner.x + offset * owner.facing, 26, 1254)).find((point) => Math.abs(point - owner.x) >= 36 && Math.abs(point - target.x) >= 26 && clones.every((clone2) => Math.abs(clone2.x - point) >= 41) && !obstructed(point));
     if (x !== void 0) clones.push({
       id: frame * 2 + slot,
       slot,
@@ -24366,12 +24546,12 @@ function tickEchoClones(owner, target, frame, floor3, obstructed) {
   }
   const ready = clones.filter((clone2) => clone2.age >= emergeTicks && !clone2.fading && !clone2.cooldown && !clone2.action);
   if (move && age === move.startup && owner.moveId === "stand_light") {
-    const helper = ready.find((clone2) => Math.abs(clone2.x - target.x) <= 63 && Math.abs(target.y - floor3) <= 45);
+    const helper = ready.find((clone2) => Math.abs(clone2.x - target.x) <= 63 && Math.abs(target.y - floor4) <= 45);
     if (helper) helper.action = { kind: "jab", tick: -4, aim: target.x };
   }
   if (move?.ben?.echoHarmony && age === move.startup) {
     const range = move.ben.echoHarmony === 2 ? 245 : 173;
-    const center = clamp7(owner.x + owner.facing * (move.ben.echoHarmony === 2 ? 127 : 83), 30, 1250);
+    const center = clamp8(owner.x + owner.facing * (move.ben.echoHarmony === 2 ? 127 : 83), 30, 1250);
     ready.filter((clone2) => Math.abs(clone2.x - owner.x) < range).forEach((clone2, i) => {
       clone2.action = { kind: "wave", tick: -6 - i * 6, aim: center };
     });
@@ -24395,8 +24575,8 @@ function tickEchoClones(owner, target, frame, floor3, obstructed) {
         watch.objects.push({
           id,
           sourceClone: clone2.id,
-          x: clamp7(clone2.x + clone2.facing * field.offset, 12, 1268),
-          y: floor3 - field.height,
+          x: clamp8(clone2.x + clone2.facing * field.offset, 12, 1268),
+          y: floor4 - field.height,
           direction: clone2.facing,
           age: 0,
           spent: false,
@@ -24407,8 +24587,8 @@ function tickEchoClones(owner, target, frame, floor3, obstructed) {
       if (action.tick >= 14) delete clone2.action;
       return true;
     }
-    const desired = clamp7(owner.x + (clone2.slot === 0 ? -65 : 76) * owner.facing, 26, 1254);
-    const next = clone2.x + clamp7(desired - clone2.x, -4, 4);
+    const desired = clamp8(owner.x + (clone2.slot === 0 ? -65 : 76) * owner.facing, 26, 1254);
+    const next = clone2.x + clamp8(desired - clone2.x, -4, 4);
     if (Math.abs(next - owner.x) >= 25 && Math.abs(next - target.x) >= 25 && clones.every((other) => other === clone2 || other.fading || Math.abs(other.x - next) >= 31) && !obstructed(next)) {
       clone2.moving = Math.abs(next - clone2.x) > 1;
       clone2.x = next;
@@ -25405,15 +25585,15 @@ var jetStartupClip = {
   frames: initial.map(([name]) => luffy_jet_poses_default[name].frame),
   durations: initial.map(([, ticks]) => ticks)
 };
-var clamp8 = (v, low, high) => Math.max(low, Math.min(high, v));
-var linear = (t, from, to) => clamp8((t - from) / (to - from), 0, 1);
-var ease5 = (v) => v * v * (3 - 2 * v);
-var mix6 = (a, b, v) => a + (b - a) * v;
+var clamp9 = (v, low, high) => Math.max(low, Math.min(high, v));
+var linear = (t, from, to) => clamp9((t - from) / (to - from), 0, 1);
+var ease6 = (v) => v * v * (3 - 2 * v);
+var mix7 = (a, b, v) => a + (b - a) * v;
 var interp = (a, b, v) => ({
-  x: mix6(a.x, b.x, v),
-  y: mix6(a.y, b.y, v)
+  x: mix7(a.x, b.x, v),
+  y: mix7(a.y, b.y, v)
 });
-var bound = (x) => clamp8(x, 40, 1240);
+var bound = (x) => clamp9(x, 40, 1240);
 function arm(cel, tip, radius = 7, bend = 0, slot = 0) {
   const joints = luffy_jet_poses_default[cel].joints;
   const root = joints[slot] ?? joints[0];
@@ -25438,7 +25618,7 @@ function jetOpener(f) {
   if (t < 59 || t >= 76) return;
   const active3 = t >= luffy_jet_gigant_default.startup && t < luffy_jet_gigant_default.startup + luffy_jet_gigant_default.active;
   const root = luffy_jet_poses_default.pistol.joints[0];
-  const reach = t < luffy_jet_gigant_default.startup ? ease5(linear(t + 1, 59, luffy_jet_gigant_default.startup)) : 1 - ease5(linear(t, luffy_jet_gigant_default.startup + luffy_jet_gigant_default.active - 1, 76));
+  const reach = t < luffy_jet_gigant_default.startup ? ease6(linear(t + 1, 59, luffy_jet_gigant_default.startup)) : 1 - ease6(linear(t, luffy_jet_gigant_default.startup + luffy_jet_gigant_default.active - 1, 76));
   const forward = f.facing > 0 ? 1247 - f.x : f.x - 33;
   const gap = f.opponent ? (f.opponent.x - f.x) * f.facing : 0;
   const extension = Math.min(
@@ -25446,10 +25626,10 @@ function jetOpener(f) {
     forward - 8,
     gap > 0 ? Math.max(root.x + 6, gap - 8) : 144
   );
-  const x = mix6(root.x + 6, extension, reach);
+  const x = mix7(root.x + 6, extension, reach);
   const geometry = arm(
     "pistol",
-    { x, y: mix6(root.y + 3, -89, reach) },
+    { x, y: mix7(root.y + 3, -89, reach) },
     7,
     -3 * reach
   );
@@ -25472,46 +25652,46 @@ function track2(t, keys) {
   }
   const [from, x, y] = keys[at - 1];
   const [to, endX, endY] = keys[at];
-  return interp({ x, y }, { x: endX, y: endY }, ease5(linear(t, from, to)));
+  return interp({ x, y }, { x: endX, y: endY }, ease6(linear(t, from, to)));
 }
 var rushHits = luffy_jet_gigant_default.hits.filter((hit) => hit.kind === "gatling");
 function jetScene(s) {
-  const t = s.tick, side = s.facing, floor3 = 580;
+  const t = s.tick, side = s.facing, floor4 = 580;
   const target = (offset) => bound(s.targetX + side * offset);
   const startGap = Math.max(62, (s.targetX - s.originX) * side);
   const back = (x, gap) => bound(x - side * gap);
   const end = target(237);
   const victim = track2(t, [
     [0, s.targetX, s.targetY],
-    [16, target(14), floor3],
-    [32, target(23), floor3],
-    [60, target(28), floor3],
-    [82, target(108), floor3],
-    [92, target(118), floor3],
-    [163, target(154), floor3],
+    [16, target(14), floor4],
+    [32, target(23), floor4],
+    [60, target(28), floor4],
+    [82, target(108), floor4],
+    [92, target(118), floor4],
+    [163, target(154), floor4],
     [208, target(180), 376],
     [235, target(185), 342],
     [272, target(198), 367],
-    [299, end, floor3],
-    [406, end, floor3]
+    [299, end, floor4],
+    [406, end, floor4]
   ]);
   const attacker = track2(t, [
-    [0, s.originX, floor3],
-    [9, back(target(12), startGap), floor3],
-    [16, back(target(14), 88), floor3],
-    [32, back(target(23), 95), floor3],
-    [49, back(target(27), 107), floor3],
-    [60, back(target(28), 101), floor3],
-    [69, back(target(64), 136), floor3],
-    [88, back(target(114), 101), floor3],
-    [163, back(target(154), 86), floor3],
-    [180, back(target(160), 101), floor3],
-    [221, back(target(182), 174), floor3],
+    [0, s.originX, floor4],
+    [9, back(target(12), startGap), floor4],
+    [16, back(target(14), 88), floor4],
+    [32, back(target(23), 95), floor4],
+    [49, back(target(27), 107), floor4],
+    [60, back(target(28), 101), floor4],
+    [69, back(target(64), 136), floor4],
+    [88, back(target(114), 101), floor4],
+    [163, back(target(154), 86), floor4],
+    [180, back(target(160), 101), floor4],
+    [221, back(target(182), 174), floor4],
     [243, back(target(189), 204), 519],
     [272, back(target(198), 240), 493],
     [286, back(end, 223), 511],
-    [319, back(end, 162), floor3],
-    [406, back(end, 162), floor3]
+    [319, back(end, 162), floor4],
+    [406, back(end, 162), floor4]
   ]);
   const phase = t < 9 ? "jetPistol" : t < 81 ? "jetBazooka" : t < 177 ? "jetGatling" : t < 246 ? "gearThird" : t < 305 ? "gigantPistol" : "return";
   const aim = {
@@ -25530,7 +25710,7 @@ function jetScene(s) {
     );
     limbs.push({ geometry: arm(name, tip, 7, -3 * reach, slot), rear });
   };
-  const pulse = (hit, wind, recovery3) => t < hit ? ease5(linear(t, hit - wind, hit)) : 1 - ease5(linear(t, hit + 1, hit + recovery3));
+  const pulse = (hit, wind, recovery3) => t < hit ? ease6(linear(t, hit - wind, hit)) : 1 - ease6(linear(t, hit + 1, hit + recovery3));
   if (t < 9) {
     cel = "pistol";
     const root = luffy_jet_poses_default.pistol.joints[0];
@@ -25540,7 +25720,7 @@ function jetScene(s) {
         interp(
           s.openingTip,
           { x: root.x + 14, y: root.y + 1 },
-          ease5(linear(t, 1, 9))
+          ease6(linear(t, 1, 9))
         ),
         7,
         -3
@@ -25592,11 +25772,11 @@ function jetScene(s) {
       y: root.y - 13
     };
     const contact = { x: aim.x - luffy_jet_fists_default[giant].nose + 13, y: aim.y };
-    const advance = t < 272 ? ease5(linear(t, 254, 272)) : 1 - ease5(linear(t, 275, 305));
+    const advance = t < 272 ? ease6(linear(t, 254, 272)) : 1 - ease6(linear(t, 275, 305));
     const tip = interp(windup, contact, advance);
     const geometry = arm(cel, tip, Math.min(12, 7 + giant), -10 * advance);
     geometry.radii = geometry.radii.map(
-      (radius, i, radii) => mix6(radius, luffy_jet_fists_default[giant].wrist, ease5(i / Math.max(1, radii.length - 1)))
+      (radius, i, radii) => mix7(radius, luffy_jet_fists_default[giant].wrist, ease6(i / Math.max(1, radii.length - 1)))
     );
     const reverse = tip.x < root.x;
     if (geometry.centers.length >= 4) {
@@ -25619,8 +25799,8 @@ function jetScene(s) {
   }
   const lastHit = luffy_jet_gigant_default.hits.filter((hit) => hit.tick <= t).at(-1);
   const victimClip = t >= 299 ? "downed" : t >= 272 ? "falling" : t >= 205 ? "damageAir" : t >= 163 ? "launched" : "damageHeavy";
-  const release = ease5(linear(t, 364, luffy_jet_gigant_default.duration));
-  const scale = mix6(mix6(1.48, 1.21, ease5(linear(t, 219, 249))), 1, release);
+  const release = ease6(linear(t, 364, luffy_jet_gigant_default.duration));
+  const scale = mix7(mix7(1.48, 1.21, ease6(linear(t, 219, 249))), 1, release);
   const midX = (attacker.x + victim.x) / 2;
   const visibleHalfWidth = 640 / scale;
   const shake = t === 272 || t === 299 ? (s.hold % 3 - 1) * 7 : t > 299 && t < 313 ? Math.round((313 - t) / 3) * (t % 2 ? 1 : -1) : 0;
@@ -25638,12 +25818,12 @@ function jetScene(s) {
     },
     camera: {
       scale,
-      x: mix6(
-        clamp8(midX, visibleHalfWidth, 1280 - visibleHalfWidth),
+      x: mix7(
+        clamp9(midX, visibleHalfWidth, 1280 - visibleHalfWidth),
         640,
         release
       ),
-      y: mix6(mix6(432, 386, ease5(linear(t, 170, 236))), 360, release),
+      y: mix7(mix7(432, 386, ease6(linear(t, 170, 236))), 360, release),
       shakeX: shake,
       shakeY: -Math.round(shake / 2)
     },
@@ -25701,6 +25881,7 @@ var Fighter = class {
   comboAge = 0;
   comboAirHits = 0;
   combo = 0;
+  lightHitsInCombo = 0;
   knockedDown = false;
   dashDirection = 1;
   jumpDirection = 0;
@@ -25810,7 +25991,8 @@ var Fighter = class {
     return this.canSpecialCancel();
   }
   canStartSuper() {
-    if (this.match?.cinematicActive || this.omnitrix) return false;
+    if (this.match?.cinematicActive) return false;
+    if (this.omnitrix) return canStartAlienX(this);
     if (this.data.id === "kaneki") return canStartCentipede(this);
     if (this.data.id === "sasuke") return canStartKirin(this);
     if (this.data.id === "luffy")
@@ -26116,7 +26298,7 @@ var Fighter = class {
       if (!chill.build && !chill.immune && !chill.used) this.chill = void 0;
     }
     if (this.omnitrix) {
-      const combatButton = (button) => button !== "heavy" && button !== "ultimate" && (!this.omnitrix.transition || !["light", "medium", "throw"].includes(button));
+      const combatButton = (button) => button !== "heavy" && (!this.omnitrix.transition || !["light", "medium", "throw"].includes(button));
       this.buffer.actions = this.buffer.actions.filter((action) => combatButton(action.button));
       input = { ...input, pressed: input.pressed.filter(combatButton) };
     }
@@ -26178,7 +26360,7 @@ var Fighter = class {
             this.knockedDown && !this.airborne ? "getup" : this.airborne ? "air" : "idle"
           );
           this.combo = 0;
-          this.comboAge = this.comboAirHits = 0;
+          this.comboAge = this.comboAirHits = this.lightHitsInCombo = 0;
           this.knockedDown = false;
         }
       }
@@ -26204,7 +26386,7 @@ var Fighter = class {
         (action) => action.button === "ultimate"
       );
       if (superRequested) {
-        const id = this.data.id === "goku" ? "ssj1_fury" : this.data.id === "dio" ? "road_roller" : this.data.id === "luffy" ? jetId : this.data.id === "sasuke" ? kirinId : this.data.id === "kaneki" ? centipedeId : "ultimate_start";
+        const id = this.data.id === "goku" ? "ssj1_fury" : this.data.id === "dio" ? "road_roller" : this.omnitrix ? alienXId : this.data.id === "luffy" ? jetId : this.data.id === "sasuke" ? kirinId : this.data.id === "kaneki" ? centipedeId : "ultimate_start";
         const move = this.data.moves[id] ?? this.data.superMoves?.[id];
         if (this.canStartSuper()) {
           this.attack(id);
@@ -26398,7 +26580,8 @@ var Fighter = class {
         else if (move.drive)
           this.vx = (!this.connected || this.hitConfirmed && move.ben?.follow) && this.stateFrame >= move.drive.from && this.stateFrame < move.drive.to ? this.facing * (this.connected && move.ben?.follow ? move.ben.follow : move.drive.speed) : 0;
         if (move.hopAt === this.stateFrame)
-          this.vy = (move.hopVelocity ?? 0) + (planetoid(this) ? input.up ? -2 : input.down ? 1.4 : 0 : 0);
+          this.vy = move.hopVelocity ?? 0;
+        drivePlanetoid(this);
         const age = this.stateFrame;
         if (move.ben?.aerialMotion === "dive") {
           if (age === 3 && !this.airborne) this.vy = -8;
@@ -26483,8 +26666,9 @@ var Match = class {
   jetGigant;
   kirin;
   centipede;
+  alienX;
   get cinematicActive() {
-    return !!(this.roadRoller || this.fury || this.jetGigant || this.kirin || this.centipede);
+    return !!(this.roadRoller || this.fury || this.jetGigant || this.kirin || this.centipede || this.alienX);
   }
   temporal = new TemporalController();
   projectiles = [];
@@ -26601,7 +26785,7 @@ var Match = class {
         return true;
       });
     });
-    if (this.fury || this.jetGigant || this.kirin || this.centipede) {
+    if (this.fury || this.jetGigant || this.kirin || this.centipede || this.alienX) {
       this.stepStagedSuper();
       return;
     }
@@ -26674,7 +26858,7 @@ var Match = class {
       if (!this.temporal.isFrozen(f.id)) f.stand?.tick(f);
     this.stepSpecialReleases();
     for (const f of this.fighters)
-      if (f.state === "attack" && f.stateFrame === 0 && (f.move?.kind === "ultimate" || f.move?.kind === "jetGigant" || f.move?.kind === "kirin"))
+      if (f.state === "attack" && f.stateFrame === 0 && (f.move?.kind === "ultimate" || f.move?.kind === "jetGigant" || f.move?.kind === "kirin" || f.move?.kind === alienXId))
         this.effect("power", f.x, f.y - 80, 20);
       else if (f.state === "attack" && f.stateFrame === 0 && f.moveId === centipedeId)
         this.centipedeEffect("activation", f.x, f.y - 74, 21);
@@ -26758,7 +26942,7 @@ var Match = class {
       if (!c2) continue;
       const { f, target, move: m, moveId } = c2;
       if (m.super && f.health <= 0) continue;
-      if ((m.kind === "jetGigant" || m.kind === "kirin" || m.kind === centipedeId) && (f.state !== "attack" || f.moveId !== moveId)) continue;
+      if ((m.kind === "jetGigant" || m.kind === "kirin" || m.kind === centipedeId || m.kind === alienXId) && (f.state !== "attack" || f.moveId !== moveId)) continue;
       if (this.capture || this.cinematicActive) continue;
       if (m.kind === "grab" && contacts.some(
         (other) => other && other.f === target && other.move.kind !== "grab"
@@ -26767,7 +26951,7 @@ var Match = class {
       f.connected = true;
       f.hitIds.push(c2.hitId);
       if (this.counterWithArmor(target, f, m, moveId, c2.impact) || this.counterWithFeedback(target, f, m)) continue;
-      if (!this.temporal.isFrozen(target.id) && target.counterWindow && m.level !== "low" && m.level !== "throw" && m.kind !== "ultimate" && m.kind !== "roadRoller" && m.kind !== "jetGigant" && m.kind !== centipedeId && (f.x - target.x) * target.facing > 0) {
+      if (!this.temporal.isFrozen(target.id) && target.counterWindow && m.level !== "low" && m.level !== "throw" && m.kind !== "ultimate" && m.kind !== "roadRoller" && m.kind !== "jetGigant" && m.kind !== centipedeId && m.kind !== alienXId && (f.x - target.x) * target.facing > 0) {
         f.setState("hitstun");
         f.stun = 12;
         f.reactionStrength = 1;
@@ -26814,6 +26998,8 @@ var Match = class {
     return target.input.direction === -target.facing && !target.airborne && ["idle", "walk", "crouch", "landing", "blockstun"].includes(target.state) && (!m.ben?.field || direction === -target.facing);
   }
   resolveImpact(f, target, m, moveId, impact, direction = f.facing, curseFx = winged(f), swordCapture = false) {
+    const limitedLight = isLimitedLightNormal(f.data.id, moveId);
+    if (limitedLight && target.combo > 0 && target.lightHitsInCombo >= antiLightCombo.maxHits) return;
     const frozen = this.temporal.isFrozen(target.id);
     const guarding = target.input.direction === -target.facing && !target.airborne && ["idle", "walk", "crouch", "landing", "blockstun"].includes(
       target.state
@@ -26832,12 +27018,12 @@ var Match = class {
     const applied = this.damage(
       target,
       damage2,
-      (swordCapture || ["ultimate", "roadRoller", "gokuFury", "jetGigant", "kirin", centipedeId].includes(m.kind ?? "")) && !blocked ? 1 : 0
+      (swordCapture || ["ultimate", "roadRoller", "gokuFury", "jetGigant", "kirin", centipedeId, alienXId].includes(m.kind ?? "")) && !blocked ? 1 : 0
     );
     const reaction = {
       blocked,
       stun: blocked ? m.blockstun : m.stun,
-      vx: direction * m.push * (m.ben && !m.ben.field && f.benScale > 1 ? 1.08 : 1) * (blocked ? 1 : 1 + Math.max(0, target.combo - combat_pace_default.combo.pushGrowthAfter) * combat_pace_default.combo.pushGrowth),
+      vx: direction * (blocked && m.ben?.field?.gravityMode === "pull" ? 3 : m.push) * (m.ben && !m.ben.field && f.benScale > 1 ? 1.08 : 1) * (blocked ? 1 : 1 + Math.max(0, target.combo - combat_pace_default.combo.pushGrowthAfter) * combat_pace_default.combo.pushGrowth),
       vy: blocked ? 0 : m.launch,
       knockdown: !blocked && !!m.knockdown,
       strength: m.damage <= 50 ? 1 : m.damage <= 90 ? 2 : 3,
@@ -26869,9 +27055,23 @@ var Match = class {
           }
         }
       }
-      if (!target.combo) target.comboAge = target.comboAirHits = 0;
+      if (!target.combo) {
+        target.comboAge = target.comboAirHits = 0;
+        target.lightHitsInCombo = 0;
+      }
       target.combo++;
       if (target.airborne || m.launch < 0) target.comboAirHits++;
+      if (limitedLight) {
+        target.lightHitsInCombo++;
+        if (target.lightHitsInCombo >= antiLightCombo.maxHits) {
+          reaction.vx = direction * antiLightCombo.push;
+          reaction.vy = antiLightCombo.launch;
+          reaction.stun = Math.max(reaction.stun, antiLightCombo.stun);
+          reaction.launch = true;
+          reaction.knockdown = true;
+          reaction.strength = 3;
+        }
+      }
       if (target.airborne && !m.knockdown && !m.super)
         reaction.stun += combat_pace_default.combo.airExtensionStun;
       if (m.ben && target.combo > 4) reaction.stun = Math.max(9, reaction.stun - (target.combo - 4) * 3);
@@ -26881,7 +27081,7 @@ var Match = class {
         reaction.vy = 10;
         reaction.stun = Math.max(reaction.stun, 30);
       }
-      if (m.kind !== "ultimate") f.gainMeter(m.meterGain ?? 10);
+      if (m.kind !== "ultimate" && m.kind !== alienXId) f.gainMeter(m.meterGain ?? 10);
       target.gainMeter(5);
       if (f.airborne && m.airHold !== void 0) f.vy = m.airHold;
     }
@@ -26916,7 +27116,7 @@ var Match = class {
     if (m.kind === "ultimate" && !blocked)
       this.beginCapture("ultimate", f, target);
     if (m.kind === "roadRoller" && !blocked) this.beginRoadRoller(f, target);
-    if (!blocked && (m.kind === "gokuFury" || m.kind === "jetGigant" || m.kind === "kirin" || m.kind === centipedeId))
+    if (!blocked && (m.kind === "gokuFury" || m.kind === "jetGigant" || m.kind === "kirin" || m.kind === centipedeId || m.kind === alienXId))
       this.beginStagedSuper(f, target, m.kind);
   }
   applyReaction(target, reaction) {
@@ -27411,6 +27611,8 @@ var Match = class {
       const target = this.fighters[1 - owner.id];
       const move = owner.state === "attack" ? owner.move : void 0;
       const cast = move?.ben?.field;
+      if (cast?.gravityMode === "repel" && owner.stateFrame === move.startup - (owner.moveId.endsWith("_medium") ? 12 : 6))
+        spawnGravityStones(owner, this.combatFrame, FLOOR2);
       if (cast && move && owner.stateFrame === move.startup) this.spawnBenField(owner, target, cast);
       const walls = this.benWalls();
       tickEchoClones(owner, target, this.combatFrame, FLOOR2, (x) => walls.some((w) => this.benWallSolid(w) && (Math.abs(w.object.x - x) <= w.field.width / 2 + 19 || this.benWallBetween(w, owner.x, x, { x: Math.min(owner.x, x), y: FLOOR2 - 95, w: Math.abs(x - owner.x), h: 95 }))));
@@ -27419,14 +27621,20 @@ var Match = class {
         const field = projectile2?.ben?.field;
         if (!field) return false;
         if (object.impactAge !== void 0) return ++object.impactAge < 15;
-        if (projectile2.ben?.nightmare && (owner.state !== "attack" || owner.moveId !== object.id)) return false;
+        if ((projectile2.ben?.nightmare || field.gravityFocus && !object.spent) && (owner.state !== "attack" || owner.moveId !== object.id)) return false;
         if (++object.age > field.life + (object.power ? 6 : 0)) return false;
         if (object.age <= 0 || field.type === "wall" || field.type === "gravityWell") return true;
         if (["fireball", "bolt", "shard", "frost", "sonic"].includes(field.type) && gravityAt(target, object.x, object.y, FLOOR2))
           object.vy = Math.min(7, (object.vy ?? 0) + 0.48);
         const before = { x: object.x, y: object.y };
-        object.x += object.direction * (field.type === "spectralHand" && object.vy ? 6 : field.speed);
-        object.y += object.vy ?? 0;
+        if (field.type === "gravityStone") {
+          if (object.age < gravityStoneLaunch(object) && (!move || !owner.moveId.startsWith("gravityRepel_"))) return false;
+          if (!tickGravityStone(object)) return true;
+          if (object.x < 0 || object.x > 1280 || object.y >= FLOOR2) return false;
+        } else {
+          object.x += object.direction * (field.type === "spectralHand" && object.vy ? 6 : field.speed);
+          object.y += object.vy ?? 0;
+        }
         if (field.gravity) object.vy = (object.vy ?? 0) + field.gravity;
         if (field.type === "beam") {
           if (owner.state !== "attack" || owner.moveId !== object.id) return false;
@@ -27476,7 +27684,7 @@ var Match = class {
           return field.type === "car" ? crash() : false;
         if (field.type === "gravityPulse" && walls.some((w) => this.benWallBetween(w, owner.x, target.x, shape))) return true;
         if (damage2 && this.strikeEchoClones(owner, target, [shape], walls) && missile && field.type !== "beam") return false;
-        if (this.capture || target.knockedDown || target.invulnerable || target.health <= 0 || field.type === "sonicAssist" && (target.combo >= 5 || owner.omnitrix?.active !== "echoEcho")) return true;
+        if (this.capture || target.knockedDown || target.invulnerable || target.health <= 0 || field.type === "gravityStone" && target.combo >= 4 || field.type === "sonicAssist" && (target.combo >= 5 || owner.omnitrix?.active !== "echoEcho")) return true;
         const hurt = target.hurtboxes().find((box) => shapeHitsRect(shape, box));
         if (!hurt) return true;
         object.spent = true;
@@ -27533,7 +27741,7 @@ var Match = class {
       const object = {
         id: owner.moveId,
         direction: owner.facing * (shot.direction ?? 1),
-        x: Math.max(half, Math.min(1280 - half, placeX)),
+        x: field.gravityFocus ? placeX : Math.max(half, Math.min(1280 - half, placeX)),
         y: shot.height ? FLOOR2 - shot.height : projectile2 ? owner.y - field.height : FLOOR2,
         age: -(shot.delay ?? 0),
         spent: false,
@@ -27723,7 +27931,7 @@ var Match = class {
     });
   }
   beginStagedSuper(a, b, kind, source = "strike") {
-    const config = kind === centipedeId ? centipedeConfig : kind === "kirin" ? sasuke_kirin_default : kind === "jetGigant" ? luffy_jet_gigant_default : goku_fury_default;
+    const config = kind === alienXId ? alienXConfig : kind === centipedeId ? centipedeConfig : kind === "kirin" ? sasuke_kirin_default : kind === "jetGigant" ? luffy_jet_gigant_default : goku_fury_default;
     const state = {
       attacker: a.id,
       victim: b.id,
@@ -27756,6 +27964,20 @@ var Match = class {
       };
       this.capture = void 0;
       if (source !== "strike") this.centipedeEffect("activation", a.x, a.y - 74, 20);
+    } else if (kind === alienXId) {
+      this.alienX = { ...state, hold: 0 };
+      const watch = a.omnitrix;
+      clearStage7(a);
+      watch.objects.length = 0;
+      if (watch.growth) watch.growthCooldown = benFormBalance.growth[watch.growth.rank].cooldown;
+      if (watch.nrgReleased) watch.nrgCooldown = benStage6Balance.nrgCooldown;
+      watch.active = "human";
+      watch.nrgReleased = false;
+      watch.nrgTicks = 0;
+      watch.holdTicks = 0;
+      delete watch.growth;
+      delete watch.flightTicks;
+      delete watch.landingStrike;
     } else this.fury = state;
     a.setState("cinematic");
     b.setState("grabbed");
@@ -27768,7 +27990,7 @@ var Match = class {
     this.stageSuper();
   }
   stageSuper() {
-    const s = this.centipede ?? this.kirin ?? this.jetGigant ?? this.fury, scene = this.centipede ? centipedeScene(this.centipede) : this.kirin ? kirinScene(this.kirin) : this.jetGigant ? jetScene(this.jetGigant) : furyScene(s), a = this.fighters[s.attacker], b = this.fighters[s.victim];
+    const s = this.alienX ?? this.centipede ?? this.kirin ?? this.jetGigant ?? this.fury, scene = this.alienX ? alienXScene(this.alienX) : this.centipede ? centipedeScene(this.centipede) : this.kirin ? kirinScene(this.kirin) : this.jetGigant ? jetScene(this.jetGigant) : furyScene(s), a = this.fighters[s.attacker], b = this.fighters[s.victim];
     for (const [f, p3] of [
       [a, scene.attacker],
       [b, scene.victim]
@@ -27783,31 +28005,34 @@ var Match = class {
   }
   stepStagedSuper() {
     const jet = this.jetGigant, kirin = this.kirin, centipede = this.centipede;
-    const held = centipede ?? kirin ?? jet;
+    const alienX = this.alienX;
+    const held = alienX ?? centipede ?? kirin ?? jet;
     if (held && held.hold > 0) {
       held.hold--;
       return;
     }
-    const config = centipede ? centipedeConfig : kirin ? sasuke_kirin_default : jet ? luffy_jet_gigant_default : goku_fury_default;
-    const s = centipede ?? kirin ?? jet ?? this.fury, t = ++s.tick, a = this.fighters[s.attacker], b = this.fighters[s.victim];
+    const config = alienX ? alienXConfig : centipede ? centipedeConfig : kirin ? sasuke_kirin_default : jet ? luffy_jet_gigant_default : goku_fury_default;
+    const s = alienX ?? centipede ?? kirin ?? jet ?? this.fury, t = ++s.tick, a = this.fighters[s.attacker], b = this.fighters[s.victim];
     this.stageSuper();
     if (kirin && (t === sasuke_kirin_default.phases.storm || t === sasuke_kirin_default.phases.reveal || t === sasuke_kirin_default.phases.dive))
       this.effect("kirinCharge", a.x, a.y - 130, 9);
     const cue = centipede && centipedePhaseCue(t);
     if (cue) this.centipedeEffect(cue, a.x, a.y - 72, 20);
+    if (alienX && (t === 12 || t === alienXConfig.phases.reveal || t === alienXConfig.phases.grasp))
+      this.effect("power", a.x, a.y - 80, 12);
     const hit = config.hits.find((h) => h.tick === t);
     if (hit) {
       const finish = hit.kind === "explosion" || hit.kind === "ground";
       if (held && "hold" in hit && typeof hit.hold === "number") held.hold = hit.hold;
       const applied = this.damage(b, Math.round(hit.damage * s.scale), finish ? 0 : 1);
       b.combo++;
-      this.recordHit(a, b, `${centipede ? centipedeId : kirin ? "kirin" : jet ? "jet" : "fury"}_${hit.kind}`, applied);
+      this.recordHit(a, b, `${alienX ? alienXId : centipede ? centipedeId : kirin ? "kirin" : jet ? "jet" : "fury"}_${hit.kind}`, applied);
       if (centipede) {
         this.centipedeEffect(hit.kind, b.x, finish ? FLOOR2 : b.y - 73, finish ? 37 : 13, finish ? 3 : 2);
       } else {
         b.gainMeter(2);
         this.effect(
-          kirin ? "kirinThunder" : !jet && finish ? "roadExplosion" : jet && (finish || hit.kind === "gigant") ? "ultimate" : "hit",
+          alienX ? "ultimate" : kirin ? "kirinThunder" : !jet && finish ? "roadExplosion" : jet && (finish || hit.kind === "gigant") ? "ultimate" : "hit",
           b.x,
           b.y - 78,
           finish ? 16 : 8
@@ -27827,7 +28052,12 @@ var Match = class {
       b.syncReactionClock(false);
       a.buffer.clear();
       b.buffer.clear();
-      this.fury = this.jetGigant = this.kirin = this.centipede = void 0;
+      this.fury = this.jetGigant = this.kirin = this.centipede = this.alienX = void 0;
+      if (alienX) {
+        b.vx = 14 * s.facing;
+        b.vy = -7;
+        b.hitLaunch = true;
+      }
       if (kirin) this.sasukeStormUntil = this.sasukeStormLevel = 0;
       this.hitstop = 0;
       this.checkRoundEnd();
@@ -28489,6 +28719,49 @@ var kick = {
   hitstop: 5,
   box: { x: 21, y: -82, w: 42, h: 25 }
 };
+var crouchJab = {
+  ...jab,
+  damage: 20,
+  level: "low",
+  box: { x: 15, y: -62, w: 35, h: 24 }
+};
+var sweep = {
+  ...kick,
+  startup: 10,
+  recovery: 20,
+  level: "low",
+  damage: 37,
+  box: { x: 12, y: -32, w: 61, h: 24 }
+};
+var airJab = {
+  ...jab,
+  level: "high",
+  damage: 23,
+  box: { x: 15, y: -88, w: 43, h: 32 },
+  airHold: 1
+};
+var airKick = {
+  ...kick,
+  startup: 7,
+  level: "high",
+  damage: 40,
+  box: { x: 12, y: -67, w: 61, h: 49 }
+};
+var grapple = {
+  startup: 8,
+  active: 3,
+  recovery: 21,
+  damage: 0,
+  stun: 0,
+  blockstun: 0,
+  push: 0,
+  launch: 0,
+  level: "throw",
+  kind: "grab",
+  rank: 3,
+  cancels: [],
+  box: { x: 14, y: -104, w: 43, h: 52 }
+};
 var ben = {
   id: benId,
   name: "Ben Tennyson",
@@ -28498,7 +28771,38 @@ var ben = {
   gravity: 0.65,
   meterMaximum: alienXSuper.cost,
   combatLimits: { maxHits: 9, maxAirHits: 4, maxTicks: 180 },
-  moves: { stand_light: jab, stand_medium: kick },
+  moves: {
+    stand_light: jab,
+    stand_medium: kick,
+    crouch_light: crouchJab,
+    crouch_medium: sweep,
+    air_light: airJab,
+    air_medium: airKick,
+    throw: grapple
+  },
+  superMoves: { [alienXId]: alienXMove },
+  grabSequence: {
+    startFromContact: true,
+    duration: 26,
+    hitTick: 17,
+    damage: 64,
+    recoveryTicks: 14,
+    victimTrack: [
+      { tick: 0, x: 53, y: 0, clip: "grabbed" },
+      { tick: 9, x: 49, y: -8, clip: "grabbed" },
+      { tick: 17, x: 66, y: -11, clip: "damageAir" },
+      { tick: 26, x: 94, y: -5, clip: "damageAir" }
+    ],
+    release: { vx: 8, vy: -5, stun: 29 }
+  },
+  lifecycle: {
+    entranceDistance: 42,
+    entranceWalkTicks: 18,
+    entranceSpeed: 2.35,
+    tauntTicks: 44,
+    getupTicks: 15,
+    koTicks: 35
+  },
   hurtboxes: {
     standing: [{ x: -19, y: -127, w: 45, h: 74 }, { x: -26, y: -55, w: 53, h: 53 }],
     crouching: [{ x: -25, y: -86, w: 52, h: 86 }],
@@ -246929,6 +247233,7 @@ var fighterKeys = [
   "comboAge",
   "comboAirHits",
   "combo",
+  "lightHitsInCombo",
   "knockedDown",
   "dashDirection",
   "jumpDirection",
@@ -246968,6 +247273,7 @@ var matchKeys = [
   "jetGigant",
   "kirin",
   "centipede",
+  "alienX",
   "hits",
   "hitSerial",
   "rules",
