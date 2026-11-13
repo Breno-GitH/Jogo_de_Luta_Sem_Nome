@@ -1333,6 +1333,32 @@ test("Kaneki capture choice is resolved by the LAN server and replayed by both c
 });
 
 
+test("Xebec resolves Dominação and Pandemonium on both clients", async () => {
+  test.setTimeout(60000);
+  const code = await pair("xebec", "samurai");
+  const room = await seed(code, 132, 100, match => {
+    match.fighters[0].domination!.charge = 100;
+  });
+  await motion(a, [2, 6], "l", 42);
+  await expect.poll(() => room.match!.fighters[0].domination!.powered).toBe(true);
+  await expect.poll(() => room.match!.fighters[0].domination!.charge).toBe(0);
+  await expect.poll(() => room.match!.fighters[0].state).toBe("idle");
+  await expect.poll(() => room.match!.fighters[1].health).toBeLessThan(1000);
+  await consistent();
+  await seed(code, 125, 100);
+  await press(a, "r");
+  for (const client of [a,b])
+    await expect(client.locator("canvas")).toHaveAttribute("data-capture", "pandemonium");
+  await expect.poll(() => room.match!.pandemonium?.tick).toBeGreaterThan(151);
+  await consistent();
+  await expect.poll(() => room.match!.pandemonium, { timeout: 12000 }).toBeUndefined();
+  for (const client of [a,b]) {
+    await expect(client.locator("canvas")).toHaveAttribute("data-pandemonium-tick", "-1");
+    await expect(client.locator("canvas")).toHaveAttribute("data-p2-health", "666");
+  }
+  await consistent();
+});
+
 test("Kaneki Four Swords replays the pressure pose on both LAN clients", async () => {
   const code = await pair("kaneki", "sasuke");
   const room = await seed(code, 107);

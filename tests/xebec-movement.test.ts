@@ -30,8 +30,8 @@ function setup() {
   return { fighter, advance, view, session };
 }
 
-describe("Xebec movement preview", () => {
-  it("appears as a selectable fighter in all supported modes", () => {
+describe("Xebec movement", () => {
+  it("appears in every mode and the LAN roster", () => {
     expect(selectionScreen("training")).toContain('value="xebec"');
     expect(
       selectionScreen("training", "xebec", "dio", "opponent"),
@@ -41,12 +41,12 @@ describe("Xebec movement preview", () => {
     expect(ONLINE_CHARACTERS).toContain("xebec");
   });
 
-  it("uses the same enlarged scale and floor pivot across movement clips", () => {
+  it("uses the same native scale and floor pivot across movement clips", () => {
     const { advance, fighter, view } = setup();
     for (const clip of Object.keys(animations.clips)) {
       view.animator.update(clip);
       expect(view.animator.sprite()).toMatchObject({
-        scale: 1.2,
+        scale: 1,
         pivot: { x: 128, y: 224 },
       });
     }
@@ -59,14 +59,14 @@ describe("Xebec movement preview", () => {
     expect(fighter.hurtbox().y).toBeCloseTo(fighter.y - 138);
   });
 
-  it("plays six walk poses in each direction and enters, holds and releases crouch", () => {
+  it("plays distinct walk cycles in each direction and enters, holds and releases crouch", () => {
     const { advance, fighter } = setup();
     const origin = fighter.x;
     expect(advance(1).clips).toEqual(["idle"]);
-    expect(advance(30, { direction: 1 }).frames).toEqual([1, 2, 3, 4, 5, 6]);
+    expect(advance(30, { direction: 1 }).frames).toEqual([4, 5, 6, 7]);
     const forward = fighter.x;
     expect(forward).toBeGreaterThan(origin);
-    expect(advance(36, { direction: -1 }).frames).toEqual([4, 3, 2, 1, 6, 5]);
+    expect(advance(36, { direction: -1 }).frames).toEqual([8, 9, 10, 11]);
     expect(fighter.x).toBeLessThan(forward);
     expect(advance(20, { down: true }).clips).toEqual([
       "crouchStart",
@@ -87,7 +87,7 @@ describe("Xebec movement preview", () => {
       "walkForward",
     ]);
     expect(jump.frames).toEqual(
-      expect.arrayContaining([7, 8, 9, 10, 11, 12, 0]),
+      expect.arrayContaining([1, 3, 4, 5, 6, 7, 8, 0]),
     );
   });
 
@@ -95,13 +95,13 @@ describe("Xebec movement preview", () => {
     const { advance, fighter } = setup();
     const origin = fighter.x;
     expect(advance(13, { direction: 1, pressed: ["dash"] }).frames).toEqual([
-      13, 14, 15,
+      12, 13, 14,
     ]);
     const forward = fighter.x;
     expect(forward - origin).toBeGreaterThan(100);
     advance(2);
     expect(advance(13, { direction: -1, pressed: ["dash"] }).frames).toEqual([
-      16, 17, 18, 0,
+      12, 15, 9,
     ]);
     expect(fighter.x).toBeLessThan(forward);
   });

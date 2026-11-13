@@ -79,9 +79,9 @@ export type TowerAttempt = {
 };
 type TowerSave = { attempt: TowerAttempt | undefined; best: number };
 const key = "sem-nome-arcade-tower-v1";
-// Both Ben and Xebec are playable. The existing tower rival pool stays in place.
-const playableIds = Object.keys(characters) as CharacterId[];
-const ids: CharacterId[] = playableIds.filter(id => id !== "ben" && id !== "xebec");
+// Ben can be the Arcade player. Keep the established rival pool unchanged.
+const playableIds: CharacterId[] = Object.keys(characters) as CharacterId[];
+const ids: CharacterId[] = playableIds.filter(id => id !== "ben");
 export const currentFloor = (attempt: TowerAttempt) =>
   Math.min(attempt.results.length, towerFloors.length - 1);
 export const towerComplete = (attempt: TowerAttempt) =>

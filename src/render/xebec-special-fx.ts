@@ -1,283 +1,132 @@
-import { FLOOR, type Match } from "../engine/combat";
-import { poseAt } from "../engine/moves";
-import {
-  pandemonium,
-  pandemoniumId,
-  pandemoniumScene,
-} from "../engine/xebec-pandemonium";
-import {
-  isXebecSpecial,
-  xebecCounterReply,
-  xebecExtraShock,
-} from "../engine/xebec-specials";
-import type { Capsule } from "../engine/types";
+import type { Match } from "../engine/combat";
+import { pandemoniumConfig, pandemoniumScene, type PandemoniumState } from "../engine/xebec-pandemonium";
+import { isXebecSpecial, xebecProjectile, xebecRiposte } from "../engine/xebec-specials";
 
-const crimson = "#ff395e";
-const shadow = "#180c1c";
-const pale = "#ffd7bb";
+const red = "#ff3959";
+const wine = "#220b1c";
+const ivory = "#ffe1b9";
 
-function lightning(
-  c: CanvasRenderingContext2D,
-  tick: number,
-  length: number,
-  color = crimson,
-) {
+function path(c: CanvasRenderingContext2D, points: readonly [number, number][]) {
   c.beginPath();
-  c.moveTo(0, 0);
-  for (let i = 1; i <= 7; i++) {
-    const jitter = Math.sin(tick * 2.8 + i * 7) * (i % 2 ? 11 : 5);
-    c.lineTo(Math.round((length * i) / 7), Math.round(jitter));
-  }
-  c.lineWidth = 5;
-  c.strokeStyle = shadow;
-  c.stroke();
-  c.lineWidth = 1.5;
-  c.strokeStyle = color;
-  c.stroke();
+  points.forEach(([x, y], i) => i === 0 ? c.moveTo(Math.round(x), Math.round(y)) :
+    c.lineTo(Math.round(x), Math.round(y)));
 }
 
-function bolts(
-  c: CanvasRenderingContext2D,
-  tick: number,
-  count: number,
-  radius: number,
-  color = crimson,
-) {
-  for (let i = 0; i < count; i++) {
-    c.save();
-    c.rotate((i * Math.PI * 2) / count + Math.sin(tick / 9) * 0.32);
-    c.translate(radius * (0.15 + (i % 3) * 0.1), 0);
-    lightning(c, tick + i, radius * (0.55 + (i % 3) * 0.15), color);
-    c.restore();
+function haki(c: CanvasRenderingContext2D, tick: number, x: number, y: number, reach: number, rise: number) {
+  const points: [number, number][] = [[x, y]];
+  for (let i = 1; i <= 6; i++) {
+    const wave = Math.sin(tick * 2.31 + i * 15) * (i % 2 === 1 ? 10 : 4);
+    points.push([x + reach * i / 6, y + rise * i / 6 + wave]);
   }
-}
-
-function ring(
-  c: CanvasRenderingContext2D,
-  x: number,
-  y: number,
-  rx: number,
-  ry: number,
-  color = crimson,
-) {
-  c.beginPath();
-  c.ellipse(x, y, rx, ry, 0, 0, Math.PI * 2);
+  path(c, points);
+  c.strokeStyle = wine;
   c.lineWidth = 6;
-  c.strokeStyle = shadow;
   c.stroke();
-  c.lineWidth = 1.7;
-  c.strokeStyle = color;
-  c.stroke();
-}
-
-function cut(
-  c: CanvasRenderingContext2D,
-  shape: Capsule,
-  thickness: number,
-  bend: number,
-) {
-  const { a, b } = shape;
-  const dx = b.x - a.x,
-    dy = b.y - a.y;
-  const length = Math.hypot(dx, dy);
-  const nx = -dy / length,
-    ny = dx / length;
-  const mx = (a.x + b.x) / 2,
-    my = (a.y + b.y) / 2;
-  c.beginPath();
-  c.moveTo(a.x, a.y);
-  c.quadraticCurveTo(mx + nx * bend, my + ny * bend, b.x, b.y);
-  c.quadraticCurveTo(
-    mx + nx * (bend + thickness),
-    my + ny * (bend + thickness),
-    a.x,
-    a.y,
-  );
-  c.fillStyle = shadow;
-  c.fill();
-  c.lineWidth = 2.5;
-  c.strokeStyle = crimson;
-  c.stroke();
-  c.beginPath();
-  c.moveTo(mx, my);
-  c.quadraticCurveTo(mx * 0.45 + b.x * 0.55, my * 0.45 + b.y * 0.55, b.x, b.y);
-  c.lineWidth = 1;
-  c.strokeStyle = pale;
+  c.strokeStyle = red;
+  c.lineWidth = 2;
   c.stroke();
 }
 
-function groundWave(
-  c: CanvasRenderingContext2D,
-  tick: number,
-  width: number,
-  tall: number,
-) {
+function shards(c: CanvasRenderingContext2D, age: number, direction: number, n: number) {
+  for (let i = 0; i < n; i++) {
+    const sign = i % 4 === 0 ? -direction : direction;
+    const x = sign * (i * 3 + age * (1.1 + i % 7 * .93));
+    const y = -((i * 7) % 26 + age * (i % 4 + 1)) + age * age * .13;
+    c.fillStyle = [red, ivory, "#573147"][i % 3];
+    c.fillRect(Math.round(x), Math.round(y), i % 3 + 2, i % 3 + 1);
+  }
+}
+
+function edge(c: CanvasRenderingContext2D, x: number, y: number, tilt: number, width: number, height: number) {
   c.save();
-  c.globalAlpha *= Math.max(0.08, 1 - tick / 26);
+  c.translate(x, y);
+  c.rotate(tilt);
+  c.scale(width / 50, height / 50);
   c.beginPath();
-  c.moveTo(-16, 0);
-  for (let i = 0; i < 10; i++) {
-    const x = (width * i) / 9;
-    c.lineTo(x, -(i % 2 ? tall * (1 - i / 12) : 2));
-  }
-  c.lineTo(width + 12, 0);
-  c.fillStyle = shadow;
+  c.moveTo(-38, -45);
+  c.quadraticCurveTo(45, -34, 43, -3);
+  c.quadraticCurveTo(38, 36, -49, 48);
+  c.quadraticCurveTo(21, 13, 21, -5);
+  c.quadraticCurveTo(18, -25, -38, -45);
+  c.fillStyle = wine;
   c.fill();
-  c.lineWidth = 1.8;
-  c.strokeStyle = crimson;
+  c.strokeStyle = red;
+  c.lineWidth = 2;
   c.stroke();
-  for (let i = 0; i < 8; i++) {
-    const x = (width * (i + 0.3)) / 8;
-    c.beginPath();
-    c.moveTo(x, 0);
-    c.lineTo(x - 8, 5 + (i % 3));
-    c.lineTo(x + 4, 7);
-    c.lineTo(x - 10, 16);
-    c.stroke();
-    c.fillStyle = i % 2 ? "#bd866e" : pale;
-    c.fillRect(
-      x + tick * 0.9,
-      -3 - tick * (1.2 + (i % 3)) + tick * tick * 0.08,
-      3 + (i % 3),
-      2,
-    );
-  }
+  c.beginPath();
+  c.moveTo(-19, -38);
+  c.quadraticCurveTo(89, -8, -20, 39);
+  c.strokeStyle = ivory;
+  c.lineWidth = 1.6;
+  c.stroke();
   c.restore();
 }
 
-export function drawXebecSpecials(
-  c: CanvasRenderingContext2D,
-  match: Match,
-  effects: boolean,
-  debug: boolean,
-) {
+function ring(c: CanvasRenderingContext2D, x: number, y: number, radius: number, flatten: number) {
+  c.beginPath();
+  c.ellipse(x, y, radius, radius * flatten, 0, 0, Math.PI * 2);
+  c.strokeStyle = wine;
+  c.lineWidth = 8;
+  c.stroke();
+  c.strokeStyle = red;
+  c.lineWidth = 2;
+  c.stroke();
+}
+
+export function drawXebecSpecials(c: CanvasRenderingContext2D, match: Match, effects: boolean, debug: boolean) {
   for (const f of match.fighters) {
-    const m = f.move;
-    if (
-      !effects ||
-      f.state !== "attack" ||
-      !m ||
-      (!isXebecSpecial(m.special) && f.moveId !== pandemoniumId)
-    )
-      continue;
-    const id = f.moveId,
-      t = f.stateFrame,
-      age = t - m.startup;
-    const powered = !!f.xebec?.empowered;
-    const hit = f.hitWindow;
-    const pose = poseAt(m, t);
+    const move = f.move, id = f.moveId, t = f.stateFrame;
+    if (!effects || f.state !== "attack" || !move || !f.domination ||
+        !(isXebecSpecial(id) || id === xebecRiposte || move.rank === 3 || move.super)) continue;
+    const age = t - move.startup;
+    if (age < -7 || age > move.active + 4) continue;
+    const power = f.domination.powered ? 1.3 : 1;
     c.save();
     c.translate(Math.round(f.x), Math.round(f.y));
     c.scale(f.facing, 1);
-    if (id === "xebecCollision" && t < m.startup + m.active) {
-      c.translate(38, -113);
-      c.rotate(-0.95);
-      lightning(c, t, 74, powered ? pale : crimson);
-    } else if (id === "xebecIntimidation" && age >= 0 && age < 10) {
-      c.globalAlpha = 1 - age / 11;
-      ring(c, 0, -77, 44 + age * 7, 23 + age * 3, pale);
-      c.translate(0, -77);
-      bolts(c, t, 5, 45 + age * 4);
-    } else if (id === "xebecPressure" && age >= 0 && age < 11) {
-      c.globalAlpha = 1 - age / 12;
-      const x = 51 + age * 10;
-      c.beginPath();
-      c.moveTo(51, -128);
-      c.bezierCurveTo(x + 15, -150, x + 34, -120, x + 18, -39);
-      c.lineTo(x - 11, -44);
-      c.quadraticCurveTo(x + 8, -88, 51, -128);
-      c.fillStyle = "#30212b88";
-      c.fill();
-      ring(c, x + 7, -92, 14, 49, "#d893aa");
-      c.translate(x, -116);
-      c.rotate(1.1);
-      lightning(c, t, 62);
-    } else if (
-      (id === "xebecRupture" && hit?.id === 2 && !f.airborne) ||
-      (id === "xebecImpact" && hit?.id === 2)
-    ) {
-      groundWave(c, t - hit!.fromTick, powered ? 159 : 112, powered ? 46 : 29);
-    } else if (
-      (id === "xebecBrutal" || id === "xebecBreaker" || id === "xebecImpact") &&
-      hit?.id === 1
-    ) {
-      c.translate(
-        id === "xebecBrutal" ? 63 : 73,
-        id === "xebecBrutal" ? -118 : -89,
-      );
-      c.rotate(-0.19);
-      c.globalAlpha = 0.72;
-      ring(
-        c,
-        2,
-        0,
-        12 + (t - hit.fromTick) * 5,
-        9 + (t - hit.fromTick) * 3,
-        "#ffc59a",
-      );
-      if (id === "xebecImpact") bolts(c, t, 5, powered ? 47 : 34);
-    } else if (id === "xebecFissure" && age >= -10 && age < 4) {
-      c.translate(age < 0 ? 12 : 110, -108);
-      lightning(c, t, 32 + Math.max(0, age + 5) * 4);
+    c.globalAlpha = age < 0 ? (age + 7) / 10 : Math.min(1, (move.active + 5 - age) / 5);
+    const heavySecondHit = (id === "xebecBreaker" || id === "xebecConqueror") && t >= move.hitWindows![1].fromTick;
+    if (id === "xebecIntimidation" && age >= 0) {
+      ring(c, 0, -61, 34 + age * 6, 1.04);
+      ring(c, 0, -1, 26 + age * 8, .15);
+    } else if (id === "xebecPressure" && age >= 0) {
+      edge(c, 73 + age * 9, -86, 0, 37, 54);
+      haki(c, t, 49, -101, 85, -16);
+    } else if (id === "xebecCollision" || id === "xebecRift" || age < 0) {
+      haki(c, t, id === "xebecCollision" ? 7 : 17, -103, 37 * power, -12);
+    } else if (id === "xebecBrutal" || (id === "xebecBreaker" || id === "xebecConqueror") && !heavySecondHit) {
+      c.translate(53, -104);
+      shards(c, age, 1, 11);
     } else {
-      const edge = pose?.hitboxes?.find(
-        (shape): shape is Capsule => "a" in shape,
-      );
-      if (edge && (!m.xebec?.confirmedFollow || f.hitConfirmed)) {
-        cut(
-          c,
-          edge,
-          id === "xebecRupture" ? 43 : 22,
-          id === "xebecBreaker" ? -25 : 12,
-        );
-        c.translate(edge.b.x - 13, edge.b.y);
-        lightning(c, t, 28, powered ? pale : crimson);
-      }
-    }
-    if (id === "xebecFlash" && Math.abs(f.vx) > 1) {
-      c.fillStyle = "#ba819b";
-      c.globalAlpha = 0.45;
-      for (let i = 0; i < 8; i++)
-        c.fillRect(-22 - i * 10, -18 - (i % 4) * 26, 26 - i, 2);
+      const rising = id === "xebecRiposte" || id === "xebecBreaker" || id === "crouch_heavy";
+      const downward = id === "xebecRupture" || id === "air_heavy";
+      edge(c, 55, downward ? -69 : -106, rising ? -.7 : downward ? .43 : 1.46, 54 * power, 31 * power);
+      haki(c, t, 22, -104, 73 * power, rising ? -35 : downward ? 51 : 2);
     }
     c.restore();
   }
   for (const p of match.kiProjectiles) {
-    if (
-      (p.move !== "xebecFissure" && p.move !== xebecExtraShock) ||
-      p.state !== "flight"
-    )
-      continue;
+    if (!xebecProjectile(p.move)) continue;
     c.save();
     c.translate(Math.round(p.x), Math.round(p.y));
     c.scale(p.facing, 1);
-    const r = p.radius;
-    if (p.move === xebecExtraShock) {
-      c.translate(-r, r - 7);
-      groundWave(c, Math.min(11, p.age), r * 2.4, r * 1.7);
-    } else {
-      const spread = Math.min(1, 0.64 + p.age * 0.11);
-      cut(
-        c,
-        {
-          a: { x: -r * 1.4, y: -r * spread },
-          b: { x: -r * 1.7, y: r * spread },
-          r,
-        },
-        -r * 0.89,
-        -r * 4,
-      );
-      if (effects) lightning(c, p.age, r * 1.2);
-    }
-    if (debug) {
-      c.strokeStyle = "#ff8797";
-      c.lineWidth = 1;
-      c.strokeRect(-r - Math.abs(p.vx), -r, r * 2 + Math.abs(p.vx), r * 2);
+    if (p.state === "flight") {
+      edge(c, 0, 0, 0, p.radius, p.radius * 1.5);
+      if (effects) haki(c, p.age, -p.radius * 2, 0, p.radius * 2.4, -6);
+      if (debug) {
+        c.strokeStyle = "#ff8797";
+        c.lineWidth = 1;
+        c.strokeRect(-p.radius, -p.radius, p.radius * 2, p.radius * 2);
+      }
+    } else if (effects) {
+      c.globalAlpha = Math.max(0, 1 - p.impactAge / 10);
+      shards(c, p.impactAge, 1, 13);
     }
     c.restore();
   }
+  if (!effects) return;
   for (const hit of match.events) {
-    if (!effects || !hit.xebec) continue;
+    if (!hit.xebec) continue;
     const age = (hit.total ?? 12) - hit.life;
     const color = hit.blocked
       ? "#a4e3ff"
@@ -285,127 +134,89 @@ export function drawXebecSpecials(
         ? pale
         : crimson;
     c.save();
-    c.translate(Math.round(hit.x), Math.round(hit.y));
+    c.translate(hit.x, hit.y);
     c.globalAlpha = Math.max(0, 1 - age / (hit.total ?? 12));
-    const radius = 7 + age * (1.5 + hit.xebec.rank * 0.32);
-    ring(c, 0, 0, radius * 0.64, radius, color);
-    if (hit.xebec.move === xebecCounterReply || hit.xebec.empowered)
-      bolts(c, age, 6, radius + 11, color);
-    c.fillStyle = color;
-    for (let i = 0; i < 6 + hit.xebec.rank * 3; i++) {
-      const angle = (hit.x + hit.y) * 0.06 + i * 2.4,
-        distance = age * (1.5 + (i % 4) * 0.7);
-      c.fillRect(
-        Math.cos(angle) * distance,
-        Math.sin(angle) * distance + age * age * 0.065,
-        (i % 3) + 1,
-        2,
-      );
+    if (!hit.blocked && hit.xebec.rank > 1)
+      haki(c, age, 0, 0, hit.xebec.facing * (22 + age * 4), -15);
+    else if (hit.blocked) {
+      c.fillStyle = "#b5e1fa";
+      c.fillRect(-7, -2, 13, 4);
+      c.fillRect(-1, -10, 3, 20);
     }
+    shards(c, age, hit.xebec.facing, 7 + hit.xebec.rank * 3);
     c.restore();
   }
 }
 
-export function drawPandemoniumSky(c: CanvasRenderingContext2D, match: Match) {
-  const s = match.pandemonium!;
-  const t = s.tick;
-  const fade = Math.min(1, Math.max(0, (pandemonium.end - t) / 24));
-  const dusk = c.createLinearGradient(0, 0, 0, 630);
-  dusk.addColorStop(0, `rgba(31,8,28,${Math.min(0.71, t * 0.027) * fade})`);
-  dusk.addColorStop(1, "rgba(27,6,23,0)");
-  c.fillStyle = dusk;
-  c.fillRect(0, 0, 1280, 630);
-  if (t < pandemonium.split) return;
-  const open = Math.min(1, (t - pandemonium.split) / 23);
-  const center = 640 + (s.originX - 640) * 0.37;
-  const edge = (side: number, step: number) =>
-    center +
-    side * (8 + open * (37 + step * 8)) +
-    Math.sin(step * 2.2) * (7 + step);
+export function drawPandemoniumSky(c: CanvasRenderingContext2D, scene: ReturnType<typeof pandemoniumScene>) {
   c.save();
-  c.globalAlpha = fade * 0.78;
-  for (const side of [-1, 1]) {
-    c.save();
-    c.beginPath();
-    c.moveTo(edge(side, 0), 25);
-    for (let i = 1; i <= 8; i++) c.lineTo(edge(side, i), 25 + i * 26);
-    c.lineTo(side < 0 ? 0 : 1280, 258);
-    c.lineTo(side < 0 ? 0 : 1280, 28);
-    c.closePath();
-    c.clip();
-    const cloud = c.createLinearGradient(0, 48, 0, 251);
-    cloud.addColorStop(0, "#201b31");
-    cloud.addColorStop(0.43, "#503550");
-    cloud.addColorStop(0.74, "#473044be");
-    cloud.addColorStop(1, "#39233700");
-    for (let i = 0; i < 14; i++) {
-      const x = center + side * (i * 55 - 55 + open * 40);
-      const y = 99 + Math.sin(i * 1.43) * 28;
-      c.fillStyle = cloud;
-      c.beginPath();
-      c.ellipse(
-        x,
-        y,
-        86 + (i % 4) * 19,
-        47 + (i % 5) * 7,
-        -0.12 * side,
-        0,
-        Math.PI * 2,
-      );
-      c.ellipse(
-        x + 38 * side,
-        y + 41,
-        110,
-        36 + (i % 3) * 11,
-        -0.08 * side,
-        0,
-        Math.PI * 2,
-      );
-      c.fill();
+  c.fillStyle = `rgba(12,6,21,${scene.darkness * .78})`;
+  c.fillRect(-140, -80, 1560, 660);
+  if (scene.split > 0) {
+    const center = 640, spread = 28 + 206 * scene.split;
+    const g = c.createLinearGradient(0, -30, 0, 285);
+    g.addColorStop(0, "#f5b5a3");
+    g.addColorStop(.55, "#e04a53");
+    g.addColorStop(1, "rgba(140,34,66,0)");
+    c.globalAlpha = scene.split * .91;
+    c.fillStyle = g;
+    path(c, [[center - spread, -30], [center + spread, -30], [center + 17, 285], [center - 20, 285]]);
+    c.fill();
+    for (const sign of [-1, 1]) {
+      for (let layer = 0; layer < 4; layer++) {
+        const x = center + sign * (spread * (.9 - .16 * layer));
+        const y = 67 + 27 * layer;
+        const drift = 60 * scene.split * sign;
+        c.fillStyle = ["#181225","#25152b","#351b32","#542539"][layer];
+        path(c, [[x + 70 * sign, -40], [x + 780 * sign, -40],
+          [x + 780 * sign, y + 42], [x + 145 * sign + drift, y + 33],
+          [x + 85 * sign, y + 18], [x - 13 * sign, y + 12],
+          [x + 43 * sign, y - 9], [x - 30 * sign, y - 32]]);
+        c.fill();
+      }
     }
-    c.restore();
-    c.beginPath();
-    c.moveTo(edge(side, 0), 25);
-    for (let i = 1; i <= 7; i++) c.lineTo(edge(side, i), 25 + i * 26);
-    c.strokeStyle = "#c47497a0";
-    c.lineWidth = 2;
-    c.stroke();
   }
   c.restore();
 }
 
-export function drawPandemoniumWorld(
-  c: CanvasRenderingContext2D,
-  match: Match,
-) {
-  const s = match.pandemonium!;
-  const t = s.tick,
-    age = t - pandemonium.impact;
-  const scene = pandemoniumScene(s, FLOOR);
+export function drawPandemoniumStrike(c: CanvasRenderingContext2D, s: PandemoniumState, scene: ReturnType<typeof pandemoniumScene>) {
+  const t = s.tick, age = t - pandemoniumConfig.hits[0].tick;
+  const a = scene.attacker, b = scene.victim;
   c.save();
-  c.translate(scene.attackerX, FLOOR);
+  c.translate(a.x, a.y);
   c.scale(s.facing, 1);
-  if (scene.phase === "charge") {
-    const buildup =
-      (t - pandemonium.charge) / (pandemonium.impact - pandemonium.charge);
-    c.translate(1, -144);
-    c.globalAlpha = Math.min(1, 0.37 + buildup);
-    bolts(c, t, 6, 33 + buildup * 62, buildup > 0.76 ? pale : crimson);
-    c.rotate(-1.1);
-    lightning(c, t, 56 + buildup * 21);
-  } else if (age >= 0 && age < 32) {
-    c.globalAlpha = Math.max(0, 1 - age / 32);
-    cut(
-      c,
-      { a: { x: 7, y: -239 }, b: { x: 153 + age * 4, y: -7 }, r: 20 },
-      71,
-      -104,
-    );
-    groundWave(c, age * 0.69, 160 + age * 11, 47 - age);
-    if (age < 13) {
-      c.translate(106, -68);
-      bolts(c, t, 8, 78 + age * 4, pale);
-    }
+  if (t > 14 && age < 2) {
+    c.globalAlpha = scene.darkness * .92;
+    const raised = Math.min(1, Math.max(0, (t - 58) / 59));
+    haki(c, t, 20, -63 - 102 * raised, 66, -5);
+    haki(c, t + 4, 32, -84 - 85 * raised, -57, -17);
+    haki(c, t + 9, -15, -5, 76, -12);
   }
+  if (age >= 0 && age < 44) {
+    c.globalAlpha = Math.min(1, (44 - age) / 22);
+    edge(c, 68 + age * 4, -133 - age * 1.2, .4, 83 + age * 3, 108 + age * 2);
+    haki(c, t, 63, -78, 185 + 5 * age, -97);
+    ring(c, 83, -3, 45 + age * 6, .12);
+    c.translate((b.x - a.x) * s.facing, b.y - a.y - 59);
+    shards(c, age, 1, 27);
+  }
+  c.restore();
+}
+
+export function drawDomination(c: CanvasRenderingContext2D, resource: NonNullable<Match["fighters"][number]["domination"]>, x: number, frame: number) {
+  const pulse = resource.spentFrame !== undefined && frame - resource.spentFrame < 30;
+  c.save();
+  c.fillStyle = "#1a101e";
+  c.fillRect(x, 668, 205, 11);
+  c.fillStyle = resource.charge === 100 ? "#ff687b" : "#b83a58";
+  c.fillRect(x + 2, 670, Math.round(201 * resource.charge / 100), 7);
+  if (pulse) {
+    c.strokeStyle = `rgba(255,208,157,${1 - (frame - resource.spentFrame!) / 30})`;
+    c.strokeRect(x, 667, 205, 12);
+  }
+  c.font = "11px monospace";
+  c.fillStyle = pulse || resource.charge === 100 ? "#ffe1b9" : "#f2acb6";
+  c.fillText(pulse ? "HAKI FORTALECIDO" :
+    resource.charge === 100 ? "DOMINAÇÃO · ESPECIAL L PRONTO" : `DOMINAÇÃO · ${resource.charge}%`, x, 661);
   c.restore();
 }

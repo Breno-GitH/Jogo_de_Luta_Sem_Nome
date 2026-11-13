@@ -63,7 +63,8 @@ try {
         "sprites/fx/alien-x-bellicus.png",
         "sprites/fx/alien-x-serena.png",
         "sprites/ben/gravattack/stage7.png",
-        "sprites/xebec/specials.png",
+        ...["base", "movement", "reactions", "normals", "specials", "pandemonium"]
+          .map(name => `sprites/xebec/${name}.png`),
       ]),
     ].map((path) => verify(path)),
   );

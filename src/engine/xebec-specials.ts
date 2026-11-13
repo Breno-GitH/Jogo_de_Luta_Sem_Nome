@@ -1,18 +1,10 @@
 import type { CommandBuffer } from "./input";
-import type { AttackShape, Capsule, Move, Point, Rect } from "./types";
+import type { AttackShape, Move, Rect } from "./types";
 
-export const xebecCommands = {
-  ki: { light: "xebecFlash", medium: "xebecFissure", heavy: "xebecRupture" },
-  kamehameha: {
-    light: "xebecIntimidation",
-    medium: "xebecPressure",
-    heavy: "xebecCollision",
-  },
-  teleport: {
-    light: "xebecBrutal",
-    medium: "xebecBreaker",
-    heavy: "xebecImpact",
-  },
+const commands = {
+  ki: { light: "xebecLightning", medium: "xebecRift", heavy: "xebecRupture" },
+  kamehameha: { light: "xebecIntimidation", medium: "xebecPressure", heavy: "xebecCollision" },
+  teleport: { light: "xebecBrutal", medium: "xebecBreaker", heavy: "xebecConqueror" },
 } as const;
 type Strength = keyof typeof xebecCommands.ki;
 export type XebecSpecial =
@@ -21,324 +13,119 @@ export const xebecCounterReply = "xebecCollisionReply";
 export const xebecExtraShock = "xebecExtraShock";
 export const dominationMaximum = 100;
 
+type Strength = keyof typeof commands.ki;
+export type XebecSpecial = (typeof commands)[keyof typeof commands][Strength];
+const specialIds = new Set<string>(Object.values(commands).flatMap(Object.values));
+export const isXebecSpecial = (id?: string): id is XebecSpecial => !!id && specialIds.has(id);
+export const xebecCharged = (id: string) =>
+  id === "xebecRupture" || id === "xebecCollision" || id === "xebecConqueror";
+
 export function xebecSpecialCommand(buffer: CommandBuffer, button: Strength) {
   const motion = buffer.gokuSpecial(button);
-  return motion && xebecCommands[motion][button];
+  return motion && commands[motion][button];
 }
 
-const cut = (
-  ax: number,
-  ay: number,
-  bx: number,
-  by: number,
-  r: number,
-): Capsule => ({ a: { x: ax, y: ay }, b: { x: bx, y: by }, r });
-const box = (x: number, y: number, w: number, h: number): Rect => ({
-  x,
-  y,
-  w,
-  h,
-});
-const fist = box(18, -130, 57, 30);
-const slash = cut(46, -109, 128, -124, 14);
-const ascending = cut(40, -82, 100, -164, 19);
-const descending = cut(36, -73, 102, -3, 17);
+export const xebecProjectiles = {
+  xebecRift: { x: 75, y: -120, speed: 21, radius: 25, life: 36 },
+  xebecAftershock: { x: 88, y: -45, speed: 16, radius: 22, life: 18 },
+} as const;
 
-type Cel = {
-  frame: number;
-  ticks: number;
-  shape?: AttackShape;
-  low?: boolean;
-  release?: Point;
-  hit?: Partial<NonNullable<Move["hitWindows"]>[number]>;
-};
-type Spec = {
-  rank: number;
-  startup: number;
-  active: number;
-  damage: number;
-  stun: number;
-  push: number;
-  blockPush?: number;
-  blockstun?: number;
-  launch?: number;
-  knockdown?: boolean;
-  drive?: Move["drive"];
-  hopAt?: number;
-  hopVelocity?: number;
-  confirmedFollow?: boolean;
-  groundWindow?: number;
-  whiffExtra?: number;
-  cels: Cel[];
-};
+export const xebecProjectile = (id: string) =>
+  Object.hasOwn(xebecProjectiles, id) ? xebecProjectiles[id as keyof typeof xebecProjectiles] : undefined;
+export const xebecRiposte = "xebecRiposte";
 
-const specs: Record<XebecSpecial | typeof xebecCounterReply, Spec> = {
-  xebecFlash: {
-    rank: 1,
-    startup: 8,
-    active: 5,
-    damage: 72,
-    stun: 23,
-    push: 3.2,
-    drive: { from: 4, to: 11, speed: 11 },
-    cels: [
-      { frame: 0, ticks: 4, low: true },
-      { frame: 40, ticks: 4, low: true },
-      { frame: 1, ticks: 5, shape: slash },
-      { frame: 2, ticks: 16 },
-    ],
-  },
-  xebecFissure: {
-    rank: 2,
-    startup: 18,
-    active: 5,
-    damage: 79,
-    stun: 23,
-    push: 5,
-    cels: [
-      { frame: 3, ticks: 12 },
-      { frame: 36, ticks: 6 },
-      { frame: 4, ticks: 5, release: { x: 113, y: -103 } },
-      { frame: 5, ticks: 23 },
-    ],
-  },
-  xebecRupture: {
-    rank: 3,
-    startup: 17,
-    active: 16,
-    damage: 126,
-    stun: 32,
-    push: 10,
-    launch: -6,
-    knockdown: true,
-    blockstun: 10,
-    blockPush: 4,
-    hopAt: 4,
-    hopVelocity: -9.5,
-    groundWindow: 2,
-    drive: { from: 5, to: 29, speed: 4.5 },
-    cels: [
-      { frame: 6, ticks: 17 },
-      { frame: 7, ticks: 12, shape: descending },
-      {
-        frame: 8,
-        ticks: 4,
-        low: true,
-        shape: box(22, -42, 116, 42),
-        hit: { damage: 48, launch: -5, push: 8 },
-      },
-      { frame: 8, ticks: 30, low: true },
-    ],
-  },
-  xebecIntimidation: {
-    rank: 1,
-    startup: 5,
-    active: 5,
-    damage: 34,
-    stun: 16,
-    push: 13,
-    blockPush: 8,
-    cels: [
-      { frame: 9, ticks: 5 },
-      {
-        frame: 10,
-        ticks: 2,
-        shape: cut(-36, -77, 36, -77, 32),
-        hit: { id: 1 },
-      },
-      {
-        frame: 10,
-        ticks: 3,
-        shape: cut(-48, -77, 48, -77, 35),
-        hit: { id: 1 },
-      },
-      { frame: 11, ticks: 19 },
-    ],
-  },
-  xebecPressure: {
-    rank: 2,
-    startup: 12,
-    active: 8,
-    damage: 56,
-    stun: 22,
-    push: 10,
-    blockPush: 13,
-    blockstun: 12,
-    drive: { from: 7, to: 12, speed: 3.4 },
-    cels: [
-      { frame: 12, ticks: 12 },
-      { frame: 13, ticks: 3, shape: box(38, -141, 54, 103), hit: { id: 1 } },
-      { frame: 13, ticks: 5, shape: box(48, -144, 105, 108), hit: { id: 1 } },
-      { frame: 14, ticks: 24 },
-    ],
-  },
-  xebecCollision: {
-    rank: 3,
-    startup: 5,
-    active: 10,
-    damage: 0,
-    stun: 0,
-    push: 0,
-    cels: [
-      { frame: 15, ticks: 5 },
-      { frame: 16, ticks: 10 },
-      { frame: 37, ticks: 7 },
-      { frame: 15, ticks: 26 },
-    ],
-  },
-  xebecCollisionReply: {
-    rank: 3,
-    startup: 3,
-    active: 7,
-    damage: 106,
-    stun: 37,
-    push: 12,
-    launch: -5,
-    blockstun: 16,
-    cels: [
-      { frame: 16, ticks: 3 },
-      { frame: 17, ticks: 7, shape: cut(17, -80, 117, -110, 31) },
-      { frame: 17, ticks: 6 },
-      { frame: 15, ticks: 20 },
-    ],
-  },
-  xebecBrutal: {
-    rank: 1,
-    startup: 6,
-    active: 4,
-    damage: 62,
-    stun: 23,
-    push: 1.7,
-    drive: { from: 2, to: 7, speed: 5.2 },
-    cels: [
-      { frame: 18, ticks: 4 },
-      { frame: 41, ticks: 2 },
-      { frame: 19, ticks: 4, shape: fist },
-      { frame: 20, ticks: 14 },
-    ],
-  },
-  xebecBreaker: {
-    rank: 2,
-    startup: 7,
-    active: 12,
-    damage: 40,
-    stun: 22,
-    push: 1.3,
-    confirmedFollow: true,
-    whiffExtra: 11,
-    drive: { from: 4, to: 8, speed: 4 },
-    cels: [
-      { frame: 39, ticks: 7, low: true },
-      { frame: 21, ticks: 3, low: true, shape: box(18, -102, 61, 30) },
-      { frame: 22, ticks: 4, low: true },
-      {
-        frame: 23,
-        ticks: 5,
-        shape: ascending,
-        hit: { damage: 54, stun: 41, launch: -15.2, push: 2.1 },
-      },
-      { frame: 38, ticks: 20, low: true },
-    ],
-  },
-  xebecImpact: {
-    rank: 3,
-    startup: 11,
-    active: 15,
-    damage: 64,
-    stun: 25,
-    push: 2.1,
-    blockstun: 11,
-    drive: { from: 6, to: 15, speed: 7.1 },
-    cels: [
-      { frame: 24, ticks: 11 },
-      { frame: 25, ticks: 4, shape: cut(25, -94, 80, -99, 20) },
-      { frame: 38, ticks: 6, low: true },
-      {
-        frame: 26,
-        ticks: 5,
-        shape: cut(27, -60, 141, -29, 23),
-        hit: { damage: 77, stun: 34, launch: -6, push: 13, knockdown: true },
-      },
-      { frame: 26, ticks: 34, low: true },
-    ],
-  },
-};
-
-export const isXebecSpecial = (name?: string): name is XebecSpecial =>
-  !!name && Object.hasOwn(specs, name) && name !== xebecCounterReply;
+const box = (x: number, y: number, w: number, h: number): Rect => ({ x, y, w, h });
+const blade = (ax: number, ay: number, bx: number, by: number, r: number): AttackShape =>
+  ({ a: { x: ax, y: ay }, b: { x: bx, y: by }, r });
+const fist = box(23, -128, 62, 38);
+const horizontal = blade(35, -113, 113, -104, 11);
+const descending = blade(32, -136, 91, -34, 14);
+const rising = blade(25, -67, 85, -148, 13);
 
 export function makeXebecSpecials(standing: Rect[], crouching: Rect[]) {
-  const moves: Record<string, Move> = {};
-  const art: Record<string, { frames: number[]; durations: number[] }> = {};
-  for (const [id, spec] of Object.entries(specs)) {
-    const { cels, startup, active, ...stats } = spec;
-    const { confirmedFollow, groundWindow, whiffExtra, ...base } = stats;
-    let frame = 0;
-    const hitWindows: NonNullable<Move["hitWindows"]> = [];
-    const poses = cels.map((cel) => {
-      const fromTick = frame;
-      frame += cel.ticks;
-      const phase =
-        fromTick < startup
-          ? "startup"
-          : fromTick < startup + active
-            ? "active"
-            : "recovery";
-      if (cel.shape)
-        hitWindows.push({
-          id: hitWindows.length + 1,
-          fromTick,
-          toTick: frame,
-          ...cel.hit,
-        });
-      return {
-        ticks: cel.ticks,
-        phase,
-        hurtboxes: [
-          ...(cel.low ? crouching : standing),
-          ...(cel.shape &&
-          !("a" in cel.shape) &&
-          ["xebecBrutal", "xebecBreaker", "xebecPressure"].includes(id)
-            ? [{ x: 20, y: cel.shape.y + 7, w: 40, h: 19 }]
-            : []),
-        ],
-        hitboxes: cel.shape ? [cel.shape] : [],
-        release: cel.release,
-      };
-    });
-    moves[id] = {
-      ...base,
-      special:
-        id === xebecCounterReply ? "xebecCollision" : (id as XebecSpecial),
-      startup,
-      active,
-      recovery: frame - startup - active,
-      level: "mid",
-      blockstun: base.blockstun ?? 13,
-      hitstop: base.rank === 3 ? 9 : 6,
-      box: box(0, 0, 0, 0),
-      launch: base.launch ?? 0,
-      cancels: id === "xebecBreaker" ? ["jump"] : [],
-      cancelWindow:
-        id === "xebecBreaker" ? { fromTick: 14, toTick: 24 } : undefined,
-      poses,
-      ...(hitWindows.length ? { hitWindows } : {}),
-      xebec: { confirmedFollow, groundWindow, whiffExtra },
-    };
-    art[id] = {
-      frames: cels.map((cel) => cel.frame),
-      durations: cels.map((cel) => cel.ticks),
+  function move(
+    rank: number, startup: number, active: number, recovery: number,
+    damage: number, contact: AttackShape | undefined, overrides: Partial<Move> = {},
+    second?: { after: number; ticks: number; shape: AttackShape },
+  ): Move {
+    const phases = [
+      { ticks: startup, phase: "startup", hurtboxes: standing, hitboxes: [] },
+      { ticks: second ? second.after : active, phase: "active", hurtboxes: standing,
+        hitboxes: contact ? [contact] : [] },
+      ...(second ? [
+        { ticks: second.ticks, phase: "active", hurtboxes: standing, hitboxes: [second.shape] },
+      ] : []),
+      { ticks: recovery, phase: "recovery", hurtboxes: standing, hitboxes: [] },
+    ];
+    return {
+      startup, active, recovery, rank, damage, box: box(0, 0, 0, 0), level: "mid",
+      stun: 22, blockstun: 12, push: 3, launch: 0, hitstop: 5, cancels: [],
+      poses: phases, ...overrides,
     };
   }
-  moves[xebecExtraShock] = {
-    ...moves.xebecRupture,
-    damage: 37,
-    push: 14,
-    launch: -5,
-    blockstun: 10,
-    level: "low",
+
+  const moves: Record<XebecSpecial, Move> = {
+    xebecLightning: move(1, 8, 5, 14, 62, horizontal, {
+      drive: { from: 3, to: 11, speed: 10.5 }, stun: 24, push: 2.5,
+    }),
+    xebecRift: move(2, 16, 4, 24, 72, undefined, {
+      push: 6, stun: 25, blockstun: 15, hitstop: 7,
+    }),
+    xebecRupture: move(3, 19, 7, 33, 119, descending, {
+      drive: { from: 4, to: 22, speed: 4.4 }, hopAt: 5, hopVelocity: -6.2,
+      stun: 33, launch: -5, push: 10, knockdown: true, hitstop: 9,
+    }),
+    xebecIntimidation: move(1, 6, 4, 20, 28, box(-54, -127, 137, 106), {
+      push: 8, stun: 18, blockstun: 9,
+    }),
+    xebecPressure: move(2, 12, 5, 23, 58, box(37, -132, 115, 82), {
+      drive: { from: 5, to: 11, speed: 2.8 }, push: 9, stun: 23, blockstun: 15, hitstop: 6,
+    }),
+    xebecCollision: move(3, 4, 8, 29, 0, undefined),
+    xebecBrutal: move(1, 7, 4, 15, 51, fist, {
+      drive: { from: 2, to: 10, speed: 7.8 }, push: 1.5, stun: 25,
+    }),
+    xebecBreaker: move(2, 10, 15, 23, 39, fist, {
+      drive: { from: 3, to: 11, speed: 5.4 }, stun: 24, push: 1.1,
+      hitWindows: [
+        { id: 0, fromTick: 10, toTick: 14 },
+        { id: 1, fromTick: 20, toTick: 25, damage: 57, launch: -15, stun: 36, push: 1.7 },
+      ],
+      cancels: ["jump"], cancelWindow: { fromTick: 20, toTick: 31 },
+    }, { after: 10, ticks: 5, shape: rising }),
+    xebecConqueror: move(3, 13, 16, 32, 56, box(21, -132, 71, 57), {
+      drive: { from: 6, to: 14, speed: 6.3 }, stun: 27, push: 1.5,
+      hitstop: 8,
+      hitWindows: [
+        { id: 0, fromTick: 13, toTick: 17 },
+        { id: 1, fromTick: 23, toTick: 29, damage: 82, launch: -7, stun: 34, push: 12, knockdown: true },
+      ],
+    }, { after: 10, ticks: 6, shape: horizontal }),
   };
-  return { moves, art };
+  for (const id of Object.keys(moves) as XebecSpecial[]) moves[id].special = id;
+  // A low launch prep exposes the landing, while the aerial swing extends the torso.
+  moves.xebecRupture.poses![0].hurtboxes = crouching;
+
+  const riposte = move(3, 1, 5, 23, 82, rising, {
+    launch: -10, stun: 33, push: 4, hitstop: 9, cancels: ["special"],
+    cancelWindow: { fromTick: 3, toTick: 15 },
+  });
+  riposte.poses![1].hitboxes = [blade(20, -91, 90, -144, 16)];
+  const conqueror = moves.xebecConqueror;
+  const powered: Partial<Record<string, Move>> = {
+    xebecRupture: { ...moves.xebecRupture, damage: 135, push: 13, hitstop: 11 },
+    xebecRiposte: { ...riposte, damage: 110, launch: -13, push: 7, hitstop: 12 },
+    xebecConqueror: {
+      ...conqueror, hitstop: 10,
+      hitWindows: [conqueror.hitWindows![0], { ...conqueror.hitWindows![1], damage: 110, push: 16 }],
+    },
+  };
+  return {
+    moves,
+    powered,
+    riposte,
+    aftershock: move(3, 0, 1, 0, 31, undefined, { push: 8, stun: 22, hitstop: 5 }),
+  };
 }
 
 export const xebecProjectile = {

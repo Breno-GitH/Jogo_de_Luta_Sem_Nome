@@ -1,366 +1,223 @@
 import { describe, expect, it } from "vitest";
-import { FLOOR } from "../src/engine/combat";
+import { Match, FLOOR } from "../src/engine/combat";
+import { characters } from "../src/engine/characters";
 import { hashState, restore, snapshot } from "../src/engine/state";
 import { neutral, type InputFrame } from "../src/engine/types";
-import { pandemonium, pandemoniumId } from "../src/engine/xebec-pandemonium";
-import {
-  xebecCounterReply,
-  xebecExtraShock,
-} from "../src/engine/xebec-specials";
+import { pandemoniumConfig } from "../src/engine/xebec-pandemonium";
 import { GameSession } from "../src/game/session";
-import { FighterPresentation } from "../src/render/presentation";
-import { xebecAnimations } from "../src/render/xebec-animations";
 
-const commands = [
-  ["forward", "light", "xebecFlash"],
-  ["forward", "medium", "xebecFissure"],
-  ["forward", "heavy", "xebecRupture"],
-  ["back", "light", "xebecIntimidation"],
-  ["back", "medium", "xebecPressure"],
-  ["back", "heavy", "xebecCollision"],
-  ["doubleDown", "light", "xebecBrutal"],
-  ["doubleDown", "medium", "xebecBreaker"],
-  ["doubleDown", "heavy", "xebecImpact"],
+type Input = Partial<InputFrame>;
+const specials = [
+  ["xebecLightning", "xebecRift", "xebecRupture"],
+  ["xebecIntimidation", "xebecPressure", "xebecCollision"],
+  ["xebecBrutal", "xebecBreaker", "xebecConqueror"],
 ] as const;
-type Motion = (typeof commands)[number][0];
-type Strength = (typeof commands)[number][1];
+const buttons = ["light", "medium", "heavy"] as const;
 
-function training(
-  gap: number,
-  side: 1 | -1 = 1,
-  rival: "samurai" | "xebec" = "samurai",
-) {
-  const session = new GameSession("training", "normal", "xebec", rival);
-  session.training.infiniteHealth = session.training.unlimitedMeter = false;
-  const match = session.match;
-  const [a, b] = match.fighters;
-  a.meter = b.meter = 0;
-  a.x = 640 - (side * gap) / 2;
-  b.x = 640 + (side * gap) / 2;
-  const view = new FighterPresentation(xebecAnimations);
-  const hits: typeof match.hits = [];
-  const step = (
-    input: Partial<InputFrame> = {},
-    rival?: Partial<InputFrame>,
-  ) => {
-    if (rival)
-      match.step([
-        { ...neutral(), ...input },
-        { ...neutral(), ...rival },
-      ]);
-    else session.step({ ...neutral(), ...input });
-    view.tick(a);
-    for (const hit of match.hits)
-      if (hits.at(-1)?.serial !== hit.serial) hits.push(hit);
+function arena(gap = 68, side: 1 | -1 = 1) {
+  const match = new Match(characters.xebec, {}, characters.samurai);
+  match.phase = "fight";
+  const [a,b] = match.fighters;
+  a.x = 640 - side * gap / 2;
+  b.x = 640 + side * gap / 2;
+  a.facing = side; b.facing = -side;
+  const hits: { move: string; blocked: boolean; damage: number }[] = [];
+  const step = (i: Input = {}, j: Input = {}) => {
+    match.step([{ ...neutral(), ...i }, { ...neutral(), ...j }]);
+    hits.push(...match.hits);
   };
-  const until = (
-    ready: () => boolean,
-    max = 140,
-    input: Partial<InputFrame> = {},
-  ) => {
-    for (let i = 0; i < max && !ready(); i++) step(input);
-    expect(ready()).toBe(true);
-  };
-  step();
-  const command = (motion: Motion, strength: Strength) => {
-    step({ down: true });
-    if (motion === "doubleDown") {
-      step();
-      step({ down: true, pressed: [strength] });
+  function advance(ticks: number, j?: Input) {
+    for (let i=0; i<ticks; i++) step({}, j);
+  }
+  function motion(row: number, column: number, j?: Input) {
+    step({ down: true },j);
+    if (row === 2) {
+      step({},j);
+      step({ down: true, pressed: [buttons[column]] },j);
     } else {
-      const direction = (motion === "forward" ? side : -side) as 1 | -1;
-      step({ direction, down: true });
-      step({ direction, pressed: [strength] });
+      const direction = (row === 0 ? a.facing : -a.facing) as 1 | -1;
+      step({ down: true, direction },j);
+      step({ direction, pressed: [buttons[column]] },j);
     }
-  };
-  return { session, match, a, b, step, command, view, until, hits };
+  }
+  return { match, a, b, hits, step, advance, motion };
 }
 
-describe("Xebec's nine specials", () => {
-  it.each(commands)(
-    "reads %s + %s as %s on both sides",
-    (motion, strength, id) => {
-      for (const side of [1, -1] as const) {
-        const { a, command, view } = training(150, side);
-        command(motion, strength);
+describe("Rocks D. Xebec", () => {
+  it.each(specials.flatMap((row, i) => row.map((id, j) => ({ id, i, j }))))(
+    "executes $id through the real input buffer on both sides",
+    ({ id, i, j }) => {
+      for (const side of [1,-1] as const) {
+        const { a,b,hits,motion,advance } = arena(i === 0 && j === 1 ? 340 : 68, side);
+        const origin = a.x;
+        motion(i,j);
         expect(a.moveId).toBe(id);
         expect(a.meter).toBe(0);
-        expect(view.animator.clipName).toBe(id);
-        expect(view.animator.sprite()).toMatchObject({
-          sheet: "xebec/specials.png",
-          scale: 1.2,
-          pivot: { x: 128, y: 224 },
-        });
-        expect(
-          new Set(xebecAnimations.clips[id].frames).size,
-        ).toBeGreaterThanOrEqual(3);
+        advance(90);
+        if (id === "xebecCollision") expect(hits).toHaveLength(0);
+        else {
+          expect(hits.map(h => h.move)).toEqual(Array(id === "xebecBreaker" || id === "xebecConqueror" ? 2 : 1).fill(id));
+          expect(b.health).toBeLessThan(b.data.health);
+        }
+        if (id === "xebecLightning" || id === "xebecBrutal") {
+          expect((a.x - origin) * side).toBeGreaterThan(7);
+          expect((b.x - a.x) * side).toBeGreaterThan(0);
+        }
       }
     },
   );
 
-  it("does not read held down as double down", () => {
-    const { a, step } = training(80);
-    step({ down: true });
-    step({ down: true });
-    step({ down: true, pressed: ["light"] });
-    expect(a.moveId).toBe("crouch_light");
+  it("pushes on block and cannot turn a guarded first hit into the second hit", () => {
+    const p = arena();
+    p.motion(1,1,{ direction: 1 });
+    p.advance(36,{ direction: 1 });
+    expect(p.hits[0]).toMatchObject({ move: "xebecPressure", blocked: true });
+    expect(p.a.domination!.charge).toBe(0);
+    const q = arena();
+    q.motion(2,1,{ direction: 1 });
+    q.advance(45,{ direction: 1 });
+    expect(q.hits).toHaveLength(1);
+    expect(q.hits[0].blocked).toBe(true);
   });
 
-  it("Flash covers distance, hits once and preserves sides", () => {
-    const { match, a, b, command, until, hits } = training(175);
-    const origin = a.x;
-    command("forward", "light");
-    until(() => match.hitSerial === 1);
-    expect(a.x - origin).toBeGreaterThan(50);
-    expect(b.x).toBeGreaterThan(a.x);
-    expect(b.vy).toBe(0);
-    until(() => a.state === "idle");
-    expect(hits.map((h) => h.move)).toEqual(["xebecFlash"]);
+  it("creates one swept projectile and rebuilds identically from its snapshot", () => {
+    const p = arena(620);
+    p.motion(0,1);
+    p.advance(18);
+    expect(p.match.kiProjectiles).toHaveLength(1);
+    const clone = restore(snapshot(p.match));
+    for (let i = 0; i < 75; i++) {
+      p.step(); clone.step([neutral(),neutral()]);
+      expect(hashState(snapshot(p.match))).toBe(hashState(snapshot(clone)));
+    }
+    expect(p.hits).toHaveLength(1);
+    expect(p.match.kiProjectiles).toHaveLength(0);
   });
 
-  it.each([false, true])(
-    "Fissure travels independently and respects guard=%s",
-    (guarded) => {
-      const { match, session, a, b, step, command, until } = training(610);
-      session.training.dummy = guarded ? "guard" : "idle";
-      command("forward", "medium");
-      until(() => match.kiProjectiles.length === 1);
-      const p = match.kiProjectiles[0],
-        x = p.x;
-      step();
-      expect(p.x - x).toBe(21);
-      expect(p.vy).toBe(0);
-      until(() => match.hitSerial === 1);
-      expect(match.hits[0]).toMatchObject({
-        move: "xebecFissure",
-        blocked: guarded,
-      });
-      expect(a.xebec!.domination).toBe(guarded ? 0 : 18);
-      expect(b.health < b.data.health).toBe(!guarded);
-    },
-  );
-
-  it.each([false, true])(
-    "Rupture hops, lands and only releases the extra wave when empowered=%s",
-    (powered) => {
-      const { match, a, b, command, until } = training(110);
-      a.xebec!.domination = powered ? 100 : 0;
-      command("forward", "heavy");
-      expect(a.xebec!.empowered).toBe(powered);
-      until(() => a.airborne);
-      expect(a.y).toBeLessThan(FLOOR);
-      until(() => match.hitSerial > 0);
-      expect(b.knockedDown).toBe(true);
-      until(() => a.y === FLOOR && a.stateFrame >= 29);
-      expect(match.kiProjectiles.some((p) => p.move === xebecExtraShock)).toBe(
-        powered,
-      );
-    },
-  );
-
-  it("Intimidation repels and Pressure pushes a guard with no damage or charge", () => {
-    const pulse = training(65);
-    pulse.command("back", "light");
-    pulse.until(() => pulse.match.hitSerial === 1);
-    expect(pulse.match.hits[0].damage).toBe(34);
-    expect(pulse.b.vx).toBe(13);
-    const pressure = training(105);
-    pressure.session.training.dummy = "guard";
-    pressure.command("back", "medium");
-    pressure.until(() => pressure.match.hitSerial === 1);
-    expect(pressure.match.hits[0]).toMatchObject({ blocked: true, damage: 0 });
-    expect(pressure.b.vx).toBe(13);
-    expect(pressure.a.xebec!.domination).toBe(0);
-    pressure.until(() => pressure.b.state !== "blockstun");
-    expect(pressure.match.hitSerial).toBe(1);
-    expect(pressure.match.kiProjectiles).toHaveLength(0);
+  it("counters a close strike, exposes recovery on whiff, and loses to a throw", () => {
+    const p = arena(53);
+    p.motion(1,2);
+    p.advance(1);
+    p.step({}, { pressed: ["light"] });
+    p.advance(50);
+    expect(p.hits.map(h => h.move)).toEqual(["xebecRiposte"]);
+    expect(p.a.domination!.charge).toBe(26);
+    const q = arena(53);
+    q.motion(1,2);
+    q.advance(17);
+    expect(q.a.attackPhase).toBe("recovery");
+    expect(q.hits).toHaveLength(0);
+    const t = arena(53);
+    t.motion(1,2);
+    t.step({}, { pressed: ["throw"] });
+    t.advance(50);
+    expect(t.hits.some(h => h.move === "throw")).toBe(true);
+    expect(t.hits.some(h => h.move === "xebecRiposte")).toBe(false);
   });
 
-  it.each([false, true])(
-    "Collision answers a strike with its own window, empowered=%s",
-    (powered) => {
-      const { a, b, match, command, step, until } = training(57);
-      a.xebec!.domination = powered ? 100 : 0;
-      command("back", "heavy");
-      step({}, { pressed: ["light"] });
-      until(() => a.moveId === xebecCounterReply);
-      expect(a.health).toBe(a.data.health);
-      until(() => match.hitSerial === 1);
-      expect(match.hits[0]).toMatchObject({
-        move: xebecCounterReply,
-        damage: powered ? 146 : 106,
-      });
-      expect(a.xebec!.domination).toBe(30);
-      expect(b.vx).toBeGreaterThan(powered ? 17 : 11);
-      until(() => !match.hitstop);
-      command("forward", "medium");
-      expect(a.moveId === "xebecFissure" || match.hitstop > 0).toBe(true);
-      until(() => a.moveId === "xebecFissure");
-    },
-  );
-
-  it("Collision leaves projectile and Super contacts eligible to hit", () => {
-    const { a, b, match, command, until } = training(60);
-    command("back", "heavy");
-    b.setState("idle");
-    b.meter = 100;
-    expect(b.attack("ultimate_start")).toBe(true);
-    until(() => match.hitSerial > 0 || match.cinematicActive, 40);
-    expect(a.moveId).not.toBe(xebecCounterReply);
-
-    const ranged = training(650, 1, "xebec");
-    expect(ranged.b.attack("xebecFissure")).toBe(true);
-    ranged.until(() => ranged.match.kiProjectiles.length === 1);
-    ranged.until(() => ranged.match.kiProjectiles[0].x - ranged.a.x < 180);
-    ranged.command("back", "heavy");
-    ranged.until(() => ranged.match.hitSerial > 0);
-    expect(ranged.a.moveId).not.toBe(xebecCounterReply);
-    expect(ranged.a.health).toBeLessThan(ranged.a.data.health);
+  it("awards once per multi-hit and consumes domination only for specials on L", () => {
+    const p = arena(68);
+    p.motion(2,1);
+    p.advance(65);
+    expect(p.hits).toHaveLength(2);
+    expect(p.a.domination!.charge).toBe(18);
+    for (const row of [0,1,2]) {
+      const trial = arena(75);
+      trial.a.domination!.charge = 100;
+      trial.motion(row,2);
+      expect(trial.a.domination).toMatchObject({ charge: 0, powered: true });
+      const snap = restore(snapshot(trial.match));
+      expect(snap.fighters[0].domination).toEqual(trial.a.domination);
+      trial.advance(80);
+      expect(trial.a.domination!.charge).toBe(0);
+      if (row === 0) expect(trial.match.projectileSerial).toBe(1);
+    }
+    const light = arena(68);
+    light.a.domination!.charge = 100;
+    light.motion(2,0);
+    light.advance(70);
+    expect(light.a.domination!.charge).toBe(100);
   });
 
-  it("Collision whiffs and cannot be started in stun", () => {
-    const { a, match, command, until } = training(64);
-    command("back", "heavy");
-    until(() => a.state === "idle");
-    expect(match.hitSerial).toBe(0);
-    a.setState("hitstun");
-    a.stun = 15;
-    command("back", "heavy");
-    expect(a.state).toBe("hitstun");
-    expect(a.moveId).toBe("");
+  it("throws only a grounded target within reach", () => {
+    const p = arena(61);
+    p.step({ pressed: ["throw"] });
+    p.advance(80);
+    expect(p.hits).toMatchObject([{ move: "throw", damage: 106 }]);
+    expect(p.match.capture).toBeUndefined();
+    const q = arena(200);
+    q.step({ pressed: ["throw"] }); q.advance(80);
+    expect(q.hits).toHaveLength(0);
+  });
+
+  it("charges one bar for R, stages only on contact, and restores control after deterministic KO", () => {
+    const p = arena(138);
+    p.step({ pressed: ["ultimate"] });
+    expect(p.a.moveId).toBe("");
+    p.a.meter = 100;
+    p.b.health = 100;
+    p.step({ pressed: ["ultimate"] });
+    p.advance(20);
+    expect(p.a.meter).toBe(0);
+    expect(p.match.pandemonium).toBeDefined();
+    const saved = restore(snapshot(p.match));
+    let stageHits = 0;
+    for (let i = 0; i < pandemoniumConfig.duration + 30; i++) {
+      p.step(); saved.step([neutral(), neutral()]);
+      expect(hashState(snapshot(saved))).toBe(hashState(snapshot(p.match)));
+      stageHits += p.match.hits.filter(h => h.move === "pandemonium_ground").length;
+    }
+    expect(stageHits).toBe(1);
+    expect(p.match.cinematicActive).toBe(false);
+    expect(p.match.phase).toBe("roundEnd");
+    expect(p.b.health).toBe(0);
+    expect(p.a.actionClip).toBe("");
+    const whiff = arena(620);
+    whiff.a.meter = 100;
+    whiff.step({ pressed: ["ultimate"] });
+    whiff.advance(80);
+    expect(whiff.match.pandemonium).toBeUndefined();
+    expect(whiff.hits).toHaveLength(0);
+    expect(whiff.a.state).toBe("idle");
   });
 
   it.each([
-    ["forward", "xebecFlash"],
-    ["doubleDown", "xebecBrutal"],
-    ["doubleDown", "xebecImpact"],
-  ] as const)("confirms grounded J → K into %s / %s", (motion, id) => {
-    const { a, match, command, step, until } = training(55);
-    step({ pressed: ["light"] });
-    until(() => a.hitConfirmed);
-    step({ pressed: ["medium"] });
-    until(
-      () =>
-        a.moveId === "stand_medium" && a.hitConfirmed && match.hitstop === 0,
-    );
-    command(motion, id === "xebecImpact" ? "heavy" : "light");
-    expect(a.moveId).toBe(id);
-    until(() => match.hits.some((h) => h.move === id && h.combo >= 3));
+    [2, 0, "xebecBrutal"], [0, 0, "xebecLightning"], [2, 2, "xebecConqueror"],
+  ] as const)("confirms J → K → %s/%s", (family, button, id) => {
+    const p = arena(59);
+    p.step({ pressed: ["light"] });
+    while (!p.a.hitConfirmed) p.step();
+    p.step({ pressed: ["medium"] });
+    for (let i = 0; i < 50 && (p.a.moveId !== "stand_medium" || !p.a.hitConfirmed); i++) p.step();
+    expect(p.a.canSpecialCancel()).toBe(true);
+    p.advance(p.match.hitstop);
+    p.motion(family, button);
+    expect(p.a.moveId).toBe(id);
+    p.advance(70);
+    expect(p.hits.slice(0, 3).map(h => h.move)).toEqual(["stand_light", "stand_medium", id]);
   });
 
-  it("Breaker confirms two distinct impacts and allows a confirmed air J → L", () => {
-    const { a, b, match, command, step, until, hits } = training(54);
-    step({ pressed: ["medium"] });
-    until(() => a.hitConfirmed && !match.hitstop);
-    command("doubleDown", "medium");
-    until(() => hits.filter((h) => h.move === "xebecBreaker").length === 2);
-    expect(b.hitLaunch).toBe(true);
-    expect(b.vy).toBeLessThan(-10);
-    expect(a.xebec!.domination).toBe(18);
-    until(() => !match.hitstop);
-    step({ pressed: ["jump"] });
-    expect(a.airborne).toBe(true);
-    step({ direction: 1, pressed: ["light"] });
-    until(() => a.moveId === "air_light" && a.hitConfirmed);
-    step({ direction: 1, pressed: ["heavy"] });
-    until(() =>
-      match.hits.some((h) => h.move === "air_heavy" && h.combo === 5),
-    );
+  it("confirms Quebra-Mar's launcher into a jump, with a finite cancel window", () => {
+    const p = arena(58);
+    p.step({ pressed: ["medium"] });
+    for (let i = 0; i < 30 && !p.a.hitConfirmed; i++) p.step();
+    p.advance(p.match.hitstop);
+    p.motion(2, 1);
+    for (let i = 0; i < 48 && !p.a.hitIds.includes(1); i++) p.step();
+    expect(p.a.canCancel("jump")).toBe(true);
+    expect(p.a.canSuperCancel()).toBe(true);
+    p.step({ pressed: ["jump"] });
+    for (let i = 0; i < 13 && !p.a.airborne; i++) p.step();
+    expect(p.a.airborne).toBe(true);
+    p.step({ pressed: ["light"] });
+    p.advance(30);
+    expect(p.hits.map(h => h.move)).toContain("air_light");
   });
 
-  it.each([false, true])(
-    "Breaker skips the sword on whiff or guard=%s",
-    (guard) => {
-      const { a, session, command, until, hits } = training(guard ? 56 : 350);
-      session.training.dummy = guard ? "guard" : "idle";
-      command("doubleDown", "medium");
-      until(() => a.stateFrame >= 40);
-      expect(a.state).toBe("attack");
-      expect(a.hitConfirmed).toBe(false);
-      expect(hits).toHaveLength(guard ? 1 : 0);
-    },
-  );
-
-  it.each([false, true])(
-    "Impact knocks down and scales only the finish when empowered=%s",
-    (empowered) => {
-      const { a, b, match, command, until, hits } = training(65);
-      a.xebec!.domination = empowered ? 100 : 0;
-      command("doubleDown", "heavy");
-      until(() => match.hitSerial === 2);
-      expect(hits.map((h) => h.damage)).toEqual([64, empowered ? 102 : 71]);
-      expect(b.knockedDown).toBe(true);
-      expect(b.vx).toBe(empowered ? 19 : 13);
-      expect(a.canCancel("light")).toBe(false);
-    },
-  );
-
-  it("charge is separate from Super and only L spends the full bar", () => {
-    const { a, b, command, match, until } = training(62);
-    a.xebec!.domination = 94;
-    command("doubleDown", "light");
-    until(() => match.hitSerial === 1);
-    expect(a.xebec!.domination).toBe(100);
-    expect(a.meter).toBeLessThan(100);
-    until(() => a.state === "idle");
-    b.x = a.x + 57;
-    command("back", "heavy");
-    expect(a.xebec).toMatchObject({ domination: 0, empowered: true });
-    until(() => a.state === "idle");
-    expect(a.xebec).toMatchObject({ domination: 0, empowered: false });
-  });
-});
-
-describe("Pandemonium", () => {
-  it.each(["whiff", "guard", "hit"] as const)(
-    "confirms only on valid hit (%s)",
-    (result) => {
-      const { a, b, match, session, step, until, hits } = training(
-        result === "whiff" ? 660 : 63,
-      );
-      session.training.dummy = result === "guard" ? "guard" : "idle";
-      step({ pressed: ["ultimate"] });
-      expect(a.moveId).not.toBe(pandemoniumId);
-      a.meter = 100;
-      step({ pressed: ["ultimate"] });
-      expect(a.moveId).toBe(pandemoniumId);
-      expect(a.meter).toBe(0);
-      if (result !== "hit") {
-        until(() => a.state === "idle");
-        expect(match.pandemonium).toBeUndefined();
-        expect(hits).toHaveLength(result === "guard" ? 1 : 0);
-        expect(b.health).toBe(b.data.health);
-        return;
-      }
-      until(() => !!match.pandemonium);
-      expect(b.state).toBe("grabbed");
-      const replica = restore(snapshot(match));
-      for (let i = 0; i <= pandemonium.end; i++) {
-        step();
-        replica.step([neutral(), neutral()]);
-        expect(hashState(snapshot(replica))).toBe(hashState(snapshot(match)));
-      }
-      expect(match.cinematicActive).toBe(false);
-      expect(a.state).toBe("idle");
-      expect(b.knockedDown).toBe(true);
-      expect(b.x - a.x).toBeGreaterThan(245);
-      expect(hits.map((h) => h.move)).toEqual([
-        pandemoniumId,
-        "pandemonium_finish",
-      ]);
-      expect(b.data.health - b.health).toBe(24 + pandemonium.damage);
-    },
-  );
-
-  it("converts a confirmed Breaker while the opener still reaches the launched rival", () => {
-    const { a, match, step, command, until, hits } = training(55);
-    a.meter = 100;
-    step({ pressed: ["medium"] });
-    until(() => a.hitConfirmed && !match.hitstop);
-    command("doubleDown", "medium");
-    until(() => hits.filter((h) => h.move === "xebecBreaker").length === 2);
-    step({ pressed: ["ultimate"] });
-    until(() => !!match.pandemonium, 50);
-    expect(match.hits.at(-1)?.combo).toBe(4);
+  it.each(["arcade", "versus"] as const)("starts a real %s match", mode => {
+    const session = new GameSession(mode, "normal", "xebec", "samurai");
+    for (let i=0; i<120; i++) session.step(neutral());
+    expect(session.match.fighters[0].data.id).toBe("xebec");
+    expect(session.match.phase).toBe("fight");
   });
 });

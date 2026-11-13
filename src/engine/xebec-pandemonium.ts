@@ -1,115 +1,63 @@
+import type { Fighter } from "./combat";
 import type { FuryState } from "./goku-fury";
-import type { Move, Rect } from "./types";
+import type { Move } from "./types";
 
 export const pandemoniumId = "pandemonium";
-export const pandemonium = {
-  cost: 100,
-  charge: 22,
-  impact: 74,
-  split: 88,
-  return: 116,
-  end: 142,
-  damage: 304,
-  minimumComboScale: 0.64,
+export const pandemoniumName = "PANDEMONIUM · A MALDIÇÃO DO ABISMO";
+export const pandemoniumConfig = {
+  cost: 100, duration: 248, minimumComboScale: .66,
+  hits: [{ tick: 143, damage: 306, kind: "ground", hold: 10 }],
 } as const;
-
-export function pandemoniumOpener(hurtboxes: Rect[]): Move {
-  return {
-    super: true,
-    kind: pandemoniumId,
-    cost: pandemonium.cost,
-    startup: 12,
-    active: 6,
-    recovery: 32,
-    damage: 24,
-    stun: 22,
-    blockstun: 13,
-    push: 4,
-    launch: 0,
-    level: "mid",
-    rank: 3,
-    cancels: [],
-    hitstop: 8,
-    box: { x: 0, y: 0, w: 0, h: 0 },
-    drive: { from: 5, to: 15, speed: 7.8 },
-    poses: [
-      { ticks: 12, phase: "startup", hurtboxes },
-      {
-        ticks: 6,
-        phase: "active",
-        hurtboxes,
-        hitboxes: [{ a: { x: 22, y: -90 }, b: { x: 119, y: -112 }, r: 24 }],
-      },
-      { ticks: 32, phase: "recovery", hurtboxes },
-    ],
-  };
-}
-
-const clamp = (v: number, a: number, b: number) => Math.max(a, Math.min(b, v));
-const ease = (t: number) => {
-  const n = clamp(t, 0, 1);
-  return n * n * (3 - 2 * n);
+export type PandemoniumState = FuryState & { hold: number };
+export const pandemoniumMove: Move = {
+  kind: pandemoniumId, super: true, cost: pandemoniumConfig.cost,
+  startup: 14, active: 5, recovery: 35, damage: 28, stun: 18, blockstun: 0,
+  push: 0, launch: 0, rank: 4, hitstop: 7, level: "mid", cancels: [],
+  box: { x: 22, y: -145, w: 112, h: 62 },
+  drive: { from: 5, to: 17, speed: 7.4 },
 };
-const mix = (a: number, b: number, t: number) => a + (b - a) * t;
+export function canStartPandemonium(f: Fighter) {
+  return !f.airborne && !f.knockedDown && !f.match?.capture &&
+    f.meter >= pandemoniumConfig.cost &&
+    (["idle", "walk", "crouch", "dash", "jumpStart", "landing"].includes(f.state) ||
+      f.hitConfirmed && f.canSuperCancel());
+}
+const clamp = (x: number, low: number, high: number) => Math.max(low, Math.min(high, x));
+const blend = (a: number, b: number, t: number) => a + (b - a) * t;
+const ease = (tick: number, start: number, end: number) => {
+  const t = clamp((tick - start) / (end - start), 0, 1);
+  return t * t * (3 - 2 * t);
+};
 
-export function pandemoniumScene(s: FuryState, floor: number) {
-  const t = s.tick,
-    f = s.facing;
-  const stage = clamp(s.originX, f === 1 ? 145 : 380, f === 1 ? 900 : 1135);
-  const attackerX = mix(s.originX, stage, ease(t / 22));
-  const stageVictim = stage + 104 * f;
-  const launched = ease((t - pandemonium.impact) / 38);
-  const victimX =
-    mix(s.targetX, stageVictim, ease(t / 22)) + launched * 191 * f;
-  const victimY =
-    mix(s.targetY, floor, ease(t / 22)) - 99 * Math.sin(Math.PI * launched);
-  const zoom =
-    1 + 0.47 * ease(t / 31) * (1 - ease((t - pandemonium.split) / 46));
-  const focus = mix(
-    640,
-    attackerX + 53 * f,
-    ease(t / 29) * (1 - ease((t - 79) / 55)),
-  );
-  const halfView = 640 / zoom;
-  const jolt =
-    t >= pandemonium.impact ? Math.max(0, 10 - (t - pandemonium.impact)) : 0;
-  const phase =
-    t < pandemonium.charge
-      ? "confirm"
-      : t < pandemonium.impact
-        ? "charge"
-        : t < pandemonium.split
-          ? "impact"
-          : t < pandemonium.return
-            ? "split"
-            : "return";
+export function pandemoniumScene(s: PandemoniumState) {
+  const t = s.tick, sign = s.facing, strike = pandemoniumConfig.hits[0].tick;
+  const plant = ease(t, 0, 36);
+  const flight = ease(t, strike, 211);
+  const focal = clamp(s.targetX, sign > 0 ? 116 : 54, sign < 0 ? 1164 : 1226);
+  const attacker = {
+    x: Math.round(blend(s.originX, focal - sign * 86, plant)), y: 580,
+    facing: sign, clip: "pandemoniumScene", tick: t,
+  };
+  const victim = {
+    x: Math.round(clamp(blend(s.targetX, focal, plant) + sign * flight * 255, 44, 1236)),
+    y: Math.round(blend(s.targetY, 580, plant) - 95 * 4 * flight * (1 - flight)),
+    facing: -sign, clip: t < strike ? "grabbed" : t < 195 ? "launched" : "downed",
+    tick: t < strike ? t : t - strike,
+  };
+  const close = ease(t, 8, 61) * (1 - ease(t, 130, 161));
+  const wide = ease(t, strike, 170) * (1 - ease(t, 212, 245));
+  const scale = 1 + close * .65 - wide * .06;
+  const view = Math.min(640, 640 / scale);
+  const center = attacker.x + sign * blend(57, 135, ease(t, 90, 138));
   return {
-    phase,
-    clipTick:
-      t < pandemonium.charge
-        ? t
-        : t < pandemonium.impact
-          ? t - pandemonium.charge
-          : t < pandemonium.return
-            ? t - pandemonium.impact
-            : t - pandemonium.return,
-    attackerX,
-    victimX,
-    victimY,
-    clip:
-      phase === "confirm"
-        ? "pandemoniumConfirm"
-        : phase === "charge"
-          ? "pandemoniumCharge"
-          : phase === "impact" || phase === "split"
-            ? "pandemoniumImpact"
-            : "pandemoniumReturn",
+    attacker, victim,
+    split: ease(t, strike + 3, 188) * (1 - ease(t, 218, 246)),
+    darkness: ease(t, 5, 43) * (1 - ease(t, 211, 247)),
     camera: {
-      x: clamp(focus, halfView, 1280 - halfView),
-      y: mix(360, floor - 169, (zoom - 1) / 0.47),
-      scale: zoom,
-      shakeX: jolt * (t % 2 ? 1 : -1),
-      shakeY: -jolt * 0.35,
+      x: clamp(blend(640, center, close), view, 1280 - view),
+      y: blend(360, 451, close) - wide * 27, scale,
+      shakeX: t >= strike && t < strike + 17 ? (t % 2 ? 1 : -1) * (strike + 17 - t) : 0,
+      shakeY: t >= strike && t < strike + 12 ? (t % 3 - 1) * (strike + 12 - t) * .55 : 0,
     },
   };
 }

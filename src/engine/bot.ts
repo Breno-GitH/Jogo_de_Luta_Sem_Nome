@@ -233,6 +233,18 @@ export class Bot {
                 this.towerTuning ? "confirmar Super" : "confirmar Mil Cortes",
             );
           }
+          if (self.domination && self.moveId === "xebecBreaker" && self.canCancel("jump")) {
+            if (self.canStartSuper() && this.chance(this.profile.ultimate))
+              return this.choose({ ...neutral(), pressed: ["ultimate"] }, "confirmar Pandemonium");
+            if (this.chance(this.profile.airCombo)) {
+              this.airRoute = true;
+              return this.choose({ ...neutral(), pressed: ["jump"] }, "perseguir Quebra-Mar");
+            }
+          }
+          if (self.domination && self.canStartSpecial("xebecLightning") && this.chance(this.profile.special)) {
+            this.lastDecision = "confirmar Corte Relâmpago";
+            return this.command([2, 6], "light", self);
+          }
           if (
             self.moveId === "crouch_heavy" &&
             this.chance(this.profile.airCombo)
@@ -402,6 +414,26 @@ export class Bot {
         { ...neutral(), pressed: ["ultimate"] },
         "usar Mil Cortes",
       );
+    if (self.domination && !self.airborne) {
+      if (self.canStartSuper() && !enemy.airborne && distance < 170 &&
+          (enemy.phase === "recovery" || enemy.state === "hitstun") && this.chance(this.profile.ultimate))
+        return this.choose({ ...neutral(), pressed: ["ultimate"] }, "usar Pandemonium");
+      if (this.chance(this.profile.special)) {
+        if (distance < 98 && enemy.phase === "startup" && self.canStartSpecial("xebecCollision")) {
+          this.lastDecision = "Colisão Soberana";
+          return this.command([2, 4], "heavy", self);
+        }
+        if (distance > 230 && distance < 590 && self.canStartSpecial("xebecRift")) {
+          this.lastDecision = "Fenda do Abismo";
+          return this.command([2, 6], "medium", self);
+        }
+        if (distance > 102 && distance < 195 && self.canStartSpecial("xebecLightning")) {
+          const heavy = self.domination.charge === 100;
+          this.lastDecision = heavy ? "Ruptura Total fortalecida" : "Corte Relâmpago";
+          return this.command([2, 6], heavy ? "heavy" : "light", self);
+        }
+      }
+    }
     if (self.data.id === "luffy" && self.canStartSuper() && !enemy.airborne &&
         distance > 95 && distance < 235 && this.chance(this.profile.ultimate))
       return this.choose({ ...neutral(), pressed: ["ultimate"] }, "Jet Gigant");
