@@ -989,11 +989,11 @@ export class Renderer {
         const ready = f.xebec.domination === 100;
         c.font = "bold 11px monospace";
         c.fillStyle = ready ? "#ffd095" : "#ff8e9e";
-        c.fillText(`DOMINAÇÃO · ${f.xebec.empowered ? "FORTALECIDO" : ready ? `PRONTA · ${this.chainKeys[2]}` : f.xebec.domination + "%"}`, x, 661);
+        c.fillText(`DOMINAÇÃO · ${f.xebec.empowered ? "FORTALECIDO" : ready ? `PRONTA · ${this.chainKeys[2]}` : f.xebec.domination + "%"}`, x, 656);
         c.fillStyle = "#291724";
-        c.fillRect(x, 668, 300, 7);
+        c.fillRect(x, 660, 300, 7);
         c.fillStyle = ready || f.xebec.empowered ? "#ffd095" : "#ed5271";
-        c.fillRect(x + 1, 669, 298 * (f.xebec.empowered ? 1 : f.xebec.domination / 100), 5);
+        c.fillRect(x + 1, 661, 298 * (f.xebec.empowered ? 1 : f.xebec.domination / 100), 5);
       }
       if (f.omnitrix)
         drawOmnitrixHud(c, f.omnitrix, i, this.chainKeys[2],

@@ -25,8 +25,12 @@ const commands = [
 type Motion = (typeof commands)[number][0];
 type Strength = (typeof commands)[number][1];
 
-function training(gap: number, side: 1 | -1 = 1) {
-  const session = new GameSession("training", "normal", "xebec", "samurai");
+function training(
+  gap: number,
+  side: 1 | -1 = 1,
+  rival: "samurai" | "xebec" = "samurai",
+) {
+  const session = new GameSession("training", "normal", "xebec", rival);
   session.training.infiniteHealth = session.training.unlimitedMeter = false;
   const match = session.match;
   const [a, b] = match.fighters;
@@ -194,6 +198,25 @@ describe("Xebec's nine specials", () => {
       until(() => a.moveId === "xebecFissure");
     },
   );
+
+  it("Collision leaves projectile and Super contacts eligible to hit", () => {
+    const { a, b, match, command, until } = training(60);
+    command("back", "heavy");
+    b.setState("idle");
+    b.meter = 100;
+    expect(b.attack("ultimate_start")).toBe(true);
+    until(() => match.hitSerial > 0 || match.cinematicActive, 40);
+    expect(a.moveId).not.toBe(xebecCounterReply);
+
+    const ranged = training(650, 1, "xebec");
+    expect(ranged.b.attack("xebecFissure")).toBe(true);
+    ranged.until(() => ranged.match.kiProjectiles.length === 1);
+    ranged.until(() => ranged.match.kiProjectiles[0].x - ranged.a.x < 180);
+    ranged.command("back", "heavy");
+    ranged.until(() => ranged.match.hitSerial > 0);
+    expect(ranged.a.moveId).not.toBe(xebecCounterReply);
+    expect(ranged.a.health).toBeLessThan(ranged.a.data.health);
+  });
 
   it("Collision whiffs and cannot be started in stun", () => {
     const { a, match, command, until } = training(64);

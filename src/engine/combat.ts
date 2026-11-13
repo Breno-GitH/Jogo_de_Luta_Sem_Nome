@@ -1704,7 +1704,7 @@ export class Match {
         this.beginCapture("grab", f, target, "air");
         continue;
       }
-      const direction = m.special === "nagashi" && target.x !== f.x
+      const direction = (m.special === "nagashi" || m.special === "xebecIntimidation") && target.x !== f.x
         ? Math.sign(target.x - f.x)
         : f.facing;
       const swordCapture = m.special === "fourSwords" &&
