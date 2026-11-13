@@ -31,14 +31,14 @@ function setup() {
 }
 
 describe("Xebec movement preview", () => {
-  it("appears as a selectable fighter in training only", () => {
+  it("appears as a selectable fighter in all supported modes", () => {
     expect(selectionScreen("training")).toContain('value="xebec"');
     expect(
       selectionScreen("training", "xebec", "dio", "opponent"),
-    ).not.toContain('value="xebec"');
-    expect(selectionScreen("versus")).not.toContain('value="xebec"');
-    expect(selectionScreen("arcade")).not.toContain('value="xebec"');
-    expect(ONLINE_CHARACTERS).not.toContain("xebec");
+    ).toContain('value="xebec"');
+    expect(selectionScreen("versus")).toContain('value="xebec"');
+    expect(selectionScreen("arcade")).toContain('value="xebec"');
+    expect(ONLINE_CHARACTERS).toContain("xebec");
   });
 
   it("uses the same enlarged scale and floor pivot across movement clips", () => {

@@ -220,6 +220,7 @@ export class GameApp {
     this.online = undefined;
     this.session = undefined;
     this.sound.setBossMusic(false);
+    this.sound.setMusicDucked(false);
     this.remapping = undefined;
     this.demo = new Match();
     this.demo.message = "";

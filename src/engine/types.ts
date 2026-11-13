@@ -77,6 +77,8 @@ export interface Move {
   airTeleport?: boolean;
   super?: boolean;
   special?: "knives" | "rush" | "timeStop" | "ki" | "kamehameha" | "teleport" | "pistol" | "gatling" | "bazooka" | SasukeSpecialId | KanekiFamily | import("./xebec-specials").XebecSpecial;
+  xebec?: { confirmedFollow?: boolean; groundWindow?: number; whiffExtra?: number };
+  blockPush?: number;
   gokuStrength?: "light" | "medium" | "heavy";
   beam?: { range: number; radius: number; interval: number; hits: number };
   projectile?: {
@@ -197,6 +199,7 @@ export interface HitWindow {
   push?: number;
   launch?: number;
   airHold?: number;
+  knockdown?: boolean;
 }
 export const overlaps = (a: Rect, b: Rect) =>
   a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
