@@ -1,5 +1,6 @@
 import movement from "../data/xebec-animations.json";
 import { xebecNormals } from "../engine/xebec";
+import { xebecSpecialArt } from "../engine/xebec-specials";
 import { pandemoniumConfig, pandemoniumId } from "../engine/xebec-pandemonium";
 import type { AnimationClip, AnimationData } from "./animator";
 
@@ -7,20 +8,11 @@ const clip = (sheet: string, frames: number[], durations: number[], loop = false
   ({ sheet: `xebec/${sheet}.png`, frames, durations, ticks: 1, loop });
 const reaction = (frames: number[], durations: number[], loop = false) =>
   clip("reactions", frames, durations, loop);
-const special = (frames: number[], durations: number[]) => clip("specials", frames, durations);
+const rush = (frames: number[], durations: number[]) => clip("rush", frames, durations);
 const cinema = (frames: number[], durations: number[]) => clip("pandemonium", frames, durations);
 const normals = Object.fromEntries(
   Object.entries(xebecNormals).map(([id, { frames, holds }]) => [id, clip("normals", frames, holds)]),
 );
-
-const specialSheet = "xebec/specials.png";
-const special = (frames: number[], durations: number[]): AnimationClip => ({
-  sheet: specialSheet,
-  frames,
-  durations,
-  ticks: 1,
-  loop: false,
-});
 
 export const xebecAnimations: AnimationData = {
   ...movement,
@@ -46,25 +38,24 @@ export const xebecAnimations: AnimationData = {
     getup: reaction([15, 1, 0], [6, 5, 5]),
     ko: reaction([14], [1]),
     entrance: { ...movement.clips.walkForward, loop: false },
-    taunt: special([15, 5, 15], [9, 25, 12]),
+    taunt: rush([7, 6, 7], [9, 25, 12]),
     defeat: reaction([14], [1]),
     victory: cinema([10, 11], [12, 64]),
     throw: cinema([12, 13, 12, 2], [8, 4, 9, 15]),
     grabHold: cinema([13, 14, 15], [9, 15, 10]),
     throwRecover: cinema([15, 10, 2], [5, 7, 6]),
     ...normals,
-    xebecLightning: special([0, 1, 15], [8, 5, 14]),
-    xebecRift: special([7, 0, 2, 15], [9, 7, 4, 24]),
-    xebecRupture: special([0, 3, 4, 12, 15], [5, 14, 7, 12, 21]),
-    xebecIntimidation: special([0, 5, 15], [6, 4, 20]),
-    xebecPressure: special([12, 0, 6, 15], [5, 7, 5, 23]),
-    xebecCollision: special([12, 7, 15], [4, 8, 29]),
-    xebecRiposte: special([7, 8, 11, 15], [1, 5, 8, 15]),
-    xebecBrutal: special([0, 9, 10, 15], [7, 4, 5, 10]),
-    xebecBreaker: special([12, 9, 10, 11, 8, 15], [10, 4, 6, 5, 9, 14]),
-    xebecConqueror: special([12, 0, 13, 10, 14, 4, 15], [7, 6, 4, 6, 6, 10, 22]),
-    [pandemoniumId]: cinema([0, 1, 2, 10], [14, 5, 10, 25]),
-    pandemoniumScene: cinema([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-      [13, 25, 22, 26, 22, 27, 8, 12, 23, 27, pandemoniumConfig.duration - 205]),
+    ...Object.fromEntries(Object.entries(xebecSpecialArt).map(([id, pose]) =>
+      [id, clip(pose.sheet, pose.frames, pose.durations)])),
+    xebecBrutalHold: rush([2, 3], [13, 4]),
+    xebecBrutalRecover: rush([3, 7], [5, 13]),
+    xebecDominionHold: rush([2, 4, 6], [6, 17, 4]),
+    xebecDominionLink: rush([6, 2, 7], [3, 6, 4]),
+    xebecExplosionHold: rush([2, 5, 4, 6], [8, 15, 10, 4]),
+    xebecExplosionRecover: rush([6, 4, 7], [6, 6, 6]),
+    [pandemoniumId]: clip("pandemonium-combat", [0, 1, 7, 2], [14, 5, 10, 25]),
+    pandemoniumScene: clip("pandemonium-combat", [1, 2, 3, 4, 5, 6, 7],
+      [10, 24, 26, 26, 49, 12, 55]),
+    pandemoniumOutro: cinema([9, 10, 11], [12, 10, pandemoniumConfig.duration - 224]),
   },
 };

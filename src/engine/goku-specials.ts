@@ -12,6 +12,7 @@ export interface KiProjectile {
   cast: number;
   curse?: boolean;
   wave?: FireDragonWave;
+  xebecPowered?: boolean;
   x: number;
   y: number;
   previousX: number;

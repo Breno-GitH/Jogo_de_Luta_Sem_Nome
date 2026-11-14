@@ -67,7 +67,7 @@ import type { Fighter } from "../engine/combat";
 import { combatPace } from "../engine/pace";
 import { xebecId } from "../engine/xebec";
 import { xebecAnimations } from "./xebec-animations";
-import { drawDomination, drawPandemoniumSky, drawPandemoniumStrike, drawXebecSpecials } from "./xebec-special-fx";
+import { drawDomination, drawPandemoniumSky, drawPandemoniumStrike, drawXebecCharge, drawXebecSpecials } from "./xebec-special-fx";
 import { pandemoniumConfig, pandemoniumName, pandemoniumScene } from "../engine/xebec-pandemonium";
 export class Renderer {
   private ctx: CanvasRenderingContext2D;
@@ -246,7 +246,6 @@ export class Renderer {
   draw(match: Match) {
     const road = match.roadRoller,
       scene = road ? roadScene(road) : undefined;
-    const xebecSuper = match.pandemonium, xebecStage = xebecSuper && pandemoniumScene(xebecSuper, FLOOR);
     const fury = match.fury,
       furyStage = fury ? furyScene(fury) : undefined;
     const jet = match.jetGigant,
@@ -323,6 +322,10 @@ export class Renderer {
     this.canvas.dataset.alienXTick = String(alienX?.tick ?? -1);
     this.canvas.dataset.pandemoniumTick = String(pandemonium?.tick ?? -1);
     this.canvas.dataset.domination = String(self.domination?.charge ?? "");
+    this.canvas.dataset.xebecCharge = self.domination?.powered || match.capture?.xebec?.powered && match.capture.attacker === self.id
+      ? "spending" : self.domination?.charge === 100 ? "full" : "";
+    this.canvas.dataset.xebecWaves = match.kiProjectiles.filter(p => p.move.startsWith("xebec") && p.state === "flight")
+      .map(p => p.move).join(",");
     this.canvas.dataset.capture = abyss ? "pandemonium" : reality ? "alienX" : centipede ? "centipede" : kirin ? "kirin" : jet ? "jetGigant" : fury
       ? "gokuFury"
       : road
@@ -491,7 +494,7 @@ export class Renderer {
       c.translate(-cx, -cy);
     }
     drawTestArena(c, benPadding);
-    if (pandemonium && abyss && this.effects) drawPandemoniumSky(c, abyss);
+    if (pandemonium && abyss && this.effects) drawPandemoniumSky(c, pandemonium.tick, abyss);
     if (reality && alienX && this.effects) {
       drawAlienXSpace(c, reality, alienX.tick, this.sprites.get(alienXBackdrop));
       drawAlienXRebuild(c, reality, alienX.tick, () => drawTestArena(c));
@@ -504,7 +507,6 @@ export class Renderer {
       c.fillStyle = haze;
       c.fillRect(-benPadding, 230, 1280 + 2 * benPadding, 352);
     }
-    if (xebecStage && this.effects) drawPandemoniumSky(c, match);
     if (kakuja && this.effects) drawCentipedeBackdrop(c, kakuja);
     if (this.effects && (kirinStage || !match.cinematicActive)) drawKirinStorm(c, match, this.sprites, kirinStage);
     if (!match.cinematicActive) drawTimeTint(c, match);
@@ -609,7 +611,7 @@ export class Renderer {
       c.scale(f.facing * sprite.scale, sprite.scale);
       const ghostDepth = benGhostDepth(f);
       if (this.effects && ghostDepth) drawBenGhostGround(c, f, match.frame);
-      if (i === 1 && !kakujaActor && !sprite.player2Sheet && f.data.id !== benId && f.data.id !== "goku" && !sasukeWingedSheets.has(sprite.sheet))
+      if (i === 1 && !kakujaActor && !sprite.player2Sheet && f.data.id !== benId && f.data.id !== "goku" && f.data.id !== xebecId && !sasukeWingedSheets.has(sprite.sheet))
         c.filter = "hue-rotate(145deg)";
       const original = this.sprites.get(
         i === 1 ? (sprite.player2Sheet ?? sprite.sheet) : sprite.sheet,
@@ -719,6 +721,8 @@ export class Renderer {
         drawSasukeCurseFX(c, f);
       }
       c.restore();
+      if (this.effects && f.domination && !pandemonium)
+        drawXebecCharge(c, f, match.frame, sprite.sheet, this.presentations[i].animator.frame());
       if (!kakujaActor)
         for (const pose of kagunes) if (pose.layer === "front") drawKagune(c, pose, f.facing as 1 | -1);
       if (this.debug) {
@@ -766,7 +770,6 @@ export class Renderer {
     if (this.effects && jet && jetStage) drawJetImpact(c, this.sprites, jetStage, jet.tick, jet.hold);
     if (this.effects && road) drawRoadEffects(c, this.sprites, road);
     if (this.effects) drawFury(c, match, this.sprites, "front");
-    if (xebecStage && this.effects) drawPandemoniumWorld(c, match);
     if (reality && alienX && this.effects) drawAlienXForces(c, reality, alienX.tick);
     if (pandemonium && abyss && this.effects) drawPandemoniumStrike(c, pandemonium, abyss);
     c.restore();

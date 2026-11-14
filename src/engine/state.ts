@@ -40,6 +40,7 @@ const fighterKeys = [
   "sasukeCurse",
   "kirinCursed",
   "domination",
+  "xebecThrowRecovery",
   "homeX",
   "guardIntent",
   "blockCrouched",
@@ -65,7 +66,6 @@ const matchKeys = [
   "capture",
   "roadRoller",
   "fury",
-  "pandemonium",
   "jetGigant",
   "kirin",
   "centipede",
@@ -127,8 +127,6 @@ export function restore(state: MatchState, match = new Match()): Match {
       fighter,
       Object.fromEntries(fighterKeys.map((key) => [key, clone(saved[key])])),
     );
-    if (saved.xebec === undefined && fighter.data.id === "xebec")
-      fighter.xebec = { domination: 0, credited: [], comboGain: 0, empowered: false };
     fighter.buffer.restore(saved.buffer);
     if (fighter.stand && saved.stand) fighter.stand.s = clone(saved.stand);
     if (fighter.omnitrix && saved.omnitrix) fighter.omnitrix = { ...fighter.omnitrix, ...clone(saved.omnitrix) };
