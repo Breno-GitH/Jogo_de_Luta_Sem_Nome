@@ -1,5 +1,6 @@
 import type { Match, HitEvent } from "../engine/combat";
 import type { CentipedeCue } from "../engine/kaneki-centipede";
+import { kingWill, xebecPressure } from "../engine/xebec-specials";
 import { pandemoniumBeats } from "../engine/xebec-pandemonium";
 import { chainFinishes } from "../engine/kaneki-chain";
 export type Cue =
@@ -22,6 +23,7 @@ export type Cue =
   | "chainEscape"
   | "chainWhoosh"
   | "chainImpact"
+  | "hakiPulse" | "hakiSovereign" | "hakiKing"
   | "rocksGather" | "rocksSlash" | "rocksCrew" | "rocksNewgate" | "rocksKaido" | "rocksLinlin" | "rocksGate" | "rocksRupture"
   | "round"
   | "fight"
@@ -53,6 +55,7 @@ export function effectCue(event: HitEvent): Cue {
 /** Original short synthesized sounds. No downloaded samples or autoplay. */
 export class Sound {
   private rocksTick = -1;
+  private hakiClocks = [-1, -1];
   enabled = true;
   volume = 0.25;
   lastCue: Cue | "" = "";
@@ -302,6 +305,15 @@ export class Sound {
     else if (cue === "power") {
       tone(160, 650, 0.3, "sawtooth", 0.12);
       tone(330, 990, 0.28, "sine", 0.15);
+    } else if (cue === "hakiPulse") {
+      tone(112,42,.21,"triangle",.43);
+    } else if (cue === "hakiSovereign") {
+      tone(99,29,.55,"triangle",.53);
+      tone(514,118,.18,"sawtooth",.1);
+    } else if (cue === "hakiKing") {
+      tone(87,25,.83,"triangle",.62);
+      tone(621,125,.29,"sawtooth",.14,.05);
+      tone(245,51,.54,"sine",.27,.16);
     } else if (cue === "rocksGather") {
       tone(56, 139, 1.18, "triangle", .38);
       tone(165, 522, .9, "sawtooth", .06, .38);
@@ -347,7 +359,8 @@ export class Sound {
   tick(match: Match, onlineRound?: string) {
     const ticks = match.pandemonium?.tick ?? -1;
     const beats = pandemoniumBeats;
-    this.setMusicDucked(ticks >= 0 && (ticks < beats.cut || ticks >= beats.flight && ticks < beats.quake || ticks >= beats.rush && ticks < beats.rupture));
+    const kingSilence = !match.cinematicActive && match.fighters.some(f => f.moveId === kingWill && f.state === "attack" && f.stateFrame < 43);
+    this.setMusicDucked(kingSilence || ticks >= 0 && (ticks < beats.cut || ticks >= beats.flight && ticks < beats.quake || ticks >= beats.rush && ticks < beats.rupture));
     if (ticks >= 0 && ticks > this.rocksTick) {
       const cues: [number, Cue][] = [[beats.lift, "rocksGather"], [beats.cut, "rocksSlash"],
         [beats.quake, "rocksNewgate"], [beats.club, "rocksKaido"], [beats.soul, "rocksLinlin"],
@@ -359,6 +372,7 @@ export class Sound {
     if (this.owner !== match) {
       this.owner = match;
       this.moves = ["", ""];
+      this.hakiClocks = [-1, -1];
       this.message = "";
       this.seen = new WeakSet();
       if (!onlineRound || onlineRound !== this.onlineRound) this.lastKnuckleFrame = this.lastCentipedeFrame = -1;
@@ -379,7 +393,11 @@ export class Sound {
       }
     match.fighters.forEach((f, i) => {
       const move = f.state === "attack" ? f.moveId : "";
-      if (move && move !== this.moves[i]) this.play("swing");
+      const haki = xebecPressure(move);
+      if (haki && f.stateFrame >= haki.release && this.hakiClocks[i] < haki.release)
+        this.play(move === kingWill ? "hakiKing" : move === "xebecSovereign" ? "hakiSovereign" : "hakiPulse");
+      this.hakiClocks[i] = haki ? f.stateFrame : -1;
+      if (move && move !== this.moves[i] && !haki) this.play("swing");
       this.moves[i] = move;
     });
     if (match.message !== this.message) {

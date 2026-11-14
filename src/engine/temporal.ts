@@ -6,6 +6,7 @@ export interface DeferredReaction {
   vx: number;
   vy: number;
   knockdown: boolean;
+  hakiPressure?: true;
   strength: number;
   launch: boolean;
   crouched: boolean;

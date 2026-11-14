@@ -1333,18 +1333,33 @@ test("Kaneki capture choice is resolved by the LAN server and replayed by both c
 });
 
 
-test("Xebec resolves Dominação and Pandemonium on both clients", async () => {
-  test.setTimeout(60000);
+test("Xebec resolves all nine specials and Pandemonium on both clients", async () => {
+  test.setTimeout(135000);
   const code = await pair("xebec", "samurai");
-  const room = await seed(code, 132, 100, match => {
-    match.fighters[0].domination!.charge = 100;
-  });
-  await motion(a, [2, 1, 4], "l", 58);
-  await expect.poll(() => room.match!.fighters[0].domination!.powered).toBe(true);
-  await expect.poll(() => room.match!.fighters[0].domination!.charge).toBe(0);
-  await expect.poll(() => room.match!.fighters[0].state).toBe("idle");
-  await expect.poll(() => room.match!.fighters[1].health).toBeLessThan(1000);
-  await consistent();
+  const room = await seed(code, 80, 100);
+  for (const [motionKeys, moves] of [
+    [[2,3,6], ["xebecFangs","xebecDance","xebecCarnage"]],
+    [[2,1,4], ["xebecCut","xebecRift","xebecTriple"]],
+    [[2,5,2], ["xebecPulse","xebecSovereign","xebecKingWill"]],
+  ] as const) {
+    for (const [i, id] of moves.entries()) {
+      await seed(code, motionKeys[1] === 1 ? 248 : 84, 100, match => {
+        match.fighters[0].domination!.charge = 100;
+      });
+      // The snapshot replay can clear held keys. Wait until both clients have
+      // applied the new training positions before starting the first cardinal.
+      for (const client of [a, b])
+        await expect(client.locator("canvas")).toHaveAttribute("data-domination", client === a ? "100" : "");
+      const tick = room.tick;
+      await expect.poll(() => room.tick).toBeGreaterThan(tick + 8);
+      const cardinals = motionKeys[1] === 5 ? [2, 5, 2] : [2, motionKeys[2]];
+      await motion(a, cardinals, (["j","k","l"] as const)[i], 100);
+      await expect(a.locator("canvas")).toHaveAttribute("data-move", id);
+      await expect.poll(() => room.match!.fighters[0].domination!.charge).toBe(id === "xebecKingWill" ? 0 : 100);
+      await expect.poll(() => room.match!.fighters[1].health).toBeLessThan(1000);
+      await consistent();
+    }
+  }
   await seed(code, 125, 100);
   await press(a, "r");
   for (const client of [a,b])

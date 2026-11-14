@@ -4,13 +4,15 @@ import { characters } from "../src/engine/characters";
 import { hashState, restore, snapshot } from "../src/engine/state";
 import { neutral, type InputFrame } from "../src/engine/types";
 import { justiceBeats, pandemoniumBeats, pandemoniumConfig, pandemoniumScene } from "../src/engine/xebec-pandemonium";
-import { xebecGrapple, xebecProjectile, xebecReleases, xebecSpecialArt } from "../src/engine/xebec-specials";
+import { kingWill, xebecPressure, xebecProjectile, xebecReleases, xebecSpecialArt } from "../src/engine/xebec-specials";
+
+import { compatibleConquerorReleases } from "../src/engine/conqueror-haki";
 
 type Input = Partial<InputFrame>;
 const specials = [
-  ["xebecThrust", "xebecAscension", "xebecGatebreaker"],
+  ["xebecFangs", "xebecDance", "xebecCarnage"],
   ["xebecCut", "xebecRift", "xebecTriple"],
-  ["xebecBrutal", "xebecDominion", "xebecExplosion"],
+  ["xebecPulse", "xebecSovereign", kingWill],
 ] as const;
 const buttons = ["light", "medium", "heavy"] as const;
 function arena(gap = 62, side: 1 | -1 = 1) {
@@ -40,65 +42,93 @@ function arena(gap = 62, side: 1 | -1 = 1) {
 
 describe("Xebec's redesigned specials", () => {
   it.each(specials.flatMap((row, i) => row.map((id, j) => ({ id, i, j }))))(
-    "$id consumes a full bar on either side and has authored timing",
-    ({ id, i, j }) => {
-      for (const side of [1, -1] as const) {
-        const p = arena(i === 1 && j > 0 ? 300 : 70, side);
+    "$id is mirrored and reserves the charge for King Will", ({ id, i, j }) => {
+      for (const facing of [1, -1] as const) {
+        const p = arena(i === 1 ? 370 : 69, facing);
         p.a.domination!.charge = 100;
-        p.motion(i,j);
+        p.motion(i, j);
         expect(p.a.moveId).toBe(id);
-        expect(p.a.domination).toMatchObject({ charge: 0, powered: true });
+        expect(p.a.domination!.charge).toBe(id === kingWill ? 0 : 100);
         expect(p.a.meter).toBe(0);
-        const animation = xebecSpecialArt[id];
-        const move = p.a.move!;
-        expect(new Set(animation.frames).size).toBeGreaterThan(2);
-        expect(animation.durations.reduce((a,b) => a + b)).toBe(move.startup + move.active + move.recovery);
-        p.advance(move.startup + move.active + move.recovery + 40);
-        expect(p.a.domination!.charge).toBe(0);
-        expect(p.a.domination!.powered).toBe(false);
+        const m = p.a.move!, clip = xebecSpecialArt[id];
+        expect(new Set(clip.frames).size).toBeGreaterThan(2);
+        expect(clip.durations.reduce((a,b)=>a+b,0)).toBe(m.startup+m.active+m.recovery);
+        p.advance(150);
+        expect(p.a.domination!.charge).toBe(id === kingWill ? 0 : 100);
+        expect(p.m.capture).toBeUndefined();
         expect(p.hits.length).toBeGreaterThan(0);
+        if (i === 0) expect(p.hits.filter(hit=>hit.move===id)).toHaveLength(j + 2);
+        if (i === 2) expect(p.hits.filter(hit=>hit.move===id)).toHaveLength(1);
       }
     },
   );
 
-  it("keeps full charge through movement, a heavy normal, and a failed activation", () => {
-    const p = arena(72);
+  it("rejects the incomplete double-down L without issuing an alternative", () => {
+    const p = arena(90);
+    p.a.domination!.charge = 99;
+    p.a.meter = 100;
+    p.motion(2,2);
+    expect(p.a.moveId).toBe("");
+    expect(p.a.domination!.charge).toBe(99);
+    p.advance(80);
+    expect(p.hits).toHaveLength(0);
     p.a.domination!.charge = 100;
-    p.step({direction: -1}); p.advance(80);
-    p.step({pressed:["heavy"]}); p.advance(45);
     p.a.setState("hitstun");
-    p.a.stun = 25;
-    expect(p.a.attack("xebecGatebreaker")).toBe(false);
+    p.a.stun = 10;
+    expect(p.a.attack(kingWill)).toBe(false);
     expect(p.a.domination!.charge).toBe(100);
-    p.advance(30);
-    p.motion(1,0);
-    p.b.attack("stand_light");
-    p.a.setState("hitstun");
-    expect(p.a.domination).toMatchObject({charge:0,powered:false});
   });
 
-  it.each([0,1,2])("separates the capture and blockable whiff wave for strength %s", strength => {
-    const id = specials[2][strength];
-    const capture = arena(64);
-    capture.motion(2,strength);
-    for (let t=0; t<25 && !capture.m.capture; t++) capture.step();
-    expect(capture.m.capture?.xebec?.id).toBe(id);
-    const live = restore(snapshot(capture.m));
-    for (let t=0;t<85;t++) {
-      capture.step(); live.step([neutral(),neutral()]);
-      expect(hashState(snapshot(live))).toBe(hashState(snapshot(capture.m)));
+  it.each([0,1,2])("blast %i is blockable, finite and can strike from behind", button => {
+    const id = specials[2][button as 0 | 1 | 2];
+    const guard = arena(75);
+    guard.a.x = 1164; guard.b.x = 1239;
+    guard.a.domination!.charge = 100;
+    guard.motion(2,button,{direction:1});
+    guard.advance(100,{direction:1});
+    expect(guard.hits).toMatchObject([{move:id, blocked:true, damage:0}]);
+    const rear = arena(130);
+    rear.a.domination!.charge = 100;
+    rear.motion(2,button);
+    const spec = xebecPressure(id)!;
+    rear.b.x = rear.a.x - (button === 0 ? 96 : 167);
+    const replay = restore(snapshot(rear.m));
+    for (let i=0; i<110; i++) {
+      rear.step(); replay.step([neutral(),neutral()]);
+      expect(hashState(snapshot(replay))).toBe(hashState(snapshot(rear.m)));
     }
-    expect(capture.hits).toMatchObject([{move:id,damage:xebecGrapple(id)!.grabDamage,blocked:false}]);
-    const whiff = arena(430);
-    whiff.motion(2,strength);
-    while (whiff.a.stateFrame < xebecGrapple(id)!.to) whiff.step();
-    whiff.b.x = whiff.a.x + 58;
-    for (let i=0;i<45;i++) {
-      expect(whiff.m.capture).toBeUndefined();
-      whiff.step({}, {direction:1});
+    expect(rear.hits).toHaveLength(1);
+    expect(rear.b.health).toBeLessThan(1000);
+    expect(spec.radius).toBe([116,196,373][button]);
+  });
+
+  it("gives King Will a short pressure reaction and a distinct legitimate KO", () => {
+    for (const hp of [1000,100]) {
+      const p = arena(205);
+      p.b.health = hp;
+      p.a.domination!.charge = 100;
+      p.a.meter = 59;
+      p.motion(2,2);
+      while (!p.hits.length && p.a.stateFrame < 49) p.step();
+      expect(p.b.hakiReaction).toBe(hp===100 ? "collapse" : "pressure");
+      expect(p.a.meter).toBe(59);
+      expect(p.a.domination!.charge).toBe(0);
+      expect(p.b.health).toBe(hp===100 ? 0 : 877);
+      p.advance(100);
+      if (hp===1000) {
+        expect(p.b.hakiReaction).toBeUndefined();
+        expect(p.b.state).toBe("idle");
+      }
     }
-    expect(whiff.hits).toMatchObject([{move:id,blocked:true,damage:0}]);
-    expect(whiff.a.domination!.charge).toBe(0);
+  });
+
+  it("only identifies simultaneous pure releases for a future confrontation", () => {
+    const m = new Match(characters.xebec, {}, characters.xebec);
+    const [a,b] = m.fighters;
+    for (const f of [a,b]) { f.domination!.charge=100; expect(f.attack(kingWill)).toBe(true); f.stateFrame=34; }
+    expect(compatibleConquerorReleases(b,a)?.map(x=>x.fighter)).toEqual([0,1]);
+    b.stateFrame = 33;
+    expect(compatibleConquerorReleases(a,b)).toBeUndefined();
   });
 
   it("leaves special waves vulnerable to projectiles and does not cut in recovery", () => {
@@ -175,36 +205,14 @@ describe("Xebec's redesigned specials", () => {
     expect(guard.hits.every(h=>h.blocked)).toBe(true);
   });
 
-  it("cuts only eligible projectiles at active sword contact", () => {
-    for (const [button, move, shouldBreak] of [
-      [0,"ki",true], [0,"gokakyu",false], [2,"gokakyu",true], [2,"goryuka",false],
-    ] as const) {
-      const p = arena(600);
-      p.motion(0,button);
-      for (let i=0; i<p.a.move!.startup - 1; i++) p.step();
-      p.m.kiProjectiles.push({
-        id:1,owner:1,move,cast:0,x:p.a.x+109,y:FLOOR-114,previousX:p.a.x+109,previousY:FLOOR-114,
-        vx:-7,vy:0,facing:-1,radius:15,age:0,life:12,state:"flight",impactAge:0,
-      });
-      p.advance(3);
-      expect(p.m.kiProjectiles.length === 0, move + "/" + button).toBe(shouldBreak);
-      expect(p.m.events.some(e=>e.xebec?.move==="xebecClash")).toBe(shouldBreak);
-    }
-  });
-
-  it("permits a limited jump chase from Ruptura Ascendente and Domínio Absoluto", () => {
-    for (const family of [0,2]) {
-      const p = arena(70);
-      p.motion(family,1);
-      for (let t=0;t<70 && !p.a.canCancel("jump");t++) p.step();
-      expect(p.a.canCancel("jump")).toBe(true);
-      p.step({pressed:["jump"]});
-      for (let t=0;t<15 && !p.a.airborne;t++) p.step();
-      expect(p.a.airborne).toBe(true);
-      p.step({pressed:["light"]});
-      p.advance(30);
-      expect(p.hits.some(h=>h.move==="air_light")).toBe(true);
-    }
+  it("allows only a confirmed third cut to open a limited aerial chase", () => {
+    const p = arena(69);
+    p.motion(0,1);
+    for (let t=0;t<75 && !p.a.canCancel("jump");t++) p.step();
+    expect(p.a.canCancel("jump")).toBe(true);
+    p.step({pressed:["jump"]});
+    for (let t=0;t<15 && !p.a.airborne;t++) p.step();
+    expect(p.a.airborne).toBe(true);
   });
 
   it.each([1, -1] as const)("choreographs the Rocks relay without moving through a cut, side %s", facing => {

@@ -47,12 +47,6 @@ export const xebecAnimations: AnimationData = {
     ...normals,
     ...Object.fromEntries(Object.entries(xebecSpecialArt).map(([id, pose]) =>
       [id, clip(pose.sheet, pose.frames, pose.durations)])),
-    xebecBrutalHold: rush([2, 3], [13, 4]),
-    xebecBrutalRecover: rush([3, 7], [5, 13]),
-    xebecDominionHold: rush([2, 4, 6], [6, 17, 4]),
-    xebecDominionLink: rush([6, 2, 7], [3, 6, 4]),
-    xebecExplosionHold: rush([2, 5, 4, 6], [8, 15, 10, 4]),
-    xebecExplosionRecover: rush([6, 4, 7], [6, 6, 6]),
     [pandemoniumId]: clip("pandemonium-combat", [0, 1, 7, 2], [14, 5, 10, 25]),
     pandemoniumScene: clip("pandemonium-cleave", [0, 1, 2, 3, 5, 4, 6, 7],
       [19, 45, 32, 52, 11, 8, 22, 44]),
