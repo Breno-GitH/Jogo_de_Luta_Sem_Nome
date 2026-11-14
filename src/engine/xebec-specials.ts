@@ -1,10 +1,11 @@
 import type { CommandBuffer } from "./input";
-import type { AttackShape, CharacterData, HitWindow, Move, Point, Rect } from "./types";
+import type { Capsule, HitWindow, Move, Point, Rect } from "./types";
 
+export const kingWill = "xebecKingWill";
 const commands = {
-  ki: { light: "xebecThrust", medium: "xebecAscension", heavy: "xebecGatebreaker" },
+  ki: { light: "xebecFangs", medium: "xebecDance", heavy: "xebecCarnage" },
   kamehameha: { light: "xebecCut", medium: "xebecRift", heavy: "xebecTriple" },
-  teleport: { light: "xebecBrutal", medium: "xebecDominion", heavy: "xebecExplosion" },
+  teleport: { light: "xebecPulse", medium: "xebecSovereign", heavy: kingWill },
 } as const;
 
 type Strength = keyof typeof commands.ki;
@@ -22,162 +23,164 @@ export function xebecSpecialCommand(buffer: CommandBuffer, button: Strength) {
 type Art = { sheet: string; frames: number[]; durations: number[] };
 const art = (sheet: string, frames: number[], durations: number[]): Art => ({ sheet, frames, durations });
 const rect = (x: number, y: number, w: number, h: number): Rect => ({ x, y, w, h });
-const sword = (ax: number, ay: number, bx: number, by: number, r = 10) =>
-  ({ a: { x: ax, y: ay }, b: { x: bx, y: by }, r });
-const thrust = sword(34, -114, 110, -114, 11);
-const cut = sword(28, -107, 99, -97, 11);
-const rising = sword(30, -92, 81, -166, 15);
-
-type Grab = NonNullable<CharacterData["grabSequence"]>;
 type Wave = {
   tick: number; x: number; y: number; speed: number; vy: number;
   radius: number; life: number; damage: number; level: Move["level"]; push: number;
+  halfLength: number; slope: number; rank: number;
 };
 const waves = {
-  xebecRiftWave: { tick: 15, x: 80, y: -102, speed: 14, vy: 0, radius: 21, life: 28, damage: 59, level: "mid", push: 6 },
-  xebecLowWave: { tick: 18, x: 73, y: -26, speed: 16, vy: 0, radius: 15, life: 46, damage: 36, level: "low", push: 3.4 },
-  xebecMidWave: { tick: 29, x: 80, y: -91, speed: 14, vy: 0, radius: 19, life: 44, damage: 40, level: "mid", push: 4 },
-  xebecHighWave: { tick: 41, x: 70, y: -119, speed: 12, vy: -1.8, radius: 20, life: 44, damage: 45, level: "mid", push: 5 },
+  xebecSingleWave: { tick: 10, x: 94, y: -96, speed: 18, vy: 0, radius: 14, halfLength: 48, slope: -.24, life: 32, damage: 55, level: "mid", push: 5, rank: 1 },
+  xebecRiftWave: { tick: 16, x: 83, y: -100, speed: 16, vy: .48, radius: 15, halfLength: 55, slope: -.69, life: 40, damage: 42, level: "mid", push: 4, rank: 2 },
+  xebecRiftRise: { tick: 35, x: 87, y: -109, speed: 14, vy: -1.1, radius: 16, halfLength: 61, slope: .54, life: 43, damage: 48, level: "mid", push: 6, rank: 2 },
+  xebecLowWave: { tick: 19, x: 94, y: -91, speed: 17, vy: 0, radius: 15, halfLength: 57, slope: -.17, life: 46, damage: 35, level: "mid", push: 3.4, rank: 3 },
+  xebecMidWave: { tick: 41, x: 85, y: -104, speed: 15, vy: .43, radius: 16, halfLength: 65, slope: -.65, life: 48, damage: 39, level: "mid", push: 4.2, rank: 3 },
+  xebecHighWave: { tick: 63, x: 87, y: -127, speed: 14, vy: -1.35, radius: 18, halfLength: 81, slope: .64, life: 50, damage: 48, level: "mid", push: 7, rank: 3 },
 } satisfies Record<string, Wave>;
 type WaveId = keyof typeof waves;
 export function xebecProjectile(id: string): Wave | undefined {
   return Object.hasOwn(waves, id) ? waves[id as WaveId] : undefined;
 }
+export function xebecWaveVolume(wave: Wave, x: number, y: number, facing: number, radius: number) {
+  return {
+    a: { x: x - facing * wave.halfLength * wave.slope, y: y - wave.halfLength },
+    b: { x: x + facing * wave.halfLength * wave.slope, y: y + wave.halfLength },
+    r: radius,
+  };
+}
 export const xebecReleases: Partial<Record<XebecSpecial, readonly WaveId[]>> = {
-  xebecRift: ["xebecRiftWave"], xebecTriple: ["xebecLowWave", "xebecMidWave", "xebecHighWave"],
+  xebecCut: ["xebecSingleWave"], xebecRift: ["xebecRiftWave", "xebecRiftRise"], xebecTriple: ["xebecLowWave", "xebecMidWave", "xebecHighWave"],
 };
-export function xebecProjectileMove(id: string, powered: boolean): Move | undefined {
+export function xebecProjectileMove(id: string): Move | undefined {
   const wave = xebecProjectile(id);
   if (!wave) return;
   return {
-    startup: 0, active: 1, recovery: 0, damage: wave.damage + (powered ? id === "xebecRiftWave" ? 13 : 6 : 0),
-    level: wave.level, box: rect(0, 0, 0, 0), rank: id === "xebecRiftWave" ? 2 : 3,
-    blockstun: 10, stun: id === "xebecRiftWave" ? 23 : 13,
-    push: wave.push + (powered ? 1.3 : 0), launch: 0, hitstop: 4, cancels: [],
+    startup: 0, active: 1, recovery: 0, damage: wave.damage,
+    level: wave.level, box: rect(0, 0, 0, 0), rank: wave.rank,
+    blockstun: 10, stun: wave.rank === 1 ? 22 : 17,
+    push: wave.push, launch: 0, hitstop: 4, cancels: [],
     comboHitLimit: 7, meterGain: 5,
   };
 }
 
-type Active = { hit: HitWindow; shape: AttackShape };
-const swing = (id: number, from: number, to: number, shape: AttackShape, props: Partial<HitWindow> = {}): Active =>
-  ({ hit: { id, fromTick: from, toTick: to, ...props }, shape });
-const grapples = {
-  xebecBrutal: { from: 8, to: 12, blast: 15, active: 4, reach: 60, damage: 23, held: 13, launch: -4, push: 8, recovery: 15, grabDamage: 76, drive: 8 },
-  xebecDominion: { from: 11, to: 16, blast: 21, active: 6, reach: 104, damage: 33, held: 23, launch: -15, push: 3, recovery: 23, grabDamage: 93, drive: 8.7 },
-  xebecExplosion: { from: 16, to: 21, blast: 28, active: 6, reach: 112, damage: 50, held: 33, launch: -8, push: 13, recovery: 34, grabDamage: 131, drive: 9.5 },
-};
-export type XebecGrapple = keyof typeof grapples;
-export const xebecGrapple = (id: string) =>
-  Object.hasOwn(grapples, id) ? grapples[id as XebecGrapple] : undefined;
-export function xebecGrabTrack(id: XebecGrapple, powered: boolean): Grab {
-  const p = grapples[id];
-  const lift = id === "xebecDominion" ? 50 : id === "xebecExplosion" ? 21 : 8;
-  return {
-    startFromContact: true, duration: p.held + 4, hitTick: p.held, recoveryTicks: id === "xebecDominion" ? 9 : p.recovery,
-    damage: p.grabDamage + (powered ? 18 : 0),
-    victimTrack: [
-      { tick: 0, x: 67, y: 0, clip: "grabbed" },
-      { tick: 6, x: 53, y: -lift, clip: "grabbed" },
-      { tick: p.held, x: 63, y: -lift, clip: "launched" },
-      { tick: p.held + 4, x: 76, y: -lift, clip: "launched" },
-    ],
-    release: { vx: p.push + (powered && id !== "xebecDominion" ? 3 : 0), vy: p.launch, stun: id === "xebecDominion" ? 35 : 26 },
-  };
-}
 
 export const xebecSpecialArt: Record<XebecSpecial, Art> = {
-  xebecThrust: art("gates", [0, 1, 2, 3], [7, 5, 4, 12]),
-  xebecAscension: art("gates", [4, 0, 5, 6, 7, 3], [5, 6, 7, 6, 6, 17]),
-  xebecGatebreaker: art("gates", [4, 0, 5, 6, 7, 3], [10, 6, 9, 8, 14, 19]),
-  xebecCut: art("abyss", [0, 1, 2, 7], [7, 5, 6, 11]),
-  xebecRift: art("abyss", [0, 2, 3, 5, 7], [8, 7, 6, 8, 16]),
-  xebecTriple: art("abyss", [0, 2, 4, 2, 5, 0, 6, 7], [10, 8, 7, 4, 8, 4, 7, 30]),
-  xebecBrutal: art("rush", [0, 1, 2, 3, 7], [4, 4, 7, 4, 15]),
-  xebecDominion: art("rush", [0, 5, 1, 2, 4, 6, 7], [5, 3, 3, 5, 5, 6, 23]),
-  xebecExplosion: art("rush", [5, 0, 1, 2, 5, 6, 7], [8, 4, 4, 5, 7, 6, 34]),
+  xebecFangs: art("eclipse-fangs", [0,1,2,3,4,5,6,7], [4,4,4,5,4,5,7,9]),
+  xebecDance: art("eclipse-dance", [0,1,2,3,4,5,6,7], [5,6,4,6,4,7,5,22]),
+  xebecCarnage: art("eclipse-carnage", [0,1,2,3,4,5,6,7,8,9,10,11], [6,8,4,7,4,6,5,5,4,6,8,23]),
+  xebecCut: art("eclipse-ruptures", [0,1,2,3], [10,7,8,13]),
+  xebecRift: art("eclipse-ruptures", [4,5,6,7,3], [16,9,10,9,25]),
+  xebecTriple: art("eclipse-ruptures", [8,9,4,5,6,11,2,3], [19,10,12,11,11,9,9,27]),
+  xebecPulse: art("haki-pressure", [0,1,2,3], [4,5,7,16]),
+  xebecSovereign: art("haki-pressure", [4,5,6,7], [7,10,11,25]),
+  xebecKingWill: art("haki-pressure", [8,9,10,11], [12,22,16,27]),
 };
 
-export function makeXebecSpecials(standing: Rect[], crouching: Rect[]) {
-  function move(rank: number, startup: number, end: number, recovery: number, damage: number,
-    windows: Active[], options: Partial<Move> = {}): Move {
-    const boundaries = [...new Set([0, startup, end, end + recovery,
-      ...windows.flatMap(({ hit }) => [hit.fromTick, hit.toTick])])].sort((a, b) => a - b);
+type HakiRelease = { kind: "burst" | "conqueror"; release: number; active: number; radius: number; height: number };
+const pressure = {
+  xebecPulse: { kind: "burst", release: 9, active: 7, radius: 116, height: 75 },
+  xebecSovereign: { kind: "burst", release: 17, active: 11, radius: 196, height: 94 },
+  xebecKingWill: { kind: "conqueror", release: 34, active: 16, radius: 373, height: 159 },
+} satisfies Record<string, HakiRelease>;
+
+export function xebecPressure(id: string): HakiRelease | undefined {
+  return Object.hasOwn(pressure, id) ? pressure[id as keyof typeof pressure] : undefined;
+}
+
+export function xebecPressureReach(p: HakiRelease, tick: number) {
+  const age = Math.max(0, Math.min(1, (tick - p.release) / (p.active - 1)));
+  return p.radius * (.36 + .64 * (1 - (1 - age) ** 2));
+}
+
+// Three horizontal capsule bands approximate the visible low ellipse without
+// granting its full radius to opponents well above the attack.
+export function xebecPressureVolumes(p: HakiRelease, tick: number, x: number, y: number): Capsule[] {
+  const reach = xebecPressureReach(p, tick);
+  return [-.6, 0, .6].map(band => {
+    const r = p.height * .32;
+    const half = Math.max(0, reach * (1 - Math.abs(band) * .25) - r);
+    const height = y - 75 + p.height * band;
+    return { a: { x: x - half, y: height }, b: { x: x + half, y: height }, r };
+  });
+}
+
+type Sword = readonly [number, number, number, number];
+export function xebecArtFrame(clip: Art, tick: number) {
+  for (const [i, duration] of clip.durations.entries()) {
+    if (tick < duration) return clip.frames[i];
+    tick -= duration;
+  }
+  return clip.frames.at(-1)!;
+}
+
+const blades: Record<string, readonly Sword[]> = {
+  "eclipse-fangs": [[-18,-67,48,-21],[-38,-91,-85,-80],[22,-96,78,-96],[13,-86,-25,-56],[16,-81,67,-48],[8,-64,60,-34],[-15,-67,45,-28],[-18,-67,46,-23]],
+  "eclipse-dance": [[-20,-66,46,-26],[-22,-71,51,-20],[18,-94,99,-93],[17,-103,-61,-139],[-9,-64,70,-16],[-21,-42,50,-5],[10,-120,84,-154],[-21,-66,49,-25]],
+  "eclipse-carnage": [[-17,-66,46,-24],[-43,-72,-80,-18],[38,-89,91,-94],[39,-65,84,-46],[16,-55,62,-7],[-18,-61,65,-76],[15,-120,74,-154],[20,-102,58,-148],[-10,-140,-58,-113],[5,-48,67,-17],[17,-39,85,-10],[-19,-72,56,-22]],
+  "eclipse-ruptures": [[-20,-59,40,-17],[3,-90,91,-90],[11,-41,96,-23],[-20,-54,49,-17],[-49,-131,12,-151],[2,-77,70,-31],[-28,-39,38,-6],[26,-116,87,-144],[-72,-116,-97,-49],[10,-86,102,-86],[14,-101,81,-124],[32,-128,87,-161]],
+  "haki-pressure": [[-16,-60,45,-11],[-59,-64,37,-12],[-51,-72,-3,-8],[-53,-68,54,-14],[-37,-50,-3,-20],[-35,-70,32,-32],[-70,-69,-117,-25],[-56,-65,48,-5],[-49,-64,36,-10],[5,-72,60,-28],[-72,-56,-97,-10],[-55,-64,43,-5]],
+};
+export function xebecRisingSweep(id: XebecSpecial, window: HitWindow) {
+  if (window.id === 2 && (id === "xebecDance" || id === "xebecCarnage")) {
+    const before = xebecBladeAt(id, window.fromTick - 1);
+    const after = xebecBladeAt(id, window.fromTick);
+    return { a: before.tip, b: after.tip, r: 13 };
+  }
+}
+
+const fallback = [-23, -61, 35, -17] as const;
+export function xebecBladeAt(id: string, tick: number): { grip: Point; tip: Point } {
+  const clip = isXebecSpecial(id) ? xebecSpecialArt[id] : undefined;
+  const [x,y,tx,ty] = clip ? blades[clip.sheet][xebecArtFrame(clip, tick)] : fallback;
+  return { grip: { x, y }, tip: { x: tx, y: ty } };
+}
+
+export function makeXebecSpecials(standing: Rect[], crouching: Rect[]): Record<XebecSpecial, Move> {
+  function move(id: XebecSpecial, rank: number, startup: number, end: number, windows: HitWindow[], values: Partial<Move>): Move {
+    const recovery = xebecSpecialArt[id].durations.reduce((a, b) => a + b, 0) - end;
+    const boundaries = [...new Set([0, startup, end, end + recovery, ...windows.flatMap(h => [h.fromTick, h.toTick])])]
+      .sort((a, b) => a - b);
     return {
-      startup, active: end - startup, recovery, rank, damage, level: "mid",
-      box: rect(0, 0, 0, 0), stun: 25, blockstun: 12, push: 3, launch: 0,
-      hitstop: 5, cancels: [], hitWindows: windows.length ? windows.map(w => w.hit) : undefined,
-      poses: boundaries.slice(0, -1).map((tick, i) => ({
-        ticks: boundaries[i + 1] - tick,
+      special: id, startup, active: end - startup, recovery, rank, damage: 0,
+      level: "mid", box: rect(0,0,0,0), stun: 20, blockstun: 10, push: 2,
+      launch: 0, hitstop: 4, cancels: [], comboHitLimit: 8, meterGain: 4,
+      hitWindows: windows.length ? windows : undefined,
+      poses: boundaries.slice(0,-1).map((tick,i) => ({
+        ticks: boundaries[i+1] - tick,
         phase: tick < startup ? "startup" : tick < end ? "active" : "recovery",
-        hurtboxes: rank >= 2 && tick < startup / 2 ? crouching : standing,
-        hitboxes: windows.filter(({ hit }) => tick >= hit.fromTick && tick < hit.toTick).map(w => w.shape),
+        hurtboxes: rank > 1 && tick < startup / 2 ? crouching : standing,
+        hitboxes: [],
       })),
-      ...options,
+      ...values,
     };
   }
-  const grabMove = (id: XebecGrapple, rank: number) => {
-    const p = grapples[id];
-    const wave = id === "xebecDominion" ? rect(12, -116, p.reach, 112) :
-      rect(-p.reach, -100, p.reach * 2, 98);
-    return move(rank, p.from, p.blast + p.active, p.recovery, p.damage, [
-      swing(0, p.from, p.to, rect(26, -125, 42, 57)),
-      swing(1, p.blast, p.blast + p.active, wave),
-    ], {
-      drive: { from: Math.max(2, p.from - 7), to: p.to, speed: p.drive },
-      push: id === "xebecExplosion" ? 10 : 5, blockstun: 9, stun: 19,
+  const bladeCombo = (id: XebecSpecial, rank: number, ticks: number[], damage: number[], drive: number) => {
+    const windows = ticks.map((fromTick, i): HitWindow => ({
+      id: i, fromTick, toTick: fromTick + (i === ticks.length - 1 ? 5 : 4),
+      damage: damage[i],
+      ...(i === ticks.length - 1 && rank === 2 ? { launch: -12.5, stun: 30, push: 2.5 } : {}),
+      ...(i === ticks.length - 1 && rank === 3 ? { launch: -8, stun: 29, push: 13, knockdown: true } : {}),
+    }));
+    const end = windows.at(-1)!.toTick;
+    return move(id, rank, ticks[0], end, windows, {
+      damage: damage[0], push: 1.25, stun: 22,
+      drive: { from: 2, to: ticks[0] + 1, speed: drive },
+      ...(rank === 2 ? { cancels: ["jump"], cancelWindow: { fromTick: ticks[2], toTick: end + 4 } } : {}),
     });
   };
-  const moves: Record<XebecSpecial, Move> = {
-    xebecThrust: move(1, 7, 16, 12, 52, [
-      swing(0, 7, 12, thrust), swing(1, 12, 16, rising, { damage: 27, push: 3 }),
-    ], { drive: { from: 2, to: 11, speed: 8.8 }, push: 2, stun: 25 }),
-    xebecAscension: move(2, 11, 24, 23, 43, [
-      swing(0, 11, 17, thrust), swing(1, 18, 24, rising, { damage: 58, launch: -15, stun: 36, push: 1.7 }),
-    ], {
-      drive: { from: 4, to: 15, speed: 9.2 }, push: 1.3,
-      cancels: ["jump"], cancelWindow: { fromTick: 18, toTick: 30 },
-    }),
-    xebecGatebreaker: move(3, 16, 33, 33, 63, [
-      swing(0, 16, 23, thrust), swing(1, 25, 33, sword(30, -62, 99, -169, 18), {
-        damage: 89, launch: -10, push: 12, stun: 33, knockdown: true,
-      }),
-    ], { drive: { from: 6, to: 20, speed: 9.6 }, stun: 29, push: 1.8, hitstop: 8 }),
-    xebecCut: move(1, 7, 12, 17, 56, [swing(0, 7, 12, cut)], { stun: 27, push: 2.8 }),
-    xebecRift: move(2, 15, 21, 24, 0, []),
-    xebecTriple: move(3, 18, 48, 30, 0, []),
-    xebecBrutal: grabMove("xebecBrutal", 1),
-    xebecDominion: grabMove("xebecDominion", 2),
-    xebecExplosion: grabMove("xebecExplosion", 3),
+  const burst = (id: keyof typeof pressure, rank: number, damage: number, push: number, stun: number) => {
+    const p = pressure[id];
+    return move(id, rank, p.release, p.release + p.active, [], { damage, push, stun,
+      hitstop: rank + 3, blockstun: 10 + rank, meterGain: rank === 3 ? 0 : 5 });
   };
-  for (const id of Object.keys(moves) as XebecSpecial[]) moves[id].special = id;
-  const powered = Object.fromEntries(Object.entries(moves).map(([id, m]) => [id, {
-    ...m, damage: m.damage ? m.damage + 12 : 0, hitstop: (m.hitstop ?? 5) + 2,
-    hitWindows: m.hitWindows?.map(hit => ({
-      ...hit, ...(hit.damage === undefined ? {} : { damage: hit.damage + 10 }),
-      ...(hit.push === undefined ? {} : { push: hit.push + (id === "xebecAscension" ? 0 : 2) }),
-    })),
-  }])) as Record<string, Move | undefined>;
-  return { moves, powered };
-}
-
-export function gateGuard(id: string) {
-  return id === "xebecThrust" ? 1 : id === "xebecAscension" ? 2 : id === "xebecGatebreaker" ? 3 : 0;
-}
-
-export function xebecGripActive(id: string, tick: number) {
-  const grab = xebecGrapple(id);
-  return !!grab && tick >= grab.from && tick < grab.to;
-}
-
-export function xebecBladeAt(id: string, tick: number): { grip: Point; tip: Point } {
-  if (gateGuard(id) && tick >= (id === "xebecThrust" ? 12 : id === "xebecAscension" ? 18 : 25))
-    return { grip: { x: 30, y: -87 }, tip: { x: 75, y: -158 } };
-  if (gateGuard(id) || id === "xebecCut" || id === "xebecRift")
-    return { grip: { x: 29, y: -103 }, tip: { x: 96, y: -105 } };
-  if (id === "xebecTriple") {
-    if (tick >= 41) return { grip: { x: 34, y: -101 }, tip: { x: 74, y: -164 } };
-    if (tick >= 29) return { grip: { x: 26, y: -91 }, tip: { x: 99, y: -92 } };
-    if (tick >= 18) return { grip: { x: 22, y: -50 }, tip: { x: 87, y: -26 } };
-  }
-  return { grip: { x: -23, y: -61 }, tip: { x: 35, y: -17 } };
+  return {
+    xebecFangs: bladeCombo("xebecFangs", 1, [8, 17], [28, 34], 2.3),
+    xebecDance: bladeCombo("xebecDance", 2, [11, 21, 32], [24, 30, 42], 3.2),
+    xebecCarnage: bladeCombo("xebecCarnage", 3, [14, 25, 35, 49], [26, 29, 34, 60], 3.7),
+    xebecCut: move("xebecCut", 1, 10, 17, [], {}),
+    xebecRift: move("xebecRift", 2, 16, 44, [], {}),
+    xebecTriple: move("xebecTriple", 3, 19, 72, [], {}),
+    xebecPulse: burst("xebecPulse", 1, 45, 5.5, 16),
+    xebecSovereign: burst("xebecSovereign", 2, 71, 8, 20),
+    xebecKingWill: burst(kingWill, 3, 123, 7.5, 24),
+  };
 }

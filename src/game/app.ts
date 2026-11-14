@@ -227,6 +227,7 @@ export class GameApp {
     this.renderer.resetAnimations();
     this.renderer.localSeat = 0;
     this.renderer.online = false;
+    this.renderer.xebecEffects = true;
     this.renderer.opponentPalette = "cyan";
     this.renderer.opponentLabel = "02 / BOT";
     this.renderer.contextLabel = "MELHOR DE 3";
@@ -870,6 +871,10 @@ export class GameApp {
     }
   }
   private bindTraining() {
+    this.el<HTMLInputElement>("xebec-fx").onchange = (e) => {
+      this.renderer.xebecEffects = (e.target as HTMLInputElement).checked;
+      this.canvas.focus({ preventScroll: true });
+    };
     for (const id of [
       "infinite-health",
       "unlimited-meter",
@@ -967,7 +972,10 @@ export class GameApp {
   }
   private syncTraining() {
     const s = this.session!;
+    this.renderer.xebecEffects = true;
     if (s.mode !== "training") return;
+    this.el("xebec-fx-label").hidden = !s.match.fighters.some(fighter => fighter.domination);
+    this.el<HTMLInputElement>("xebec-fx").checked = true;
     this.el<HTMLInputElement>("infinite-health").checked =
       s.training.infiniteHealth;
     this.el<HTMLInputElement>("unlimited-meter").checked =

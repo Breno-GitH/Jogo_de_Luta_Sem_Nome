@@ -67,8 +67,12 @@ import type { Fighter } from "../engine/combat";
 import { combatPace } from "../engine/pace";
 import { xebecId } from "../engine/xebec";
 import { xebecAnimations } from "./xebec-animations";
+import { kingWill } from "../engine/xebec-specials";
+import { drawKingWillArena, drawKingWillScreen, kingWillCamera, kingWillFace } from "./xebec-king-will";
 import { drawDomination, drawPandemoniumSky, drawPandemoniumStrike, drawXebecCharge, drawXebecSpecials } from "./xebec-special-fx";
-import { pandemoniumConfig, pandemoniumName, pandemoniumScene } from "../engine/xebec-pandemonium";
+import { drawPandemoniumActsFx, drawPandemoniumActsScreen, drawRocksInterventions, pandemoniumActSheets } from "./xebec-pandemonium-fx";
+import { drawGateRupture, drawJusticeGates, drawPandemoniumClose, drawRocksCrew, pandemoniumSheets } from "./xebec-super-cinematic";
+import { pandemoniumBeats, pandemoniumConfig, pandemoniumName, pandemoniumScene } from "../engine/xebec-pandemonium";
 export class Renderer {
   private ctx: CanvasRenderingContext2D;
   private sprites = new Map<string, HTMLImageElement>();
@@ -78,6 +82,8 @@ export class Renderer {
   ];
   debug = false;
   effects = true;
+  xebecEffects = true;
+  private readonly prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   cameraShake = true;
   superKey = "R";
   chainKeys: readonly string[] = ["J", "K", "L"];
@@ -112,7 +118,7 @@ export class Renderer {
     for (const sheet of kirinEffectsSheets) sheets.add(sheet);
     for (const sheet of gokuFxSheets) sheets.add(sheet);
     for (const sheet of [...benReformSheets, ...portraitSheets, alienXBackdrop, ...alienXVoices]) sheets.add(sheet);
-    for (const sheet of [...furyFxSheets, ...jetFxSheets]) sheets.add(sheet);
+    for (const sheet of [...furyFxSheets, ...jetFxSheets, ...pandemoniumSheets, ...pandemoniumActSheets, kingWillFace]) sheets.add(sheet);
     for (const data of [
       metadata,
       dioAnimations,
@@ -292,7 +298,9 @@ export class Renderer {
     const openingCamera = this.effects && !match.cinematicActive
       ? match.fighters.map(alienXOpenerCamera).find(camera => camera !== undefined)
       : undefined;
-    const stagedCamera = abyss?.camera ?? cosmicCamera ?? openingCamera ?? kakuja?.camera ?? kirinStage?.camera ?? (jet && jetStage ? jetCamera(jetStage, jet) : furyStage?.camera)
+    const xebecEffects = this.effects && this.xebecEffects;
+    const conqueror = xebecEffects && !this.prefersReducedMotion.matches && !match.cinematicActive ? match.fighters.find(f => f.state === "attack" && f.moveId === kingWill) : undefined;
+    const stagedCamera = abyss?.camera ?? (conqueror && kingWillCamera(conqueror)) ?? cosmicCamera ?? openingCamera ?? kakuja?.camera ?? kirinStage?.camera ?? (jet && jetStage ? jetCamera(jetStage, jet) : furyStage?.camera)
       ?? chainCamera ?? (this.effects ? chidoriCamera(match) ?? benCamera : undefined);
     const self = match.fighters[this.localSeat],
       other = match.fighters[1 - this.localSeat];
@@ -321,8 +329,12 @@ export class Renderer {
     this.canvas.dataset.alienXVisual = alienX && this.effects ? alienXVisualPhase(alienX.tick) : "";
     this.canvas.dataset.alienXTick = String(alienX?.tick ?? -1);
     this.canvas.dataset.pandemoniumTick = String(pandemonium?.tick ?? -1);
+    this.canvas.dataset.pandemoniumPhase = abyss?.phase ?? "";
+    this.canvas.dataset.prometheusCel = String(abyss?.prometheus?.cel ?? -1);
     this.canvas.dataset.domination = String(self.domination?.charge ?? "");
-    this.canvas.dataset.xebecCharge = self.domination?.powered || match.capture?.xebec?.powered && match.capture.attacker === self.id
+    this.canvas.dataset.moveTick = String(self.stateFrame);
+    this.canvas.dataset.hakiReaction = other.hakiReaction ?? "";
+    this.canvas.dataset.xebecCharge = self.domination?.powered
       ? "spending" : self.domination?.charge === 100 ? "full" : "";
     this.canvas.dataset.xebecWaves = match.kiProjectiles.filter(p => p.move.startsWith("xebec") && p.state === "flight")
       .map(p => p.move).join(",");
@@ -494,7 +506,16 @@ export class Renderer {
       c.translate(-cx, -cy);
     }
     drawTestArena(c, benPadding);
-    if (pandemonium && abyss && this.effects) drawPandemoniumSky(c, pandemonium.tick, abyss);
+    if (conqueror) drawKingWillArena(c, conqueror.stateFrame);
+    if (pandemonium && abyss) {
+      if (abyss.justiceTick === undefined) {
+        if (xebecEffects) drawPandemoniumSky(c, pandemonium.tick, abyss);
+        drawRocksInterventions(c, pandemonium.tick, abyss, this.sprites, xebecEffects);
+      } else if (this.effects) {
+        drawJusticeGates(c, abyss.justiceTick, abyss, this.sprites);
+        drawRocksCrew(c, abyss.justiceTick, pandemonium.facing, abyss, this.sprites);
+      }
+    }
     if (reality && alienX && this.effects) {
       drawAlienXSpace(c, reality, alienX.tick, this.sprites.get(alienXBackdrop));
       drawAlienXRebuild(c, reality, alienX.tick, () => drawTestArena(c));
@@ -584,7 +605,7 @@ export class Renderer {
     if (!match.cinematicActive) drawEchoClones(c, match, this.sprites, this.debug, this.effects);
     // Keep the held opponent readable between the two converging shells.
     const centipedeWrap = kakuja?.phase === "capture" || kakuja?.phase === "descent";
-    const order = centipede ? (centipedeWrap ? [centipede.attacker, centipede.victim] : [centipede.victim, centipede.attacker]) : jet ? [jet.victim, jet.attacker] : fury
+    const order = pandemonium ? [pandemonium.victim, pandemonium.attacker] : centipede ? (centipedeWrap ? [centipede.attacker, centipede.victim] : [centipede.victim, centipede.attacker]) : jet ? [jet.victim, jet.attacker] : fury
       ? [fury.victim, fury.attacker]
       : road
         ? [road.victim, road.attacker]
@@ -721,7 +742,7 @@ export class Renderer {
         drawSasukeCurseFX(c, f);
       }
       c.restore();
-      if (this.effects && f.domination && !pandemonium)
+      if (xebecEffects && f.domination && !pandemonium)
         drawXebecCharge(c, f, match.frame, sprite.sheet, this.presentations[i].animator.frame());
       if (!kakujaActor)
         for (const pose of kagunes) if (pose.layer === "front") drawKagune(c, pose, f.facing as 1 | -1);
@@ -752,7 +773,7 @@ export class Renderer {
       drawGokuSpecials(c, match, this.sprites, this.debug);
       if (this.effects) for (const f of match.fighters) drawAlienXOpener(c, f);
       drawSasukeProjectiles(c, match, this.sprites, this.debug);
-      drawXebecSpecials(c, match, this.effects, this.debug);
+      drawXebecSpecials(c, match, xebecEffects, this.debug, this.prefersReducedMotion.matches);
       if (this.effects || this.debug) drawBenFields(c, match, this.debug, this.sprites);
     }
     if (this.effects && !fury && !jet && !kirin && !reality && !abyss) {
@@ -771,7 +792,14 @@ export class Renderer {
     if (this.effects && road) drawRoadEffects(c, this.sprites, road);
     if (this.effects) drawFury(c, match, this.sprites, "front");
     if (reality && alienX && this.effects) drawAlienXForces(c, reality, alienX.tick);
-    if (pandemonium && abyss && this.effects) drawPandemoniumStrike(c, pandemonium, abyss);
+    if (pandemonium && abyss && this.effects) {
+      if (abyss.justiceTick === undefined) {
+        if (xebecEffects) drawPandemoniumActsFx(c, pandemonium, abyss);
+      } else {
+        drawPandemoniumStrike(c, { ...pandemonium, tick: abyss.justiceTick }, abyss);
+        drawGateRupture(c, abyss.justiceTick, abyss);
+      }
+    }
     c.restore();
     c.restore();
     if (jet && this.effects) drawJetScreen(c, jet);
@@ -784,17 +812,24 @@ export class Renderer {
       drawAlienXScreen(c, reality, alienX.tick, this.sprites.get(portraitSheet("alienX")),
         alienXVoices.map(sheet => this.sprites.get(sheet)));
     }
-    if (pandemonium && this.effects) {
-      const age = pandemonium.tick - pandemoniumConfig.hits[0].tick;
-      if (age >= 0 && age < 8) {
-        c.fillStyle = `rgba(255,215,182,${.35 * (1 - age / 8)})`;
+    if (pandemonium && abyss && this.effects) {
+      if (abyss.justiceTick === undefined) {
+        if (xebecEffects) drawPandemoniumActsScreen(c, pandemonium);
+      } else drawPandemoniumClose(c, abyss.justiceTick, this.sprites);
+      const age = Math.min(...pandemoniumConfig.hits.filter(hit => hit.tick <= pandemonium.tick)
+        .map(hit => pandemonium.tick - hit.tick));
+      if (age >= 0 && age < 8 && (xebecEffects || abyss.justiceTick !== undefined)) {
+        const intensity = abyss.justiceTick === undefined ? .18 : .35;
+        c.fillStyle = `rgba(255,215,182,${intensity * (1 - age / 8)})`;
         c.fillRect(0, 0, 1280, 720);
       }
     }
+    if (conqueror) drawKingWillScreen(c, conqueror, this.sprites.get(kingWillFace));
     this.hud(match);
-    if (pandemonium && pandemonium.tick < 52) {
+    if (pandemonium && xebecEffects && pandemonium.tick >= pandemoniumBeats.cut &&
+        pandemonium.tick < pandemoniumBeats.cut + 24) {
       c.save(); c.font = "bold 23px monospace"; c.textAlign = "center"; c.fillStyle = "#ffb6b0";
-      c.fillText(pandemoniumName, 640, 177); c.restore();
+      c.fillText(pandemoniumName, 640, 168); c.restore();
     }
     if (alienX && alienX.tick < 73) {
       c.save();

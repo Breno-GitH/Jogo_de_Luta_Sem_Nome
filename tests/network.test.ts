@@ -1,4 +1,4 @@
-import { describe, it, expect, afterEach, vi } from "vitest";
+import { describe, it, expect, afterEach } from "vitest";
 import { Rooms, RoomError } from "../server/rooms";
 import { createGameServer } from "../server/server";
 import { io, type Socket } from "socket.io-client";
@@ -295,7 +295,7 @@ describe("real Socket.IO server boundary", () => {
     expect(created.data.room.players[0].token).toBeUndefined();
     expect(created.data.token).toHaveLength(64);
   });
-  it("keeps two Socket.IO clients in sync through empowered Triple Rupture and Pandemonium", async () => {
+  it("keeps two Socket.IO clients in sync through Triple Rupture, King Will and Pandemonium", async () => {
     const host = await connect(), guest = await connect();
     const made = await host.timeout(1000).emitWithAck("room:create", { version: ENGINE_VERSION });
     expect((await guest.timeout(1000).emitWithAck("room:join", {
@@ -329,19 +329,18 @@ describe("real Socket.IO server boundary", () => {
     const history: string[] = [];
     const rejected: unknown[] = [];
     for (const player of players) player.on("input:rejected", event => rejected.push(event));
-    let powered = false, projectile = false, phase = false;
-    let now = Date.now() + 1100;
-    const wallClock = vi.spyOn(Date, "now").mockImplementation(() => now);
-    try {
-    for (let i = 1; i <= 445; i++) {
-      now += 17;
+    let powered = false, projectile = false, phase = false, retained = false;
+    for (let i = 1; i <= 1270; i++) {
+      await new Promise(resolve => setTimeout(resolve, 14));
       const packets = players.map(socket => new Promise<StepPacket>(resolve => socket.once("match:step", resolve)));
       const frame = neutral();
       if (i === 1) frame.down = true;
       if (i === 2) { frame.down = true; frame.direction = -1; }
       if (i === 3) { frame.direction = -1; frame.pressed = ["heavy"]; }
-      if (i >= 81 && i < 110 && match.fighters[1].x - match.fighters[0].x > 70) frame.direction = 1;
-      if (i === 112) frame.pressed = ["ultimate"];
+      if (i === 125 || i === 128) frame.down = true;
+      if (i === 128) frame.pressed = ["heavy"];
+      if (i >= 220 && i < 283 && match.fighters[1].x - match.fighters[0].x > 70) frame.direction = 1;
+      if (i === 287) frame.pressed = ["ultimate"];
       const tick = room.tick + INPUT_DELAY + 1;
       host.emit("match:input", { matchId: room.matchId, tick, input: frame });
       guest.emit("match:input", { matchId: room.matchId, tick, input: neutral() });
@@ -357,19 +356,17 @@ describe("real Socket.IO server boundary", () => {
         expect(hashState(snapshot(copies[seat]))).toBe(steps[seat].hash);
         expect(steps[seat].hash).toBe(steps[0].hash);
       }
-      powered ||= match.fighters[0].domination!.powered;
+      if (match.fighters[0].moveId === "xebecTriple") retained ||= match.fighters[0].domination!.charge === 100;
+      powered ||= match.fighters[0].moveId === "xebecKingWill" && match.fighters[0].domination!.charge === 0;
       projectile ||= match.kiProjectiles.some(p => p.move === "xebecLowWave");
       phase ||= !!match.pandemonium;
       history.push(...match.hits.map(h => h.move));
       if (phase && !match.cinematicActive) break;
     }
-    } finally {
-      wallClock.mockRestore();
-    }
-    expect({ powered, projectile, phase }).toEqual({ powered: true, projectile: true, phase: true });
-    expect(history).toContain("pandemonium_ground");
+    expect({ powered, projectile, phase, retained }).toEqual({ powered: true, projectile: true, phase: true, retained: true });
+    expect(history.filter(move => move.startsWith("pandemonium"))).toEqual(["pandemonium_cleave", "pandemonium_ground"]);
     expect(match.cinematicActive).toBe(false);
-  }, 15000);
+  }, 75000);
 
   it("does not expose health/results updates and rejects hostile input payloads", async () => {
     const a = await connect(),

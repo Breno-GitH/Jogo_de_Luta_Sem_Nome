@@ -108,7 +108,10 @@ export function benFlameAnchor(sheet: string, frame: number) {
 export function tickBenAnimation(f: Fighter, animator: Animator) {
   let clip = "idle";
   let tick = f.stateFrame;
-  if (f.state === "cinematic" && animator.hasClip(f.actionClip)) clip = f.actionClip;
+  if (f.hakiReaction === "collapse" && f.stateFrame < 16) clip = f.stateFrame < 8 ? "damage" : "crouchIdle";
+  else if (f.hakiReaction === "pressure" && !f.airborne)
+    clip = f.stateFrame < 9 ? "guardStand" : "crouchIdle";
+  else if (f.state === "cinematic" && animator.hasClip(f.actionClip)) clip = f.actionClip;
   else if (["entrance", "taunt", "victory"].includes(f.state) && animator.hasClip(f.state)) clip = f.state;
   else if (f.state === "attack" && f.move?.ben?.absorb && f.omnitrix?.absorbFlash && animator.hasClip("absorbConfirm")) {
     clip = "absorbConfirm";

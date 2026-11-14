@@ -14,7 +14,7 @@ const { Match, characters, snapshot, hashState } =
   await import("../../deployment/run/lan-fixtures.mjs");
 import { ENGINE_VERSION } from "../../src/net/version";
 const { createGameServer } =
-  (await import("../../server-dist/server-core.mjs")) as {
+  (await import(process.env.BEN_LAN_SERVER_CORE ?? "../../server-dist/server-core.mjs")) as {
     createGameServer: typeof Factory;
   };
 const audit = "deployment/audit/lan";
@@ -155,6 +155,8 @@ async function observe(p: Page) {
           zoom: canvas.dataset.cameraZoom,
           chain: canvas.dataset.chainFinish,
           chainHeight: canvas.dataset.chainHeight,
+          pandemonium: canvas.dataset.pandemoniumPhase,
+          prometheus: canvas.dataset.prometheusCel,
           centipede: canvas.dataset.centipedePhase,
           centipedeSource: canvas.dataset.centipedeSource,
           knuckle: canvas.dataset.knucklePose,
@@ -1333,25 +1335,50 @@ test("Kaneki capture choice is resolved by the LAN server and replayed by both c
 });
 
 
-test("Xebec resolves Dominação and Pandemonium on both clients", async () => {
-  test.setTimeout(60000);
+test("Xebec resolves all nine specials and Pandemonium on both clients", async () => {
+  test.setTimeout(135000);
   const code = await pair("xebec", "samurai");
-  const room = await seed(code, 132, 100, match => {
-    match.fighters[0].domination!.charge = 100;
-  });
-  await motion(a, [2, 1, 4], "l", 58);
-  await expect.poll(() => room.match!.fighters[0].domination!.powered).toBe(true);
-  await expect.poll(() => room.match!.fighters[0].domination!.charge).toBe(0);
-  await expect.poll(() => room.match!.fighters[0].state).toBe("idle");
-  await expect.poll(() => room.match!.fighters[1].health).toBeLessThan(1000);
-  await consistent();
+  const room = await seed(code, 80, 100);
+  for (const [motionKeys, moves] of [
+    [[2,3,6], ["xebecFangs","xebecDance","xebecCarnage"]],
+    [[2,1,4], ["xebecCut","xebecRift","xebecTriple"]],
+    [[2,5,2], ["xebecPulse","xebecSovereign","xebecKingWill"]],
+  ] as const) {
+    for (const [i, id] of moves.entries()) {
+      await seed(code, motionKeys[1] === 1 ? 248 : 84, 100, match => {
+        match.fighters[0].domination!.charge = 100;
+      });
+      // The snapshot replay can clear held keys. Wait until both clients have
+      // applied the new training positions before starting the first cardinal.
+      for (const client of [a, b])
+        await expect(client.locator("canvas")).toHaveAttribute("data-domination", client === a ? "100" : "");
+      const tick = room.tick;
+      await expect.poll(() => room.tick).toBeGreaterThan(tick + 8);
+      const cardinals = motionKeys[1] === 5 ? [2, 5, 2] : [2, motionKeys[2]];
+      await motion(a, cardinals, (["j","k","l"] as const)[i], 100);
+      await expect(a.locator("canvas")).toHaveAttribute("data-move", id);
+      await expect.poll(() => room.match!.fighters[0].domination!.charge).toBe(id === "xebecKingWill" ? 0 : 100);
+      await expect.poll(() => room.match!.fighters[1].health).toBeLessThan(1000);
+      await consistent();
+    }
+  }
   await seed(code, 125, 100);
   await press(a, "r");
   for (const client of [a,b])
     await expect(client.locator("canvas")).toHaveAttribute("data-capture", "pandemonium");
-  await expect.poll(() => room.match!.pandemonium?.tick).toBeGreaterThan(151);
+  await expect.poll(() => room.match!.fighters[1].health, { timeout: 12000 }).toBe(868);
+  const phases = ["horizontal", "diagonal", "cross", "rising", "falling", "pandemonium",
+    "newgate", "kaido", "linlin", "prometheus", "prometheus-fire", "rocks"];
+  // Read the observed simulation history so a short chapter is still checked
+  // when Chromium skips a paint or Playwright's locator poll arrives late.
+  await expect.poll(async () => Promise.all([a, b].map(client => client.evaluate(keys => {
+    const samples = Object.values((window as any).netRecords) as
+      { pandemonium: string; prometheus: string; p2: string }[];
+    return keys.every(key => samples.some(s => s.pandemonium === key &&
+      (key.startsWith("prometheus") ? Number(s.prometheus) >= 0 && s.p2 === "868" : true)));
+  }, phases))), { timeout: 24000 }).toEqual([true, true]);
   await consistent();
-  await expect.poll(() => room.match!.pandemonium, { timeout: 12000 }).toBeUndefined();
+  await expect.poll(() => room.match!.pandemonium, { timeout: 24000 }).toBeUndefined();
   for (const client of [a,b]) {
     await expect(client.locator("canvas")).toHaveAttribute("data-pandemonium-tick", "-1");
     await expect(client.locator("canvas")).toHaveAttribute("data-p2-health", "666");
