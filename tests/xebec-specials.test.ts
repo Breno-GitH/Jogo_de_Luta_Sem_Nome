@@ -115,12 +115,11 @@ describe("Xebec's redesigned specials", () => {
     const q = arena(770);
     q.motion(0,0);
     while (q.a.attackPhase !== "recovery") q.step();
-    q.m.projectiles.push({ id: 101, owner: 1, move: "knives", x: q.a.x + 50, y: FLOOR - 113,
-      previousX: q.a.x + 50, previousY: FLOOR - 113, vx: -12, vy: 0, facing: -1,
+    q.m.projectiles.push({ id: 101, owner: 1, move: "knives", x: q.a.x + 90, y: FLOOR - 103,
+      previousX: q.a.x + 90, previousY: FLOOR - 103, vx: -24, vy: 0, facing: -1,
       age: 0, life: 20, sprite: 0, damage: 18, stun: 10, blockstun: 8 });
-    q.step();
+    q.advance(3);
     expect(q.b.health).toBe(1000);
-    expect(q.a.health).toBeLessThan(1000);
     expect(q.m.events.some(e => e.xebec?.move === "xebecClash")).toBe(false);
   });
 

@@ -327,25 +327,27 @@ describe("real Socket.IO server boundary", () => {
       return restore(packet.state);
     });
     const history: string[] = [];
+    const rejected: unknown[] = [];
+    for (const player of players) player.on("input:rejected", event => rejected.push(event));
     let powered = false, projectile = false, phase = false;
     let now = Date.now() + 1100;
     const wallClock = vi.spyOn(Date, "now").mockImplementation(() => now);
     try {
-    for (let i = 1; i <= 508; i++) {
+    for (let i = 1; i <= 445; i++) {
       now += 17;
       const packets = players.map(socket => new Promise<StepPacket>(resolve => socket.once("match:step", resolve)));
       const frame = neutral();
       if (i === 1) frame.down = true;
       if (i === 2) { frame.down = true; frame.direction = -1; }
       if (i === 3) { frame.direction = -1; frame.pressed = ["heavy"]; }
-      if (i >= 130 && i < 208 && match.fighters[1].x - match.fighters[0].x > 70) frame.direction = 1;
-      if (i === 210) frame.pressed = ["ultimate"];
+      if (i >= 81 && i < 110 && match.fighters[1].x - match.fighters[0].x > 70) frame.direction = 1;
+      if (i === 112) frame.pressed = ["ultimate"];
       const tick = room.tick + INPUT_DELAY + 1;
       host.emit("match:input", { matchId: room.matchId, tick, input: frame });
       guest.emit("match:input", { matchId: room.matchId, tick, input: neutral() });
       // The ack follows input delivery on each connection before the real Rooms clock advances.
       await Promise.all(players.map(socket => new Promise<void>(resolve => socket.emit("net:ping", () => resolve()))));
-      expect(room.players.map(p => p?.accepted), `accepted input for tick ${tick}`).toEqual([tick, tick]);
+      expect(room.players.map(p => p?.accepted), `accepted input for tick ${tick}, room ${room.status}, rejected ${JSON.stringify(rejected)}`).toEqual([tick, tick]);
       room.nextAt = performance.now() - 1;
       app!.rooms.pump();
       expect(room.tick, `step ${i}, status ${room.status}`).toBe(i);
@@ -359,11 +361,12 @@ describe("real Socket.IO server boundary", () => {
       projectile ||= match.kiProjectiles.some(p => p.move === "xebecLowWave");
       phase ||= !!match.pandemonium;
       history.push(...match.hits.map(h => h.move));
+      if (phase && !match.cinematicActive) break;
     }
     } finally {
       wallClock.mockRestore();
     }
-    expect(powered && projectile && phase).toBe(true);
+    expect({ powered, projectile, phase }).toEqual({ powered: true, projectile: true, phase: true });
     expect(history).toContain("pandemonium_ground");
     expect(match.cinematicActive).toBe(false);
   }, 15000);
