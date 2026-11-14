@@ -1,6 +1,6 @@
 import type { Match } from "../engine/combat";
 import { justiceBeats, pandemoniumScene, type PandemoniumState } from "../engine/xebec-pandemonium";
-import { gateGuard, isXebecSpecial, xebecBladeAt, xebecGrapple, xebecProjectile, xebecWaveVolume } from "../engine/xebec-specials";
+import { isXebecSpecial, kingWill, xebecBladeAt, xebecPressure, xebecPressureReach, xebecProjectile, xebecWaveVolume } from "../engine/xebec-specials";
 import type { Fighter } from "../engine/combat";
 import { hakiBolt, hakiBurst } from "./xebec-haki-fx";
 
@@ -26,42 +26,6 @@ function shards(c: CanvasRenderingContext2D, age: number, direction: number, n: 
     c.fillStyle = [red, ivory, "#573147"][i % 3];
     c.fillRect(Math.round(x), Math.round(y), i % 3 + 2, i % 3 + 1);
   }
-}
-
-function edge(c: CanvasRenderingContext2D, x: number, y: number, tilt: number, width: number, height: number) {
-  c.save();
-  c.translate(x, y);
-  c.rotate(tilt);
-  c.scale(width / 50, height / 50);
-  c.beginPath();
-  c.moveTo(-38, -45);
-  c.quadraticCurveTo(45, -34, 43, -3);
-  c.quadraticCurveTo(38, 36, -49, 48);
-  c.quadraticCurveTo(21, 13, 21, -5);
-  c.quadraticCurveTo(18, -25, -38, -45);
-  c.fillStyle = wine;
-  c.fill();
-  c.strokeStyle = red;
-  c.lineWidth = 2;
-  c.stroke();
-  c.beginPath();
-  c.moveTo(-19, -38);
-  c.quadraticCurveTo(89, -8, -20, 39);
-  c.strokeStyle = ivory;
-  c.lineWidth = 1.6;
-  c.stroke();
-  c.restore();
-}
-
-function ring(c: CanvasRenderingContext2D, x: number, y: number, radius: number, flatten: number) {
-  c.beginPath();
-  c.ellipse(x, y, radius, radius * flatten, 0, 0, Math.PI * 2);
-  c.strokeStyle = wine;
-  c.lineWidth = 8;
-  c.stroke();
-  c.strokeStyle = red;
-  c.lineWidth = 2;
-  c.stroke();
 }
 
 const bladeCels: Record<string, Record<number, [number, number, number, number]>> = {
@@ -94,9 +58,9 @@ export function drawXebecCharge(c: CanvasRenderingContext2D, f: Fighter, frame: 
     xebecBladeAt(f.moveId, f.stateFrame);
   const crouched = f.crouching || f.state === "landing";
   const shoulder = f.airborne ? -89 : crouched ? -79 : -116;
-  const fold = f.state === "dash" || gateGuard(f.moveId) && f.state === "attack" ? 13 : 0;
+  const fold = f.state === "dash" ? 13 : 0;
   const hand = f.state === "attack" && f.attackPhase === "active" && !f.move?.super &&
-    !xebecGrapple(f.moveId) ?
+    !isXebecSpecial(f.moveId) ?
     f.attackShapes().map(shape => "a" in shape ? shape.b : { x: shape.x + (f.facing > 0 ? shape.w : 0), y: shape.y + shape.h / 2 })[0] : undefined;
   const forearm = hand ? { x: (hand.x - f.x) * f.facing, y: hand.y - f.y } : { x: 34 + fold, y: shoulder - 4 };
   c.save();
@@ -111,74 +75,81 @@ export function drawXebecCharge(c: CanvasRenderingContext2D, f: Fighter, frame: 
   hakiBolt(c, frame, 162, blade.grip, blade.tip, charge.powered ? 5 : 3);
   hakiBolt(c, frame, 215, { x: -3, y: -47 }, { x: -32, y: -9 }, 2);
   if (!f.airborne) hakiBolt(c, frame, 971, { x: -13, y: -4 }, { x: 40, y: 1 }, 3);
+  if (f.state === "dash") hakiBolt(c, frame, 310, { x: -28, y: -65 }, { x: -101, y: -35 }, 3);
   if (charge.powered && f.attackPhase === "startup")
     hakiBolt(c, frame, 377, { x: -36, y: shoulder + 45 }, forearm, 4);
   c.restore();
 }
 
-export function drawXebecSpecials(c: CanvasRenderingContext2D, match: Match, effects: boolean, debug: boolean) {
-  if (effects && match.capture?.xebec) {
-    const s = match.capture, grab = s.xebec!, a = match.fighters[s.attacker], b = match.fighters[s.victim];
-    const p = xebecGrapple(grab.id)!;
-    const age = s.tick - p.held;
-    c.save();
-    c.globalAlpha = age < 0 ? .39 + Math.min(1, s.tick / p.held) * .31 : .94;
-    const origin = { x: (a.x + b.x) / 2, y: b.y - 95 };
-    hakiBolt(c, match.frame, 77, { x: a.x + a.facing * 26, y: a.y - 92 }, origin, grab.powered ? 6 : 3);
-    hakiBurst(c, match.frame, origin, (grab.powered ? 1.35 : 1) * (26 + (age < 0 ? s.tick * 1.15 : p.reach * .72)), age < 0 ? 3 : 7, 107,
-      grab.id === "xebecDominion" ? 22 : 0);
-    c.restore();
-  }
+export function drawXebecSpecials(c: CanvasRenderingContext2D, match: Match, effects: boolean, debug: boolean, reducedMotion = false) {
   for (const f of match.fighters) {
     const move = f.move, id = f.moveId, t = f.stateFrame;
     if (!effects || f.state !== "attack" || !move || !f.domination ||
         !(isXebecSpecial(id) || move.rank === 3 || move.super)) continue;
-    const age = t - move.startup;
-    if (age < -9 || age > move.active + 8) continue;
-    const power = f.domination.powered ? 1.3 : 1;
     c.save();
     c.translate(Math.round(f.x), Math.round(f.y));
     c.scale(f.facing, 1);
-    const grip = xebecGrapple(id);
-    if (grip && t >= grip.blast) {
-      const release = t - grip.blast, max = grip.active + 7;
-      c.globalAlpha = Math.max(0, 1 - release / max);
-      const origin = { x: id === "xebecDominion" ? 27 : 0, y: -52 };
-      const reach = grip.reach * Math.min(1, .62 + .38 * release / Math.max(1, grip.active - 1));
-      if (id === "xebecDominion") edge(c, 25 + reach * .65, -63, 0, reach * .36, 46);
-      else {
-        for (const side of [-1, 1]) {
-          for (let band = 0; band < (move.rank === 3 ? 3 : 2); band++) {
-            const d = reach * (1 - band * .18) * side;
-            const y = -49 + band * 12;
-            path(c, [[d * .23, y + 12], [d * .59, y - 20], [d, y - 9],
-              [d * .79, y + 3], [d * .93, y + 13], [d * .61, y + 8], [d * .36, y + 22]]);
+    const pressure = xebecPressure(id);
+    if (pressure) {
+      const age = t - pressure.release;
+      if (age >= 0 && age < pressure.active + 12) {
+        const reach = xebecPressureReach(pressure,t);
+        const king = pressure.kind === "conqueror";
+        c.globalAlpha = Math.min(reducedMotion ? .48 : .86, (pressure.active + 12 - age) / 17);
+        for (let layer = 0; layer < (king ? 4 : 2); layer++) {
+          const end = reach * (1 - layer * .13);
+          const y = -64 + layer * 17;
+          const lift = pressure.height * (.57 - layer * .08);
+          for (const direction of [-1, 1]) {
+            const x = direction * end;
+            const g = c.createLinearGradient(0, y, x, y);
+            g.addColorStop(0, "#f5a1a500"); g.addColorStop(.8, "#952c4d23");
+            g.addColorStop(1, king ? "#f994a074" : "#ed6a7b56");
+            c.beginPath();
+            c.moveTo(0,y-lift);
+            c.bezierCurveTo(x*.55,y-lift,x*.75,y-lift*.54,x,y);
+            c.bezierCurveTo(x*.84,y+lift*.77,x*.32,y+lift,0,y+lift);
+            c.bezierCurveTo(x*.54,y+lift*.44,x*.72,y,x*.42,y-lift*.63);
             c.closePath();
-            c.fillStyle = wine;
-            c.fill();
-            c.strokeStyle = red;
-            c.lineWidth = 2;
-            c.stroke();
+            c.fillStyle = g; c.fill();
+            hakiBolt(c,t,56+layer*89+direction*13,{x:direction*18,y:y-layer*4},
+              {x:x*.94,y:y+direction*layer*7}, king ? 9-layer : 5-layer);
           }
         }
+        c.translate(0,-3);
+        if (!reducedMotion) shards(c,age,1,king?28:move.rank*7+4);
+      } else if (age < 0 && age >= -(id === kingWill ? 33 : 8)) {
+        const focus = Math.max(.2, 1 + age / (id === kingWill ? 40 : 12));
+        c.globalAlpha = reducedMotion ? focus * .55 : focus;
+        hakiBurst(c,t,{x:0,y:-105}, (id === kingWill ? 94 : 41)*focus, id === kingWill ? 6 : 3, 593);
       }
-      hakiBurst(c, t, origin, reach * power, Math.min(8, 2 + move.rank * 2), 94);
-    } else if (grip) {
-      haki(c, t, 19, -93, 38 * power, -8, 3);
-    } else if (isXebecSpecial(id) && !grip) {
-      const blade = xebecBladeAt(id, t);
-      hakiBolt(c, t, 44 + id.length, blade.grip, blade.tip, 3 * power);
-      if (f.attackPhase === "active" && (gateGuard(id) || id === "xebecCut")) {
-        const rises = blade.tip.y < blade.grip.y - 22;
-        c.globalAlpha = .83;
-        edge(c, blade.tip.x - 10, blade.tip.y + (rises ? 34 : 0), rises ? -.6 : 1.57,
-          (rises ? 42 : 28) * power, (rises ? 65 : 39) * power);
+    } else if (isXebecSpecial(id)) {
+      const blade = xebecBladeAt(id,t);
+      const contact = f.hitWindow;
+      const waveHit = move.startup <= t && t < move.startup + move.active;
+      if (t < move.startup + move.active + 3) {
+        hakiBolt(c,t,44+id.length,blade.grip,blade.tip,contact ? 3+contact.id : 2.5);
+      }
+      if (contact) {
+        const { grip, tip } = blade;
+        const ax = tip.x-grip.x, ay = tip.y-grip.y;
+        const arc = contact.id === 2 ? 1 : -1;
+        c.globalAlpha = .65;
+        c.beginPath();
+        c.moveTo(grip.x,grip.y);
+        c.quadraticCurveTo(tip.x + arc*ay*.6,tip.y - arc*ax*.55,tip.x,tip.y);
+        c.quadraticCurveTo(tip.x + arc*ay*.3,tip.y - arc*ax*.26,grip.x,grip.y);
+        c.fillStyle = "#170a1b88"; c.fill();
+        c.strokeStyle = red; c.lineWidth = 2+contact.id; c.stroke();
+      } else if (waveHit && match.kiProjectiles.some(p => p.owner === f.id && p.age <= 3 && xebecProjectile(p.move))) {
+        hakiBurst(c,t,blade.tip,33+move.rank*11,move.rank+1,790);
       }
     } else if (f.attackPhase === "active") {
       haki(c, t, 25, -109, 35, -9, 2);
     }
     c.restore();
   }
+
   for (const p of match.kiProjectiles) {
     const wave = xebecProjectile(p.move);
     if (!wave) continue;
@@ -192,7 +163,7 @@ export function drawXebecSpecials(c: CanvasRenderingContext2D, match: Match, eff
       const leading = (y: number) => y * slope + radius * (1 - (y / wave.halfLength) ** 2);
       const y0 = a.y, y1 = b.y;
       if (effects) {
-        c.fillStyle = p.xebecPowered ? "#fb294753" : "#d0213e29";
+        c.fillStyle = wave.rank === 3 ? "#fb294753" : "#d0213e29";
         for (let i = 0; i < 5; i++) {
           const y = y0 + (i + 1) * (y1 - y0) / 6;
           c.fillRect(Math.round(leading(y)) - 44 - i % 3 * 12, Math.round(y), 61, 3 + i % 2 * 3);
@@ -206,12 +177,12 @@ export function drawXebecSpecials(c: CanvasRenderingContext2D, match: Match, eff
       c.closePath();
       c.fillStyle = "#140f1f";
       c.fill();
-      c.strokeStyle = p.xebecPowered ? "#ff8791" : "#ff3d60";
-      c.lineWidth = p.xebecPowered ? 5 : 3;
+      c.strokeStyle = wave.rank === 3 ? "#ff8791" : "#ff3d60";
+      c.lineWidth = wave.rank === 3 ? 5 : 3;
       c.stroke();
       if (effects) {
-        c.globalAlpha = p.xebecPowered ? .96 : .77;
-        hakiBolt(c, p.age, p.id * 13, { x: a.x, y: y0 + 5 }, { x: radius * .7, y: 1 }, p.xebecPowered ? 7 : 4);
+        c.globalAlpha = wave.rank === 3 ? .96 : .77;
+        hakiBolt(c, p.age, p.id * 13, { x: a.x, y: y0 + 5 }, { x: radius * .7, y: 1 }, wave.rank === 3 ? 7 : 4);
         hakiBolt(c, p.age, p.id * 31, { x: radius * .6, y: -4 }, { x: b.x, y: y1 - 7 }, 5);
         hakiBolt(c, p.age, p.id * 57, { x: 3, y: 5 }, { x: -radius * 3.4, y: y0 * .62 }, 3);
       }
@@ -333,7 +304,7 @@ export function drawDomination(c: CanvasRenderingContext2D, resource: NonNullabl
   }
   c.font = "11px monospace";
   c.fillStyle = pulse || resource.charge === 100 ? "#ffe1b9" : "#f2acb6";
-  c.fillText(pulse ? "HAKI FORTALECIDO" :
-    resource.charge === 100 ? "DOMINAÇÃO · ESPECIAL PRONTO" : `DOMINAÇÃO · ${resource.charge}%`, x, 661);
+  c.fillText(pulse ? "VONTADE DO REI SUPREMO" :
+    resource.charge === 100 ? "DOMINAÇÃO · ↓↓ + FORTE" : `DOMINAÇÃO · ${resource.charge}%`, x, 661);
   c.restore();
 }
