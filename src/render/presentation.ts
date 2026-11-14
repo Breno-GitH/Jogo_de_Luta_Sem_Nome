@@ -71,6 +71,15 @@ export class FighterPresentation {
       this.animator = preview;
       return;
     }
+    if (fighter.data.id !== "ben" && fighter.match?.pandemonium?.victim === fighter.id &&
+        fighter.state === "grabbed" && fighter.actionClip) {
+      const pose = reactionFor(fighter);
+      const clip = pose && this.animator.hasClip(pose.clip) ? pose.clip :
+        this.animator.hasClip("grabbed") ? "grabbed" : "idle";
+      this.animator.update(clip);
+      this.animator.seekTick(pose?.tick ?? fighter.stateFrame);
+      return;
+    }
     if (fighter.data.id === "ben") {
       const watch = fighter.omnitrix;
       const superState = fighter.match?.alienX;

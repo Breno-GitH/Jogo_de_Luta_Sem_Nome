@@ -1,5 +1,5 @@
 import type { Match } from "../engine/combat";
-import { pandemoniumBeats, pandemoniumConfig, pandemoniumScene, type PandemoniumState } from "../engine/xebec-pandemonium";
+import { justiceBeats, pandemoniumScene, type PandemoniumState } from "../engine/xebec-pandemonium";
 import { gateGuard, isXebecSpecial, xebecBladeAt, xebecGrapple, xebecProjectile, xebecWaveVolume } from "../engine/xebec-specials";
 import type { Fighter } from "../engine/combat";
 import { hakiBolt, hakiBurst } from "./xebec-haki-fx";
@@ -290,29 +290,12 @@ export function drawPandemoniumSky(c: CanvasRenderingContext2D, tick: number, sc
 }
 
 export function drawPandemoniumStrike(c: CanvasRenderingContext2D, s: PandemoniumState, scene: ReturnType<typeof pandemoniumScene>) {
-  const t = s.tick, age = t - pandemoniumConfig.hits[0].tick;
-  const a = scene.attacker, b = scene.victim;
+  const t = s.tick;
+  const a = scene.attacker;
   c.save();
   c.translate(a.x, a.y);
   c.scale(s.facing, 1);
-  if (t > 14 && age < 2) {
-    c.globalAlpha = scene.darkness * .92;
-    const raised = Math.min(1, Math.max(0, (t - 58) / 59));
-    haki(c, t, 20, -63 - 102 * raised, 66, -5);
-    haki(c, t + 4, 32, -84 - 85 * raised, -57, -17);
-    haki(c, t + 9, -15, -5, 76, -12);
-    hakiBurst(c, t, { x: 35, y: -81 - 97 * raised }, 140 + 33 * raised, 6, 121, 20);
-  }
-  if (age >= 0 && age < 44) {
-    c.globalAlpha = Math.min(1, (44 - age) / 22);
-    edge(c, 96 + age * 4, -132 - age * 1.2, .52, 93 + age * 3, 110 + age * 2);
-    haki(c, t, 63, -78, 185 + 5 * age, -97);
-    ring(c, 83, -3, 45 + age * 6, .12);
-    hakiBurst(c, t, { x: 83, y: -70 }, Math.min(215, 59 + age * 7), 9, 841, 27);
-    c.translate((b.x - a.x) * s.facing, b.y - a.y - 59);
-    shards(c, age, 1, 27);
-  }
-  if (t >= pandemoniumBeats.rush && t < pandemoniumBeats.rupture) {
+  if (t >= justiceBeats.rush && t < justiceBeats.rupture) {
     const sprint = t - 533;
     c.globalAlpha = .78;
     hakiBolt(c, t, 918, {x: -29, y: -119}, {x: 70, y: -81}, 6);
@@ -325,14 +308,10 @@ export function drawPandemoniumStrike(c: CanvasRenderingContext2D, s: Pandemoniu
       }
     }
   }
-  if (t >= pandemoniumBeats.aftermath && t < pandemoniumBeats.return) {
-    c.globalAlpha = (1 - (t - pandemoniumBeats.aftermath) / 85) * .72;
+  if (t >= justiceBeats.aftermath && t < justiceBeats.return) {
+    c.globalAlpha = (1 - (t - justiceBeats.aftermath) / 85) * .72;
     hakiBolt(c, t, 588, {x: -29, y: -120}, {x: 53, y: -123}, 4);
     hakiBolt(c, t, 693, {x: -25, y: -37}, {x: -59, y: -4}, 3);
-  }
-  if (t >= 202 && t < 241) {
-    c.globalAlpha = (241 - t) / 60;
-    hakiBolt(c, t, 382, { x: -23, y: -125 }, { x: 39, y: -139 }, 3);
   }
   c.restore();
 }

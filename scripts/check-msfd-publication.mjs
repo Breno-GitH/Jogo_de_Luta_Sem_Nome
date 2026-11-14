@@ -64,7 +64,8 @@ try {
         "sprites/fx/alien-x-serena.png",
         "sprites/ben/gravattack/stage7.png",
         ...["base", "movement", "reactions", "normals", "rush", "abyss", "gates", "pandemonium", "pandemonium-combat", "giant-cuts", "justice-cel",
-          "captain-close", "rocks-newgate", "rocks-kaido", "rocks-linlin"]
+          "captain-close", "rocks-newgate", "rocks-kaido", "rocks-linlin", "pandemonium-cleave",
+          "newgate-intervention", "kaido-intervention", "linlin-intervention"]
           .map(name => `sprites/xebec/${name}.png`),
         "sprites/xebec/justice-gates.webp",
       ]),

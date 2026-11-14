@@ -68,6 +68,7 @@ import { combatPace } from "../engine/pace";
 import { xebecId } from "../engine/xebec";
 import { xebecAnimations } from "./xebec-animations";
 import { drawDomination, drawPandemoniumSky, drawPandemoniumStrike, drawXebecCharge, drawXebecSpecials } from "./xebec-special-fx";
+import { drawPandemoniumActsFx, drawPandemoniumActsScreen, drawRocksInterventions, pandemoniumActSheets } from "./xebec-pandemonium-fx";
 import { drawGateRupture, drawJusticeGates, drawPandemoniumClose, drawRocksCrew, pandemoniumSheets } from "./xebec-super-cinematic";
 import { pandemoniumConfig, pandemoniumName, pandemoniumScene } from "../engine/xebec-pandemonium";
 export class Renderer {
@@ -113,7 +114,7 @@ export class Renderer {
     for (const sheet of kirinEffectsSheets) sheets.add(sheet);
     for (const sheet of gokuFxSheets) sheets.add(sheet);
     for (const sheet of [...benReformSheets, ...portraitSheets, alienXBackdrop, ...alienXVoices]) sheets.add(sheet);
-    for (const sheet of [...furyFxSheets, ...jetFxSheets, ...pandemoniumSheets]) sheets.add(sheet);
+    for (const sheet of [...furyFxSheets, ...jetFxSheets, ...pandemoniumSheets, ...pandemoniumActSheets]) sheets.add(sheet);
     for (const data of [
       metadata,
       dioAnimations,
@@ -496,10 +497,14 @@ export class Renderer {
       c.translate(-cx, -cy);
     }
     drawTestArena(c, benPadding);
-    if (pandemonium && abyss && this.effects) {
-      drawPandemoniumSky(c, pandemonium.tick, abyss);
-      drawJusticeGates(c, pandemonium.tick, abyss, this.sprites);
-      drawRocksCrew(c, pandemonium.tick, pandemonium.facing, abyss, this.sprites);
+    if (pandemonium && abyss) {
+      if (abyss.justiceTick === undefined) {
+        if (this.effects) drawPandemoniumSky(c, pandemonium.tick, abyss);
+        drawRocksInterventions(c, pandemonium.tick, abyss, this.sprites);
+      } else if (this.effects) {
+        drawJusticeGates(c, abyss.justiceTick, abyss, this.sprites);
+        drawRocksCrew(c, abyss.justiceTick, pandemonium.facing, abyss, this.sprites);
+      }
     }
     if (reality && alienX && this.effects) {
       drawAlienXSpace(c, reality, alienX.tick, this.sprites.get(alienXBackdrop));
@@ -778,8 +783,11 @@ export class Renderer {
     if (this.effects) drawFury(c, match, this.sprites, "front");
     if (reality && alienX && this.effects) drawAlienXForces(c, reality, alienX.tick);
     if (pandemonium && abyss && this.effects) {
-      drawPandemoniumStrike(c, pandemonium, abyss);
-      drawGateRupture(c, pandemonium.tick, abyss);
+      if (abyss.justiceTick === undefined) drawPandemoniumActsFx(c, pandemonium, abyss);
+      else {
+        drawPandemoniumStrike(c, { ...pandemonium, tick: abyss.justiceTick }, abyss);
+        drawGateRupture(c, abyss.justiceTick, abyss);
+      }
     }
     c.restore();
     c.restore();
@@ -793,8 +801,9 @@ export class Renderer {
       drawAlienXScreen(c, reality, alienX.tick, this.sprites.get(portraitSheet("alienX")),
         alienXVoices.map(sheet => this.sprites.get(sheet)));
     }
-    if (pandemonium && this.effects) {
-      drawPandemoniumClose(c, pandemonium.tick, this.sprites);
+    if (pandemonium && abyss && this.effects) {
+      if (abyss.justiceTick === undefined) drawPandemoniumActsScreen(c, pandemonium, this.sprites);
+      else drawPandemoniumClose(c, abyss.justiceTick, this.sprites);
       const age = Math.min(...pandemoniumConfig.hits.filter(hit => hit.tick <= pandemonium.tick)
         .map(hit => pandemonium.tick - hit.tick));
       if (age >= 0 && age < 8) {

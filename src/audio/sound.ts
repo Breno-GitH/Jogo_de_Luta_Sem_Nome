@@ -22,7 +22,7 @@ export type Cue =
   | "chainEscape"
   | "chainWhoosh"
   | "chainImpact"
-  | "rocksGather" | "rocksSlash" | "rocksCrew" | "rocksGate" | "rocksRupture"
+  | "rocksGather" | "rocksSlash" | "rocksCrew" | "rocksNewgate" | "rocksKaido" | "rocksLinlin" | "rocksGate" | "rocksRupture"
   | "round"
   | "fight"
   | "ko"
@@ -312,6 +312,19 @@ export class Sound {
       tone(164, 155, .42, "triangle", .31);
       tone(219, 196, .56, "triangle", .25, .18);
       tone(311, 293, .59, "triangle", .22, .38);
+    } else if (cue === "rocksNewgate") {
+      tone(53, 31, .83, "sine", .58);
+      tone(296, 58, .46, "triangle", .48, .04);
+      tone(1030, 271, .26, "sawtooth", .12, .09);
+      tone(155, 37, .21, "triangle", .31, .2);
+    } else if (cue === "rocksKaido") {
+      tone(1214, 131, .15, "sawtooth", .19);
+      tone(178, 34, .37, "square", .17, .04);
+      tone(81, 29, .55, "triangle", .54, .09);
+    } else if (cue === "rocksLinlin") {
+      tone(392, 535, .29, "triangle", .26);
+      tone(523, 710, .26, "sine", .29, .085);
+      tone(813, 112, .43, "triangle", .31, .18);
     } else if (cue === "rocksGate") {
       tone(41, 75, .79, "triangle", .47);
       tone(94, 61, .56, "sawtooth", .09, .36);
@@ -334,10 +347,11 @@ export class Sound {
   tick(match: Match, onlineRound?: string) {
     const ticks = match.pandemonium?.tick ?? -1;
     const beats = pandemoniumBeats;
-    this.setMusicDucked(ticks >= 0 && (ticks < beats.cut || ticks >= beats.rush && ticks < beats.rupture));
+    this.setMusicDucked(ticks >= 0 && (ticks < beats.cut || ticks >= beats.flight && ticks < beats.quake || ticks >= beats.rush && ticks < beats.rupture));
     if (ticks >= 0 && ticks > this.rocksTick) {
       const cues: [number, Cue][] = [[beats.lift, "rocksGather"], [beats.cut, "rocksSlash"],
-        [beats.crew, "rocksCrew"], [beats.gates, "rocksGate"], [beats.rupture, "rocksRupture"]];
+        [beats.quake, "rocksNewgate"], [beats.club, "rocksKaido"], [beats.soul, "rocksLinlin"],
+        [beats.regroup, "rocksCrew"], [beats.gates, "rocksGate"], [beats.rupture, "rocksRupture"]];
       for (const [at, cue] of cues)
         if (at > this.rocksTick && at <= ticks) this.play(cue);
     }

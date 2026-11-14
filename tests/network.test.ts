@@ -330,7 +330,7 @@ describe("real Socket.IO server boundary", () => {
     const rejected: unknown[] = [];
     for (const player of players) player.on("input:rejected", event => rejected.push(event));
     let powered = false, projectile = false, phase = false;
-    for (let i = 1; i <= 965; i++) {
+    for (let i = 1; i <= 1130; i++) {
       await new Promise(resolve => setTimeout(resolve, 14));
       const packets = players.map(socket => new Promise<StepPacket>(resolve => socket.once("match:step", resolve)));
       const frame = neutral();

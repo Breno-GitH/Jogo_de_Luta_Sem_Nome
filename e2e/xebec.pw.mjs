@@ -40,7 +40,7 @@ async function distance(page, max) {
 }
 
 test("plays Xebec in the training arena and captures Pandemonium", async ({ page }, info) => {
-  test.setTimeout(85000);
+  test.setTimeout(110000);
   const { canvas, failures } = await start(page, "training");
   await page.locator("#infinite-health").uncheck();
   await page.locator("#unlimited-meter").uncheck();
@@ -78,11 +78,13 @@ test("plays Xebec in the training arena and captures Pandemonium", async ({ page
   await page.keyboard.press("r", { delay: 36 });
   await expect(canvas).toHaveAttribute("data-capture", "pandemonium");
   const frameAt = tick => page.waitForFunction(t => Number(document.querySelector("canvas").dataset.pandemoniumTick) >= t, tick);
-  await frameAt(61);
+  await frameAt(43);
   await expect(canvas).toHaveAttribute("data-target-health", String(hp));
   await canvas.screenshot({ path: info.outputPath("pandemonium-sorriso.png") });
-  for (const [tick, title] of [[156, "preparacao"], [199, "corte"], [389, "rocks"],
-    [461, "portoes"], [588, "ruptura"], [690, "pose-final"]]) {
+  for (const [tick, title] of [[80, "eclipse"], [132, "preparacao"], [154, "aceleracao"],
+    [163, "corte"], [193, "lancamento"], [260, "entrada-barba-branca"], [304, "barba-branca"],
+    [368, "kaido-aereo"], [453, "linlin"], [511, "piratas-rocks"], [561, "transicao"],
+    [618, "portoes"], [750, "ruptura"], [849, "pose-final"]]) {
     await frameAt(tick);
     await canvas.screenshot({ path: info.outputPath("pandemonium-" + title + ".png") });
   }

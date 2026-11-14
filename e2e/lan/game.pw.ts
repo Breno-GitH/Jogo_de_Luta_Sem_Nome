@@ -14,7 +14,7 @@ const { Match, characters, snapshot, hashState } =
   await import("../../deployment/run/lan-fixtures.mjs");
 import { ENGINE_VERSION } from "../../src/net/version";
 const { createGameServer } =
-  (await import("../../server-dist/server-core.mjs")) as {
+  (await import(process.env.BEN_LAN_SERVER_CORE ?? "../../server-dist/server-core.mjs")) as {
     createGameServer: typeof Factory;
   };
 const audit = "deployment/audit/lan";
@@ -1350,6 +1350,11 @@ test("Xebec resolves Dominação and Pandemonium on both clients", async () => {
   for (const client of [a,b])
     await expect(client.locator("canvas")).toHaveAttribute("data-capture", "pandemonium");
   await expect.poll(() => room.match!.fighters[1].health, { timeout: 12000 }).toBe(868);
+  for (const phase of ["newgate", "kaido", "linlin", "rocks"]) {
+    await Promise.all([a, b].map(client => expect(client.locator("canvas"))
+      .toHaveAttribute("data-pandemonium-phase", phase, { timeout: 8500 })));
+    expect(room.match!.fighters[1].health).toBe(868);
+  }
   await consistent();
   await expect.poll(() => room.match!.pandemonium, { timeout: 24000 }).toBeUndefined();
   for (const client of [a,b]) {

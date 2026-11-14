@@ -3,7 +3,7 @@ import { Match, FLOOR } from "../src/engine/combat";
 import { characters } from "../src/engine/characters";
 import { hashState, restore, snapshot } from "../src/engine/state";
 import { neutral, type InputFrame } from "../src/engine/types";
-import { pandemoniumBeats, pandemoniumConfig } from "../src/engine/xebec-pandemonium";
+import { justiceBeats, pandemoniumBeats, pandemoniumConfig, pandemoniumScene } from "../src/engine/xebec-pandemonium";
 import { xebecGrapple, xebecProjectile, xebecReleases, xebecSpecialArt } from "../src/engine/xebec-specials";
 
 type Input = Partial<InputFrame>;
@@ -207,6 +207,33 @@ describe("Xebec's redesigned specials", () => {
     }
   });
 
+  it.each([1, -1] as const)("choreographs the Rocks relay without moving through a cut, side %s", facing => {
+    const beats = pandemoniumBeats;
+    const state = { attacker: 0, victim: 1, facing, originX: 640 - 96 * facing,
+      targetX: 640, targetY: 580, scale: 1, hold: 0, tick: 0 };
+    const at = (tick: number) => pandemoniumScene({ ...state, tick });
+    const active = (tick: number) => at(tick).rocks.filter(a => a.opacity > .5);
+    expect(active(beats.newgate - 1)).toHaveLength(0);
+    expect(active(beats.quake).map(a => a.member)).toEqual(["newgate"]);
+    expect(active(beats.club).map(a => a.member)).toEqual(["kaido"]);
+    expect(active(beats.soul).map(a => a.member)).toEqual(["linlin"]);
+    expect(active(beats.regroup + 23)).toHaveLength(3);
+    for (const [t, yDirection] of [[beats.quake, -1], [beats.club, 1], [beats.soul, -1]]) {
+      expect((at(t + 8).victim.y - at(t).victim.y) * yDirection).toBeGreaterThan(8);
+      expect(Math.abs(at(t - 1).victim.x - at(t).victim.x)).toBeLessThan(10);
+      expect(Math.abs(at(t - 1).victim.y - at(t).victim.y)).toBeLessThan(10);
+    }
+    const before = at(beats.gates - 1), after = at(beats.gates);
+    expect(Math.abs(before.victim.x - after.victim.x)).toBeLessThan(3);
+    expect(Math.abs(before.victim.y - after.victim.y)).toBeLessThan(3);
+    expect(Math.abs(before.attacker.x - after.attacker.x)).toBeLessThan(3);
+    expect(after.justiceTick).toBe(justiceBeats.gates);
+    expect(at(beats.rush + 38).attacker.clip).toBe("pandemoniumGate");
+    expect(at(beats.rupture).justiceTick).toBe(justiceBeats.rupture);
+    expect(at(beats.rupture + 37).fracture).toBeGreaterThan(.3);
+    expect(at(pandemoniumConfig.duration).camera.scale).toBe(1);
+  });
+
   it("stages Pandemonium only if R lands, independently from Domination", () => {
     const p = arena(135);
     p.step({pressed:["ultimate"]});
@@ -224,7 +251,9 @@ describe("Xebec's redesigned specials", () => {
     for (let t=0;t<pandemoniumConfig.duration+24;t++) {
       p.step(); restored.step([neutral(),neutral()]);
       expect(hashState(snapshot(restored))).toBe(hashState(snapshot(p.m)));
-      if (p.m.pandemonium?.tick === pandemoniumBeats.crew) expect(p.b.health).toBe(868);
+      const tick = p.m.pandemonium?.tick;
+      if (tick !== undefined && tick >= pandemoniumBeats.crew && tick < pandemoniumBeats.rupture)
+        expect(p.b.health).toBe(868);
     }
     expect(p.hits).toEqual([
       { move: "pandemonium_cleave", blocked: false, damage: 132 },
