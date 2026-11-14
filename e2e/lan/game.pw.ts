@@ -1349,9 +1349,9 @@ test("Xebec resolves Dominação and Pandemonium on both clients", async () => {
   await press(a, "r");
   for (const client of [a,b])
     await expect(client.locator("canvas")).toHaveAttribute("data-capture", "pandemonium");
-  await expect.poll(() => room.match!.pandemonium?.tick).toBeGreaterThan(151);
+  await expect.poll(() => room.match!.fighters[1].health, { timeout: 12000 }).toBe(868);
   await consistent();
-  await expect.poll(() => room.match!.pandemonium, { timeout: 12000 }).toBeUndefined();
+  await expect.poll(() => room.match!.pandemonium, { timeout: 24000 }).toBeUndefined();
   for (const client of [a,b]) {
     await expect(client.locator("canvas")).toHaveAttribute("data-pandemonium-tick", "-1");
     await expect(client.locator("canvas")).toHaveAttribute("data-p2-health", "666");

@@ -1,7 +1,7 @@
 import movement from "../data/xebec-animations.json";
 import { xebecNormals } from "../engine/xebec";
 import { xebecSpecialArt } from "../engine/xebec-specials";
-import { pandemoniumConfig, pandemoniumId } from "../engine/xebec-pandemonium";
+import { pandemoniumId } from "../engine/xebec-pandemonium";
 import type { AnimationClip, AnimationData } from "./animator";
 
 const clip = (sheet: string, frames: number[], durations: number[], loop = false): AnimationClip =>
@@ -55,7 +55,10 @@ export const xebecAnimations: AnimationData = {
     xebecExplosionRecover: rush([6, 4, 7], [6, 6, 6]),
     [pandemoniumId]: clip("pandemonium-combat", [0, 1, 7, 2], [14, 5, 10, 25]),
     pandemoniumScene: clip("pandemonium-combat", [1, 2, 3, 4, 5, 6, 7],
-      [10, 24, 26, 26, 49, 12, 55]),
-    pandemoniumOutro: cinema([9, 10, 11], [12, 10, pandemoniumConfig.duration - 224]),
+      [15, 18, 34, 39, 76, 15, 56]),
+    pandemoniumCommand: clip("justice-cel", [6, 0, 7], [10, 51, 110]),
+    pandemoniumApproach: clip("justice-cel", [7, 6, 1], [37, 27, 22]),
+    pandemoniumGate: clip("justice-cel", [1, 2, 1, 2, 1, 3, 4, 5, 6], [25, 6, 6, 8, 9, 15, 10, 15, 43]),
+    pandemoniumOutro: clip("justice-cel", [6, 7], [12, 104]),
   },
 };

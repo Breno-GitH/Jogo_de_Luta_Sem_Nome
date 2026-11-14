@@ -1,6 +1,6 @@
 import type { Match, HitEvent } from "../engine/combat";
 import type { CentipedeCue } from "../engine/kaneki-centipede";
-import { pandemoniumConfig } from "../engine/xebec-pandemonium";
+import { pandemoniumBeats } from "../engine/xebec-pandemonium";
 import { chainFinishes } from "../engine/kaneki-chain";
 export type Cue =
   | "swing"
@@ -22,6 +22,7 @@ export type Cue =
   | "chainEscape"
   | "chainWhoosh"
   | "chainImpact"
+  | "rocksGather" | "rocksSlash" | "rocksCrew" | "rocksGate" | "rocksRupture"
   | "round"
   | "fight"
   | "ko"
@@ -51,6 +52,7 @@ export function effectCue(event: HitEvent): Cue {
 }
 /** Original short synthesized sounds. No downloaded samples or autoplay. */
 export class Sound {
+  private rocksTick = -1;
   enabled = true;
   volume = 0.25;
   lastCue: Cue | "" = "";
@@ -300,6 +302,24 @@ export class Sound {
     else if (cue === "power") {
       tone(160, 650, 0.3, "sawtooth", 0.12);
       tone(330, 990, 0.28, "sine", 0.15);
+    } else if (cue === "rocksGather") {
+      tone(56, 139, 1.18, "triangle", .38);
+      tone(165, 522, .9, "sawtooth", .06, .38);
+    } else if (cue === "rocksSlash") {
+      tone(930, 96, .21, "sawtooth", .18);
+      tone(152, 29, .72, "triangle", .62, .035);
+    } else if (cue === "rocksCrew") {
+      tone(164, 155, .42, "triangle", .31);
+      tone(219, 196, .56, "triangle", .25, .18);
+      tone(311, 293, .59, "triangle", .22, .38);
+    } else if (cue === "rocksGate") {
+      tone(41, 75, .79, "triangle", .47);
+      tone(94, 61, .56, "sawtooth", .09, .36);
+    } else if (cue === "rocksRupture") {
+      tone(1450, 181, .18, "square", .12);
+      tone(149, 24, 1.03, "triangle", .72);
+      tone(73, 30, .74, "sawtooth", .17, .24);
+      tone(310, 63, .38, "triangle", .22, .43);
     } else if (cue === "round") {
       tone(440, 440, 0.11);
       tone(660, 660, 0.13, "triangle", 0.3, 0.14);
@@ -312,7 +332,16 @@ export class Sound {
     } else if (cue === "menu") tone(660, 880, 0.06, "sine", 0.15);
   }
   tick(match: Match, onlineRound?: string) {
-    this.setMusicDucked(!!match.pandemonium && match.pandemonium.tick < pandemoniumConfig.hits[0].tick);
+    const ticks = match.pandemonium?.tick ?? -1;
+    const beats = pandemoniumBeats;
+    this.setMusicDucked(ticks >= 0 && (ticks < beats.cut || ticks >= beats.rush && ticks < beats.rupture));
+    if (ticks >= 0 && ticks > this.rocksTick) {
+      const cues: [number, Cue][] = [[beats.lift, "rocksGather"], [beats.cut, "rocksSlash"],
+        [beats.crew, "rocksCrew"], [beats.gates, "rocksGate"], [beats.rupture, "rocksRupture"]];
+      for (const [at, cue] of cues)
+        if (at > this.rocksTick && at <= ticks) this.play(cue);
+    }
+    this.rocksTick = ticks;
     if (this.owner !== match) {
       this.owner = match;
       this.moves = ["", ""];

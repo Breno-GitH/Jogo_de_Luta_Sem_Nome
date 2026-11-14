@@ -25,34 +25,43 @@ const rect = (x: number, y: number, w: number, h: number): Rect => ({ x, y, w, h
 const sword = (ax: number, ay: number, bx: number, by: number, r = 10) =>
   ({ a: { x: ax, y: ay }, b: { x: bx, y: by }, r });
 const thrust = sword(34, -114, 110, -114, 11);
-const cut = sword(28, -107, 99, -97, 11);
 const rising = sword(30, -92, 81, -166, 15);
 
 type Grab = NonNullable<CharacterData["grabSequence"]>;
 type Wave = {
   tick: number; x: number; y: number; speed: number; vy: number;
   radius: number; life: number; damage: number; level: Move["level"]; push: number;
+  halfLength: number; slope: number; rank: number;
 };
 const waves = {
-  xebecRiftWave: { tick: 15, x: 80, y: -102, speed: 14, vy: 0, radius: 21, life: 28, damage: 59, level: "mid", push: 6 },
-  xebecLowWave: { tick: 18, x: 73, y: -26, speed: 16, vy: 0, radius: 15, life: 46, damage: 36, level: "low", push: 3.4 },
-  xebecMidWave: { tick: 29, x: 80, y: -91, speed: 14, vy: 0, radius: 19, life: 44, damage: 40, level: "mid", push: 4 },
-  xebecHighWave: { tick: 41, x: 70, y: -119, speed: 12, vy: -1.8, radius: 20, life: 44, damage: 45, level: "mid", push: 5 },
+  xebecSingleWave: { tick: 9, x: 94, y: -96, speed: 18, vy: 0, radius: 14, halfLength: 48, slope: -.24, life: 32, damage: 55, level: "mid", push: 5, rank: 1 },
+  xebecRiftWave: { tick: 14, x: 83, y: -100, speed: 16, vy: .48, radius: 15, halfLength: 55, slope: -.69, life: 40, damage: 42, level: "mid", push: 4, rank: 2 },
+  xebecRiftRise: { tick: 32, x: 85, y: -74, speed: 14, vy: -1.1, radius: 16, halfLength: 61, slope: .54, life: 43, damage: 48, level: "mid", push: 6, rank: 2 },
+  xebecLowWave: { tick: 16, x: 94, y: -91, speed: 17, vy: 0, radius: 15, halfLength: 57, slope: -.17, life: 46, damage: 35, level: "mid", push: 3.4, rank: 3 },
+  xebecMidWave: { tick: 35, x: 85, y: -104, speed: 15, vy: .43, radius: 16, halfLength: 65, slope: -.65, life: 48, damage: 39, level: "mid", push: 4.2, rank: 3 },
+  xebecHighWave: { tick: 55, x: 90, y: -76, speed: 14, vy: -1.35, radius: 18, halfLength: 81, slope: .64, life: 50, damage: 48, level: "mid", push: 7, rank: 3 },
 } satisfies Record<string, Wave>;
 type WaveId = keyof typeof waves;
 export function xebecProjectile(id: string): Wave | undefined {
   return Object.hasOwn(waves, id) ? waves[id as WaveId] : undefined;
 }
+export function xebecWaveVolume(wave: Wave, x: number, y: number, facing: number, radius: number) {
+  return {
+    a: { x: x - facing * wave.halfLength * wave.slope, y: y - wave.halfLength },
+    b: { x: x + facing * wave.halfLength * wave.slope, y: y + wave.halfLength },
+    r: radius,
+  };
+}
 export const xebecReleases: Partial<Record<XebecSpecial, readonly WaveId[]>> = {
-  xebecRift: ["xebecRiftWave"], xebecTriple: ["xebecLowWave", "xebecMidWave", "xebecHighWave"],
+  xebecCut: ["xebecSingleWave"], xebecRift: ["xebecRiftWave", "xebecRiftRise"], xebecTriple: ["xebecLowWave", "xebecMidWave", "xebecHighWave"],
 };
 export function xebecProjectileMove(id: string, powered: boolean): Move | undefined {
   const wave = xebecProjectile(id);
   if (!wave) return;
   return {
-    startup: 0, active: 1, recovery: 0, damage: wave.damage + (powered ? id === "xebecRiftWave" ? 13 : 6 : 0),
-    level: wave.level, box: rect(0, 0, 0, 0), rank: id === "xebecRiftWave" ? 2 : 3,
-    blockstun: 10, stun: id === "xebecRiftWave" ? 23 : 13,
+    startup: 0, active: 1, recovery: 0, damage: wave.damage + (powered ? wave.rank === 1 ? 13 : 6 : 0),
+    level: wave.level, box: rect(0, 0, 0, 0), rank: wave.rank,
+    blockstun: 10, stun: wave.rank === 1 ? 22 : 17,
     push: wave.push + (powered ? 1.3 : 0), launch: 0, hitstop: 4, cancels: [],
     comboHitLimit: 7, meterGain: 5,
   };
@@ -89,9 +98,9 @@ export const xebecSpecialArt: Record<XebecSpecial, Art> = {
   xebecThrust: art("gates", [0, 1, 2, 3], [7, 5, 4, 12]),
   xebecAscension: art("gates", [4, 0, 5, 6, 7, 3], [5, 6, 7, 6, 6, 17]),
   xebecGatebreaker: art("gates", [4, 0, 5, 6, 7, 3], [10, 6, 9, 8, 14, 19]),
-  xebecCut: art("abyss", [0, 1, 2, 7], [7, 5, 6, 11]),
-  xebecRift: art("abyss", [0, 2, 3, 5, 7], [8, 7, 6, 8, 16]),
-  xebecTriple: art("abyss", [0, 2, 4, 2, 5, 0, 6, 7], [10, 8, 7, 4, 8, 4, 7, 30]),
+  xebecCut: art("giant-cuts", [0, 1, 2, 7], [9, 6, 6, 14]),
+  xebecRift: art("giant-cuts", [0, 2, 3, 4, 5, 6, 7], [7, 7, 6, 7, 5, 7, 27]),
+  xebecTriple: art("giant-cuts", [0, 1, 2, 3, 4, 5, 6, 7], [16, 8, 11, 8, 7, 5, 7, 32]),
   xebecBrutal: art("rush", [0, 1, 2, 3, 7], [4, 4, 7, 4, 15]),
   xebecDominion: art("rush", [0, 5, 1, 2, 4, 6, 7], [5, 3, 3, 5, 5, 6, 23]),
   xebecExplosion: art("rush", [5, 0, 1, 2, 5, 6, 7], [8, 4, 4, 5, 7, 6, 34]),
@@ -142,9 +151,9 @@ export function makeXebecSpecials(standing: Rect[], crouching: Rect[]) {
         damage: 89, launch: -10, push: 12, stun: 33, knockdown: true,
       }),
     ], { drive: { from: 6, to: 20, speed: 9.6 }, stun: 29, push: 1.8, hitstop: 8 }),
-    xebecCut: move(1, 7, 12, 17, 56, [swing(0, 7, 12, cut)], { stun: 27, push: 2.8 }),
-    xebecRift: move(2, 15, 21, 24, 0, []),
-    xebecTriple: move(3, 18, 48, 30, 0, []),
+    xebecCut: move(1, 9, 15, 20, 0, []),
+    xebecRift: move(2, 14, 39, 27, 0, []),
+    xebecTriple: move(3, 16, 62, 32, 0, []),
     xebecBrutal: grabMove("xebecBrutal", 1),
     xebecDominion: grabMove("xebecDominion", 2),
     xebecExplosion: grabMove("xebecExplosion", 3),
@@ -172,12 +181,21 @@ export function xebecGripActive(id: string, tick: number) {
 export function xebecBladeAt(id: string, tick: number): { grip: Point; tip: Point } {
   if (gateGuard(id) && tick >= (id === "xebecThrust" ? 12 : id === "xebecAscension" ? 18 : 25))
     return { grip: { x: 30, y: -87 }, tip: { x: 75, y: -158 } };
-  if (gateGuard(id) || id === "xebecCut" || id === "xebecRift")
-    return { grip: { x: 29, y: -103 }, tip: { x: 96, y: -105 } };
-  if (id === "xebecTriple") {
-    if (tick >= 41) return { grip: { x: 34, y: -101 }, tip: { x: 74, y: -164 } };
-    if (tick >= 29) return { grip: { x: 26, y: -91 }, tip: { x: 99, y: -92 } };
-    if (tick >= 18) return { grip: { x: 22, y: -50 }, tip: { x: 87, y: -26 } };
+  if (gateGuard(id)) return { grip: { x: 29, y: -103 }, tip: { x: 108, y: -105 } };
+  if (isXebecSpecial(id) && xebecReleases[id]) {
+    const clip = xebecSpecialArt[id];
+    let elapsed = tick, frame = clip.frames[0];
+    for (let i = 0; i < clip.frames.length; i++) {
+      frame = clip.frames[i];
+      if (elapsed < clip.durations[i]) break;
+      elapsed -= clip.durations[i];
+    }
+    const anchors = [
+      [-33,-89,-74,-110], [22,-106,104,-104], [1,-124,43,-157], [24,-77,89,-40],
+      [-22,-55,-62,-91], [22,-74,64,-121], [40,-111,98,-173], [-22,-64,34,-20],
+    ];
+    const [x,y,tx,ty] = anchors[frame];
+    return { grip: { x,y }, tip: { x: tx,y: ty } };
   }
   return { grip: { x: -23, y: -61 }, tip: { x: 35, y: -17 } };
 }

@@ -1,6 +1,6 @@
 import type { Match } from "../engine/combat";
-import { pandemoniumConfig, pandemoniumScene, type PandemoniumState } from "../engine/xebec-pandemonium";
-import { gateGuard, isXebecSpecial, xebecBladeAt, xebecGrapple, xebecProjectile } from "../engine/xebec-specials";
+import { pandemoniumBeats, pandemoniumConfig, pandemoniumScene, type PandemoniumState } from "../engine/xebec-pandemonium";
+import { gateGuard, isXebecSpecial, xebecBladeAt, xebecGrapple, xebecProjectile, xebecWaveVolume } from "../engine/xebec-specials";
 import type { Fighter } from "../engine/combat";
 import { hakiBolt, hakiBurst } from "./xebec-haki-fx";
 
@@ -146,7 +146,22 @@ export function drawXebecSpecials(c: CanvasRenderingContext2D, match: Match, eff
       const origin = { x: id === "xebecDominion" ? 27 : 0, y: -52 };
       const reach = grip.reach * Math.min(1, .62 + .38 * release / Math.max(1, grip.active - 1));
       if (id === "xebecDominion") edge(c, 25 + reach * .65, -63, 0, reach * .36, 46);
-      else ring(c, 0, -52, reach, .58);
+      else {
+        for (const side of [-1, 1]) {
+          for (let band = 0; band < (move.rank === 3 ? 3 : 2); band++) {
+            const d = reach * (1 - band * .18) * side;
+            const y = -49 + band * 12;
+            path(c, [[d * .23, y + 12], [d * .59, y - 20], [d, y - 9],
+              [d * .79, y + 3], [d * .93, y + 13], [d * .61, y + 8], [d * .36, y + 22]]);
+            c.closePath();
+            c.fillStyle = wine;
+            c.fill();
+            c.strokeStyle = red;
+            c.lineWidth = 2;
+            c.stroke();
+          }
+        }
+      }
       hakiBurst(c, t, origin, reach * power, Math.min(8, 2 + move.rank * 2), 94);
     } else if (grip) {
       haki(c, t, 19, -93, 38 * power, -8, 3);
@@ -171,19 +186,46 @@ export function drawXebecSpecials(c: CanvasRenderingContext2D, match: Match, eff
     c.translate(Math.round(p.x), Math.round(p.y));
     c.scale(p.facing, 1);
     if (p.state === "flight") {
-      const high = p.move === "xebecHighWave", low = p.move === "xebecLowWave";
-      edge(c, 0, 0, high ? -.36 : low ? 1.12 : .14, p.radius * (low ? 1.45 : 1), p.radius * (low ? .7 : 1.45));
+      const {a, b} = xebecWaveVolume(wave, 0, 0, 1, p.radius);
+      const radius = p.radius;
+      const slope = wave.slope;
+      const leading = (y: number) => y * slope + radius * (1 - (y / wave.halfLength) ** 2);
+      const y0 = a.y, y1 = b.y;
       if (effects) {
-        c.globalAlpha = p.xebecPowered ? .96 : .74;
-        hakiBolt(c, p.age, p.id * 13, { x: 5, y: 0 }, { x: -p.radius * 2.3, y: high ? 18 : low ? -6 : -12 }, p.xebecPowered ? 5 : 3);
+        c.fillStyle = p.xebecPowered ? "#fb294753" : "#d0213e29";
+        for (let i = 0; i < 5; i++) {
+          const y = y0 + (i + 1) * (y1 - y0) / 6;
+          c.fillRect(Math.round(leading(y)) - 44 - i % 3 * 12, Math.round(y), 61, 3 + i % 2 * 3);
+        }
+      }
+      path(c, [[a.x - radius * 2.4, y0 - 5], [a.x + radius * .65, y0 + 7],
+        [leading(y0 * .46) + 6, y0 * .46], [radius * 1.15, -4], [radius * .85, 9],
+        [leading(y1 * .51) + 5, y1 * .51], [b.x + radius * .15, y1 - 4], [b.x - radius * 2, y1 + 8],
+        [leading(y1 * .43) - radius * 1.2, y1 * .43], [-radius * .65, 5],
+        [leading(y0 * .43) - radius * .9, y0 * .43], [a.x - radius * .95, y0 + 11]]);
+      c.closePath();
+      c.fillStyle = "#140f1f";
+      c.fill();
+      c.strokeStyle = p.xebecPowered ? "#ff8791" : "#ff3d60";
+      c.lineWidth = p.xebecPowered ? 5 : 3;
+      c.stroke();
+      if (effects) {
+        c.globalAlpha = p.xebecPowered ? .96 : .77;
+        hakiBolt(c, p.age, p.id * 13, { x: a.x, y: y0 + 5 }, { x: radius * .7, y: 1 }, p.xebecPowered ? 7 : 4);
+        hakiBolt(c, p.age, p.id * 31, { x: radius * .6, y: -4 }, { x: b.x, y: y1 - 7 }, 5);
+        hakiBolt(c, p.age, p.id * 57, { x: 3, y: 5 }, { x: -radius * 3.4, y: y0 * .62 }, 3);
       }
       if (debug) {
-        c.strokeStyle = "#ff8797";
-        c.lineWidth = 1;
-        c.strokeRect(-p.radius, -p.radius, p.radius * 2, p.radius * 2);
+        c.globalAlpha = .35;
+        c.strokeStyle = "#91ffe0";
+        c.lineCap = "round";
+        c.lineWidth = radius * 2;
+        path(c, [[a.x, a.y], [b.x, b.y]]);
+        c.stroke();
       }
     } else if (effects) {
       c.globalAlpha = Math.max(0, 1 - p.impactAge / 10);
+      hakiBurst(c, p.impactAge, { x: 0, y: 0 }, 37 + p.impactAge * 3, wave.rank + 2, p.id * 17);
       shards(c, p.impactAge, 1, 13);
     }
     c.restore();
@@ -269,6 +311,24 @@ export function drawPandemoniumStrike(c: CanvasRenderingContext2D, s: Pandemoniu
     hakiBurst(c, t, { x: 83, y: -70 }, Math.min(215, 59 + age * 7), 9, 841, 27);
     c.translate((b.x - a.x) * s.facing, b.y - a.y - 59);
     shards(c, age, 1, 27);
+  }
+  if (t >= pandemoniumBeats.rush && t < pandemoniumBeats.rupture) {
+    const sprint = t - 533;
+    c.globalAlpha = .78;
+    hakiBolt(c, t, 918, {x: -29, y: -119}, {x: 70, y: -81}, 6);
+    hakiBolt(c, t, 212, {x: 14, y: -81}, {x: 114, y: -102}, 8);
+    if (sprint >= 0) {
+      for (let i = 0; i < 11; i++) {
+        const length = 17 + (i * 23 + sprint * 5) % 106;
+        c.fillStyle = i % 3 ? "#bc394c74" : "#fff0b596";
+        c.fillRect(-19 - i * 13 - length, -16 - i * 13, length, 2 + i % 4);
+      }
+    }
+  }
+  if (t >= pandemoniumBeats.aftermath && t < pandemoniumBeats.return) {
+    c.globalAlpha = (1 - (t - pandemoniumBeats.aftermath) / 85) * .72;
+    hakiBolt(c, t, 588, {x: -29, y: -120}, {x: 53, y: -123}, 4);
+    hakiBolt(c, t, 693, {x: -25, y: -37}, {x: -59, y: -4}, 3);
   }
   if (t >= 202 && t < 241) {
     c.globalAlpha = (241 - t) / 60;
