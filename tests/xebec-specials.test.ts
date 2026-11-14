@@ -4,6 +4,7 @@ import { characters } from "../src/engine/characters";
 import { hashState, restore, snapshot } from "../src/engine/state";
 import { neutral, type InputFrame } from "../src/engine/types";
 import { justiceBeats, pandemoniumBeats, pandemoniumConfig, pandemoniumScene } from "../src/engine/xebec-pandemonium";
+import { pandemoniumPrelude, pandemoniumBladeClips } from "../src/engine/xebec-pandemonium-acts";
 import { kingWill, xebecPressure, xebecProjectile, xebecReleases, xebecSpecialArt } from "../src/engine/xebec-specials";
 
 import { compatibleConquerorReleases } from "../src/engine/conqueror-haki";
@@ -222,6 +223,24 @@ describe("Xebec's redesigned specials", () => {
     const at = (tick: number) => pandemoniumScene({ ...state, tick });
     const active = (tick: number) => at(tick).rocks.filter(a => a.opacity > .5);
     expect(active(beats.newgate - 1)).toHaveLength(0);
+    expect(pandemoniumPrelude.map(({ tick }) => at(tick).phase)).toEqual(["horizontal", "diagonal", "cross", "rising"]);
+    expect(at(beats.uppercut + 10).victim.y).toBeLessThan(500);
+    expect(at(beats.apex).victim.y).toBeLessThan(at(beats.lift).victim.y);
+    expect(at(beats.lift).victim.y).toBeLessThan(at(beats.cut).victim.y);
+    expect(at(beats.lift).attacker.clip).toBe("pandemoniumDescent");
+    expect(Math.abs(at(beats.lift).attacker.x - at(beats.lift).victim.x)).toBeLessThan(70);
+    expect(at(beats.cut).attacker.tick).toBe(
+      pandemoniumBladeClips.pandemoniumDescent.durations.slice(0, 5).reduce((a, b) => a + b, 0),
+    );
+    expect(at(beats.cut).victim.tick).toBe(0);
+    expect(at(beats.reveal - 1).prometheus).toBeUndefined();
+    const sun = at(beats.soul).prometheus!;
+    expect(sun.jet).toBe(1);
+    expect(sun.cel).toBeGreaterThanOrEqual(5);
+    expect(sun.size).toBeGreaterThan(at(beats.reveal + 10).prometheus!.size * 1.5);
+    expect(sun.aimX).toBe(at(beats.soul).victim.x);
+    expect(sun.aimY).toBe(at(beats.soul).victim.y - 94);
+    expect(at(beats.regroup).prometheus).toBeUndefined();
     expect(active(beats.quake).map(a => a.member)).toEqual(["newgate"]);
     expect(active(beats.club).map(a => a.member)).toEqual(["kaido"]);
     expect(active(beats.soul).map(a => a.member)).toEqual(["linlin"]);
@@ -256,11 +275,13 @@ describe("Xebec's redesigned specials", () => {
     expect(p.hits).toHaveLength(0);
     expect(p.b.health).toBe(1000);
     const restored = restore(snapshot(p.m));
-    for (let t=0;t<pandemoniumConfig.duration+24;t++) {
+    const holds = [...pandemoniumPrelude, ...pandemoniumConfig.hits].reduce((sum, beat) => sum + beat.hold, 4);
+    for (let t = 0; t < pandemoniumConfig.duration + holds; t++) {
       p.step(); restored.step([neutral(),neutral()]);
       expect(hashState(snapshot(restored))).toBe(hashState(snapshot(p.m)));
       const tick = p.m.pandemonium?.tick;
-      if (tick !== undefined && tick >= pandemoniumBeats.crew && tick < pandemoniumBeats.rupture)
+      if (tick !== undefined && tick < pandemoniumBeats.cut) expect(p.b.health).toBe(1000);
+      if (tick !== undefined && tick >= pandemoniumBeats.cut && tick < pandemoniumBeats.rupture)
         expect(p.b.health).toBe(868);
     }
     expect(p.hits).toEqual([

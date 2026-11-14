@@ -34,6 +34,7 @@ import { luffyAttackLimbs, luffySpecialCommand } from "./luffy-specials";
 import { xebecId } from "./xebec";
 import { isXebecSpecial, kingWill, xebecBladeAt, xebecPressure, xebecPressureVolumes,
   xebecProjectile, xebecProjectileMove, xebecReleases, xebecRisingSweep, xebecSpecialCommand, xebecWaveVolume } from "./xebec-specials";
+import { pandemoniumPrelude } from "./xebec-pandemonium-acts";
 import { canStartPandemonium, pandemoniumConfig, pandemoniumId, pandemoniumScene, type PandemoniumState } from "./xebec-pandemonium";
 import {
   isSasukeSpecial, sasukeSpecialBalance, sasukeSpecialCommand, sasukeSpecialContact,
@@ -2965,6 +2966,10 @@ export class Match {
       a = this.fighters[s.attacker],
       b = this.fighters[s.victim];
     this.stageSuper();
+    if (pandemonium) {
+      const beat = pandemoniumPrelude.find(contact => contact.tick === t);
+      if (beat) pandemonium.hold = beat.hold;
+    }
     if (kirin && (t === kirinConfig.phases.storm || t === kirinConfig.phases.reveal || t === kirinConfig.phases.dive))
       this.effect("kirinCharge", a.x, a.y - 130, 9);
     const cue = centipede && centipedePhaseCue(t);

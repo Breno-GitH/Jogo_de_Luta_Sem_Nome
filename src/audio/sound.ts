@@ -1,6 +1,7 @@
 import type { Match, HitEvent } from "../engine/combat";
 import type { CentipedeCue } from "../engine/kaneki-centipede";
 import { kingWill, xebecPressure } from "../engine/xebec-specials";
+import { pandemoniumPrelude } from "../engine/xebec-pandemonium-acts";
 import { pandemoniumBeats } from "../engine/xebec-pandemonium";
 import { chainFinishes } from "../engine/kaneki-chain";
 export type Cue =
@@ -24,6 +25,7 @@ export type Cue =
   | "chainWhoosh"
   | "chainImpact"
   | "hakiPulse" | "hakiSovereign" | "hakiKing"
+  | "rocksCut" | "rocksLift" | "solarIgnition" | "solarSurge"
   | "rocksGather" | "rocksSlash" | "rocksCrew" | "rocksNewgate" | "rocksKaido" | "rocksLinlin" | "rocksGate" | "rocksRupture"
   | "round"
   | "fight"
@@ -314,6 +316,19 @@ export class Sound {
       tone(87,25,.83,"triangle",.62);
       tone(621,125,.29,"sawtooth",.14,.05);
       tone(245,51,.54,"sine",.27,.16);
+    } else if (cue === "rocksCut") {
+      tone(880, 224, .12, "sawtooth", .11);
+      tone(131, 51, .2, "triangle", .28);
+    } else if (cue === "rocksLift") {
+      tone(213, 881, .20, "triangle", .32);
+      tone(163, 66, .26, "sawtooth", .13);
+    } else if (cue === "solarIgnition") {
+      tone(330, 573, .45, "sine", .22);
+      tone(417, 869, .32, "triangle", .16, .08);
+    } else if (cue === "solarSurge") {
+      tone(234, 49, .48, "triangle", .43);
+      tone(706, 123, .53, "sawtooth", .16);
+      tone(911, 218, .26, "sine", .26, .12);
     } else if (cue === "rocksGather") {
       tone(56, 139, 1.18, "triangle", .38);
       tone(165, 522, .9, "sawtooth", .06, .38);
@@ -360,10 +375,12 @@ export class Sound {
     const ticks = match.pandemonium?.tick ?? -1;
     const beats = pandemoniumBeats;
     const kingSilence = !match.cinematicActive && match.fighters.some(f => f.moveId === kingWill && f.state === "attack" && f.stateFrame < 43);
-    this.setMusicDucked(kingSilence || ticks >= 0 && (ticks < beats.cut || ticks >= beats.flight && ticks < beats.quake || ticks >= beats.rush && ticks < beats.rupture));
+    this.setMusicDucked(kingSilence || ticks >= 0 && (ticks >= beats.uppercut && ticks < beats.cut || ticks >= beats.flight && ticks < beats.quake || ticks >= beats.rush && ticks < beats.rupture));
     if (ticks >= 0 && ticks > this.rocksTick) {
-      const cues: [number, Cue][] = [[beats.lift, "rocksGather"], [beats.cut, "rocksSlash"],
-        [beats.quake, "rocksNewgate"], [beats.club, "rocksKaido"], [beats.soul, "rocksLinlin"],
+      const cues: [number, Cue][] = [...pandemoniumPrelude.map(({ tick, angle }): [number, Cue] =>
+        [tick, angle === "rising" ? "rocksLift" : "rocksCut"]), [beats.lift, "rocksGather"], [beats.cut, "rocksSlash"],
+        [beats.quake, "rocksNewgate"], [beats.club, "rocksKaido"], [beats.reveal, "rocksLinlin"],
+        [beats.flare, "solarIgnition"], [beats.soul, "solarSurge"],
         [beats.regroup, "rocksCrew"], [beats.gates, "rocksGate"], [beats.rupture, "rocksRupture"]];
       for (const [at, cue] of cues)
         if (at > this.rocksTick && at <= ticks) this.play(cue);

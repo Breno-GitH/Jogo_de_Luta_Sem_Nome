@@ -155,6 +155,8 @@ async function observe(p: Page) {
           zoom: canvas.dataset.cameraZoom,
           chain: canvas.dataset.chainFinish,
           chainHeight: canvas.dataset.chainHeight,
+          pandemonium: canvas.dataset.pandemoniumPhase,
+          prometheus: canvas.dataset.prometheusCel,
           centipede: canvas.dataset.centipedePhase,
           centipedeSource: canvas.dataset.centipedeSource,
           knuckle: canvas.dataset.knucklePose,
@@ -1365,11 +1367,16 @@ test("Xebec resolves all nine specials and Pandemonium on both clients", async (
   for (const client of [a,b])
     await expect(client.locator("canvas")).toHaveAttribute("data-capture", "pandemonium");
   await expect.poll(() => room.match!.fighters[1].health, { timeout: 12000 }).toBe(868);
-  for (const phase of ["newgate", "kaido", "linlin", "rocks"]) {
-    await Promise.all([a, b].map(client => expect(client.locator("canvas"))
-      .toHaveAttribute("data-pandemonium-phase", phase, { timeout: 8500 })));
-    expect(room.match!.fighters[1].health).toBe(868);
-  }
+  const phases = ["horizontal", "diagonal", "cross", "rising", "falling", "pandemonium",
+    "newgate", "kaido", "linlin", "prometheus", "prometheus-fire", "rocks"];
+  // Read the observed simulation history so a short chapter is still checked
+  // when Chromium skips a paint or Playwright's locator poll arrives late.
+  await expect.poll(async () => Promise.all([a, b].map(client => client.evaluate(keys => {
+    const samples = Object.values((window as any).netRecords) as
+      { pandemonium: string; prometheus: string; p2: string }[];
+    return keys.every(key => samples.some(s => s.pandemonium === key &&
+      (key.startsWith("prometheus") ? Number(s.prometheus) >= 0 && s.p2 === "868" : true)));
+  }, phases))), { timeout: 24000 }).toEqual([true, true]);
   await consistent();
   await expect.poll(() => room.match!.pandemonium, { timeout: 24000 }).toBeUndefined();
   for (const client of [a,b]) {

@@ -52,9 +52,10 @@ async function distance(page, max) {
   } finally { await page.keyboard.up(state.key); }
 }
 
-test("plays Xebec in the training arena and captures Pandemonium", async ({ page }, info) => {
+async function pandemoniumTest({ page }, info) {
   test.setTimeout(110000);
   const { canvas, failures } = await start(page, "training");
+  if (info.title.endsWith("without Haki FX")) await page.locator("#xebec-fx").uncheck();
   await page.locator("#infinite-health").uncheck();
   await page.locator("#unlimited-meter").uncheck();
   await page.locator("#fill-meter").click();
@@ -91,16 +92,17 @@ test("plays Xebec in the training arena and captures Pandemonium", async ({ page
   await canvas.focus();
   await page.keyboard.press("r", { delay: 36 });
   await expect(canvas).toHaveAttribute("data-capture", "pandemonium");
-  const frameAt = tick => page.waitForFunction(t => Number(document.querySelector("canvas").dataset.pandemoniumTick) >= t, tick);
-  await frameAt(43);
-  await expect(canvas).toHaveAttribute("data-target-health", String(hp));
-  await canvas.screenshot({ path: info.outputPath("pandemonium-sorriso.png") });
-  for (const [tick, title] of [[80, "eclipse"], [132, "preparacao"], [154, "aceleracao"],
-    [163, "corte"], [193, "lancamento"], [260, "entrada-barba-branca"], [304, "barba-branca"],
-    [368, "kaido-aereo"], [453, "linlin"], [511, "piratas-rocks"], [561, "transicao"],
-    [618, "portoes"], [750, "ruptura"], [849, "pose-final"]]) {
-    await frameAt(tick);
-    await canvas.screenshot({ path: info.outputPath("pandemonium-" + title + ".png") });
+  await captureAt(page, info, "pandemonium-horizontal", { pandemoniumTick: 6, pandemoniumPhase: "horizontal" });
+  for (const [tick, title] of [
+    [22, "diagonal"], [37, "cruzado"], [54, "ascendente"], [92, "apice"],
+    [115, "preparacao"], [132, "aceleracao"], [138, "corte"], [163, "lancamento"],
+    [237, "entrada-barba-branca"], [275, "barba-branca"], [345, "kaido-aereo"], [392, "linlin"],
+    [413, "prometheus"], [441, "comando"], [454, "fogo"], [481, "recuo-prometheus"],
+    [524, "piratas-rocks"], [558, "transicao"], [618, "portoes"], [750, "ruptura"], [849, "pose-final"],
+  ]) {
+    await captureAt(page, info, "pandemonium-" + title, { pandemoniumTick: tick });
+    if (tick === 115) await expect(canvas).toHaveAttribute("data-target-health", String(hp));
+    if (tick === 163 || tick === 481) await expect(canvas).toHaveAttribute("data-target-health", String(hp - 132));
   }
   await expect(canvas).toHaveAttribute("data-pandemonium-tick", "-1", { timeout: 24000 });
   await expect(canvas).toHaveAttribute("data-camera-zoom", "1");
@@ -109,7 +111,10 @@ test("plays Xebec in the training arena and captures Pandemonium", async ({ page
   await page.keyboard.press("j");
   await expect(canvas).toHaveAttribute("data-move", "stand_light");
   expect(failures).toEqual([]);
-});
+}
+
+test("plays Xebec in the training arena and captures Pandemonium", pandemoniumTest);
+test("captures Pandemonium body movement without Haki FX", pandemoniumTest);
 
 async function kingWillTest({ page }, info) {
   test.setTimeout(100000);

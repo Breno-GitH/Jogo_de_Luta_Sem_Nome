@@ -77,7 +77,7 @@ function justiceScene(s: PandemoniumState, t: number) {
   const view = 640 / scale;
   const center = gateClose ? attacker.x + sign * 109 : 640;
   return {
-    phase, attacker, victim, justiceTick: t, rocks: finaleCrew,
+    phase, attacker, victim, justiceTick: t, rocks: finaleCrew, prometheus: undefined,
     split: 0, darkness: 0,
     fracture: ease(b.rupture, b.aftermath + 25),
     ocean: ease(b.gates, b.gates + 23) * (1 - exiting),
