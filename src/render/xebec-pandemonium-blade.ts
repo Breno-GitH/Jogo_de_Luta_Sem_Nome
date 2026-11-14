@@ -52,29 +52,17 @@ export function drawPandemoniumBlade(c: CanvasRenderingContext2D, t: number, sce
     if (prelude) {
       const arcAge = t - prelude.tick;
       c.globalAlpha = 1 - arcAge / 9;
-      const { grip, tip } = blade;
-      const swing = prelude.angle === "horizontal" ? [-31,-132,116,-116] :
-        prelude.angle === "diagonal" ? [35,-206,131,-57] :
-        prelude.angle === "cross" ? [-13,-68,122,-149] : [113,-26,153,-166];
-      c.beginPath();
-      c.moveTo(grip.x, grip.y);
-      c.quadraticCurveTo(swing[0], swing[1], tip.x, tip.y);
-      c.quadraticCurveTo(swing[2], swing[3], tip.x + 14, tip.y + 4);
-      c.quadraticCurveTo(swing[0] * .65, swing[1] * .82, grip.x, grip.y);
-      c.closePath();
-      c.fillStyle = "#170a1ce0";
-      c.strokeStyle = "#f74b69";
-      c.lineWidth = prelude.angle === "rising" ? 4 : 3;
-      c.fill();
-      c.stroke();
-      hakiBolt(c, t, prelude.tick * 13, tip, point(swing[2], swing[3]), 3.5);
+      const { tip } = blade;
+      const exit = prelude.angle === "horizontal" ? point(157, -106) :
+        prelude.angle === "diagonal" ? point(131, -57) :
+        prelude.angle === "cross" ? point(122, -149) : point(153, -166);
+      hakiBolt(c, t, prelude.tick * 13, tip, exit, 4);
     }
     c.restore();
   }
   if (age < 0) return;
 
-  // Anchor the afterimage to the blade at contact, then propagate it through
-  // the arena. The artist's blade always keeps its own opaque silver edge.
+  // Preserve the silver silhouette. The branches extend from the contact and tip.
   const x = scene.victim.x - actor.facing * Math.min(age, 28) * 1.8;
   const y = 483;
   c.save();
@@ -86,21 +74,14 @@ export function drawPandemoniumBlade(c: CanvasRenderingContext2D, t: number, sce
   }
   c.translate(actor.x, actor.y);
   c.scale(actor.facing, 1);
-  for (let i = 0; i < 3; i++) {
-    const spread = age * (4.7 + i * 1.9);
-    const base = 44 + spread;
-    c.beginPath();
-    c.moveTo(base - 27, -195 - i * 8);
-    c.bezierCurveTo(base + 107, -155 - i * 14, base + 138, -68 + i * 7, base + 19, -27 + i * 8);
-    c.quadraticCurveTo(base + 152, -16 + i * 4, base + 182 + i * 21, -48 - i * 11);
-    c.quadraticCurveTo(base + 154, -126 - i * 6, base - 27, -195 - i * 8);
-    c.fillStyle = ["#170915c4", "#74355253", "#aa6d7741"][i];
-    c.fill();
-    c.strokeStyle = ["#ed4668", "#a71e49", "#fbbda5"][i];
-    c.lineWidth = 5 - i * 1.6;
-    c.stroke();
+  if (blade && age < 17) {
+    c.globalAlpha = .84 * (1 - ease(age, 5, 17));
+    const tip = blade.tip;
+    hakiBolt(c, t, 461, tip, point(tip.x + 56 + age * 6, tip.y - 49 - age), 6);
+    hakiBolt(c, t, 773, tip, point(tip.x + 40 + age * 5, tip.y + 13 + age), 5);
   }
-  for (let i = 0; i < 29; i++) {
+  c.globalAlpha = (1 - ease(age, 3, 27)) * .51;
+  for (let i = 0; i < 16; i++) {
     const px = 77 + i * 5 + age * (2 + i % 8 * .62);
     const py = -16 - (i * 13 % 79) - age * (2 + i % 5) + age * age * .132;
     c.fillStyle = ["#ffe6ae", "#ac2d55", "#502538"][i % 3];

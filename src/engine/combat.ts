@@ -132,7 +132,8 @@ export class Fighter {
   gokuCastSerial = 0;
   sasukeCurse?: SasukeCurseState;
   omnitrix?: OmnitrixState;
-  domination?: { charge: number; powered: boolean; awarded: boolean; spentFrame?: number; cast: number; lastWaveCredit: number };
+  domination?: { charge: number; powered: boolean; awarded: boolean; spentFrame?: number;
+    cast: number; lastWaveCredit: number; finishingPressure?: { frame: number; tick: number } };
   kirinCursed?: boolean;
   homeX: number;
   guardIntent = false;
@@ -3614,6 +3615,11 @@ export class Match {
       } else {
         this.wins[winner]++;
         this.message = this.timer <= 0 ? "TEMPO ESGOTADO" : "K.O.";
+      }
+      if (winner === 0 || winner === 1) {
+        const source = this.fighters[winner], target = this.fighters[1 - winner];
+        if (source.domination && source.moveId === kingWill && target.hakiReaction === "collapse")
+          source.domination.finishingPressure = { frame: this.frame, tick: source.stateFrame };
       }
       this.fighters.forEach((f, i) => {
         f.vx = f.vy = 0;

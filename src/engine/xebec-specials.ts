@@ -72,7 +72,7 @@ export const xebecSpecialArt: Record<XebecSpecial, Art> = {
   xebecTriple: art("eclipse-ruptures", [8,9,4,5,6,11,2,3], [19,10,12,11,11,9,9,27]),
   xebecPulse: art("haki-pressure", [0,1,2,3], [4,5,7,16]),
   xebecSovereign: art("haki-pressure", [4,5,6,7], [7,10,11,25]),
-  xebecKingWill: art("haki-pressure", [8,9,10,11], [12,22,16,27]),
+  xebecKingWill: art("king-will-body", [0,1,2,3,4,5,6,7], [6,9,11,8,10,12,14,28]),
 };
 
 type HakiRelease = { kind: "burst" | "conqueror"; release: number; active: number; radius: number; height: number };
@@ -88,7 +88,8 @@ export function xebecPressure(id: string): HakiRelease | undefined {
 
 export function xebecPressureReach(p: HakiRelease, tick: number) {
   const age = Math.max(0, Math.min(1, (tick - p.release) / (p.active - 1)));
-  return p.radius * (.36 + .64 * (1 - (1 - age) ** 2));
+  const initial = p.kind === "conqueror" ? .12 : .36;
+  return p.radius * (initial + (1 - initial) * (1 - (1 - age) ** 2));
 }
 
 // Three horizontal capsule bands approximate the visible low ellipse without
@@ -181,6 +182,6 @@ export function makeXebecSpecials(standing: Rect[], crouching: Rect[]): Record<X
     xebecTriple: move("xebecTriple", 3, 19, 72, [], {}),
     xebecPulse: burst("xebecPulse", 1, 45, 5.5, 16),
     xebecSovereign: burst("xebecSovereign", 2, 71, 8, 20),
-    xebecKingWill: burst(kingWill, 3, 123, 7.5, 24),
+    xebecKingWill: burst(kingWill, 3, 123, 4.5, 24),
   };
 }
