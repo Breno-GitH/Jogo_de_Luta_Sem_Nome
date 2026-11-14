@@ -6,7 +6,8 @@ async function start(page, mode, opponent = "Samurai") {
   page.on("response", response => {
     if (response.status() >= 400 && response.url().includes("/sprites/xebec/")) failures.push(response.url());
   });
-  await page.goto("./", { waitUntil: "domcontentloaded", timeout: 35000 });
+  const response = await page.goto("./", { waitUntil: "domcontentloaded", timeout: 35000 });
+  expect(response?.status()).toBe(200);
   await page.locator("#" + mode).click();
   await page.getByRole("radio", { name: "Selecionar Rocks D. Xebec" }).check();
   await page.locator("#confirm-character").click();
@@ -21,13 +22,18 @@ async function start(page, mode, opponent = "Samurai") {
   return { canvas, failures };
 }
 async function distance(page, max) {
-  await page.keyboard.down("d");
+  const state = await page.locator("canvas").evaluate(c => {
+    const delta = Number(c.dataset.rivalX) - Number(c.dataset.rootX);
+    return { gap: Math.abs(delta), key: delta < 0 ? "a" : "d" };
+  });
+  if (state.gap <= max) return;
+  await page.keyboard.down(state.key);
   try {
     await page.waitForFunction(max => {
       const d = document.querySelector("canvas").dataset;
       return Math.abs(Number(d.rivalX) - Number(d.rootX)) <= max;
     }, max);
-  } finally { await page.keyboard.up("d"); }
+  } finally { await page.keyboard.up(state.key); }
 }
 
 test("plays Xebec in the training arena and captures Pandemonium", async ({ page }, info) => {
@@ -96,16 +102,17 @@ test("shows persistent Haki and spends it on a J special", async ({ page }, info
   }
   // Six normal L strikes are 84 points. A connected special fills the rest.
   await page.keyboard.press("s", { delay: 44 });
-  await page.keyboard.down("a");
+  const back = await canvas.evaluate(c => Number(c.dataset.rootX) < Number(c.dataset.rivalX) ? "a" : "d");
+  await page.keyboard.down(back);
   try { await page.keyboard.press("j", { delay: 35 }); }
-  finally { await page.keyboard.up("a"); }
+  finally { await page.keyboard.up(back); }
   await expect(canvas).toHaveAttribute("data-xebec-charge", "full");
   await expect(canvas).toHaveAttribute("data-physics-state", "idle");
   await canvas.screenshot({ path: info.outputPath("haki-idle.png") });
-  await page.keyboard.down("a");
+  await page.keyboard.down(back);
   await expect(canvas).toHaveAttribute("data-animation", "walkBack");
   await canvas.screenshot({ path: info.outputPath("haki-recuo.png") });
-  await page.keyboard.up("a");
+  await page.keyboard.up(back);
   await page.keyboard.press("w");
   await expect(canvas).toHaveAttribute("data-animation", "jumpRise");
   await expect(canvas).toHaveAttribute("data-xebec-charge", "full");

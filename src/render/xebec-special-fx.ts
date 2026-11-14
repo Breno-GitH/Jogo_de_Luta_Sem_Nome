@@ -95,13 +95,17 @@ export function drawXebecCharge(c: CanvasRenderingContext2D, f: Fighter, frame: 
   const crouched = f.crouching || f.state === "landing";
   const shoulder = f.airborne ? -89 : crouched ? -79 : -116;
   const fold = f.state === "dash" || gateGuard(f.moveId) && f.state === "attack" ? 13 : 0;
-  const hand = f.state === "attack" && f.attackPhase === "active" && !f.move?.super ?
+  const hand = f.state === "attack" && f.attackPhase === "active" && !f.move?.super &&
+    !xebecGrapple(f.moveId) ?
     f.attackShapes().map(shape => "a" in shape ? shape.b : { x: shape.x + (f.facing > 0 ? shape.w : 0), y: shape.y + shape.h / 2 })[0] : undefined;
   const forearm = hand ? { x: (hand.x - f.x) * f.facing, y: hand.y - f.y } : { x: 34 + fold, y: shoulder - 4 };
   c.save();
   c.translate(Math.round(f.x), Math.round(f.y));
   c.scale(f.facing, 1);
   c.globalAlpha = charge.powered ? .92 : .62 + .19 * Math.sin(frame * .13);
+  c.fillStyle = "rgba(200,28,61,.16)";
+  path(c, [[-26 + fold, shoulder + 2], [-48, shoulder + 24], [-44, shoulder + 50], [-23, shoulder + 18]]);
+  c.fill();
   hakiBolt(c, frame, 29, { x: -23 + fold, y: shoulder + 8 }, { x: -51, y: shoulder + 42 }, 3);
   hakiBolt(c, frame, 73, { x: 11 + fold, y: shoulder + 13 }, forearm, 3);
   hakiBolt(c, frame, 162, blade.grip, blade.tip, charge.powered ? 5 : 3);
@@ -140,7 +144,7 @@ export function drawXebecSpecials(c: CanvasRenderingContext2D, match: Match, eff
       const release = t - grip.blast, max = grip.active + 7;
       c.globalAlpha = Math.max(0, 1 - release / max);
       const origin = { x: id === "xebecDominion" ? 27 : 0, y: -52 };
-      const reach = Math.min(grip.reach, 25 + release * 12);
+      const reach = grip.reach * Math.min(1, .62 + .38 * release / Math.max(1, grip.active - 1));
       if (id === "xebecDominion") edge(c, 25 + reach * .65, -63, 0, reach * .36, 46);
       else ring(c, 0, -52, reach, .58);
       hakiBurst(c, t, origin, reach * power, Math.min(8, 2 + move.rank * 2), 94);
@@ -259,7 +263,7 @@ export function drawPandemoniumStrike(c: CanvasRenderingContext2D, s: Pandemoniu
   }
   if (age >= 0 && age < 44) {
     c.globalAlpha = Math.min(1, (44 - age) / 22);
-    edge(c, 68 + age * 4, -133 - age * 1.2, .4, 83 + age * 3, 108 + age * 2);
+    edge(c, 96 + age * 4, -132 - age * 1.2, .52, 93 + age * 3, 110 + age * 2);
     haki(c, t, 63, -78, 185 + 5 * age, -97);
     ring(c, 83, -3, 45 + age * 6, .12);
     hakiBurst(c, t, { x: 83, y: -70 }, Math.min(215, 59 + age * 7), 9, 841, 27);

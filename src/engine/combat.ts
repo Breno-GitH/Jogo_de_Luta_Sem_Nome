@@ -509,6 +509,13 @@ export class Fighter {
     }
     if (m.hitWindows && !this.hitWindow) return [];
     if (this.moveId === "xebecThrust" && this.hitWindow?.id === 1 && !this.hitConfirmed) return [];
+    const haki = this.domination && xebecGrapple(this.moveId);
+    if (haki && this.hitWindow?.id === 1) {
+      const reach = Math.min(haki.reach, haki.reach * (.62 + .38 * (this.stateFrame - haki.blast) / Math.max(1, haki.active - 1)));
+      const front = this.moveId === "xebecDominion";
+      return [worldRect({ x: front ? 12 : -reach, y: front ? -116 : -102,
+        w: front ? reach : reach * 2, h: front ? 111 : 98 }, this.x, this.y, this.facing)];
+    }
     if (m.ben?.spectralReach) return spectralPaths(m, this.stateFrame).flatMap(path =>
       path.slice(2, -1).map((a, i) => worldCapsule({ a, b: path[i + 3], r: 12 }, this.x, this.y, this.facing)),
     );
@@ -1666,6 +1673,7 @@ export class Match {
         this.beginCapture("grab", f, target);
         if (xebec) {
           this.capture!.xebec = xebec;
+          f.actionClip = xebec.id + "Hold";
           this.finishTemporalStep(timeWasActive);
           return;
         }
