@@ -233,16 +233,16 @@ export class Bot {
                 this.towerTuning ? "confirmar Super" : "confirmar Mil Cortes",
             );
           }
-          if (self.domination && (self.moveId === "xebecAscension" || self.moveId === "xebecDominionLink") && self.canCancel("jump")) {
+          if (self.domination && self.moveId === "xebecDance" && self.canCancel("jump")) {
             if (self.canStartSuper() && this.chance(this.profile.ultimate))
               return this.choose({ ...neutral(), pressed: ["ultimate"] }, "confirmar Pandemonium");
             if (this.chance(this.profile.airCombo)) {
               this.airRoute = true;
-              return this.choose({ ...neutral(), pressed: ["jump"] }, "perseguir Quebra-Mar");
+              return this.choose({ ...neutral(), pressed: ["jump"] }, "perseguir Dança do Conquistador");
             }
           }
-          if (self.domination && self.canStartSpecial("xebecThrust") && this.chance(this.profile.special)) {
-            this.lastDecision = "confirmar Estocada Relâmpago";
+          if (self.domination && self.canStartSpecial("xebecFangs") && this.chance(this.profile.special)) {
+            this.lastDecision = "confirmar Presas de Eclipse";
             return this.command([2, 6], "light", self);
           }
           if (
@@ -419,18 +419,21 @@ export class Bot {
           (enemy.phase === "recovery" || enemy.state === "hitstun") && this.chance(this.profile.ultimate))
         return this.choose({ ...neutral(), pressed: ["ultimate"] }, "usar Pandemonium");
       if (this.chance(this.profile.special)) {
-        if (distance < 98 && !enemy.airborne && self.canStartSpecial("xebecBrutal")) {
-          this.lastDecision = "Investida Brutal";
+        if (distance < 325 && self.canStartSpecial("xebecKingWill")) {
+          this.lastDecision = "Vontade do Rei Supremo";
+          return this.command([2, 5, 2], "heavy", self);
+        }
+        if (distance < 98 && !enemy.airborne && self.canStartSpecial("xebecPulse")) {
+          this.lastDecision = "Pulso do Conquistador";
           return this.command([2, 5, 2], "light", self);
         }
         if (distance > 230 && distance < 590 && self.canStartSpecial("xebecRift")) {
           this.lastDecision = "Dupla Fenda do Abismo";
           return this.command([2, 4], "medium", self);
         }
-        if (distance > 102 && distance < 195 && self.canStartSpecial("xebecThrust")) {
-          const heavy = self.domination.charge === 100;
-          this.lastDecision = heavy ? "Quebra dos Portões fortalecida" : "Estocada Relâmpago";
-          return this.command([2, 6], heavy ? "heavy" : "light", self);
+        if (distance < 146 && self.canStartSpecial("xebecFangs")) {
+          this.lastDecision = "Presas de Eclipse";
+          return this.command([2, 6], "light", self);
         }
       }
     }

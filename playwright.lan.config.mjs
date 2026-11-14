@@ -11,7 +11,7 @@ export default defineConfig({
   timeout: 120000,
   reporter: "list",
   outputDir: "test-results/lan",
-  webServer: preview ? {
+  webServer: preview && process.env.BEN_LAN_EXTERNAL_PREVIEW !== "1" ? {
     command: `node node_modules/vite/bin/vite.js preview --host 127.0.0.1 --port ${port} --strictPort`,
     url: preview,
     env: { ONLINE_PROXY_TARGET: `http://127.0.0.1:${backendPort}` },

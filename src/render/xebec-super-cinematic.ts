@@ -1,16 +1,15 @@
-import { pandemoniumBeats as beats, pandemoniumEase as ease, pandemoniumConfig, type pandemoniumScene } from "../engine/xebec-pandemonium";
+import { justiceBeats as beats, pandemoniumEase as ease, type pandemoniumScene } from "../engine/xebec-pandemonium";
 import { hakiBolt, hakiBurst } from "./xebec-haki-fx";
 
 type Scene = ReturnType<typeof pandemoniumScene>;
-const close = "xebec/captain-close.png";
 const gates = "xebec/justice-gates.webp";
 const actorSheet = "xebec/justice-cel.png";
 const crew = [
-  { sheet: "xebec/rocks-newgate.png", x: -230, delay: 0, scale: 1.03 },
-  { sheet: "xebec/rocks-kaido.png", x: 115, delay: 22, scale: .97 },
-  { sheet: "xebec/rocks-linlin.png", x: 305, delay: 42, scale: 1.06 },
+  { sheet: "xebec/rocks-newgate.png", x: -230, scale: 1.03 },
+  { sheet: "xebec/rocks-kaido.png", x: 115, scale: .97 },
+  { sheet: "xebec/rocks-linlin.png", x: 305, scale: 1.06 },
 ];
-export const pandemoniumSheets = [close, gates, ...crew.map(member => member.sheet)];
+export const pandemoniumSheets = [gates, ...crew.map(member => member.sheet)];
 
 function polygon(c: CanvasRenderingContext2D, points: readonly (readonly [number, number])[]) {
   c.beginPath();
@@ -92,48 +91,21 @@ export function drawJusticeGates(c: CanvasRenderingContext2D, t: number, scene: 
 }
 
 export function drawRocksCrew(c: CanvasRenderingContext2D, t: number, facing: number, scene: Scene, assets: Map<string, HTMLImageElement>) {
-  const assembly = t >= beats.crew && t < beats.gates + 22;
-  const finale = t >= beats.aftermath && t < beats.return + 11;
-  if (!assembly && !finale) return;
-  const leader = assembly ? Math.min(895, Math.max(385, scene.attacker.x)) : 640;
-  crew.forEach(({ sheet, x, delay, scale }, i) => {
+  if (t < beats.aftermath || t >= beats.return + 11) return;
+  const leader = 640;
+  crew.forEach(({ sheet, x, scale }, i) => {
     const image = assets.get(sheet);
     if (!image) return;
-    const age = t - beats.crew - delay;
-    const entry = assembly ? ease(age, 0, 17) : ease(t, 648 + i * 4, 676 + i * 5);
-    const leave = 1 - ease(t, assembly ? 416 : 722, assembly ? 446 : 743);
+    const entry = ease(t, 648 + i * 4, 676 + i * 5);
+    const leave = 1 - ease(t, 722, 743);
     if (!entry || !leave) return;
-    const cel = finale || age >= 59 ? 3 : age >= 37 ? 2 : age >= 21 ? 1 : 0;
     const worldX = leader + facing * (x + Math.sign(x) * (1 - entry) * 116);
-    const y = 579 - (i === 1 && cel < 2 ? Math.sin(Math.min(1, age / 38) * Math.PI) * 55 : 0);
+    const y = 579;
     c.save();
     c.globalAlpha *= entry * leave;
     c.translate(Math.round(worldX), Math.round(y));
     c.scale(facing * scale, scale);
-    c.drawImage(image, cel * 320, 0, 320, 320, -160, -288, 320, 320);
-    if (assembly && age >= 37 && age < 54) {
-      c.globalAlpha *= 1 - Math.max(0, age - 43) / 12;
-      if (i === 0) {
-        c.strokeStyle = "#e5eff7";
-        for (const row of [0, 13, 24]) {
-          c.lineWidth = 3;
-          c.beginPath();
-          c.moveTo(69, -60 + row);
-          c.lineTo(100, -40 + row);
-          c.lineTo(91, -23 + row);
-          c.lineTo(136, -9 + row);
-          c.stroke();
-        }
-      } else if (i === 1) {
-        hakiBolt(c, t, 85, { x: 28, y: -65 }, { x: 133, y: -29 }, 6);
-      } else {
-        for (let j = 0; j < 11; j++) {
-          c.fillStyle = ["#f46b47", "#ffb14c", "#ffe1a0"][j % 3];
-          const q = (j * 19 + age * 3) % 65;
-          c.fillRect(60 + (j * 9) % 33 + q * .8, -110 - q * .57, 3 + j % 6, 3 + j % 4);
-        }
-      }
-    }
+    c.drawImage(image, 3 * 320, 0, 320, 320, -160, -288, 320, 320);
     c.restore();
   });
 }
@@ -161,27 +133,6 @@ export function drawGateRupture(c: CanvasRenderingContext2D, t: number, scene: S
 }
 
 export function drawPandemoniumClose(c: CanvasRenderingContext2D, t: number, assets: Map<string, HTMLImageElement>) {
-  const image = assets.get(close);
-  const opacity = ease(t, 16, 31) * (1 - ease(t, 78, 96));
-  if (image && opacity) {
-    const cel = t >= 57 ? 2 : t >= 36 ? 1 : 0;
-    c.save();
-    c.globalAlpha *= opacity;
-    const backdrop = c.createLinearGradient(0, 0, 1280, 620);
-    backdrop.addColorStop(0, "#140e1c");
-    backdrop.addColorStop(.57, "#502233");
-    backdrop.addColorStop(1, "#160e1d");
-    c.fillStyle = backdrop;
-    c.fillRect(0, 0, 1280, 720);
-    for (let i = 0; i < 19; i++) {
-      c.fillStyle = i % 3 ? "#dd526522" : "#ff989b46";
-      const x = ((i * 173 - t * (i % 4 + 1) + 1600) % 1400) - 50;
-      c.fillRect(x, 155 + i * 19, 45 + i % 6 * 23, 2);
-    }
-    const zoom = ease(t, 22, 83);
-    c.drawImage(image, cel * 384, 0, 384, 384, 324 - zoom * 52, 69 - zoom * 36, 630 + zoom * 132, 630 + zoom * 132);
-    c.restore();
-  }
   const blade = assets.get(actorSheet);
   const focus = ease(t, 501, 512) * (1 - ease(t, 524, 533));
   if (blade && focus) {
@@ -199,7 +150,7 @@ export function drawPandemoniumClose(c: CanvasRenderingContext2D, t: number, ass
     hakiBolt(c, t, 109, { x: -218 + frame, y: -32 }, { x: -565 + frame, y: 218 }, 8);
     c.restore();
   }
-  const letterbox = ease(t, 5, 22) * (1 - ease(t, beats.return, pandemoniumConfig.duration));
+  const letterbox = ease(t, 5, 22) * (1 - ease(t, beats.return, beats.end));
   c.fillStyle = "#08070d";
   c.fillRect(0, 0, 1280, 41 * letterbox);
   c.fillRect(0, 720 - 50 * letterbox, 1280, 50 * letterbox);
