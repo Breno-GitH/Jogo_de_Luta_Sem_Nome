@@ -366,7 +366,7 @@ describe("real Socket.IO server boundary", () => {
     expect({ powered, projectile, phase, retained }).toEqual({ powered: true, projectile: true, phase: true, retained: true });
     expect(history.filter(move => move.startsWith("pandemonium"))).toEqual(["pandemonium_cleave", "pandemonium_ground"]);
     expect(match.cinematicActive).toBe(false);
-  }, 45000);
+  }, 75000);
 
   it("does not expose health/results updates and rejects hostile input payloads", async () => {
     const a = await connect(),

@@ -72,7 +72,7 @@ import { drawKingWillArena, drawKingWillScreen, kingWillCamera, kingWillFace } f
 import { drawDomination, drawPandemoniumSky, drawPandemoniumStrike, drawXebecCharge, drawXebecSpecials } from "./xebec-special-fx";
 import { drawPandemoniumActsFx, drawPandemoniumActsScreen, drawRocksInterventions, pandemoniumActSheets } from "./xebec-pandemonium-fx";
 import { drawGateRupture, drawJusticeGates, drawPandemoniumClose, drawRocksCrew, pandemoniumSheets } from "./xebec-super-cinematic";
-import { pandemoniumConfig, pandemoniumName, pandemoniumScene } from "../engine/xebec-pandemonium";
+import { pandemoniumBeats, pandemoniumConfig, pandemoniumName, pandemoniumScene } from "../engine/xebec-pandemonium";
 export class Renderer {
   private ctx: CanvasRenderingContext2D;
   private sprites = new Map<string, HTMLImageElement>();
@@ -330,6 +330,7 @@ export class Renderer {
     this.canvas.dataset.alienXTick = String(alienX?.tick ?? -1);
     this.canvas.dataset.pandemoniumTick = String(pandemonium?.tick ?? -1);
     this.canvas.dataset.pandemoniumPhase = abyss?.phase ?? "";
+    this.canvas.dataset.prometheusCel = String(abyss?.prometheus?.cel ?? -1);
     this.canvas.dataset.domination = String(self.domination?.charge ?? "");
     this.canvas.dataset.moveTick = String(self.stateFrame);
     this.canvas.dataset.hakiReaction = other.hakiReaction ?? "";
@@ -508,8 +509,8 @@ export class Renderer {
     if (conqueror) drawKingWillArena(c, conqueror.stateFrame);
     if (pandemonium && abyss) {
       if (abyss.justiceTick === undefined) {
-        if (this.effects) drawPandemoniumSky(c, pandemonium.tick, abyss);
-        drawRocksInterventions(c, pandemonium.tick, abyss, this.sprites);
+        if (xebecEffects) drawPandemoniumSky(c, pandemonium.tick, abyss);
+        drawRocksInterventions(c, pandemonium.tick, abyss, this.sprites, xebecEffects);
       } else if (this.effects) {
         drawJusticeGates(c, abyss.justiceTick, abyss, this.sprites);
         drawRocksCrew(c, abyss.justiceTick, pandemonium.facing, abyss, this.sprites);
@@ -792,8 +793,9 @@ export class Renderer {
     if (this.effects) drawFury(c, match, this.sprites, "front");
     if (reality && alienX && this.effects) drawAlienXForces(c, reality, alienX.tick);
     if (pandemonium && abyss && this.effects) {
-      if (abyss.justiceTick === undefined) drawPandemoniumActsFx(c, pandemonium, abyss);
-      else {
+      if (abyss.justiceTick === undefined) {
+        if (xebecEffects) drawPandemoniumActsFx(c, pandemonium, abyss);
+      } else {
         drawPandemoniumStrike(c, { ...pandemonium, tick: abyss.justiceTick }, abyss);
         drawGateRupture(c, abyss.justiceTick, abyss);
       }
@@ -811,18 +813,21 @@ export class Renderer {
         alienXVoices.map(sheet => this.sprites.get(sheet)));
     }
     if (pandemonium && abyss && this.effects) {
-      if (abyss.justiceTick === undefined) drawPandemoniumActsScreen(c, pandemonium, this.sprites);
-      else drawPandemoniumClose(c, abyss.justiceTick, this.sprites);
+      if (abyss.justiceTick === undefined) {
+        if (xebecEffects) drawPandemoniumActsScreen(c, pandemonium);
+      } else drawPandemoniumClose(c, abyss.justiceTick, this.sprites);
       const age = Math.min(...pandemoniumConfig.hits.filter(hit => hit.tick <= pandemonium.tick)
         .map(hit => pandemonium.tick - hit.tick));
-      if (age >= 0 && age < 8) {
-        c.fillStyle = `rgba(255,215,182,${.35 * (1 - age / 8)})`;
+      if (age >= 0 && age < 8 && (xebecEffects || abyss.justiceTick !== undefined)) {
+        const intensity = abyss.justiceTick === undefined ? .18 : .35;
+        c.fillStyle = `rgba(255,215,182,${intensity * (1 - age / 8)})`;
         c.fillRect(0, 0, 1280, 720);
       }
     }
     if (conqueror) drawKingWillScreen(c, conqueror, this.sprites.get(kingWillFace));
     this.hud(match);
-    if (pandemonium && this.effects && pandemonium.tick < 52) {
+    if (pandemonium && xebecEffects && pandemonium.tick >= pandemoniumBeats.cut &&
+        pandemonium.tick < pandemoniumBeats.cut + 24) {
       c.save(); c.font = "bold 23px monospace"; c.textAlign = "center"; c.fillStyle = "#ffb6b0";
       c.fillText(pandemoniumName, 640, 168); c.restore();
     }
