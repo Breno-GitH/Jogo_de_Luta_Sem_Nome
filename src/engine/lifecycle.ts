@@ -17,7 +17,7 @@ function logicalReactionFor(
       "ko",
     ].includes(f.state)
   )
-    return { clip: f.state, tick: time };
+    return { clip: f.state === "throwRecover" && f.domination && f.actionClip ? f.actionClip : f.state, tick: time };
   if (["cinematic", "grabbing", "grabbed"].includes(f.state))
     return { clip: f.actionClip || f.state, tick: time };
   if (f.state === "counter")

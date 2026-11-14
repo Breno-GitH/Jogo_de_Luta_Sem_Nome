@@ -77,8 +77,6 @@ export interface Move {
   airTeleport?: boolean;
   super?: boolean;
   special?: "knives" | "rush" | "timeStop" | "ki" | "kamehameha" | "teleport" | "pistol" | "gatling" | "bazooka" | SasukeSpecialId | KanekiFamily | import("./xebec-specials").XebecSpecial;
-  xebec?: { confirmedFollow?: boolean; groundWindow?: number; whiffExtra?: number };
-  blockPush?: number;
   gokuStrength?: "light" | "medium" | "heavy";
   beam?: { range: number; radius: number; interval: number; hits: number };
   projectile?: {
