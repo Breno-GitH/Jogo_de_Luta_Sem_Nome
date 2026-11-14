@@ -157,6 +157,8 @@ async function observe(p: Page) {
           chainHeight: canvas.dataset.chainHeight,
           pandemonium: canvas.dataset.pandemoniumPhase,
           prometheus: canvas.dataset.prometheusCel,
+          fronts: canvas.dataset.kingWillFronts,
+          reaction: canvas.dataset.hakiReaction,
           centipede: canvas.dataset.centipedePhase,
           centipedeSource: canvas.dataset.centipedeSource,
           knuckle: canvas.dataset.knucklePose,
@@ -1359,6 +1361,22 @@ test("Xebec resolves all nine specials and Pandemonium on both clients", async (
       await expect(a.locator("canvas")).toHaveAttribute("data-move", id);
       await expect.poll(() => room.match!.fighters[0].domination!.charge).toBe(id === "xebecKingWill" ? 0 : 100);
       await expect.poll(() => room.match!.fighters[1].health).toBeLessThan(1000);
+      if (id === "xebecKingWill") {
+        const f = () => room.match!.fighters[0];
+        for (const client of [a,b]) {
+          await expect.poll(() => client.evaluate(() => {
+            const frames = Object.values((window as any).netRecords) as
+              { fronts: string; reaction: string; p2: string }[];
+            const visible = new Set(frames.map(frame => frame.fronts));
+            return ["1", "2", "3"].every(n => visible.has(n)) &&
+              frames.some(frame => frame.p2 === "877");
+          })).toBe(true);
+        }
+        await expect.poll(() => f().state).toBe("idle");
+        expect(f().domination!.charge).toBe(0);
+        expect(room.match!.fighters[1].hakiReaction).toBeUndefined();
+        expect(room.match!.fighters[1].health).toBe(877);
+      }
       await consistent();
     }
   }

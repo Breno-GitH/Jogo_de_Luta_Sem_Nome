@@ -7,6 +7,7 @@ import { justiceBeats, pandemoniumBeats, pandemoniumConfig, pandemoniumScene } f
 import { pandemoniumPrelude, pandemoniumBladeClips } from "../src/engine/xebec-pandemonium-acts";
 import { kingWill, xebecPressure, xebecProjectile, xebecReleases, xebecSpecialArt } from "../src/engine/xebec-specials";
 
+import { kingWillFronts } from "../src/render/xebec-king-will";
 import { compatibleConquerorReleases } from "../src/engine/conqueror-haki";
 
 type Input = Partial<InputFrame>;
@@ -115,6 +116,7 @@ describe("Xebec's redesigned specials", () => {
       expect(p.a.meter).toBe(59);
       expect(p.a.domination!.charge).toBe(0);
       expect(p.b.health).toBe(hp===100 ? 0 : 877);
+      if (hp === 100) expect(p.a.domination!.finishingPressure?.tick).toBeGreaterThanOrEqual(34);
       p.advance(100);
       if (hp===1000) {
         expect(p.b.hakiReaction).toBeUndefined();
@@ -126,10 +128,38 @@ describe("Xebec's redesigned specials", () => {
   it("only identifies simultaneous pure releases for a future confrontation", () => {
     const m = new Match(characters.xebec, {}, characters.xebec);
     const [a,b] = m.fighters;
+    b.x = a.x + 78;
     for (const f of [a,b]) { f.domination!.charge=100; expect(f.attack(kingWill)).toBe(true); f.stateFrame=34; }
     expect(compatibleConquerorReleases(b,a)?.map(x=>x.fighter)).toEqual([0,1]);
     b.stateFrame = 33;
     expect(compatibleConquerorReleases(a,b)).toBeUndefined();
+    b.stateFrame = 34;
+    b.x = a.x + 700;
+    expect(compatibleConquerorReleases(a,b)).toBeUndefined();
+  });
+
+  it("expands three cosmetic pressure fronts over one authoritative strike", () => {
+    const release = xebecPressure(kingWill)!.release;
+    expect(kingWillFronts(release - 1)).toHaveLength(0);
+    expect(kingWillFronts(release + 3)).toHaveLength(1);
+    expect(kingWillFronts(release + 12)).toHaveLength(2);
+    const fronts = kingWillFronts(release + 22);
+    expect(fronts).toHaveLength(3);
+    expect(new Set(fronts.map(front => front.rx)).size).toBe(3);
+    expect(fronts.every(front => front.alpha > 0 && front.ry < front.rx)).toBe(true);
+    expect(kingWillFronts(release + 60)).toEqual([]);
+    const battle = arena(230);
+    battle.a.domination!.charge = 100;
+    battle.motion(2,2);
+    battle.advance(110);
+    expect(battle.hits).toMatchObject([{ move: kingWill, damage: 123 }]);
+    expect(battle.a.domination!.charge).toBe(0);
+    const outside = arena(440);
+    outside.a.domination!.charge = 100;
+    outside.motion(2,2);
+    outside.advance(110);
+    expect(outside.hits).toHaveLength(0);
+    expect(outside.a.domination!.charge).toBe(0);
   });
 
   it("leaves special waves vulnerable to projectiles and does not cut in recovery", () => {

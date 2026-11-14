@@ -313,9 +313,10 @@ export class Sound {
       tone(99,29,.55,"triangle",.53);
       tone(514,118,.18,"sawtooth",.1);
     } else if (cue === "hakiKing") {
-      tone(87,25,.83,"triangle",.62);
-      tone(621,125,.29,"sawtooth",.14,.05);
-      tone(245,51,.54,"sine",.27,.16);
+      tone(73,29,.43,"triangle",.46);
+      tone(66,26,.55,"triangle",.55,.133);
+      tone(56,24,.71,"triangle",.63,.283);
+      tone(168,43,.63,"sine",.24,.283);
     } else if (cue === "rocksCut") {
       tone(880, 224, .12, "sawtooth", .11);
       tone(131, 51, .2, "triangle", .28);
@@ -374,7 +375,7 @@ export class Sound {
   tick(match: Match, onlineRound?: string) {
     const ticks = match.pandemonium?.tick ?? -1;
     const beats = pandemoniumBeats;
-    const kingSilence = !match.cinematicActive && match.fighters.some(f => f.moveId === kingWill && f.state === "attack" && f.stateFrame < 43);
+    const kingSilence = !match.cinematicActive && match.fighters.some(f => f.moveId === kingWill && f.state === "attack" && f.stateFrame < 56);
     this.setMusicDucked(kingSilence || ticks >= 0 && (ticks >= beats.uppercut && ticks < beats.cut || ticks >= beats.flight && ticks < beats.quake || ticks >= beats.rush && ticks < beats.rupture));
     if (ticks >= 0 && ticks > this.rocksTick) {
       const cues: [number, Cue][] = [...pandemoniumPrelude.map(({ tick, angle }): [number, Cue] =>

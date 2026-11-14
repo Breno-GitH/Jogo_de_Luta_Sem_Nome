@@ -71,13 +71,19 @@ export class FighterPresentation {
       this.animator = preview;
       return;
     }
+    if (fighter.state === "victory" && fighter.domination?.finishingPressure && fighter.stateFrame < 50) {
+      this.animator.update("xebecKingWill");
+      this.animator.seekTick(45 + fighter.stateFrame);
+      return;
+    }
     if (fighter.data.id !== "ben" && fighter.hakiReaction) {
+      const t = fighter.stateFrame;
+      const brace = ["guardImpactStand", "guardStand", "guardHigh"];
+      const buckle = ["damageCrouch", "guardCrouch", "crouchIdle"];
       const poses = fighter.hakiReaction === "collapse"
-        ? fighter.stateFrame < 8 ? ["damageHeavy", "guardStand"] : fighter.stateFrame < 17
-          ? ["damageCrouch", "crouchIdle"] : ["downed", "ko"]
+        ? t < 7 ? brace : t < 17 ? buckle : ["downed", "ko"]
         : fighter.airborne ? ["falling", "damageAir", "launched"]
-          : fighter.stateFrame < 9 ? ["guardImpactStand", "guardStand", "damageHeavy"] :
-            ["damageCrouch", "guardCrouch", "crouchIdle"];
+          : t < 6 ? brace : fighter.stun > 7 ? buckle : ["crouchEnd", ...brace];
       const clip = poses.map(name => fighter.data.reactionClips?.[name] ?? name)
         .find(name => this.animator.hasClip(name));
       if (clip) {

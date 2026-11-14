@@ -52,6 +52,7 @@ const bladeCels: Record<string, Record<number, [number, number, number, number]>
 
 export function drawXebecCharge(c: CanvasRenderingContext2D, f: Fighter, frame: number, sheet: string, cel: number) {
   const charge = f.domination;
+  if (f.moveId === kingWill) return;
   if (!charge || (charge.charge !== 100 && !charge.powered) || f.health <= 0) return;
   const data = bladeCels[sheet]?.[cel];
   const blade = data ? { grip: { x: data[0], y: data[1] }, tip: { x: data[2], y: data[3] } } :
@@ -84,7 +85,7 @@ export function drawXebecCharge(c: CanvasRenderingContext2D, f: Fighter, frame: 
 export function drawXebecSpecials(c: CanvasRenderingContext2D, match: Match, effects: boolean, debug: boolean, reducedMotion = false) {
   for (const f of match.fighters) {
     const move = f.move, id = f.moveId, t = f.stateFrame;
-    if (!effects || f.state !== "attack" || !move || !f.domination ||
+    if (!effects || id === kingWill || f.state !== "attack" || !move || !f.domination ||
         !(isXebecSpecial(id) || move.rank === 3 || move.super)) continue;
     c.save();
     c.translate(Math.round(f.x), Math.round(f.y));
@@ -94,9 +95,8 @@ export function drawXebecSpecials(c: CanvasRenderingContext2D, match: Match, eff
       const age = t - pressure.release;
       if (age >= 0 && age < pressure.active + 12) {
         const reach = xebecPressureReach(pressure,t);
-        const king = pressure.kind === "conqueror";
         c.globalAlpha = Math.min(reducedMotion ? .48 : .86, (pressure.active + 12 - age) / 17);
-        for (let layer = 0; layer < (king ? 4 : 2); layer++) {
+        for (let layer = 0; layer < 2; layer++) {
           const end = reach * (1 - layer * .13);
           const y = -64 + layer * 17;
           const lift = pressure.height * (.57 - layer * .08);
@@ -104,7 +104,7 @@ export function drawXebecSpecials(c: CanvasRenderingContext2D, match: Match, eff
             const x = direction * end;
             const g = c.createLinearGradient(0, y, x, y);
             g.addColorStop(0, "#f5a1a500"); g.addColorStop(.8, "#952c4d23");
-            g.addColorStop(1, king ? "#f994a074" : "#ed6a7b56");
+            g.addColorStop(1, "#ed6a7b56");
             c.beginPath();
             c.moveTo(0,y-lift);
             c.bezierCurveTo(x*.55,y-lift,x*.75,y-lift*.54,x,y);
@@ -113,15 +113,15 @@ export function drawXebecSpecials(c: CanvasRenderingContext2D, match: Match, eff
             c.closePath();
             c.fillStyle = g; c.fill();
             hakiBolt(c,t,56+layer*89+direction*13,{x:direction*18,y:y-layer*4},
-              {x:x*.94,y:y+direction*layer*7}, king ? 9-layer : 5-layer);
+              {x:x*.94,y:y+direction*layer*7}, 5-layer);
           }
         }
         c.translate(0,-3);
-        if (!reducedMotion) shards(c,age,1,king?28:move.rank*7+4);
-      } else if (age < 0 && age >= -(id === kingWill ? 33 : 8)) {
-        const focus = Math.max(.2, 1 + age / (id === kingWill ? 40 : 12));
+        if (!reducedMotion) shards(c,age,1,move.rank*7+4);
+      } else if (age < 0 && age >= -8) {
+        const focus = Math.max(.2, 1 + age / 12);
         c.globalAlpha = reducedMotion ? focus * .55 : focus;
-        hakiBurst(c,t,{x:0,y:-105}, (id === kingWill ? 94 : 41)*focus, id === kingWill ? 6 : 3, 593);
+        hakiBurst(c,t,{x:0,y:-105}, 41*focus, 3, 593);
       }
     } else if (isXebecSpecial(id)) {
       const blade = xebecBladeAt(id,t);
@@ -203,7 +203,7 @@ export function drawXebecSpecials(c: CanvasRenderingContext2D, match: Match, eff
   }
   if (!effects) return;
   for (const hit of match.events) {
-    if (!hit.xebec) continue;
+    if (!hit.xebec || hit.xebec.move === kingWill) continue;
     const { rank, facing, powered, move } = hit.xebec;
     const age = (hit.total ?? 12) - hit.life;
     c.save();

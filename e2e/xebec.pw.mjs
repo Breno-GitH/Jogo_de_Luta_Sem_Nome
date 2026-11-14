@@ -8,7 +8,7 @@ async function captureAt(page, info, label, conditions) {
     return Object.entries(expected).every(([key, value]) =>
       typeof value === "number" ? Number(d[key]) >= value : d[key] === value)
       ? canvas.toDataURL() : null;
-  }, conditions);
+  }, conditions, { timeout: 7500 });
   const data = await frame.jsonValue();
   await writeFile(info.outputPath(label + ".png"), Buffer.from(data.split(",")[1], "base64"));
 }
@@ -116,11 +116,20 @@ async function pandemoniumTest({ page }, info) {
 test("plays Xebec in the training arena and captures Pandemonium", pandemoniumTest);
 test("captures Pandemonium body movement without Haki FX", pandemoniumTest);
 
+async function doubleDown(page, button) {
+  await page.keyboard.press("s", { delay: 65 });
+  await page.waitForTimeout(50);
+  await page.keyboard.down("s");
+  try { await page.keyboard.press(button, { delay: 40 }); }
+  finally { await page.keyboard.up("s"); }
+}
+
 async function kingWillTest({ page }, info) {
   test.setTimeout(100000);
   const { canvas, failures } = await start(page, "training");
   const effects = !info.title.endsWith("without Haki FX");
   if (!effects) await page.locator("#xebec-fx").uncheck();
+  const ko = info.title.endsWith("with legitimate KO");
   await page.locator("#empty-meter").click();
   await distance(page, 83);
   for (let i = 0; i < 6; i++) {
@@ -149,36 +158,67 @@ async function kingWillTest({ page }, info) {
   await expect(canvas).toHaveAttribute("data-physics-state", "idle");
   await page.keyboard.press("l", { delay: 40 });
   await expect(canvas).toHaveAttribute("data-move", "stand_heavy");
-  await expect(canvas).toHaveAttribute("data-phase", "active");
-  await expect(canvas).toHaveAttribute("data-xebec-charge", "full");
-  await canvas.screenshot({ path: info.outputPath("haki-normal.png") });
+  await captureAt(page, info, "haki-normal", { move: "stand_heavy", phase: "active", xebecCharge: "full" });
   await expect(canvas).toHaveAttribute("data-physics-state", "idle");
   await distance(page, 105);
-  await page.keyboard.press("s", { delay: 46 });
-  await page.waitForTimeout(48);
-  await page.keyboard.down("s");
-  try { await page.keyboard.press("j", { delay: 40 }); }
-  finally { await page.keyboard.up("s"); }
-  await expect(canvas).toHaveAttribute("data-move", "xebecPulse");
-  await expect(canvas).toHaveAttribute("data-domination", "100");
-  await expect(canvas).toHaveAttribute("data-physics-state", "idle");
-  await page.keyboard.press("s", { delay: 65 });
-  await page.waitForTimeout(50);
-  await page.keyboard.down("s");
-  try { await page.keyboard.press("l", { delay: 40 }); }
-  finally { await page.keyboard.up("s"); }
+  if (ko) {
+    const hp = page.locator("#health-1");
+    await hp.fill("10");
+    await hp.press("Tab");
+    await expect(canvas).toHaveAttribute("data-target-health", "100");
+  } else {
+    await doubleDown(page, "j");
+    await captureAt(page, info, "haki-pulso", { move: "xebecPulse", moveTick: 12 });
+    await expect(canvas).toHaveAttribute("data-physics-state", "idle");
+    await doubleDown(page, "k");
+    await captureAt(page, info, "haki-explosao", { move: "xebecSovereign", moveTick: 24 });
+    await expect(canvas).toHaveAttribute("data-domination", "100");
+    await expect(canvas).toHaveAttribute("data-physics-state", "idle");
+  }
+  await distance(page, 185);
+  await doubleDown(page, "l");
   await expect(canvas).toHaveAttribute("data-move", "xebecKingWill");
   await expect(canvas).toHaveAttribute("data-domination", "0");
-  await captureAt(page, info, "haki-olhar", { move: "xebecKingWill", moveTick: 22 });
-  if (!effects) await expect(canvas).toHaveAttribute("data-camera-zoom", "1");
-  await captureAt(page, info, "haki-vontade", { move: "xebecKingWill", moveTick: 38 });
-  await captureAt(page, info, "haki-reacao", { hakiReaction: "pressure", moveTick: 43 });
+  await captureAt(page, info, "haki-concentracao", { move: "xebecKingWill", moveTick: 22 });
+  if (ko) {
+    await captureAt(page, info, "haki-ko-resiste", { hakiReaction: "collapse", targetHealth: "0" });
+    await captureAt(page, info, "haki-ko-cai", { hakiReaction: "collapse", moveTick: 19 });
+  } else {
+    const snapshots = await page.evaluate(async fx => {
+      const canvas = document.querySelector("canvas");
+      const frames = new Map([
+        ["primeira-esfera", [39, "1"]], ["segunda-esfera", [47, "2"]],
+        ["tres-esferas", [60, "3"]], ["dissipacao", [82, "2"]],
+      ]);
+      const images = {};
+      const deadline = performance.now() + 6500;
+      while (performance.now() < deadline && (frames.size || !images.reacao)) {
+        await new Promise(requestAnimationFrame);
+        const { moveTick, move, hakiReaction, kingWillFronts } = canvas.dataset;
+        if (move !== "xebecKingWill") continue;
+        if (!images.reacao && hakiReaction === "pressure" && Number(moveTick) >= 44)
+          images.reacao = canvas.toDataURL();
+        for (const [name, [tick, count]] of frames) {
+          if (Number(moveTick) < tick || name !== "dissipacao" && kingWillFronts !== (fx ? count : "0")) continue;
+          images[name] = canvas.toDataURL();
+          frames.delete(name);
+        }
+      }
+      return images;
+    }, effects);
+    expect(Object.keys(snapshots)).toEqual(expect.arrayContaining(["primeira-esfera", "segunda-esfera", "tres-esferas", "reacao", "dissipacao"]));
+    for (const [label, data] of Object.entries(snapshots))
+      await writeFile(info.outputPath("haki-" + label + ".png"), Buffer.from(data.split(",")[1], "base64"));
+    await expect(canvas).toHaveAttribute("data-physics-state", "idle");
+    await expect(canvas).toHaveAttribute("data-king-will-fronts", "0");
+  }
   await expect(canvas).toHaveAttribute("data-camera-zoom", "1");
   expect(failures).toEqual([]);
 }
 
 test("keeps Haki charged until King Will", kingWillTest);
 test("keeps King Will readable without Haki FX", kingWillTest);
+test("shows the collapse of King Will with legitimate KO", kingWillTest);
 
 async function ordinarySpecials({ page }, info) {
   test.setTimeout(120000);
