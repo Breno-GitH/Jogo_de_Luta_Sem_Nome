@@ -92,7 +92,7 @@ describe("Xebec's redesigned specials", () => {
     const whiff = arena(430);
     whiff.motion(2,strength);
     while (whiff.a.stateFrame < xebecGrapple(id)!.to) whiff.step();
-    whiff.b.x = whiff.a.x + Math.min(87, xebecGrapple(id)!.reach);
+    whiff.b.x = whiff.a.x + 58;
     for (let i=0;i<45;i++) {
       expect(whiff.m.capture).toBeUndefined();
       whiff.step({}, {direction:1});

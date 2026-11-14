@@ -128,6 +128,40 @@ test("shows persistent Haki and spends it on a J special", async ({ page }, info
   expect(failures).toEqual([]);
 });
 
+test("runs all nine new specials in Training", async ({ page }, info) => {
+  test.setTimeout(120000);
+  const { canvas, failures } = await start(page, "training");
+  for (const [family, commands] of [
+    ["forward", ["xebecThrust", "xebecAscension", "xebecGatebreaker"]],
+    ["back", ["xebecCut", "xebecRift", "xebecTriple"]],
+    ["double", ["xebecBrutal", "xebecDominion", "xebecExplosion"]],
+  ]) {
+    for (const [i, id] of commands.entries()) {
+      await page.locator("#reset-positions").click();
+      await canvas.focus();
+      await expect(canvas).toHaveAttribute("data-physics-state", "idle");
+      if (family !== "back" || i === 0) await distance(page, 70);
+      await page.keyboard.down("s");
+      await page.waitForTimeout(65);
+      const horizontal = family === "forward" ? "d" : "a";
+      if (family !== "double") await page.keyboard.down(horizontal);
+      await page.keyboard.up("s");
+      await page.waitForTimeout(50);
+      if (family === "double") await page.keyboard.down("s");
+      try { await page.keyboard.press(["j", "k", "l"][i], { delay: 40 }); }
+      finally { await page.keyboard.up(family === "double" ? "s" : horizontal); }
+      await expect(canvas).toHaveAttribute("data-move", id);
+      if (family === "double")
+        await expect(canvas).toHaveAttribute("data-physics-state", "grabbing");
+      else
+        await expect(canvas).toHaveAttribute("data-phase", "active");
+      await canvas.screenshot({ path: info.outputPath(id + ".png") });
+      await expect(canvas).toHaveAttribute("data-physics-state", "idle");
+    }
+  }
+  expect(failures).toEqual([]);
+});
+
 for (const [mode, opponent] of [["arcade", "Samurai"], ["versus", "Dio"], ["training", "Goku"]]) {
   test("Xebec loads and moves in " + mode + " against " + opponent, async ({ page }, info) => {
     test.setTimeout(60000);
