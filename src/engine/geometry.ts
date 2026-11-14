@@ -90,6 +90,22 @@ function segmentCrossesRect(a: Point, b: Point, r: Rect) {
   }
   return true;
 }
+/** Exact distance between two rounded attack paths. */
+export function shapesOverlap(a: AttackShape, b: AttackShape): boolean {
+  if (!("a" in b)) return shapeHitsRect(a, b);
+  if (!("a" in a)) return shapeHitsRect(b, a);
+  if (!overlaps(shapeBounds(a), shapeBounds(b))) return false;
+  const ax = a.b.x - a.a.x, ay = a.b.y - a.a.y;
+  const bx = b.b.x - b.a.x, by = b.b.y - b.a.y;
+  const cross = ax * by - ay * bx;
+  if (Math.abs(cross) > 1e-9) {
+    const dx = b.a.x - a.a.x, dy = b.a.y - a.a.y;
+    const u = (dx * by - dy * bx) / cross, v = (dx * ay - dy * ax) / cross;
+    if (0 <= u && u <= 1 && 0 <= v && v <= 1) return true;
+  }
+  return Math.min(pointSegmentDistance(a.a, b.a, b.b), pointSegmentDistance(a.b, b.a, b.b),
+    pointSegmentDistance(b.a, a.a, a.b), pointSegmentDistance(b.b, a.a, a.b)) <= a.r + b.r;
+}
 /** Exact segment/rectangle distance: diagonal blades do not hit empty AABB corners. */
 export function shapeHitsRect(shape: AttackShape, r: Rect): boolean {
   if (!("a" in shape)) return overlaps(shape, r);

@@ -68,6 +68,7 @@ import { combatPace } from "../engine/pace";
 import { xebecId } from "../engine/xebec";
 import { xebecAnimations } from "./xebec-animations";
 import { drawDomination, drawPandemoniumSky, drawPandemoniumStrike, drawXebecCharge, drawXebecSpecials } from "./xebec-special-fx";
+import { drawGateRupture, drawJusticeGates, drawPandemoniumClose, drawRocksCrew, pandemoniumSheets } from "./xebec-super-cinematic";
 import { pandemoniumConfig, pandemoniumName, pandemoniumScene } from "../engine/xebec-pandemonium";
 export class Renderer {
   private ctx: CanvasRenderingContext2D;
@@ -112,7 +113,7 @@ export class Renderer {
     for (const sheet of kirinEffectsSheets) sheets.add(sheet);
     for (const sheet of gokuFxSheets) sheets.add(sheet);
     for (const sheet of [...benReformSheets, ...portraitSheets, alienXBackdrop, ...alienXVoices]) sheets.add(sheet);
-    for (const sheet of [...furyFxSheets, ...jetFxSheets]) sheets.add(sheet);
+    for (const sheet of [...furyFxSheets, ...jetFxSheets, ...pandemoniumSheets]) sheets.add(sheet);
     for (const data of [
       metadata,
       dioAnimations,
@@ -321,6 +322,7 @@ export class Renderer {
     this.canvas.dataset.alienXVisual = alienX && this.effects ? alienXVisualPhase(alienX.tick) : "";
     this.canvas.dataset.alienXTick = String(alienX?.tick ?? -1);
     this.canvas.dataset.pandemoniumTick = String(pandemonium?.tick ?? -1);
+    this.canvas.dataset.pandemoniumPhase = abyss?.phase ?? "";
     this.canvas.dataset.domination = String(self.domination?.charge ?? "");
     this.canvas.dataset.xebecCharge = self.domination?.powered || match.capture?.xebec?.powered && match.capture.attacker === self.id
       ? "spending" : self.domination?.charge === 100 ? "full" : "";
@@ -494,7 +496,11 @@ export class Renderer {
       c.translate(-cx, -cy);
     }
     drawTestArena(c, benPadding);
-    if (pandemonium && abyss && this.effects) drawPandemoniumSky(c, pandemonium.tick, abyss);
+    if (pandemonium && abyss && this.effects) {
+      drawPandemoniumSky(c, pandemonium.tick, abyss);
+      drawJusticeGates(c, pandemonium.tick, abyss, this.sprites);
+      drawRocksCrew(c, pandemonium.tick, pandemonium.facing, abyss, this.sprites);
+    }
     if (reality && alienX && this.effects) {
       drawAlienXSpace(c, reality, alienX.tick, this.sprites.get(alienXBackdrop));
       drawAlienXRebuild(c, reality, alienX.tick, () => drawTestArena(c));
@@ -584,7 +590,7 @@ export class Renderer {
     if (!match.cinematicActive) drawEchoClones(c, match, this.sprites, this.debug, this.effects);
     // Keep the held opponent readable between the two converging shells.
     const centipedeWrap = kakuja?.phase === "capture" || kakuja?.phase === "descent";
-    const order = centipede ? (centipedeWrap ? [centipede.attacker, centipede.victim] : [centipede.victim, centipede.attacker]) : jet ? [jet.victim, jet.attacker] : fury
+    const order = pandemonium ? [pandemonium.victim, pandemonium.attacker] : centipede ? (centipedeWrap ? [centipede.attacker, centipede.victim] : [centipede.victim, centipede.attacker]) : jet ? [jet.victim, jet.attacker] : fury
       ? [fury.victim, fury.attacker]
       : road
         ? [road.victim, road.attacker]
@@ -771,7 +777,10 @@ export class Renderer {
     if (this.effects && road) drawRoadEffects(c, this.sprites, road);
     if (this.effects) drawFury(c, match, this.sprites, "front");
     if (reality && alienX && this.effects) drawAlienXForces(c, reality, alienX.tick);
-    if (pandemonium && abyss && this.effects) drawPandemoniumStrike(c, pandemonium, abyss);
+    if (pandemonium && abyss && this.effects) {
+      drawPandemoniumStrike(c, pandemonium, abyss);
+      drawGateRupture(c, pandemonium.tick, abyss);
+    }
     c.restore();
     c.restore();
     if (jet && this.effects) drawJetScreen(c, jet);
@@ -785,16 +794,18 @@ export class Renderer {
         alienXVoices.map(sheet => this.sprites.get(sheet)));
     }
     if (pandemonium && this.effects) {
-      const age = pandemonium.tick - pandemoniumConfig.hits[0].tick;
+      drawPandemoniumClose(c, pandemonium.tick, this.sprites);
+      const age = Math.min(...pandemoniumConfig.hits.filter(hit => hit.tick <= pandemonium.tick)
+        .map(hit => pandemonium.tick - hit.tick));
       if (age >= 0 && age < 8) {
         c.fillStyle = `rgba(255,215,182,${.35 * (1 - age / 8)})`;
         c.fillRect(0, 0, 1280, 720);
       }
     }
     this.hud(match);
-    if (pandemonium && pandemonium.tick < 52) {
+    if (pandemonium && this.effects && pandemonium.tick < 52) {
       c.save(); c.font = "bold 23px monospace"; c.textAlign = "center"; c.fillStyle = "#ffb6b0";
-      c.fillText(pandemoniumName, 640, 177); c.restore();
+      c.fillText(pandemoniumName, 640, 168); c.restore();
     }
     if (alienX && alienX.tick < 73) {
       c.save();

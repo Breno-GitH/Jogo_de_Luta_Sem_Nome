@@ -33,7 +33,7 @@ import { alienXConfig, alienXId, alienXScene, canStartAlienX, type AlienXState }
 import { luffyAttackLimbs, luffySpecialCommand } from "./luffy-specials";
 import { xebecId, xebecSpecials } from "./xebec";
 import { gateGuard, isXebecSpecial, xebecGrapple, xebecGrabTrack, xebecGripActive,
-  xebecProjectile, xebecProjectileMove, xebecReleases, xebecSpecialCommand,
+  xebecProjectile, xebecProjectileMove, xebecReleases, xebecSpecialCommand, xebecWaveVolume,
   type XebecGrapple } from "./xebec-specials";
 import { canStartPandemonium, pandemoniumConfig, pandemoniumId, pandemoniumScene, type PandemoniumState } from "./xebec-pandemonium";
 import {
@@ -72,6 +72,7 @@ import { jetConfig, jetId, jetOpener, jetScene, type JetState } from "./luffy-je
 import {
   shapeBounds,
   shapeHitsRect,
+  shapesOverlap,
   unionBounds,
   worldCapsule,
   worldRect,
@@ -251,7 +252,7 @@ export class Fighter {
         (p) => p.owner === this.id && p.state === "flight",
       ).length + shots.length > sasukeSpecialBalance.maximumProjectiles) return false;
     }
-    if ((id === "xebecRift" || id === "xebecTriple") && this.match?.kiProjectiles.some(
+    if ((isXebecSpecial(id) && xebecReleases[id]) && this.match?.kiProjectiles.some(
       p => p.owner === this.id && p.state === "flight" && xebecProjectile(p.move),
     )) return false;
     if (move.stand && !this.stand?.canBegin(this.canSpecialCancel()))
@@ -694,7 +695,7 @@ export class Fighter {
       const resource = this.domination;
       resource.powered = isXebecSpecial(id) && resource.charge === 100;
       resource.awarded = false;
-      if (id === "xebecRift" || id === "xebecTriple") resource.cast++;
+      if (isXebecSpecial(id) && xebecReleases[id]) resource.cast++;
       if (resource.powered) {
         resource.charge = 0;
         resource.spentFrame = this.match?.frame;
@@ -1747,6 +1748,12 @@ export class Match {
       (!isSuperMove(m) || m.kind === pandemoniumId) &&
       (m.level !== "low" || target.input.down) &&
       (m.level !== "high" || !target.input.down);
+    if (m.kind === pandemoniumId && !blocked) {
+      this.effect("power", impact ? impact.x + impact.w / 2 : target.x,
+        impact ? impact.y + impact.h / 2 : target.y - 90, 12);
+      this.beginStagedSuper(f, target, pandemoniumId);
+      return;
+    }
     let damage = blocked
       ? 0
       : Math.round(
@@ -1996,7 +2003,7 @@ export class Match {
           id: ++this.projectileSerial, owner: f.id, move: id, cast: f.domination.cast,
           ...(f.domination.powered ? { xebecPowered: true } : {}),
           x, y, previousX: x, previousY: y, vx: shot.speed * f.facing, vy: shot.vy,
-          facing: f.facing, radius: shot.radius, age: 0, life: shot.life, state: "flight", impactAge: 0,
+          facing: f.facing, radius: shot.radius + (f.domination.powered ? 4 : 0), age: 0, life: shot.life, state: "flight", impactAge: 0,
         });
       }
     }
@@ -2009,10 +2016,8 @@ export class Match {
         this.temporal.isFrozen(f.id) || rank + Number(f.domination.powered) < strength) return false;
     // A follow-up blade can cut a projectile even if the thrust missed a fighter.
     const volumes = poseAt(f.move!, f.stateFrame)?.hitboxes ?? [];
-    const target = shapeBounds(path);
-    if (!volumes.some(h => "a" in h ?
-          shapeHitsRect(worldCapsule(h, f.x, f.y, f.facing), target) :
-          overlaps(worldRect(h, f.x, f.y, f.facing), target))) return false;
+    if (!volumes.some(h => shapesOverlap("a" in h ?
+          worldCapsule(h, f.x, f.y, f.facing) : worldRect(h, f.x, f.y, f.facing), path))) return false;
     this.xebecClash(f, x, y);
     return true;
   }
@@ -2026,11 +2031,18 @@ export class Match {
   private clashXebecWaves() {
     if (this.temporal.active && dioBalance.timeStop.freezeAllProjectiles) return;
     for (const wave of this.kiProjectiles) {
-      if (wave.state !== "flight" || !xebecProjectile(wave.move)) continue;
-      const shape = { a: { x: wave.x, y: wave.y }, b: { x: wave.x + wave.vx, y: wave.y + wave.vy }, r: wave.radius };
-      const rival = this.kiProjectiles.find(p => p.owner !== wave.owner && p.state === "flight" && !p.wave &&
-        (p.move === "ki" || isSasukeSpecial(p.move) || xebecProjectile(p.move)) &&
-        shapeHitsRect(shape, shapeBounds({ a: { x: p.x, y: p.y }, b: { x: p.x + p.vx, y: p.y + p.vy }, r: p.radius })));
+      const data = xebecProjectile(wave.move);
+      if (wave.state !== "flight" || !data) continue;
+      const volume = (p: KiProjectile, shot: NonNullable<ReturnType<typeof xebecProjectile>>) =>
+        xebecWaveVolume(shot, p.x + p.vx / 2, p.y + p.vy / 2, p.facing, p.radius);
+      const shape = volume(wave, data);
+      const rival = this.kiProjectiles.find(p => {
+        if (p.owner === wave.owner || p.state !== "flight" || p.wave) return false;
+        const shot = xebecProjectile(p.move);
+        if (shot) return shapesOverlap(shape, volume(p, shot));
+        return (p.move === "ki" || isSasukeSpecial(p.move)) && shapesOverlap(shape,
+          { a: { x: p.x, y: p.y }, b: { x: p.x + p.vx, y: p.y + p.vy }, r: p.radius });
+      });
       if (!rival) continue;
       this.xebecClash(this.fighters[wave.owner], (wave.x + rival.x) / 2, (wave.y + rival.y) / 2);
       for (const p of [wave, rival]) {
@@ -2063,6 +2075,17 @@ export class Match {
       const tip = p.facing * 14;
       const shape = { a: { x: p.previousX - tip, y: p.previousY }, b: { x: p.x + tip, y: p.y }, r: 2 };
       if (this.sliceProjectile(p.owner, shape, 1, p.x, p.y)) return false;
+      const clash = this.kiProjectiles.find(w => {
+        const data = xebecProjectile(w.move);
+        return data && w.owner !== p.owner && w.state === "flight" && shapesOverlap(shape,
+          xebecWaveVolume(data, w.x + w.vx / 2, w.y + w.vy / 2, w.facing, w.radius));
+      });
+      if (clash) {
+        clash.state = "impact";
+        clash.impactAge = clash.vx = clash.vy = 0;
+        this.xebecClash(this.fighters[clash.owner], p.x, p.y);
+        return false;
+      }
       const walls = this.benWalls();
       if (this.damageBenWalls([shape], p.damage, walls, `knife:${p.id}`, p.owner) ||
           this.strikeEchoClones(owner, target, [shape], walls)) return false;
@@ -2215,19 +2238,19 @@ export class Match {
       p.x += p.vx;
       p.y += p.vy;
       p.age++;
-      if (
-        --p.life <= 0 ||
-        p.x < -40 ||
-        p.x > 1320 ||
-        p.y < 0 ||
-        p.y > FLOOR + 20
-      )
-        return false;
+      const wave = xebecProjectile(p.move);
+      --p.life;
+      if (p.life <= 0 || p.x < -40 || p.x > 1320 || p.y < 0 || p.y > FLOOR + 20) {
+        if (!wave) return false;
+        p.state = "impact";
+        p.impactAge = p.vx = p.vy = 0;
+        return true;
+      }
       const target = this.fighters[1 - p.owner],
         owner = this.fighters[p.owner],
         haki = xebecProjectileMove(p.move, !!p.xebecPowered),
         move = haki ?? (p.curse ? sasukeCurseMoves[p.move] : owner.data.specialMoves?.[p.move]);
-      const shape = {
+      const shape = wave ? xebecWaveVolume(wave, p.x, p.y, p.facing, p.radius) : {
         a: { x: p.previousX, y: p.previousY },
         b: { x: p.x, y: p.y },
         r: p.radius,
@@ -2891,7 +2914,7 @@ export class Match {
       targetY: b.y,
       scale: Math.max(
         config.minimumComboScale,
-        1 - Math.max(0, b.combo - 1) * 0.08,
+        1 - Math.max(0, b.combo - Number(kind !== pandemoniumId)) * 0.08,
       ),
     };
     if (kind === "jetGigant") this.jetGigant = { ...state, hold: 8, openingTip: jetOpener(a)!.tip };
@@ -2919,7 +2942,7 @@ export class Match {
       delete watch.growth;
       delete watch.flightTicks;
       delete watch.landingStrike;
-    } else if (kind === pandemoniumId) this.pandemonium = { ...state, hold: 0 };
+    } else if (kind === pandemoniumId) this.pandemonium = { ...state, hold: 4 };
     else this.fury = state;
     a.setState("cinematic");
     b.setState("grabbed");
@@ -3006,9 +3029,9 @@ export class Match {
       a.buffer.clear();
       b.buffer.clear();
       this.fury = this.jetGigant = this.kirin = this.centipede = this.alienX = this.pandemonium = undefined;
-      if (alienX) {
-        b.vx = 14 * s.facing;
-        b.vy = -7;
+      if (alienX || pandemonium) {
+        b.vx = (pandemonium ? 11 : 14) * s.facing;
+        b.vy = pandemonium ? -5 : -7;
         b.hitLaunch = true;
       }
       if (kirin) this.sasukeStormUntil = this.sasukeStormLevel = 0;

@@ -63,8 +63,10 @@ try {
         "sprites/fx/alien-x-bellicus.png",
         "sprites/fx/alien-x-serena.png",
         "sprites/ben/gravattack/stage7.png",
-        ...["base", "movement", "reactions", "normals", "rush", "abyss", "gates", "pandemonium", "pandemonium-combat"]
+        ...["base", "movement", "reactions", "normals", "rush", "abyss", "gates", "pandemonium", "pandemonium-combat", "giant-cuts", "justice-cel",
+          "captain-close", "rocks-newgate", "rocks-kaido", "rocks-linlin"]
           .map(name => `sprites/xebec/${name}.png`),
+        "sprites/xebec/justice-gates.webp",
       ]),
     ].map((path) => verify(path)),
   );

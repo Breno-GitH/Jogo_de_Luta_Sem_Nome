@@ -3,8 +3,8 @@ import { Match, FLOOR } from "../src/engine/combat";
 import { characters } from "../src/engine/characters";
 import { hashState, restore, snapshot } from "../src/engine/state";
 import { neutral, type InputFrame } from "../src/engine/types";
-import { pandemoniumConfig } from "../src/engine/xebec-pandemonium";
-import { xebecGrapple, xebecProjectile, xebecSpecialArt } from "../src/engine/xebec-specials";
+import { pandemoniumBeats, pandemoniumConfig } from "../src/engine/xebec-pandemonium";
+import { xebecGrapple, xebecProjectile, xebecReleases, xebecSpecialArt } from "../src/engine/xebec-specials";
 
 type Input = Partial<InputFrame>;
 const specials = [
@@ -53,7 +53,7 @@ describe("Xebec's redesigned specials", () => {
         const move = p.a.move!;
         expect(new Set(animation.frames).size).toBeGreaterThan(2);
         expect(animation.durations.reduce((a,b) => a + b)).toBe(move.startup + move.active + move.recovery);
-        p.advance(105);
+        p.advance(move.startup + move.active + move.recovery + 40);
         expect(p.a.domination!.charge).toBe(0);
         expect(p.a.domination!.powered).toBe(false);
         expect(p.hits.length).toBeGreaterThan(0);
@@ -123,6 +123,36 @@ describe("Xebec's redesigned specials", () => {
     expect(q.m.events.some(e => e.xebec?.move === "xebecClash")).toBe(false);
   });
 
+  it.each([0, 1, 2])("releases exactly %i + 1 moving waves on distinct sword poses", strength => {
+    const fight = arena(740);
+    fight.motion(1, strength);
+    const attack = specials[1][strength];
+    const ids = xebecReleases[attack]!;
+    const released = new Map<string, { x: number; tick: number }>();
+    const animation = xebecSpecialArt[attack];
+    for (let tick = 0; tick < 100; tick++) {
+      fight.step();
+      for (const shot of fight.m.kiProjectiles)
+        if (!released.has(shot.move)) released.set(shot.move, { x: shot.x, tick: fight.a.stateFrame });
+    }
+    expect([...released.keys()]).toEqual(ids);
+    expect(ids).toHaveLength(strength + 1);
+    const cels = [...released].map(([id, shot]) => {
+      expect(shot.x).toBeGreaterThan(fight.a.x);
+      expect(shot.tick).toBe(xebecProjectile(id)!.tick);
+      let remaining = shot.tick;
+      return animation.frames.find((_, i) => (remaining -= animation.durations[i]) < 0);
+    });
+    expect(new Set(cels).size).toBe(ids.length);
+    const stopped = arena(740);
+    stopped.motion(1, strength);
+    stopped.advance(xebecProjectile(ids[0])!.tick - 2);
+    stopped.a.setState("hitstun");
+    stopped.a.stun = 40;
+    stopped.advance(90);
+    expect(stopped.m.kiProjectiles).toHaveLength(0);
+  });
+
   it("keeps three independently timed, blockable waves under one cast credit", () => {
     const p = arena(685);
     p.motion(1,2);
@@ -136,7 +166,7 @@ describe("Xebec's redesigned specials", () => {
     expect(new Set([...ids.values()].map(w=>w.tick)).size).toBe(3);
     expect(new Set([...ids.values()].map(w=>w.height)).size).toBe(3);
     expect(ids.get("xebecHighWave")?.velocity).toBeLessThan(0);
-    expect(xebecProjectile("xebecLowWave")?.level).toBe("low");
+    expect(xebecProjectile("xebecLowWave")?.level).toBe("mid");
     expect(p.a.domination!.charge).toBeLessThanOrEqual(18);
     const guard = arena(265);
     guard.motion(1,2,{direction:1,down:true});
@@ -188,12 +218,18 @@ describe("Xebec's redesigned specials", () => {
     expect(p.a.meter).toBe(0);
     expect(p.a.domination!.charge).toBe(100);
     expect(p.m.pandemonium).toBeDefined();
+    expect(p.hits).toHaveLength(0);
+    expect(p.b.health).toBe(1000);
     const restored = restore(snapshot(p.m));
     for (let t=0;t<pandemoniumConfig.duration+24;t++) {
       p.step(); restored.step([neutral(),neutral()]);
       expect(hashState(snapshot(restored))).toBe(hashState(snapshot(p.m)));
+      if (p.m.pandemonium?.tick === pandemoniumBeats.crew) expect(p.b.health).toBe(868);
     }
-    expect(p.hits.map(h=>h.move)).toEqual(["pandemonium","pandemonium_ground"]);
+    expect(p.hits).toEqual([
+      { move: "pandemonium_cleave", blocked: false, damage: 132 },
+      { move: "pandemonium_ground", blocked: false, damage: 202 },
+    ].map(hit => expect.objectContaining(hit)));
     expect(p.b.health).toBe(666);
     expect(p.m.cinematicActive).toBe(false);
     expect(p.a.state).toBe("idle");

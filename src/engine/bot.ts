@@ -424,7 +424,7 @@ export class Bot {
           return this.command([2, 5, 2], "light", self);
         }
         if (distance > 230 && distance < 590 && self.canStartSpecial("xebecRift")) {
-          this.lastDecision = "Fenda do Abismo";
+          this.lastDecision = "Dupla Fenda do Abismo";
           return this.command([2, 4], "medium", self);
         }
         if (distance > 102 && distance < 195 && self.canStartSpecial("xebecThrust")) {

@@ -19,6 +19,8 @@ async function start(page, mode, opponent = "Samurai") {
   const canvas = page.locator("canvas");
   await expect(canvas).toHaveAttribute("data-match-phase", "fight", { timeout: 45000 });
   await canvas.focus();
+  // Give the newly mounted match its first input-enabled frame.
+  await page.waitForTimeout(150);
   return { canvas, failures };
 }
 async function distance(page, max) {
@@ -27,12 +29,13 @@ async function distance(page, max) {
     return { gap: Math.abs(delta), key: delta < 0 ? "a" : "d" };
   });
   if (state.gap <= max) return;
+  await page.locator("canvas").focus();
   await page.keyboard.down(state.key);
   try {
     await page.waitForFunction(max => {
       const d = document.querySelector("canvas").dataset;
       return Math.abs(Number(d.rivalX) - Number(d.rootX)) <= max;
-    }, max);
+    }, max, { timeout: 4500 });
   } finally { await page.keyboard.up(state.key); }
 }
 
@@ -75,13 +78,15 @@ test("plays Xebec in the training arena and captures Pandemonium", async ({ page
   await page.keyboard.press("r", { delay: 36 });
   await expect(canvas).toHaveAttribute("data-capture", "pandemonium");
   const frameAt = tick => page.waitForFunction(t => Number(document.querySelector("canvas").dataset.pandemoniumTick) >= t, tick);
-  await frameAt(111);
-  await canvas.screenshot({ path: info.outputPath("pandemonium-preparacao.png") });
-  await frameAt(143);
-  await canvas.screenshot({ path: info.outputPath("pandemonium-corte.png") });
-  await frameAt(188);
-  await canvas.screenshot({ path: info.outputPath("pandemonium-ceus.png") });
-  await expect(canvas).toHaveAttribute("data-pandemonium-tick", "-1", { timeout: 12000 });
+  await frameAt(61);
+  await expect(canvas).toHaveAttribute("data-target-health", String(hp));
+  await canvas.screenshot({ path: info.outputPath("pandemonium-sorriso.png") });
+  for (const [tick, title] of [[156, "preparacao"], [199, "corte"], [389, "rocks"],
+    [461, "portoes"], [588, "ruptura"], [690, "pose-final"]]) {
+    await frameAt(tick);
+    await canvas.screenshot({ path: info.outputPath("pandemonium-" + title + ".png") });
+  }
+  await expect(canvas).toHaveAttribute("data-pandemonium-tick", "-1", { timeout: 24000 });
   await expect(canvas).toHaveAttribute("data-camera-zoom", "1");
   await expect(canvas).toHaveAttribute("data-meter", "0");
   await expect(canvas).toHaveAttribute("data-target-health", String(hp - 334));
@@ -93,12 +98,12 @@ test("plays Xebec in the training arena and captures Pandemonium", async ({ page
 test("shows persistent Haki and spends it on a J special", async ({ page }, info) => {
   test.setTimeout(100000);
   const { canvas, failures } = await start(page, "training");
-  await distance(page, 65);
+  await distance(page, 76);
   for (let i = 0; i < 6; i++) {
     await page.keyboard.press("l", { delay: 40 });
     await expect(canvas).toHaveAttribute("data-move", "stand_heavy");
     await expect(canvas).toHaveAttribute("data-physics-state", "idle");
-    await distance(page, 67);
+    await distance(page, 76);
   }
   // Six normal L strikes are 84 points. A connected special fills the rest.
   await page.keyboard.press("s", { delay: 44 });

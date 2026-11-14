@@ -124,7 +124,7 @@ export function movesContent(id: CharacterId, b: Bindings) {
       `Agachado (${keyLabel(b.down)})|${light} Soco baixo · ${medium} Rasteira · ${heavy} Corte ascendente`,
       `No ar|${light} Soco aéreo · ${medium} Chute aéreo · ${heavy} Corte descendente`,
       `Ruptura dos Portões|↓ → + ${light} Estocada Relâmpago · ${medium} Ruptura Ascendente · ${heavy} Quebra dos Portões`,
-      `Cortes do Abismo|↓ ← + ${light} Corte do Conquistador · ${medium} Fenda do Abismo · ${heavy} Ruptura Tripla`,
+      `Cortes Gigantes de Eclipse|↓ ← + ${light} Fenda do Conquistador · ${medium} Dupla Fenda do Abismo · ${heavy} Três Rupturas do Abismo`,
       `Investida do Conquistador|↓ ↓ + ${light} Investida Brutal · ${medium} Domínio Absoluto · ${heavy} Explosão do Rei Supremo`,
       `Arremesso dos Rocks|${keyLabel(b.throw)} em curta distância`,
       `Pandemonium: A Maldição do Abismo|${keyLabel(b.ultimate)} com a barra de Super cheia. A sequência exige confirmação.`,
