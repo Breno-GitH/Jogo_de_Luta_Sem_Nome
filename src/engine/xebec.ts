@@ -1,7 +1,7 @@
 import { combatPace } from "./pace";
 import type { AttackShape, CharacterData, Move } from "./types";
 import { pandemoniumId, pandemoniumMove } from "./xebec-pandemonium";
-import { makeXebecSpecials, xebecRiposte } from "./xebec-specials";
+import { makeXebecSpecials } from "./xebec-specials";
 
 export const xebecId = "xebec";
 
@@ -201,7 +201,11 @@ export const xebec: CharacterData = {
   },
   moves: {
     ...moves,
-    [xebecRiposte]: xebecSpecials.riposte,
+    xebecDominionLink: {
+      startup: 0, active: 0, recovery: 13, damage: 0, level: "mid",
+      box: { x: 0, y: 0, w: 0, h: 0 }, rank: 2, blockstun: 0, stun: 0, push: 0, launch: 0,
+      cancels: ["jump"], cancelWindow: { fromTick: 3, toTick: 10 },
+    },
     throw: {
       kind: "grab", level: "throw", startup: 8, active: 4, recovery: 24,
       rank: 2, damage: 0, stun: 0, blockstun: 0, push: 0, launch: 0,

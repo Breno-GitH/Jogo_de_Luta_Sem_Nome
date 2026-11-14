@@ -295,7 +295,7 @@ describe("real Socket.IO server boundary", () => {
     expect(created.data.room.players[0].token).toBeUndefined();
     expect(created.data.token).toHaveLength(64);
   });
-  it("keeps two Socket.IO clients in sync through empowered Rupture and Pandemonium", async () => {
+  it("keeps two Socket.IO clients in sync through empowered Triple Rupture and Pandemonium", async () => {
     const host = await connect(), guest = await connect();
     const made = await host.timeout(1000).emitWithAck("room:create", { version: ENGINE_VERSION });
     expect((await guest.timeout(1000).emitWithAck("room:join", {
@@ -318,7 +318,7 @@ describe("real Socket.IO server boundary", () => {
     match.fighters[0].x = 570;
     match.fighters[1].x = 675;
     match.fighters[0].meter = 100;
-    match.fighters[0].xebec!.domination = 100;
+    match.fighters[0].domination!.charge = 100;
     const players = [host, guest];
     const checkpoints = players.map(socket => new Promise<StartPacket>(resolve => socket.once("match:start", resolve)));
     expect((await host.timeout(1000).emitWithAck("match:sync", { matchId: opening[0].matchId })).ok).toBe(true);
@@ -328,23 +328,24 @@ describe("real Socket.IO server boundary", () => {
     });
     const history: string[] = [];
     let powered = false, projectile = false, phase = false;
-    let now = Date.now();
+    let now = Date.now() + 1100;
     const wallClock = vi.spyOn(Date, "now").mockImplementation(() => now);
     try {
-    for (let i = 1; i <= 296; i++) {
+    for (let i = 1; i <= 508; i++) {
       now += 17;
       const packets = players.map(socket => new Promise<StepPacket>(resolve => socket.once("match:step", resolve)));
       const frame = neutral();
       if (i === 1) frame.down = true;
-      if (i === 2) { frame.down = true; frame.direction = 1; }
-      if (i === 3) { frame.direction = 1; frame.pressed = ["heavy"]; }
-      if (i >= 77 && i < 124 && match.fighters[1].x - match.fighters[0].x > 70) frame.direction = 1;
-      if (i === 128) frame.pressed = ["ultimate"];
+      if (i === 2) { frame.down = true; frame.direction = -1; }
+      if (i === 3) { frame.direction = -1; frame.pressed = ["heavy"]; }
+      if (i >= 130 && i < 208 && match.fighters[1].x - match.fighters[0].x > 70) frame.direction = 1;
+      if (i === 210) frame.pressed = ["ultimate"];
       const tick = room.tick + INPUT_DELAY + 1;
       host.emit("match:input", { matchId: room.matchId, tick, input: frame });
       guest.emit("match:input", { matchId: room.matchId, tick, input: neutral() });
       // The ack follows input delivery on each connection before the real Rooms clock advances.
-      await Promise.all(players.map(socket => socket.timeout(1000).emitWithAck("net:ping")));
+      await Promise.all(players.map(socket => new Promise<void>(resolve => socket.emit("net:ping", () => resolve()))));
+      expect(room.players.map(p => p?.accepted), `accepted input for tick ${tick}`).toEqual([tick, tick]);
       room.nextAt = performance.now() - 1;
       app!.rooms.pump();
       expect(room.tick, `step ${i}, status ${room.status}`).toBe(i);
@@ -354,8 +355,8 @@ describe("real Socket.IO server boundary", () => {
         expect(hashState(snapshot(copies[seat]))).toBe(steps[seat].hash);
         expect(steps[seat].hash).toBe(steps[0].hash);
       }
-      powered ||= match.fighters[0].xebec!.empowered;
-      projectile ||= match.kiProjectiles.some(p => p.move === "xebecExtraShock");
+      powered ||= match.fighters[0].domination!.powered;
+      projectile ||= match.kiProjectiles.some(p => p.move === "xebecLowWave");
       phase ||= !!match.pandemonium;
       history.push(...match.hits.map(h => h.move));
     }
@@ -363,7 +364,7 @@ describe("real Socket.IO server boundary", () => {
       wallClock.mockRestore();
     }
     expect(powered && projectile && phase).toBe(true);
-    expect(history).toContain("pandemonium_finish");
+    expect(history).toContain("pandemonium_ground");
     expect(match.cinematicActive).toBe(false);
   }, 15000);
 

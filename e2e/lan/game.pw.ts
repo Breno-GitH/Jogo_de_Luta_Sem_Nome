@@ -1339,7 +1339,7 @@ test("Xebec resolves Dominação and Pandemonium on both clients", async () => {
   const room = await seed(code, 132, 100, match => {
     match.fighters[0].domination!.charge = 100;
   });
-  await motion(a, [2, 6], "l", 42);
+  await motion(a, [2, 4], "l", 42);
   await expect.poll(() => room.match!.fighters[0].domination!.powered).toBe(true);
   await expect.poll(() => room.match!.fighters[0].domination!.charge).toBe(0);
   await expect.poll(() => room.match!.fighters[0].state).toBe("idle");

@@ -1,6 +1,6 @@
 import type { Match, HitEvent } from "../engine/combat";
 import type { CentipedeCue } from "../engine/kaneki-centipede";
-import { pandemonium } from "../engine/xebec-pandemonium";
+import { pandemoniumConfig } from "../engine/xebec-pandemonium";
 import { chainFinishes } from "../engine/kaneki-chain";
 export type Cue =
   | "swing"
@@ -312,7 +312,7 @@ export class Sound {
     } else if (cue === "menu") tone(660, 880, 0.06, "sine", 0.15);
   }
   tick(match: Match, onlineRound?: string) {
-    this.setMusicDucked(!!match.pandemonium && match.pandemonium.tick < pandemonium.impact);
+    this.setMusicDucked(!!match.pandemonium && match.pandemonium.tick < pandemoniumConfig.hits[0].tick);
     if (this.owner !== match) {
       this.owner = match;
       this.moves = ["", ""];

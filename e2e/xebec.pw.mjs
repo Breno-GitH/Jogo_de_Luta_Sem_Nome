@@ -57,9 +57,11 @@ test("plays Xebec in the training arena and captures Pandemonium", async ({ page
   await page.keyboard.down("d");
   try { await page.keyboard.press("j", { delay: 35 }); }
   finally { await page.keyboard.up("d"); }
-  await expect(canvas).toHaveAttribute("data-move", "xebecLightning");
+  await expect(canvas).toHaveAttribute("data-move", "xebecThrust");
   await expect(canvas).toHaveAttribute("data-domination", "18");
+  await canvas.screenshot({ path: info.outputPath("estocada-relampago.png") });
   await expect(canvas).toHaveAttribute("data-physics-state", "idle");
+  await page.waitForTimeout(650);
   const hp = Number(await canvas.getAttribute("data-target-health"));
   expect(hp).toBeLessThan(1000);
   await page.locator("#fill-meter").click();
@@ -79,6 +81,43 @@ test("plays Xebec in the training arena and captures Pandemonium", async ({ page
   await expect(canvas).toHaveAttribute("data-target-health", String(hp - 334));
   await page.keyboard.press("j");
   await expect(canvas).toHaveAttribute("data-move", "stand_light");
+  expect(failures).toEqual([]);
+});
+
+test("shows persistent Haki and spends it on a J special", async ({ page }, info) => {
+  test.setTimeout(100000);
+  const { canvas, failures } = await start(page, "training");
+  await distance(page, 65);
+  for (let i = 0; i < 6; i++) {
+    await page.keyboard.press("l", { delay: 40 });
+    await expect(canvas).toHaveAttribute("data-move", "stand_heavy");
+    await expect(canvas).toHaveAttribute("data-physics-state", "idle");
+    await distance(page, 67);
+  }
+  // Six normal L strikes are 84 points. A connected special fills the rest.
+  await page.keyboard.press("s", { delay: 44 });
+  await page.keyboard.down("a");
+  try { await page.keyboard.press("j", { delay: 35 }); }
+  finally { await page.keyboard.up("a"); }
+  await expect(canvas).toHaveAttribute("data-xebec-charge", "full");
+  await expect(canvas).toHaveAttribute("data-physics-state", "idle");
+  await canvas.screenshot({ path: info.outputPath("haki-idle.png") });
+  await page.keyboard.down("a");
+  await expect(canvas).toHaveAttribute("data-animation", "walkBack");
+  await canvas.screenshot({ path: info.outputPath("haki-recuo.png") });
+  await page.keyboard.up("a");
+  await page.keyboard.press("w");
+  await expect(canvas).toHaveAttribute("data-animation", "jumpRise");
+  await expect(canvas).toHaveAttribute("data-xebec-charge", "full");
+  await canvas.screenshot({ path: info.outputPath("haki-salto.png") });
+  await expect(canvas).toHaveAttribute("data-physics-state", "idle");
+  await page.keyboard.press("s", { delay: 46 });
+  await page.waitForTimeout(48);
+  await page.keyboard.down("s");
+  try { await page.keyboard.press("j", { delay: 40 }); }
+  finally { await page.keyboard.up("s"); }
+  await expect(canvas).toHaveAttribute("data-move", "xebecBrutal");
+  await expect(canvas).toHaveAttribute("data-domination", "0");
   expect(failures).toEqual([]);
 });
 
