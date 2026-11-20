@@ -67,6 +67,8 @@ import type { Fighter } from "../engine/combat";
 import { combatPace } from "../engine/pace";
 import { xebecId } from "../engine/xebec";
 import { xebecAnimations } from "./xebec-animations";
+import { astaAnimations } from "./asta-animations";
+import { drawAstaWeapon,drawAstaSwordHud } from "./asta-weapon";
 import { kingWill } from "../engine/xebec-specials";
 import { drawKingWillArena, drawKingWillHaki, drawKingWillReaction, kingWillFronts } from "./xebec-king-will";
 import { drawDomination, drawPandemoniumSky, drawPandemoniumStrike, drawXebecCharge, drawXebecSpecials } from "./xebec-special-fx";
@@ -114,6 +116,7 @@ export class Renderer {
     this.fxImage.src = `${spriteBase}fx/samurai-fx.png`;
     const sheets = new Set<string>();
     sheets.add("fx/dio-specials.png");
+    sheets.add("asta/arsenal.png");
     sheets.add(sasukeEffectsSheet);
     sheets.add(goryukaHeadSheet);
     for (const sheet of kirinEffectsSheets) sheets.add(sheet);
@@ -128,6 +131,7 @@ export class Renderer {
       sasukeAnimations,
       kanekiAnimations,
       xebecAnimations,
+      astaAnimations,
       ...benAnimationSets,
       ...previewAnimations,
       worldAnimations,
@@ -227,7 +231,7 @@ export class Renderer {
                 : f.data.id === "sasuke"
                   ? sasukeAnimations
                   : f.data.id === "kaneki" ? kanekiAnimations
-                    : f.data.id === benId ? benArt : f.data.id === xebecId ? xebecAnimations : metadata,
+                    : f.data.id === benId ? benArt : f.data.id === xebecId ? xebecAnimations : f.asta ? astaAnimations : metadata,
         );
         if (f.stand) this.standAnimations.set(f, new Animator(worldAnimations));
       }
@@ -318,6 +322,8 @@ export class Renderer {
     this.canvas.dataset.animationTick = String(
       this.presentations[this.localSeat].animator.elapsedTicks,
     );
+    this.canvas.dataset.sheet = this.presentations[this.localSeat].animator.sprite().sheet;
+    this.canvas.dataset.rivalSheet = this.presentations[1-this.localSeat].animator.sprite().sheet;
     this.canvas.dataset.physicsState = self.state;
     this.canvas.dataset.rootY = String(self.y);
     this.canvas.dataset.rootX = String(self.x);
@@ -337,6 +343,8 @@ export class Renderer {
     this.canvas.dataset.pandemoniumTick = String(pandemonium?.tick ?? -1);
     this.canvas.dataset.pandemoniumPhase = abyss?.phase ?? "";
     this.canvas.dataset.prometheusCel = String(abyss?.prometheus?.cel ?? -1);
+    this.canvas.dataset.astaSword = self.asta?.equipped ?? "";
+    this.canvas.dataset.astaAirDash = String(self.asta?.airDashTicks ?? 0);
     this.canvas.dataset.domination = String(self.domination?.charge ?? "");
     this.canvas.dataset.moveTick = String(self.stateFrame);
     this.canvas.dataset.hakiReaction = other.hakiReaction ?? "";
@@ -641,13 +649,13 @@ export class Renderer {
       c.scale(f.facing * sprite.scale, sprite.scale);
       const ghostDepth = benGhostDepth(f);
       if (this.effects && ghostDepth) drawBenGhostGround(c, f, match.frame);
-      if (i === 1 && !kakujaActor && !sprite.player2Sheet && f.data.id !== benId && f.data.id !== "goku" && f.data.id !== xebecId && !sasukeWingedSheets.has(sprite.sheet))
+      if (i === 1 && !kakujaActor && !sprite.player2Sheet && f.data.id !== benId && f.data.id !== "goku" && f.data.id !== xebecId && !f.asta && !sasukeWingedSheets.has(sprite.sheet))
         c.filter = "hue-rotate(145deg)";
       const original = this.sprites.get(
         i === 1 ? (sprite.player2Sheet ?? sprite.sheet) : sprite.sheet,
       );
       const image =
-        i === 1 && !kakujaActor && f.data.id !== benId && !sasukeWingedSheets.has(sprite.sheet) && (this.opponentPalette !== "cyan" || f.data.id === "goku")
+        i === 1 && !kakujaActor && f.data.id !== benId && !f.asta && !sasukeWingedSheets.has(sprite.sheet) && (this.opponentPalette !== "cyan" || f.data.id === "goku")
           ? (this.variants.get(`${this.opponentPalette}:${sprite.sheet}`) ??
             original)
           : original;
@@ -719,6 +727,7 @@ export class Renderer {
         c.restore();
       }
       c.globalAlpha = 1;
+      if(f.asta && image) drawAstaWeapon(c,f,this.presentations[i].animator,this.sprites.get("asta/arsenal.png")!,image);
       drawSpectralArms(c, f, match);
       if (f.omnitrix?.active === "feedback") {
         const animator = this.presentations[i].animator;
@@ -1023,7 +1032,7 @@ export class Renderer {
         c.font = "11px monospace";
         c.fillStyle = i === 0 ? "#e5b16b" : "#73cbd5";
         c.fillText(
-          f.domination ? `PANDEMONIUM · ${f.meter >= pandemoniumConfig.cost ? `PRONTA · ${this.superKey}` : Math.floor(f.meter) + "%"}` :
+          f.asta ? "SUPER · INDISPONÍVEL" : f.domination ? `PANDEMONIUM · ${f.meter >= pandemoniumConfig.cost ? `PRONTA · ${this.superKey}` : Math.floor(f.meter) + "%"}` :
           f.data.id === benId ? `ALIEN X · ${f.meter >= f.meterMaximum ? `PRONTA · ${this.superKey}` : Math.floor(100 * f.meter / f.meterMaximum) + "%"}` : f.data.id === "kaneki"
             ? `CENTIPEDE · ${f.meter >= centipedeConfig.cost ? `PRONTA · ${this.superKey}` : Math.floor(100 * f.meter / centipedeConfig.cost) + "%"}`
             : f.data.id === "luffy"
@@ -1040,6 +1049,7 @@ export class Renderer {
         );
       }
       if (f.domination) drawDomination(c, f.domination, x, m.frame);
+      if (f.asta) drawAstaSwordHud(c,f,x);
       if (f.omnitrix)
         drawOmnitrixHud(c, f.omnitrix, i, this.chainKeys[2],
           !omnitrixCanBrowse(f.state) || f.knockedDown || Boolean(m.capture) || m.cinematicActive || m.temporal.isFrozen(i),

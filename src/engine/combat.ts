@@ -1,4 +1,6 @@
 import type { KaguneId } from "./kagune";
+import { astaMoves } from "./asta";
+import { newAsta, beginAstaAttack, commitAstaSword, finishAstaAttack, type AstaState } from "./asta-stances";
 import samurai from "../data/samurai.json";
 import { CombatStand } from "./stand-combat";
 import { TemporalController, type DeferredReaction } from "./temporal";
@@ -132,6 +134,7 @@ export class Fighter {
   gokuCastSerial = 0;
   sasukeCurse?: SasukeCurseState;
   omnitrix?: OmnitrixState;
+  asta?: AstaState;
   domination?: { charge: number; powered: boolean; awarded: boolean; spentFrame?: number;
     cast: number; lastWaveCredit: number; finishingPressure?: { frame: number; tick: number } };
   kirinCursed?: boolean;
@@ -158,6 +161,7 @@ export class Fighter {
     this.homeX = x;
     this.health = data.health;
     if (data.id === benId) this.omnitrix = newOmnitrix();
+    if (data.id === "asta") this.asta = newAsta();
     if (data.id === xebecId) this.domination = { charge: 0, powered: false, awarded: false, cast: 0, lastWaveCredit: 0 };
     this.facing = id === 0 ? 1 : -1;
     // A runtime link, not serializable combat state. Keeping it non-enumerable
@@ -184,7 +188,7 @@ export class Fighter {
     return growth ? benFormBalance.growth[growth.rank].scale : 1;
   }
   get movementData() { return this.benForm?.movement ?? this.data; }
-  private get normalMoves() { return this.benForm?.moves ?? this.data.moves; }
+  private get normalMoves() { return this.asta ? astaMoves[this.asta.attackSword ?? this.asta.equipped] : this.benForm?.moves ?? this.data.moves; }
   get grabSequence() { return this.benForm?.grab ?? this.data.grabSequence; }
   get stageInset() { return Math.max(40, (this.benForm?.width ?? 52) * this.benScale / 2); }
   get airborne() {
@@ -441,6 +445,7 @@ export class Fighter {
       : !this.connected;
   }
   canCancel(name: string) {
+    if (this.asta && (!this.hitConfirmed || name === "light")) return false;
     if (this.benForm && !this.hitConfirmed) return false;
     if (name === "jump" && this.moveId === "xebecDance" &&
         (!this.hitIds.includes(2) || !this.opponent?.hitLaunch || this.opponent.knockedDown)) return false;
@@ -611,6 +616,10 @@ export class Fighter {
       if (s === "crouch") this.omnitrix.crouchExit = 0;
       else if (this.state === "crouch" && (s === "idle" || s === "walk")) this.omnitrix.crouchExit = 5;
     }
+    if (this.asta) {
+      if (s !== "attack") finishAstaAttack(this);
+      if (s !== "air") this.asta.airDashTicks = 0;
+    }
     this.state = s;
     this.hakiReaction = undefined;
     if (this.omnitrix && !omnitrixCanBrowse(s)) cancelOmnitrix(this.omnitrix);
@@ -695,6 +704,7 @@ export class Fighter {
         Math.max(42, Math.min(technique.reach, gap - 7))));
     } else this.kanekiBurrowX = undefined;
     this.moveId = id;
+    beginAstaAttack(this, m.astaSword);
     if (this.domination) {
       const resource = this.domination;
       resource.powered = id === kingWill;
@@ -774,6 +784,8 @@ export class Fighter {
       this.reverseBeatUsed = false;
     this.buffer.push(input, frame, this.facing);
     this.stateFrame++;
+    commitAstaSword(this);
+    if (this.asta && !this.airborne) this.asta.airDashUsed = false;
     if (this.combo > 0) this.comboAge++;
     this.syncReactionClock(true);
     if (
@@ -1207,6 +1219,18 @@ export class Fighter {
       } else this.airChaseTicks = 0;
     }
     tickGokuMove(this);
+    const swordDash = this.asta;
+    if (swordDash && this.airborne && this.state === "air") {
+      if (!swordDash.airDashUsed && input.direction && this.buffer.consume("dash")) {
+        swordDash.airDashUsed = true; swordDash.airDashTicks = 8;
+        swordDash.airDashDirection = input.direction; this.vy = -1;
+      }
+      if (swordDash.airDashTicks > 0) {
+        this.vx = swordDash.airDashDirection * (8 + swordDash.airDashTicks * .7);
+        this.vy = Math.min(this.vy, .2);
+        swordDash.airDashTicks--;
+      }
+    }
     flyNrg(this, input);
     if (this.benScale > 1 && this.state === "walk") this.vx *= 1 / Math.sqrt(this.benScale);
     const wasAirborne = this.airborne;

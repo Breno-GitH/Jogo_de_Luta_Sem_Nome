@@ -72,6 +72,7 @@ export interface CombatPose {
   hurtboxes: Rect[];
 }
 export interface Move {
+  astaSword?: { sword: import("./asta-stances").AstaSword; commitTick: number };
   ben?: import("./ben-moves").BenMoveMeta;
   visualTiming?: { startup: number; active: number; recovery: number };
   airTeleport?: boolean;

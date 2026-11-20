@@ -58,6 +58,10 @@ export const roster: {
     status: "Onze formas cadastradas · transformação com L · especiais próprios · Alien X reservado",
   },
   {
+    id: "asta", name: "Asta", style: "Rushdown técnico com quatro estilos de espada e perseguição aérea.",
+    status: "Base jogável · 36 normais · quatro espadas · especiais e Super na próxima etapa",
+  },
+  {
     id: xebecId,
     name: "Rocks D. Xebec",
     style: "Capitão dos Piratas Rocks. Mistura socos e chutes rápidos com cortes de sabre de maior alcance.",
@@ -119,6 +123,7 @@ export function movesContent(id: CharacterId, b: Bindings) {
   const [light, medium, heavy] = [b.light, b.medium, b.heavy].map(keyLabel);
   const atk = `${light} / ${medium} / ${heavy}`;
   const moves: Record<CharacterId, string[]> = {
+    asta: [`Normais|${atk} em pé, agachado e no ar. A espada equipada determina alcance e ritmo.`, `Combos|Confirme J → K → L. Agachado + L permite perseguição com salto após acerto.`, `Mobilidade|Dash terrestre e um air dash por salto.`, `Espadas|Partidas começam com Demon-Slayer. No Treinamento, escolha as outras espadas no painel. A troca durante especiais será integrada na próxima etapa.`],
     [xebecId]: [
       `Em pé|${light} Soco direto · ${medium} Golpe de Corpo · ${heavy} Corte horizontal`,
       `Agachado (${keyLabel(b.down)})|${light} Soco baixo · ${medium} Rasteira · ${heavy} Corte ascendente`,

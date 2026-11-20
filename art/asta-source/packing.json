@@ -1,0 +1,1067 @@
+{
+  "bodyScale": 0.3,
+  "cell": [
+    256,
+    256
+  ],
+  "pivot": [
+    128,
+    224
+  ],
+  "bounds": {
+    "idle": [
+      {
+        "sourceBounds": [
+          143,
+          4,
+          388,
+          494
+        ],
+        "floor": 494,
+        "rootX": 265.5
+      },
+      {
+        "sourceBounds": [
+          118,
+          3,
+          363,
+          494
+        ],
+        "floor": 494,
+        "rootX": 240.5
+      },
+      {
+        "sourceBounds": [
+          91,
+          3,
+          336,
+          494
+        ],
+        "floor": 494,
+        "rootX": 213.5
+      },
+      {
+        "sourceBounds": [
+          147,
+          4,
+          393,
+          496
+        ],
+        "floor": 496,
+        "rootX": 270.0
+      },
+      {
+        "sourceBounds": [
+          118,
+          4,
+          364,
+          496
+        ],
+        "floor": 496,
+        "rootX": 241.0
+      },
+      {
+        "sourceBounds": [
+          91,
+          4,
+          337,
+          496
+        ],
+        "floor": 496,
+        "rootX": 214.0
+      }
+    ],
+    "walk": [
+      {
+        "sourceBounds": [
+          87,
+          11,
+          440,
+          488
+        ],
+        "floor": 488,
+        "rootX": 263.5
+      },
+      {
+        "sourceBounds": [
+          120,
+          16,
+          331,
+          490
+        ],
+        "floor": 490,
+        "rootX": 230.5
+      },
+      {
+        "sourceBounds": [
+          117,
+          6,
+          337,
+          488
+        ],
+        "floor": 488,
+        "rootX": 231.5
+      },
+      {
+        "sourceBounds": [
+          120,
+          5,
+          379,
+          492
+        ],
+        "floor": 492,
+        "rootX": 212.0
+      },
+      {
+        "sourceBounds": [
+          80,
+          6,
+          417,
+          492
+        ],
+        "floor": 492,
+        "rootX": 248.5
+      },
+      {
+        "sourceBounds": [
+          104,
+          18,
+          335,
+          493
+        ],
+        "floor": 493,
+        "rootX": 225.0
+      }
+    ],
+    "back": [
+      {
+        "sourceBounds": [
+          75,
+          10,
+          390,
+          485
+        ],
+        "floor": 485,
+        "rootX": 229.0
+      },
+      {
+        "sourceBounds": [
+          115,
+          15,
+          346,
+          484
+        ],
+        "floor": 484,
+        "rootX": 224.5
+      },
+      {
+        "sourceBounds": [
+          111,
+          17,
+          323,
+          484
+        ],
+        "floor": 484,
+        "rootX": 193.5
+      },
+      {
+        "sourceBounds": [
+          146,
+          15,
+          354,
+          487
+        ],
+        "floor": 487,
+        "rootX": 234.0
+      },
+      {
+        "sourceBounds": [
+          106,
+          15,
+          382,
+          489
+        ],
+        "floor": 489,
+        "rootX": 244.0
+      },
+      {
+        "sourceBounds": [
+          91,
+          17,
+          361,
+          491
+        ],
+        "floor": 491,
+        "rootX": 226.0
+      }
+    ],
+    "dash": [
+      {
+        "sourceBounds": [
+          12,
+          114,
+          512,
+          477
+        ],
+        "floor": 477,
+        "rootX": 262.0
+      },
+      {
+        "sourceBounds": [
+          0,
+          20,
+          496,
+          512
+        ],
+        "floor": 512,
+        "rootX": 211.5
+      },
+      {
+        "sourceBounds": [
+          60,
+          87,
+          483,
+          477
+        ],
+        "floor": 477,
+        "rootX": 271.0
+      },
+      {
+        "sourceBounds": [
+          35,
+          18,
+          479,
+          496
+        ],
+        "floor": 496,
+        "rootX": 290.0
+      },
+      {
+        "sourceBounds": [
+          20,
+          0,
+          390,
+          442
+        ],
+        "floor": 442,
+        "rootX": 258.0
+      },
+      {
+        "sourceBounds": [
+          51,
+          81,
+          445,
+          496
+        ],
+        "floor": 496,
+        "rootX": 248.5
+      }
+    ],
+    "jump": [
+      {
+        "sourceBounds": [
+          138,
+          97,
+          397,
+          491
+        ],
+        "floor": 500,
+        "rootX": 253.0
+      },
+      {
+        "sourceBounds": [
+          84,
+          7,
+          350,
+          491
+        ],
+        "floor": 500,
+        "rootX": 211.5
+      },
+      {
+        "sourceBounds": [
+          140,
+          2,
+          341,
+          380
+        ],
+        "floor": 500,
+        "rootX": 216.0
+      },
+      {
+        "sourceBounds": [
+          182,
+          2,
+          377,
+          471
+        ],
+        "floor": 500,
+        "rootX": 252.0
+      },
+      {
+        "sourceBounds": [
+          144,
+          19,
+          342,
+          494
+        ],
+        "floor": 500,
+        "rootX": 231.0
+      },
+      {
+        "sourceBounds": [
+          94,
+          132,
+          358,
+          499
+        ],
+        "floor": 500,
+        "rootX": 212.5
+      }
+    ],
+    "crouch": [
+      {
+        "sourceBounds": [
+          86,
+          10,
+          384,
+          497
+        ],
+        "floor": 497,
+        "rootX": 220.0
+      },
+      {
+        "sourceBounds": [
+          96,
+          83,
+          384,
+          496
+        ],
+        "floor": 496,
+        "rootX": 225.5
+      },
+      {
+        "sourceBounds": [
+          93,
+          82,
+          377,
+          497
+        ],
+        "floor": 497,
+        "rootX": 220.0
+      },
+      {
+        "sourceBounds": [
+          94,
+          33,
+          386,
+          503
+        ],
+        "floor": 503,
+        "rootX": 223.5
+      },
+      {
+        "sourceBounds": [
+          86,
+          1,
+          393,
+          503
+        ],
+        "floor": 503,
+        "rootX": 239.5
+      },
+      {
+        "sourceBounds": [
+          73,
+          55,
+          395,
+          503
+        ],
+        "floor": 503,
+        "rootX": 234.0
+      }
+    ],
+    "reaction": [
+      {
+        "sourceBounds": [
+          126,
+          21,
+          433,
+          487
+        ],
+        "floor": 487,
+        "rootX": 291.0
+      },
+      {
+        "sourceBounds": [
+          112,
+          65,
+          390,
+          489
+        ],
+        "floor": 489,
+        "rootX": 240.5
+      },
+      {
+        "sourceBounds": [
+          95,
+          9,
+          407,
+          429
+        ],
+        "floor": 429,
+        "rootX": 254.5
+      },
+      {
+        "sourceBounds": [
+          23,
+          317,
+          497,
+          502
+        ],
+        "floor": 502,
+        "rootX": 284.5
+      },
+      {
+        "sourceBounds": [
+          66,
+          153,
+          416,
+          487
+        ],
+        "floor": 487,
+        "rootX": 241.0
+      },
+      {
+        "sourceBounds": [
+          90,
+          3,
+          395,
+          497
+        ],
+        "floor": 497,
+        "rootX": 242.5
+      }
+    ],
+    "life": [
+      {
+        "sourceBounds": [
+          112,
+          6,
+          385,
+          501
+        ],
+        "floor": 501,
+        "rootX": 248.5
+      },
+      {
+        "sourceBounds": [
+          113,
+          5,
+          385,
+          500
+        ],
+        "floor": 500,
+        "rootX": 249.0
+      },
+      {
+        "sourceBounds": [
+          81,
+          4,
+          389,
+          501
+        ],
+        "floor": 501,
+        "rootX": 250.5
+      },
+      {
+        "sourceBounds": [
+          30,
+          38,
+          484,
+          501
+        ],
+        "floor": 501,
+        "rootX": 209.0
+      },
+      {
+        "sourceBounds": [
+          41,
+          54,
+          413,
+          499
+        ],
+        "floor": 499,
+        "rootX": 227.0
+      },
+      {
+        "sourceBounds": [
+          43,
+          13,
+          471,
+          501
+        ],
+        "floor": 501,
+        "rootX": 239.5
+      }
+    ],
+    "stand_light": [
+      {
+        "sourceBounds": [
+          112,
+          4,
+          383,
+          483
+        ],
+        "floor": 483,
+        "rootX": 247.5
+      },
+      {
+        "sourceBounds": [
+          82,
+          5,
+          352,
+          485
+        ],
+        "floor": 485,
+        "rootX": 217.0
+      },
+      {
+        "sourceBounds": [
+          50,
+          5,
+          375,
+          484
+        ],
+        "floor": 484,
+        "rootX": 212.5
+      },
+      {
+        "sourceBounds": [
+          64,
+          10,
+          442,
+          489
+        ],
+        "floor": 489,
+        "rootX": 246.0
+      },
+      {
+        "sourceBounds": [
+          73,
+          10,
+          368,
+          487
+        ],
+        "floor": 487,
+        "rootX": 220.5
+      },
+      {
+        "sourceBounds": [
+          77,
+          4,
+          360,
+          486
+        ],
+        "floor": 486,
+        "rootX": 218.5
+      }
+    ],
+    "stand_heavy": [
+      {
+        "sourceBounds": [
+          102,
+          18,
+          408,
+          500
+        ],
+        "floor": 500,
+        "rootX": 255.0
+      },
+      {
+        "sourceBounds": [
+          87,
+          2,
+          413,
+          500
+        ],
+        "floor": 500,
+        "rootX": 250.0
+      },
+      {
+        "sourceBounds": [
+          68,
+          18,
+          416,
+          500
+        ],
+        "floor": 500,
+        "rootX": 242.0
+      },
+      {
+        "sourceBounds": [
+          84,
+          67,
+          451,
+          501
+        ],
+        "floor": 501,
+        "rootX": 267.5
+      },
+      {
+        "sourceBounds": [
+          77,
+          21,
+          394,
+          501
+        ],
+        "floor": 501,
+        "rootX": 235.5
+      },
+      {
+        "sourceBounds": [
+          85,
+          12,
+          400,
+          501
+        ],
+        "floor": 501,
+        "rootX": 242.5
+      }
+    ],
+    "crouch_heavy": [
+      {
+        "sourceBounds": [
+          86,
+          129,
+          422,
+          512
+        ],
+        "floor": 512,
+        "rootX": 241.5
+      },
+      {
+        "sourceBounds": [
+          61,
+          63,
+          391,
+          512
+        ],
+        "floor": 512,
+        "rootX": 225.5
+      },
+      {
+        "sourceBounds": [
+          39,
+          15,
+          366,
+          457
+        ],
+        "floor": 457,
+        "rootX": 202.5
+      },
+      {
+        "sourceBounds": [
+          150,
+          0,
+          378,
+          489
+        ],
+        "floor": 489,
+        "rootX": 237.0
+      },
+      {
+        "sourceBounds": [
+          118,
+          0,
+          330,
+          498
+        ],
+        "floor": 498,
+        "rootX": 187.0
+      },
+      {
+        "sourceBounds": [
+          55,
+          28,
+          350,
+          503
+        ],
+        "floor": 503,
+        "rootX": 202.5
+      }
+    ],
+    "stand_medium": [
+      {
+        "sourceBounds": [
+          76,
+          12,
+          356,
+          501
+        ],
+        "floor": 501,
+        "rootX": 216.0
+      },
+      {
+        "sourceBounds": [
+          46,
+          38,
+          363,
+          500
+        ],
+        "floor": 500,
+        "rootX": 204.5
+      },
+      {
+        "sourceBounds": [
+          23,
+          38,
+          402,
+          500
+        ],
+        "floor": 500,
+        "rootX": 212.5
+      },
+      {
+        "sourceBounds": [
+          54,
+          23,
+          478,
+          491
+        ],
+        "floor": 491,
+        "rootX": 232.5
+      },
+      {
+        "sourceBounds": [
+          52,
+          16,
+          391,
+          488
+        ],
+        "floor": 488,
+        "rootX": 221.5
+      },
+      {
+        "sourceBounds": [
+          68,
+          10,
+          388,
+          491
+        ],
+        "floor": 491,
+        "rootX": 228.0
+      }
+    ],
+    "crouch_light": [
+      {
+        "sourceBounds": [
+          112,
+          116,
+          396,
+          480
+        ],
+        "floor": 480,
+        "rootX": 257.5
+      },
+      {
+        "sourceBounds": [
+          100,
+          130,
+          392,
+          480
+        ],
+        "floor": 480,
+        "rootX": 252.0
+      },
+      {
+        "sourceBounds": [
+          94,
+          155,
+          408,
+          479
+        ],
+        "floor": 479,
+        "rootX": 234.0
+      },
+      {
+        "sourceBounds": [
+          117,
+          142,
+          424,
+          474
+        ],
+        "floor": 474,
+        "rootX": 257.5
+      },
+      {
+        "sourceBounds": [
+          116,
+          139,
+          398,
+          473
+        ],
+        "floor": 473,
+        "rootX": 257.0
+      },
+      {
+        "sourceBounds": [
+          108,
+          133,
+          394,
+          474
+        ],
+        "floor": 474,
+        "rootX": 253.5
+      }
+    ],
+    "crouch_medium": [
+      {
+        "sourceBounds": [
+          36,
+          82,
+          469,
+          479
+        ],
+        "floor": 479,
+        "rootX": 263.5
+      },
+      {
+        "sourceBounds": [
+          1,
+          18,
+          442,
+          478
+        ],
+        "floor": 478,
+        "rootX": 243.0
+      },
+      {
+        "sourceBounds": [
+          33,
+          36,
+          432,
+          477
+        ],
+        "floor": 477,
+        "rootX": 232.5
+      },
+      {
+        "sourceBounds": [
+          37,
+          55,
+          469,
+          481
+        ],
+        "floor": 481,
+        "rootX": 241.0
+      },
+      {
+        "sourceBounds": [
+          38,
+          43,
+          431,
+          481
+        ],
+        "floor": 481,
+        "rootX": 234.5
+      },
+      {
+        "sourceBounds": [
+          5,
+          85,
+          473,
+          481
+        ],
+        "floor": 481,
+        "rootX": 260.5
+      }
+    ],
+    "air_light": [
+      {
+        "sourceBounds": [
+          154,
+          4,
+          367,
+          462
+        ],
+        "floor": 500,
+        "rootX": 243.5
+      },
+      {
+        "sourceBounds": [
+          108,
+          3,
+          341,
+          447
+        ],
+        "floor": 500,
+        "rootX": 213.0
+      },
+      {
+        "sourceBounds": [
+          110,
+          3,
+          369,
+          462
+        ],
+        "floor": 500,
+        "rootX": 188.5
+      },
+      {
+        "sourceBounds": [
+          149,
+          5,
+          413,
+          453
+        ],
+        "floor": 500,
+        "rootX": 222.0
+      },
+      {
+        "sourceBounds": [
+          114,
+          4,
+          338,
+          437
+        ],
+        "floor": 500,
+        "rootX": 211.0
+      },
+      {
+        "sourceBounds": [
+          120,
+          5,
+          334,
+          457
+        ],
+        "floor": 500,
+        "rootX": 203.0
+      }
+    ],
+    "air_medium": [
+      {
+        "sourceBounds": [
+          124,
+          6,
+          351,
+          469
+        ],
+        "floor": 500,
+        "rootX": 156.0
+      },
+      {
+        "sourceBounds": [
+          80,
+          6,
+          358,
+          459
+        ],
+        "floor": 500,
+        "rootX": 195.0
+      },
+      {
+        "sourceBounds": [
+          78,
+          6,
+          413,
+          469
+        ],
+        "floor": 500,
+        "rootX": 203.0
+      },
+      {
+        "sourceBounds": [
+          58,
+          6,
+          467,
+          475
+        ],
+        "floor": 500,
+        "rootX": 297.0
+      },
+      {
+        "sourceBounds": [
+          85,
+          6,
+          359,
+          453
+        ],
+        "floor": 500,
+        "rootX": 215.0
+      },
+      {
+        "sourceBounds": [
+          91,
+          6,
+          358,
+          442
+        ],
+        "floor": 500,
+        "rootX": 218.0
+      }
+    ],
+    "air_heavy": [
+      {
+        "sourceBounds": [
+          149,
+          30,
+          366,
+          422
+        ],
+        "floor": 500,
+        "rootX": 256.0
+      },
+      {
+        "sourceBounds": [
+          97,
+          9,
+          352,
+          499
+        ],
+        "floor": 500,
+        "rootX": 184.5
+      },
+      {
+        "sourceBounds": [
+          58,
+          71,
+          351,
+          485
+        ],
+        "floor": 500,
+        "rootX": 204.5
+      },
+      {
+        "sourceBounds": [
+          85,
+          81,
+          424,
+          470
+        ],
+        "floor": 500,
+        "rootX": 254.5
+      },
+      {
+        "sourceBounds": [
+          116,
+          62,
+          353,
+          412
+        ],
+        "floor": 500,
+        "rootX": 218.0
+      },
+      {
+        "sourceBounds": [
+          86,
+          17,
+          329,
+          489
+        ],
+        "floor": 500,
+        "rootX": 174.5
+      }
+    ]
+  }
+}

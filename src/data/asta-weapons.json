@@ -1,0 +1,34 @@
+{
+  "slayer": {
+    "index": 0,
+    "pivot": {
+      "x": 64,
+      "y": 160
+    },
+    "reach": 112
+  },
+  "slasher": {
+    "index": 1,
+    "pivot": {
+      "x": 64,
+      "y": 160
+    },
+    "reach": 80
+  },
+  "dweller": {
+    "index": 2,
+    "pivot": {
+      "x": 64,
+      "y": 160
+    },
+    "reach": 91
+  },
+  "destroyer": {
+    "index": 3,
+    "pivot": {
+      "x": 64,
+      "y": 160
+    },
+    "reach": 83
+  }
+}

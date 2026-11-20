@@ -12,6 +12,7 @@ import { OnlineClient } from "../net/client";
 import { onlineEntry, lobby, onlineResult, escapeText } from "../ui/online";
 import { neutral, type InputFrame } from "../engine/types";
 import type { DummyBehavior } from "./training";
+import { practiceSword, isAstaSword } from "../engine/asta-stances";
 import type { CharacterId } from "../engine/characters";
 import { ONLINE_CHARACTERS } from "../net/protocol";
 import {
@@ -871,6 +872,15 @@ export class GameApp {
     }
   }
   private bindTraining() {
+    for (const i of [0,1]) this.el<HTMLSelectElement>("asta-sword-"+i).onchange = event => {
+      const s=this.session, field=event.target as HTMLSelectElement;
+      if (s?.mode==="training" && isAstaSword(field.value)) {
+        const fighter=s.match.fighters[i];
+        if(!practiceSword(fighter,field.value)) field.value=fighter.asta?.equipped ?? "slayer";
+        this.renderer.tick(s.match);
+      }
+      this.keyboard.clear(); this.canvas.focus({preventScroll:true});
+    };
     this.el<HTMLInputElement>("xebec-fx").onchange = (e) => {
       this.renderer.xebecEffects = (e.target as HTMLInputElement).checked;
       this.canvas.focus({ preventScroll: true });
@@ -983,6 +993,11 @@ export class GameApp {
     this.el<HTMLSelectElement>("dummy").value = s.training.dummy;
     this.el<HTMLSelectElement>("training-difficulty").value = s.difficulty;
     this.el("training-difficulty-label").hidden = s.training.dummy !== "bot";
+    for (const i of [0,1]) {
+      const f=s.match.fighters[i];
+      this.el("asta-sword-label-"+i).hidden=!f.asta;
+      this.el<HTMLSelectElement>("asta-sword-"+i).value=f.asta?.equipped ?? "slayer";
+    }
     this.trainingStatus(s);
     this.trainingValues();
     this.trainingReadout();
