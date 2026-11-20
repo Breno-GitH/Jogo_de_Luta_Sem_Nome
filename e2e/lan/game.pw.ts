@@ -10,14 +10,14 @@ import { mkdirSync, writeFileSync, readFileSync } from "node:fs";
 import { io } from "socket.io-client";
 import type { createGameServer as Factory } from "../../server/server";
 import type { CharacterId } from "../../src/engine/characters";
-const { Match, characters, snapshot, hashState } =
+const { Match, characters, snapshot, hashState, astaSpecialBlade } =
   await import("../../deployment/run/lan-fixtures.mjs");
 import { ENGINE_VERSION } from "../../src/net/version";
 const { createGameServer } =
   (await import(process.env.BEN_LAN_SERVER_CORE ?? "../../server-dist/server-core.mjs")) as {
     createGameServer: typeof Factory;
   };
-const audit = "deployment/audit/lan";
+const audit = process.env.MSFD_LAN_EVIDENCE_DIR ?? "deployment/audit/lan";
 mkdirSync(audit, { recursive: true });
 const ip = Object.values(networkInterfaces())
   .flat()
@@ -246,6 +246,7 @@ async function capture(code: string, name: string) {
       ),
     );
     expect(ds[0].cameraZoom).toBe(ds[1].cameraZoom);
+    expect(ds[0].astaStates).toBe(ds[1].astaStates);
     expect(ds[0].furyTick).toBe(ds[1].furyTick);
     expect(ds[0].jetTick).toBe(ds[1].jetTick);
     expect(ds[0].jetFist).toBe(ds[1].jetFist);
@@ -1631,7 +1632,7 @@ test("Asta selects in two clients, plays four sword states and synchronizes air 
  await consistent();await capture(code,"asta-return");
 });
 
-test("Asta nine specials retain swords, Dual stages and Causality in two synchronized clients",async()=>{
+test("Asta nine specials retain swords, Relay openings and Causality in two synchronized clients",async()=>{
  test.setTimeout(240000);
  const code=await pair("asta","goku");
  const moves=[
@@ -1644,16 +1645,63 @@ test("Asta nine specials retain swords, Dual stages and Causality in two synchro
    const r=await seed(code,90,0,m=>{m.fighters[0].asta!.equipped=previous;});
    await a.locator("canvas").focus();await motion(a,[...pattern],key,45);
    await expect.poll(()=>r.match!.fighters[0].moveId).toBe(id);
-   await expect.poll(()=>r.match!.fighters[0].asta!.equipped).toBe(sword);
+   await expect.poll(()=>r.match!.fighters[0].asta!.equipped).toBe(id==="astaDualBreak"?previous:sword);
    await expect.poll(()=>r.match!.fighters[0].state,{timeout:5000}).toBe("idle");
    await consistent();
   }
   await capture(code,"asta-special-"+id);
  }
  const r=await seed(code,400,0,m=>{
-  const f=m.fighters[0];f.attack("astaCausalityBreak");f.stateFrame=8;f.asta!.equipped=f.asta!.attackSword="destroyer";
+  const f=m.fighters[0];f.attack("astaCausalityBreak");f.stateFrame=4;f.asta!.equipped=f.asta!.attackSword="destroyer";
   const g={x:f.x+15,y:f.y-90};m.kiProjectiles.push({id:++m.projectileSerial,owner:1,move:"ki_light",cast:1,...g,previousX:g.x,previousY:g.y,vx:-8,vy:0,facing:-1,radius:18,age:0,life:40,state:"flight",impactAge:0});
  });
  await expect.poll(()=>r.match!.fighters[0].asta!.neutralized).toBe(1);await consistent();await capture(code,"asta-causality-neutralized");
  await expect.poll(()=>r.match!.fighters[0].state).toBe("idle");await consistent();
+});
+
+test("Asta Relay manual choices from all four opening swords stay synchronized without capture",async()=>{
+ test.setTimeout(90000);const code=await pair("asta","samurai");
+ const routes=[["slayer","slasher","destroyer"],["slasher","destroyer","dweller"],["dweller","slayer","slasher"],["destroyer","dweller","slayer"]]as const;
+ for(const[initial,first,second]of routes){
+  const room=await seed(code,85,0,m=>{m.fighters[0].asta!.equipped=initial;});
+  await a.locator("canvas").focus();await motion(a,[2,5,2],"l",40);
+  await expect.poll(()=>room.match!.fighters[0].moveId).toBe("astaDualBreak");
+  for(const[i,sword]of[first,second].entries()){
+   await a.waitForFunction(i=>{const d=document.querySelector("canvas")!.dataset;return d.astaRelayWindow==="true"&&Number(d.astaRelayExtensions)===i;},i,{polling:"raf",timeout:3000});
+   const key=sword==="slayer"?"d":sword==="slasher"?"a":"s";
+   await a.keyboard.down(key);await press(a,sword==="destroyer"?"k":"j",25);await a.keyboard.up(key);
+   await expect.poll(()=>room.match!.fighters[0].asta!.relay?.extensions).toBe(i+1);
+   expect(room.match!.capture).toBeFalsy();await expect.poll(()=>room.match!.fighters[0].asta!.equipped).toBe(sword);
+  }
+  await capture(code,"asta21-relay-"+initial+"-finish");
+  await expect.poll(()=>room.match!.fighters[0].state,{timeout:5000}).toBe("idle");
+  expect(room.match!.fighters[0].asta!.equipped).toBe(second);
+  expect(room.match!.fighters[0].asta!.relay).toBeUndefined();expect(room.match!.capture).toBeFalsy();
+  await consistent();await capture(code,"asta21-relay-"+initial+"-return");
+ }
+});
+
+test("Asta Causality captures the real neutralization window and keeps two clients equal",async()=>{
+ const code=await pair("asta","goku");
+ await a.evaluate(()=>{window.astaMagicFrames=[];let last="";const end=performance.now()+5000;
+  function tick(){const c=document.querySelector("canvas")!,d=c.dataset,key=d.frame;
+   if(d.move==="astaCausalityBreak"&&d.physicsState==="attack"&&d.astaNeutralized==="1"&&last!==key){
+    window.astaMagicFrames.push({png:c.toDataURL(),state:{...d}});last=key;
+   }if(performance.now()<end)requestAnimationFrame(tick);
+  }tick();
+ });
+ const room=await seed(code,400,0,m=>{
+  const f=m.fighters[0];f.attack("astaCausalityBreak");f.stateFrame=3;
+  const blade=astaSpecialBlade("astaCausalityBreak",4),x=f.x+blade.a.x+7,y=f.y+blade.a.y;
+  m.kiProjectiles.push({id:++m.projectileSerial,owner:1,move:"ki_light",cast:1,x,y,previousX:x,previousY:y,vx:-8,vy:0,facing:-1,radius:18,age:0,life:40,state:"flight",impactAge:0});
+ });
+ await expect.poll(()=>room.match!.fighters[0].asta!.neutralized).toBe(1);
+ await a.waitForTimeout(650);const frames=await a.evaluate(()=>window.astaMagicFrames);
+ expect(frames.length).toBeGreaterThan(0);
+ for(const [i,{png,state}]of frames.entries()){
+  writeFileSync(audit+"/asta21-causality-contact-"+i+".png",Buffer.from(png.split(",")[1],"base64"));
+  writeFileSync(audit+"/asta21-causality-contact-"+i+".json",JSON.stringify(state,null,2));
+ }
+ await consistent();await expect.poll(()=>room.match!.fighters[0].state).toBe("idle");
+ expect(room.match!.fighters[0].health).toBe(1000);
 });

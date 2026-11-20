@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { mkdirSync, writeFileSync } from "node:fs";
-const evidence = "deployment/audit/asta";
+const evidence = process.env.ASTA_BASE_EVIDENCE_DIR ?? "deployment/audit/asta";
 mkdirSync(evidence, { recursive: true });
 async function start(page, mode = "training", opponent = "Samurai") {
   const errors = [];

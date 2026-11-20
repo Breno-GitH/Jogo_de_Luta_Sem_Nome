@@ -88,7 +88,7 @@ async function collect(page, id) {
     tick();
   }, id);
 }
-test("nine real input specials, correct retained swords, two Dual stages and code FX toggle", async ({
+test("nine real input specials, correct retained swords, Relay retains its opening weapon and code FX toggle", async ({
   page,
 }) => {
   test.setTimeout(100000);
@@ -108,9 +108,8 @@ test("nine real input specials, correct retained swords, two Dual stages and cod
     for (const [id, family, key, sword] of moves) {
       await page.locator("#reset-positions").click();
       await page.waitForTimeout(450);
-      await page
-        .locator("#asta-sword-0")
-        .selectOption(sword === "slayer" ? "destroyer" : "slayer");
+      const initial=sword === "slayer" ? "destroyer" : "slayer";
+      await page.locator("#asta-sword-0").selectOption(initial);
       await c.focus();
       await page.keyboard.down("d");
       await page.waitForFunction(
@@ -125,16 +124,15 @@ test("nine real input specials, correct retained swords, two Dual stages and cod
       await motion(page, family, key);
       await expect(c).toHaveAttribute("data-move", id);
       await page.waitForTimeout(1500);
-      await expect(c).toHaveAttribute("data-asta-sword", sword);
+      await expect(c).toHaveAttribute("data-asta-sword", id==="astaDualBreak"?initial:sword);
       await expect(c).toHaveAttribute("data-physics-state", /idle|crouch|walk/);
       const frames = await page.evaluate(() => window.astaFrames);
       expect(frames.length, id).toBeGreaterThanOrEqual(
-        id === "astaFlashSteps" || id === "astaDualBreak" ? 9 : 4,
+        id === "astaFlashSteps" || id === "astaSeveringLine" ? 9 : 4,
       );
       expect(frames.every((f) => Number(f.count) <= 1)).toBe(true);
       if (id === "astaDualBreak") {
-        expect(frames.some((f) => f.stage === "dweller")).toBe(true);
-        expect(frames.some((f) => f.stage === "destroyer")).toBe(true);
+        expect(frames.every((f) => f.stage === initial)).toBe(true);
       }
       for (let i = 0; i < frames.length; i++) {
         const { png, ...meta } = frames[i];

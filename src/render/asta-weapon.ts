@@ -1,4 +1,4 @@
-import { astaWeaponHidden,drawAstaBladeExtension } from "./asta-antimagic-fx";
+import { astaWeaponHidden, drawAstaBladeExtension } from "./asta-antimagic-fx";
 import type { Fighter } from "../engine/combat";
 import {
   visibleAstaSword,
@@ -40,7 +40,7 @@ export function drawAstaWeapon(
     192,
   );
   c.restore();
-  drawAstaBladeExtension(c,f);
+  drawAstaBladeExtension(c, f);
   // The closed fist occludes the hilt. This is the authored cel, never a posed/warped body.
   const x = Math.round(grip.x + s.pivot.x),
     y = Math.round(grip.y + s.pivot.y);
@@ -70,5 +70,37 @@ export function drawAstaSwordHud(
     c.fillStyle = id === sword ? "#e5c677" : "#39414b";
     c.fillRect(x + i * 44, 158, 38, 4);
   });
+  const relay = f.asta?.relay,
+    pursuit = f.asta?.pursuit;
+  if (relay) {
+    c.fillStyle = "#d3a5ad";
+    c.fillText(
+      "RELAY · " +
+        relay.extensions +
+        "/2 · " +
+        (relay.phase === "finish"
+          ? "FINALIZAÇÃO"
+          : relay.confirmed
+            ? "CONFIRMADO"
+            : "ABERTURA"),
+      x,
+      182,
+    );
+    c.font = "10px monospace";
+    c.fillStyle = "#c3c8d0";
+    c.fillText("Frente+J Slayer · Trás+J Slasher", x, 199);
+    c.fillText("Baixo+J Dweller · Baixo+K Destroyer", x, 212);
+    if (relay.confirmed && relay.phase !== "finish" && relay.extensions < 2) {
+      const remaining = Math.max(
+        0,
+        Math.min(1, (relay.windowTo - f.stateFrame) / 12),
+      );
+      c.fillStyle = "#8b3c52";
+      c.fillRect(x, 219, 170 * remaining, 3);
+    }
+  } else if (pursuit && !pursuit.used && f.match!.frame <= pursuit.until) {
+    c.fillStyle = "#c8b0ce";
+    c.fillText("BLACK SLASH · J PARA PERSEGUIR", x, 182);
+  }
   c.restore();
 }

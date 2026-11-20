@@ -1,7 +1,8 @@
 import {
-  astaSpecialIds,
+  astaArtKey,
   astaSpecialSegment,
-  isAstaSpecial,
+  isAstaAction,
+  type AstaArtKey,
 } from "../engine/asta-specials";
 import specialArt from "../data/asta-special-art.json";
 import movement from "../data/asta-animations.json";
@@ -23,7 +24,7 @@ export function astaAnimation(
       durations: normalHolds(sword, id),
       loop: false,
     };
-  for (const id of astaSpecialIds)
+  for (const id of Object.keys(specialArt) as AstaArtKey[])
     specialArt[id].forEach((s, i) => {
       clips[i ? id + ":" + i : id] = {
         sheet: "asta/" + s.sheet + ".png",
@@ -64,8 +65,9 @@ export function tickAsta(f: Fighter, animator: Animator) {
                     : "walkBack"
                   : "idle");
   let seek = f.stateFrame;
-  if (f.state === "attack" && isAstaSpecial(name)) {
-    const segment = astaSpecialSegment(name, seek);
+  if (f.state === "attack" && isAstaAction(name)) {
+    const segment = astaSpecialSegment(name, seek, f.asta?.relay);
+    name = astaArtKey(name, f.asta?.relay);
     name = segment.index ? name + ":" + segment.index : name;
     seek -= segment.start;
   }

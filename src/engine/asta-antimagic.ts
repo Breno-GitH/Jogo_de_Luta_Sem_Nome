@@ -26,13 +26,20 @@ export function stepAstaAntimagic(m: Match) {
       !f.asta ||
       f.asta.neutralized ||
       f.state !== "attack" ||
-      f.moveId !== "astaCausalityBreak" ||
-      f.stateFrame < 7 ||
-      f.stateFrame >= 12 ||
+      !(
+        f.moveId === "astaCausalityBreak" ||
+        (f.moveId === "astaDualBreak" && f.asta.relay?.sword === "destroyer")
+      ) ||
+      f.stateFrame < 3 ||
+      f.stateFrame >= 9 ||
       m.temporal.isFrozen(f.id)
     )
       continue;
-    const b = astaSpecialBlade("astaCausalityBreak", f.stateFrame);
+    const b = astaSpecialBlade(
+      f.moveId === "astaDualBreak" ? "astaDualBreak" : "astaCausalityBreak",
+      f.stateFrame,
+      f.asta.relay,
+    );
     const shape = {
       a: { x: f.x + b.a.x * f.facing, y: f.y + b.a.y },
       b: { x: f.x + b.b.x * f.facing, y: f.y + b.b.y },
