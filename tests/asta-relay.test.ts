@@ -1,4 +1,5 @@
 import { describe, it, expect } from "vitest";
+import { Bot } from "../src/engine/bot";
 import { Match } from "../src/engine/combat";
 import { characters } from "../src/engine/characters";
 import { neutral, type InputFrame } from "../src/engine/types";
@@ -236,6 +237,13 @@ describe("Anti-Magic Relay: 64 manually chosen routes", () => {
       }
     },
   );
+  it("lets an Asta BOT choose two legal sword continuations through ordinary input",()=>{
+    const p=arena(),bot=new Bot("normal",3417,0);
+    p.a.attack("astaDualBreak");let extensions=0;
+    for(let t=0;t<200;t++){extensions=Math.max(extensions,p.a.asta!.relay?.extensions??0);p.step(bot.sample(p.m));}
+    expect(extensions).toBe(2);expect(p.a.asta!.equipped).toBe("slasher");
+    expect(p.a.asta!.relay).toBeUndefined();expect(p.m.capture).toBeFalsy();
+  });
   it("ends safely on legitimate KO and cannot reset combo limits", () => {
     const p = arena();
     p.b.health = 15;

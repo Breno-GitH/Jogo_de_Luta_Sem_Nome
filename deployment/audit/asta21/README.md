@@ -16,7 +16,7 @@ Capturas reais do Canvas da arena em Chrome, por comandos de teclado. Não são 
 
 - TypeScript: passou.
 - Vitest completo: **56 arquivos, 1.491 testes aprovados**; resultado bruto em `vitest-results.txt`.
-- Asta: 22 testes de base + 36 de especiais + 78 de Relay = **136 testes**.
+- Asta: 22 testes de base + 36 de especiais + 79 de Relay = **137 testes**. O teste adicional do BOT foi executado após a suíte completa e passou separadamente.
 - Relay: as 64 rotas são exercitadas nas duas orientações, com replay de snapshots.
 - Browser: 6 testes de base + 3 de especiais/modos + 2 de Relay/Pursuit = **11 aprovados**.
 - LAN: **4 testes aprovados** — seleção/quatro armas/air dash, nove especiais de quatro armas iniciais, Relay manual e neutralização elegível com captura do contato.
@@ -32,4 +32,6 @@ A versão anterior está documentada em `../asta-specials/`, incluindo `nove-esp
 
 ## Publicação
 
-A confirmação de SHA, build-info.json, recursos HTTP e dois clientes na instalação real do Apache será registrada no relatório de publicação desta pasta. O computador remoto não foi presumido atualizado.
+Confirmada a publicação real do commit c5ba6f0, motor a204db1ca3461221044881c8: 103 recursos HTTP iguais a dist por SHA-256, backend existente reiniciado, cinco testes repetidos pelo Apache e uma partida adicional de dois clientes executando nove especiais, com escolhas manuais no Relay. Foram observados 810 ticks comuns com hashes iguais. Ver `publicacao.json` e `apache-lan-p1/p2.png`.
+
+Este relatório é versionado depois da captura. Seu commit altera somente teste/documentação; a publicação final do HEAD é verificada novamente pelo mesmo atualizador. O computador remoto não foi presumido atualizado.

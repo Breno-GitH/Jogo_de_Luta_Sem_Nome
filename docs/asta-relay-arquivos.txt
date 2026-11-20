@@ -22,6 +22,8 @@ art/asta-source/sources.json
 art/asta-source/v21-sockets.json
 art/asta-source/v21-sources.json
 deployment/audit/asta21/air-combo.png
+deployment/audit/asta21/apache-lan-p1.png
+deployment/audit/asta21/apache-lan-p2.png
 deployment/audit/asta21/arcade.png
 deployment/audit/asta21/asta21-causality-contact-0.json
 deployment/audit/asta21/asta21-causality-contact-0.png
@@ -88,6 +90,7 @@ deployment/audit/asta21/comparison-Dio.png
 deployment/audit/asta21/comparison-Goku.png
 deployment/audit/asta21/ground-combo.png
 deployment/audit/asta21/nove-especiais.webm
+deployment/audit/asta21/publicacao.json
 deployment/audit/asta21/README.md
 deployment/audit/asta21/relay-destroyer-dweller-slayer-action0.png
 deployment/audit/asta21/relay-destroyer-dweller-slayer-action1.png
