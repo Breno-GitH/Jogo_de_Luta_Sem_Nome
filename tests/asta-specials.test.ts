@@ -332,3 +332,12 @@ it("Rising Demon allows a bounded aerial pursuit after a valid launcher",()=>{
  expect(p.hits.map(h=>h.move)).toEqual(["astaRisingDemon","air_light"]);
  expect(p.b.combo).toBeLessThanOrEqual(2);
 });
+
+it("keeps the full active Divider blade above the arena floor throughout its sweep",()=>{
+ const m=astaSpecialMoves.astaBlackDivider;
+ for(let t=m.startup;t<m.startup+m.active;t++){
+  const b=astaSpecialBlade("astaBlackDivider",t);
+  expect(b.a.y).toBeLessThanOrEqual(0);expect(b.b.y).toBeLessThanOrEqual(0);
+  expect(astaReach("astaBlackDivider",t)).toBe(210);
+ }
+});

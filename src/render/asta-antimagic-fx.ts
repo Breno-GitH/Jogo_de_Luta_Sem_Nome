@@ -55,7 +55,9 @@ export function drawAstaBladeExtension(
     t < m.startup
       ? Math.min(1, (t - 6) / Math.max(1, m.startup - 6))
       : Math.min(1, (m.startup + m.active + 5 - t) / 5);
-  const reach = native + (astaReach(f.moveId, t) - native) * gain;
+  const extended = native + (astaReach(f.moveId, t) - native) * gain;
+  // The active blade shares combat geometry. Its recovery dissolves above the ground.
+  const reach = t >= m.startup + m.active && Math.sin(a) > 0 ? Math.min(extended, -g.y / Math.sin(a)) : extended;
   const nx = Math.cos(a),
     ny = Math.sin(a),
     px = -ny,

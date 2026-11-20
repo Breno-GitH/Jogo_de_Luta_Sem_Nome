@@ -9,8 +9,8 @@
   {
     "key": "asta/special-rush.png/1",
     "phase": "startup",
-    "sword": "slayer",
-    "stage": "slayer",
+    "sword": "destroyer",
+    "stage": "destroyer",
     "count": "1"
   },
   {

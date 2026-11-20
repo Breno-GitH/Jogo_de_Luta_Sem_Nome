@@ -42,6 +42,13 @@
     "count": "1"
   },
   {
+    "key": "asta/special-flash_b.png/0",
+    "phase": "recovery",
+    "sword": "slasher",
+    "stage": "slasher",
+    "count": "1"
+  },
+  {
     "key": "asta/special-flash_b.png/1",
     "phase": "recovery",
     "sword": "slasher",

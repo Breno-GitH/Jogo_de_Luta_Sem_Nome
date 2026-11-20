@@ -43,7 +43,7 @@ Para publicar esta branch no XAMPP: atualizar-msfd.cmd -Branch codex/asta-nove-e
 
 ## Resultados — 20/11/2026
 - TypeScript aprovado.
-- Vitest: 55 arquivos e 1.425 testes aprovados, incluindo 70 testes de Asta. Log em deployment/audit/asta-specials/vitest.txt.
+- Vitest: 55 arquivos e 1.426 testes aprovados, incluindo 71 testes de Asta. Log em deployment/audit/asta-specials/vitest.txt.
 - Nove cenários de navegador validados: nove especiais com efeitos ligados/desligados, base/36 normais, combos, perseguição aérea, Arcade, Versus BOT e comparação de escala com Dio/Goku. O teste de combo aéreo foi repetido e aprovado após corrigir a prioridade do input no ar.
 - Dois testes LAN aprovados: quatro espadas/air dash e nove especiais × quatro equipamentos iniciais, mais neutralização. Estados dos dois clientes comparados ao hash autoritativo.
 - Arte: 28 atlas de seis cels, incluindo onze novos; transparência, margens e encaixes aprovados. Os 17 atlas e as quatro armas da etapa 1 permanecem iguais.
@@ -51,3 +51,5 @@ Para publicar esta branch no XAMPP: atualizar-msfd.cmd -Branch codex/asta-nove-e
 - Não foi executada novamente toda a coleção de scripts Python legados dos demais personagens. Executada a auditoria específica de arte de Asta.
 
 Lista exata de arquivos da etapa: asta-especiais-arquivos.txt. A etapa depende da base do PR #11: integrar primeiro a base à main e depois esta continuação. Nenhum merge automático da main é realizado.
+
+Revisão visual final: ajustado o ângulo da conclusão do Black Divider e limitada sua dissipação ao plano do chão. O alcance ativo permanece 210 e compartilha os encaixes usados pelas colisões. Um teste percorre todos os ticks ativos para impedir que a ponta ultrapasse o chão. Capturas e vídeo foram regenerados e inspecionados após a correção.
