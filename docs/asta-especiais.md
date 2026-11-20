@@ -40,3 +40,14 @@ Fontes e prompts ImageGen (ferramenta integrada): art/asta-source/sources.json e
 - Evidências: deployment/audit/asta-specials/ e deployment/audit/lan/asta-special-*.
 
 Para publicar esta branch no XAMPP: atualizar-msfd.cmd -Branch codex/asta-nove-especiais. Após integrar os PRs: atualizar-msfd.cmd -Branch main. Executar dentro da instalação real. O atualizador verifica Git, testes, dependências, backend existente, build:lan, versão HTTP, hashes dos assets e Socket.IO; não declara sucesso com frontend antigo ou backend incompatível.
+
+## Resultados — 20/11/2026
+- TypeScript aprovado.
+- Vitest: 55 arquivos e 1.425 testes aprovados, incluindo 70 testes de Asta. Log em deployment/audit/asta-specials/vitest.txt.
+- Nove cenários de navegador validados: nove especiais com efeitos ligados/desligados, base/36 normais, combos, perseguição aérea, Arcade, Versus BOT e comparação de escala com Dio/Goku. O teste de combo aéreo foi repetido e aprovado após corrigir a prioridade do input no ar.
+- Dois testes LAN aprovados: quatro espadas/air dash e nove especiais × quatro equipamentos iniciais, mais neutralização. Estados dos dois clientes comparados ao hash autoritativo.
+- Arte: 28 atlas de seis cels, incluindo onze novos; transparência, margens e encaixes aprovados. Os 17 atlas e as quatro armas da etapa 1 permanecem iguais.
+- Builds de produção do frontend e backend aprovadas; permanece o aviso de tamanho de chunks do Vite. A publicação real no Apache é verificada pelo atualizador e por build-info.json.
+- Não foi executada novamente toda a coleção de scripts Python legados dos demais personagens. Executada a auditoria específica de arte de Asta.
+
+Lista exata de arquivos da etapa: asta-especiais-arquivos.txt. A etapa depende da base do PR #11: integrar primeiro a base à main e depois esta continuação. Nenhum merge automático da main é realizado.
