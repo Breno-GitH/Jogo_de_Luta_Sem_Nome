@@ -1,0 +1,44 @@
+[
+  {
+    "key": "asta/v21-iai_two.png/0",
+    "phase": "startup",
+    "sword": "slayer",
+    "stage": "slayer",
+    "count": "1"
+  },
+  {
+    "key": "asta/v21-iai_two.png/1",
+    "phase": "startup",
+    "sword": "slasher",
+    "stage": "slasher",
+    "count": "1"
+  },
+  {
+    "key": "asta/v21-iai_two.png/2",
+    "phase": "active",
+    "sword": "slasher",
+    "stage": "slasher",
+    "count": "1"
+  },
+  {
+    "key": "asta/v21-iai_two.png/3",
+    "phase": "recovery",
+    "sword": "slasher",
+    "stage": "slasher",
+    "count": "1"
+  },
+  {
+    "key": "asta/v21-iai_two.png/4",
+    "phase": "active",
+    "sword": "slasher",
+    "stage": "slasher",
+    "count": "1"
+  },
+  {
+    "key": "asta/v21-iai_two.png/5",
+    "phase": "recovery",
+    "sword": "slasher",
+    "stage": "slasher",
+    "count": "1"
+  }
+]

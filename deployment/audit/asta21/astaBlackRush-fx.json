@@ -1,0 +1,72 @@
+[
+  {
+    "key": "asta/v21-rush_run.png/0",
+    "phase": "startup",
+    "sword": "destroyer",
+    "stage": "destroyer",
+    "count": "1"
+  },
+  {
+    "key": "asta/v21-rush_run.png/1",
+    "phase": "startup",
+    "sword": "slayer",
+    "stage": "slayer",
+    "count": "1"
+  },
+  {
+    "key": "asta/v21-rush_run.png/2",
+    "phase": "startup",
+    "sword": "slayer",
+    "stage": "slayer",
+    "count": "1"
+  },
+  {
+    "key": "asta/v21-rush_run.png/4",
+    "phase": "startup",
+    "sword": "slayer",
+    "stage": "slayer",
+    "count": "1"
+  },
+  {
+    "key": "asta/v21-rush_run.png/5",
+    "phase": "startup",
+    "sword": "slayer",
+    "stage": "slayer",
+    "count": "1"
+  },
+  {
+    "key": "asta/v21-rush_cut.png/0",
+    "phase": "startup",
+    "sword": "slayer",
+    "stage": "slayer",
+    "count": "1"
+  },
+  {
+    "key": "asta/v21-rush_cut.png/2",
+    "phase": "active",
+    "sword": "slayer",
+    "stage": "slayer",
+    "count": "1"
+  },
+  {
+    "key": "asta/v21-rush_cut.png/3",
+    "phase": "active",
+    "sword": "slayer",
+    "stage": "slayer",
+    "count": "1"
+  },
+  {
+    "key": "asta/v21-rush_cut.png/4",
+    "phase": "recovery",
+    "sword": "slayer",
+    "stage": "slayer",
+    "count": "1"
+  },
+  {
+    "key": "asta/v21-rush_cut.png/5",
+    "phase": "recovery",
+    "sword": "slayer",
+    "stage": "slayer",
+    "count": "1"
+  }
+]

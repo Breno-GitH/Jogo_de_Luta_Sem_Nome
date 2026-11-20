@@ -2,3 +2,4 @@
 export{Match}from"../../src/engine/combat";
 export{characters}from"../../src/engine/characters";
 export{snapshot,hashState}from"../../src/engine/state";
+export{astaSpecialBlade}from"../../src/engine/asta-specials";

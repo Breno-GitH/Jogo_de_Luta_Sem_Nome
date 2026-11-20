@@ -1,0 +1,86 @@
+[
+  {
+    "key": "asta/v21-relay_slayer.png/0",
+    "phase": "startup",
+    "sword": "slayer",
+    "stage": "slayer",
+    "count": "1"
+  },
+  {
+    "key": "asta/v21-relay_slayer.png/1",
+    "phase": "startup",
+    "sword": "slayer",
+    "stage": "slayer",
+    "count": "1"
+  },
+  {
+    "key": "asta/v21-relay_slayer.png/2",
+    "phase": "active",
+    "sword": "slayer",
+    "stage": "slayer",
+    "count": "1"
+  },
+  {
+    "key": "asta/v21-relay_slayer.png/3",
+    "phase": "active",
+    "sword": "slayer",
+    "stage": "slayer",
+    "count": "1"
+  },
+  {
+    "key": "asta/v21-relay_slayer.png/4",
+    "phase": "recovery",
+    "sword": "slayer",
+    "stage": "slayer",
+    "count": "1"
+  },
+  {
+    "key": "asta/v21-relay_slayer.png/5",
+    "phase": "recovery",
+    "sword": "slayer",
+    "stage": "slayer",
+    "count": "1"
+  },
+  {
+    "key": "asta/v21-relay_slayer.png/0",
+    "phase": "startup",
+    "sword": "slayer",
+    "stage": "slayer",
+    "count": "1"
+  },
+  {
+    "key": "asta/v21-relay_slayer.png/1",
+    "phase": "startup",
+    "sword": "slayer",
+    "stage": "slayer",
+    "count": "1"
+  },
+  {
+    "key": "asta/v21-relay_slayer.png/2",
+    "phase": "active",
+    "sword": "slayer",
+    "stage": "slayer",
+    "count": "1"
+  },
+  {
+    "key": "asta/v21-relay_slayer.png/3",
+    "phase": "active",
+    "sword": "slayer",
+    "stage": "slayer",
+    "count": "1"
+  },
+  {
+    "key": "asta/v21-relay_slayer.png/4",
+    "phase": "recovery",
+    "sword": "slayer",
+    "stage": "slayer",
+    "count": "1"
+  },
+  {
+    "key": "asta/v21-relay_slayer.png/5",
+    "phase": "recovery",
+    "sword": "slayer",
+    "stage": "slayer",
+    "count": "1"
+  }
+]

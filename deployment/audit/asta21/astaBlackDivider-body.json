@@ -1,0 +1,86 @@
+[
+  {
+    "key": "asta/v21-divider_run.png/0",
+    "phase": "startup",
+    "sword": "destroyer",
+    "stage": "destroyer",
+    "count": "1"
+  },
+  {
+    "key": "asta/v21-divider_run.png/1",
+    "phase": "startup",
+    "sword": "slayer",
+    "stage": "slayer",
+    "count": "1"
+  },
+  {
+    "key": "asta/v21-divider_run.png/2",
+    "phase": "startup",
+    "sword": "slayer",
+    "stage": "slayer",
+    "count": "1"
+  },
+  {
+    "key": "asta/v21-divider_run.png/3",
+    "phase": "startup",
+    "sword": "slayer",
+    "stage": "slayer",
+    "count": "1"
+  },
+  {
+    "key": "asta/v21-divider_run.png/4",
+    "phase": "startup",
+    "sword": "slayer",
+    "stage": "slayer",
+    "count": "1"
+  },
+  {
+    "key": "asta/v21-divider_run.png/5",
+    "phase": "startup",
+    "sword": "slayer",
+    "stage": "slayer",
+    "count": "1"
+  },
+  {
+    "key": "asta/v21-divider_drop.png/0",
+    "phase": "startup",
+    "sword": "slayer",
+    "stage": "slayer",
+    "count": "1"
+  },
+  {
+    "key": "asta/v21-divider_drop.png/1",
+    "phase": "startup",
+    "sword": "slayer",
+    "stage": "slayer",
+    "count": "1"
+  },
+  {
+    "key": "asta/v21-divider_drop.png/2",
+    "phase": "active",
+    "sword": "slayer",
+    "stage": "slayer",
+    "count": "1"
+  },
+  {
+    "key": "asta/v21-divider_drop.png/3",
+    "phase": "active",
+    "sword": "slayer",
+    "stage": "slayer",
+    "count": "1"
+  },
+  {
+    "key": "asta/v21-divider_drop.png/4",
+    "phase": "recovery",
+    "sword": "slayer",
+    "stage": "slayer",
+    "count": "1"
+  },
+  {
+    "key": "asta/v21-divider_drop.png/5",
+    "phase": "recovery",
+    "sword": "slayer",
+    "stage": "slayer",
+    "count": "1"
+  }
+]

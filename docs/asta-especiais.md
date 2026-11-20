@@ -1,5 +1,7 @@
 # Asta — nove especiais e troca integrada
 
+> Registro da etapa 2. Comandos e mecânicas atuais foram substituídos pelo [Prompt 2.1 — rushdown e Relay](asta-relay.md). Este documento permanece como histórico para comparação.
+
 Etapa 2 sobre a base aprovada do PR #11. Super R e Sword Chain avançado continuam reservados à próxima etapa.
 
 ## Comandos
