@@ -163,6 +163,7 @@ deployment/audit/asta-specials/astaSeveringLine-fx-4.png
 deployment/audit/asta-specials/astaSeveringLine-fx-5.png
 deployment/audit/asta-specials/astaSeveringLine-fx.json
 deployment/audit/asta-specials/nove-especiais.webm
+deployment/audit/asta-specials/vitest.txt
 deployment/audit/lan/asta-causality-neutralized-p1.png
 deployment/audit/lan/asta-causality-neutralized-p2.png
 deployment/audit/lan/asta-causality-neutralized.json
