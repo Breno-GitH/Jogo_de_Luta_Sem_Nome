@@ -1613,3 +1613,20 @@ test("Alien X confirms and restores Ben in both authoritative LAN clients", asyn
   for (const [i, page] of [a, b].entries()) await expect(page.locator("#app")).toHaveAttribute("data-resyncs", resyncs[i]!);
   await consistent();
 });
+
+test("Asta selects in two clients, plays four sword states and synchronizes air dash", async()=>{
+ const code=await pair("asta","samurai");
+ await expect(a.locator("canvas")).toHaveAttribute("data-asta-sword","slayer");
+ for(const sword of ["slayer","slasher","dweller","destroyer"]as const){
+  const room=await seed(code,75,0,m=>{m.fighters[0].asta!.equipped=sword;});
+  await a.locator("canvas").focus();await press(a,"j",40);
+  await expect.poll(()=>room.match!.fighters[1].health).toBeLessThan(1000);
+  await consistent();await capture(code,"asta-"+sword);
+ }
+ const room=await seed(code,400,0,m=>{const f=m.fighters[0];f.y-=120;f.setState("air");});
+ await a.locator("canvas").focus();await a.keyboard.down("d");await press(a,"Shift",50);await a.keyboard.up("d");
+ await expect.poll(()=>room.match!.fighters[0].asta!.airDashUsed).toBe(true);
+ await consistent();
+ await expect.poll(()=>room.match!.fighters[0].asta!.airDashUsed,{timeout:5000}).toBe(false);
+ await consistent();await capture(code,"asta-return");
+});
