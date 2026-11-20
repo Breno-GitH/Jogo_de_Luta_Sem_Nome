@@ -2,6 +2,9 @@ import { createHash } from "node:crypto";
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
 const files = [
   "src/engine/asta.ts",
+  "src/engine/asta-specials.ts",
+  "src/engine/asta-antimagic.ts",
+  "src/data/asta-special-art.json",
   "src/engine/asta-normals.ts",
   "src/engine/asta-stances.ts",
   "src/data/asta-sockets.json",

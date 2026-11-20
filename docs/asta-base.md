@@ -1,5 +1,7 @@
 # Asta — base jogável e quatro espadas
 
+Relatório da etapa 1. A continuação com os nove especiais está em [asta-especiais.md](asta-especiais.md).
+
 Branch: `codex/asta-quatro-espadas`. Base: `9adf9563f317f32afa3ff43452f8fa4a5492a656` (main / PR 10). Esta etapa não altera Xebec, Ben ou os recursos dos demais lutadores.
 
 ## Entregue

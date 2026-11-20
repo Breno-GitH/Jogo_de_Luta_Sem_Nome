@@ -1,6 +1,8 @@
 import type { KaguneId } from "./kagune";
 import { astaMoves } from "./asta";
-import { newAsta, beginAstaAttack, commitAstaSword, finishAstaAttack, type AstaState } from "./asta-stances";
+import { astaSpecialCommand,isAstaSpecial,astaRuntimeMove,canStartAstaSpecial,spawnAstaSpecial,astaWaveVolume } from "./asta-specials";
+import { stepAstaAntimagic } from "./asta-antimagic";
+import { newAsta, beginAstaAttack, commitAstaSword, finishAstaAttack, tickAstaState, type AstaState } from "./asta-stances";
 import samurai from "../data/samurai.json";
 import { CombatStand } from "./stand-combat";
 import { TemporalController, type DeferredReaction } from "./temporal";
@@ -200,7 +202,7 @@ export class Fighter {
   private lookupMove(id: string) {
     if (id === kirinId && (this.moveId === id ? this.kirinCursed : winged(this)))
       return kirinCurseOpener;
-    return curseMove(this, id) ?? this.normalMoves[id] ??
+    return (this.asta && isAstaSpecial(id) ? astaRuntimeMove(this,id) : undefined) ?? curseMove(this, id) ?? this.normalMoves[id] ??
       this.data.specialMoves?.[id] ?? this.data.superMoves?.[id];
   }
   get temporalActive() {
@@ -225,6 +227,7 @@ export class Fighter {
     );
   }
   canStartSpecial(id: string) {
+    if(this.asta)return isAstaSpecial(id)&&canStartAstaSpecial(this,id);
     if (this.data.id === "goku") return canStartGokuSpecial(this, id);
     const move = (winged(this) ? sasukeCurseMoves[id] : undefined) ?? this.data.specialMoves?.[id];
     if (
@@ -691,6 +694,7 @@ export class Fighter {
     const technique = kaneki ? kanekiTechnique(id) : undefined;
     const captureLink = kaneki && (id === "throw" || !!technique) &&
       this.state === "attack" && this.hitConfirmed;
+    if(this.asta)commitAstaSword(this);
     this.setState("attack", chain);
     this.kanekiThrowLink = captureLink || undefined;
     this.kanekiLimb = technique?.family === "fourSwords" ? "lowerRear"
@@ -784,7 +788,7 @@ export class Fighter {
       this.reverseBeatUsed = false;
     this.buffer.push(input, frame, this.facing);
     this.stateFrame++;
-    commitAstaSword(this);
+    tickAstaState(this);
     if (this.asta && !this.airborne) this.asta.airDashUsed = false;
     if (this.combo > 0) this.comboAge++;
     this.syncReactionClock(true);
@@ -910,6 +914,14 @@ export class Fighter {
             return;
           }
           if (free) this.buffer.consumeSpecial(button);
+        }
+      }
+      if (this.asta && !this.airborne) {
+        for(const button of ["heavy","medium","light"] as const){
+          const id=astaSpecialCommand(this.buffer,button);if(!id)continue;
+          if(this.attack(id)){this.buffer.consumeSpecial(button);return;}
+          if(free||this.move?.special)this.buffer.consumeSpecial(button);
+          break;
         }
       }
       if (this.data.id === "kaneki") {
@@ -1059,6 +1071,7 @@ export class Fighter {
       }
       if (free || this.state === "attack") {
         for (const b of ["throw", "light", "medium", "heavy"] as const) {
+          if (this.asta && !this.airborne && astaSpecialCommand(this.buffer,b)) continue;
           if (this.bufferedBenSpecial(b)) continue;
           if (this.data.id === "kaneki" && kanekiSpecialCommand(this.buffer, b)) continue;
           if (this.data.id === "sasuke" && sasukeSpecialCommand(this.buffer, b)) continue;
@@ -1325,6 +1338,7 @@ export interface HitEvent {
     | "centipede";
   total?: number;
   ben?: BenEffect;
+  asta?: {kind:"break"|"hit";actor:number};
 }
 export interface CaptureSequence {
   kind: "ultimate" | "grab";
@@ -1722,6 +1736,7 @@ export class Match {
     }
     this.clashXebecWaves();
     this.stepProjectiles();
+    stepAstaAntimagic(this);
     this.stepEnergy();
     if (!this.capture) this.stepBenObjects();
     for (const f of this.fighters) f.syncReactionClock(false);
@@ -1760,7 +1775,7 @@ export class Match {
       ["idle", "walk", "crouch", "landing", "blockstun"].includes(
         target.state,
       ) &&
-      (!(wave || m.ben?.field || ["knives", "ki", "kamehameha"].includes(m.special ?? "") ||
+      (!(wave || m.kind === "astaWave" || m.ben?.field || ["knives", "ki", "kamehameha"].includes(m.special ?? "") ||
         (m.special && isSasukeSpecial(m.special) && sasukeTechniques[m.special].shots)) ||
         direction === -target.facing || m.ben?.field?.type === "sonicAssist");
     const blocked =
@@ -1822,6 +1837,7 @@ export class Match {
         f.hitConfirmed = true;
         if (m.ben?.field) f.connected = true;
       }
+      if(f.asta && isAstaSpecial(moveId) && !f.asta.usedSpecials.includes(moveId))f.asta.usedSpecials.push(moveId);
       if (m.ben?.technique && f.omnitrix && !f.omnitrix.usedSpecials.includes(m.ben.technique))
         f.omnitrix.usedSpecials.push(m.ben.technique);
       if (m.ben?.cold && applied > 0 && !frozen && target.health > 0) {
@@ -1912,6 +1928,7 @@ export class Match {
     );
     const event = this.events[eventCount];
     if (event) {
+      if(f.asta)event.asta={kind:"hit",actor:f.id};
       if (f.domination) event.xebec = { rank: m.rank, facing: direction, move: moveId, powered: moveId === kingWill };
       if (m.ben && !blocked) event.ben = m.ben.effect;
       if (!blocked && (m.special === "chidori" || m.special === "goryuka"))
@@ -1966,6 +1983,7 @@ export class Match {
     for (const f of this.fighters) {
       if (this.temporal.isFrozen(f.id) || f.state !== "attack") continue;
       const m = f.move!;
+      if(f.asta){spawnAstaSpecial(f,this);continue;}
       if (f.data.id === "goku") {
         this.spawnGokuSpecial(f);
         continue;
@@ -2258,7 +2276,7 @@ export class Match {
         owner = this.fighters[p.owner],
         haki = xebecProjectileMove(p.move),
         move = haki ?? (p.curse ? sasukeCurseMoves[p.move] : owner.data.specialMoves?.[p.move]);
-      const shape = wave ? xebecWaveVolume(wave, p.x, p.y, p.facing, p.radius) : {
+      const shape = wave ? xebecWaveVolume(wave, p.x, p.y, p.facing, p.radius) : p.move==="astaBlackSlash" ? astaWaveVolume(p) : {
         a: { x: p.previousX, y: p.previousY },
         b: { x: p.x, y: p.y },
         r: p.radius,
@@ -2277,7 +2295,7 @@ export class Match {
           p.x = Math.max(hurt.x, Math.min(hurt.x + hurt.w, p.x));
           p.y = Math.max(hurt.y, Math.min(hurt.y + hurt.h, p.y));
           impact = { x: p.x, y: p.y, w: 0, h: 0 };
-        } else if (owner.gokuCastSerial === p.cast && owner.moveId === p.move) {
+        } else if ((owner.asta ? owner.asta.cast === p.cast : owner.gokuCastSerial === p.cast) && owner.moveId === p.move) {
           owner.connected = true;
         }
         this.resolveImpact(owner, target, move, p.move, impact, p.facing, winged(owner), false, haki ? p : undefined);

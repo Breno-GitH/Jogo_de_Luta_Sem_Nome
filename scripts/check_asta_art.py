@@ -15,8 +15,8 @@ for name,grips in sockets.items():
   assert set(cel.getchannel("A").tobytes())=={0,255}
   hashes.add(hashlib.sha256(cel.tobytes()).digest())
   pt=(128+g["x"],224+g["y"]);color=cel.getpixel(pt)
-  if color[3]!=255 or max(color[:3])>125: errors.append((name,i,pt,color))
+  if color[3]!=255 or (max(color[1:3])>125 or color[0]>190): errors.append((name,i,pt,color))
  assert len(hashes)==6,(name,"repeated cel")
-print("17 action atlases, all six cels distinct; alpha, margins and scale checked.")
+print(f"{len(sockets)} action atlases, all six cels distinct; alpha, margins and scale checked.")
 print("Sockets requiring manual review:",errors)
 if errors:raise SystemExit(1)

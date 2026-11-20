@@ -123,7 +123,7 @@ export function movesContent(id: CharacterId, b: Bindings) {
   const [light, medium, heavy] = [b.light, b.medium, b.heavy].map(keyLabel);
   const atk = `${light} / ${medium} / ${heavy}`;
   const moves: Record<CharacterId, string[]> = {
-    asta: [`Normais|${atk} em pé, agachado e no ar. A espada equipada determina alcance e ritmo.`, `Combos|Confirme J → K → L. Agachado + L permite perseguição com salto após acerto.`, `Mobilidade|Dash terrestre e um air dash por salto.`, `Espadas|Partidas começam com Demon-Slayer. No Treinamento, escolha as outras espadas no painel. A troca durante especiais será integrada na próxima etapa.`],
+    asta: [`Demon-Slayer|↓ → + ${light} Black Rush · ${medium} Rising Demon · ${heavy} Black Divider`, `Demon-Slasher|↓ ← + ${light} Iai Slash · ${medium} Black Flash Steps · ${heavy} Severing Line`, `Antimagia|↓ ↓ + ${light} Black Slash (Dweller) · ${medium} Causality Break (Destroyer) · ${heavy} Dual Anti-Magic Break (Dweller → Destroyer)`, `Normais|${atk} em pé, agachado e no ar. A espada equipada determina alcance e ritmo.`, `Combos|Confirme J → K → L. Agachado + L permite perseguição com salto após acerto.`, `Mobilidade|Dash terrestre e um air dash por salto.`, `Espadas|Partidas começam com Demon-Slayer. No Treinamento, escolha as outras espadas no painel. Os especiais trocam a espada durante o ataque, inclusive ao errar. Interrompido antes do saque mantém a arma anterior.`],
     [xebecId]: [
       `Em pé|${light} Soco direto · ${medium} Golpe de Corpo · ${heavy} Corte horizontal`,
       `Agachado (${keyLabel(b.down)})|${light} Soco baixo · ${medium} Rasteira · ${heavy} Corte ascendente`,

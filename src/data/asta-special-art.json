@@ -1,0 +1,141 @@
+{
+  "astaBlackRush": [
+    {
+      "sheet": "special-rush",
+      "durations": [
+        2,
+        3,
+        2,
+        3,
+        7,
+        10
+      ]
+    }
+  ],
+  "astaRisingDemon": [
+    {
+      "sheet": "special-rising",
+      "durations": [
+        4,
+        4,
+        3,
+        3,
+        9,
+        12
+      ]
+    }
+  ],
+  "astaBlackDivider": [
+    {
+      "sheet": "special-divider",
+      "durations": [
+        6,
+        8,
+        4,
+        4,
+        13,
+        18
+      ]
+    }
+  ],
+  "astaIaiSlash": [
+    {
+      "sheet": "special-iai",
+      "durations": [
+        1,
+        3,
+        2,
+        2,
+        5,
+        7
+      ]
+    }
+  ],
+  "astaFlashSteps": [
+    {
+      "sheet": "special-flash_a",
+      "durations": [
+        2,
+        3,
+        2,
+        2,
+        3,
+        3
+      ]
+    },
+    {
+      "sheet": "special-flash_b",
+      "durations": [
+        3,
+        3,
+        2,
+        3,
+        7,
+        11
+      ]
+    }
+  ],
+  "astaSeveringLine": [
+    {
+      "sheet": "special-severing",
+      "durations": [
+        4,
+        6,
+        3,
+        3,
+        10,
+        16
+      ]
+    }
+  ],
+  "astaBlackSlash": [
+    {
+      "sheet": "special-slash",
+      "durations": [
+        4,
+        6,
+        3,
+        3,
+        8,
+        14
+      ]
+    }
+  ],
+  "astaCausalityBreak": [
+    {
+      "sheet": "special-causality",
+      "durations": [
+        3,
+        4,
+        5,
+        5,
+        3,
+        12
+      ]
+    }
+  ],
+  "astaDualBreak": [
+    {
+      "sheet": "special-dual_a",
+      "durations": [
+        3,
+        4,
+        3,
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "sheet": "special-dual_b",
+      "durations": [
+        4,
+        4,
+        3,
+        3,
+        8,
+        13
+      ]
+    }
+  ]
+}

@@ -1,3 +1,4 @@
+import { astaWeaponHidden,drawAstaBladeExtension } from "./asta-antimagic-fx";
 import type { Fighter } from "../engine/combat";
 import {
   visibleAstaSword,
@@ -14,7 +15,7 @@ export function drawAstaWeapon(
   atlas: CanvasImageSource | undefined,
   body: CanvasImageSource,
 ) {
-  if (!atlas) return;
+  if (!atlas || astaWeaponHidden(f)) return;
   const s = a.sprite(),
     id = s.sheet.replace("asta/", "").replace(".png", "");
   const grip = (
@@ -39,6 +40,7 @@ export function drawAstaWeapon(
     192,
   );
   c.restore();
+  drawAstaBladeExtension(c,f);
   // The closed fist occludes the hilt. This is the authored cel, never a posed/warped body.
   const x = Math.round(grip.x + s.pivot.x),
     y = Math.round(grip.y + s.pivot.y);

@@ -1,4 +1,5 @@
 import profiles from "../data/bot-profiles.json";
+import { astaTechniques, type AstaSpecialId } from "./asta-specials";
 import { neutral, type Button, type InputFrame, type State } from "./types";
 import { benAliens, omnitrixHoldTicks, omnitrixSwapTicks } from "./ben-omnitrix";
 import type { Fighter, Match } from "./combat";
@@ -286,6 +287,8 @@ export class Bot {
           ) {
             if (self.data.id === "sasuke")
               return this.sasukeTechnique(self, ["chidori", "eiso", "gokakyu", "serpents"]) ?? neutral();
+            if(self.asta){const id:AstaSpecialId=self.asta.equipped==="slayer"?"astaIaiSlash":self.asta.equipped==="slasher"?"astaBlackRush":"astaDualBreak";
+              if(self.canStartSpecial(id)){const s=astaTechniques[id];this.lastDecision=s.name;return this.command(s.family===0?[2,6]:s.family===1?[2,4]:[2,5,2],s.button,self);}}
             this.lastDecision = "cancelar em especial";
             return this.command(
               self.moveId === "crouch_heavy" ? [6, 2, 3] : [2, 3, 6],
@@ -382,6 +385,10 @@ export class Bot {
         this.lastDecision = "punir com saque";
         return this.command([2, 3, 6], "light", self);
       }
+    }
+    if(self.asta && this.chance(this.profile.special)){
+      const ids:AstaSpecialId[]=enemy.airborne?["astaRisingDemon"]:distance>220?["astaBlackSlash","astaSeveringLine"]:distance<115?["astaFlashSteps","astaDualBreak","astaIaiSlash"]:["astaBlackRush","astaBlackDivider"];
+      const id=ids[Math.floor(this.random()*ids.length)];if(self.canStartSpecial(id)){const s=astaTechniques[id];this.lastDecision=s.name;return this.command(s.family===0?[2,6]:s.family===1?[2,4]:[2,5,2],s.button,self);}
     }
     if (enemy.airborne && distance < 110 && this.chance(this.profile.special)) {
       if (sasuke)
