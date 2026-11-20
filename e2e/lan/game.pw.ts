@@ -1630,3 +1630,30 @@ test("Asta selects in two clients, plays four sword states and synchronizes air 
  await expect.poll(()=>room.match!.fighters[0].asta!.airDashUsed,{timeout:5000}).toBe(false);
  await consistent();await capture(code,"asta-return");
 });
+
+test("Asta nine specials retain swords, Dual stages and Causality in two synchronized clients",async()=>{
+ test.setTimeout(240000);
+ const code=await pair("asta","goku");
+ const moves=[
+  ["astaBlackRush",[2,6],"j","slayer"],["astaRisingDemon",[2,6],"k","slayer"],["astaBlackDivider",[2,6],"l","slayer"],
+  ["astaIaiSlash",[2,4],"j","slasher"],["astaFlashSteps",[2,4],"k","slasher"],["astaSeveringLine",[2,4],"l","slasher"],
+  ["astaBlackSlash",[2,5,2],"j","dweller"],["astaCausalityBreak",[2,5,2],"k","destroyer"],["astaDualBreak",[2,5,2],"l","destroyer"]
+ ]as const;
+ for(const [id,pattern,key,sword] of moves){
+  for(const previous of ["slayer","slasher","dweller","destroyer"]as const){
+   const r=await seed(code,90,0,m=>{m.fighters[0].asta!.equipped=previous;});
+   await a.locator("canvas").focus();await motion(a,[...pattern],key,45);
+   await expect.poll(()=>r.match!.fighters[0].moveId).toBe(id);
+   await expect.poll(()=>r.match!.fighters[0].asta!.equipped).toBe(sword);
+   await expect.poll(()=>r.match!.fighters[0].state,{timeout:5000}).toBe("idle");
+   await consistent();
+  }
+  await capture(code,"asta-special-"+id);
+ }
+ const r=await seed(code,400,0,m=>{
+  const f=m.fighters[0];f.attack("astaCausalityBreak");f.stateFrame=8;f.asta!.equipped=f.asta!.attackSword="destroyer";
+  const g={x:f.x+15,y:f.y-90};m.kiProjectiles.push({id:++m.projectileSerial,owner:1,move:"ki_light",cast:1,...g,previousX:g.x,previousY:g.y,vx:-8,vy:0,facing:-1,radius:18,age:0,life:40,state:"flight",impactAge:0});
+ });
+ await expect.poll(()=>r.match!.fighters[0].asta!.neutralized).toBe(1);await consistent();await capture(code,"asta-causality-neutralized");
+ await expect.poll(()=>r.match!.fighters[0].state).toBe("idle");await consistent();
+});

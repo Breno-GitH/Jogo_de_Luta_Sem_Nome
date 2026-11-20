@@ -1,3 +1,4 @@
+import { astaSpecialMoves } from "./asta-specials";
 import type { CharacterData } from "./types";
 import { astaSwords, type AstaSword } from "./asta-stances";
 import { astaBody, astaNormals } from "./asta-normals";
@@ -19,6 +20,7 @@ export const asta: CharacterData = {
     backdash: [8, 11, 12, 10, 8, 6, 3, 0],
   },
   hurtboxes: astaBody,
+  specialMoves: astaSpecialMoves,
   combatLimits: { maxHits: 14, maxAirHits: 6, maxTicks: 245 },
   lifecycle: {
     entranceDistance: 36,

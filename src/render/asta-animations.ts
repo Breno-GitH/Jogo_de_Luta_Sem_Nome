@@ -1,3 +1,9 @@
+import {
+  astaSpecialIds,
+  astaSpecialSegment,
+  isAstaSpecial,
+} from "../engine/asta-specials";
+import specialArt from "../data/asta-special-art.json";
 import movement from "../data/asta-animations.json";
 import type { AnimationData, AnimationClip } from "./animator";
 import { astaNormalIds, normalHolds } from "../engine/asta-normals";
@@ -17,12 +23,22 @@ export function astaAnimation(
       durations: normalHolds(sword, id),
       loop: false,
     };
+  for (const id of astaSpecialIds)
+    specialArt[id].forEach((s, i) => {
+      clips[i ? id + ":" + i : id] = {
+        sheet: "asta/" + s.sheet + ".png",
+        frames: [0, 1, 2, 3, 4, 5],
+        ticks: 1,
+        durations: s.durations,
+        loop: false,
+      };
+    });
   return { ...movement, clips };
 }
 export const astaAnimations = astaAnimation();
 export function tickAsta(f: Fighter, animator: Animator) {
   const reaction = reactionFor(f);
-  const name =
+  let name =
     reaction?.clip ??
     (f.state === "attack"
       ? f.moveId
@@ -47,6 +63,12 @@ export function tickAsta(f: Fighter, animator: Animator) {
                     ? "walkForward"
                     : "walkBack"
                   : "idle");
+  let seek = f.stateFrame;
+  if (f.state === "attack" && isAstaSpecial(name)) {
+    const segment = astaSpecialSegment(name, seek);
+    name = segment.index ? name + ":" + segment.index : name;
+    seek -= segment.start;
+  }
   let clip = animator.hasClip(name) ? name : "idle";
   if (!reaction && f.state === "crouch" && f.stateFrame < 4)
     clip = "crouchStart";
@@ -65,7 +87,7 @@ export function tickAsta(f: Fighter, animator: Animator) {
     f.state === "landing" ||
     f.state === "dash"
   )
-    animator.seekTick(reaction?.tick ?? f.stateFrame);
+    animator.seekTick(reaction?.tick ?? seek);
 }
 /** Weapon choice is presented with the same latched state used by move lookup. */
 export const astaVisualSword = visibleAstaSword;

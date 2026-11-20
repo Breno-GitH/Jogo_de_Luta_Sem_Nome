@@ -229,6 +229,7 @@ export class GameApp {
     this.renderer.localSeat = 0;
     this.renderer.online = false;
     this.renderer.xebecEffects = true;
+    this.renderer.astaEffects = true;
     this.renderer.opponentPalette = "cyan";
     this.renderer.opponentLabel = "02 / BOT";
     this.renderer.contextLabel = "MELHOR DE 3";
@@ -881,6 +882,7 @@ export class GameApp {
       }
       this.keyboard.clear(); this.canvas.focus({preventScroll:true});
     };
+    this.el<HTMLInputElement>("asta-fx").onchange = e => {this.renderer.astaEffects=(e.target as HTMLInputElement).checked;this.canvas.focus({preventScroll:true});};
     this.el<HTMLInputElement>("xebec-fx").onchange = (e) => {
       this.renderer.xebecEffects = (e.target as HTMLInputElement).checked;
       this.canvas.focus({ preventScroll: true });
@@ -983,7 +985,10 @@ export class GameApp {
   private syncTraining() {
     const s = this.session!;
     this.renderer.xebecEffects = true;
+    this.renderer.astaEffects = true;
     if (s.mode !== "training") return;
+    this.el("asta-fx-label").hidden = !s.match.fighters.some(f=>f.asta);
+    this.el<HTMLInputElement>("asta-fx").checked=true;
     this.el("xebec-fx-label").hidden = !s.match.fighters.some(fighter => fighter.domination);
     this.el<HTMLInputElement>("xebec-fx").checked = true;
     this.el<HTMLInputElement>("infinite-health").checked =

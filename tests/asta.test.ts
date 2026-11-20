@@ -50,7 +50,7 @@ describe("Asta four-sword base", () => {
       "slayer",
       "slayer",
     ]);
-    expect(characters.asta.specialMoves).toBeUndefined();
+    expect(Object.keys(characters.asta.specialMoves!)).toHaveLength(9);
     expect(characters.asta.superMoves).toBeUndefined();
   });
   it.each(astaSwords)(
@@ -202,7 +202,7 @@ describe("Asta four-sword base", () => {
       p.a.attack("stand_light");
       p.a.stateFrame = 0;
       beginAstaAttack(p.a, { sword: "slasher", commitTick: 5 });
-      expect(p.a.asta?.attackSword).toBe("slasher");
+      expect(p.a.asta?.attackSword).toBe("slayer");
       expect(p.a.asta?.equipped).toBe("slayer");
       p.a.stateFrame = interrupted;
       commitAstaSword(p.a);

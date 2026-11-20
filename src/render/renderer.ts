@@ -67,6 +67,7 @@ import type { Fighter } from "../engine/combat";
 import { combatPace } from "../engine/pace";
 import { xebecId } from "../engine/xebec";
 import { xebecAnimations } from "./xebec-animations";
+import { drawAstaAntimagic,drawAstaWaves,astaWeaponHidden } from "./asta-antimagic-fx";
 import { astaAnimations } from "./asta-animations";
 import { drawAstaWeapon,drawAstaSwordHud } from "./asta-weapon";
 import { kingWill } from "../engine/xebec-specials";
@@ -85,6 +86,7 @@ export class Renderer {
   debug = false;
   effects = true;
   xebecEffects = true;
+  astaEffects = true;
   private readonly prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   cameraShake = true;
   superKey = "R";
@@ -344,6 +346,10 @@ export class Renderer {
     this.canvas.dataset.pandemoniumPhase = abyss?.phase ?? "";
     this.canvas.dataset.prometheusCel = String(abyss?.prometheus?.cel ?? -1);
     this.canvas.dataset.astaSword = self.asta?.equipped ?? "";
+    this.canvas.dataset.astaStage = self.asta?.attackSword ?? "";
+    this.canvas.dataset.astaPending = self.asta?.pending?.sword ?? "";
+    this.canvas.dataset.astaDrawnWeapons = String(self.asta ? astaWeaponHidden(self)?0:1 : 0);
+    this.canvas.dataset.astaNeutralized = String(self.asta?.neutralized ?? 0);
     this.canvas.dataset.astaAirDash = String(self.asta?.airDashTicks ?? 0);
     this.canvas.dataset.domination = String(self.domination?.charge ?? "");
     this.canvas.dataset.moveTick = String(self.stateFrame);
@@ -728,6 +734,7 @@ export class Renderer {
       }
       c.globalAlpha = 1;
       if(f.asta && image) drawAstaWeapon(c,f,this.presentations[i].animator,this.sprites.get("asta/arsenal.png")!,image);
+      if(f.asta && this.effects && this.astaEffects) drawAstaAntimagic(c,f,match.frame);
       drawSpectralArms(c, f, match);
       if (f.omnitrix?.active === "feedback") {
         const animator = this.presentations[i].animator;
@@ -792,6 +799,7 @@ export class Renderer {
       for (const fighter of match.fighters) if (fighter.hakiReaction) drawKingWillReaction(c, fighter);
     }
     if (!match.cinematicActive) {
+      drawAstaWaves(c,match,this.effects && this.astaEffects);
       drawGokuSpecials(c, match, this.sprites, this.debug);
       if (this.effects) for (const f of match.fighters) drawAlienXOpener(c, f);
       drawSasukeProjectiles(c, match, this.sprites, this.debug);

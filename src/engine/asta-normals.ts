@@ -143,6 +143,7 @@ export const astaNormals: Record<
             box: { x: 0, y: 0, w: 0, h: 0 },
             cancels: [
               ...(r === 0 ? ["medium"] : r === 1 ? ["heavy"] : []),
+              ...(r < 2 ? ["special"] : []),
               ...(id === "crouch_heavy" ? ["jump"] : []),
             ],
             cancelMoves: next,
