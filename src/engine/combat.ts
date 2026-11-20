@@ -1,6 +1,7 @@
 import type { KaguneId } from "./kagune";
 import { astaMoves } from "./asta";
-import { astaSpecialCommand,isAstaSpecial,astaRuntimeMove,canStartAstaSpecial,spawnAstaSpecial,astaWaveVolume } from "./asta-specials";
+import { astaSpecialCommand,isAstaSpecial,isAstaAction,astaRuntimeMove,canStartAstaSpecial,spawnAstaSpecial,astaWaveVolume } from "./asta-specials";
+import { beginAstaRelay,stepAstaRelay,stepAstaPursuit,confirmAstaRelay } from "./asta-relay";
 import { stepAstaAntimagic } from "./asta-antimagic";
 import { newAsta, beginAstaAttack, commitAstaSword, finishAstaAttack, tickAstaState, type AstaState } from "./asta-stances";
 import samurai from "../data/samurai.json";
@@ -202,7 +203,7 @@ export class Fighter {
   private lookupMove(id: string) {
     if (id === kirinId && (this.moveId === id ? this.kirinCursed : winged(this)))
       return kirinCurseOpener;
-    return (this.asta && isAstaSpecial(id) ? astaRuntimeMove(this,id) : undefined) ?? curseMove(this, id) ?? this.normalMoves[id] ??
+    return (this.asta && isAstaAction(id) ? astaRuntimeMove(this,id) : undefined) ?? curseMove(this, id) ?? this.normalMoves[id] ??
       this.data.specialMoves?.[id] ?? this.data.superMoves?.[id];
   }
   get temporalActive() {
@@ -227,7 +228,7 @@ export class Fighter {
     );
   }
   canStartSpecial(id: string) {
-    if(this.asta)return isAstaSpecial(id)&&canStartAstaSpecial(this,id);
+    if(this.asta)return isAstaAction(id)&&canStartAstaSpecial(this,id);
     if (this.data.id === "goku") return canStartGokuSpecial(this, id);
     const move = (winged(this) ? sasukeCurseMoves[id] : undefined) ?? this.data.specialMoves?.[id];
     if (
@@ -620,7 +621,7 @@ export class Fighter {
       else if (this.state === "crouch" && (s === "idle" || s === "walk")) this.omnitrix.crouchExit = 5;
     }
     if (this.asta) {
-      if (s !== "attack") finishAstaAttack(this);
+      if (s !== "attack") finishAstaAttack(this,!["idle","walk","crouch"].includes(s));
       if (s !== "air") this.asta.airDashTicks = 0;
     }
     this.state = s;
@@ -709,6 +710,7 @@ export class Fighter {
     } else this.kanekiBurrowX = undefined;
     this.moveId = id;
     beginAstaAttack(this, m.astaSword);
+    if(this.asta && id==="astaDualBreak")beginAstaRelay(this);
     if (this.domination) {
       const resource = this.domination;
       resource.powered = id === kingWill;
@@ -787,8 +789,10 @@ export class Fighter {
     if (!opponent.combo && this.state !== "attack")
       this.reverseBeatUsed = false;
     this.buffer.push(input, frame, this.facing);
+    const astaRelayOwned=!!this.asta?.relay;
     this.stateFrame++;
     tickAstaState(this);
+    stepAstaRelay(this);stepAstaPursuit(this);
     if (this.asta && !this.airborne) this.asta.airDashUsed = false;
     if (this.combo > 0) this.comboAge++;
     this.syncReactionClock(true);
@@ -916,7 +920,7 @@ export class Fighter {
           if (free) this.buffer.consumeSpecial(button);
         }
       }
-      if (this.asta && !this.airborne) {
+      if (this.asta && !this.airborne && !astaRelayOwned) {
         for(const button of ["heavy","medium","light"] as const){
           const id=astaSpecialCommand(this.buffer,button);if(!id)continue;
           if(this.attack(id)){this.buffer.consumeSpecial(button);return;}
@@ -1071,6 +1075,7 @@ export class Fighter {
       }
       if (free || this.state === "attack") {
         for (const b of ["throw", "light", "medium", "heavy"] as const) {
+          if(astaRelayOwned)break;
           if (this.asta && !this.airborne && astaSpecialCommand(this.buffer,b)) continue;
           if (this.bufferedBenSpecial(b)) continue;
           if (this.data.id === "kaneki" && kanekiSpecialCommand(this.buffer, b)) continue;
@@ -1837,6 +1842,7 @@ export class Match {
         f.hitConfirmed = true;
         if (m.ben?.field) f.connected = true;
       }
+      if(f.asta && moveId==="astaDualBreak" && applied>0)confirmAstaRelay(f);
       if(f.asta && isAstaSpecial(moveId) && !f.asta.usedSpecials.includes(moveId))f.asta.usedSpecials.push(moveId);
       if (m.ben?.technique && f.omnitrix && !f.omnitrix.usedSpecials.includes(m.ben.technique))
         f.omnitrix.usedSpecials.push(m.ben.technique);

@@ -349,6 +349,15 @@ export class Renderer {
     this.canvas.dataset.astaStage = self.asta?.attackSword ?? "";
     this.canvas.dataset.astaPending = self.asta?.pending?.sword ?? "";
     this.canvas.dataset.astaDrawnWeapons = String(self.asta ? astaWeaponHidden(self)?0:1 : 0);
+    const relay=self.asta?.relay;
+    this.canvas.dataset.astaRelayPhase=relay?.phase??"";
+    this.canvas.dataset.astaRelayExtensions=String(relay?.extensions??0);
+    this.canvas.dataset.astaRelaySword=relay?.sword??"";
+    this.canvas.dataset.astaRelayAction=String(relay?.action??-1);
+    this.canvas.dataset.astaRelayWindow=String(!!relay&&relay.confirmed&&relay.phase!=="finish"&&relay.extensions<2&&self.stateFrame>=relay.windowFrom&&self.stateFrame<=relay.windowTo);
+    this.canvas.dataset.astaRelayContacts=String(relay?.contacts.length??0);
+    this.canvas.dataset.astaPursuit=String(!!self.asta?.pursuit&&!self.asta.pursuit.used);
+    this.canvas.dataset.astaStates=JSON.stringify(match.fighters.map(f=>f.asta?{sword:f.asta.equipped,relay:f.asta.relay??null}:null));
     this.canvas.dataset.astaNeutralized = String(self.asta?.neutralized ?? 0);
     this.canvas.dataset.astaAirDash = String(self.asta?.airDashTicks ?? 0);
     this.canvas.dataset.domination = String(self.domination?.charge ?? "");
@@ -687,7 +696,7 @@ export class Renderer {
           this.effects &&
           !match.cinematicActive &&
           combatPace.feedback.dashTrails &&
-          (f.state === "dash" || f.airChaseTicks > 0 || f.move?.special === "rinkakuRush") &&
+          (f.state === "dash" || f.airChaseTicks > 0 || f.move?.special === "rinkakuRush" || f.asta && f.state==="attack" && !!f.move?.drive) &&
           Math.abs(f.vx) > 5
         ) {
           for (const back of [2, 1]) {

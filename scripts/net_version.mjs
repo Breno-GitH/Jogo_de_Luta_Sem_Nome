@@ -3,6 +3,7 @@ import { readFileSync, writeFileSync, existsSync } from "node:fs";
 const files = [
   "src/engine/asta.ts",
   "src/engine/asta-specials.ts",
+  "src/engine/asta-relay.ts",
   "src/engine/asta-antimagic.ts",
   "src/data/asta-special-art.json",
   "src/engine/asta-normals.ts",

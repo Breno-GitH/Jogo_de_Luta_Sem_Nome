@@ -1,8 +1,8 @@
-import type { Fighter, Match } from "../engine/combat";
+import { FLOOR, type Fighter, type Match } from "../engine/combat";
 import {
   astaSpecialGrip,
   astaReach,
-  isAstaSpecial,
+  isAstaAction,
 } from "../engine/asta-specials";
 import { swordReach } from "../engine/asta-normals";
 import { visibleAstaSword } from "../engine/asta-stances";
@@ -27,12 +27,8 @@ function stroke(
     );
 }
 export function astaWeaponHidden(f: Fighter) {
-  return (
-    f.state === "attack" &&
-    f.moveId === "astaDualBreak" &&
-    f.stateFrame >= 24 &&
-    f.stateFrame < 26
-  );
+  // Keep the last committed weapon visible until the next offensive drawing commits.
+  return false;
 }
 /** Readable gameplay geometry remains visible when optional effects are disabled. Local fighter space. */
 export function drawAstaBladeExtension(
@@ -41,13 +37,13 @@ export function drawAstaBladeExtension(
 ) {
   if (
     f.state !== "attack" ||
-    !isAstaSpecial(f.moveId) ||
-    !["astaBlackDivider", "astaSeveringLine"].includes(f.moveId)
+    !isAstaAction(f.moveId) ||
+    f.moveId !== "astaBlackDivider"
   )
     return;
   const t = f.stateFrame,
     m = f.move!,
-    g = astaSpecialGrip(f.moveId, t);
+    g = astaSpecialGrip(f.moveId, t, f.asta?.relay);
   if (t < 6 || t >= m.startup + m.active + 5) return;
   const a = (g.angle * Math.PI) / 180,
     native = swordReach[visibleAstaSword(f)];
@@ -55,9 +51,13 @@ export function drawAstaBladeExtension(
     t < m.startup
       ? Math.min(1, (t - 6) / Math.max(1, m.startup - 6))
       : Math.min(1, (m.startup + m.active + 5 - t) / 5);
-  const extended = native + (astaReach(f.moveId, t) - native) * gain;
+  const extended =
+    native + (astaReach(f.moveId, t, f.asta?.relay) - native) * gain;
   // The active blade shares combat geometry. Its recovery dissolves above the ground.
-  const reach = t >= m.startup + m.active && Math.sin(a) > 0 ? Math.min(extended, -g.y / Math.sin(a)) : extended;
+  const reach =
+    t >= m.startup + m.active && Math.sin(a) > 0
+      ? Math.min(extended, -g.y / Math.sin(a))
+      : extended;
   const nx = Math.cos(a),
     ny = Math.sin(a),
     px = -ny,
@@ -87,15 +87,69 @@ export function drawAstaAntimagic(
   f: Fighter,
   frame: number,
 ) {
-  if (f.state !== "attack" || !isAstaSpecial(f.moveId)) return;
+  if (f.state !== "attack" || !isAstaAction(f.moveId)) return;
   const t = f.stateFrame,
     m = f.move!,
-    g = astaSpecialGrip(f.moveId, t),
+    g = astaSpecialGrip(f.moveId, t, f.asta?.relay),
     a = (g.angle * Math.PI) / 180;
   const active = t >= m.startup && t < m.startup + m.active;
   c.save();
-  if (f.moveId === "astaDualBreak" && t >= 19 && t < 30) {
-    const p = (t - 19) / 11;
+  // Short quantized blade traces use the authored hand trajectory, never a screen-sized band.
+  if (active && f.moveId !== "astaBlackSlash") {
+    const before = astaSpecialGrip(
+      f.moveId,
+      Math.max(m.startup, t - 2),
+      f.asta?.relay,
+    );
+    const reach = astaReach(f.moveId, t, f.asta?.relay),
+      b = (before.angle * Math.PI) / 180;
+    for (const fraction of [0.55, 0.8, 1]) {
+      const from = {
+        x: before.x + Math.cos(b) * reach * fraction,
+        y: before.y + Math.sin(b) * reach * fraction,
+      };
+      const to = {
+        x: g.x + Math.cos(a) * reach * fraction,
+        y: g.y + Math.sin(a) * reach * fraction,
+      };
+      c.globalAlpha = 0.48;
+      stroke(
+        c,
+        from.x,
+        from.y,
+        to.x,
+        to.y,
+        f.moveId === "astaBlackDivider" ? 4 : 2,
+        "#211522",
+      );
+    }
+    c.globalAlpha = 1;
+  }
+  if (
+    ["astaBlackRush", "astaRisingDemon", "astaBlackDivider"].includes(
+      f.moveId,
+    ) &&
+    active
+  ) {
+    const ground = FLOOR - f.y,
+      intensity = f.moveId === "astaBlackDivider" ? 2 : 1;
+    for (let i = 0; i < 8; i++) {
+      const d = i * 9 + (((t - m.startup) * 7) % 18);
+      c.fillStyle = i % 3 ? "#74655f" : "#b6a58c";
+      c.fillRect(
+        Math.round(20 + d),
+        Math.round(ground - 2 - ((i * 3 + t) % 7) * intensity),
+        4 + (i % 2) * 2,
+        2,
+      );
+    }
+  }
+  if (
+    f.moveId === "astaDualBreak" &&
+    f.asta?.relay?.phase === "link" &&
+    t < 5
+  ) {
+    const p = t / 5;
     c.fillStyle = "#332b36";
     c.fillRect(-34, -87, 18, 23);
     c.fillStyle = "#ab8255";
@@ -120,7 +174,7 @@ export function drawAstaAntimagic(
     (t < m.startup &&
       ["astaBlackDivider", "astaCausalityBreak"].includes(f.moveId))
   ) {
-    const reach = astaReach(f.moveId, t);
+    const reach = astaReach(f.moveId, t, f.asta?.relay);
     for (let i = 0; i < 5; i++) {
       const d =
         18 + ((i * 19 + Math.floor(frame / 2) * 7) % Math.max(20, reach - 22));

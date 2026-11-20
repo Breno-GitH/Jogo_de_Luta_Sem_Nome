@@ -12,7 +12,26 @@ export const swordNames: Record<AstaSword, string> = {
   dweller: "Demon-Dweller",
   destroyer: "Demon-Destroyer",
 };
+export interface AstaRelayState {
+  initial: AstaSword;
+  sword: AstaSword;
+  phase: "opening" | "link" | "finish";
+  extensions: number;
+  action: number;
+  cast: number;
+  started: number;
+  deadline: number;
+  confirmed: boolean;
+  windowFrom: number;
+  windowTo: number;
+  minSerial: number;
+  contacts: string[];
+  lastContact: number;
+  choice?: AstaSword;
+}
 export interface AstaState {
+  relay?: AstaRelayState;
+  pursuit?: { cast: number; until: number; used: boolean; minSerial: number };
   equipped: AstaSword;
   attackSword?: AstaSword;
   pending?: {
@@ -68,7 +87,9 @@ export function beginAstaAttack(
   if (!s) return;
   s.attackSword = s.equipped;
   s.neutralized = 0;
-  if (sword) {
+  if (f.moveId !== "astaDualBreak") delete s.relay;
+  if (f.moveId !== "astaBlackSlashPursuit") delete s.pursuit;
+  if (sword && f.moveId !== "astaBlackSlashPursuit") {
     s.cast++;
     if (f.opponent?.combo && !s.usedSpecials.includes(f.moveId))
       s.usedSpecials.push(f.moveId);
@@ -102,10 +123,12 @@ export function commitAstaSword(f: Fighter) {
     else delete s.pending;
   }
 }
-export function finishAstaAttack(f: Fighter) {
+export function finishAstaAttack(f: Fighter, interrupted = false) {
   if (!f.asta) return;
   delete f.asta.pending;
   delete f.asta.attackSword;
+  delete f.asta.relay;
+  if (interrupted) delete f.asta.pursuit;
 }
 export const visibleAstaSword = (f: Fighter) =>
   f.asta?.attackSword ?? f.asta?.equipped ?? "slayer";
