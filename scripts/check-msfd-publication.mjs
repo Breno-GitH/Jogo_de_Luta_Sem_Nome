@@ -70,6 +70,7 @@ try {
           "eclipse-carnage", "eclipse-ruptures", "haki-pressure", "king-will-body"]
           .map(name => `sprites/xebec/${name}.png`),
         "sprites/xebec/justice-gates.webp",
+        ...(await readdir(new URL("sprites/asta/", dist))).filter(name=>name.endsWith(".png")).map(name=>`sprites/asta/${name}`),
       ]),
     ].map((path) => verify(path)),
   );

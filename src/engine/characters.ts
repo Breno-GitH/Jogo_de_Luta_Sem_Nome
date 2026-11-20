@@ -19,9 +19,11 @@ import secondaryActions from "../data/the-world-secondary.json";
 import type { CharacterData } from "./types";
 import { pacedCharacter } from "./pace";
 import { xebec, xebecId } from "./xebec";
-export type CharacterId = "samurai" | "dio" | "goku" | "luffy" | "sasuke" | "kaneki" | "ben" | typeof xebecId;
+import { asta } from "./asta";
+export type CharacterId = "samurai" | "dio" | "goku" | "luffy" | "sasuke" | "kaneki" | "ben" | typeof xebecId | "asta";
 export const characters: Record<CharacterId, CharacterData> = {
   xebec,
+  asta,
   samurai: pacedCharacter(samurai),
   goku: pacedCharacter(goku),
   sasuke,

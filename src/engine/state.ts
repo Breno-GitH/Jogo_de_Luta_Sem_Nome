@@ -40,6 +40,7 @@ const fighterKeys = [
   "sasukeCurse",
   "kirinCursed",
   "domination",
+  "asta",
   "hakiReaction",
   "homeX",
   "guardIntent",

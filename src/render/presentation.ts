@@ -14,12 +14,14 @@ import fury from "../data/goku-fury-animations.json";
 import { GokuCombatPresentation } from "./goku-combat";
 import { animationTick } from "../engine/pace";
 import { xebecId } from "../engine/xebec";
+import { astaAnimation, tickAsta, astaVisualSword } from "./asta-animations";
 
 /** Selects visual phases without driving physics from animation frames. */
 export class FighterPresentation {
   animator: Animator;
   private benVisual?: "human" | BenAlien | "nrgReleased" | "alienX";
   private benGrowth = 0;
+  private astaSword?: string;
   private kaneki?: KanekiPresentation;
   private sasukeMotion?: SasukePresentation;
   private luffyMotion?: LuffyMotionPresentation;
@@ -99,6 +101,12 @@ export class FighterPresentation {
         this.animator.hasClip("grabbed") ? "grabbed" : "idle";
       this.animator.update(clip);
       this.animator.seekTick(pose?.tick ?? fighter.stateFrame);
+      return;
+    }
+    if (fighter.asta) {
+      const sword=astaVisualSword(fighter);
+      if(this.astaSword!==sword){this.animator=new Animator(astaAnimation(sword));this.astaSword=sword;}
+      tickAsta(fighter,this.animator);
       return;
     }
     if (fighter.data.id === "ben") {
