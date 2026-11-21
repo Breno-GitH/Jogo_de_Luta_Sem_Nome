@@ -1,6 +1,6 @@
 {
   "tick": "28",
-  "hash": "a8648c46",
+  "hash": "38b52945",
   "clients": [
     {
       "animation": "astaCausalityBreak:1",
@@ -43,6 +43,8 @@
       "astaDrawTo": "",
       "astaRestorationCooldown": "972",
       "astaRestored": "0",
+      "astaVolleyShots": "0",
+      "astaWaves": "[]",
       "astaCleansed": "1",
       "astaStatuses": "0",
       "astaStates": "[{\"sword\":\"destroyer\",\"relay\":null,\"draw\":null,\"recentDamage\":[{\"id\":1,\"at\":0,\"amount\":150,\"claimed\":false,\"restored\":0}],\"restorationReadyAt\":1000,\"result\":{\"cast\":1,\"at\":6,\"hp\":0,\"cleansed\":[\"test-slow\"]},\"statuses\":[]},null]",
@@ -206,6 +208,8 @@
       "astaDrawTo": "",
       "astaRestorationCooldown": "0",
       "astaRestored": "0",
+      "astaVolleyShots": "0",
+      "astaWaves": "[]",
       "astaCleansed": "0",
       "astaStatuses": "0",
       "astaStates": "[{\"sword\":\"destroyer\",\"relay\":null,\"draw\":null,\"recentDamage\":[{\"id\":1,\"at\":0,\"amount\":150,\"claimed\":false,\"restored\":0}],\"restorationReadyAt\":1000,\"result\":{\"cast\":1,\"at\":6,\"hp\":0,\"cleansed\":[\"test-slow\"]},\"statuses\":[]},null]",

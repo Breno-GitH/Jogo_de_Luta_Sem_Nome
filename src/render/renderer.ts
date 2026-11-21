@@ -363,6 +363,8 @@ export class Renderer {
     this.canvas.dataset.astaDrawTo=self.asta?.draw?.to??"";
     this.canvas.dataset.astaRestorationCooldown=String(Math.max(0,(self.asta?.restorationReadyAt??0)-match.combatFrame));
     this.canvas.dataset.astaRestored=String(self.asta?.causalityResult?.hp??0);
+    this.canvas.dataset.astaVolleyShots=String(self.asta?.blackSlashShots??0);
+    this.canvas.dataset.astaWaves=JSON.stringify(match.kiProjectiles.filter(p=>p.owner===self.id&&p.move==="astaBlackSlash").map(p=>({id:p.id,cut:p.astaCut??0,x:p.x,y:p.y,state:p.state})));
     this.canvas.dataset.astaCleansed=String(self.asta?.causalityResult?.cleansed.length??0);
     this.canvas.dataset.astaStatuses=String(self.statusEffects?.length??0);
     this.canvas.dataset.astaStates=JSON.stringify(match.fighters.map(f=>f.asta?{sword:f.asta.equipped,relay:f.asta.relay??null,draw:f.asta.draw??null,recentDamage:f.asta.recentDamage,restorationReadyAt:f.asta.restorationReadyAt,result:f.asta.causalityResult??null,statuses:f.statusEffects??[]}:null));

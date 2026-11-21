@@ -1702,3 +1702,24 @@ test("Asta Black Slash is punished physically before release in synchronized cli
  await a.waitForTimeout(850);expect(room.match!.kiProjectiles.some(p=>p.owner===0)).toBe(false);expect(room.match!.fighters[1].health).toBe(1000);
  await consistent();await capture(code,"asta22-black-slash-punished");
 });
+
+test("Asta Black Slash sends three independently guardable cuts in synchronized LAN clients",async()=>{
+ const code=await pair("asta","samurai"),room=await seed(code,800,0);
+ const impacts=new Set<number>();let maxFlying=0;
+ const watch=setInterval(()=>{
+  const m=room.match;if(!m)return;
+  const shots=m.kiProjectiles.filter(p=>p.move==="astaBlackSlash"&&p.owner===0);
+  maxFlying=Math.max(maxFlying,shots.filter(p=>p.state==="flight").length);
+  for(const p of shots)if(p.state==="impact"&&m.fighters[1].state==="blockstun")impacts.add(p.id);
+ },10);
+ try{
+  await b.locator("canvas").focus();await b.keyboard.down("d");await a.locator("canvas").focus();
+  await motion(a,[2,5,2],"j",40);
+  await expect.poll(()=>room.match!.fighters[0].asta!.blackSlashShots).toBe(3);
+  await expect.poll(()=>impacts.size,{timeout:6000}).toBe(3);
+  expect(maxFlying).toBe(3);expect(room.match!.fighters[1].health).toBe(1000);
+  await expect.poll(()=>room.match!.fighters[1].state).not.toBe("blockstun");
+  expect(room.match!.capture).toBeFalsy();await consistent();await capture(code,"asta22-three-cuts-guarded");
+  writeFileSync(audit+"/asta22-three-cuts-guarded-summary.json",JSON.stringify({cuts:3,guarded:impacts.size,maxFlying,health:room.match!.fighters[1].health},null,2));
+ }finally{clearInterval(watch);await b.keyboard.up("d");}
+});

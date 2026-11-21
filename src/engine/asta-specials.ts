@@ -179,7 +179,7 @@ export const astaTechniques: Record<AstaSpecialId, Technique> = {
     launch: 0,
     rank: 3,
     startup: 29,
-    end: 32,
+    end: 56,
     projectile: true,
   },
   astaCausalityBreak: {
@@ -283,6 +283,14 @@ export function astaReach(
     ? swordReach[relay?.sword ?? "slayer"]
     : (astaTechniques[id].reach ?? swordReach[astaStageSword(id, tick, relay)]);
 }
+export const blackDividerHalfWidth = 18;
+export const blackSlashVolley = [
+  { at: 29, radius: 80, tilt: -1.05 },
+  { at: 41, radius: 86, tilt: 1.1 },
+  { at: 53, radius: 82, tilt: -0.95 },
+] as const;
+export const astaWaveTilt = (p: KiProjectile) =>
+  p.move === "astaBlackSlash" ? blackSlashVolley[p.astaCut ?? 0].tilt : 0;
 export function astaSpecialBlade(
   id: AstaActionId,
   tick: number,
@@ -295,11 +303,14 @@ export function astaSpecialBlade(
     y: g.y + Math.sin(a) * d,
   });
   return {
-    a: pt(12),
-    b: pt(astaReach(id, tick, relay)),
+    a: pt(id === "astaBlackDivider" ? 18 + blackDividerHalfWidth : 12),
+    b: pt(
+      astaReach(id, tick, relay) -
+        (id === "astaBlackDivider" ? blackDividerHalfWidth : 0),
+    ),
     r:
       id === "astaBlackDivider"
-        ? 11
+        ? blackDividerHalfWidth
         : astaStageSword(id, tick, relay) === "slasher"
           ? 5
           : 8,
@@ -513,7 +524,14 @@ const relayWaveImpact: Move = {
 };
 export function astaProjectileMove(p: KiProjectile): Move | undefined {
   return p.move === "astaBlackSlash"
-    ? astaSpecialMoves.astaBlackSlash
+    ? {
+        ...astaSpecialMoves.astaBlackSlash,
+        damage: 30,
+        stun: 14,
+        blockstun: 8,
+        push: p.astaCut === 2 ? 3.5 : 1,
+        hitstop: 4,
+      }
     : p.move === "astaDualBreak"
       ? relayWaveImpact
       : undefined;
@@ -572,9 +590,11 @@ export function spawnAstaSpecial(f: Fighter, m: Match) {
   const s = f.asta;
   if (!s) return;
   const relay = s.relay;
+  const shot = blackSlashVolley.findIndex((cut) => cut.at === f.stateFrame);
   const black =
     f.moveId === "astaBlackSlash" &&
-    f.stateFrame === astaSpecialMoves.astaBlackSlash.startup;
+    shot >= 0 &&
+    (s.blackSlashShots ?? 0) <= shot;
   const short =
     f.moveId === "astaDualBreak" &&
     relay?.phase === "branch" &&
@@ -598,20 +618,29 @@ export function spawnAstaSpecial(f: Fighter, m: Match) {
     vx: (black ? 18 : 14) * f.facing,
     vy: 0,
     facing: f.facing,
-    radius: black ? 30 : 23,
+    radius: black ? blackSlashVolley[shot].radius : 23,
+    ...(black ? { astaCut: shot as 0 | 1 | 2 } : {}),
     age: 0,
     life: black ? 70 : 22,
     state: "flight",
     impactAge: 0,
   });
-  if (black) s.projectileCooldown = 110;
+  if (black) {
+    s.blackSlashShots = shot + 1;
+    if (shot === 0) s.projectileCooldown = 110;
+  }
   if (short) relay!.projectileFired = true;
 }
-export const astaWaveVolume = (p: KiProjectile): Capsule => ({
-  a: { x: p.previousX, y: p.y - p.radius },
-  b: { x: p.x, y: p.y + p.radius },
-  r: 6,
-});
+export const astaWaveVolume = (p: KiProjectile): Capsule => {
+  const angle = astaWaveTilt(p),
+    dx = Math.sin(angle) * p.radius * p.facing,
+    dy = Math.cos(angle) * p.radius;
+  return {
+    a: { x: p.previousX + dx, y: p.y - dy },
+    b: { x: p.x - dx, y: p.y + dy },
+    r: 6,
+  };
+};
 export function astaSpecialSegment(
   id: AstaActionId,
   tick: number,

@@ -3604,6 +3604,130 @@
         "floor": 482,
         "rootX": 238.0
       }
+    ],
+    "v22-black_chain_up": [
+      {
+        "sourceBounds": [
+          71,
+          27,
+          420,
+          487
+        ],
+        "floor": 487,
+        "rootX": 245.5
+      },
+      {
+        "sourceBounds": [
+          32,
+          34,
+          436,
+          486
+        ],
+        "floor": 486,
+        "rootX": 234.0
+      },
+      {
+        "sourceBounds": [
+          32,
+          13,
+          444,
+          486
+        ],
+        "floor": 486,
+        "rootX": 238.0
+      },
+      {
+        "sourceBounds": [
+          58,
+          25,
+          456,
+          490
+        ],
+        "floor": 490,
+        "rootX": 257.0
+      },
+      {
+        "sourceBounds": [
+          41,
+          26,
+          438,
+          492
+        ],
+        "floor": 492,
+        "rootX": 239.5
+      },
+      {
+        "sourceBounds": [
+          47,
+          14,
+          441,
+          492
+        ],
+        "floor": 492,
+        "rootX": 244.5
+      }
+    ],
+    "v22-black_chain_down": [
+      {
+        "sourceBounds": [
+          70,
+          11,
+          419,
+          485
+        ],
+        "floor": 485,
+        "rootX": 244.5
+      },
+      {
+        "sourceBounds": [
+          8,
+          56,
+          433,
+          484
+        ],
+        "floor": 484,
+        "rootX": 220.5
+      },
+      {
+        "sourceBounds": [
+          21,
+          73,
+          443,
+          484
+        ],
+        "floor": 484,
+        "rootX": 232.0
+      },
+      {
+        "sourceBounds": [
+          56,
+          49,
+          456,
+          490
+        ],
+        "floor": 490,
+        "rootX": 256.0
+      },
+      {
+        "sourceBounds": [
+          47,
+          27,
+          430,
+          491
+        ],
+        "floor": 491,
+        "rootX": 238.5
+      },
+      {
+        "sourceBounds": [
+          58,
+          25,
+          424,
+          491
+        ],
+        "floor": 491,
+        "rootX": 241.0
+      }
     ]
   }
 }

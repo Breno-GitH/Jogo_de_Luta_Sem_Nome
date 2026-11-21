@@ -143,7 +143,7 @@ describe("Asta 2.2 shared integration and preserved six specials", () => {
       expect(astaReach("astaBlackDivider", t)).toBe(210);
     }
   });
-  it("Black Slash charges before exactly one fast long-range release without pursuit", () => {
+  it("Black Slash prepares a three-cut long-range volley without pursuit", () => {
     for (const side of [1, -1] as const) {
       const p = arena(side, 800),
         x = p.a.x;
@@ -159,8 +159,12 @@ describe("Asta 2.2 shared integration and preserved six specials", () => {
       p.step({ pressed: ["light"] });
       for (let t = 0; t < 110; t++) p.step();
       expect(p.a.x).toBe(x);
-      expect(p.hits).toHaveLength(1);
-      expect(p.hits[0].damage).toBe(90);
+      expect(p.hits).toHaveLength(3);
+      expect(
+        p.hits.reduce((total, h) => total + h.damage, 0),
+      ).toBeLessThanOrEqual(90);
+      expect(p.hits.every((h) => h.damage > 0 && h.damage <= 30)).toBe(true);
+      expect(p.a.asta!.blackSlashShots).toBe(3);
       expect(p.a.asta!.equipped).toBe("dweller");
       expect(p.m.kiProjectiles).toHaveLength(0);
       expect(p.a.moveId).not.toBe("astaBlackSlashPursuit");
@@ -181,20 +185,51 @@ describe("Asta 2.2 shared integration and preserved six specials", () => {
     const p = arena(1, 450);
     p.a.attack("astaBlackSlash");
     for (let t = 0; t < 130; t++) p.step({}, { direction: 1 });
-    expect(p.hits).toHaveLength(1);
-    expect(p.hits[0].blocked).toBe(true);
+    expect(p.hits).toHaveLength(3);
+    expect(p.hits.every((h) => h.blocked)).toBe(true);
+    expect(p.b.health).toBe(1000);
+    expect(p.b.attack("stand_light")).toBe(true);
     const q = arena(1, 450);
     q.a.attack("astaBlackSlash");
     for (let t = 0; t < 29; t++) q.step();
     q.step({}, { pressed: ["jump"] });
-    for (let t = 0; t < 110; t++) q.step();
+    for (let t = 0; t < 22; t++) q.step();
     expect(q.hits).toHaveLength(0);
+    for (let t = 0; t < 90; t++) q.step();
+    expect(q.hits.length).toBeLessThan(3);
     const z = arena(1, 800);
     z.a.attack("astaBlackSlash");
     for (let t = 0; t < 52; t++) z.step();
     expect(z.a.attack("astaBlackSlash")).toBe(false);
     for (let t = 0; t < 100; t++) z.step();
     expect(z.a.attack("astaBlackSlash")).toBe(true);
+  });
+  it("emits each of three cuts once and replays a snapshot taken between releases", () => {
+    const p = arena(1, 950);
+    p.a.attack("astaBlackSlash");
+    for (let t = 0; t < 44; t++) p.step();
+    expect(p.a.asta!.blackSlashShots).toBe(2);
+    const q = restore(snapshot(p.m));
+    for (let t = 0; t < 140; t++) {
+      p.step();
+      q.step([neutral(), neutral()]);
+      expect(hashState(snapshot(q))).toBe(hashState(snapshot(p.m)));
+    }
+    expect(p.a.asta!.blackSlashShots).toBe(3);
+    expect(p.hits).toHaveLength(3);
+    expect(p.m.kiProjectiles).toHaveLength(0);
+  });
+  it("cancels the remaining volley releases when interrupted after the first emission", () => {
+    const p = arena(1, 900);
+    p.a.attack("astaBlackSlash");
+    for (let t = 0; t < 32; t++) p.step();
+    expect(p.a.asta!.blackSlashShots).toBe(1);
+    p.a.setState("hitstun");
+    p.a.stun = 18;
+    for (let t = 0; t < 120; t++) p.step();
+    expect(p.a.asta!.blackSlashShots).toBe(1);
+    expect(p.hits.length).toBeLessThanOrEqual(1);
+    expect(p.m.kiProjectiles).toHaveLength(0);
   });
   it("never invents a grimoire exchange when already using the required sword", () => {
     for (const id of astaSpecialIds.slice(0, 8)) {

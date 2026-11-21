@@ -4,9 +4,11 @@ Base: `codex/asta-relay-rushdown`, commit `42e8592a3029d2bb1fe0bc1a407f69357a8ac
 
 ## Comandos jogáveis
 
-- **↓↓J — Demon-Dweller: Black Slash:** preparação vulnerável de 29 ticks; emissão única no movimento de corte; três ticks ativos e 18 de recuperação. Projétil cortante a 18 px/tick, dano-base 90, vida máxima de 70 ticks e intervalo de 110 ticks. Sem invulnerabilidade, avanço ou continuação por J. Interromper antes da emissão impede o disparo; saltar e defender continuam válidos.
+- **↓↓J — Demon-Dweller: Black Slash:** preparação vulnerável de 29 ticks e três movimentos corporais diferentes. Emite lâminas diagonais longas nos ticks 29, 41 e 53; termina em 74 ticks, com 18 de recuperação após a última liberação. Cada corte possui entidade, inclinação, colisão e defesa próprias, viaja a 18 px/tick e tem dano-base 30, sujeito ao escalonamento normal. Uma rajada ativa por vez, no máximo três cortes; vida máxima de 70 ticks por corte e cooldown de 110 ticks desde a primeira emissão. Sem invulnerabilidade, avanço ou continuação por novo J. Interrupções cancelam os disparos seguintes; cortes já emitidos continuam finitos. Defender toda a sequência causa zero dano; saltos podem evitar cortes conforme o momento.
 - **↓↓K — Demon-Destroyer: Causality Break:** preparação corporal, cinco extensões curvas de antimagia da lâmina, expansão e retração. Janela de neutralização nos ticks 12–31, no máximo três entidades elegíveis por execução. Restauração/remoção de status no tick 24; animação total de 48 ticks e recuperação de 16. Não acerta, agarra, lança ou dá invulnerabilidade.
 - **↓↓L — Anti-Magic Relay:** abre com a espada equipada. Um acerto legítimo oferece uma única escolha nova J/K/L durante 16 ticks. A ordem fixa é Slayer, Slasher, Dweller, Destroyer, excluindo a espada inicial. Direções não mudam o mapeamento. A HUD mostra as três opções. A tecla L usada na ativação e inputs anteriores ao acerto não escolhem automaticamente.
+
+**↓→L — Black Divider:** por solicitação posterior, a ampliação agora tem face negra larga, laterais retas e ponta chanfrada, acompanhando a espada durante o corte. A cápsula de 18 px de raio fica contida na lâmina visível, com ponta nominal em 210 px. Dano, comandos, startup, recuperação e animações corporais aprovadas são preservados. A geometria essencial da lâmina continua visível com FX cosméticos desligados.
 
 O Relay sem escolha termina a abertura com a arma inicial. Defesa ou erro não abrem escolha. A continuação confirma a espada no terceiro tick; interrupção anterior preserva a arma antiga. Não existe uma segunda escolha.
 
@@ -41,11 +43,13 @@ As extensões usam cinco trajetórias cúbicas determinísticas, amostradas tamb
 - [Capa de grimório de Asta/Yuno — produto divulgado pelo site oficial](https://bclover.jp/season1/goods/item.php?id=1007778): contraste da capa gasta e escura de Asta com o livro claro de Yuno.
 - [Grimório de Asta — Studio Pierrot](https://studio-pierrot-store.jp/view/item/000000000376): capa quase preta, manchas castanhas, trevo escuro e espessura das páginas. O produto é referência da capa, não da iluminação do efeito.
 
+A correção visual de 21/11 também usa os dois painéis enviados pelo usuário: sucessão de cortes negros à distância e a massa ampliada de Black Divider. Servem como referência de silhueta e ritmo; nenhum painel foi incorporado aos recursos finais.
+
 O desenho curvo das correntes é uma adaptação própria de antimagia para a escala do M.S.F.D.; a recuperação limitada de HP é uma regra deste jogo. Nenhuma fotografia, frame do anime ou textura desses sites foi incorporada aos assets finais.
 
 ## Animação e arquivos
 
-Doze atlas corporais curtos novos, seis cels por atlas: **72 quadros**. Black Slash e Causality têm preparação e execução/recuperação novas; as quatro continuações do Relay têm dois atlas próprios cada. As quatro aberturas aprovadas do Relay e os seis especiais ↓→/↓← permanecem.
+Quatorze atlas corporais curtos novos, seis cels por atlas: **84 quadros**. Black Slash possui preparação, primeiro corte, corte ascendente e corte diagonal final, em quatro atlas curtos; Causality tem preparação e canalização/recuperação novas; as quatro continuações do Relay têm dois atlas próprios cada. As quatro aberturas aprovadas do Relay, os cinco especiais de espada não solicitados nesta revisão e as animações corporais de Black Divider permanecem.
 
 Fontes em `art/asta-source/frames/v22-*.png`; runtime em `public/sprites/asta/v22-*.png`. Produção pela ferramenta de imagem integrada, modo built-in, usando a identidade aprovada do próprio projeto como referência. Prompts e saídas em `art/asta-source/v22-sources.json`, empunhaduras revisadas em `v22-sockets.json`. Empacotamento nearest-neighbor, transparência binária e arma aprovada ancorada por cel. Não há efeitos desenhados nos corpos.
 
@@ -69,7 +73,7 @@ $env:BEN_LAN_EXTERNAL_PREVIEW='0'
 npm.cmd run test:lan -- --grep Asta
 ```
 
-A restauração usa ticks e recibos sincronizados em snapshots. As 12 rotas são testadas nas duas orientações, nos cantos contra Ben humano/Goku, com interrupções antes/depois da confirmação, KO, defesa/erro, timeout, input antecipado/tardio/repetido, finalização e replay determinístico. Os testes LAN exercitam a mesma fábrica de servidor existente numa instância temporária encerrada ao final; isso não substitui nem instala outro backend do usuário.
+A restauração usa ticks e recibos sincronizados em snapshots. As 12 rotas são testadas nas duas orientações, nos cantos contra Ben humano/Goku, com interrupções antes/depois da confirmação, KO, defesa/erro, timeout, input antecipado/tardio/repetido, finalização e replay determinístico. A emissão única por ordinal e a restauração de snapshots entre o segundo e o terceiro disparo também são testadas. Os testes LAN exercitam a mesma fábrica de servidor existente numa instância temporária encerrada ao final; isso não substitui nem instala outro backend do usuário.
 
 ## Publicar no XAMPP
 

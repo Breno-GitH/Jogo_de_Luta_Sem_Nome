@@ -159,11 +159,33 @@
       "sheet": "v22-black_cast",
       "durations": [
         3,
+        2,
+        2,
+        2,
+        2,
+        1
+      ]
+    },
+    {
+      "sheet": "v22-black_chain_up",
+      "durations": [
         3,
-        4,
-        4,
-        5,
-        5
+        2,
+        2,
+        2,
+        2,
+        1
+      ]
+    },
+    {
+      "sheet": "v22-black_chain_down",
+      "durations": [
+        3,
+        2,
+        2,
+        2,
+        6,
+        9
       ]
     }
   ],

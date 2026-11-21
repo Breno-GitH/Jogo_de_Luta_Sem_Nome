@@ -2,6 +2,8 @@ import { FLOOR, type Fighter, type Match } from "../engine/combat";
 import {
   astaSpecialGrip,
   astaReach,
+  astaWaveTilt,
+  blackDividerHalfWidth,
   isAstaAction,
 } from "../engine/asta-specials";
 import { swordReach } from "../engine/asta-normals";
@@ -36,51 +38,56 @@ export function drawAstaBladeExtension(
   c: CanvasRenderingContext2D,
   f: Fighter,
 ) {
-  if (
-    f.state !== "attack" ||
-    !isAstaAction(f.moveId) ||
-    f.moveId !== "astaBlackDivider"
-  )
-    return;
+  if (f.state !== "attack" || f.moveId !== "astaBlackDivider") return;
   const t = f.stateFrame,
     m = f.move!,
     g = astaSpecialGrip(f.moveId, t, f.asta?.relay);
   if (t < 6 || t >= m.startup + m.active + 5) return;
   const a = (g.angle * Math.PI) / 180,
+    nx = Math.cos(a),
+    ny = Math.sin(a),
+    px = -ny,
+    py = nx,
     native = swordReach[visibleAstaSword(f)];
   const gain =
     t < m.startup
       ? Math.min(1, (t - 6) / Math.max(1, m.startup - 6))
       : Math.min(1, (m.startup + m.active + 5 - t) / 5);
-  const extended =
-    native + (astaReach(f.moveId, t, f.asta?.relay) - native) * gain;
-  // The active blade shares combat geometry. Its recovery dissolves above the ground.
-  const reach =
-    t >= m.startup + m.active && Math.sin(a) > 0
-      ? Math.min(extended, -g.y / Math.sin(a))
-      : extended;
-  const nx = Math.cos(a),
-    ny = Math.sin(a),
-    px = -ny,
-    py = nx,
-    half = f.moveId === "astaBlackDivider" ? 10 : 4;
-  c.fillStyle = "#100e19";
-  c.beginPath();
-  c.moveTo(g.x + nx * 16 + px * half, g.y + ny * 16 + py * half);
-  c.lineTo(g.x + nx * reach + px * 2, g.y + ny * reach + py * 2);
-  c.lineTo(g.x + nx * reach - px * 2, g.y + ny * reach - py * 2);
-  c.lineTo(g.x + nx * 16 - px * half, g.y + ny * 16 - py * half);
-  c.closePath();
-  c.fill();
-  stroke(
-    c,
-    g.x + nx * native,
-    g.y + ny * native,
-    g.x + nx * reach,
-    g.y + ny * reach,
-    2,
-    "#a23949",
-  );
+  let reach = native + (astaReach(f.moveId, t, f.asta?.relay) - native) * gain;
+  if (t >= m.startup + m.active && ny > 0) reach = Math.min(reach, -g.y / ny);
+  const half = 9 + (blackDividerHalfWidth - 9) * gain,
+    start = 18;
+  // A broad black sword face, not a triangular beam or a large red arc.
+  // The active profile follows the same 18-pixel capsule and 210-pixel tip.
+  for (let d = start; d <= reach; d += 2) {
+    // Broad parallel blade faces and a short chamfered end, never a rounded bat.
+    // The visual slab encloses the combat capsule without exceeding its nominal tip.
+    const bevel = Math.max(0, d - (reach - 8)) / 8;
+    const edge = half * (1 - bevel * 0.5);
+    for (let side = -edge; side <= edge; side += 2) {
+      c.fillStyle =
+        Math.abs(side) > edge - 2
+          ? "#3c2635"
+          : Math.abs(side) < edge - 4
+            ? "#090a10"
+            : "#19131e";
+      c.fillRect(
+        Math.round((g.x + nx * d + px * side) / 2) * 2,
+        Math.round((g.y + ny * d + py * side) / 2) * 2,
+        2,
+        2,
+      );
+    }
+    if (d > 50 && d < reach - 22 && Math.floor(d / 8) % 3 !== 0) {
+      c.fillStyle = "#24202b";
+      c.fillRect(
+        Math.round(g.x + nx * d - px * half * 0.4),
+        Math.round(g.y + ny * d - py * half * 0.4),
+        2,
+        2,
+      );
+    }
+  }
 }
 /** Optional cosmetic accents follow authored hand sockets, not the neutral pivot. */
 export function drawAstaAntimagic(
@@ -191,12 +198,31 @@ export function drawAstaWaves(
     c.scale(p.facing, 1);
     const fade = p.state === "flight" ? 1 : Math.max(0, 1 - p.impactAge / 8);
     c.globalAlpha = fade;
-    // Crescent, its opaque edge matches the swept vertical combat capsule.
+    // Each volley cut has its own inclination and tapered, curved silhouette.
+    // The fixed angle is shared with its swept collision capsule.
+    c.save();
+    c.rotate(astaWaveTilt(p));
     for (let y = -p.radius; y <= p.radius; y += 2) {
-      const x = -Math.round((y * y) / (p.radius * 4));
-      stroke(c, x, y, x + 6, y, 5, "#171220");
-      stroke(c, x + 4, y, x + 7, y, 2, "#8f3549");
+      const u = (y + p.radius) / (p.radius * 2),
+        width = Math.max(
+          1,
+          Math.round(
+            Math.sin(u * Math.PI) * (p.move === "astaBlackSlash" ? 12 : 8),
+          ),
+        );
+      const x = -Math.round((y * y) / (p.radius * 3.4));
+      c.fillStyle = "#101019";
+      c.fillRect(x, y, width, 2);
+      if (width > 3) {
+        c.fillStyle = "#492439";
+        c.fillRect(x + width - 2, y, 2, 2);
+      }
+      if (width > 5) {
+        c.fillStyle = "#25202d";
+        c.fillRect(x + 1, y, 2, 2);
+      }
     }
+    c.restore();
     if (cosmetics)
       for (let i = 0; i < 9; i++) {
         const x =

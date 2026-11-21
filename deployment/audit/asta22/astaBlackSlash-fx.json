@@ -57,27 +57,104 @@
   },
   {
     "key": "asta/v22-black_cast.png/2",
-    "phase": "recovery",
+    "phase": "active",
     "sword": "dweller",
     "stage": "dweller",
     "count": "1"
   },
   {
     "key": "asta/v22-black_cast.png/3",
-    "phase": "recovery",
+    "phase": "active",
     "sword": "dweller",
     "stage": "dweller",
     "count": "1"
   },
   {
     "key": "asta/v22-black_cast.png/4",
-    "phase": "recovery",
+    "phase": "active",
     "sword": "dweller",
     "stage": "dweller",
     "count": "1"
   },
   {
     "key": "asta/v22-black_cast.png/5",
+    "phase": "active",
+    "sword": "dweller",
+    "stage": "dweller",
+    "count": "1"
+  },
+  {
+    "key": "asta/v22-black_chain_up.png/0",
+    "phase": "active",
+    "sword": "dweller",
+    "stage": "dweller",
+    "count": "1"
+  },
+  {
+    "key": "asta/v22-black_chain_up.png/1",
+    "phase": "active",
+    "sword": "dweller",
+    "stage": "dweller",
+    "count": "1"
+  },
+  {
+    "key": "asta/v22-black_chain_up.png/2",
+    "phase": "active",
+    "sword": "dweller",
+    "stage": "dweller",
+    "count": "1"
+  },
+  {
+    "key": "asta/v22-black_chain_up.png/3",
+    "phase": "active",
+    "sword": "dweller",
+    "stage": "dweller",
+    "count": "1"
+  },
+  {
+    "key": "asta/v22-black_chain_up.png/4",
+    "phase": "active",
+    "sword": "dweller",
+    "stage": "dweller",
+    "count": "1"
+  },
+  {
+    "key": "asta/v22-black_chain_up.png/5",
+    "phase": "active",
+    "sword": "dweller",
+    "stage": "dweller",
+    "count": "1"
+  },
+  {
+    "key": "asta/v22-black_chain_down.png/0",
+    "phase": "active",
+    "sword": "dweller",
+    "stage": "dweller",
+    "count": "1"
+  },
+  {
+    "key": "asta/v22-black_chain_down.png/1",
+    "phase": "active",
+    "sword": "dweller",
+    "stage": "dweller",
+    "count": "1"
+  },
+  {
+    "key": "asta/v22-black_chain_down.png/2",
+    "phase": "active",
+    "sword": "dweller",
+    "stage": "dweller",
+    "count": "1"
+  },
+  {
+    "key": "asta/v22-black_chain_down.png/3",
+    "phase": "recovery",
+    "sword": "dweller",
+    "stage": "dweller",
+    "count": "1"
+  },
+  {
+    "key": "asta/v22-black_chain_down.png/4",
     "phase": "recovery",
     "sword": "dweller",
     "stage": "dweller",

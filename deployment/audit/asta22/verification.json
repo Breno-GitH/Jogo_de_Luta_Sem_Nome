@@ -1,29 +1,39 @@
 {
-  "engineVersion": "d28db63edaab817fa83a1246",
+  "engineVersion": "269c048ac1d71f2e8a5b3dd5",
   "baseCommit": "42e8592a3029d2bb1fe0bc1a407f69357a8acdf3",
   "vitest": {
     "files": 57,
-    "passed": 1445,
+    "passed": 1447,
     "failed": 0,
-    "asta": 90
+    "asta": 92
   },
   "typescript": "passed",
   "art": {
-    "atlases": 58,
+    "atlases": 60,
     "pendingSockets": 0,
-    "newBodyFrames": 72
+    "newBodyFrames": 84
   },
   "browser": {
-    "distinctScenarios": 13,
-    "passed": 13,
+    "distinctScenarios": 14,
+    "passed": 14,
     "relayRepeatedAfterFinalGuard": true
   },
   "lan": {
-    "distinctScenarios": 6,
-    "passed": 6,
-    "allTwelveRelayRoutesRepeatedAfterFinalGuard": true
+    "distinctScenarios": 7,
+    "passed": 7,
+    "allTwelveRelayRoutesRepeatedAfterFinalGuard": true,
+    "threeCutsGuarded": {
+      "cuts": 3,
+      "guarded": 3,
+      "maxFlying": 3,
+      "health": 1000
+    }
   },
   "productionPreviewBuild": "passed",
   "apachePublication": "Verified separately after committing the final HEAD",
-  "legacyPythonArtCollection": "Not rerun in full"
+  "legacyPythonArtCollection": "Not rerun in full",
+  "latestRequestedChanges": {
+    "blackSlash": "three independently guardable diagonal cuts, at ticks 29/41/53",
+    "blackDivider": "broad black chamfered blade, visible 210px tip and matching capsule"
+  }
 }

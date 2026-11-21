@@ -1,83 +1,83 @@
 [
   {
     "file": "black-slash-preparation.png",
-    "source": "deployment/msfd-work/asta22-dd-reference/black-slash-preparation.png",
-    "sha256": "24f69d4df334ece7a36bcfb61ac4dd3e75b66b5ba110a35977662ba6f32bbea3"
+    "source": "deployment/msfd-work/asta22-volley-dd-final/black-slash-preparation.png",
+    "sha256": "519d6a9e8557d6b6329fa79e175b8e138d4c6d410acf8c519fcf6e4a9c7a1e88"
   },
   {
     "file": "black-slash-flight.png",
-    "source": "deployment/msfd-work/asta22-dd-reference/black-slash-flight.png",
-    "sha256": "561bb672235d884986f0c3a895896f1f7c6e5d62f1cb3ecb3b3b2e4741cca6d2"
+    "source": "deployment/msfd-work/asta22-volley-dd-final/black-slash-flight.png",
+    "sha256": "e2a4988b2fcc0cacbd2d5277f4dccc0bf7a2a39a54a5c78d9c382113ff507881"
   },
   {
     "file": "black-slash-long-range.webm",
-    "source": "deployment/msfd-work/asta22-dd-reference/black-slash-long-range.webm",
-    "sha256": "3aca806568234d55efd34842e2297b5e46e9633cf7d12a0646875dcb45103511"
+    "source": "deployment/msfd-work/asta22-volley-dd-final/black-slash-long-range.webm",
+    "sha256": "cc5dcabc9f6234c93f6c6ae2f93a682a1b0cba1c4aaf4dd70b8aba6591d047a3"
   },
   {
     "file": "causality-tendrils.png",
-    "source": "deployment/msfd-work/asta22-dd-reference/causality-tendrils.png",
-    "sha256": "c7fc98aad34ac3744ad6126cf98c68f810b59846af4c4200a82f399b0b5b173b"
+    "source": "deployment/msfd-work/asta22-volley-dd-final/causality-tendrils.png",
+    "sha256": "e784427e59ad5de49134bd94af04cf81ac65d2ea3460e925cd121b6daa9d8320"
   },
   {
     "file": "causality-real-hp-restored.png",
-    "source": "deployment/msfd-work/asta22-dd-reference/causality-real-hp-restored.png",
-    "sha256": "ceafd0c185de56bde827a65cebb8b88b90f5a9a5238865be3253b68174575d94"
+    "source": "deployment/msfd-work/asta22-volley-dd-final/causality-real-hp-restored.png",
+    "sha256": "30cfdf269e1d59ce17d914da05f5bc4a11e02ba126ea38819a30dff42125cf02"
   },
   {
     "file": "causality-real-hp.json",
-    "source": "deployment/msfd-work/asta22-dd-reference/causality-real-hp.json",
-    "sha256": "5c08c1412a95522e9fdc4d2090c87659824dff2ba13112069f5a541d0a4c00d7"
+    "source": "deployment/msfd-work/asta22-volley-dd-final/causality-real-hp.json",
+    "sha256": "0deadbda6003e086e88885a7e9f6ffc49890759019c0daaa867bb38187e1c975"
   },
   {
     "file": "causality-real-recent-damage.webm",
-    "source": "deployment/msfd-work/asta22-dd-reference/causality-real-recent-damage.webm",
-    "sha256": "128747731834aedfb4f74522782e5821228bea124d064ea7a8eb566202d313f3"
+    "source": "deployment/msfd-work/asta22-volley-dd-final/causality-real-recent-damage.webm",
+    "sha256": "d9c16b4c357fb80a115fc920e9cbffbee85e33bf4af9ff60a70cc769db8d732f"
   },
   {
     "file": "nove-especiais.webm",
-    "source": "deployment/msfd-work/asta22-specials-final/nove-especiais.webm",
-    "sha256": "dbd7a5d1eb0a5b5ea90aa064ef38746f3752dbb4a1a1a9adb244cb183ec51119"
+    "source": "deployment/msfd-work/asta22-volley-specials-final/nove-especiais.webm",
+    "sha256": "24f3f6a6861e1a77e210efd3fcf086c54a280a8449ed2504652f316c9187cc8b"
   },
   {
     "file": "astaBlackSlash-fx.json",
-    "source": "deployment/msfd-work/asta22-specials-final/astaBlackSlash-fx.json",
-    "sha256": "a0f710122d426a69b46b6ce5f34225f739f95b89b18bccef95eb9968521cd333"
+    "source": "deployment/msfd-work/asta22-volley-specials-final/astaBlackSlash-fx.json",
+    "sha256": "6a3665ee004935649b87efbc8a5c8b64277e686848b61ace173e17bcfafad2b1"
   },
   {
     "file": "astaBlackSlash-fx-preparation.png",
-    "source": "deployment/msfd-work/asta22-specials-final/astaBlackSlash-fx-3.png",
-    "sha256": "449b1f241f1f99565a67963228ef46d7d70908439880df30c4a82c4706eada3b"
+    "source": "deployment/msfd-work/asta22-volley-specials-final/astaBlackSlash-fx-3.png",
+    "sha256": "ac9ce361bca18870626ac1980c037fe246a9639a98018f905645e941be1225c2"
   },
   {
     "file": "astaBlackSlash-fx-windup.png",
-    "source": "deployment/msfd-work/asta22-specials-final/astaBlackSlash-fx-6.png",
-    "sha256": "73314560a68b388c59bd5a8270c0bd0d27954f2bf1d2965b867ee3d10e7ec3c6"
+    "source": "deployment/msfd-work/asta22-volley-specials-final/astaBlackSlash-fx-6.png",
+    "sha256": "8eb438b904ecca02ca6a52113cd942354414ed1a8e280fc7dbed0f39b6484742"
   },
   {
     "file": "astaBlackSlash-fx-recovery.png",
-    "source": "deployment/msfd-work/asta22-specials-final/astaBlackSlash-fx-8.png",
-    "sha256": "686d97243a0b2caf35a92c9a640531e54f95241c019b67468308583cb9684eeb"
+    "source": "deployment/msfd-work/asta22-volley-specials-final/astaBlackSlash-fx-22.png",
+    "sha256": "3ad0cbb1b722020ef07024e3abcc06281ab0aede1ff6e773a4542018ed57dd75"
   },
   {
     "file": "astaBlackSlash-body.json",
-    "source": "deployment/msfd-work/asta22-specials-final/astaBlackSlash-body.json",
-    "sha256": "a0f710122d426a69b46b6ce5f34225f739f95b89b18bccef95eb9968521cd333"
+    "source": "deployment/msfd-work/asta22-volley-specials-final/astaBlackSlash-body.json",
+    "sha256": "6a3665ee004935649b87efbc8a5c8b64277e686848b61ace173e17bcfafad2b1"
   },
   {
     "file": "astaBlackSlash-body-preparation.png",
-    "source": "deployment/msfd-work/asta22-specials-final/astaBlackSlash-body-3.png",
+    "source": "deployment/msfd-work/asta22-volley-specials-final/astaBlackSlash-body-3.png",
     "sha256": "449b1f241f1f99565a67963228ef46d7d70908439880df30c4a82c4706eada3b"
   },
   {
     "file": "astaBlackSlash-body-windup.png",
-    "source": "deployment/msfd-work/asta22-specials-final/astaBlackSlash-body-6.png",
+    "source": "deployment/msfd-work/asta22-volley-specials-final/astaBlackSlash-body-6.png",
     "sha256": "73314560a68b388c59bd5a8270c0bd0d27954f2bf1d2965b867ee3d10e7ec3c6"
   },
   {
     "file": "astaBlackSlash-body-recovery.png",
-    "source": "deployment/msfd-work/asta22-specials-final/astaBlackSlash-body-8.png",
-    "sha256": "686d97243a0b2caf35a92c9a640531e54f95241c019b67468308583cb9684eeb"
+    "source": "deployment/msfd-work/asta22-volley-specials-final/astaBlackSlash-body-22.png",
+    "sha256": "3ad0cbb1b722020ef07024e3abcc06281ab0aede1ff6e773a4542018ed57dd75"
   },
   {
     "file": "astaCausalityBreak-fx.json",
@@ -333,5 +333,75 @@
     "file": "versus.png",
     "source": "deployment/msfd-work/asta22-base-final/versus.png",
     "sha256": "6ff84afc51cb8c006222c2051c593f938e26e1c049945529eb7fe932415a7c83"
+  },
+  {
+    "file": "black-slash-volley.png",
+    "source": "deployment/msfd-work/asta22-volley-dd-final/black-slash-volley.png",
+    "sha256": "fe5ee9bdafdefd97d80c1f9260cb62c57b037cc5661ce57007abbb145a29adf6"
+  },
+  {
+    "file": "black-slash-three-guarded.png",
+    "source": "deployment/msfd-work/asta22-volley-dd-final/black-slash-three-guarded.png",
+    "sha256": "606315328b6216aa7645f53f3bb9502bc077184f0eee814e5f9fb5fd845464a1"
+  },
+  {
+    "file": "black-slash-three-guarded.webm",
+    "source": "deployment/msfd-work/asta22-volley-dd-final/black-slash-three-guarded.webm",
+    "sha256": "c4d7907f330a99421c14890efd4c0fe057e3a711bc43b5a96f223f22fbcfc6e9"
+  },
+  {
+    "file": "astaBlackSlash-fx-first-cut.png",
+    "source": "deployment/msfd-work/asta22-volley-specials-final/astaBlackSlash-fx-7.png",
+    "sha256": "9121cd84091608e9f4f2cb1179acc666d5ffda0263a26781e0786e3eb70b6fb9"
+  },
+  {
+    "file": "astaBlackSlash-fx-second-cut.png",
+    "source": "deployment/msfd-work/asta22-volley-specials-final/astaBlackSlash-fx-13.png",
+    "sha256": "c294c7a65678c75775ea60cd927249c097941203933b9c91b1a1b3a61d0f2092"
+  },
+  {
+    "file": "astaBlackSlash-fx-third-cut.png",
+    "source": "deployment/msfd-work/asta22-volley-specials-final/astaBlackSlash-fx-19.png",
+    "sha256": "fdd70b32127178463fe454b5e63fceec73fa488fdd7b1def074887d1dd3fed1f"
+  },
+  {
+    "file": "astaBlackSlash-body-first-cut.png",
+    "source": "deployment/msfd-work/asta22-volley-specials-final/astaBlackSlash-body-7.png",
+    "sha256": "4004afdb78e203402039e7561c58a3936f11bb1f15ad8dbde9160ad2583758df"
+  },
+  {
+    "file": "astaBlackSlash-body-second-cut.png",
+    "source": "deployment/msfd-work/asta22-volley-specials-final/astaBlackSlash-body-13.png",
+    "sha256": "603a646f4e366540bf99385f7e25c0dab3ff27f8a5e07e04c4922cc4a39be458"
+  },
+  {
+    "file": "astaBlackSlash-body-third-cut.png",
+    "source": "deployment/msfd-work/asta22-volley-specials-final/astaBlackSlash-body-19.png",
+    "sha256": "448c2cb3e822986fb8afa7a9c2b92530244d9f996ff5ac8d2d0992b9d8b3313b"
+  },
+  {
+    "file": "black-divider-contact.png",
+    "source": "deployment/msfd-work/asta22-volley-specials-final/astaBlackDivider-fx-8.png",
+    "sha256": "0045ef00360b72463f9a239e3e65c29cf0ad3b280a253166442beea46034c684"
+  },
+  {
+    "file": "black-divider-follow-through.png",
+    "source": "deployment/msfd-work/asta22-volley-specials-final/astaBlackDivider-fx-9.png",
+    "sha256": "b4d68fc7ea326520068a5b8bd33104f017c7fbdf483b3e6bb28e2013e3e56708"
+  },
+  {
+    "file": "black-divider-no-fx.png",
+    "source": "deployment/msfd-work/asta22-volley-specials-final/astaBlackDivider-body-8.png",
+    "sha256": "b99010b9a1342026c6f5e10380872f310327857d8d07b5a9c687a7cef29b3228"
+  },
+  {
+    "file": "astaBlackDivider-fx.json",
+    "source": "deployment/msfd-work/asta22-volley-specials-final/astaBlackDivider-fx.json",
+    "sha256": "fccdbfdc6b05793c46096170e52d91fd1db45ab085c8dd63e0c536c304f1eff8"
+  },
+  {
+    "file": "astaBlackDivider-body.json",
+    "source": "deployment/msfd-work/asta22-volley-specials-final/astaBlackDivider-body.json",
+    "sha256": "fccdbfdc6b05793c46096170e52d91fd1db45ab085c8dd63e0c536c304f1eff8"
   }
 ]

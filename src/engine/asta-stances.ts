@@ -54,6 +54,7 @@ export interface AstaState {
   cast: number;
   usedSpecials: string[];
   projectileCooldown: number;
+  blackSlashShots: number;
   neutralized: number;
   airDashUsed: boolean;
   airDashTicks: number;
@@ -74,6 +75,7 @@ export const newAsta = (): AstaState => ({
   cast: 0,
   usedSpecials: [],
   projectileCooldown: 0,
+  blackSlashShots: 0,
   neutralized: 0,
   airDashUsed: false,
   airDashTicks: 0,
@@ -126,6 +128,7 @@ export function beginAstaAttack(
   if (!s) return;
   s.attackSword = s.equipped;
   s.neutralized = 0;
+  if (f.moveId === "astaBlackSlash") s.blackSlashShots = 0;
   if (f.moveId !== "astaDualBreak") delete s.relay;
   if (sword) {
     s.cast++;

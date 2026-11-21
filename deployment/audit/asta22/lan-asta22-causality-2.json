@@ -39,6 +39,8 @@
   "astaDrawTo": "",
   "astaRestorationCooldown": "993",
   "astaRestored": "0",
+  "astaVolleyShots": "0",
+  "astaWaves": "[]",
   "astaCleansed": "1",
   "astaStatuses": "0",
   "astaStates": "[{\"sword\":\"destroyer\",\"relay\":null,\"draw\":null,\"recentDamage\":[{\"id\":1,\"at\":0,\"amount\":150,\"claimed\":false,\"restored\":0}],\"restorationReadyAt\":1000,\"result\":{\"cast\":1,\"at\":6,\"hp\":0,\"cleansed\":[\"test-slow\"]},\"statuses\":[]},null]",
