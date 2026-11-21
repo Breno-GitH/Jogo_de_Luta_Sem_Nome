@@ -122,6 +122,7 @@ public/sprites/asta/r-union-rise.png
 public/sprites/asta/r-union-rush.png
 scripts/net_version.mjs
 scripts/pack_asta.py
+scripts/update-msfd.ps1
 scripts/verify-asta-super-lan.mjs
 scripts/verify-asta-super-modes.mjs
 src/audio/sound.ts
