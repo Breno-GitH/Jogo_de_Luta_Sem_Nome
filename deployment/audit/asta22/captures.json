@@ -1,0 +1,337 @@
+[
+  {
+    "file": "black-slash-preparation.png",
+    "source": "deployment/msfd-work/asta22-dd-reference/black-slash-preparation.png",
+    "sha256": "24f69d4df334ece7a36bcfb61ac4dd3e75b66b5ba110a35977662ba6f32bbea3"
+  },
+  {
+    "file": "black-slash-flight.png",
+    "source": "deployment/msfd-work/asta22-dd-reference/black-slash-flight.png",
+    "sha256": "561bb672235d884986f0c3a895896f1f7c6e5d62f1cb3ecb3b3b2e4741cca6d2"
+  },
+  {
+    "file": "black-slash-long-range.webm",
+    "source": "deployment/msfd-work/asta22-dd-reference/black-slash-long-range.webm",
+    "sha256": "3aca806568234d55efd34842e2297b5e46e9633cf7d12a0646875dcb45103511"
+  },
+  {
+    "file": "causality-tendrils.png",
+    "source": "deployment/msfd-work/asta22-dd-reference/causality-tendrils.png",
+    "sha256": "c7fc98aad34ac3744ad6126cf98c68f810b59846af4c4200a82f399b0b5b173b"
+  },
+  {
+    "file": "causality-real-hp-restored.png",
+    "source": "deployment/msfd-work/asta22-dd-reference/causality-real-hp-restored.png",
+    "sha256": "ceafd0c185de56bde827a65cebb8b88b90f5a9a5238865be3253b68174575d94"
+  },
+  {
+    "file": "causality-real-hp.json",
+    "source": "deployment/msfd-work/asta22-dd-reference/causality-real-hp.json",
+    "sha256": "5c08c1412a95522e9fdc4d2090c87659824dff2ba13112069f5a541d0a4c00d7"
+  },
+  {
+    "file": "causality-real-recent-damage.webm",
+    "source": "deployment/msfd-work/asta22-dd-reference/causality-real-recent-damage.webm",
+    "sha256": "128747731834aedfb4f74522782e5821228bea124d064ea7a8eb566202d313f3"
+  },
+  {
+    "file": "nove-especiais.webm",
+    "source": "deployment/msfd-work/asta22-specials-final/nove-especiais.webm",
+    "sha256": "dbd7a5d1eb0a5b5ea90aa064ef38746f3752dbb4a1a1a9adb244cb183ec51119"
+  },
+  {
+    "file": "astaBlackSlash-fx.json",
+    "source": "deployment/msfd-work/asta22-specials-final/astaBlackSlash-fx.json",
+    "sha256": "a0f710122d426a69b46b6ce5f34225f739f95b89b18bccef95eb9968521cd333"
+  },
+  {
+    "file": "astaBlackSlash-fx-preparation.png",
+    "source": "deployment/msfd-work/asta22-specials-final/astaBlackSlash-fx-3.png",
+    "sha256": "449b1f241f1f99565a67963228ef46d7d70908439880df30c4a82c4706eada3b"
+  },
+  {
+    "file": "astaBlackSlash-fx-windup.png",
+    "source": "deployment/msfd-work/asta22-specials-final/astaBlackSlash-fx-6.png",
+    "sha256": "73314560a68b388c59bd5a8270c0bd0d27954f2bf1d2965b867ee3d10e7ec3c6"
+  },
+  {
+    "file": "astaBlackSlash-fx-recovery.png",
+    "source": "deployment/msfd-work/asta22-specials-final/astaBlackSlash-fx-8.png",
+    "sha256": "686d97243a0b2caf35a92c9a640531e54f95241c019b67468308583cb9684eeb"
+  },
+  {
+    "file": "astaBlackSlash-body.json",
+    "source": "deployment/msfd-work/asta22-specials-final/astaBlackSlash-body.json",
+    "sha256": "a0f710122d426a69b46b6ce5f34225f739f95b89b18bccef95eb9968521cd333"
+  },
+  {
+    "file": "astaBlackSlash-body-preparation.png",
+    "source": "deployment/msfd-work/asta22-specials-final/astaBlackSlash-body-3.png",
+    "sha256": "449b1f241f1f99565a67963228ef46d7d70908439880df30c4a82c4706eada3b"
+  },
+  {
+    "file": "astaBlackSlash-body-windup.png",
+    "source": "deployment/msfd-work/asta22-specials-final/astaBlackSlash-body-6.png",
+    "sha256": "73314560a68b388c59bd5a8270c0bd0d27954f2bf1d2965b867ee3d10e7ec3c6"
+  },
+  {
+    "file": "astaBlackSlash-body-recovery.png",
+    "source": "deployment/msfd-work/asta22-specials-final/astaBlackSlash-body-8.png",
+    "sha256": "686d97243a0b2caf35a92c9a640531e54f95241c019b67468308583cb9684eeb"
+  },
+  {
+    "file": "astaCausalityBreak-fx.json",
+    "source": "deployment/msfd-work/asta22-specials-final/astaCausalityBreak-fx.json",
+    "sha256": "28b5d933e8f8cd807b4a01857f06f7079ba42fbcca47a7bf3d309722de6717b5"
+  },
+  {
+    "file": "astaCausalityBreak-fx-preparation.png",
+    "source": "deployment/msfd-work/asta22-specials-final/astaCausalityBreak-fx-3.png",
+    "sha256": "bf4e5f32dffc6a96145651adc30e43e6b777ad986fed1179d2ae89a34645723a"
+  },
+  {
+    "file": "astaCausalityBreak-fx-channel.png",
+    "source": "deployment/msfd-work/asta22-specials-final/astaCausalityBreak-fx-6.png",
+    "sha256": "9ab0e6600d7e4425d0f7a9307f5bc496829d2069a41485734f23e7794cc48159"
+  },
+  {
+    "file": "astaCausalityBreak-fx-retraction.png",
+    "source": "deployment/msfd-work/asta22-specials-final/astaCausalityBreak-fx-8.png",
+    "sha256": "99650c0c4aeae8c515f310dcae414f2bf2a3c8d3c04908745256076d67ffb2d8"
+  },
+  {
+    "file": "astaCausalityBreak-body.json",
+    "source": "deployment/msfd-work/asta22-specials-final/astaCausalityBreak-body.json",
+    "sha256": "28b5d933e8f8cd807b4a01857f06f7079ba42fbcca47a7bf3d309722de6717b5"
+  },
+  {
+    "file": "astaCausalityBreak-body-preparation.png",
+    "source": "deployment/msfd-work/asta22-specials-final/astaCausalityBreak-body-3.png",
+    "sha256": "bf4e5f32dffc6a96145651adc30e43e6b777ad986fed1179d2ae89a34645723a"
+  },
+  {
+    "file": "astaCausalityBreak-body-channel.png",
+    "source": "deployment/msfd-work/asta22-specials-final/astaCausalityBreak-body-6.png",
+    "sha256": "9ab0e6600d7e4425d0f7a9307f5bc496829d2069a41485734f23e7794cc48159"
+  },
+  {
+    "file": "astaCausalityBreak-body-retraction.png",
+    "source": "deployment/msfd-work/asta22-specials-final/astaCausalityBreak-body-8.png",
+    "sha256": "99650c0c4aeae8c515f310dcae414f2bf2a3c8d3c04908745256076d67ffb2d8"
+  },
+  {
+    "file": "destroyer-j-slayer.json",
+    "source": "deployment/msfd-work/asta22-relay-final/destroyer-j-slayer.json",
+    "sha256": "d8e3f5075d0b156c7fb176c665959e08abfe9336ecfde5a091789aa1bee5c859"
+  },
+  {
+    "file": "destroyer-k-slasher.json",
+    "source": "deployment/msfd-work/asta22-relay-final/destroyer-k-slasher.json",
+    "sha256": "5e6776e909849205fd60fe28efbd73521eeae4bb9b1312493ca3ed5b5c80992b"
+  },
+  {
+    "file": "destroyer-l-dweller.json",
+    "source": "deployment/msfd-work/asta22-relay-final/destroyer-l-dweller.json",
+    "sha256": "977a513310bb864e53e205799707d1cb8727e48115b1d650fff1997dead33355"
+  },
+  {
+    "file": "dweller-j-slayer.json",
+    "source": "deployment/msfd-work/asta22-relay-final/dweller-j-slayer.json",
+    "sha256": "055ecd2098bdce3bdc40f45aeace56b2e50bfe44e4a5a675173a3fa7d454fba9"
+  },
+  {
+    "file": "dweller-k-slasher.json",
+    "source": "deployment/msfd-work/asta22-relay-final/dweller-k-slasher.json",
+    "sha256": "a9467204e39f38623489a85002822960ab24858302b3e3ba9e52fc4263446a16"
+  },
+  {
+    "file": "dweller-l-destroyer.json",
+    "source": "deployment/msfd-work/asta22-relay-final/dweller-l-destroyer.json",
+    "sha256": "92be5440d445140a64fb62d2e47c8a76f35420636e58f3ac72b5561d939753c8"
+  },
+  {
+    "file": "slasher-j-slayer.json",
+    "source": "deployment/msfd-work/asta22-relay-final/slasher-j-slayer.json",
+    "sha256": "445edaa3108ae21ee2523d823cdf19cbe36f8e9c3b1f9d0e7b79a4bd031e7af2"
+  },
+  {
+    "file": "slasher-k-dweller.json",
+    "source": "deployment/msfd-work/asta22-relay-final/slasher-k-dweller.json",
+    "sha256": "4149ff189b2de507a4f49f144a6969f4d556973eb547bade5aa1493aa3f65bb0"
+  },
+  {
+    "file": "slasher-l-destroyer.json",
+    "source": "deployment/msfd-work/asta22-relay-final/slasher-l-destroyer.json",
+    "sha256": "f94b655ecdc42a3bf56203f39dd0fd2907f0fc1f4683a265b48d698b0c2262c2"
+  },
+  {
+    "file": "slayer-j-slasher.json",
+    "source": "deployment/msfd-work/asta22-relay-final/slayer-j-slasher.json",
+    "sha256": "ca4c178dc7e239f536c5bd72b0f568d8d29ccb24aaa7154d9b2dc4afefa45327"
+  },
+  {
+    "file": "slayer-k-dweller.json",
+    "source": "deployment/msfd-work/asta22-relay-final/slayer-k-dweller.json",
+    "sha256": "21302a9f412e2ba301ccb39912fe646fd6c2b8540ad3e42cd0e75a87a6bf3807"
+  },
+  {
+    "file": "slayer-l-destroyer.json",
+    "source": "deployment/msfd-work/asta22-relay-final/slayer-l-destroyer.json",
+    "sha256": "5b3de68b45400070bb97e06a095a9634615cd6a5e3f65072dfa3c290ef8fca89"
+  },
+  {
+    "file": "slayer-k-dweller.webm",
+    "source": "deployment/msfd-work/asta22-relay-final/slayer-k-dweller.webm",
+    "sha256": "d017e44bf944977aed09f2d15eadf1874d8a85c1bba9584bf2bc560ed7ede5cb"
+  },
+  {
+    "file": "slayer-k-dweller-opening.png",
+    "source": "deployment/msfd-work/asta22-relay-final/slayer-k-dweller-0.png",
+    "sha256": "09d93b62481acbe8e1d3eed4128b5236733ecf8b43b079e83b58256115270e51"
+  },
+  {
+    "file": "slayer-k-dweller-exchange.png",
+    "source": "deployment/msfd-work/asta22-relay-final/slayer-k-dweller-8.png",
+    "sha256": "26d243d3708505aa39e4f2ae9f766df4db820f517159af5d4bb5657a987099f2"
+  },
+  {
+    "file": "slayer-k-dweller-finisher.png",
+    "source": "deployment/msfd-work/asta22-relay-final/slayer-k-dweller-18.png",
+    "sha256": "b3f7d5ce4bda56cb8ca08121d657545fe0365913550dc8837365a325084b39f4"
+  },
+  {
+    "file": "slasher-l-destroyer.webm",
+    "source": "deployment/msfd-work/asta22-relay-final/slasher-l-destroyer.webm",
+    "sha256": "5fb50a553d52c0038c60c88a281432558bf728f10c726a8ebede2c0868f80ed7"
+  },
+  {
+    "file": "slasher-l-destroyer-opening.png",
+    "source": "deployment/msfd-work/asta22-relay-final/slasher-l-destroyer-0.png",
+    "sha256": "cba18a06dcf2608f55f15adf5f7b03c41129e894fb270d3f63f60d18fe2cdb78"
+  },
+  {
+    "file": "slasher-l-destroyer-exchange.png",
+    "source": "deployment/msfd-work/asta22-relay-final/slasher-l-destroyer-8.png",
+    "sha256": "b21dcec1f59e7b018225df2d837f9f6ff5071c076d3405c6eff5f1a5c694e437"
+  },
+  {
+    "file": "slasher-l-destroyer-finisher.png",
+    "source": "deployment/msfd-work/asta22-relay-final/slasher-l-destroyer-19.png",
+    "sha256": "dc98c0161af627fed51c2fbc47559fd191ab2439b09ec998779f0f3541d49ee9"
+  },
+  {
+    "file": "dweller-k-slasher.webm",
+    "source": "deployment/msfd-work/asta22-relay-final/dweller-k-slasher.webm",
+    "sha256": "67831e6bed1e1dcf355eaaf0ee81e1e5f11b7a8809ccbb274b095be733221fc5"
+  },
+  {
+    "file": "dweller-k-slasher-opening.png",
+    "source": "deployment/msfd-work/asta22-relay-final/dweller-k-slasher-0.png",
+    "sha256": "885fb62827e77551358f7e8c6c13a05315dc1e28423b2ad9e9aeb44eac7e1b7e"
+  },
+  {
+    "file": "dweller-k-slasher-exchange.png",
+    "source": "deployment/msfd-work/asta22-relay-final/dweller-k-slasher-8.png",
+    "sha256": "f4ef349612b7f6dd4aaf2d58326d48ce65daed2ba46b92054692dfd36507b3e8"
+  },
+  {
+    "file": "dweller-k-slasher-finisher.png",
+    "source": "deployment/msfd-work/asta22-relay-final/dweller-k-slasher-18.png",
+    "sha256": "db43edc370a9632f218f854185bf15c06974bae0b902ca42dcd23b9386d017c1"
+  },
+  {
+    "file": "destroyer-j-slayer.webm",
+    "source": "deployment/msfd-work/asta22-relay-final/destroyer-j-slayer.webm",
+    "sha256": "e6dee243c6174a7429dfa47223e95b55789b15ae0f7aad7171538c3133ddfa78"
+  },
+  {
+    "file": "destroyer-j-slayer-opening.png",
+    "source": "deployment/msfd-work/asta22-relay-final/destroyer-j-slayer-0.png",
+    "sha256": "6271356bf137940e36e22b3edd57b4f4725e7d76fe9c9e47a148859d04ef0b1b"
+  },
+  {
+    "file": "destroyer-j-slayer-exchange.png",
+    "source": "deployment/msfd-work/asta22-relay-final/destroyer-j-slayer-7.png",
+    "sha256": "ebf7c9f348afabfa3d7b7a88442e5ed4c5102fa0666fafbd0fb2e6fec6587742"
+  },
+  {
+    "file": "destroyer-j-slayer-finisher.png",
+    "source": "deployment/msfd-work/asta22-relay-final/destroyer-j-slayer-17.png",
+    "sha256": "4986deb568d80d03ebfd4a3e2ddbc155387fc01ccc2eed33f9c200ffb14b64ca"
+  },
+  {
+    "file": "grimoire-cover-return.png",
+    "source": "deployment/msfd-work/asta22-relay-final/slayer-k-dweller-6.png",
+    "sha256": "6fa6171a86ce346b2f8baed06abdfd1f2418f08682b4780c1b502e4949f32bb6"
+  },
+  {
+    "file": "grimoire-pages-emerge.png",
+    "source": "deployment/msfd-work/asta22-relay-final/slayer-k-dweller-8.png",
+    "sha256": "26d243d3708505aa39e4f2ae9f766df4db820f517159af5d4bb5657a987099f2"
+  },
+  {
+    "file": "grimoire-sword-contact.png",
+    "source": "deployment/msfd-work/asta22-relay-final/slayer-k-dweller-10.png",
+    "sha256": "f72f6b1aa9405e4d9fc866b0e9cdfb30bbca792faa6d44dc42f83e142810058b"
+  },
+  {
+    "file": "body-slayer-slasher.webm",
+    "source": "deployment/msfd-work/asta22-relay-final/body-slayer-slasher.webm",
+    "sha256": "7c2e7cf22b1ca8b666781c65307cf17e52a1825a24104e5014ba8ce69e7e21e1"
+  },
+  {
+    "file": "body-slasher-slayer.webm",
+    "source": "deployment/msfd-work/asta22-relay-final/body-slasher-slayer.webm",
+    "sha256": "a0bb623e32307f547df90f751fd17950d67db0411a419c0c7fa09a0c0d2774e3"
+  },
+  {
+    "file": "body-dweller-destroyer.webm",
+    "source": "deployment/msfd-work/asta22-relay-final/body-dweller-destroyer.webm",
+    "sha256": "12e8a113283aed45f68a66a273b6a17bbf7a1f71c5fe1d13d8cdac5e1e13f008"
+  },
+  {
+    "file": "body-destroyer-dweller.webm",
+    "source": "deployment/msfd-work/asta22-relay-final/body-destroyer-dweller.webm",
+    "sha256": "294cb6a43e4540f9380fd4feda2a0c479f2d313f99b3fa2f67ff04cc23889fb4"
+  },
+  {
+    "file": "guard.json",
+    "source": "deployment/msfd-work/asta22-relay-final/guard.json",
+    "sha256": "37b646c3073eb40add6b14e97700baf3b3c243b92963eed2fe24a226520052a4"
+  },
+  {
+    "file": "timeout.json",
+    "source": "deployment/msfd-work/asta22-relay-final/timeout.json",
+    "sha256": "0b92e1575ea4dbcf4e841b0e87f0c23a92f95d36485cdd6ea79736aff1218b0d"
+  },
+  {
+    "file": "comparison-Dio.png",
+    "source": "deployment/msfd-work/asta22-base-final/comparison-Dio.png",
+    "sha256": "a7251e492e2ac97ccde46e706a1800971577d46b48f217f2f640eb58d3f638dd"
+  },
+  {
+    "file": "comparison-Goku.png",
+    "source": "deployment/msfd-work/asta22-base-final/comparison-Goku.png",
+    "sha256": "cc9976915e0fcbde21cc14ffd380fc6226c1ae4eef86af4b89be55b98b399c92"
+  },
+  {
+    "file": "ground-combo.png",
+    "source": "deployment/msfd-work/asta22-base-final/ground-combo.png",
+    "sha256": "f563ae726fe27655ef3c5f9a0959e210f1ff56db9f1f2411c5de681bdd0cb753"
+  },
+  {
+    "file": "air-combo.png",
+    "source": "deployment/msfd-work/asta22-base-final/air-combo.png",
+    "sha256": "6037db80528693507de74c9a80f1c6cedead8c4ade59991b0845f957e35a4857"
+  },
+  {
+    "file": "arcade.png",
+    "source": "deployment/msfd-work/asta22-base-final/arcade.png",
+    "sha256": "e00101ef6f9bf0213e8b8f2d73056de7bbd50c5476d5d4034d5b4574693bbe14"
+  },
+  {
+    "file": "versus.png",
+    "source": "deployment/msfd-work/asta22-base-final/versus.png",
+    "sha256": "6ff84afc51cb8c006222c2051c593f938e26e1c049945529eb7fe932415a7c83"
+  }
+]

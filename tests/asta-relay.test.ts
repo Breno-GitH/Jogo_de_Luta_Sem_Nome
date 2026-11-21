@@ -1,5 +1,4 @@
 import { describe, it, expect } from "vitest";
-import { Bot } from "../src/engine/bot";
 import { Match } from "../src/engine/combat";
 import { characters } from "../src/engine/characters";
 import { neutral, type InputFrame } from "../src/engine/types";
@@ -8,6 +7,8 @@ import {
   practiceSword,
   type AstaSword,
 } from "../src/engine/asta-stances";
+import { relayOptions } from "../src/engine/asta-relay";
+import { Bot } from "../src/engine/bot";
 import { snapshot, restore, hashState } from "../src/engine/state";
 function arena(
   side: 1 | -1 = 1,
@@ -27,234 +28,277 @@ function arena(
   b.facing = -side;
   const hits: typeof m.hits = [];
   const step = (i: Partial<InputFrame> = {}, j: Partial<InputFrame> = {}) => {
-    const input = { ...neutral(), ...i },
-      other = { ...neutral(), ...j };
-    m.step([input, other]);
+    const pair: [InputFrame, InputFrame] = [
+      { ...neutral(), ...i },
+      { ...neutral(), ...j },
+    ];
+    m.step(pair);
     hits.push(...m.hits);
-    return [input, other] as [InputFrame, InputFrame];
+    return pair;
   };
   return { m, a, b, hits, step };
 }
-function choice(s: AstaSword, side: number): Partial<InputFrame> {
-  return s === "slayer"
-    ? { direction: side as 1 | -1, pressed: ["light"] }
-    : s === "slasher"
-      ? { direction: -side as 1 | -1, pressed: ["light"] }
-      : { down: true, pressed: [s === "dweller" ? "light" : "medium"] };
-}
+const buttons = ["light", "medium", "heavy"] as const;
 const routes = astaSwords.flatMap((initial) =>
-  astaSwords.flatMap((first) =>
-    astaSwords.map((second) => [initial, first, second] as const),
-  ),
+  buttons.map((button, i) => ({
+    initial,
+    button,
+    selected: relayOptions(initial)[i],
+  })),
 );
-describe("Anti-Magic Relay: 64 manually chosen routes", () => {
+const branchHits: Record<AstaSword, number> = {
+  slayer: 2,
+  slasher: 4,
+  dweller: 2,
+  destroyer: 3,
+};
+describe("Relay 2.2: one dynamic J/K/L choice and twelve physical routes", () => {
   it.each(routes)(
-    "%s → %s → %s uses real contacts, two manual choices and deterministic snapshots",
-    (initial, first, second) => {
+    "$initial + $button → $selected connects its distinct finisher and restores deterministically",
+    ({ initial, button, selected }) => {
       for (const side of [1, -1] as const) {
         const p = arena(side);
         practiceSword(p.a, initial);
         p.a.attack("astaDualBreak");
-        expect(p.a.asta!.relay!.initial).toBe(initial);
-        let extensions = 0,
-          finished = false,
+        let picked = false,
+          branch = false,
           q: Match | undefined,
-          maxCombo = 0;
-        const events = new Set<string>();
-        for (let t = 0; t < 240; t++) {
+          maxAction = 0;
+        const contacts = new Set<string>();
+        const original = [...p.a.asta!.relay!.options];
+        expect(original).toEqual(astaSwords.filter((x) => x !== initial));
+        for (let t = 0; t < 190; t++) {
           const r = p.a.asta!.relay;
           if (r) {
-            extensions = Math.max(extensions, r.extensions);
-            finished ||= r.phase === "finish";
-            r.contacts.forEach((x) => events.add(x));
+            branch ||= r.phase === "branch";
+            maxAction = Math.max(maxAction, r.action);
+            r.contacts.forEach((c) => contacts.add(c));
+            expect(r.options).toEqual(original);
           }
           const input =
-            r?.confirmed &&
-            r.phase !== "finish" &&
-            r.extensions < 2 &&
-            p.a.stateFrame >= r.windowFrom
-              ? choice(r.extensions === 0 ? first : second, side)
+            r?.phase === "choice" && !picked
+              ? { direction: -side as 1 | -1, down: true, pressed: [button] }
               : {};
+          if (r?.phase === "choice") picked = true;
           const frames = p.step(input);
           if (q) {
             q.step(frames);
             expect(hashState(snapshot(q))).toBe(hashState(snapshot(p.m)));
           }
-          if (!q && p.a.asta!.relay?.extensions === 1)
+          if (!q && p.a.asta!.relay?.phase === "branch")
             q = restore(snapshot(p.m));
-          maxCombo = Math.max(maxCombo, p.b.combo);
           expect(p.m.capture).toBeFalsy();
           expect(p.m.cinematicActive).toBe(false);
         }
-        expect(
-          extensions,
-          initial + "/" + first + "/" + second + "/" + side,
-        ).toBe(2);
-        expect(finished).toBe(true);
-        expect(p.a.asta!.equipped).toBe(second);
+        expect(picked).toBe(true);
+        expect(branch).toBe(true);
+        expect(maxAction).toBe(1);
+        expect(p.hits.filter((x) => x.move === "astaDualBreak")).toHaveLength(
+          (initial === "slasher" ? 2 : 1) + branchHits[selected],
+        );
+        expect(contacts.size).toBe(p.hits.length);
+        expect(p.b.health).toBeGreaterThan(800);
+        expect(p.b.health).toBeLessThan(930);
+        expect(p.a.asta!.equipped).toBe(selected);
         expect(p.a.asta!.relay).toBeUndefined();
         expect(p.a.asta!.pending).toBeUndefined();
+        expect(p.a.asta!.draw).toBeUndefined();
         expect(p.a.state).toBe("idle");
         expect(p.a.attackShapes()).toHaveLength(0);
-        expect(p.b.health).toBeGreaterThan(700);
-        expect(p.b.health).toBeLessThan(1000);
-        expect(maxCombo).toBeGreaterThanOrEqual(4);
-        expect(maxCombo).toBeLessThanOrEqual(8);
-        expect(events.size).toBe(p.hits.length);
       }
     },
   );
   it.each(astaSwords)(
-    "%s whiff and guard never enter an interactive capture",
-    (s) => {
-      for (const guard of [false, true]) {
-        const p = arena(1, guard ? 85 : 500);
-        practiceSword(p.a, s);
-        if (guard) {
+    "%s keeps its sword on whiff, block and timeout without an automatic continuation",
+    (initial) => {
+      for (const mode of ["whiff", "guard", "timeout"] as const) {
+        const p = arena(1, mode === "whiff" ? 500 : 85);
+        practiceSword(p.a, initial);
+        if (mode === "guard") {
           p.a.x = 1150;
           p.b.x = 1235;
         }
         p.a.attack("astaDualBreak");
-        let ext = 0;
-        for (let t = 0; t < 150; t++) {
-          p.step(
-            t === 10 ? choice("dweller", 1) : {},
-            guard ? { direction: 1 } : {},
-          );
-          ext = Math.max(ext, p.a.asta!.relay?.extensions ?? 0);
+        let branch = false;
+        for (let t = 0; t < 130; t++) {
+          branch ||= p.a.asta!.relay?.phase === "branch";
+          p.step({}, mode === "guard" ? { direction: 1 } : {});
         }
-        expect(ext).toBe(0);
-        expect(p.a.asta!.equipped).toBe(s);
-        expect(p.m.capture).toBeFalsy();
+        expect(branch).toBe(false);
+        expect(p.a.asta!.equipped).toBe(initial);
         expect(p.a.asta!.relay).toBeUndefined();
-        if (guard) expect(p.hits.every((h) => h.blocked)).toBe(true);
+        expect(p.a.state).toBe("idle");
+        expect(p.hits.length).toBe(
+          mode === "whiff" ? 0 : initial === "slasher" ? 2 : 1,
+        );
+        if (mode === "guard") expect(p.hits.every((x) => x.blocked)).toBe(true);
+        expect(p.m.capture).toBeFalsy();
       }
     },
   );
-  it.each(astaSwords)(
-    "%s times out into a short finisher with the same sword",
-    (s) => {
+  it("never reuses activating L or a pre-hit input, and ignores a late button", () => {
+    for (const timing of ["activation", "early", "late"] as const) {
       const p = arena();
-      practiceSword(p.a, s);
-      p.a.attack("astaDualBreak");
-      let ext = 0,
-        finish = false;
-      for (let t = 0; t < 180; t++) {
+      p.step({ down: true });
+      p.step();
+      p.step({ down: true, pressed: ["heavy"] });
+      let injected = false;
+      for (let t = 0; t < 130; t++) {
         const r = p.a.asta!.relay;
-        if (r) {
-          ext = Math.max(ext, r.extensions);
-          finish ||= r.phase === "finish";
-        }
-        p.step();
+        const press =
+          !injected &&
+          (timing === "early"
+            ? t === 0
+            : timing === "late" && r && p.a.stateFrame > r.windowTo);
+        p.step(press ? { pressed: ["medium"] } : {});
+        if (press) injected = true;
+        expect(p.a.asta!.relay?.phase).not.toBe("branch");
       }
-      expect(ext).toBe(0);
-      expect(finish).toBe(true);
-      expect(p.a.asta!.equipped).toBe(s);
-      expect(p.a.asta!.relay).toBeUndefined();
-      expect(p.b.state).not.toBe("grabbed");
-    },
-  );
-  it("does not reuse held/consumed input, a late choice, or another special", () => {
+      expect(p.a.asta!.equipped).toBe("slayer");
+      expect(p.a.state).toBe("idle");
+      expect(p.hits).toHaveLength(1);
+    }
+  });
+  it("accepts a fresh L after confirmation through hitstop, consumes subsequent choices and rejects simultaneous specials", () => {
     const p = arena();
     p.a.attack("astaDualBreak");
-    let chosen = false,
-      max = 0;
-    for (let t = 0; t < 180; t++) {
-      const r = p.a.asta!.relay;
-      let input: Partial<InputFrame> = {};
-      if (r?.confirmed && p.a.stateFrame >= r.windowFrom && !chosen) {
-        input = choice("dweller", 1);
-        chosen = true;
-      }
-      if (r) max = Math.max(max, r.extensions);
-      p.step(input);
-    }
-    expect(max).toBe(1);
-    expect(p.a.asta!.equipped).toBe("dweller");
-    expect(p.a.attack("astaDualBreak")).toBe(true);
+    for (let t = 0; t < 30 && !p.a.asta!.relay?.confirmed; t++) p.step();
+    expect(p.m.hitstop).toBeGreaterThan(0);
+    p.step({ pressed: ["heavy"] });
+    for (let t = 0; t < 20 && p.a.asta!.relay?.phase !== "branch"; t++)
+      p.step();
+    expect(p.a.asta!.relay?.sword).toBe("destroyer");
     expect(p.a.attack("astaBlackRush")).toBe(false);
-  });
-  it("ignores late continuation edges and consumes them without leaking a normal", () => {
-    const p = arena();
-    p.a.attack("astaDualBreak");
-    for (let t = 0; t < 80 && p.a.asta!.relay?.phase !== "finish"; t++)
-      p.step();
-    expect(p.a.asta!.relay?.phase).toBe("finish");
-    p.step(choice("slasher", 1));
-    for (let t = 0; t < 100; t++) {
-      p.step();
-      if(p.a.state==="attack")expect(p.a.moveId).toBe("astaDualBreak");
-    }
-    expect(p.a.asta!.equipped).toBe("slayer");
-    expect(p.a.moveId).toBe("");
+    for (let t = 0; t < 90; t++)
+      p.step(
+        p.a.asta!.relay?.phase === "branch"
+          ? { pressed: ["light", "medium", "heavy"] }
+          : {},
+      );
+    expect(p.a.asta!.equipped).toBe("destroyer");
     expect(p.a.state).toBe("idle");
+    expect(p.hits).toHaveLength(4);
   });
-  it("interruptions retain only the last committed sword and release all Relay state", () => {
-    for (const tick of [1, 3]) {
+  it("commits the grimoire exchange once and keeps the last committed sword when interrupted", () => {
+    for (const tick of [2, 5]) {
       const p = arena();
       p.a.attack("astaDualBreak");
       for (let t = 0; t < 50; t++) {
-        const r = p.a.asta!.relay;
-        if (r?.confirmed && p.a.stateFrame >= r.windowFrom) {
-          p.step(choice("slasher", 1));
+        if (p.a.asta!.relay?.phase === "choice") {
+          p.step({ pressed: ["light"] });
           break;
         }
         p.step();
       }
+      expect(p.a.asta!.relay?.phase).toBe("branch");
+      expect(p.a.asta!.draw).toMatchObject({
+        from: "slayer",
+        to: "slasher",
+        commitAt: 3,
+      });
       for (let t = 0; t < tick; t++) p.step();
       p.a.setState("hitstun");
-      expect(p.a.asta!.equipped).toBe(tick < 2 ? "slayer" : "slasher");
-      expect(p.a.asta!.relay).toBeUndefined();
+      expect(p.a.asta!.equipped).toBe(tick < 3 ? "slayer" : "slasher");
       expect(p.a.asta!.pending).toBeUndefined();
+      expect(p.a.asta!.draw).toBeUndefined();
+      expect(p.a.asta!.relay).toBeUndefined();
     }
   });
   it.each(["ben", "goku"] as const)(
-    "works against %s at either corner without forced position or arena escape",
+    "all twelve routes work at either corner against %s without forcing positions",
     (opponent) => {
-      for (const side of [1, -1] as const) {
-        const p = arena(side, 85, opponent);
-        p.a.x = side === 1 ? 1150 : 130;
-        p.b.x = side === 1 ? 1235 : 45;
-        p.a.attack("astaDualBreak");
-        let ext = 0;
-        for (let t = 0; t < 200; t++) {
-          const r = p.a.asta!.relay;
-          ext = Math.max(ext, r?.extensions ?? 0);
-          p.step(
-            r?.confirmed && r.extensions < 2 && p.a.stateFrame >= r.windowFrom
-              ? choice(r.extensions ? "destroyer" : "slasher", side)
-              : {},
-          );
-          for (const f of p.m.fighters) {
-            expect(f.x).toBeGreaterThanOrEqual(0);
-            expect(f.x).toBeLessThanOrEqual(1280);
+      for (const { initial, button, selected } of routes)
+        for (const side of [1, -1] as const) {
+          const p = arena(side, 85, opponent);
+          p.a.x = side === 1 ? 1150 : 130;
+          p.b.x = side === 1 ? 1235 : 45;
+          practiceSword(p.a, initial);
+          p.a.attack("astaDualBreak");
+          let picked = false;
+          for (let t = 0; t < 180; t++) {
+            const r = p.a.asta!.relay;
+            const input =
+              r?.phase === "choice" && !picked ? { pressed: [button] } : {};
+            if (r?.phase === "choice") picked = true;
+            p.step(input);
+            for (const f of p.m.fighters) {
+              expect(f.x).toBeGreaterThanOrEqual(0);
+              expect(f.x).toBeLessThanOrEqual(1280);
+            }
+            expect(p.m.capture).toBeFalsy();
           }
-          expect(p.m.capture).toBeFalsy();
+          expect(picked).toBe(true);
+          expect(p.a.asta!.equipped).toBe(selected);
+          expect(p.a.asta!.relay).toBeUndefined();
+          expect(p.b.state).not.toBe("grabbed");
         }
-        expect(ext).toBe(2);
-        expect(p.a.asta!.relay).toBeUndefined();
-        expect(p.b.state).not.toBe("grabbed");
-      }
     },
   );
-  it("lets an Asta BOT choose two legal sword continuations through ordinary input",()=>{
-    const p=arena(),bot=new Bot("normal",3417,0);
-    p.a.attack("astaDualBreak");let extensions=0;
-    for(let t=0;t<200;t++){extensions=Math.max(extensions,p.a.asta!.relay?.extensions??0);p.step(bot.sample(p.m));}
-    expect(extensions).toBe(2);expect(p.a.asta!.equipped).toBe("slasher");
-    expect(p.a.asta!.relay).toBeUndefined();expect(p.m.capture).toBeFalsy();
-  });
-  it("ends safely on legitimate KO and cannot reset combo limits", () => {
+  it("does not heal through the Destroyer branch, resurrect, or restart its combo limit", () => {
     const p = arena();
-    p.b.health = 15;
+    p.a.health = 700;
+    p.a.asta!.recentDamage = [
+      { id: 1, at: 0, amount: 300, claimed: false, restored: 0 },
+    ];
     p.a.attack("astaDualBreak");
-    for (let t = 0; t < 100; t++) p.step();
-    expect(p.b.health).toBe(0);
-    expect(p.a.asta!.relay).toBeUndefined();
-    expect(p.m.capture).toBeFalsy();
+    for (let t = 0; t < 150; t++)
+      p.step(p.a.asta!.relay?.phase === "choice" ? { pressed: ["heavy"] } : {});
+    expect(p.a.health).toBe(700);
+    expect(p.a.asta!.restorationReadyAt).toBe(0);
     const q = arena();
+    q.b.health = 10;
     q.a.attack("astaDualBreak");
-    for (let t = 0; t < 100 && q.a.asta!.relay; t++) q.step();
-    if (q.b.combo) expect(q.a.attack("astaDualBreak")).toBe(false);
+    for (let t = 0; t < 100; t++) q.step();
+    expect(q.b.health).toBe(0);
+    expect(q.a.asta!.relay).toBeUndefined();
+    expect(q.m.capture).toBeFalsy();
+    const z = arena();
+    z.a.attack("astaDualBreak");
+    for (let t = 0; t < 60 && !z.a.asta!.relay?.confirmed; t++) z.step();
+    expect(z.a.attack("astaDualBreak")).toBe(false);
+  });
+  it("does not confirm a new Relay opening through an earlier residual projected slash", () => {
+    const p = arena(1, 400);
+    p.a.attack("astaDualBreak");
+    p.m.kiProjectiles.push({
+      id: ++p.m.projectileSerial,
+      owner: 0,
+      move: "astaDualBreak",
+      cast: p.a.asta!.cast - 1,
+      x: p.b.x - 5,
+      y: p.b.y - 65,
+      previousX: p.b.x - 5,
+      previousY: p.b.y - 65,
+      vx: 14,
+      vy: 0,
+      facing: 1,
+      radius: 23,
+      age: 0,
+      life: 22,
+      state: "flight",
+      impactAge: 0,
+    });
+    p.step();
+    expect(p.b.health).toBeLessThan(1000);
+    expect(p.a.asta!.relay!.confirmed).toBe(false);
+    for (let t = 0; t < 55; t++) {
+      p.step({ pressed: ["heavy"] });
+      expect(p.a.asta!.relay?.phase).not.toBe("choice");
+      expect(p.a.asta!.relay?.phase).not.toBe("branch");
+    }
+    expect(p.a.asta!.equipped).toBe("slayer");
+  });
+  it("lets the BOT choose one ordinary J/K/L continuation", () => {
+    const p = arena(),
+      bot = new Bot("normal", 3417, 0);
+    p.a.attack("astaDualBreak");
+    let max = 0;
+    for (let t = 0; t < 150 && p.a.asta!.relay; t++) {
+      max = Math.max(max, p.a.asta!.relay?.action ?? 0);
+      p.step(bot.sample(p.m));
+    }
+    expect(max).toBe(1);
+    expect(p.a.asta!.equipped).toBe("slasher");
+    expect(p.a.asta!.relay).toBeUndefined();
   });
 });

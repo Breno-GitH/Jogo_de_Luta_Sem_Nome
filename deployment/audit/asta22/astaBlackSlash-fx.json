@@ -1,0 +1,86 @@
+[
+  {
+    "key": "asta/v22-black_charge.png/0",
+    "phase": "startup",
+    "sword": "slayer",
+    "stage": "slayer",
+    "count": "1"
+  },
+  {
+    "key": "asta/v22-black_charge.png/1",
+    "phase": "startup",
+    "sword": "slayer",
+    "stage": "slayer",
+    "count": "1"
+  },
+  {
+    "key": "asta/v22-black_charge.png/2",
+    "phase": "startup",
+    "sword": "dweller",
+    "stage": "dweller",
+    "count": "1"
+  },
+  {
+    "key": "asta/v22-black_charge.png/3",
+    "phase": "startup",
+    "sword": "dweller",
+    "stage": "dweller",
+    "count": "1"
+  },
+  {
+    "key": "asta/v22-black_charge.png/4",
+    "phase": "startup",
+    "sword": "dweller",
+    "stage": "dweller",
+    "count": "1"
+  },
+  {
+    "key": "asta/v22-black_charge.png/5",
+    "phase": "startup",
+    "sword": "dweller",
+    "stage": "dweller",
+    "count": "1"
+  },
+  {
+    "key": "asta/v22-black_cast.png/0",
+    "phase": "startup",
+    "sword": "dweller",
+    "stage": "dweller",
+    "count": "1"
+  },
+  {
+    "key": "asta/v22-black_cast.png/1",
+    "phase": "active",
+    "sword": "dweller",
+    "stage": "dweller",
+    "count": "1"
+  },
+  {
+    "key": "asta/v22-black_cast.png/2",
+    "phase": "recovery",
+    "sword": "dweller",
+    "stage": "dweller",
+    "count": "1"
+  },
+  {
+    "key": "asta/v22-black_cast.png/3",
+    "phase": "recovery",
+    "sword": "dweller",
+    "stage": "dweller",
+    "count": "1"
+  },
+  {
+    "key": "asta/v22-black_cast.png/4",
+    "phase": "recovery",
+    "sword": "dweller",
+    "stage": "dweller",
+    "count": "1"
+  },
+  {
+    "key": "asta/v22-black_cast.png/5",
+    "phase": "recovery",
+    "sword": "dweller",
+    "stage": "dweller",
+    "count": "1"
+  }
+]

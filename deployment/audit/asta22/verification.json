@@ -1,0 +1,29 @@
+{
+  "engineVersion": "d28db63edaab817fa83a1246",
+  "baseCommit": "42e8592a3029d2bb1fe0bc1a407f69357a8acdf3",
+  "vitest": {
+    "files": 57,
+    "passed": 1445,
+    "failed": 0,
+    "asta": 90
+  },
+  "typescript": "passed",
+  "art": {
+    "atlases": 58,
+    "pendingSockets": 0,
+    "newBodyFrames": 72
+  },
+  "browser": {
+    "distinctScenarios": 13,
+    "passed": 13,
+    "relayRepeatedAfterFinalGuard": true
+  },
+  "lan": {
+    "distinctScenarios": 6,
+    "passed": 6,
+    "allTwelveRelayRoutesRepeatedAfterFinalGuard": true
+  },
+  "productionPreviewBuild": "passed",
+  "apachePublication": "Verified separately after committing the final HEAD",
+  "legacyPythonArtCollection": "Not rerun in full"
+}
