@@ -1,10 +1,4 @@
-
-Running 1 test using 1 worker
-
-(node:12152) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
-(Use `node --trace-warnings ...` to show where the warning was created)
-(node:12152) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
-(Use `node --trace-warnings ...` to show where the warning was created)
-  ok 1 e2e\asta-super.pw.mjs:116:1 › Black Meteorite confirms into Liebe, four-sword Devil Union and Equinox, then restores combat (29.7s)
-
-  1 passed (32.0s)
+2026-11-21 — Equinox correction
+Visual review: actual sword-tip emission (942), growing plane (944), sky-to-floor cutting edge (948/952), delayed contact (956), continued propagation and ground/sky incision (974), then dissipation and restoration.
+Three complete browser scenarios passed. Evidence includes full and short Equinox recordings, an FX-off pass, guard/whiff, per-phase screenshots and losslessly compacted traces.
+Before image: equinox-before.png (old stationary zigzag pillar). New effect is a broad traveling blade with a continuous edge, layered dark mass, low pressure sheets and irregular airborne debris.

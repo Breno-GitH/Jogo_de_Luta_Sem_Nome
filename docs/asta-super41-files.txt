@@ -25,6 +25,7 @@ deployment/audit/asta-super41/complete-aerial.png
 deployment/audit/asta-super41/complete-destroyer.png
 deployment/audit/asta-super41/complete-dweller.png
 deployment/audit/asta-super41/complete-equinox.png
+deployment/audit/asta-super41/complete-equinox.webm
 deployment/audit/asta-super41/complete-equinoxCharge.png
 deployment/audit/asta-super41/complete-equinoxImpact.png
 deployment/audit/asta-super41/complete-frame-1048.png
@@ -49,7 +50,10 @@ deployment/audit/asta-super41/complete-frame-750.png
 deployment/audit/asta-super41/complete-frame-781.png
 deployment/audit/asta-super41/complete-frame-850.png
 deployment/audit/asta-super41/complete-frame-905.png
-deployment/audit/asta-super41/complete-frame-945.png
+deployment/audit/asta-super41/complete-frame-942.png
+deployment/audit/asta-super41/complete-frame-944.png
+deployment/audit/asta-super41/complete-frame-948.png
+deployment/audit/asta-super41/complete-frame-952.png
 deployment/audit/asta-super41/complete-frame-956.png
 deployment/audit/asta-super41/complete-frame-974.png
 deployment/audit/asta-super41/complete-impact.png
@@ -63,6 +67,7 @@ deployment/audit/asta-super41/complete-slayer.png
 deployment/audit/asta-super41/complete-union.png
 deployment/audit/asta-super41/complete.json
 deployment/audit/asta-super41/complete.webm
+deployment/audit/asta-super41/equinox-before.png
 deployment/audit/asta-super41/guarded-opener.png
 deployment/audit/asta-super41/guarded.json
 deployment/audit/asta-super41/guarded.webm
@@ -93,6 +98,7 @@ deployment/audit/asta-super41/no-fx-aerial.png
 deployment/audit/asta-super41/no-fx-destroyer.png
 deployment/audit/asta-super41/no-fx-dweller.png
 deployment/audit/asta-super41/no-fx-equinox.png
+deployment/audit/asta-super41/no-fx-equinox.webm
 deployment/audit/asta-super41/no-fx-equinoxCharge.png
 deployment/audit/asta-super41/no-fx-equinoxImpact.png
 deployment/audit/asta-super41/no-fx-frame-1048.png
@@ -117,7 +123,10 @@ deployment/audit/asta-super41/no-fx-frame-750.png
 deployment/audit/asta-super41/no-fx-frame-781.png
 deployment/audit/asta-super41/no-fx-frame-850.png
 deployment/audit/asta-super41/no-fx-frame-905.png
-deployment/audit/asta-super41/no-fx-frame-945.png
+deployment/audit/asta-super41/no-fx-frame-942.png
+deployment/audit/asta-super41/no-fx-frame-944.png
+deployment/audit/asta-super41/no-fx-frame-948.png
+deployment/audit/asta-super41/no-fx-frame-952.png
 deployment/audit/asta-super41/no-fx-frame-956.png
 deployment/audit/asta-super41/no-fx-frame-974.png
 deployment/audit/asta-super41/no-fx-impact.png
@@ -162,6 +171,7 @@ public/sprites/asta/r41-slayer-horizontal.png
 public/sprites/asta/r41-union.png
 scripts/net_version.mjs
 scripts/pack_asta.py
+scripts/update-msfd.ps1
 scripts/verify-asta-super-lan.mjs
 scripts/verify-asta-super-modes.mjs
 src/audio/sound.ts
@@ -171,9 +181,11 @@ src/engine/asta-super.ts
 src/engine/combat.ts
 src/net/version.ts
 src/render/asta-equinox-fx.ts
+src/render/asta-equinox-geometry.ts
 src/render/asta-super-animations.ts
 src/render/asta-super-fx.ts
 src/render/renderer.ts
 src/ui/catalog.ts
+tests/asta-equinox-fx.test.ts
 tests/asta-super.test.ts
 tests/test_asta_super_art.py

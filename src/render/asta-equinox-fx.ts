@@ -1,3 +1,4 @@
+import { equinoxCut } from "./asta-equinox-geometry";
 import { astaUnionScene, type AstaUnionState } from "../engine/asta-super";
 import { unionBeats as b } from "../engine/asta-super-acts";
 type Point = readonly [number, number];
@@ -21,7 +22,8 @@ export function drawUnionSky(c: CanvasRenderingContext2D, s: AstaUnionState) {
     p = u(t, b.aerial, b.retreat) * (1 - u(t, b.outro, b.end));
   if (!p) return;
   const scene = astaUnionScene(s),
-    split = u(t, b.release, b.outro),
+    cut = equinoxCut(s),
+    split = u(t, b.release, b.impact + 20),
     axis = scene.plane.x;
   c.save();
   c.globalAlpha = p * 0.74;
@@ -33,7 +35,8 @@ export function drawUnionSky(c: CanvasRenderingContext2D, s: AstaUnionState) {
     for (let i = -1; i < 7; i++) {
       const cx = i * 240 + shift + (layer % 2 ? 70 : 0),
         side = cx < axis ? -1 : 1,
-        drift = split * side * (70 + layer * 25);
+        passed = Math.max(0, (cut.ceilingX - cx) * s.facing),
+        drift = split * Math.min(1, passed / 110) * side * (70 + layer * 25);
       shape(
         c,
         [
@@ -50,6 +53,42 @@ export function drawUnionSky(c: CanvasRenderingContext2D, s: AstaUnionState) {
         ["#292b3e", "#333449", "#3c3b4b"][layer],
       );
     }
+  }
+
+  if (cut.active && cut.growth >= 0.999) {
+    const a = cut.origin[0],
+      z = cut.ceilingX;
+    c.globalAlpha = cut.residue * 0.7;
+    shape(
+      c,
+      [
+        [a, 100],
+        [z, 88],
+        [z - s.facing * 24, 125],
+        [a + s.facing * 16, 112],
+      ],
+      "#050710",
+    );
+    shape(
+      c,
+      [
+        [a, 96],
+        [z, 84],
+        [z, 88],
+        [a, 100],
+      ],
+      "#9a8b9b55",
+    );
+    shape(
+      c,
+      [
+        [a, 112],
+        [z - s.facing * 24, 125],
+        [z - s.facing * 30, 130],
+        [a, 116],
+      ],
+      "#74687d55",
+    );
   }
   // Long torn anti-magic currents live behind the actors, in a separate parallax layer.
   c.globalAlpha = p * 0.46;
@@ -92,95 +131,184 @@ export function drawUnionSky(c: CanvasRenderingContext2D, s: AstaUnionState) {
   }
   c.restore();
 }
-/** Asta's ordinary 80px katana releases this SEPARATE distant cutting plane.
- * At release it incises sky-to-ground; eleven ticks later the principal impact opens it.
- * All procedural points depend only on the cinematic clock, never on combat randomness. */
+/** Smooth, tapered cleaving edge released by the sword. No zigzag pillar or beam.
+ * The ground trench and separated sky advance with the same traveling crescent. */
 export function drawRemoteEquinox(
   c: CanvasRenderingContext2D,
   s: AstaUnionState,
 ) {
-  const { plane } = astaUnionScene(s),
-    t = s.tick;
-  if (!plane.released || t > b.outro + 28) return;
-  const age = t - b.release,
-    impact = t - b.impact,
-    fade = 1 - u(t, b.outro, b.outro + 28);
-  const top = plane.top,
-    bottom = plane.bottom,
-    x = plane.x,
-    progress = u(age, 0, 5);
-  const end = top + (bottom - top) * progress;
-  const open = impact < 0 ? 0 : Math.sin(Math.PI * u(impact, 0, 60));
-  const width = impact < 0 ? 2 : 14 + open * 23;
+  const cut = equinoxCut(s);
+  if (!cut.active) return;
+  const { front, back, facing: f } = cut,
+    t = s.tick,
+    age = t - b.release,
+    impact = t - b.impact;
   c.save();
-  c.globalAlpha = fade;
-  const edge: Point[] = Array.from({ length: 24 }, (_, i) => {
-    const y = top + ((end - top) * i) / 23,
-      notch = (((i * 37 + Math.floor(age / 3) * 11) % 17) - 8) * 0.6;
-    return [x + notch + ((i % 3) - 1) * open * 5, y];
-  });
-  const band = (w: number, color: string) =>
+  // Perspective fissure left by the lower tip, from Asta's release to the moving edge.
+  const groundEnd = cut.floorX,
+    start = cut.origin[0],
+    distance = Math.max(0, (groundEnd - start) * f);
+  c.globalAlpha = cut.residue;
+  if (distance > 2 && cut.bottom >= 577) {
     shape(
       c,
       [
-        ...edge.map(([px, py]) => [px - w, py] as Point),
-        ...edge.map(([px, py]) => [px + w, py] as Point).reverse(),
+        [start, 579],
+        [groundEnd, 577],
+        [groundEnd - f * 26, 604],
+        [start + f * 12, 583],
       ],
-      color,
+      "#080a12",
     );
-  band(width + 6, "#6e244baa");
-  band(width + 2, "#b94a6bcc");
-  band(width, "#05060c");
-  if (impact >= 0) {
-    // Directional pressure sheets, not an opaque circular explosion.
-    for (let k = 0; k < 3; k++) {
-      const p = u(impact, k * 4, 35 + k * 4);
-      if (!p || p >= 1) continue;
-      c.globalAlpha = fade * (1 - p) * 0.65;
-      for (const side of [-1, 1]) {
-        const reach = 60 + p * 300,
-          offset = side * reach;
-        shape(
-          c,
-          [
-            [x + side * width, top + 60],
-            [x + offset, top + 135],
-            [x + offset * 0.8, bottom - 85],
-            [x + side * width, bottom],
-            [x + offset * 0.76, bottom - 85],
-            [x + offset - side * 4, top + 138],
-          ],
-          k % 2 ? "#777080" : "#a295a0",
+    shape(
+      c,
+      [
+        [start, 577],
+        [groundEnd, 575],
+        [groundEnd - f * 8, 579],
+        [start, 581],
+      ],
+      "#79727b88",
+    );
+    for (let i = 0; i < 18; i++) {
+      const dx = 17 + i * 28 + ((i * i * 7) % 19);
+      if (dx > distance) break;
+      const localX = start + dx * f,
+        localAge = Math.max(
+          0,
+          age -
+            (dx / Math.max(1, Math.abs(cut.target - start))) *
+              (b.impact - b.release),
         );
-      }
-    }
-    c.globalAlpha = fade * (1 - u(impact, 16, 68));
-    for (let i = 0; i < 30; i++) {
-      const direction = i % 2 ? 1 : -1,
-        px = x + direction * (12 + impact * (1.2 + (i % 5))),
-        py = top + 25 + ((i * 47) % 440);
+      const flight = Math.min(36, localAge),
+        rise = Math.max(
+          0,
+          (3.2 + ((i * 13) % 17) * 0.1) * flight - 0.14 * flight * flight,
+        ),
+        x = localX + f * flight * (0.15 + (i % 3) * 0.25),
+        size = 5 + ((i * 7) % 9);
+      if (localAge > 36) continue;
       shape(
         c,
         [
-          [px, py],
-          [px + direction * (5 + (i % 12)), py - 8],
-          [px + direction * 4, py + 9],
+          [x, 579 - rise],
+          [x + f * size * 0.4, 572 - rise - (i % 3) * 2],
+          [x + f * size, 574 - rise],
+          [x + f * size * 0.7, 581 - rise],
         ],
-        i % 4 ? "#10101b" : "#84516a",
+        i % 3 ? "#31313b" : "#867b83",
       );
     }
-    const spread = 20 + u(impact, 0, 38) * 230;
-    c.globalAlpha = fade * (1 - u(impact, 18, 70)) * 0.8;
-    for (const side of [-1, 1])
+    // Low torn pressure sheets peel away from the moving incision, not a radial blast.
+    c.globalAlpha = cut.fade * 0.65;
+    for (let i = 0; i < 3; i++) {
+      const reach = 36 + i * 22,
+        x = groundEnd - f * (10 + i * 10);
       shape(
         c,
         [
-          [x, bottom - 2],
-          [x + side * spread, bottom - 10],
-          [x + side * (spread - 15), bottom + 2],
+          [x - f * reach, 581],
+          [x + f * 15, 574],
+          [x + f * (reach * 0.7), 545 - i * 9],
+          [x + f * (reach * 0.4), 571],
+          [x + f * reach, 578],
+          [x - f * reach * 0.4, 585],
         ],
-        "#1c1625",
+        i === 0 ? "#c9c1ce" : "#77718199",
       );
+    }
+  }
+  // A cleft in the sky follows the TOP of the traveling blade, never a fixed vertical line.
+  if (cut.growth >= 0.999) {
+    c.globalAlpha = cut.residue * 0.6;
+    const skyEnd = cut.ceilingX;
+    shape(
+      c,
+      [
+        [start, 102],
+        [skyEnd, 94],
+        [skyEnd - f * 10, 106],
+        [start, 108],
+      ],
+      "#070811",
+    );
+    shape(
+      c,
+      [
+        [start, 102],
+        [skyEnd, 92],
+        [skyEnd, 95],
+        [start, 104],
+      ],
+      "#77707d55",
+    );
+  }
+  if (cut.fade > 0) {
+    c.globalAlpha = cut.fade;
+    const rim = front.map(([x, y]) => [x + f * 3, y] as Point);
+    shape(c, [...rim, ...[...back].reverse()], "#462b46aa");
+    shape(c, [...front, ...[...back].reverse()], "#060711");
+    const flank = back.map(
+      ([x, y], i) =>
+        [x - f * (7 + Math.sin((i / 32) * Math.PI) * 15), y] as Point,
+    );
+    c.globalAlpha = cut.fade * 0.32;
+    shape(c, [...back, ...[...flank].reverse()], "#6d506e");
+    c.globalAlpha = cut.fade;
+    for (let i = 5; i < 29; i += 6) {
+      const [x, y] = back[i],
+        width = 22 + (i % 4) * 11;
+      shape(
+        c,
+        [
+          [x + f * 5, y - 15],
+          [x - f * width, y - 5],
+          [x - f * width * 0.65, y + 13],
+          [x, y + 7],
+        ],
+        "#0c0a15",
+      );
+    }
+    // A narrow continuous leading edge makes the surface read as a blade.
+    shape(c, [...rim, ...[...front].reverse()], "#a65b79bb");
+    const highlight = front.slice(8, 25),
+      edge = highlight.map(([x, y]) => [x + f * 1.5, y] as Point);
+    shape(c, [...edge, ...[...highlight].reverse()], "#b9a6b566");
+    // Trailing strokes peel from the curved edge and carry its direction of travel.
+    for (let i = 4; i < 30; i += 5) {
+      const [x, y] = back[i],
+        length = 18 + (i % 4) * 10;
+      shape(
+        c,
+        [
+          [x, y],
+          [x - f * length, y + 8],
+          [x - f * (length * 0.6), y + 3],
+        ],
+        "#1b1026aa",
+      );
+    }
+  }
+  if (impact >= 0 && impact < 24) {
+    const birth = astaUnionScene({ ...s, tick: b.impact }).victim;
+    const x = birth.x,
+      y = birth.y - 75,
+      p = impact / 24;
+    c.globalAlpha = (1 - p) * 0.75;
+    // Thin slanted shear sheets at the contact, with no enclosing shield outline.
+    for (let i = 0; i < 4; i++) {
+      const span = 35 + p * (130 + i * 19),
+        dy = (i - 1.5) * 16;
+      shape(
+        c,
+        [
+          [x - f * span * 0.5, y - span * 0.6 + dy],
+          [x + f * span, y + span * 0.35 + dy],
+          [x + f * span * 0.8, y + span * 0.32 + dy],
+        ],
+        i % 2 ? "#8f8292" : "#17101f",
+      );
+    }
   }
   c.restore();
 }

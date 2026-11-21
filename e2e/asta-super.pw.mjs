@@ -49,6 +49,19 @@ async function record(page) {
       const d = { ...c.dataset },
         t = +d.astaUnionTick;
       s.trace.push(d);
+      if (t >= 824 && !s.finale) {
+        const chunks = [],
+          rec = new MediaRecorder(c.captureStream(30), {
+            mimeType: "video/webm;codecs=vp8",
+          });
+        s.finale = { chunks, rec, stopped: false };
+        rec.ondataavailable = (e) => chunks.push(e.data);
+        rec.start();
+      }
+      if (t >= 1032 && s.finale && !s.finale.stopped) {
+        s.finale.stopped = true;
+        s.finale.rec.stop();
+      }
       const key =
         t >= 0
           ? d.astaUnionPhase
@@ -65,7 +78,7 @@ async function record(page) {
       }
       for (const at of [
         38, 47, 120, 136, 196, 218, 256, 292, 330, 398, 436, 450, 513, 606, 646,
-        686, 750, 781, 850, 905, 945, 956, 974, 1048, 1082,
+        686, 750, 781, 850, 905, 942, 944, 948, 952, 956, 974, 1048, 1082,
       ]) {
         const key = "frame-" + at;
         if (t >= at && t <= at + 2 && !seen.has(key)) {
@@ -97,6 +110,31 @@ async function save(page, name) {
     dir + "/" + name + ".webm",
     Buffer.from(data.video.split(",")[1], "base64"),
   );
+  const finale = await page.evaluate(
+    () =>
+      new Promise((resolve) => {
+        const movie = window.superCapture.finale;
+        if (!movie) {
+          resolve(null);
+          return;
+        }
+        const read = () => {
+          const r = new FileReader();
+          r.onload = () => resolve(r.result);
+          r.readAsDataURL(new Blob(movie.chunks, { type: "video/webm" }));
+        };
+        if (movie.stopped) read();
+        else {
+          movie.rec.onstop = read;
+          movie.rec.stop();
+        }
+      }),
+  );
+  if (finale)
+    writeFileSync(
+      dir + "/" + name + "-equinox.webm",
+      Buffer.from(finale.split(",")[1], "base64"),
+    );
   data.frames.forEach((f) =>
     writeFileSync(
       dir + "/" + name + "-" + f.key + ".png",
@@ -164,6 +202,15 @@ test("Black Meteorite confirms into Liebe, four-sword Devil Union and Equinox, t
   );
   expect(ranged.length).toBeGreaterThan(20);
   expect(ranged.every((d) => +d.equinoxGap >= 500)).toBe(true);
+  const travel = data.trace.filter(
+    (d) => +d.astaUnionTick >= 942 && +d.astaUnionTick <= 956,
+  );
+  expect(
+    new Set(travel.map((d) => Math.round(+d.equinoxWaveX))).size,
+  ).toBeGreaterThan(3);
+  expect(
+    Math.abs(+travel[0].equinoxWaveX - +travel[0].equinoxOriginX),
+  ).toBeLessThan(60);
   await c.screenshot({ path: dir + "/restored.png" });
 });
 test("Standing guard and long whiff refuse the cinematic and spend one Super", async ({

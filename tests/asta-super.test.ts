@@ -213,7 +213,7 @@ describe("Asta R: Black Meteorite into Devil Union", () => {
       const plane = astaEquinoxPlane({ ...s, tick: 945 });
       expect(plane.top).toBeLessThan(150);
       expect(plane.bottom).toBe(FLOOR);
-      expect(plane.impact - plane.release).toBe(11);
+      expect(plane.impact - plane.release).toBe(14);
       expect(astaUnionScene({ ...s, tick: 956 }).victim.x).toBe(plane.x);
       expect(astaUnionConfig.hits.filter((h) => h.tick >= 945)).toEqual([
         {

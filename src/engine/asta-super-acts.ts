@@ -26,7 +26,7 @@ export const unionBeats = {
   retreat: 824,
   charge: 872,
   equinox: 932,
-  release: 945,
+  release: 942,
   impact: 956,
   outro: 1004,
   partial: 1040,

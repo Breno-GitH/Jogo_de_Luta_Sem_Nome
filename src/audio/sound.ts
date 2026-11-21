@@ -401,7 +401,7 @@ export class Sound {
     this.rocksTick = ticks;
     if(this.owner !== match || unionTick < this.astaTick) this.astaTick=-1;
     if(unionTick>=0 && unionTick>this.astaTick) {
-      const cues:[number,Cue][]=[...unionContacts.map(h=>[h.tick,h.kind==="explosion"?"astaEquinox":h.kind==="meteorite"?"astaMeteor":"astaCut"] as [number,Cue]),[astaBeats.union,"astaUnion"],[astaBeats.pact,"astaUnion"]];
+      const cues:[number,Cue][]=[...unionContacts.map(h=>[h.tick,h.kind==="explosion"?"astaEquinox":h.kind==="meteorite"?"astaMeteor":"astaCut"] as [number,Cue]),[astaBeats.union,"astaUnion"],[astaBeats.pact,"astaUnion"],[astaBeats.release,"astaCut"]];
       for(const [at,cue]of cues)if(at>this.astaTick&&at<=unionTick)this.play(cue);
     }
     this.astaTick=unionTick;

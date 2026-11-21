@@ -477,7 +477,12 @@ export function drawAstaUnionScreen(
   c.save();
   c.fillStyle = "#080b15";
   c.fillRect(0, 135, 1280, 12);
-  c.fillRect(0, 590, 1280, 12);
+  c.fillRect(
+    0,
+    s.tick >= beats.release && s.tick < beats.outro + 28 ? 602 : 590,
+    1280,
+    s.tick >= beats.release && s.tick < beats.outro + 28 ? 4 : 12,
+  );
   if (last && s.tick - last.tick < 2) {
     c.fillStyle = last.kind === "explosion" ? "#d2cbd424" : "#b4a8b617";
     c.fillRect(0, 147, 1280, 443);

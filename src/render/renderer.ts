@@ -1,3 +1,4 @@
+import {equinoxCut} from "./asta-equinox-geometry";
 import { astaUnionConfig, astaUnionScene } from "../engine/asta-super";
 import { astaSuperSheets, drawAstaUnionBackdrop, drawLiebeManifestation, drawAstaUnionLocal, drawAstaUnionImpact, drawAstaUnionScreen } from "./asta-super-fx";
 import { assetBase } from "../asset-base";
@@ -350,6 +351,9 @@ export class Renderer {
     this.canvas.dataset.astaUnionPhase = unionStage?.phase ?? "";
     this.canvas.dataset.equinoxGap = String(unionStage ? Math.abs(unionStage.attacker.x-unionStage.plane.x) : 0);
     this.canvas.dataset.equinoxReleased = String(unionStage?.plane.released ?? false);
+    const cut=union&&unionStage&&union.tick>=unionStage.plane.release?equinoxCut(union):undefined;
+    this.canvas.dataset.equinoxWaveX=String(cut?.noseX??-1);
+    this.canvas.dataset.equinoxOriginX=String(cut?.origin[0]??-1);
     this.canvas.dataset.astaForm = unionStage?.form ?? (self.state === "attack" && self.moveId === "astaBlackMeteorite" && self.stateFrame < 36 ? "black" : "base");
     this.canvas.dataset.alienXTick = String(alienX?.tick ?? -1);
     this.canvas.dataset.pandemoniumTick = String(pandemonium?.tick ?? -1);

@@ -32,7 +32,7 @@ try{
    let key=t>=0?d.astaUnionPhase:d.move==="astaBlackMeteorite"?"opener":"";
    if(t>=956&&t<=959)key="impact";
    if(key&&!seen.has(key)){seen.add(key);s.frames.push({key,png:c.toDataURL(),state:d});}
-   for(const at of [4,14,38,47,120,136,196,218,256,292,330,398,436,450,513,606,646,686,750,781,850,905,945,956,974,1048,1082]) {
+   for(const at of [4,14,38,47,120,136,196,218,256,292,330,398,436,450,513,606,646,686,750,781,850,905,942,944,948,952,956,974,1048,1082]) {
     const detail="frame-"+at;
     if(t>=at&&t<=at+2&&!seen.has(detail)){seen.add(detail);s.frames.push({key:detail,png:c.toDataURL(),state:d});}
    }
