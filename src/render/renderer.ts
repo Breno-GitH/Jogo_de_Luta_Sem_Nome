@@ -348,6 +348,8 @@ export class Renderer {
     this.canvas.dataset.alienXVisual = alienX && this.effects ? alienXVisualPhase(alienX.tick) : "";
     this.canvas.dataset.astaUnionTick = String(union?.tick ?? -1);
     this.canvas.dataset.astaUnionPhase = unionStage?.phase ?? "";
+    this.canvas.dataset.equinoxGap = String(unionStage ? Math.abs(unionStage.attacker.x-unionStage.plane.x) : 0);
+    this.canvas.dataset.equinoxReleased = String(unionStage?.plane.released ?? false);
     this.canvas.dataset.astaForm = unionStage?.form ?? (self.state === "attack" && self.moveId === "astaBlackMeteorite" && self.stateFrame < 36 ? "black" : "base");
     this.canvas.dataset.alienXTick = String(alienX?.tick ?? -1);
     this.canvas.dataset.pandemoniumTick = String(pandemonium?.tick ?? -1);
@@ -558,7 +560,7 @@ export class Renderer {
       drawKingWillArena(c, conquerors, this.pressureStage, this.prefersReducedMotion.matches);
     if (union) {
       if(this.effects && this.astaEffects) drawAstaUnionBackdrop(c,union);
-      drawLiebeManifestation(c,union,this.sprites.get("asta/r-liebe.png"));
+      drawLiebeManifestation(c,union,this.sprites);
     }
     if (pandemonium && abyss) {
       if (abyss.justiceTick === undefined) {
@@ -701,7 +703,7 @@ export class Renderer {
       const limbs = luffyAttackLimbs(f);
       if (this.effects && limbs.length && f.move)
         paintLuffyTrails(c, limbs, f.stateFrame, f.move);
-      if(f.asta && this.effects && this.astaEffects) drawAstaUnionLocal(c,f,this.presentations[i].animator,"behind");
+      if(f.asta && this.effects && this.astaEffects) drawAstaUnionLocal(c,f,this.presentations[i].animator,"behind",image);
       // Causality flows behind the body and weapon so its dark volume never hides Asta's face or hands.
       if(f.asta && this.effects && this.astaEffects && f.moveId==="astaCausalityBreak")
         drawAstaAntimagic(c,f,match.frame);
@@ -1077,7 +1079,7 @@ export class Renderer {
         c.font = "11px monospace";
         c.fillStyle = i === 0 ? "#e5b16b" : "#73cbd5";
         c.fillText(
-          f.asta ? `BLACK METEORITE · ${f.meter >= astaUnionConfig.cost ? `PRONTA · ${this.superKey}` : Math.floor(f.meter)+"%"}` : f.domination ? `PANDEMONIUM · ${f.meter >= pandemoniumConfig.cost ? `PRONTA · ${this.superKey}` : Math.floor(f.meter) + "%"}` :
+          f.asta ? `DEVIL UNION · ${f.meter >= astaUnionConfig.cost ? `PRONTA · ${this.superKey}` : Math.floor(f.meter)+"%"}` : f.domination ? `PANDEMONIUM · ${f.meter >= pandemoniumConfig.cost ? `PRONTA · ${this.superKey}` : Math.floor(f.meter) + "%"}` :
           f.data.id === benId ? `ALIEN X · ${f.meter >= f.meterMaximum ? `PRONTA · ${this.superKey}` : Math.floor(100 * f.meter / f.meterMaximum) + "%"}` : f.data.id === "kaneki"
             ? `CENTIPEDE · ${f.meter >= centipedeConfig.cost ? `PRONTA · ${this.superKey}` : Math.floor(100 * f.meter / centipedeConfig.cost) + "%"}`
             : f.data.id === "luffy"

@@ -5,7 +5,7 @@ const url="http://localhost/2025/M.S.F.D/";mkdirSync(out,{recursive:true});
 const browser=await chromium.launch({channel:"chrome",headless:true});
 try{
  const a=await browser.newPage({viewport:{width:1440,height:1100}}),b=await browser.newPage({viewport:{width:1440,height:1100}});
- for(const p of[a,b]){await p.goto(url,{waitUntil:"domcontentloaded"});await p.locator("#online").click();await expect(p.locator("#app")).toHaveAttribute("data-connection","connected");}
+ for(const p of[a,b]){await p.goto(url,{waitUntil:"domcontentloaded"});await p.locator("#online").click();await expect(p.locator("#app")).toHaveAttribute("data-connection","connected",{timeout:20000});}
  await a.locator("#create-room").click();const code=(await a.locator("#lobby-code").innerText()).trim();
  await b.locator("#room-code").fill(code);await b.locator("#join-room").click();await expect(b.locator("#lobby-code")).toHaveText(code);
  for(const[p,id]of[[a,"asta"],[b,"samurai"]]){await p.locator("#online-"+id).check();await p.locator("#online-confirm").click();await p.locator("#online-ready").click();}
@@ -30,14 +30,19 @@ try{
   const s=window.liveMovie={chunks,rec,frames:[],active:true};rec.ondataavailable=e=>chunks.push(e.data);rec.start();
   const seen=new Set();function poll(){const d={...c.dataset},t=+d.astaUnionTick;
    let key=t>=0?d.astaUnionPhase:d.move==="astaBlackMeteorite"?"opener":"";
-   if(t>=230&&t<=233)key="impact";
+   if(t>=956&&t<=959)key="impact";
    if(key&&!seen.has(key)){seen.add(key);s.frames.push({key,png:c.toDataURL(),state:d});}
+   for(const at of [4,14,38,47,120,136,196,218,256,292,330,398,436,450,513,606,646,686,750,781,850,905,945,956,974,1048,1082]) {
+    const detail="frame-"+at;
+    if(t>=at&&t<=at+2&&!seen.has(detail)){seen.add(detail);s.frames.push({key:detail,png:c.toDataURL(),state:d});}
+   }
    if(s.active)requestAnimationFrame(poll);
   }poll();
  });
+ await a.locator("canvas").screenshot({path:out+"/base-before-R.png"});
  await a.keyboard.press("r",{delay:40});
  for(const p of[a,b])await expect(p.locator("canvas")).toHaveAttribute("data-capture","astaUnion");
- await expect(a.locator("canvas")).toHaveAttribute("data-capture","none",{timeout:9000});
+ await expect(a.locator("canvas")).toHaveAttribute("data-capture","none",{timeout:25000});
  for(const p of[a,b]){
   await expect(p.locator("canvas")).toHaveAttribute("data-p2-health",String(before-340));
   await expect(p.locator("canvas")).toHaveAttribute("data-asta-form","base");

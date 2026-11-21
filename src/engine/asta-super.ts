@@ -4,6 +4,13 @@ import type { FuryState } from "./goku-fury";
 import type { AstaSword } from "./asta-stances";
 import sockets from "../data/asta-sockets.json";
 import weapons from "../data/asta-weapons.json";
+import {
+  unionBeats as beats,
+  unionChapters,
+  unionContacts,
+  unionPhase,
+  unionPose,
+} from "./asta-super-acts";
 
 export function astaUnionBlade(
   sheet: string,
@@ -25,25 +32,18 @@ export function astaUnionBlade(
 export function astaMeteoriteBlade(t: number) {
   return astaUnionBlade(
     "r-black-flight",
-    Math.max(0, Math.min(3, Math.floor((t - 14) / 3))),
+    t < 17 ? 0 : t < 20 ? 1 : t < 24 ? 2 : 3,
     "slayer",
   );
 }
 
 export const astaUnionId = "astaBlackMeteorite";
-export const astaUnionName = "Black Meteorite · Devil Union";
+export const astaUnionName = "Devil Union — Infinite Slash Equinox";
 export const astaUnionConfig = {
   cost: 100,
-  duration: 278,
+  duration: beats.end,
   minimumComboScale: 0.55,
-  hits: [
-    { tick: 4, damage: 60, kind: "meteorite", hold: 6 },
-    { tick: 100, damage: 36, kind: "rush", hold: 3 },
-    { tick: 126, damage: 36, kind: "cross", hold: 3 },
-    { tick: 154, damage: 38, kind: "rise", hold: 4 },
-    { tick: 184, damage: 40, kind: "dive", hold: 4 },
-    { tick: 230, damage: 130, kind: "explosion", hold: 8 },
-  ],
+  hits: unionContacts.filter((h) => h.damage > 0),
 } as const;
 /** Guardable, finite opener. Its real swept sword hit owns confirmation, never distance alone. */
 export const astaUnionMove: Move = {
@@ -117,6 +117,8 @@ const clamp = (n: number, a: number, b: number) => Math.max(a, Math.min(b, n));
 const mix = (a: number, b: number, p: number) => a + (b - a) * p;
 const u = (t: number, a: number, b: number) => clamp((t - a) / (b - a), 0, 1);
 type Key = readonly [number, number, number];
+/** Piecewise travel is authored in world coordinates, including the launch/apex/fall.
+ * Roots are never swapped by a camera cut. Every segment starts at the previous endpoint. */
 function track(t: number, keys: Key[]) {
   for (let i = 1; i < keys.length; i++)
     if (t <= keys[i][0]) {
@@ -128,176 +130,222 @@ function track(t: number, keys: Key[]) {
   const k = keys.at(-1)!;
   return { x: k[1], y: k[2] };
 }
-export const astaUnionPhases = [
-  [0, "meteorite"],
-  [22, "liebe"],
-  [48, "union"],
-  [82, "rush"],
-  [112, "cross"],
-  [140, "rise"],
-  [168, "dive"],
-  [198, "equinoxCharge"],
-  [222, "equinox"],
-  [244, "return"],
-] as const;
-export function astaUnionPhase(t: number) {
-  return (
-    [...astaUnionPhases].reverse().find(([start]) => t >= start)?.[1] ??
-    "meteorite"
-  );
+export const astaUnionPhases = unionChapters;
+export const astaUnionPhase = unionPhase;
+/** A remote cutting plane, independent of Asta's physical katana and cosmetic fragments.
+ * The plane is locked by the serialized target/clock and has exactly one damage event.
+ * The release precedes that event: neither the swing nor its particles can hit again. */
+export function astaEquinoxPlane(s: AstaUnionState) {
+  const center = clamp(s.targetX, 480, 800);
+  return {
+    x: center + 215 * s.facing,
+    top: 115,
+    bottom: 580,
+    release: beats.release,
+    impact: beats.impact,
+    released: s.tick >= beats.release,
+    impacted: s.tick >= beats.impact,
+  };
 }
-/** All camera, forms, weapon commits and victim paths derive from this serialized 60 Hz clock.
- * No render clock, particle or random value can apply damage or move a combatant. */
 export function astaUnionScene(s: AstaUnionState) {
   const t = s.tick,
     f = s.facing,
-    stage = clamp(s.targetX, 350, 930);
+    stage = clamp(s.targetX, 480, 800);
+  const x = (offset: number) => stage + offset * f;
   const vkeys: Key[] = [
     [0, s.targetX, s.targetY],
-    [14, stage + 40 * f, 535],
-    [22, stage + 65 * f, 580],
-    [82, stage + 65 * f, 580],
-    [100, stage + 75 * f, 570],
-    [112, stage + 100 * f, 520],
-    [126, stage + 60 * f, 490],
-    [140, stage + 95 * f, 450],
-    [154, stage + 100 * f, 350],
-    [168, stage + 130 * f, 300],
-    [184, stage + 145 * f, 425],
-    [198, stage + 120 * f, 575],
-    [222, stage + 115 * f, 575],
-    [230, stage + 130 * f, 575],
-    [246, stage + 220 * f, 450],
-    [260, stage + 270 * f, 480],
-    [278, stage + 290 * f, 580],
+    [22, clamp(s.targetX + 48 * f, 62, 1218), 540],
+    [47, clamp(s.targetX + 65 * f, 62, 1218), 520],
+    [70, clamp(s.targetX + 80 * f, 62, 1218), 340],
+    [90, x(165), 480],
+    [110, x(150), 580],
+    [140, x(145), 580],
+    [158, x(142), 580],
+    [195, x(130), 580],
+    [232, x(125), 580],
+    [256, x(145), 575],
+    [272, x(175), 560],
+    [292, x(155), 565],
+    [312, x(175), 550],
+    [330, x(180), 440],
+    [352, x(190), 300],
+    [380, x(165), 280],
+    [398, x(165), 300],
+    [416, x(210), 345],
+    [436, x(235), 350],
+    [450, x(260), 330],
+    [468, x(230), 280],
+    [484, x(240), 230],
+    [513, x(220), 270],
+    [538, x(170), 345],
+    [580, x(130), 480],
+    [588, x(130), 480],
+    [606, x(140), 460],
+    [622, x(160), 445],
+    [635, x(130), 430],
+    [646, x(120), 405],
+    [666, x(145), 390],
+    [671, x(145), 380],
+    [686, x(130), 360],
+    [705, x(135), 300],
+    [724, x(140), 195],
+    [750, x(140), 160],
+    [766, x(135), 180],
+    [781, x(140), 220],
+    [798, x(170), 250],
+    [824, x(210), 310],
+    [872, x(215), 390],
+    [912, x(215), 450],
+    [932, x(215), 490],
+    [945, x(215), 515],
+    [956, x(215), 535],
+    [978, x(315), 440],
+    [1004, x(350), 510],
+    [1024, x(355), 580],
+    [1060, x(345), 580],
+    [1100, x(345), 580],
   ];
   const victim = track(t, vkeys);
-  const contact = (
-    at: number,
-    sheet: string,
-    frame: number,
-    sword: AstaSword,
-    grounded = false,
-  ): Key => {
-    const target = track(at, vkeys),
-      p = astaUnionBlade(sheet, frame, sword, 0.72).b;
-    return [at, target.x - p.x * f, grounded ? 580 : target.y - 75 - p.y];
+  const contact = (at: number, grounded = false, face = f): Key => {
+    const p = unionPose(at, s.openingTick),
+      v = track(at, vkeys);
+    const tip = astaUnionBlade(p.sheet, p.frame, p.sword, 0.72).b;
+    return [at, v.x - tip.x * face, grounded ? 580 : v.y - 75 - tip.y];
   };
-  let clip = "unionMeteorite",
-    tick = Math.min(21, Math.max(0, s.openingTick - 14) + t),
-    sword: AstaSword = "slayer";
   const akeys: Key[] = [
     [0, s.originX, 580],
-    [22, stage - 45 * f, 580],
-    [82, stage - 45 * f, 580],
-    contact(100, "r-union-rush", 2, "dweller"),
-    [112, stage + 10 * f, 560],
-    contact(126, "r-union-rush", 5, "dweller"),
-    [140, stage + 5 * f, 490],
-    contact(154, "r-union-rise", 3, "destroyer"),
-    [168, stage + 45 * f, 280],
-    contact(184, "r-union-dive", 3, "slayer"),
-    [198, stage + 30 * f, 580],
-    [222, stage + 30 * f, 580],
-    contact(230, "r-equinox", 3, "slasher", true),
-    [244, stage + 55 * f, 580],
-    [278, stage + 55 * f, 580],
+    [22, clamp(s.targetX - 35 * f, 62, 1218), 580],
+    contact(47, true),
+    [66, x(-70), 580],
+    [90, x(-100), 580],
+    [158, x(-100), 580],
+    [232, x(-100), 580],
+    contact(256, true),
+    [272, x(45), 580],
+    contact(292, true),
+    [312, x(40), 580],
+    contact(330),
+    [352, x(55), 430],
+    [380, x(100), 300],
+    contact(398),
+    [416, x(95), 340],
+    [436, x(80), 340],
+    [450, x(120), 310],
+    contact(468),
+    [484, x(130), 230],
+    contact(513),
+    [538, x(95), 300],
+    [580, x(15), 480],
+    contact(588),
+    contact(606),
+    [622, x(180), 400],
+    contact(635, false, -f),
+    contact(646, false, -f),
+    [666, x(55), 350],
+    contact(671),
+    contact(686),
+    contact(705),
+    [724, x(65), 235],
+    [744, x(125), 115],
+    [766, x(135), 100],
+    contact(781),
+    [798, x(70), 310],
+    [824, x(40), 480],
+    [837, x(-55), 440],
+    [855, x(-220), 480],
+    [872, x(-300), 580],
+    [932, x(-300), 580],
+    [1004, x(-300), 580],
+    [1100, x(-300), 580],
   ];
   const attacker = track(t, akeys),
-    phase = astaUnionPhase(t);
-  if (t >= 22 && t < 48) {
-    clip = "unionBlackBrace";
-    tick = t - 22;
-  } else if (t >= 48 && t < 82) {
-    clip = t < 54 ? "unionPartialReady" : "unionChange";
-    tick = t - (t < 54 ? 48 : 54);
-  } else if (t >= 82 && t < 112) {
-    clip = "unionRush";
-    tick = t - 82;
-    sword = "dweller";
-  } else if (t >= 112 && t < 140) {
-    clip = "unionCross";
-    tick = t - 112;
-    sword = "dweller";
-  } else if (t >= 140 && t < 168) {
-    clip = "unionRise";
-    tick = t - 140;
-    sword = "destroyer";
-  } else if (t >= 168 && t < 198) {
-    clip = "unionDive";
-    tick = t - 168;
-    sword = "slayer";
-  } else if (t >= 198 && t < 222) {
-    clip = "unionEquinoxCharge";
-    tick = t - 198;
-    sword = "slasher";
-  } else if (t >= 222 && t < 244) {
-    clip = "unionEquinox";
-    tick = t - 222;
-    sword = "slasher";
-  } else if (t >= 244) {
-    clip = "unionReturn";
-    tick = t - 244;
-    sword = "slasher";
-  }
-  if (t >= 257 && t < 267) {
-    clip = "unionPartialReturn";
-    tick = t - 257;
-  } else if (t >= 267) {
-    clip = "unionBaseReturn";
-    tick = t - 267;
-  }
-  const hits = astaUnionConfig.hits;
-  const age = Math.min(
-    ...hits.filter((h) => h.tick <= t).map((h) => t - h.tick),
-  );
-  const shake =
-    age < 6 ? (t % 2 ? 1 : -1) * (t >= 230 ? 4 : 2) * (1 - age / 6) : 0;
-  const focus = t >= 22 && t < 82 ? u(t, 22, 36) * (1 - u(t, 72, 82)) : 0;
-  const scale =
-    1 + 0.28 * focus + (t >= 198 && t < 230 ? 0.13 * u(t, 198, 214) : 0);
-  const camera = {
-    x: clamp((attacker.x + victim.x) / 2, 640 / scale, 1280 - 640 / scale),
-    y: mix(
-      580 - 220 / scale,
-      (Math.min(attacker.y, victim.y) + Math.max(attacker.y, victim.y)) / 2 -
-        155,
-      t >= 112 && t < 198 ? 0.65 : 0,
-    ),
-    scale,
-    shakeX: shake,
-    shakeY: -shake * 0.4,
-  };
-  const form =
-    t < 48 ? "black" : t < 82 ? "changing" : t < 244 ? "union" : "return";
+    pose = unionPose(t, s.openingTick);
+  const facing = t >= 622 && t < 666 ? -f : f;
+  // During the crossover Asta flies through the gap; the hand/weapon faces the target.
+  const last = [...unionContacts].reverse().find((h) => t >= h.tick);
+  const age = last ? t - last.tick : 1000;
+  const airborne = victim.y < 570;
   const vclip =
-    t < 22
-      ? "damageHeavy"
-      : t < 82
-        ? "damageCrouch"
-        : t < 140
+    t >= 1024
+      ? "downed"
+      : t >= 956
+        ? "falling"
+        : t >= 945
           ? "damageAir"
-          : t < 168
-            ? "launched"
-            : t < 198
-              ? "falling"
-              : t < 230
-                ? "damageHeavy"
-                : "falling";
-  // 1/16 px quantization is part of the simulation, not a client rendering decision.
+          : t >= 781
+            ? "falling"
+            : airborne
+              ? age < 9
+                ? "damageAir"
+                : "launched"
+              : t >= 110 && t < 232
+                ? t < 145
+                  ? "damageCrouch"
+                  : t < 180
+                    ? "guard"
+                    : "damageHeavy"
+                : "damageHeavy";
+  const focus = u(t, 90, 110) * (1 - u(t, 218, 240));
+  const reveal = u(t, 198, 218) * (1 - u(t, 222, 232));
+  const final = u(t, 824, 872) * (1 - u(t, 1004, 1100));
+  let scale = 1 + 0.2 * focus + 0.08 * reveal - 0.12 * final;
+  if (t >= 330 && t < 824) scale = 1.03;
+  const pairCenter = (attacker.x + victim.x) / 2;
+  const desiredX = mix(pairCenter, attacker.x + 35 * f, focus * 0.6);
+  // Fit both actors and their wings without sudden hard camera cuts.
+  const end = u(t, 1004, 1100);
+  const elevation = Math.max(0, 580 - Math.min(attacker.y, victim.y));
+  const maximumRoot = Math.max(attacker.y, victim.y);
+  const minimumTop = Math.min(attacker.y - 250, victim.y - 155);
+  scale = Math.min(scale, 420 / (maximumRoot - minimumTop));
+  const lower = maximumRoot - 220 / scale,
+    upper = minimumTop + 205 / scale;
+  const y = clamp(
+    580 - 220 / scale - elevation * 0.52,
+    lower,
+    Math.max(lower, upper),
+  );
+  const amount =
+    age < 6 ? (last?.kind === "explosion" ? 4 : 1.8) * (1 - age / 6) : 0;
+  const camera = {
+    x: mix(desiredX, 640, end),
+    y: mix(y, 360, end),
+    scale: mix(scale, 1, end),
+    shakeX: (t % 2 ? 1 : -1) * amount,
+    shakeY: ((t % 3) - 1) * amount * 0.4,
+  };
   const q = (n: number) => Math.round(n * 16) / 16;
+  const form =
+    t < 158
+      ? "black"
+      : t < 232
+        ? "changing"
+        : t < 1004
+          ? "union"
+          : t < 1070
+            ? "return"
+            : "base";
   return {
-    phase,
+    phase: unionPhase(t),
     form,
-    sword,
+    sword: pose.sword,
     camera,
-    attacker: { x: q(attacker.x), y: q(attacker.y), facing: f, clip, tick },
+    plane: astaEquinoxPlane(s),
+    contact: last,
+    contactAge: age,
+    attacker: {
+      x: q(attacker.x),
+      y: q(attacker.y),
+      facing,
+      clip: pose.clip,
+      tick: pose.tick,
+    },
     victim: {
       x: q(victim.x),
       y: q(victim.y),
       facing: -f,
       clip: vclip,
-      tick: age < 8 ? Math.max(0, age) : t % 18,
+      tick: age < 9 ? age : t % 24,
     },
   };
 }

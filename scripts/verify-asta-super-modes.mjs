@@ -1,6 +1,6 @@
 import {chromium,expect}from"@playwright/test";
 import{mkdirSync,writeFileSync}from"node:fs";
-const out="deployment/msfd-work/asta-super-modes",url=process.env.MSFD_TEST_URL??"http://localhost/2025/M.S.F.D/";mkdirSync(out,{recursive:true});
+const out=process.env.ASTA_MODE_EVIDENCE_DIR??"deployment/msfd-work/asta-super-modes",url=process.env.MSFD_TEST_URL??"http://localhost/2025/M.S.F.D/";mkdirSync(out,{recursive:true});
 const browser=await chromium.launch({channel:"chrome",headless:true});const results=[];
 try{
  for(const mode of["arcade","versus"]){
@@ -21,15 +21,16 @@ try{
    if(!["idle","walk","crouch","attack"].includes(d.physicsState)){await p.waitForTimeout(120);continue;}
    const gap=Math.abs(+d.playerX- +d.targetX),side=+d.playerX<+d.targetX?"d":"a";
    if(gap>75&&d.physicsState!=="attack"){await p.keyboard.down(side);await p.waitForTimeout(Math.min(500,(gap-60)/6.2*1000/60));await p.keyboard.up(side);}
-   if(+d.meter>=100){await p.keyboard.press("k",{delay:25});await p.waitForTimeout(230);await p.keyboard.press("r",{delay:35});attempts++;await p.waitForTimeout(350);}
+   if(+d.meter>=100){await c.screenshot({path:out+"/"+mode+"-before-R.png"});await p.keyboard.press("k",{delay:25});await p.waitForTimeout(230);await p.keyboard.press("r",{delay:35});attempts++;await p.waitForTimeout(350);}
    else{await p.keyboard.press(attempts%3?"j":"k",{delay:30});await p.waitForTimeout(360);attempts++;}
   }
   expect(await p.evaluate(()=>window.modeSuper.confirmed)).toBe(true);
-  await expect(c).toHaveAttribute("data-capture","none",{timeout:9000});
+  await expect(c).toHaveAttribute("data-capture","none",{timeout:26000});
   const data=await p.evaluate(()=>new Promise(resolve=>{const s=window.modeSuper;s.active=false;s.rec.onstop=()=>{const r=new FileReader();r.onload=()=>resolve({video:r.result,frames:s.frames});r.readAsDataURL(new Blob(s.chunks,{type:"video/webm"}));};s.rec.stop();}));
   writeFileSync(out+"/"+mode+".webm",Buffer.from(data.video.split(",")[1],"base64"));
   for(const f of data.frames)writeFileSync(out+"/"+mode+"-"+f.phase+".png",Buffer.from(f.png.split(",")[1],"base64"));
-  const state=await c.evaluate(c=>({...c.dataset}));results.push({mode,attempts,errors,state,phases:data.frames.map(f=>f.phase)});expect(errors).toEqual([]);await p.close();console.log(mode+" Super completed");
+  expect(new Set(data.frames.map(f=>f.phase)).size).toBe(13);
+  const state=await c.evaluate(c=>({...c.dataset}));expect(state.astaForm).toBe("base");expect(state.astaSword).toBe("slasher");results.push({mode,attempts,errors,state,phases:data.frames.map(f=>f.phase)});expect(errors).toEqual([]);await p.close();console.log(mode+" Super completed");
  }
  writeFileSync(out+"/results.json",JSON.stringify(results,null,2));
 }catch(e){console.error(e);process.exitCode=1;}finally{await browser.close();}

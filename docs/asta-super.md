@@ -1,5 +1,7 @@
 # Asta R — Black Meteorite / Devil Union
 
+> Registro da primeira versão. A timeline, a coreografia e Equinox desta versão foram substituídos pela [reconstrução 4.1](asta-super-41.md). Estes dados e gravações são mantidos para comparação histórica.
+
 Base: `6576cc145f1061f0a959cad56a9d5c11ff853740` (etapa 2.2). Branch: `codex/asta-black-meteorite-union`.
 
 Esta base ainda não possuía Super de Asta: o R estava reservado. A implementação acrescenta uma Super ao sistema cinematográfico existente, preservando os nove especiais e os quatro estilos de normais.

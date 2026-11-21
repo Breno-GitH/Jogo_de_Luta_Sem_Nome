@@ -1,3 +1,4 @@
+import {unionSwordChanges, unionContacts} from "./asta-super-acts";
 import type { KaguneId } from "./kagune";
 import { astaMoves } from "./asta";
 import { astaSpecialCommand,isAstaSpecial,isAstaAction,astaRuntimeMove,canStartAstaSpecial,spawnAstaSpecial,astaWaveVolume,astaProjectileMove } from "./asta-specials";
@@ -3012,7 +3013,7 @@ export class Match {
     }
     if (this.astaUnion && a.asta) {
       const union = astaUnionScene(this.astaUnion);
-      const drawAt = [82,140,168,198].find(at => this.astaUnion!.tick >= at && this.astaUnion!.tick < at+10);
+      const drawAt = unionSwordChanges.find(at => this.astaUnion!.tick >= at && this.astaUnion!.tick < at+10);
       if (drawAt !== undefined) {
         const age = this.astaUnion.tick-drawAt;
         if (!age && a.asta.equipped !== union.sword)
@@ -3042,6 +3043,10 @@ export class Match {
     if (pandemonium) {
       const beat = pandemoniumPrelude.find(contact => contact.tick === t);
       if (beat) pandemonium.hold = beat.hold;
+    }
+    if (astaUnion) {
+      const beat=unionContacts.find(contact=>contact.tick===t && !contact.damage);
+      if(beat) astaUnion.hold=beat.hold;
     }
     if (kirin && (t === kirinConfig.phases.storm || t === kirinConfig.phases.reveal || t === kirinConfig.phases.dive))
       this.effect("kirinCharge", a.x, a.y - 130, 9);

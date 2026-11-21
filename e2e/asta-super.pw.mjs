@@ -4,6 +4,7 @@ const dir =
   process.env.ASTA_SUPER_EVIDENCE_DIR ??
   "deployment/msfd-work/asta-super-arena";
 mkdirSync(dir, { recursive: true });
+test.setTimeout(65000);
 async function start(page) {
   const errors = [];
   page.on("pageerror", (e) => errors.push(e.message));
@@ -58,11 +59,14 @@ async function record(page) {
         seen.add(key);
         s.frames.push({ key, png: c.toDataURL(), state: d });
       }
-      if (t >= 230 && t <= 233 && !seen.has("impact")) {
+      if (t >= 956 && t <= 959 && !seen.has("impact")) {
         seen.add("impact");
         s.frames.push({ key: "impact", png: c.toDataURL(), state: d });
       }
-      for (const at of [38, 70, 100, 126, 154, 184, 214, 236, 264]) {
+      for (const at of [
+        38, 47, 120, 136, 196, 218, 256, 292, 330, 398, 436, 450, 513, 606, 646,
+        686, 750, 781, 850, 905, 945, 956, 974, 1048, 1082,
+      ]) {
         const key = "frame-" + at;
         if (t >= at && t <= at + 2 && !seen.has(key)) {
           seen.add(key);
@@ -116,8 +120,8 @@ test("Black Meteorite confirms into Liebe, four-sword Devil Union and Equinox, t
   await record(page);
   await page.keyboard.press("r");
   await expect(c).toHaveAttribute("data-capture", "astaUnion");
-  await expect(c).toHaveAttribute("data-asta-form", "union", { timeout: 4000 });
-  await expect(c).toHaveAttribute("data-capture", "none", { timeout: 8000 });
+  await expect(c).toHaveAttribute("data-asta-form", "union", { timeout: 6000 });
+  await expect(c).toHaveAttribute("data-capture", "none", { timeout: 25000 });
   await expect(c).toHaveAttribute("data-physics-state", "idle");
   await expect(c).toHaveAttribute("data-asta-form", "base");
   await expect(c).toHaveAttribute("data-asta-sword", "slasher");
@@ -136,12 +140,15 @@ test("Black Meteorite confirms into Liebe, four-sword Devil Union and Equinox, t
       "meteorite",
       "liebe",
       "union",
-      "rush",
-      "cross",
-      "rise",
-      "dive",
+      "slayer",
+      "dweller",
+      "destroyer",
+      "slasher",
+      "aerial",
+      "retreat",
       "equinoxCharge",
       "equinox",
+      "equinoxImpact",
       "impact",
       "return",
     ]),
@@ -150,8 +157,13 @@ test("Black Meteorite confirms into Liebe, four-sword Devil Union and Equinox, t
     new Set(
       data.trace.filter((d) => d.astaUnionTick !== "-1").map((d) => d.sheet),
     ).size,
-  ).toBeGreaterThanOrEqual(7);
+  ).toBeGreaterThanOrEqual(18);
   expect(errors).toEqual([]);
+  const ranged = data.trace.filter(
+    (d) => +d.astaUnionTick >= 872 && +d.astaUnionTick <= 956,
+  );
+  expect(ranged.length).toBeGreaterThan(20);
+  expect(ranged.every((d) => +d.equinoxGap >= 500)).toBe(true);
   await c.screenshot({ path: dir + "/restored.png" });
 });
 test("Standing guard and long whiff refuse the cinematic and spend one Super", async ({
@@ -192,11 +204,11 @@ test("Body choreography, Liebe and distinct forms remain readable with anti-magi
   await record(page);
   await page.keyboard.press("r");
   await expect(c).toHaveAttribute("data-capture", "astaUnion");
-  await expect(c).toHaveAttribute("data-capture", "none", { timeout: 8000 });
+  await expect(c).toHaveAttribute("data-capture", "none", { timeout: 25000 });
   const data = await save(page, "no-fx");
   expect(
     data.frames.filter((f) =>
-      ["rush", "rise", "dive", "equinox"].includes(f.key),
+      ["slayer", "dweller", "destroyer", "equinox"].includes(f.key),
     ),
   ).toHaveLength(4);
   await expect(c).toHaveAttribute("data-p2-health", "660");

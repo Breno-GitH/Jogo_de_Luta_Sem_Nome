@@ -1,7 +1,12 @@
+import {
+  unionBeats as beats,
+  unionContacts,
+  unionPose,
+} from "../engine/asta-super-acts";
+import { drawUnionSky, drawRemoteEquinox } from "./asta-equinox-fx";
 import type { Fighter } from "../engine/combat";
 import {
   astaUnionBlade,
-  astaUnionConfig,
   astaUnionId,
   astaUnionScene,
   type AstaUnionState,
@@ -11,7 +16,11 @@ import { astaSuperClips } from "./asta-super-animations";
 import sockets from "../data/asta-sockets.json";
 import weapons from "../data/asta-weapons.json";
 import { visibleAstaSword } from "../engine/asta-stances";
-export const astaSuperSheets = ["asta/r-liebe.png"];
+export const astaSuperSheets = [
+  "asta/r-liebe.png",
+  "asta/r41-liebe-partner.png",
+  "asta/r41-liebe-return.png",
+];
 type Point = readonly [number, number];
 const poly = (c: CanvasRenderingContext2D, p: Point[], color: string) => {
   c.fillStyle = color;
@@ -30,69 +39,51 @@ function seed(n: number) {
     return n / 4294967296;
   };
 }
-/** Rasterize cosmetics at two screen pixels per FX pixel, never blurred glow. */
-let raster: HTMLCanvasElement | undefined;
-function pixels(
-  c: CanvasRenderingContext2D,
-  paint: (b: CanvasRenderingContext2D) => void,
-) {
-  raster ??= document.createElement("canvas");
-  raster.width = 640;
-  raster.height = 360;
-  const b = raster.getContext("2d")!;
-  b.scale(0.5, 0.5);
-  paint(b);
-  c.save();
-  c.imageSmoothingEnabled = false;
-  c.drawImage(raster, 0, 0, 1280, 720);
-  c.restore();
-}
 export function drawAstaUnionBackdrop(
   c: CanvasRenderingContext2D,
   s: AstaUnionState,
 ) {
   const t = s.tick;
-  pixels(c, (b) => {
-    const darkness =
-      t < 22
-        ? 0.1
-        : t < 82
-          ? 0.22
-          : t < 198
-            ? 0.12
-            : t < 244
-              ? 0.25
-              : 0.12 * (1 - (t - 244) / 34);
-    b.fillStyle = `rgba(10,8,20,${darkness})`;
-    b.fillRect(0, 0, 1280, 720);
-    if (t < 22 || (t >= 82 && t < 198)) {
-      const rand = seed(17 + Math.floor(t / 3) * 397);
-      for (let i = 0; i < 17; i++) {
-        const y = 160 + rand() * 420,
-          x = rand() * 1280,
-          len = 30 + rand() * 110;
-        b.fillStyle = i % 3 ? "#11121d99" : "#93858d55";
-        b.fillRect(x, y, len, 2);
-      }
-    }
-  });
+  c.save();
+  c.fillStyle = `rgba(10,8,20,${t >= beats.liebe && t < beats.slayer ? 0.18 : 0.08})`;
+  c.fillRect(-400, -500, 2080, 1220);
+  c.restore();
+  drawUnionSky(c, s);
 }
 export function drawLiebeManifestation(
   c: CanvasRenderingContext2D,
   s: AstaUnionState,
-  atlas: CanvasImageSource | undefined,
+  atlases: ReadonlyMap<string, CanvasImageSource>,
 ) {
-  if (!atlas || s.tick < 22 || s.tick >= 76) return;
-  const scene = astaUnionScene(s),
-    age = s.tick - 22;
-  const frame = Math.min(5, Math.floor(age / 9));
-  const alpha = Math.min(1, age / 6, (54 - age) / 10);
+  const outro = s.tick >= beats.outro,
+    from = outro ? beats.outro : 78,
+    to = outro ? 1094 : 194;
+  if (s.tick < from || s.tick >= to) return;
+  const age = s.tick - from,
+    scene = astaUnionScene(s);
+  const name = outro
+    ? "r41-liebe-return"
+    : age < 12
+      ? "r-liebe"
+      : "r41-liebe-partner";
+  const atlas = atlases.get("asta/" + name + ".png");
+  if (!atlas) return;
+  const frame = outro
+    ? Math.min(5, Math.floor(age / 15))
+    : age < 12
+      ? Math.floor(age / 6)
+      : s.tick < 158
+        ? unionPose(s.tick, s.openingTick).frame
+        : 5;
+  const merge = outro ? 0 : Math.max(0, (s.tick - 158) / 36);
   c.save();
-  c.globalAlpha = Math.max(0, alpha);
+  c.globalAlpha = Math.max(0, Math.min(1, age / 8, (to - s.tick) / 12));
   c.imageSmoothingEnabled = false;
-  c.translate(scene.attacker.x - 74 * s.facing, scene.attacker.y - 12);
-  c.scale(s.facing, 1);
-  // Liebe has six physical wing/gesture poses, not a zoomed portrait.
+  c.translate(
+    scene.attacker.x + (118 - merge * 114) * s.facing,
+    scene.attacker.y + 4 - (outro && age > 72 ? (age - 72) * 1.5 : 0),
+  );
+  c.scale(-s.facing, 1);
   c.drawImage(
     atlas,
     (frame % 3) * 256,
@@ -168,17 +159,18 @@ function swordHistory(f: Fighter, a: Animator): { inner: Point; tip: Point }[] {
       sockets as Record<string, { x: number; y: number; angle: number }[]>
     )[id]?.[frame];
     if (!grip) continue;
+    const flip = scene.attacker.facing * f.facing;
     const dx = (scene.attacker.x - f.x) * f.facing,
       dy = scene.attacker.y - f.y;
     const angle = (grip.angle * Math.PI) / 180,
       len = weapons[scene.sword].reach;
     points.push({
       inner: [
-        dx + grip.x + Math.cos(angle) * len * 0.2,
+        dx + (grip.x + Math.cos(angle) * len * 0.2) * flip,
         dy + grip.y + Math.sin(angle) * len * 0.2,
       ],
       tip: [
-        dx + grip.x + Math.cos(angle) * len,
+        dx + (grip.x + Math.cos(angle) * len) * flip,
         dy + grip.y + Math.sin(angle) * len,
       ],
     });
@@ -190,6 +182,7 @@ export function drawAstaUnionLocal(
   f: Fighter,
   a: Animator,
   layer: "behind" | "front" = "front",
+  body?: CanvasImageSource,
 ) {
   const state = f.match?.astaUnion,
     opening = f.state === "attack" && f.moveId === astaUnionId;
@@ -204,12 +197,42 @@ export function drawAstaUnionLocal(
   if (!grip) return;
   const rand = seed(713 + f.id * 53 + Math.floor(t / 2) * 131);
   const meteor = (opening && t >= 9 && t < 26) || (!!state && t < 22);
-  const charge = !!state && t >= 198 && t < 222,
-    change = !!state && t >= 48 && t < 82;
+  const charge = !!state && t >= beats.charge && t < beats.release,
+    change = !!state && t >= beats.union && t < beats.slayer;
   c.save();
   c.lineJoin = "miter";
   c.imageSmoothingEnabled = false;
   if (layer === "behind") {
+    if (
+      body &&
+      state &&
+      (state.tick < 22 ||
+        (state.tick >= beats.slasher && state.tick < beats.retreat))
+    ) {
+      for (const ago of [8, 4]) {
+        const past = astaUnionScene({ ...state, tick: Math.max(0, t - ago) }),
+          pose = unionPose(Math.max(0, t - ago), state.openingTick);
+        if (
+          past.attacker.clip !== f.actionClip ||
+          past.attacker.facing !== f.facing
+        )
+          continue;
+        c.save();
+        c.globalAlpha = 0.11;
+        c.drawImage(
+          body,
+          (pose.frame % 3) * 256,
+          Math.floor(pose.frame / 3) * 256,
+          256,
+          256,
+          -128 + (past.attacker.x - f.x) * f.facing,
+          -224 + past.attacker.y - f.y,
+          256,
+          256,
+        );
+        c.restore();
+      }
+    }
     if (meteor) {
       for (let i = 0; i < 8; i++) {
         const y = -48 - i * 7,
@@ -237,7 +260,9 @@ export function drawAstaUnionLocal(
       }
     }
     if (change || charge) {
-      const amount = change ? (t - 48) / 34 : (t - 198) / 24;
+      const amount = change
+        ? (t - beats.union) / (beats.slayer - beats.union)
+        : (t - beats.charge) / (beats.release - beats.charge);
       for (let i = 0; i < 5; i++) {
         const p = i / 5,
           from: Point = [-32 - p * 38, -27 - p * 22],
@@ -249,13 +274,10 @@ export function drawAstaUnionLocal(
     }
     const cutting =
       !!state &&
-      [
-        [94, 109],
-        [119, 137],
-        [148, 165],
-        [178, 195],
-        [226, 244],
-      ].some(([from, to]) => t >= from && t < to);
+      (unionContacts.some(
+        (h) => h.kind !== "explosion" && t >= h.tick - 8 && t < h.tick + 9,
+      ) ||
+        (t >= beats.equinox && t < beats.release + 5));
     if (cutting && (!f.asta?.draw || f.asta.draw.tick >= f.asta.draw.handAt)) {
       const h = swordHistory(f, a);
       if (h.length > 1) {
@@ -263,7 +285,7 @@ export function drawAstaUnionLocal(
           ...h.map((p) => p.tip),
           ...h.map((p) => p.inner).reverse(),
         ];
-        poly(c, polygon, "#4b233a88");
+        poly(c, polygon, t >= beats.equinox ? "#4b233a22" : "#4b233a55");
         poly(
           c,
           [
@@ -276,7 +298,7 @@ export function drawAstaUnionLocal(
             ),
             ...h.map((p) => p.inner).reverse(),
           ],
-          "#06080feb",
+          t >= beats.equinox ? "#06080f33" : "#06080f88",
         );
         for (let i = 1; i < h.length; i++) {
           const p = h[i].tip,
@@ -312,44 +334,112 @@ export function drawAstaUnionLocal(
   }
   c.restore();
 }
+/** Super-only flying slash and offensive Causality extensions, purely visual subactions. */
+function drawUnionTechniques(c: CanvasRenderingContext2D, s: AstaUnionState) {
+  const t = s.tick;
+  if (t >= beats.charge && t < beats.release) {
+    const scene = astaUnionScene(s),
+      pose = unionPose(t, s.openingTick),
+      blade = astaUnionBlade(pose.sheet, pose.frame, "slasher").b;
+    const tip: Point = [
+      scene.attacker.x + blade.x * scene.attacker.facing,
+      scene.attacker.y + blade.y,
+    ];
+    c.save();
+    for (let i = 0; i < 14; i++) {
+      const p = ((t - beats.charge + i * 7) % 43) / 43;
+      const from: Point = [
+        tip[0] + Math.cos(i * 2.41) * (110 + (i % 4) * 25),
+        tip[1] + Math.sin(i * 2.41) * (65 + (i % 3) * 25),
+      ];
+      const at: Point = [
+        from[0] + (tip[0] - from[0]) * p,
+        from[1] + (tip[1] - from[1]) * p,
+      ];
+      ribbon(
+        c,
+        curve(
+          at,
+          [at[0] + (tip[0] - at[0]) * 0.12, at[1] + (tip[1] - at[1]) * 0.12],
+          4,
+        ),
+        2,
+        i % 4 ? "#0a0912" : "#583147",
+      );
+    }
+    c.restore();
+  }
+  if (t >= beats.blackSlash && t <= beats.slashContact) {
+    const birth = astaUnionScene({ ...s, tick: beats.blackSlash }),
+      pose = unionPose(beats.blackSlash, s.openingTick);
+    const blade = astaUnionBlade(pose.sheet, pose.frame, "dweller").b;
+    const from: Point = [
+      birth.attacker.x + blade.x * s.facing,
+      birth.attacker.y + blade.y,
+    ];
+    const end = astaUnionScene({ ...s, tick: beats.slashContact }).victim,
+      p = (t - beats.blackSlash) / (beats.slashContact - beats.blackSlash);
+    const px = from[0] + (end.x - from[0]) * p,
+      py = from[1] + (end.y - 75 - from[1]) * p;
+    c.save();
+    c.translate(px, py);
+    c.scale(s.facing, 1);
+    const slash = curve([-9, -55], [10, 55], 27);
+    ribbon(c, slash, 6, "#69405b");
+    ribbon(c, slash, 4, "#050710");
+    c.restore();
+  }
+  if (t >= beats.rupture - 9 && t < beats.rupture + 26) {
+    const age = t - (beats.rupture - 9),
+      scene = astaUnionScene(s),
+      pose = unionPose(t, s.openingTick);
+    const tip = astaUnionBlade(pose.sheet, pose.frame, "destroyer", 0.8).b;
+    c.save();
+    c.translate(
+      scene.attacker.x + tip.x * scene.attacker.facing,
+      scene.attacker.y + tip.y,
+    );
+    c.scale(s.facing, 1);
+    c.globalAlpha = Math.max(0, Math.min(1, age / 6, (35 - age) / 12));
+    for (let i = 0; i < 6; i++) {
+      const angle = i * 1.17 - 2.7,
+        reach = 25 + Math.min(age, 22) * (2 + (i % 3));
+      const path = curve(
+        [0, 0],
+        [Math.cos(angle) * reach, Math.sin(angle) * reach],
+        Math.sin(age * 0.2 + i) * 24,
+      );
+      ribbon(c, path, 4, "#372335aa");
+      ribbon(c, path, 2.5, "#080910");
+    }
+    c.restore();
+  }
+}
 export function drawAstaUnionImpact(
   c: CanvasRenderingContext2D,
   s: AstaUnionState,
 ) {
   const t = s.tick,
     scene = astaUnionScene(s),
-    hit = astaUnionConfig.hits.filter((h) => h.tick <= t).at(-1);
-  if (!hit) return;
+    hit = [...unionContacts].reverse().find((h) => h.tick <= t);
+  drawUnionTechniques(c, s);
+  drawRemoteEquinox(c, s);
+  if (!hit || hit.kind === "explosion") return;
   const age = t - hit.tick,
-    finish = hit.kind === "explosion",
-    life = finish ? 30 : 16;
+    life = 16;
   if (age > life) return;
-  const direction =
-    hit.kind === "rise"
-      ? -1.05
-      : hit.kind === "dive"
-        ? 0.85
-        : hit.kind === "cross"
-          ? -0.25
-          : 0;
+  const direction = hit.angle;
   const rand = seed(919 + Math.floor(age / 2) * 71);
   c.save();
   const birth = astaUnionScene({ ...s, tick: hit.tick });
-  const tip =
-    hit.kind === "explosion"
-      ? astaUnionBlade("r-equinox", 3, "slasher", 0.72).b
-      : undefined;
-  c.translate(
-    tip ? birth.attacker.x + tip.x * s.facing : birth.victim.x,
-    tip ? birth.attacker.y + tip.y : birth.victim.y - 77,
-  );
+  c.translate(birth.victim.x, birth.victim.y - 77);
   c.scale(s.facing, 1);
   c.globalAlpha = Math.max(0, 1 - age / life);
   // Thin pressure fronts travel in the slash direction, leaving gaps around the victim silhouette.
   for (let layer = 0; layer < 3; layer++) {
     const q = (age - layer * 3) / (life - layer * 3);
     if (q < 0 || q > 1) continue;
-    const radius = (finish ? 75 : 28) + q * (finish ? 255 : 80),
+    const radius = 28 + q * 80,
       path: Point[] = [];
     for (let i = 0; i <= 18; i++) {
       const a = -1.2 + (i / 18) * 2.4,
@@ -362,9 +452,9 @@ export function drawAstaUnionImpact(
     }
     ribbon(c, path, layer === 0 ? 2 : 1, layer % 2 ? "#918b9855" : "#251b32aa");
   }
-  for (let i = 0; i < (finish ? 14 : 7); i++) {
+  for (let i = 0; i < 7; i++) {
     const a = direction + (rand() - 0.5) * 2.4,
-      reach = (finish ? 210 : 85) * (0.4 + rand() * 0.6),
+      reach = 85 * (0.4 + rand() * 0.6),
       travel = age * 2;
     const from: Point = [
       Math.cos(a) * (8 + travel),
@@ -375,32 +465,7 @@ export function drawAstaUnionImpact(
       Math.sin(a) * (reach + travel),
     ];
     const path = curve(from, to, (rand() - 0.5) * 25);
-    ribbon(
-      c,
-      path,
-      (finish ? 4 : 2) * (1 - age / life),
-      i % 4 ? "#080a13" : "#53253c",
-    );
-  }
-  if (finish) {
-    const p = age / life,
-      reach = 200 + p * 520;
-    const path = curve([-70, 0], [reach, -12 - p * 25], -12);
-    ribbon(c, path, 10 + 5 * (1 - p), "#4a273a88");
-    ribbon(c, path, 7 + 4 * (1 - p), "#05070e");
-    for (let i = 0; i < 22; i++) {
-      const x = rand() * reach,
-        y = (rand() - 0.5) * (25 + p * 130);
-      poly(
-        c,
-        [
-          [x, y],
-          [x + 5 + rand() * 12, y - 3],
-          [x + rand() * 5, y + 3],
-        ],
-        i % 3 ? "#10101c" : "#69445888",
-      );
-    }
+    ribbon(c, path, 2 * (1 - age / life), i % 4 ? "#080a13" : "#53253c");
   }
   c.restore();
 }
@@ -408,7 +473,7 @@ export function drawAstaUnionScreen(
   c: CanvasRenderingContext2D,
   s: AstaUnionState,
 ) {
-  const last = astaUnionConfig.hits.filter((h) => h.tick <= s.tick).at(-1);
+  const last = [...unionContacts].reverse().find((h) => h.tick <= s.tick);
   c.save();
   c.fillStyle = "#080b15";
   c.fillRect(0, 135, 1280, 12);
@@ -423,9 +488,9 @@ export function drawAstaUnionScreen(
   const title =
     s.tick < 22
       ? "BLACK METEORITE"
-      : s.tick >= 48 && s.tick < 89
+      : s.tick >= beats.union && s.tick < beats.slayer
         ? "DEVIL UNION"
-        : s.tick >= 198 && s.tick < 244
+        : s.tick >= beats.charge && s.tick < beats.outro
           ? "INFINITE SLASH · EQUINOX"
           : "";
   if (title) c.fillText(title, 640, 169);

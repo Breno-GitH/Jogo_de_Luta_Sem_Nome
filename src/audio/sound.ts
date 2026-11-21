@@ -1,3 +1,4 @@
+import {unionBeats as astaBeats,unionContacts} from "../engine/asta-super-acts";
 import type { Match, HitEvent } from "../engine/combat";
 import type { CentipedeCue } from "../engine/kaneki-centipede";
 import { kingWill, xebecPressure } from "../engine/xebec-specials";
@@ -387,7 +388,7 @@ export class Sound {
     const beats = pandemoniumBeats;
     const kingSilence = !match.cinematicActive && match.fighters.some(f => f.moveId === kingWill && f.state === "attack" && f.stateFrame < 56);
     const unionTick = match.astaUnion?.tick ?? -1;
-    this.setMusicDucked(unionTick >= 22 && unionTick < 82 || unionTick >= 198 && unionTick < 230 || kingSilence || ticks >= 0 && (ticks >= beats.uppercut && ticks < beats.cut || ticks >= beats.flight && ticks < beats.quake || ticks >= beats.rush && ticks < beats.rupture));
+    this.setMusicDucked(unionTick >= astaBeats.liebe && unionTick < astaBeats.slayer || unionTick >= astaBeats.charge && unionTick < astaBeats.impact || kingSilence || ticks >= 0 && (ticks >= beats.uppercut && ticks < beats.cut || ticks >= beats.flight && ticks < beats.quake || ticks >= beats.rush && ticks < beats.rupture));
     if (ticks >= 0 && ticks > this.rocksTick) {
       const cues: [number, Cue][] = [...pandemoniumPrelude.map(({ tick, angle }): [number, Cue] =>
         [tick, angle === "rising" ? "rocksLift" : "rocksCut"]), [beats.lift, "rocksGather"], [beats.cut, "rocksSlash"],
@@ -400,7 +401,7 @@ export class Sound {
     this.rocksTick = ticks;
     if(this.owner !== match || unionTick < this.astaTick) this.astaTick=-1;
     if(unionTick>=0 && unionTick>this.astaTick) {
-      const cues:[number,Cue][]=[[4,"astaMeteor"],[48,"astaUnion"],[100,"astaCut"],[126,"astaCut"],[154,"astaCut"],[184,"astaCut"],[230,"astaEquinox"]];
+      const cues:[number,Cue][]=[...unionContacts.map(h=>[h.tick,h.kind==="explosion"?"astaEquinox":h.kind==="meteorite"?"astaMeteor":"astaCut"] as [number,Cue]),[astaBeats.union,"astaUnion"],[astaBeats.pact,"astaUnion"]];
       for(const [at,cue]of cues)if(at>this.astaTick&&at<=unionTick)this.play(cue);
     }
     this.astaTick=unionTick;

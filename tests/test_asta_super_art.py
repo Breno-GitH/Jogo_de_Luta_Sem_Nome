@@ -6,7 +6,10 @@ from PIL import Image
 
 root = Path(__file__).resolve().parents[1]
 sources = json.loads((root / "art/asta-source/super-sources.json").read_text(encoding="utf8"))
-assert len(sources) == 9
+new_sources = json.loads((root / "art/asta-source/super41-sources.json").read_text(encoding="utf8"))
+assert len(new_sources) == 17
+sources.update(new_sources)
+assert len(sources) == 26
 for name, source in sources.items():
     original = Image.open(root / "art/asta-source" / source["file"]).convert("RGBA")
     atlas = Image.open(root / f"public/sprites/asta/{name}.png").convert("RGBA")
@@ -29,4 +32,4 @@ for name, point in {"r-equinox": (380, 180), "r-union-return": (1404, 692),
                     "r-union-rush": (380, 180)}.items():
     original = Image.open(root / f"art/asta-source/frames/{name}.png").convert("RGBA")
     assert original.getpixel(point)[3] < 16, (name, "background matte")
-print("Nine short Super atlases: 54 unique drawings, clean alpha, safe margins and no matte regression.")
+print("26 short Super atlases: 156 unique drawings (102 new in 4.1), clean alpha, safe margins and no matte regression.")

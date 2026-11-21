@@ -7,15 +7,21 @@ import {
   astaUnionId,
   astaUnionConfig,
   astaUnionScene,
+  astaEquinoxPlane,
 } from "../src/engine/asta-super";
+import {
+  unionBeats,
+  unionContacts,
+  unionPose,
+} from "../src/engine/asta-super-acts";
 import { astaSwords } from "../src/engine/asta-stances";
 import { FighterPresentation } from "../src/render/presentation";
 import { astaAnimations } from "../src/render/asta-animations";
-function arena(side = 1, gap = 220, p2 = false) {
+function arena(side = 1, gap = 220, p2 = false, opponent = characters.samurai) {
   const m = new Match(
-    p2 ? characters.samurai : characters.asta,
+    p2 ? opponent : characters.asta,
     {},
-    p2 ? characters.asta : characters.samurai,
+    p2 ? characters.asta : opponent,
   );
   m.phase = "fight";
   m.message = "";
@@ -80,14 +86,14 @@ describe("Asta R: Black Meteorite into Devil Union", () => {
       p.a.asta!.equipped = sword;
       p.confirm();
       expect(p.a.asta!.equipped).toBe("slayer");
-      for (let i = 0; i < 380 && p.m.astaUnion; i++) p.step();
+      for (let i = 0; i < 1300 && p.m.astaUnion; i++) p.step();
       expect(p.m.astaUnion).toBeUndefined();
       expect(p.a.state).toBe("idle");
       expect(p.a.asta!.equipped).toBe("slasher");
       expect(p.a.asta!.draw).toBeUndefined();
       expect(p.b.health).toBe(660);
       expect(p.hits.filter((h) => h.move.startsWith(astaUnionId))).toHaveLength(
-        6,
+        7,
       );
       expect(p.a.y).toBe(FLOOR);
       expect(p.b.y).toBe(FLOOR);
@@ -128,18 +134,22 @@ describe("Asta R: Black Meteorite into Devil Union", () => {
         forms = new Set<string>(),
         presentation = new FighterPresentation(astaAnimations);
       let previous = { x: p.b.x, y: p.b.y };
-      for (let i = 0; i < 380 && p.m.astaUnion; i++) {
+      for (let i = 0; i < 1300 && p.m.astaUnion; i++) {
         const scene = astaUnionScene(p.m.astaUnion);
         phases.add(scene.phase);
         forms.add(scene.form);
         expect(
           Math.hypot(scene.victim.x - previous.x, scene.victim.y - previous.y),
-        ).toBeLessThan(18);
+        ).toBeLessThan(24);
         previous = scene.victim;
         presentation.tick(p.a);
-        expect(presentation.animator.sprite().sheet).toMatch(/^asta\/r-/);
+        expect(presentation.animator.sprite().sheet).toMatch(
+          /^asta\/r(?:-|41-)/,
+        );
         if (
-          [4, 48, 82, 100, 141, 168, 230, 245].includes(p.m.astaUnion.tick) &&
+          [
+            4, 90, 158, 232, 352, 484, 580, 724, 824, 872, 945, 956, 1004, 1070,
+          ].includes(p.m.astaUnion.tick) &&
           !p.m.astaUnion.hold
         ) {
           const copy = restore(snapshot(p.m));
@@ -148,8 +158,10 @@ describe("Asta R: Black Meteorite into Devil Union", () => {
           expect(hashState(snapshot(copy))).toBe(hashState(snapshot(p.m)));
         } else p.step();
       }
-      expect(phases.size).toBe(10);
-      expect(forms).toEqual(new Set(["black", "changing", "union", "return"]));
+      expect(phases.size).toBe(13);
+      expect(forms).toEqual(
+        new Set(["black", "changing", "union", "return", "base"]),
+      );
       expect(p.b.health).toBe(660);
       expect(p.m.cinematicActive).toBe(false);
       for (let i = 0; i < 150; i++) p.step();
@@ -162,10 +174,11 @@ describe("Asta R: Black Meteorite into Devil Union", () => {
     const p = arena();
     p.b.health = 20;
     p.confirm();
-    while (p.m.astaUnion && p.m.astaUnion.tick < 230) {
+    while (p.m.astaUnion && p.m.astaUnion.tick < unionBeats.impact) {
       p.step();
       expect(p.m.phase).toBe("fight");
-      if (p.m.astaUnion!.tick < 230) expect(p.b.health).toBeGreaterThan(0);
+      if (p.m.astaUnion!.tick < unionBeats.impact)
+        expect(p.b.health).toBeGreaterThan(0);
     }
     while (p.m.astaUnion) p.step();
     expect(p.b.health).toBe(0);
@@ -185,4 +198,102 @@ describe("Asta R: Black Meteorite into Devil Union", () => {
       ),
     );
   });
+
+  it.each([1, -1])(
+    "retreats before a separate sky-to-floor Equinox, side %s",
+    (side) => {
+      const p = arena(side);
+      p.confirm();
+      const s = p.m.astaUnion!;
+      const before = astaUnionScene({ ...s, tick: 824 }),
+        away = astaUnionScene({ ...s, tick: 932 });
+      expect(Math.abs(away.attacker.x - away.victim.x)).toBeGreaterThan(500);
+      expect((away.attacker.x - before.attacker.x) * side).toBeLessThan(-300);
+      expect(away.sword).toBe("slasher");
+      const plane = astaEquinoxPlane({ ...s, tick: 945 });
+      expect(plane.top).toBeLessThan(150);
+      expect(plane.bottom).toBe(FLOOR);
+      expect(plane.impact - plane.release).toBe(11);
+      expect(astaUnionScene({ ...s, tick: 956 }).victim.x).toBe(plane.x);
+      expect(astaUnionConfig.hits.filter((h) => h.tick >= 945)).toEqual([
+        {
+          tick: 956,
+          damage: 140,
+          kind: "explosion",
+          hold: 9,
+          angle: Math.PI / 2,
+        },
+      ]);
+      const health = p.b.health;
+      while (p.m.astaUnion && p.m.astaUnion.tick < 945) p.step();
+      const preImpact = p.b.health;
+      while (p.m.astaUnion && p.m.astaUnion.tick < 956) p.step();
+      expect(health - preImpact).toBe(200);
+      expect(preImpact - p.b.health).toBe(140);
+      for (let i = 0; i < 15; i++) p.step();
+      expect(p.b.health).toBe(660);
+    },
+  );
+  it.each(["goku", "dio", "ben", "luffy", "kaneki"] as const)(
+    "finishes at either corner against %s without heals or orphan states",
+    (opponent) => {
+      for (const side of [1, -1]) {
+        const p = arena(side, 130, false, characters[opponent]);
+        p.a.x = side > 0 ? 1060 : 220;
+        p.b.x = side > 0 ? 1190 : 90;
+        p.a.health = 650;
+        p.confirm();
+        let previous = { x: p.a.x, y: p.a.y },
+          maximum = 0;
+        while (p.m.astaUnion) {
+          p.step();
+          maximum = Math.max(
+            maximum,
+            Math.hypot(p.a.x - previous.x, p.a.y - previous.y),
+          );
+          previous = { x: p.a.x, y: p.a.y };
+        }
+        expect(maximum).toBeLessThan(65);
+        expect(p.a.health).toBe(650);
+        expect(p.b.health).toBe(660);
+        expect(p.a.x).toBeGreaterThan(40);
+        expect(p.a.x).toBeLessThan(1240);
+        expect(p.b.x).toBeGreaterThan(40);
+        expect(p.b.x).toBeLessThan(1240);
+        expect(p.a.asta!.equipped).toBe("slasher");
+        expect(p.m.capture).toBeUndefined();
+      }
+    },
+  );
+  it("keeps the eleven-chapter performance within 16–20 seconds and separates visual contacts from damage", () => {
+    const ticks =
+      unionBeats.end + unionContacts.reduce((sum, h) => sum + h.hold, 0) + 14;
+    expect(ticks / 60).toBeGreaterThanOrEqual(16);
+    expect(ticks / 60).toBeLessThanOrEqual(20);
+    expect(astaUnionConfig.hits).toHaveLength(7);
+    expect(unionContacts.length).toBe(18);
+    expect(astaUnionConfig.hits.reduce((n, h) => n + h.damage, 0)).toBe(340);
+    expect(unionPose(232).sword).toBe("slayer");
+    expect(unionPose(352).sword).toBe("dweller");
+    expect(unionPose(484).sword).toBe("destroyer");
+    expect(unionPose(580).sword).toBe("slasher");
+  });
+  it.each([1, -1])(
+    "keeps both bodies inside the cinematic viewport, side %s",
+    (side) => {
+      const p = arena(side);
+      p.confirm();
+      const initial = p.m.astaUnion!;
+      for (let tick = 0; tick <= 1100; tick++) {
+        const scene = astaUnionScene({ ...initial, tick }),
+          c = scene.camera;
+        for (const actor of [scene.attacker, scene.victim]) {
+          const foot = 360 + (actor.y - c.y) * c.scale;
+          const head = 360 + (actor.y - 130 - c.y) * c.scale;
+          expect(foot, `feet at ${tick}`).toBeLessThanOrEqual(585);
+          expect(head, `head at ${tick}`).toBeGreaterThanOrEqual(145);
+        }
+      }
+    },
+  );
 });

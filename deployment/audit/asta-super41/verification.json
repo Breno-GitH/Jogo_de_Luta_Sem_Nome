@@ -1,0 +1,22 @@
+{
+  "date": "2026-11-21",
+  "branch": "codex/asta-super-devil-union-cinematic",
+  "base": "b1b9d54c5fa474381a5cbee08a1f2fc4fa24a132",
+  "engine": "a4e916e5f3d37ea9a94fc0b0",
+  "unitFiles": 58,
+  "unitTests": 1470,
+  "superTests": 23,
+  "browserScenarios": 3,
+  "finalPresentationRecheck": 1,
+  "lanScenarios": 3,
+  "newAtlases": 17,
+  "newDrawings": 102,
+  "preservedAstaResources": 71,
+  "damageEvents": 7,
+  "baseDamage": 340,
+  "remoteSeparation": 515,
+  "releaseTick": 945,
+  "principalImpactTick": 956,
+  "cosmeticEffects": "code only",
+  "xampp": "Publication checked separately after this commit, against the actual Apache URL."
+}

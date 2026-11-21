@@ -1,0 +1,3 @@
+83 action atlases, all six cels distinct; alpha, margins and scale checked.
+Sockets requiring manual review: []
+26 short Super atlases: 156 unique drawings (102 new in 4.1), clean alpha, safe margins and no matte regression.

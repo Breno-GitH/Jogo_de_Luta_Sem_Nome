@@ -16,6 +16,8 @@ sockets=json.loads((SRC/"sockets-source.json").read_text(encoding="utf-8-sig"))
 # Super bodies remain short authored atlases. No changes to the approved base sources.
 if (SRC/"super-sources.json").exists(): sources.update(json.loads((SRC/"super-sources.json").read_text(encoding="utf8")))
 if (SRC/"super-sockets.json").exists(): sockets.update(json.loads((SRC/"super-sockets.json").read_text(encoding="utf8")))
+if (SRC/"super41-sources.json").exists(): sources.update(json.loads((SRC/"super41-sources.json").read_text(encoding="utf8")))
+if (SRC/"super41-sockets.json").exists(): sockets.update(json.loads((SRC/"super41-sockets.json").read_text(encoding="utf8")))
 bounds={}
 packed={}
 for name,info in sources.items():

@@ -1,0 +1,10 @@
+
+Running 1 test using 1 worker
+
+(node:12152) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:12152) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 e2e\asta-super.pw.mjs:116:1 › Black Meteorite confirms into Liebe, four-sword Devil Union and Equinox, then restores combat (29.7s)
+
+  1 passed (32.0s)
