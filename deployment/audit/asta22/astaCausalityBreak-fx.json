@@ -1,0 +1,86 @@
+[
+  {
+    "key": "asta/v22-causality_open.png/0",
+    "phase": "startup",
+    "sword": "slayer",
+    "stage": "slayer",
+    "count": "1"
+  },
+  {
+    "key": "asta/v22-causality_open.png/1",
+    "phase": "startup",
+    "sword": "slayer",
+    "stage": "slayer",
+    "count": "1"
+  },
+  {
+    "key": "asta/v22-causality_open.png/2",
+    "phase": "startup",
+    "sword": "destroyer",
+    "stage": "destroyer",
+    "count": "1"
+  },
+  {
+    "key": "asta/v22-causality_open.png/3",
+    "phase": "startup",
+    "sword": "destroyer",
+    "stage": "destroyer",
+    "count": "1"
+  },
+  {
+    "key": "asta/v22-causality_open.png/4",
+    "phase": "active",
+    "sword": "destroyer",
+    "stage": "destroyer",
+    "count": "1"
+  },
+  {
+    "key": "asta/v22-causality_open.png/5",
+    "phase": "active",
+    "sword": "destroyer",
+    "stage": "destroyer",
+    "count": "1"
+  },
+  {
+    "key": "asta/v22-causality_close.png/0",
+    "phase": "active",
+    "sword": "destroyer",
+    "stage": "destroyer",
+    "count": "1"
+  },
+  {
+    "key": "asta/v22-causality_close.png/1",
+    "phase": "active",
+    "sword": "destroyer",
+    "stage": "destroyer",
+    "count": "1"
+  },
+  {
+    "key": "asta/v22-causality_close.png/2",
+    "phase": "active",
+    "sword": "destroyer",
+    "stage": "destroyer",
+    "count": "1"
+  },
+  {
+    "key": "asta/v22-causality_close.png/3",
+    "phase": "recovery",
+    "sword": "destroyer",
+    "stage": "destroyer",
+    "count": "1"
+  },
+  {
+    "key": "asta/v22-causality_close.png/4",
+    "phase": "recovery",
+    "sword": "destroyer",
+    "stage": "destroyer",
+    "count": "1"
+  },
+  {
+    "key": "asta/v22-causality_close.png/5",
+    "phase": "recovery",
+    "sword": "destroyer",
+    "stage": "destroyer",
+    "count": "1"
+  }
+]

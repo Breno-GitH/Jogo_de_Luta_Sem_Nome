@@ -12,6 +12,8 @@ export interface KiProjectile {
   cast: number;
   curse?: boolean;
   wave?: FireDragonWave;
+  /** Asta-only volley ordinal; absent from every other character's projectiles. */
+  astaCut?: 0 | 1 | 2;
   x: number;
   y: number;
   previousX: number;

@@ -72,6 +72,7 @@ export interface CombatPose {
   hurtboxes: Rect[];
 }
 export interface Move {
+  energy?: {nature:"magic"|"physical"|"haki"|"antiMagic";causalityBreak:boolean};
   astaSword?: { sword: import("./asta-stances").AstaSword; commitTick: number; sequence?: {sword: import("./asta-stances").AstaSword;commitTick:number}[] };
   ben?: import("./ben-moves").BenMoveMeta;
   visualTiming?: { startup: number; active: number; recovery: number };

@@ -2860,6 +2860,874 @@
         "floor": 484,
         "rootX": 240.0
       }
+    ],
+    "v22-black_charge": [
+      {
+        "sourceBounds": [
+          83,
+          14,
+          379,
+          498
+        ],
+        "floor": 498,
+        "rootX": 227.5
+      },
+      {
+        "sourceBounds": [
+          54,
+          35,
+          380,
+          498
+        ],
+        "floor": 498,
+        "rootX": 217.0
+      },
+      {
+        "sourceBounds": [
+          62,
+          22,
+          400,
+          499
+        ],
+        "floor": 499,
+        "rootX": 231.0
+      },
+      {
+        "sourceBounds": [
+          78,
+          16,
+          420,
+          490
+        ],
+        "floor": 490,
+        "rootX": 249.0
+      },
+      {
+        "sourceBounds": [
+          49,
+          25,
+          397,
+          490
+        ],
+        "floor": 490,
+        "rootX": 223.0
+      },
+      {
+        "sourceBounds": [
+          44,
+          12,
+          400,
+          490
+        ],
+        "floor": 490,
+        "rootX": 222.0
+      }
+    ],
+    "v22-black_cast": [
+      {
+        "sourceBounds": [
+          71,
+          12,
+          418,
+          487
+        ],
+        "floor": 487,
+        "rootX": 244.5
+      },
+      {
+        "sourceBounds": [
+          8,
+          56,
+          434,
+          484
+        ],
+        "floor": 484,
+        "rootX": 221.0
+      },
+      {
+        "sourceBounds": [
+          21,
+          58,
+          442,
+          484
+        ],
+        "floor": 484,
+        "rootX": 231.5
+      },
+      {
+        "sourceBounds": [
+          53,
+          48,
+          456,
+          490
+        ],
+        "floor": 490,
+        "rootX": 254.5
+      },
+      {
+        "sourceBounds": [
+          48,
+          28,
+          429,
+          492
+        ],
+        "floor": 492,
+        "rootX": 238.5
+      },
+      {
+        "sourceBounds": [
+          57,
+          24,
+          424,
+          492
+        ],
+        "floor": 492,
+        "rootX": 240.5
+      }
+    ],
+    "v22-causality_open": [
+      {
+        "sourceBounds": [
+          81,
+          13,
+          398,
+          498
+        ],
+        "floor": 498,
+        "rootX": 239.5
+      },
+      {
+        "sourceBounds": [
+          47,
+          25,
+          425,
+          498
+        ],
+        "floor": 498,
+        "rootX": 236.0
+      },
+      {
+        "sourceBounds": [
+          48,
+          26,
+          429,
+          498
+        ],
+        "floor": 498,
+        "rootX": 238.5
+      },
+      {
+        "sourceBounds": [
+          60,
+          21,
+          428,
+          497
+        ],
+        "floor": 497,
+        "rootX": 244.0
+      },
+      {
+        "sourceBounds": [
+          59,
+          14,
+          429,
+          498
+        ],
+        "floor": 498,
+        "rootX": 244.0
+      },
+      {
+        "sourceBounds": [
+          64,
+          9,
+          442,
+          498
+        ],
+        "floor": 498,
+        "rootX": 253.0
+      }
+    ],
+    "v22-causality_close": [
+      {
+        "sourceBounds": [
+          77,
+          12,
+          379,
+          498
+        ],
+        "floor": 498,
+        "rootX": 228.0
+      },
+      {
+        "sourceBounds": [
+          57,
+          41,
+          412,
+          498
+        ],
+        "floor": 498,
+        "rootX": 234.5
+      },
+      {
+        "sourceBounds": [
+          60,
+          12,
+          426,
+          498
+        ],
+        "floor": 498,
+        "rootX": 243.0
+      },
+      {
+        "sourceBounds": [
+          58,
+          27,
+          420,
+          492
+        ],
+        "floor": 492,
+        "rootX": 239.0
+      },
+      {
+        "sourceBounds": [
+          59,
+          17,
+          404,
+          492
+        ],
+        "floor": 492,
+        "rootX": 231.5
+      },
+      {
+        "sourceBounds": [
+          67,
+          9,
+          412,
+          492
+        ],
+        "floor": 492,
+        "rootX": 239.5
+      }
+    ],
+    "v22-relay_slayer_a": [
+      {
+        "sourceBounds": [
+          67,
+          16,
+          403,
+          494
+        ],
+        "floor": 494,
+        "rootX": 235.0
+      },
+      {
+        "sourceBounds": [
+          65,
+          21,
+          401,
+          494
+        ],
+        "floor": 494,
+        "rootX": 233.0
+      },
+      {
+        "sourceBounds": [
+          46,
+          15,
+          411,
+          494
+        ],
+        "floor": 494,
+        "rootX": 228.5
+      },
+      {
+        "sourceBounds": [
+          54,
+          13,
+          442,
+          491
+        ],
+        "floor": 491,
+        "rootX": 247.5
+      },
+      {
+        "sourceBounds": [
+          42,
+          30,
+          417,
+          491
+        ],
+        "floor": 491,
+        "rootX": 229.5
+      },
+      {
+        "sourceBounds": [
+          54,
+          18,
+          444,
+          491
+        ],
+        "floor": 491,
+        "rootX": 249.0
+      }
+    ],
+    "v22-relay_slayer_b": [
+      {
+        "sourceBounds": [
+          88,
+          17,
+          391,
+          496
+        ],
+        "floor": 496,
+        "rootX": 239.5
+      },
+      {
+        "sourceBounds": [
+          58,
+          8,
+          432,
+          496
+        ],
+        "floor": 496,
+        "rootX": 245.0
+      },
+      {
+        "sourceBounds": [
+          44,
+          71,
+          436,
+          496
+        ],
+        "floor": 496,
+        "rootX": 240.0
+      },
+      {
+        "sourceBounds": [
+          57,
+          75,
+          440,
+          494
+        ],
+        "floor": 494,
+        "rootX": 248.5
+      },
+      {
+        "sourceBounds": [
+          66,
+          102,
+          417,
+          494
+        ],
+        "floor": 494,
+        "rootX": 241.5
+      },
+      {
+        "sourceBounds": [
+          73,
+          48,
+          419,
+          494
+        ],
+        "floor": 494,
+        "rootX": 246.0
+      }
+    ],
+    "v22-relay_slasher_a": [
+      {
+        "sourceBounds": [
+          72,
+          16,
+          400,
+          479
+        ],
+        "floor": 479,
+        "rootX": 236.0
+      },
+      {
+        "sourceBounds": [
+          42,
+          16,
+          377,
+          479
+        ],
+        "floor": 479,
+        "rootX": 209.5
+      },
+      {
+        "sourceBounds": [
+          37,
+          18,
+          425,
+          481
+        ],
+        "floor": 481,
+        "rootX": 231.0
+      },
+      {
+        "sourceBounds": [
+          53,
+          17,
+          454,
+          489
+        ],
+        "floor": 489,
+        "rootX": 233.5
+      },
+      {
+        "sourceBounds": [
+          57,
+          20,
+          351,
+          487
+        ],
+        "floor": 487,
+        "rootX": 204.0
+      },
+      {
+        "sourceBounds": [
+          44,
+          25,
+          401,
+          490
+        ],
+        "floor": 490,
+        "rootX": 222.5
+      }
+    ],
+    "v22-relay_slasher_b": [
+      {
+        "sourceBounds": [
+          78,
+          11,
+          399,
+          483
+        ],
+        "floor": 483,
+        "rootX": 238.5
+      },
+      {
+        "sourceBounds": [
+          122,
+          14,
+          354,
+          484
+        ],
+        "floor": 484,
+        "rootX": 228.0
+      },
+      {
+        "sourceBounds": [
+          53,
+          14,
+          436,
+          479
+        ],
+        "floor": 479,
+        "rootX": 244.5
+      },
+      {
+        "sourceBounds": [
+          48,
+          13,
+          436,
+          483
+        ],
+        "floor": 483,
+        "rootX": 242.0
+      },
+      {
+        "sourceBounds": [
+          18,
+          31,
+          455,
+          477
+        ],
+        "floor": 477,
+        "rootX": 225.5
+      },
+      {
+        "sourceBounds": [
+          63,
+          16,
+          432,
+          484
+        ],
+        "floor": 484,
+        "rootX": 247.5
+      }
+    ],
+    "v22-relay_dweller_a": [
+      {
+        "sourceBounds": [
+          68,
+          17,
+          413,
+          480
+        ],
+        "floor": 480,
+        "rootX": 240.5
+      },
+      {
+        "sourceBounds": [
+          68,
+          17,
+          415,
+          480
+        ],
+        "floor": 480,
+        "rootX": 241.5
+      },
+      {
+        "sourceBounds": [
+          67,
+          10,
+          427,
+          481
+        ],
+        "floor": 481,
+        "rootX": 247.0
+      },
+      {
+        "sourceBounds": [
+          55,
+          28,
+          456,
+          489
+        ],
+        "floor": 489,
+        "rootX": 235.5
+      },
+      {
+        "sourceBounds": [
+          96,
+          37,
+          413,
+          491
+        ],
+        "floor": 491,
+        "rootX": 215.5
+      },
+      {
+        "sourceBounds": [
+          83,
+          31,
+          427,
+          489
+        ],
+        "floor": 489,
+        "rootX": 256.0
+      }
+    ],
+    "v22-relay_dweller_b": [
+      {
+        "sourceBounds": [
+          73,
+          13,
+          425,
+          486
+        ],
+        "floor": 486,
+        "rootX": 249.0
+      },
+      {
+        "sourceBounds": [
+          55,
+          17,
+          424,
+          489
+        ],
+        "floor": 489,
+        "rootX": 239.5
+      },
+      {
+        "sourceBounds": [
+          44,
+          27,
+          470,
+          489
+        ],
+        "floor": 489,
+        "rootX": 252.0
+      },
+      {
+        "sourceBounds": [
+          46,
+          19,
+          461,
+          488
+        ],
+        "floor": 488,
+        "rootX": 253.5
+      },
+      {
+        "sourceBounds": [
+          50,
+          19,
+          436,
+          489
+        ],
+        "floor": 489,
+        "rootX": 243.0
+      },
+      {
+        "sourceBounds": [
+          64,
+          16,
+          442,
+          491
+        ],
+        "floor": 491,
+        "rootX": 253.0
+      }
+    ],
+    "v22-relay_destroyer_a": [
+      {
+        "sourceBounds": [
+          74,
+          16,
+          404,
+          495
+        ],
+        "floor": 495,
+        "rootX": 239.0
+      },
+      {
+        "sourceBounds": [
+          68,
+          16,
+          416,
+          496
+        ],
+        "floor": 496,
+        "rootX": 242.0
+      },
+      {
+        "sourceBounds": [
+          63,
+          16,
+          421,
+          496
+        ],
+        "floor": 496,
+        "rootX": 242.0
+      },
+      {
+        "sourceBounds": [
+          44,
+          16,
+          442,
+          495
+        ],
+        "floor": 495,
+        "rootX": 235.0
+      },
+      {
+        "sourceBounds": [
+          51,
+          16,
+          428,
+          492
+        ],
+        "floor": 492,
+        "rootX": 239.5
+      },
+      {
+        "sourceBounds": [
+          54,
+          37,
+          442,
+          492
+        ],
+        "floor": 492,
+        "rootX": 248.0
+      }
+    ],
+    "v22-relay_destroyer_b": [
+      {
+        "sourceBounds": [
+          77,
+          19,
+          427,
+          480
+        ],
+        "floor": 480,
+        "rootX": 252.0
+      },
+      {
+        "sourceBounds": [
+          23,
+          41,
+          467,
+          480
+        ],
+        "floor": 480,
+        "rootX": 220.5
+      },
+      {
+        "sourceBounds": [
+          41,
+          19,
+          422,
+          480
+        ],
+        "floor": 480,
+        "rootX": 231.5
+      },
+      {
+        "sourceBounds": [
+          41,
+          59,
+          463,
+          482
+        ],
+        "floor": 482,
+        "rootX": 244.5
+      },
+      {
+        "sourceBounds": [
+          25,
+          69,
+          435,
+          482
+        ],
+        "floor": 482,
+        "rootX": 230.0
+      },
+      {
+        "sourceBounds": [
+          47,
+          20,
+          429,
+          482
+        ],
+        "floor": 482,
+        "rootX": 238.0
+      }
+    ],
+    "v22-black_chain_up": [
+      {
+        "sourceBounds": [
+          71,
+          27,
+          420,
+          487
+        ],
+        "floor": 487,
+        "rootX": 245.5
+      },
+      {
+        "sourceBounds": [
+          32,
+          34,
+          436,
+          486
+        ],
+        "floor": 486,
+        "rootX": 234.0
+      },
+      {
+        "sourceBounds": [
+          32,
+          13,
+          444,
+          486
+        ],
+        "floor": 486,
+        "rootX": 238.0
+      },
+      {
+        "sourceBounds": [
+          58,
+          25,
+          456,
+          490
+        ],
+        "floor": 490,
+        "rootX": 257.0
+      },
+      {
+        "sourceBounds": [
+          41,
+          26,
+          438,
+          492
+        ],
+        "floor": 492,
+        "rootX": 239.5
+      },
+      {
+        "sourceBounds": [
+          47,
+          14,
+          441,
+          492
+        ],
+        "floor": 492,
+        "rootX": 244.5
+      }
+    ],
+    "v22-black_chain_down": [
+      {
+        "sourceBounds": [
+          70,
+          11,
+          419,
+          485
+        ],
+        "floor": 485,
+        "rootX": 244.5
+      },
+      {
+        "sourceBounds": [
+          8,
+          56,
+          433,
+          484
+        ],
+        "floor": 484,
+        "rootX": 220.5
+      },
+      {
+        "sourceBounds": [
+          21,
+          73,
+          443,
+          484
+        ],
+        "floor": 484,
+        "rootX": 232.0
+      },
+      {
+        "sourceBounds": [
+          56,
+          49,
+          456,
+          490
+        ],
+        "floor": 490,
+        "rootX": 256.0
+      },
+      {
+        "sourceBounds": [
+          47,
+          27,
+          430,
+          491
+        ],
+        "floor": 491,
+        "rootX": 238.5
+      },
+      {
+        "sourceBounds": [
+          58,
+          25,
+          424,
+          491
+        ],
+        "floor": 491,
+        "rootX": 241.0
+      }
     ]
   }
 }

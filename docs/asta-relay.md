@@ -1,5 +1,7 @@
 # Asta — Prompt 2.1: rushdown e Anti-Magic Relay
 
+> Documento histórico do Prompt 2.1. As regras dos três especiais ↓↓ e as escolhas do Relay foram substituídas no [Prompt 2.2](asta-22.md).
+
 ## Base preservada
 
 Branch `codex/asta-relay-rushdown`, derivada de `codex/asta-nove-especiais` no commit `231b2848f5edf9fba54fc68cdb55fe8dfbfd6f91`.

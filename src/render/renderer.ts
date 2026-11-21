@@ -70,6 +70,7 @@ import { xebecAnimations } from "./xebec-animations";
 import { drawAstaAntimagic,drawAstaWaves,astaWeaponHidden } from "./asta-antimagic-fx";
 import { astaAnimations } from "./asta-animations";
 import { drawAstaWeapon,drawAstaSwordHud } from "./asta-weapon";
+import { astaDrawPhase } from "./asta-grimoire";
 import { kingWill } from "../engine/xebec-specials";
 import { drawKingWillArena, drawKingWillHaki, drawKingWillReaction, kingWillFronts } from "./xebec-king-will";
 import { drawDomination, drawPandemoniumSky, drawPandemoniumStrike, drawXebecCharge, drawXebecSpecials } from "./xebec-special-fx";
@@ -351,13 +352,22 @@ export class Renderer {
     this.canvas.dataset.astaDrawnWeapons = String(self.asta ? astaWeaponHidden(self)?0:1 : 0);
     const relay=self.asta?.relay;
     this.canvas.dataset.astaRelayPhase=relay?.phase??"";
-    this.canvas.dataset.astaRelayExtensions=String(relay?.extensions??0);
+    this.canvas.dataset.astaRelayButton=relay?.button??"";
+    this.canvas.dataset.astaRelayOptions=JSON.stringify(relay?.options??[]);
     this.canvas.dataset.astaRelaySword=relay?.sword??"";
     this.canvas.dataset.astaRelayAction=String(relay?.action??-1);
-    this.canvas.dataset.astaRelayWindow=String(!!relay&&relay.confirmed&&relay.phase!=="finish"&&relay.extensions<2&&self.stateFrame>=relay.windowFrom&&self.stateFrame<=relay.windowTo);
+    this.canvas.dataset.astaRelayWindow=String(!!relay&&relay.phase==="choice"&&self.stateFrame<=relay.windowTo);
     this.canvas.dataset.astaRelayContacts=String(relay?.contacts.length??0);
-    this.canvas.dataset.astaPursuit=String(!!self.asta?.pursuit&&!self.asta.pursuit.used);
-    this.canvas.dataset.astaStates=JSON.stringify(match.fighters.map(f=>f.asta?{sword:f.asta.equipped,relay:f.asta.relay??null}:null));
+    this.canvas.dataset.astaGrimoire=astaDrawPhase(self);
+    this.canvas.dataset.astaDrawFrom=self.asta?.draw?.from??"";
+    this.canvas.dataset.astaDrawTo=self.asta?.draw?.to??"";
+    this.canvas.dataset.astaRestorationCooldown=String(Math.max(0,(self.asta?.restorationReadyAt??0)-match.combatFrame));
+    this.canvas.dataset.astaRestored=String(self.asta?.causalityResult?.hp??0);
+    this.canvas.dataset.astaVolleyShots=String(self.asta?.blackSlashShots??0);
+    this.canvas.dataset.astaWaves=JSON.stringify(match.kiProjectiles.filter(p=>p.owner===self.id&&p.move==="astaBlackSlash").map(p=>({id:p.id,cut:p.astaCut??0,x:p.x,y:p.y,state:p.state})));
+    this.canvas.dataset.astaCleansed=String(self.asta?.causalityResult?.cleansed.length??0);
+    this.canvas.dataset.astaStatuses=String(self.statusEffects?.length??0);
+    this.canvas.dataset.astaStates=JSON.stringify(match.fighters.map(f=>f.asta?{sword:f.asta.equipped,relay:f.asta.relay??null,draw:f.asta.draw??null,recentDamage:f.asta.recentDamage,restorationReadyAt:f.asta.restorationReadyAt,result:f.asta.causalityResult??null,statuses:f.statusEffects??[]}:null));
     this.canvas.dataset.astaNeutralized = String(self.asta?.neutralized ?? 0);
     this.canvas.dataset.astaAirDash = String(self.asta?.airDashTicks ?? 0);
     this.canvas.dataset.domination = String(self.domination?.charge ?? "");
@@ -680,6 +690,9 @@ export class Renderer {
       const limbs = luffyAttackLimbs(f);
       if (this.effects && limbs.length && f.move)
         paintLuffyTrails(c, limbs, f.stateFrame, f.move);
+      // Causality flows behind the body and weapon so its dark volume never hides Asta's face or hands.
+      if(f.asta && this.effects && this.astaEffects && f.moveId==="astaCausalityBreak")
+        drawAstaAntimagic(c,f,match.frame);
       const luffyImpact = limbs.length
         ? match.events.filter(e => e.luffy?.actor === i && e.luffy.move === f.moveId).at(-1)
         : undefined;
@@ -743,7 +756,7 @@ export class Renderer {
       }
       c.globalAlpha = 1;
       if(f.asta && image) drawAstaWeapon(c,f,this.presentations[i].animator,this.sprites.get("asta/arsenal.png")!,image);
-      if(f.asta && this.effects && this.astaEffects) drawAstaAntimagic(c,f,match.frame);
+      if(f.asta && this.effects && this.astaEffects && f.moveId!=="astaCausalityBreak") drawAstaAntimagic(c,f,match.frame);
       drawSpectralArms(c, f, match);
       if (f.omnitrix?.active === "feedback") {
         const animator = this.presentations[i].animator;
@@ -930,7 +943,7 @@ export class Renderer {
       c.fillStyle = i === 0 ? "#ffce8c" : "#9be5ef";
       c.font = "italic bold 30px monospace";
       const x = i === 0 ? 55 : 1000;
-      const y = match.fighters[i].omnitrix ? 251 : 225;
+      const y = match.fighters[i].asta ? 267 : match.fighters[i].omnitrix ? 251 : 225;
       c.fillText(`${stats.comboHits} HITS`, x, y);
       c.font = "14px monospace";
       c.fillText(`${stats.comboDamage} DANO`, x, y + 24);

@@ -1,0 +1,206 @@
+{
+  "base": "42e8592a3029d2bb1fe0bc1a407f69357a8acdf3",
+  "unchangedTrackedAstaPNGs": [
+    {
+      "file": "public/sprites/asta/air_heavy.png",
+      "sha256": "59f3b0e48b44c235a0fa904d5f234f4d0acd2307e098488ce725eede7577e72d"
+    },
+    {
+      "file": "public/sprites/asta/air_light.png",
+      "sha256": "1dbaa46395bb034ba4726e93f5c2c2701b480ea478d4a6a8034915d71dbb3ed7"
+    },
+    {
+      "file": "public/sprites/asta/air_medium.png",
+      "sha256": "66b5224e1343ea0bbfc0cdfb839bce40749beaef8febda51f4652a76b37ee199"
+    },
+    {
+      "file": "public/sprites/asta/arsenal.png",
+      "sha256": "ea0fe4bbd20d03c117506afd32d974d203255576a145656a254af598d50d8d88"
+    },
+    {
+      "file": "public/sprites/asta/back.png",
+      "sha256": "eb1f2d09b870509dcc9e9edd29bad0c844a1e089c5899c99bc292aa190253c31"
+    },
+    {
+      "file": "public/sprites/asta/base.png",
+      "sha256": "cf6af57b302008095beeea3ca71c6d8361291ccbcf202503ed091fff35f0fc05"
+    },
+    {
+      "file": "public/sprites/asta/crouch.png",
+      "sha256": "e1fd32a27efdde9b9a8efbf835b6a7fc9d09d3b070b897dcf62e6c1e79943a8b"
+    },
+    {
+      "file": "public/sprites/asta/crouch_heavy.png",
+      "sha256": "9f75394bac30af159f2d28350bde4eddd657e56e0cd3dc503636c812c2182d53"
+    },
+    {
+      "file": "public/sprites/asta/crouch_light.png",
+      "sha256": "204d07faa9666f6013ca6c9b9d078f68046e07e8e012652518ea67bb357379a4"
+    },
+    {
+      "file": "public/sprites/asta/crouch_medium.png",
+      "sha256": "1e8c0887842007c95bbc2dcd549d4a0deed77b4a24704983af1cc63f1d33f985"
+    },
+    {
+      "file": "public/sprites/asta/dash.png",
+      "sha256": "3e3f5c30e94e60d4cd3626cc14ac947b10ea36e5edf18571e8b3f180246b41bc"
+    },
+    {
+      "file": "public/sprites/asta/idle.png",
+      "sha256": "bbbdb32bd05bd6e2d1dd06584b42934280dd757741ea2dbed0a904bb2a9f5f1b"
+    },
+    {
+      "file": "public/sprites/asta/jump.png",
+      "sha256": "4f3b772551ffd851faf3f15f4930dcffadcf3838625f7a68c2c139e3cbc752d1"
+    },
+    {
+      "file": "public/sprites/asta/life.png",
+      "sha256": "2d370a7f4dab39304a3a2dbe6d7360c3487e5ee894fbf0d27e95e49f2293e738"
+    },
+    {
+      "file": "public/sprites/asta/reaction.png",
+      "sha256": "b200bc6611f28b1318f4b9288aa232eaad64b4a0221a7fb455cc8a9eda1d0218"
+    },
+    {
+      "file": "public/sprites/asta/special-causality.png",
+      "sha256": "6478db70280fafc4132c926daa87415034cd2d544ccd500dad7282d27f845b7c"
+    },
+    {
+      "file": "public/sprites/asta/special-divider.png",
+      "sha256": "1a6513e4a854a961a7ff98173712581c4a032fcc886babe9454e1a6fdb780d79"
+    },
+    {
+      "file": "public/sprites/asta/special-dual_a.png",
+      "sha256": "f4ab1c1518557eea7f2b269ff46b56d0fdf6b02ee39f1cc4764c0c676273ca4d"
+    },
+    {
+      "file": "public/sprites/asta/special-dual_b.png",
+      "sha256": "2f87b441f0837749275f17632da371fc66e5aad7507ecd50f80a5e6dbfe9bbdc"
+    },
+    {
+      "file": "public/sprites/asta/special-flash_a.png",
+      "sha256": "09585ec13180454dc1b9f8192577c8f17b60445bbd4af1430b5170511856820f"
+    },
+    {
+      "file": "public/sprites/asta/special-flash_b.png",
+      "sha256": "b0fdb9cc4cd239d003d9b89d9ff4ef28d1c4b88b90063fad8401511733b8d446"
+    },
+    {
+      "file": "public/sprites/asta/special-iai.png",
+      "sha256": "3166fd594a795938a92fc2fee5bea5fb778867ba1aed0295cb310986fe2fc0ba"
+    },
+    {
+      "file": "public/sprites/asta/special-rising.png",
+      "sha256": "80a8cb3f1e82ea0473bc060097f2dc2a1de4da7b5d6b061d53fed3d55d9b5b60"
+    },
+    {
+      "file": "public/sprites/asta/special-rush.png",
+      "sha256": "44df79738d6f723bb5b08ff09192329a55013e3106674cf3db819e384f0a510b"
+    },
+    {
+      "file": "public/sprites/asta/special-severing.png",
+      "sha256": "797d0403c73af680eff3099d157c37ffa1f2e31c1a23d66088b498c88a953b0a"
+    },
+    {
+      "file": "public/sprites/asta/special-slash.png",
+      "sha256": "8d891a592cdc9c99df988c7c753f8d47a6cdbd2fa3ec2664c804dbe9b18a100c"
+    },
+    {
+      "file": "public/sprites/asta/stand_heavy.png",
+      "sha256": "e4d538c7cc109d916564ed3dd0738b2e981fad7c693db5971733ab1ce947c9dc"
+    },
+    {
+      "file": "public/sprites/asta/stand_light.png",
+      "sha256": "bd66b21046fcdb034dcd382be768506a7259746263a625b902c8e42beee38821"
+    },
+    {
+      "file": "public/sprites/asta/stand_medium.png",
+      "sha256": "b5efa5c3c562d7f82c12dfea2c9b97f28bbf14d0b19309a25d8811354fc86e25"
+    },
+    {
+      "file": "public/sprites/asta/v21-destroyer_rush.png",
+      "sha256": "04f9430774c9e92cde142639532957bcc98f833429c5cdc442a65cc3182c4116"
+    },
+    {
+      "file": "public/sprites/asta/v21-divider_drop.png",
+      "sha256": "2de9c6825b0f964fa58d510048870b0de7b7ae9ba2d6c7c6cf236487cd1bfa2a"
+    },
+    {
+      "file": "public/sprites/asta/v21-divider_run.png",
+      "sha256": "2768d1ac4b286d722641eb04972a32e9b0e0ff4fcc418e6e6dc8f8c975f75eb8"
+    },
+    {
+      "file": "public/sprites/asta/v21-dweller_chase.png",
+      "sha256": "030198055e011cd65adee0d437a00e3fbc5ae56fd0f9f59a06125f7a006d8e6d"
+    },
+    {
+      "file": "public/sprites/asta/v21-flash_a.png",
+      "sha256": "882036c68cd761887bf287ee99bdb578cd97b44f137604467404de93b4e94124"
+    },
+    {
+      "file": "public/sprites/asta/v21-flash_b.png",
+      "sha256": "4ee174549c8343b41c2c310b8fdeeb3788a3534e69d530fc9c78f68365085221"
+    },
+    {
+      "file": "public/sprites/asta/v21-iai_two.png",
+      "sha256": "76268aa1f371150938fc300eef9b5afcd202b75790c87145e702748a9a8e59aa"
+    },
+    {
+      "file": "public/sprites/asta/v21-meteor_drop.png",
+      "sha256": "4b8796583b3d419ef2f19f63ab9aba91cca2ca5a75b80dfedfb183e577fcb561"
+    },
+    {
+      "file": "public/sprites/asta/v21-meteor_run.png",
+      "sha256": "798e53481948e05fe25420632643061388edbcb571dffd16a3cd3abe76116960"
+    },
+    {
+      "file": "public/sprites/asta/v21-relay_destroyer.png",
+      "sha256": "a94d11cee9f8b0b1d727e36e7c539052d712396ffe9c8c9730021ca454d83b02"
+    },
+    {
+      "file": "public/sprites/asta/v21-relay_dweller.png",
+      "sha256": "f3efe4754e1a984bda5035f4addd07175876d8ed25d78ee90eb221052ee91ff3"
+    },
+    {
+      "file": "public/sprites/asta/v21-relay_slasher.png",
+      "sha256": "401d5bf98a8665f3615dee386058b987613fd2405f3458badd55fe49c24f3e90"
+    },
+    {
+      "file": "public/sprites/asta/v21-relay_slayer.png",
+      "sha256": "38224d186c1ede43bb1df651e9dfe9772c95adbbe20efe1492c8d249684b0694"
+    },
+    {
+      "file": "public/sprites/asta/v21-rush_cut.png",
+      "sha256": "8af0a305455535f545f9a69a766942faab635dfd902089ba27fd21da1794969e"
+    },
+    {
+      "file": "public/sprites/asta/v21-rush_run.png",
+      "sha256": "b30badf4e1b802ec6483b9eba0054553544526b03b6637de91f7e77ffd0ee6fd"
+    },
+    {
+      "file": "public/sprites/asta/v21-tempest_a.png",
+      "sha256": "0d603a849d7f903a9b9585b9982013cd5eac9d6e6a6bcd43b1910e5680f7fe7a"
+    },
+    {
+      "file": "public/sprites/asta/v21-tempest_b.png",
+      "sha256": "8cb8c0e57ca1a034c3f81b14214377e86a7c1172e858930cdb663f579715384b"
+    },
+    {
+      "file": "public/sprites/asta/v21-tempest_c.png",
+      "sha256": "c2e80360dd120d678dac355b5cc744980935c356c13e149f15e56520d5252c22"
+    },
+    {
+      "file": "public/sprites/asta/walk.png",
+      "sha256": "1e1b0a982ad1db2d1b040d3f26178ef2ec95b54b5aa6963f04466c15d51d16b9"
+    }
+  ],
+  "sixApprovedAnimationDefinitionsUnchanged": [
+    "astaBlackRush",
+    "astaRisingDemon",
+    "astaBlackDivider",
+    "astaIaiSlash",
+    "astaFlashSteps",
+    "astaSeveringLine"
+  ],
+  "baseAnd36NormalsUnchanged": true
+}
