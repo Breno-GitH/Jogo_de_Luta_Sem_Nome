@@ -1,67 +1,77 @@
 import type { Fighter } from "./combat";
 import type { Button } from "./types";
-import type { AstaSword, AstaRelayState } from "./asta-stances";
+import { astaSwords, beginAstaDraw, type AstaSword } from "./asta-stances";
 import { astaRelayMove } from "./asta-specials";
-const clock = (f: Fighter) => f.match?.frame ?? 0;
+const clock = (f: Fighter) => f.match?.combatFrame ?? 0;
+export const relayChoiceTicks = 16;
+export const relayOptions = (initial: AstaSword) =>
+  astaSwords.filter((x) => x !== initial) as [AstaSword, AstaSword, AstaSword];
 function consumeChoices(f: Fighter) {
   for (const b of ["light", "medium", "heavy"] as Button[])
     while (f.buffer.consume(b)) {}
 }
 export function beginAstaRelay(f: Fighter) {
-  const s = f.asta!;
-  const sword = s.equipped,
+  const s = f.asta!,
+    sword = s.equipped,
     m = astaRelayMove(sword);
   s.relay = {
     initial: sword,
     sword,
+    options: relayOptions(sword),
     phase: "opening",
-    extensions: 0,
     action: 0,
     cast: s.cast,
     started: clock(f),
-    deadline: clock(f) + 150,
+    deadline: clock(f) + 120,
     confirmed: false,
     windowFrom: m.startup + m.active,
-    windowTo: m.startup + m.active + 12,
+    windowTo: m.startup + m.active + relayChoiceTicks,
     minSerial: f.buffer.snapshot().serial,
     contacts: [],
     lastContact: -1,
+    projectileFired: false,
   };
 }
-/** Called only by the ordinary hit resolver. No capture, forced position or extra damage. */
-export function confirmAstaRelay(f: Fighter) {
+/** Only ordinary, unblocked, damaging contacts confirm an opening. */
+export function confirmAstaRelay(f: Fighter, projectile = false) {
   const r = f.asta?.relay;
   if (!r || f.moveId !== "astaDualBreak") return;
-  const key = r.action + ":" + (f.hitWindow?.id ?? 0);
+  // A residual projected slash may still hit after interruption. It is never
+  // an opening contact for a newer Relay and cannot unlock its sword choice.
+  if (
+    projectile &&
+    (r.phase !== "branch" || r.sword !== "dweller" || !r.projectileFired)
+  )
+    return;
+  const key = r.action + ":" + (projectile ? "wave" : (f.hitWindow?.id ?? 0));
   if (!r.contacts.includes(key)) r.contacts.push(key);
+  if (!r.confirmed && r.phase === "opening") {
+    r.minSerial = f.buffer.snapshot().serial;
+    consumeChoices(f);
+  }
   r.confirmed = true;
   r.lastContact = clock(f);
 }
-function transition(
-  f: Fighter,
-  phase: AstaRelayState["phase"],
-  sword: AstaSword,
-) {
+function choose(f: Fighter, button: "light" | "medium" | "heavy") {
   const s = f.asta!,
-    r = s.relay!;
+    r = s.relay!,
+    sword = r.options[["light", "medium", "heavy"].indexOf(button)];
+  r.button = button;
   r.sword = sword;
-  r.phase = phase;
-  r.action++;
+  r.phase = "branch";
+  r.action = 1;
   r.confirmed = false;
   r.minSerial = f.buffer.snapshot().serial;
-  delete r.choice;
-  const m = astaRelayMove(sword, phase, r.extensions);
-  r.windowFrom = m.startup + m.active;
-  r.windowTo = r.windowFrom + 12;
   f.stateFrame = 0;
   f.connected = f.hitConfirmed = false;
   f.hitIds = [];
   f.vx = 0;
   s.attackSword = s.equipped;
-  s.pending = { sword, at: 2, move: "astaDualBreak" };
+  s.pending = { sword, at: 3, move: "astaDualBreak" };
+  beginAstaDraw(f, sword, 3);
   consumeChoices(f);
 }
-/** Owns only the player's J/K/L actions while the existing attack state is active. */
+/** One J/K/L choice, independent of direction. The selected mini-combo owns all subsequent input until recovery. */
 export function stepAstaRelay(f: Fighter) {
   const s = f.asta,
     r = s?.relay;
@@ -70,87 +80,28 @@ export function stepAstaRelay(f: Fighter) {
     delete s.relay;
     return;
   }
-  if (!f.opponent || f.opponent.health <= 0) {
+  if (!f.opponent || f.opponent.health <= 0 || clock(f) >= r.deadline) {
     consumeChoices(f);
     f.setState("idle");
     f.vx = 0;
     return;
   }
-  if (r.phase === "finish") {
+  if (r.phase === "branch") {
     consumeChoices(f);
     return;
   }
-  if (clock(f) >= r.deadline) {
-    transition(f, "finish", s.equipped);
-    return;
-  }
-  if (!r.confirmed) {
-    const m = f.move!;
-    if (f.stateFrame >= m.startup + m.active + m.recovery) consumeChoices(f);
-    return;
-  }
-  if (f.stateFrame < r.windowFrom) return;
-  if (r.extensions >= 2) {
-    transition(f, "finish", s.equipped);
-    return;
-  }
-  let selected: AstaSword | undefined;
-  for (const a of f.buffer.actions) {
-    if (
-      (a.serial ?? 0) <= r.minSerial ||
-      !["light", "medium"].includes(a.button)
-    )
-      continue;
-    const d =
-      f.buffer.directions
-        .filter((d) => (d.serial ?? 0) <= (a.serial ?? 0))
-        .at(-1)?.value ?? 5;
-    if (a.button === "medium" && d === 2) {
-      selected = "destroyer";
-      break;
+  if (r.confirmed && f.stateFrame >= r.windowFrom) r.phase = "choice";
+  if (r.phase === "choice" && f.stateFrame <= r.windowTo) {
+    const edge = f.buffer.actions.find(
+      (a) =>
+        (a.serial ?? 0) > r.minSerial &&
+        ["light", "medium", "heavy"].includes(a.button),
+    );
+    if (edge) {
+      choose(f, edge.button as "light" | "medium" | "heavy");
+      return;
     }
-    if (a.button === "light")
-      selected =
-        d === 6
-          ? "slayer"
-          : d === 4
-            ? "slasher"
-            : d === 2
-              ? "dweller"
-              : undefined;
-    if (selected) break;
   }
-  if (selected && f.stateFrame <= r.windowTo) {
-    r.choice = selected;
-    r.extensions++;
-    transition(f, "link", selected);
-    return;
-  }
-  if (f.stateFrame >= r.windowTo) {
-    transition(f, "finish", s.equipped);
-  }
-}
-/** One fresh J opts into pursuit. A complete motion still belongs to the universal special reader. */
-export function stepAstaPursuit(f: Fighter) {
-  const s = f.asta,
-    p = s?.pursuit;
-  if (!s || !p || p.used || s.relay) return;
-  if (clock(f) > p.until || f.health <= 0) {
-    delete s.pursuit;
-    return;
-  }
-  if (
-    f.airborne ||
-    !["idle", "walk", "crouch", "attack"].includes(f.state) ||
-    (f.state === "attack" && f.moveId !== "astaBlackSlash")
-  )
-    return;
-  const edge = f.buffer.actions.find(
-    (a) => a.button === "light" && (a.serial ?? 0) > p.minSerial,
-  );
-  if (!edge || f.buffer.gokuSpecial("light")) return;
-  if (f.attack("astaBlackSlashPursuit")) {
-    p.used = true;
-    f.buffer.consumeSpecial("light");
-  }
+  // Timeout recovers the opening without an automatic finisher or sword selection.
+  if (f.stateFrame >= r.windowTo || !r.confirmed) consumeChoices(f);
 }

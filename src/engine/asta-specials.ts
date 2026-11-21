@@ -18,12 +18,12 @@ export const astaSpecialIds = [
   "astaDualBreak",
 ] as const;
 export type AstaSpecialId = (typeof astaSpecialIds)[number];
-export type AstaActionId = AstaSpecialId | "astaBlackSlashPursuit";
+export type AstaActionId = AstaSpecialId;
 export type AstaArtKey = keyof typeof art;
 export const isAstaSpecial = (id: string): id is AstaSpecialId =>
   (astaSpecialIds as readonly string[]).includes(id);
 export const isAstaAction = (id: string): id is AstaActionId =>
-  isAstaSpecial(id) || id === "astaBlackSlashPursuit";
+  isAstaSpecial(id);
 type Technique = {
   name: string;
   family: 0 | 1 | 2;
@@ -169,33 +169,31 @@ export const astaTechniques: Record<AstaSpecialId, Technique> = {
     ],
   },
   astaBlackSlash: {
-    name: "Black Slash Pursuit",
+    name: "Demon-Dweller: Black Slash",
     family: 2,
     button: "light",
-    stages: [{ at: 3, sword: "dweller" }],
-    damage: 52,
-    stun: 29,
-    push: 1.1,
+    stages: [{ at: 6, sword: "dweller" }],
+    damage: 90,
+    stun: 30,
+    push: 3.5,
     launch: 0,
-    rank: 2,
-    startup: 7,
-    end: 12,
+    rank: 3,
+    startup: 29,
+    end: 32,
     projectile: true,
   },
   astaCausalityBreak: {
-    name: "Causality Rush",
+    name: "Demon-Destroyer: Causality Break",
     family: 2,
     button: "medium",
-    stages: [{ at: 2, sword: "destroyer" }],
-    damage: 66,
-    stun: 28,
-    push: 1,
-    launch: -6,
-    rank: 3,
-    startup: 7,
-    end: 12,
-    chain: true,
-    drive: { from: 2, to: 8, speed: 7 },
+    stages: [{ at: 6, sword: "destroyer" }],
+    damage: 0,
+    stun: 0,
+    push: 0,
+    launch: 0,
+    rank: 2,
+    startup: 12,
+    end: 32,
   },
   astaDualBreak: {
     name: "Anti-Magic Relay",
@@ -219,7 +217,7 @@ export function astaArtKey(
   if (id !== "astaDualBreak") return id;
   return ("astaRelay" +
     swordCase(relay?.sword ?? "slayer") +
-    (relay?.phase === "finish" ? "Finish" : "")) as AstaArtKey;
+    (relay?.phase === "branch" ? "Branch" : "")) as AstaArtKey;
 }
 export function astaSpecialCommand(
   buffer: CommandBuffer,
@@ -271,7 +269,6 @@ export function astaStageSword(
   relay?: AstaRelayState,
 ): AstaSword {
   if (id === "astaDualBreak") return relay?.sword ?? "slayer";
-  if (id === "astaBlackSlashPursuit") return "dweller";
   return (
     astaTechniques[id].stages.filter((s) => s.at <= tick).at(-1)?.sword ??
     astaTechniques[id].stages[0].sword
@@ -284,9 +281,7 @@ export function astaReach(
 ) {
   return id === "astaDualBreak"
     ? swordReach[relay?.sword ?? "slayer"]
-    : id === "astaBlackSlashPursuit"
-      ? 91
-      : (astaTechniques[id].reach ?? swordReach[astaStageSword(id, tick)]);
+    : (astaTechniques[id].reach ?? swordReach[astaStageSword(id, tick, relay)]);
 }
 export function astaSpecialBlade(
   id: AstaActionId,
@@ -363,7 +358,9 @@ function buildMove(
         phase: active ? "active" : at < s.startup ? "startup" : "recovery",
         hurtboxes: astaBody.standing,
         hitboxes:
-          active && !s.projectile ? [astaSpecialBlade(id, at, relay)] : [],
+          active && !s.projectile && s.damage > 0
+            ? [astaSpecialBlade(id, at, relay)]
+            : [],
       };
     }),
   };
@@ -372,78 +369,126 @@ const relayCache = new Map<string, Move>();
 export function astaRelayMove(
   sword: AstaSword,
   phase: AstaRelayState["phase"] = "opening",
-  extensions = 0,
 ): Move {
-  const key = sword + phase + extensions,
+  const branch = phase === "branch",
+    key = sword + (branch ? "branch" : "opening"),
     cached = relayCache.get(key);
   if (cached) return cached;
-  const finish = phase === "finish",
-    slasher = sword === "slasher";
-  const r = { sword, phase } as AstaRelayState;
-  const startup = finish ? 3 : slasher ? 3 : sword === "destroyer" ? 5 : 4;
-  const end = finish
-    ? slasher
-      ? 10
-      : 7
-    : slasher
-      ? 9
-      : sword === "destroyer"
-        ? 9
-        : sword === "dweller"
-          ? 9
-          : 8;
-  const damage = finish
-    ? { slayer: 68, slasher: 45, dweller: 56, destroyer: 54 }[sword]
-    : phase === "opening"
-      ? { slayer: 42, slasher: 17, dweller: 34, destroyer: 32 }[sword]
-      : { slayer: 43, slasher: 14, dweller: 31, destroyer: 30 }[sword];
-  const result = buildMove(
-    "astaDualBreak",
-    {
+  const r = { sword, phase: branch ? "branch" : "opening" } as AstaRelayState;
+  let spec: Omit<Technique, "family" | "button" | "name">;
+  if (!branch) {
+    const slasher = sword === "slasher",
+      startup = slasher ? 3 : sword === "destroyer" ? 5 : 4,
+      end = sword === "slayer" ? 8 : 9;
+    spec = {
       startup,
       end,
       stages: [{ at: 2, sword }],
-      damage,
-      stun: finish ? 20 : Math.max(20, 31 - extensions * 3),
-      push: finish ? 6 : sword === "slayer" ? 1.8 : 0.55,
-      launch: finish ? 3 : sword === "destroyer" ? -3.5 : 0,
-      rank: finish ? 4 : 3,
-      knockdown: finish,
+      damage: { slayer: 42, slasher: 17, dweller: 34, destroyer: 32 }[sword],
+      stun: 34,
+      push: sword === "slayer" ? 1.3 : 0.5,
+      launch: sword === "destroyer" ? -3.5 : 0,
+      rank: 3,
       drive: {
         from: 1,
         to: startup + 1,
-        speed: sword === "dweller" ? 11 : sword === "slasher" ? 7 : 5,
+        speed: sword === "dweller" ? 11 : slasher ? 7 : 5,
       },
       windows: slasher
-        ? finish
-          ? [
-              {
-                id: 1,
-                fromTick: 3,
-                toTick: 5,
-                damage: 22,
-                push: 0.4,
-                launch: 0,
-                knockdown: false,
-              },
-              {
-                id: 2,
-                fromTick: 7,
-                toTick: 10,
-                damage: 27,
-                push: 6,
-                launch: 3,
-                knockdown: true,
-              },
-            ]
-          : [
-              { id: 1, fromTick: 3, toTick: 5, damage },
-              { id: 2, fromTick: 7, toTick: 9, damage },
-            ]
+        ? [
+            { id: 1, fromTick: 3, toTick: 5, damage: 17 },
+            { id: 2, fromTick: 7, toTick: 9, damage: 19 },
+          ]
         : undefined,
-    },
-    r,
-  );
+    };
+  } else {
+    const configs = {
+      slayer: {
+        startup: 6,
+        end: 27,
+        damage: 40,
+        stun: 32,
+        push: 0.65,
+        launch: 0,
+        rank: 4,
+        drive: { from: 1, to: 7, speed: 7 },
+        windows: [
+          { id: 1, fromTick: 6, toTick: 9, damage: 40 },
+          {
+            id: 2,
+            fromTick: 23,
+            toTick: 27,
+            damage: 72,
+            stun: 24,
+            push: 7,
+            launch: 2,
+            knockdown: true,
+          },
+        ],
+      },
+      slasher: {
+        startup: 6,
+        end: 24,
+        damage: 17,
+        stun: 27,
+        push: 0.35,
+        launch: 0,
+        rank: 4,
+        drive: { from: 1, to: 20, speed: 4.5 },
+        windows: [
+          { id: 1, fromTick: 6, toTick: 8, damage: 17 },
+          { id: 2, fromTick: 10, toTick: 12, damage: 19 },
+          { id: 3, fromTick: 16, toTick: 18, damage: 21 },
+          {
+            id: 4,
+            fromTick: 20,
+            toTick: 24,
+            damage: 32,
+            stun: 22,
+            push: 6,
+            launch: 1,
+            knockdown: true,
+          },
+        ],
+      },
+      dweller: {
+        startup: 6,
+        end: 9,
+        damage: 34,
+        stun: 34,
+        push: 1,
+        launch: 0,
+        rank: 3,
+        drive: { from: 1, to: 10, speed: 8 },
+      },
+      destroyer: {
+        startup: 7,
+        end: 28,
+        damage: 26,
+        stun: 30,
+        push: 0.5,
+        launch: -2,
+        rank: 4,
+        drive: { from: 1, to: 9, speed: 6 },
+        windows: [
+          { id: 1, fromTick: 7, toTick: 10, damage: 26 },
+          { id: 2, fromTick: 17, toTick: 20, damage: 25 },
+          {
+            id: 3,
+            fromTick: 24,
+            toTick: 28,
+            damage: 48,
+            stun: 22,
+            push: 6,
+            launch: 2,
+            knockdown: true,
+          },
+        ],
+      },
+    };
+    spec = { ...configs[sword], stages: [{ at: 3, sword }] };
+  }
+  const result = buildMove("astaDualBreak", spec, r);
   relayCache.set(key, result);
   return result;
 }
@@ -455,29 +500,32 @@ export const astaSpecialMoves = Object.fromEntries(
       : buildMove(id, astaTechniques[id]),
   ]),
 ) as Record<AstaSpecialId, Move>;
-const pursuitMove = buildMove("astaBlackSlashPursuit", {
-  startup: 5,
-  end: 10,
-  stages: [{ at: 1, sword: "dweller" }],
-  damage: 46,
-  stun: 26,
-  push: 2,
-  launch: 0,
-  rank: 3,
-  chain: true,
-  drive: { from: 1, to: 8, speed: 18 },
-});
+const relayWaveImpact: Move = {
+  ...astaSpecialMoves.astaBlackSlash,
+  damage: 48,
+  stun: 24,
+  push: 5,
+  launch: 1,
+  rank: 4,
+  knockdown: true,
+  hitstop: 6,
+  cancels: [],
+};
+export function astaProjectileMove(p: KiProjectile): Move | undefined {
+  return p.move === "astaBlackSlash"
+    ? astaSpecialMoves.astaBlackSlash
+    : p.move === "astaDualBreak"
+      ? relayWaveImpact
+      : undefined;
+}
 export function astaRuntimeMove(f: Fighter, id: AstaActionId): Move {
   if (id === "astaDualBreak") {
     const r = f.asta?.relay;
-    return astaRelayMove(r?.sword ?? f.asta!.equipped, r?.phase, r?.extensions);
+    return astaRelayMove(r?.sword ?? f.asta!.equipped, r?.phase);
   }
-  if (id === "astaBlackSlashPursuit") return pursuitMove;
   const m = astaSpecialMoves[id];
   if (id === "astaBlackRush" && f.hitConfirmed)
     return { ...m, recovery: m.recovery - 4 };
-  if (id === "astaCausalityBreak" && f.asta?.neutralized)
-    return { ...m, damage: 80, launch: -10, stun: 30 };
   return m;
 }
 export function canStartAstaSpecial(f: Fighter, id: AstaActionId) {
@@ -493,16 +541,6 @@ export function canStartAstaSpecial(f: Fighter, id: AstaActionId) {
     f.match?.temporal.isFrozen(f.id)
   )
     return false;
-  if (id === "astaBlackSlashPursuit")
-    return (
-      !!s.pursuit &&
-      !s.pursuit.used &&
-      f.match!.frame <= s.pursuit.until &&
-      (["idle", "walk", "crouch"].includes(f.state) ||
-        (f.state === "attack" &&
-          f.moveId === "astaBlackSlash" &&
-          f.stateFrame >= 7))
-    );
   if (
     id === "astaBlackSlash" &&
     (s.projectileCooldown > 0 ||
@@ -531,13 +569,20 @@ export function canStartAstaSpecial(f: Fighter, id: AstaActionId) {
   );
 }
 export function spawnAstaSpecial(f: Fighter, m: Match) {
-  if (
-    !f.asta ||
-    f.moveId !== "astaBlackSlash" ||
-    f.stateFrame !== astaSpecialMoves.astaBlackSlash.startup
-  )
-    return;
-  const g = astaSpecialGrip("astaBlackSlash", f.stateFrame),
+  const s = f.asta;
+  if (!s) return;
+  const relay = s.relay;
+  const black =
+    f.moveId === "astaBlackSlash" &&
+    f.stateFrame === astaSpecialMoves.astaBlackSlash.startup;
+  const short =
+    f.moveId === "astaDualBreak" &&
+    relay?.phase === "branch" &&
+    relay.sword === "dweller" &&
+    f.stateFrame === 19 &&
+    !relay.projectileFired;
+  if (!black && !short) return;
+  const g = astaSpecialGrip(f.moveId as AstaActionId, f.stateFrame, relay),
     a = (g.angle * Math.PI) / 180;
   const x = f.x + f.facing * (g.x + Math.cos(a) * 24),
     y = f.y + g.y + Math.sin(a) * 24;
@@ -545,31 +590,26 @@ export function spawnAstaSpecial(f: Fighter, m: Match) {
     id: ++m.projectileSerial,
     owner: f.id,
     move: f.moveId,
-    cast: f.asta.cast,
+    cast: s.cast,
     x,
     y,
     previousX: x,
     previousY: y,
-    vx: 12 * f.facing,
+    vx: (black ? 18 : 14) * f.facing,
     vy: 0,
     facing: f.facing,
-    radius: 22,
+    radius: black ? 30 : 23,
     age: 0,
-    life: 26,
+    life: black ? 70 : 22,
     state: "flight",
     impactAge: 0,
   });
-  f.asta.projectileCooldown = 60;
-  f.asta.pursuit = {
-    cast: f.asta.cast,
-    until: m.frame + 32,
-    used: false,
-    minSerial: f.buffer.snapshot().serial,
-  };
+  if (black) s.projectileCooldown = 110;
+  if (short) relay!.projectileFired = true;
 }
 export const astaWaveVolume = (p: KiProjectile): Capsule => ({
-  a: { x: p.previousX, y: p.y - 22 },
-  b: { x: p.x, y: p.y + 22 },
+  a: { x: p.previousX, y: p.y - p.radius },
+  b: { x: p.x, y: p.y + p.radius },
   r: 6,
 });
 export function astaSpecialSegment(

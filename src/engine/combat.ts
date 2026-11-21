@@ -1,8 +1,10 @@
 import type { KaguneId } from "./kagune";
 import { astaMoves } from "./asta";
-import { astaSpecialCommand,isAstaSpecial,isAstaAction,astaRuntimeMove,canStartAstaSpecial,spawnAstaSpecial,astaWaveVolume } from "./asta-specials";
-import { beginAstaRelay,stepAstaRelay,stepAstaPursuit,confirmAstaRelay } from "./asta-relay";
+import { astaSpecialCommand,isAstaSpecial,isAstaAction,astaRuntimeMove,canStartAstaSpecial,spawnAstaSpecial,astaWaveVolume,astaProjectileMove } from "./asta-specials";
+import { beginAstaRelay,stepAstaRelay,confirmAstaRelay } from "./asta-relay";
 import { stepAstaAntimagic } from "./asta-antimagic";
+import { recordAstaDamage } from "./asta-causality";
+import { tickCombatStatuses } from "./status-effects";
 import { newAsta, beginAstaAttack, commitAstaSword, finishAstaAttack, tickAstaState, type AstaState } from "./asta-stances";
 import samurai from "../data/samurai.json";
 import { CombatStand } from "./stand-combat";
@@ -138,6 +140,7 @@ export class Fighter {
   sasukeCurse?: SasukeCurseState;
   omnitrix?: OmnitrixState;
   asta?: AstaState;
+  statusEffects?: import("./status-effects").CombatStatus[];
   domination?: { charge: number; powered: boolean; awarded: boolean; spentFrame?: number;
     cast: number; lastWaveCredit: number; finishingPressure?: { frame: number; tick: number } };
   kirinCursed?: boolean;
@@ -621,7 +624,7 @@ export class Fighter {
       else if (this.state === "crouch" && (s === "idle" || s === "walk")) this.omnitrix.crouchExit = 5;
     }
     if (this.asta) {
-      if (s !== "attack") finishAstaAttack(this,!["idle","walk","crouch"].includes(s));
+      if (s !== "attack") finishAstaAttack(this);
       if (s !== "air") this.asta.airDashTicks = 0;
     }
     this.state = s;
@@ -792,7 +795,8 @@ export class Fighter {
     const astaRelayOwned=!!this.asta?.relay;
     this.stateFrame++;
     tickAstaState(this);
-    stepAstaRelay(this);stepAstaPursuit(this);
+    tickCombatStatuses(this);
+    stepAstaRelay(this);
     if (this.asta && !this.airborne) this.asta.airDashUsed = false;
     if (this.combo > 0) this.comboAge++;
     this.syncReactionClock(true);
@@ -1343,7 +1347,7 @@ export interface HitEvent {
     | "centipede";
   total?: number;
   ben?: BenEffect;
-  asta?: {kind:"break"|"hit";actor:number};
+  asta?: {kind:"break"|"hit"|"restore";actor:number};
 }
 export interface CaptureSequence {
   kind: "ultimate" | "grab";
@@ -1842,7 +1846,7 @@ export class Match {
         f.hitConfirmed = true;
         if (m.ben?.field) f.connected = true;
       }
-      if(f.asta && moveId==="astaDualBreak" && applied>0)confirmAstaRelay(f);
+      if(f.asta && moveId==="astaDualBreak" && applied>0)confirmAstaRelay(f,m.kind==="astaWave");
       if(f.asta && isAstaSpecial(moveId) && !f.asta.usedSpecials.includes(moveId))f.asta.usedSpecials.push(moveId);
       if (m.ben?.technique && f.omnitrix && !f.omnitrix.usedSpecials.includes(m.ben.technique))
         f.omnitrix.usedSpecials.push(m.ben.technique);
@@ -2241,7 +2245,7 @@ export class Match {
     const shapes = fireDragonVolumes(w, { x: p.previousX, y: p.previousY }, p.radius);
     const target = this.fighters[1 - p.owner], owner = this.fighters[p.owner];
     const haki = xebecProjectileMove(p.move),
-        move = haki ?? (p.curse ? sasukeCurseMoves[p.move] : owner.data.specialMoves?.[p.move]);
+        move = haki ?? (owner.asta ? astaProjectileMove(p) : undefined) ?? (p.curse ? sasukeCurseMoves[p.move] : owner.data.specialMoves?.[p.move]);
     if (move && this.damageBenWalls(shapes, move.damage, this.benWalls(), `dragon:${p.id}`, p.owner)) return false;
     if (target.invulnerable || target.knockedDown) return true;
     const boxes = target.hurtboxes();
@@ -2281,8 +2285,8 @@ export class Match {
       const target = this.fighters[1 - p.owner],
         owner = this.fighters[p.owner],
         haki = xebecProjectileMove(p.move),
-        move = haki ?? (p.curse ? sasukeCurseMoves[p.move] : owner.data.specialMoves?.[p.move]);
-      const shape = wave ? xebecWaveVolume(wave, p.x, p.y, p.facing, p.radius) : p.move==="astaBlackSlash" ? astaWaveVolume(p) : {
+        move = haki ?? (owner.asta ? astaProjectileMove(p) : undefined) ?? (p.curse ? sasukeCurseMoves[p.move] : owner.data.specialMoves?.[p.move]);
+      const shape = wave ? xebecWaveVolume(wave, p.x, p.y, p.facing, p.radius) : owner.asta && (p.move==="astaBlackSlash"||p.move==="astaDualBreak") ? astaWaveVolume(p) : {
         a: { x: p.previousX, y: p.previousY },
         b: { x: p.x, y: p.y },
         r: p.radius,
@@ -2813,6 +2817,7 @@ export class Match {
     const next = Math.max(minimum, target.health - damage),
       applied = target.health - next;
     target.health = next;
+    recordAstaDamage(target,Math.max(0,applied));
     return Math.max(0, applied);
   }
   private recordHit(

@@ -41,6 +41,7 @@ const fighterKeys = [
   "kirinCursed",
   "domination",
   "asta",
+  "statusEffects",
   "hakiReaction",
   "homeX",
   "guardIntent",

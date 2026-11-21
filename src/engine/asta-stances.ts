@@ -1,4 +1,5 @@
 import type { Fighter } from "./combat";
+import { pruneAstaDamage, type DamageReceipt } from "./asta-causality";
 export const astaSwords = [
   "slayer",
   "slasher",
@@ -15,8 +16,8 @@ export const swordNames: Record<AstaSword, string> = {
 export interface AstaRelayState {
   initial: AstaSword;
   sword: AstaSword;
-  phase: "opening" | "link" | "finish";
-  extensions: number;
+  options: [AstaSword, AstaSword, AstaSword];
+  phase: "opening" | "choice" | "branch";
   action: number;
   cast: number;
   started: number;
@@ -27,11 +28,21 @@ export interface AstaRelayState {
   minSerial: number;
   contacts: string[];
   lastContact: number;
-  choice?: AstaSword;
+  button?: "light" | "medium" | "heavy";
+  projectileFired: boolean;
+}
+export interface AstaDrawState {
+  from: AstaSword;
+  to: AstaSword;
+  move: string;
+  tick: number;
+  commitAt: number;
+  handAt: number;
+  total: number;
 }
 export interface AstaState {
   relay?: AstaRelayState;
-  pursuit?: { cast: number; until: number; used: boolean; minSerial: number };
+  draw?: AstaDrawState;
   equipped: AstaSword;
   attackSword?: AstaSword;
   pending?: {
@@ -47,6 +58,16 @@ export interface AstaState {
   airDashUsed: boolean;
   airDashTicks: number;
   airDashDirection: number;
+  damageSerial: number;
+  recentDamage: DamageReceipt[];
+  restorationReadyAt: number;
+  restoredCast: number;
+  causalityResult?: {
+    cast: number;
+    at: number;
+    hp: number;
+    cleansed: string[];
+  };
 }
 export const newAsta = (): AstaState => ({
   equipped: "slayer",
@@ -57,10 +78,13 @@ export const newAsta = (): AstaState => ({
   airDashUsed: false,
   airDashTicks: 0,
   airDashDirection: 1,
+  damageSerial: 0,
+  recentDamage: [],
+  restorationReadyAt: 0,
+  restoredCast: -1,
 });
 export const isAstaSword = (value: string): value is AstaSword =>
   astaSwords.includes(value as AstaSword);
-/** Only training may equip at rest. No neutral sword-switch command is exposed in combat. */
 export function practiceSword(f: Fighter, sword: AstaSword) {
   if (
     !f.asta ||
@@ -72,9 +96,24 @@ export function practiceSword(f: Fighter, sword: AstaSword) {
   f.asta.equipped = sword;
   return true;
 }
-/** Special moves commit at the authored drawing, even on whiff.
- * Interrupted before this tick -> previous sword. Interrupted afterwards -> new sword.
- * Each authored stage updates the latched sword, replicated by snapshots. */
+/** Visual exchange shares the actual commit tick and reaches the hand before the first active frame. */
+export function beginAstaDraw(f: Fighter, to: AstaSword, commitAt: number) {
+  const s = f.asta!;
+  if (to === s.equipped) {
+    delete s.draw;
+    return;
+  }
+  const handAt = Math.min(f.move?.startup ?? commitAt + 3, commitAt + 3);
+  s.draw = {
+    from: s.equipped,
+    to,
+    move: f.moveId,
+    tick: 0,
+    commitAt,
+    handAt,
+    total: handAt + 4,
+  };
+}
 export function beginAstaAttack(
   f: Fighter,
   sword?: {
@@ -88,12 +127,12 @@ export function beginAstaAttack(
   s.attackSword = s.equipped;
   s.neutralized = 0;
   if (f.moveId !== "astaDualBreak") delete s.relay;
-  if (f.moveId !== "astaBlackSlashPursuit") delete s.pursuit;
-  if (sword && f.moveId !== "astaBlackSlashPursuit") {
+  if (sword) {
     s.cast++;
     if (f.opponent?.combo && !s.usedSpecials.includes(f.moveId))
       s.usedSpecials.push(f.moveId);
-  }
+    beginAstaDraw(f, sword.sword, sword.commitTick);
+  } else delete s.draw;
   s.pending = sword
     ? {
         sword: sword.sword,
@@ -123,21 +162,24 @@ export function commitAstaSword(f: Fighter) {
     else delete s.pending;
   }
 }
-export function finishAstaAttack(f: Fighter, interrupted = false) {
+export function finishAstaAttack(f: Fighter) {
   if (!f.asta) return;
   delete f.asta.pending;
   delete f.asta.attackSword;
   delete f.asta.relay;
-  if (interrupted) delete f.asta.pursuit;
+  delete f.asta.draw;
 }
 export const visibleAstaSword = (f: Fighter) =>
   f.asta?.attackSword ?? f.asta?.equipped ?? "slayer";
-
-/** One decrement per simulation update; repeated commit checks never change clocks. */
 export function tickAstaState(f: Fighter) {
   const s = f.asta;
   if (!s) return;
   s.projectileCooldown = Math.max(0, s.projectileCooldown - 1);
   if (!f.opponent?.combo && f.state !== "attack") s.usedSpecials.length = 0;
+  pruneAstaDamage(f);
   commitAstaSword(f);
+  if (s.draw) {
+    s.draw.tick = f.stateFrame;
+    if (f.moveId !== s.draw.move || s.draw.tick > s.draw.total) delete s.draw;
+  }
 }

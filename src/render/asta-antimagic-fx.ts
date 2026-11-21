@@ -6,6 +6,7 @@ import {
 } from "../engine/asta-specials";
 import { swordReach } from "../engine/asta-normals";
 import { visibleAstaSword } from "../engine/asta-stances";
+import { drawCausalityRibbons } from "./asta-causality-fx";
 /** Quantized strokes: no bitmaps, gradients, blur or simulation mutations. */
 function stroke(
   c: CanvasRenderingContext2D,
@@ -95,7 +96,7 @@ export function drawAstaAntimagic(
   const active = t >= m.startup && t < m.startup + m.active;
   c.save();
   // Short quantized blade traces use the authored hand trajectory, never a screen-sized band.
-  if (active && f.moveId !== "astaBlackSlash") {
+  if (active && !["astaBlackSlash", "astaCausalityBreak"].includes(f.moveId)) {
     const before = astaSpecialGrip(
       f.moveId,
       Math.max(m.startup, t - 2),
@@ -144,35 +145,13 @@ export function drawAstaAntimagic(
       );
     }
   }
-  if (
-    f.moveId === "astaDualBreak" &&
-    f.asta?.relay?.phase === "link" &&
-    t < 5
-  ) {
-    const p = t / 5;
-    c.fillStyle = "#332b36";
-    c.fillRect(-34, -87, 18, 23);
-    c.fillStyle = "#ab8255";
-    c.fillRect(-32, -85, 14, 2);
-    c.fillStyle = "#c7b68b";
-    c.fillRect(-25, -83, 1, 17);
-    for (let i = 0; i < 7; i++) {
-      const x = -25 + p * 50 + i * 3;
-      c.fillStyle = i % 2 ? "#5e2a3d" : "#191626";
-      c.fillRect(Math.round(x), -80 + ((i * 7 + t) % 19), 2, 2);
-    }
-  }
-  if (f.moveId === "astaCausalityBreak" && t >= 3 && t < 17) {
-    const radius = t < 12 ? 12 + (t - 3) * 2 : 30 - (t - 12) * 3;
-    for (let i = 0; i < 5; i++) {
-      const y = g.y - radius + (i * radius) / 2;
-      stroke(c, g.x - 8, y, g.x + 4 + (i % 2) * 9, y - 7, 3, "#1a1422");
-    }
-  }
+  if (f.moveId === "astaCausalityBreak") drawCausalityRibbons(c, f);
   if (
     active ||
     (t < m.startup &&
-      ["astaBlackDivider", "astaCausalityBreak"].includes(f.moveId))
+      ["astaBlackDivider", "astaCausalityBreak", "astaBlackSlash"].includes(
+        f.moveId,
+      ))
   ) {
     const reach = astaReach(f.moveId, t, f.asta?.relay);
     for (let i = 0; i < 5; i++) {
@@ -202,22 +181,27 @@ export function drawAstaWaves(
   cosmetics: boolean,
 ) {
   for (const p of m.kiProjectiles) {
-    if (p.move !== "astaBlackSlash") continue;
+    if (
+      !["astaBlackSlash", "astaDualBreak"].includes(p.move) ||
+      !m.fighters[p.owner].asta
+    )
+      continue;
     c.save();
     c.translate(Math.round(p.x), Math.round(p.y));
     c.scale(p.facing, 1);
     const fade = p.state === "flight" ? 1 : Math.max(0, 1 - p.impactAge / 8);
     c.globalAlpha = fade;
     // Crescent, its opaque edge matches the swept vertical combat capsule.
-    for (let y = -22; y <= 22; y += 2) {
-      const x = -Math.round((y * y) / 96);
+    for (let y = -p.radius; y <= p.radius; y += 2) {
+      const x = -Math.round((y * y) / (p.radius * 4));
       stroke(c, x, y, x + 6, y, 5, "#171220");
       stroke(c, x + 4, y, x + 7, y, 2, "#8f3549");
     }
     if (cosmetics)
       for (let i = 0; i < 9; i++) {
-        const x = -10 - ((p.age * 5 + i * 11) % 39),
-          y = ((i * 13 + p.age * 3) % 43) - 22;
+        const x =
+            -10 - ((p.age * 5 + i * 11) % Math.max(20, Math.abs(p.vx) * 3)),
+          y = ((i * 13 + p.age * 3) % (p.radius * 2)) - p.radius;
         c.fillStyle = i % 3 ? "#25182d" : "#ad4153";
         c.fillRect(x, y, 2 + (i % 2) * 2, 2);
       }
@@ -232,7 +216,10 @@ export function drawAstaWaves(
       c.globalAlpha = e.life / total;
       for (let i = 0; i < 8; i++) {
         const a = (i * Math.PI) / 4,
-          d = 4 + age * (e.asta.kind === "break" ? 3 : 1.4);
+          d =
+            e.asta.kind === "restore"
+              ? Math.max(3, 28 - age * 1.2)
+              : 4 + age * (e.asta.kind === "break" ? 3 : 1.4);
         stroke(
           c,
           e.x + Math.cos(a) * d,
