@@ -73,6 +73,7 @@ const matchKeys = [
   "centipede",
   "alienX",
   "pandemonium",
+  "astaUnion",
   "hits",
   "hitSerial",
   "rules",

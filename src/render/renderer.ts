@@ -1,3 +1,5 @@
+import { astaUnionConfig, astaUnionScene } from "../engine/asta-super";
+import { astaSuperSheets, drawAstaUnionBackdrop, drawLiebeManifestation, drawAstaUnionLocal, drawAstaUnionImpact, drawAstaUnionScreen } from "./asta-super-fx";
 import { assetBase } from "../asset-base";
 import { drawTestArena } from "./arena";
 import benArt from "../data/ben-art.json";
@@ -120,6 +122,7 @@ export class Renderer {
     const sheets = new Set<string>();
     sheets.add("fx/dio-specials.png");
     sheets.add("asta/arsenal.png");
+    astaSuperSheets.forEach(sheet=>sheets.add(sheet));
     sheets.add(sasukeEffectsSheet);
     sheets.add(goryukaHeadSheet);
     for (const sheet of kirinEffectsSheets) sheets.add(sheet);
@@ -266,6 +269,7 @@ export class Renderer {
       jetStage = jet ? jetScene(jet) : undefined;
     const kirin = match.kirin, kirinStage = kirin ? kirinScene(kirin) : undefined;
     const alienX = match.alienX, reality = alienX && alienXScene(alienX);
+    const union = match.astaUnion, unionStage = union && astaUnionScene(union);
     const pandemonium = match.pandemonium, abyss = pandemonium && pandemoniumScene(pandemonium);
     const centipede = match.centipede, kakuja = centipede ? centipedeScene(centipede) : undefined;
     const kanekiCapture = match.capture?.kaneki;
@@ -313,7 +317,7 @@ export class Renderer {
         f.state === "attack" && f.moveId === kingWill ? f.stateFrame : -1;
       return tick >= 0 && tick < 96 ? [{ x: f.x, y: f.y, facing: f.facing, tick }] : [];
     });
-    const stagedCamera = abyss?.camera ?? cosmicCamera ?? openingCamera ?? kakuja?.camera ?? kirinStage?.camera ?? (jet && jetStage ? jetCamera(jetStage, jet) : furyStage?.camera)
+    const stagedCamera = unionStage?.camera ?? abyss?.camera ?? cosmicCamera ?? openingCamera ?? kakuja?.camera ?? kirinStage?.camera ?? (jet && jetStage ? jetCamera(jetStage, jet) : furyStage?.camera)
       ?? chainCamera ?? (this.effects ? chidoriCamera(match) ?? benCamera : undefined);
     const self = match.fighters[this.localSeat],
       other = match.fighters[1 - this.localSeat];
@@ -342,6 +346,9 @@ export class Renderer {
     this.canvas.dataset.centipedeTick = String(centipede?.tick ?? -1);
     this.canvas.dataset.alienXPhase = reality?.phase ?? "";
     this.canvas.dataset.alienXVisual = alienX && this.effects ? alienXVisualPhase(alienX.tick) : "";
+    this.canvas.dataset.astaUnionTick = String(union?.tick ?? -1);
+    this.canvas.dataset.astaUnionPhase = unionStage?.phase ?? "";
+    this.canvas.dataset.astaForm = unionStage?.form ?? (self.state === "attack" && self.moveId === "astaBlackMeteorite" && self.stateFrame < 36 ? "black" : "base");
     this.canvas.dataset.alienXTick = String(alienX?.tick ?? -1);
     this.canvas.dataset.pandemoniumTick = String(pandemonium?.tick ?? -1);
     this.canvas.dataset.pandemoniumPhase = abyss?.phase ?? "";
@@ -379,7 +386,7 @@ export class Renderer {
       ? "spending" : self.domination?.charge === 100 ? "full" : "";
     this.canvas.dataset.xebecWaves = match.kiProjectiles.filter(p => p.move.startsWith("xebec") && p.state === "flight")
       .map(p => p.move).join(",");
-    this.canvas.dataset.capture = abyss ? "pandemonium" : reality ? "alienX" : centipede ? "centipede" : kirin ? "kirin" : jet ? "jetGigant" : fury
+    this.canvas.dataset.capture = union ? "astaUnion" : abyss ? "pandemonium" : reality ? "alienX" : centipede ? "centipede" : kirin ? "kirin" : jet ? "jetGigant" : fury
       ? "gokuFury"
       : road
         ? "roadRoller"
@@ -549,6 +556,10 @@ export class Renderer {
     drawTestArena(c, benPadding);
     if (xebecEffects && conquerors.length)
       drawKingWillArena(c, conquerors, this.pressureStage, this.prefersReducedMotion.matches);
+    if (union) {
+      if(this.effects && this.astaEffects) drawAstaUnionBackdrop(c,union);
+      drawLiebeManifestation(c,union,this.sprites.get("asta/r-liebe.png"));
+    }
     if (pandemonium && abyss) {
       if (abyss.justiceTick === undefined) {
         if (xebecEffects) drawPandemoniumSky(c, pandemonium.tick, abyss);
@@ -690,6 +701,7 @@ export class Renderer {
       const limbs = luffyAttackLimbs(f);
       if (this.effects && limbs.length && f.move)
         paintLuffyTrails(c, limbs, f.stateFrame, f.move);
+      if(f.asta && this.effects && this.astaEffects) drawAstaUnionLocal(c,f,this.presentations[i].animator,"behind");
       // Causality flows behind the body and weapon so its dark volume never hides Asta's face or hands.
       if(f.asta && this.effects && this.astaEffects && f.moveId==="astaCausalityBreak")
         drawAstaAntimagic(c,f,match.frame);
@@ -755,6 +767,7 @@ export class Renderer {
         c.restore();
       }
       c.globalAlpha = 1;
+      if(f.asta && this.effects && this.astaEffects) drawAstaUnionLocal(c,f,this.presentations[i].animator);
       if(f.asta && image) drawAstaWeapon(c,f,this.presentations[i].animator,this.sprites.get("asta/arsenal.png")!,image);
       if(f.asta && this.effects && this.astaEffects && f.moveId!=="astaCausalityBreak") drawAstaAntimagic(c,f,match.frame);
       drawSpectralArms(c, f, match);
@@ -843,6 +856,7 @@ export class Renderer {
     if (this.effects && jet && jetStage) drawJetImpact(c, this.sprites, jetStage, jet.tick, jet.hold);
     if (this.effects && road) drawRoadEffects(c, this.sprites, road);
     if (this.effects) drawFury(c, match, this.sprites, "front");
+    if (union && this.effects && this.astaEffects) drawAstaUnionImpact(c,union);
     if (reality && alienX && this.effects) drawAlienXForces(c, reality, alienX.tick);
     if (pandemonium && abyss && this.effects) {
       if (abyss.justiceTick === undefined) {
@@ -877,6 +891,7 @@ export class Renderer {
       }
     }
 
+    if(union && this.effects && this.astaEffects) drawAstaUnionScreen(c,union);
     this.hud(match);
     if (pandemonium && xebecEffects && pandemonium.tick >= pandemoniumBeats.cut &&
         pandemonium.tick < pandemoniumBeats.cut + 24) {
@@ -1062,7 +1077,7 @@ export class Renderer {
         c.font = "11px monospace";
         c.fillStyle = i === 0 ? "#e5b16b" : "#73cbd5";
         c.fillText(
-          f.asta ? "SUPER · INDISPONÍVEL" : f.domination ? `PANDEMONIUM · ${f.meter >= pandemoniumConfig.cost ? `PRONTA · ${this.superKey}` : Math.floor(f.meter) + "%"}` :
+          f.asta ? `BLACK METEORITE · ${f.meter >= astaUnionConfig.cost ? `PRONTA · ${this.superKey}` : Math.floor(f.meter)+"%"}` : f.domination ? `PANDEMONIUM · ${f.meter >= pandemoniumConfig.cost ? `PRONTA · ${this.superKey}` : Math.floor(f.meter) + "%"}` :
           f.data.id === benId ? `ALIEN X · ${f.meter >= f.meterMaximum ? `PRONTA · ${this.superKey}` : Math.floor(100 * f.meter / f.meterMaximum) + "%"}` : f.data.id === "kaneki"
             ? `CENTIPEDE · ${f.meter >= centipedeConfig.cost ? `PRONTA · ${this.superKey}` : Math.floor(100 * f.meter / centipedeConfig.cost) + "%"}`
             : f.data.id === "luffy"

@@ -27,6 +27,7 @@ export type Cue =
   | "hakiPulse" | "hakiSovereign" | "hakiKing"
   | "rocksCut" | "rocksLift" | "solarIgnition" | "solarSurge"
   | "rocksGather" | "rocksSlash" | "rocksCrew" | "rocksNewgate" | "rocksKaido" | "rocksLinlin" | "rocksGate" | "rocksRupture"
+  | "astaMeteor" | "astaUnion" | "astaCut" | "astaEquinox"
   | "round"
   | "fight"
   | "ko"
@@ -57,6 +58,7 @@ export function effectCue(event: HitEvent): Cue {
 /** Original short synthesized sounds. No downloaded samples or autoplay. */
 export class Sound {
   private rocksTick = -1;
+  private astaTick = -1;
   private hakiClocks = [-1, -1];
   enabled = true;
   volume = 0.25;
@@ -370,13 +372,22 @@ export class Sound {
     } else if (cue === "ko") {
       tone(220, 55, 0.45, "sawtooth", 0.16);
       tone(330, 110, 0.5, "triangle", 0.2, 0.07);
+    } else if (cue === "astaMeteor") {
+      tone(380,55,.24,"sawtooth",.21);tone(90,33,.32,"triangle",.28,.02);
+    } else if (cue === "astaUnion") {
+      tone(65,170,.38,"sawtooth",.16);tone(130,260,.32,"triangle",.14,.10);
+    } else if (cue === "astaCut") {
+      tone(920,110,.09,"sawtooth",.18);tone(150,60,.13,"triangle",.2,.02);
+    } else if (cue === "astaEquinox") {
+      tone(1200,65,.17,"sawtooth",.24);tone(70,28,.48,"triangle",.30,.025);
     } else if (cue === "menu") tone(660, 880, 0.06, "sine", 0.15);
   }
   tick(match: Match, onlineRound?: string) {
     const ticks = match.pandemonium?.tick ?? -1;
     const beats = pandemoniumBeats;
     const kingSilence = !match.cinematicActive && match.fighters.some(f => f.moveId === kingWill && f.state === "attack" && f.stateFrame < 56);
-    this.setMusicDucked(kingSilence || ticks >= 0 && (ticks >= beats.uppercut && ticks < beats.cut || ticks >= beats.flight && ticks < beats.quake || ticks >= beats.rush && ticks < beats.rupture));
+    const unionTick = match.astaUnion?.tick ?? -1;
+    this.setMusicDucked(unionTick >= 22 && unionTick < 82 || unionTick >= 198 && unionTick < 230 || kingSilence || ticks >= 0 && (ticks >= beats.uppercut && ticks < beats.cut || ticks >= beats.flight && ticks < beats.quake || ticks >= beats.rush && ticks < beats.rupture));
     if (ticks >= 0 && ticks > this.rocksTick) {
       const cues: [number, Cue][] = [...pandemoniumPrelude.map(({ tick, angle }): [number, Cue] =>
         [tick, angle === "rising" ? "rocksLift" : "rocksCut"]), [beats.lift, "rocksGather"], [beats.cut, "rocksSlash"],
@@ -387,6 +398,12 @@ export class Sound {
         if (at > this.rocksTick && at <= ticks) this.play(cue);
     }
     this.rocksTick = ticks;
+    if(this.owner !== match || unionTick < this.astaTick) this.astaTick=-1;
+    if(unionTick>=0 && unionTick>this.astaTick) {
+      const cues:[number,Cue][]=[[4,"astaMeteor"],[48,"astaUnion"],[100,"astaCut"],[126,"astaCut"],[154,"astaCut"],[184,"astaCut"],[230,"astaEquinox"]];
+      for(const [at,cue]of cues)if(at>this.astaTick&&at<=unionTick)this.play(cue);
+    }
+    this.astaTick=unionTick;
     if (this.owner !== match) {
       this.owner = match;
       this.moves = ["", ""];

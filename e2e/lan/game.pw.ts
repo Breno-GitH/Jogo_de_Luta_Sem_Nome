@@ -156,6 +156,7 @@ async function observe(p: Page) {
           chain: canvas.dataset.chainFinish,
           chainHeight: canvas.dataset.chainHeight,
           pandemonium: canvas.dataset.pandemoniumPhase,
+          astaUnion: canvas.dataset.astaUnionTick,
           prometheus: canvas.dataset.prometheusCel,
           fronts: canvas.dataset.kingWillFronts,
           reaction: canvas.dataset.hakiReaction,
@@ -247,6 +248,7 @@ async function capture(code: string, name: string) {
     );
     expect(ds[0].cameraZoom).toBe(ds[1].cameraZoom);
     expect(ds[0].astaStates).toBe(ds[1].astaStates);
+    expect(ds[0].astaUnionTick).toBe(ds[1].astaUnionTick);
     expect(ds[0].furyTick).toBe(ds[1].furyTick);
     expect(ds[0].jetTick).toBe(ds[1].jetTick);
     expect(ds[0].jetFist).toBe(ds[1].jetFist);
@@ -1722,4 +1724,35 @@ test("Asta Black Slash sends three independently guardable cuts in synchronized 
   expect(room.match!.capture).toBeFalsy();await consistent();await capture(code,"asta22-three-cuts-guarded");
   writeFileSync(audit+"/asta22-three-cuts-guarded-summary.json",JSON.stringify({cuts:3,guarded:impacts.size,maxFlying,health:room.match!.fighters[1].health},null,2));
  }finally{clearInterval(watch);await b.keyboard.up("d");}
+});
+
+
+test("Asta Super R synchronizes Black Meteorite, Liebe, Union swords, Equinox and release",async()=>{
+ const code=await pair("asta","samurai"),room=await seed(code,220,100);
+ await a.locator("canvas").focus();await press(a,"r",45);
+ await expect.poll(()=>room.match!.astaUnion?.tick).toBeGreaterThanOrEqual(1);
+ await capture(code,"asta-super-meteorite");
+ await expect.poll(()=>room.match!.astaUnion?.tick,{timeout:6000}).toBeGreaterThanOrEqual(85);
+ for(const client of[a,b])await expect(client.locator("canvas")).toHaveAttribute("data-asta-form","union");
+ await capture(code,"asta-super-devil-union");
+ await expect.poll(()=>room.match!.astaUnion?.tick,{timeout:6000}).toBeGreaterThanOrEqual(222);
+ await capture(code,"asta-super-equinox");
+ await expect.poll(()=>room.match!.astaUnion,{timeout:6000}).toBeUndefined();
+ expect(room.match!.fighters[1].health).toBe(660);
+ expect(room.match!.fighters[0].asta!.equipped).toBe("slasher");
+ expect(room.match!.fighters[0].meter).toBe(0);
+ for(const client of[a,b])await expect(client.locator("canvas")).toHaveAttribute("data-capture","none");
+ await consistent();await capture(code,"asta-super-restored");
+});
+test("Asta Super R guard and whiff never capture either LAN client",async()=>{
+ const code=await pair("asta","samurai"),room=await seed(code,220,100);
+ await b.locator("canvas").focus();await b.keyboard.down("d");
+ try{
+  await a.locator("canvas").focus();await press(a,"r",45);await a.waitForTimeout(1400);
+  expect(room.match!.astaUnion).toBeUndefined();expect(room.match!.fighters[1].health).toBe(1000);
+  expect(room.match!.fighters[0].meter).toBe(0);await consistent();
+ }finally{await b.keyboard.up("d");}
+ await seed(code,700,100);await a.locator("canvas").focus();await press(a,"r",45);await a.waitForTimeout(1300);
+ expect(room.match!.astaUnion).toBeUndefined();expect(room.match!.fighters[1].health).toBe(1000);
+ expect(room.match!.fighters[0].state).toBe("idle");await consistent();await capture(code,"asta-super-whiff");
 });

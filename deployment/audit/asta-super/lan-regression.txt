@@ -1,0 +1,20 @@
+
+Running 9 tests using 1 worker
+
+(node:15088) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:15088) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 e2e\lan\game.pw.ts:1620:1 › Asta selects in two clients, plays four sword states and synchronizes air dash (23.1s)
+  ok 2 e2e\lan\game.pw.ts:1638:1 › Asta nine specials preserve swords and the six approved attacks in two clients (1.8m)
+  ok 3 e2e\lan\game.pw.ts:1649:1 › Asta Relay 2.2 all twelve single J/K/L routes synchronize the chosen sword and finisher (54.3s)
+  ok 4 e2e\lan\game.pw.ts:1663:1 › Asta Causality restores recent HP, cleans test metadata and preserves cooldown in two clients (20.2s)
+  ok 5 e2e\lan\game.pw.ts:1679:1 › Asta Causality neutralizes eligible Ki during its animated ribbon window without healing on cooldown (18.0s)
+  ok 6 e2e\lan\game.pw.ts:1699:1 › Asta Black Slash is punished physically before release in synchronized clients (18.3s)
+  ok 7 e2e\lan\game.pw.ts:1708:1 › Asta Black Slash sends three independently guardable cuts in synchronized LAN clients (20.0s)
+  ok 8 e2e\lan\game.pw.ts:1730:1 › Asta Super R synchronizes Black Meteorite, Liebe, Union swords, Equinox and release (23.2s)
+  ok 9 e2e\lan\game.pw.ts:1747:1 › Asta Super R guard and whiff never capture either LAN client (19.4s)
+
+  Slow test file: e2e\lan\game.pw.ts (5.0m)
+  Consider running tests from slow files in parallel. See: https://playwright.dev/docs/test-parallel
+  9 passed (5.3m)

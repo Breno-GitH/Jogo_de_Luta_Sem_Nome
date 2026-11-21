@@ -94,7 +94,7 @@ export class FighterPresentation {
         return;
       }
     }
-    if (fighter.data.id !== "ben" && fighter.match?.pandemonium?.victim === fighter.id &&
+    if (fighter.data.id !== "ben" && (fighter.match?.pandemonium?.victim === fighter.id || fighter.match?.astaUnion?.victim === fighter.id) &&
         fighter.state === "grabbed" && fighter.actionClip) {
       const pose = reactionFor(fighter);
       const clip = pose && this.animator.hasClip(pose.clip) ? pose.clip :
