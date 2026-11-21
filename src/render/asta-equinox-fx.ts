@@ -131,8 +131,8 @@ export function drawUnionSky(c: CanvasRenderingContext2D, s: AstaUnionState) {
   }
   c.restore();
 }
-/** Smooth, tapered cleaving edge released by the sword. No zigzag pillar or beam.
- * The ground trench and separated sky advance with the same traveling crescent. */
+/** Straight, colossal cleaving plane released by the sword.
+ * The ground trench and separated sky advance with the same cutting front. */
 export function drawRemoteEquinox(
   c: CanvasRenderingContext2D,
   s: AstaUnionState,
@@ -255,26 +255,38 @@ export function drawRemoteEquinox(
     c.globalAlpha = cut.fade * 0.32;
     shape(c, [...back, ...[...flank].reverse()], "#6d506e");
     c.globalAlpha = cut.fade;
-    for (let i = 5; i < 29; i += 6) {
-      const [x, y] = back[i],
-        width = 22 + (i % 4) * 11;
+    // Unequal swept tails form the torn trailing silhouette of a giant MUGEN slash.
+    // They peel in different frames, while the dense front remains continuous.
+    for (let i = 0; i < 3; i++) {
+      const index = [10, 19, 28][i],
+        [x, y] = back[index],
+        phase = Math.floor(age / 3) + i * 3,
+        available = Math.max(0, (x - cut.origin[0]) * f - 12),
+        width = Math.min(available, [120, 185, 94][i] * u(age, 1, 9)),
+        bend = Math.sin(phase * 0.62) * (7 + i * 3),
+        peel = Math.max(0.15, 1 - u(impact, 8 + i * 4, 32 + i * 4));
+      c.globalAlpha = cut.fade * peel;
       shape(
         c,
         [
-          [x + f * 5, y - 15],
-          [x - f * width, y - 5],
-          [x - f * width * 0.65, y + 13],
-          [x, y + 7],
+          [x + f * 12, y - 32],
+          [x - f * width * 0.4, y - 21 + bend],
+          [x - f * width, y - 66 + bend],
+          [x - f * width * 0.68, y - 9 + bend],
+          [x - f * width * 0.9, y + 22 + bend],
+          [x - f * width * 0.25, y + 10],
+          [x + f * 14, y + 26],
         ],
-        "#0c0a15",
+        i % 2 ? "#090910" : "#100c19",
       );
     }
+    c.globalAlpha = cut.fade;
     // A narrow continuous leading edge makes the surface read as a blade.
     shape(c, [...rim, ...[...front].reverse()], "#a65b79bb");
     const highlight = front.slice(8, 25),
       edge = highlight.map(([x, y]) => [x + f * 1.5, y] as Point);
     shape(c, [...edge, ...[...highlight].reverse()], "#b9a6b566");
-    // Trailing strokes peel from the curved edge and carry its direction of travel.
+    // Trailing strokes peel from the dark mass and carry its direction of travel.
     for (let i = 4; i < 30; i += 5) {
       const [x, y] = back[i],
         length = 18 + (i % 4) * 10;

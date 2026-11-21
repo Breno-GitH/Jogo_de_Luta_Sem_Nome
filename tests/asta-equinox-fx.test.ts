@@ -48,27 +48,23 @@ describe("Equinox is a cutting wave emitted by Demon-Slasher", () => {
     },
   );
   it.each([1, -1])(
-    "has a smooth bowed edge, tapered tips and a moving ground/sky cut, side %s",
+    "has a straight colossal cutting front, dense mass and tapered ends, side %s",
     (facing) => {
       const cut = equinoxCut(state(unionBeats.impact, facing));
-      expect(cut.top).toBeLessThan(120);
+      expect(cut.bottom - cut.top).toBeGreaterThan(650);
+      expect(cut.top).toBeLessThan(0);
       expect(cut.bottom).toBe(580);
-      expect(Math.abs(cut.front[0][0] - cut.noseX)).toBeCloseTo(36);
+      expect(cut.front.every(([x]) => x === cut.noseX)).toBe(true);
       expect(cut.front[0]).toEqual(cut.back[0]);
       expect(Math.abs(cut.front.at(-1)![0] - cut.back.at(-1)![0])).toBeLessThan(
         0.01,
       );
       const widths = cut.front.map(([x], i) => Math.abs(x - cut.back[i][0]));
       expect(Math.max(...widths)).toBeGreaterThan(75);
-      const x = cut.front.map(([x]) => x * facing);
-      let reversals = 0,
-        last = 0;
-      for (let i = 1; i < x.length; i++) {
-        const sign = Math.sign(x[i] - x[i - 1]);
-        if (last && sign !== last) reversals++;
-        last = sign;
-      }
-      expect(reversals).toBe(1); // one curved blade, no alternating lightning notches
+      expect(widths.slice(6, 27).every((width) => width > 75)).toBe(true);
+      expect(cut.front.every(([, y], i) => !i || y > cut.front[i - 1][1])).toBe(
+        true,
+      );
       const before = equinoxCut(state(unionBeats.release + 4, facing));
       expect((cut.floorX - before.floorX) * facing).toBeGreaterThan(100);
       expect((cut.ceilingX - before.ceilingX) * facing).toBeGreaterThan(100);

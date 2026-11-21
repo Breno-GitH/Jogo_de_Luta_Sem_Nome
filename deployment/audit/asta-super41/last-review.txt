@@ -1,4 +1,6 @@
 2026-11-21 — Equinox correction
-Visual review: actual sword-tip emission (942), growing plane (944), sky-to-floor cutting edge (948/952), delayed contact (956), continued propagation and ground/sky incision (974), then dissipation and restoration.
+Visual review: actual sword-tip emission (942), growing straight plane (944), sky-to-floor cutting edge (948/952), delayed contact (956), continued propagation and ground/sky incision (974), then dissipation and restoration.
 Three complete browser scenarios passed. Evidence includes full and short Equinox recordings, an FX-off pass, guard/whiff, per-phase screenshots and losslessly compacted traces.
-Before image: equinox-before.png (old stationary zigzag pillar). New effect is a broad traveling blade with a continuous edge, layered dark mass, low pressure sheets and irregular airborne debris.
+Before image: equinox-before.png (old stationary zigzag pillar). New effect is a colossal traveling blade with a straight vertical front and dark dense mass, layered dark mass, low pressure sheets and irregular airborne debris.
+Final silhouette correction: full TypeScript check, 29 combat/geometry cases and all three browser scenarios passed again. Simulation/hash unchanged; live two-client publication is verified separately after commit.
+MUGEN reference pass: unequal swept and tapered dark trails peel in staggered frames, behind the straight dense cutting front. Latest complete in-game recording rechecked and passed; no body, damage, sword commits or serialized state changed.

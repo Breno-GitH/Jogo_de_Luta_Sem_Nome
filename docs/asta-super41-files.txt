@@ -142,6 +142,7 @@ deployment/audit/asta-super41/no-fx.json
 deployment/audit/asta-super41/no-fx.webm
 deployment/audit/asta-super41/preserved-assets.json
 deployment/audit/asta-super41/restored.png
+deployment/audit/asta-super41/targeted.txt
 deployment/audit/asta-super41/verification.json
 deployment/audit/asta-super41/vitest.txt
 deployment/audit/asta-super41/whiff-opener.png
