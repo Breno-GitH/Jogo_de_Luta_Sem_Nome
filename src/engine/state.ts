@@ -61,6 +61,7 @@ const matchKeys = [
   "hitstop",
   "phase",
   "phaseFrames",
+  "intro",
   "wins",
   "round",
   "message",

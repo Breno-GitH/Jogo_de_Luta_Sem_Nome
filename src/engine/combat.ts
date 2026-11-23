@@ -1,3 +1,4 @@
+import { createIntro, advanceIntro, entranceAge, entranceProfile, entranceRoot, introStage, type IntroState } from "./entrances";
 import {unionSwordChanges, unionContacts} from "./asta-super-acts";
 import type { KaguneId } from "./kagune";
 import { astaMoves } from "./asta";
@@ -1378,6 +1379,7 @@ export interface CombatHit {
   combo: number;
 }
 export interface MatchRules {
+  introSkip?: "single" | "both";
   training?: boolean;
   infiniteHealth?: [boolean, boolean];
 }
@@ -1404,7 +1406,8 @@ export class Match {
   timer = 99 * 60;
   hitstop = 0;
   phase: "intro" | "fight" | "roundEnd" | "finished" = "intro";
-  phaseFrames = 100;
+  phaseFrames = 0;
+  intro!: IntroState;
   wins = [0, 0];
   round = 1;
   message = "ROUND 1";
@@ -1422,6 +1425,33 @@ export class Match {
       new Fighter(opponentData, 1, 880),
     ];
     this.linkOpponents();
+    this.beginIntro(true);
+  }
+  /** First-round performances share one clock; later rounds only announce. */
+  private beginIntro(full: boolean) {
+    this.intro = createIntro(this.fighters.map(f=>f.data.id), full);
+    this.phaseFrames = this.intro.fightAt;
+    this.message = full ? "" : `ROUND ${this.round}`;
+  }
+  private stepIntro(inputs: [InputFrame, InputFrame]) {
+    const intro=this.intro;
+    advanceIntro(intro,inputs,this.rules.introSkip==="both");
+    for(const f of this.fighters) {
+      const age=entranceAge(intro,f.id), profile=entranceProfile(f.data.id);
+      const performing=intro.full && !intro.skipped && age<profile.duration && intro.tick<intro.presentationEnd;
+      const state=performing?"entrance":"idle";
+      if(f.state!==state) f.setState(state);
+      f.stateFrame=Math.max(0,performing?age:age-profile.duration);
+      f.x=entranceRoot(f.homeX,f.facing,f.data.id,performing?age:profile.walkTicks);
+      f.y=FLOOR;f.vx=f.vy=0;f.input=neutral();f.buffer.clear();
+      f.stand?.tick(f);
+    }
+    this.phaseFrames=Math.max(0,intro.fightAt-intro.tick);
+    this.message=introStage(intro)==="presentations"?"":introStage(intro)==="round"?`ROUND ${this.round}`:"LUTEM!";
+    if(!this.phaseFrames) {
+      this.phase="fight";this.message="";
+      for(const f of this.fighters) {f.setState("idle");f.x=entranceRoot(f.homeX,f.facing,f.data.id,entranceProfile(f.data.id).walkTicks);f.input=neutral();f.buffer.clear();}
+    }
   }
   linkOpponents() {
     this.fighters[0].opponent = this.fighters[1];
@@ -1435,25 +1465,8 @@ export class Match {
     if (this.phase !== "fight") {
       if (this.phase === "finished") return;
       if (this.phase === "intro") {
-        if (this.phaseFrames === 26) this.message = "LUTEM!";
-        for (const f of this.fighters) {
-          if (this.phaseFrames === 100) {
-            f.setState("entrance");
-            f.x =
-              f.homeX - f.facing * (f.data.lifecycle?.entranceDistance ?? 48);
-            f.buffer.clear();
-          }
-          f.stateFrame++;
-          const entry = f.data.lifecycle;
-          f.x =
-            f.homeX -
-            f.facing *
-              Math.max(
-                0,
-                (entry?.entranceDistance ?? 48) -
-                  f.stateFrame * (entry?.entranceSpeed ?? 2),
-              );
-        }
+        this.stepIntro(inputs);
+        return;
       } else {
         for (const f of this.fighters) {
           f.stateFrame++;
@@ -1465,15 +1478,7 @@ export class Match {
         }
       }
       if (--this.phaseFrames <= 0) {
-        if (this.phase === "intro") {
-          this.phase = "fight";
-          this.message = "";
-          for (const f of this.fighters) {
-            f.setState("idle");
-            f.x = f.homeX;
-            f.buffer.clear();
-          }
-        } else if (!this.rules.training && this.wins.some((w) => w >= 2)) {
+        if (!this.rules.training && this.wins.some((w) => w >= 2)) {
           this.phase = "finished";
           this.message = this.wins[0] >= 2 ? "VOCÊ VENCEU" : "BOT VENCEU";
         } else {
@@ -1491,8 +1496,7 @@ export class Match {
           this.linkOpponents();
           this.timer = 99 * 60;
           this.phase = "intro";
-          this.phaseFrames = 100;
-          this.message = `ROUND ${this.round}`;
+          this.beginIntro(false);
           if (this.rules.training) {
             this.wins = [0, 0];
             this.phase = "fight";

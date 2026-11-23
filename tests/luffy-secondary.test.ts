@@ -104,9 +104,7 @@ describe("Luffy's defensive and secondary poses", () => {
   it("uses the round's own entrance, taunt, win, KO and defeat transitions", () => {
     const entry = matchAt();
     entry.match.phase = "intro";
-    entry.match.phaseFrames = 100;
-    entry.until(() => entry.match.phase === "fight", 101);
-    expect(entry.seen).toContain("walkForward");
+    entry.until(() => entry.match.phase === "fight", entry.match.phaseFrames+1);
     expect(entry.seen).toContain("entrance");
     entry.step({ pressed: ["taunt"] });
     expect(entry.presentation.animator.clipName).toBe("taunt");

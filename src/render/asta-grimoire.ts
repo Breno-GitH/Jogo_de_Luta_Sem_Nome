@@ -41,8 +41,9 @@ let surface: HTMLCanvasElement | undefined;
  * The cover follows the weathered near-black five-leaf design shown by the
  * anime's official book-cover merchandise and Studio Pierrot's grimoire prop.
  * Essential sword exchange remains visible with optional cosmetic FX disabled. */
-export function drawAstaGrimoire(c: CanvasRenderingContext2D, f: Fighter) {
-  const d = f.asta?.draw;
+export function drawAstaGrimoire(c: CanvasRenderingContext2D, f: Fighter,
+  visual?: {tick:number;total:number;x:number;y:number}) {
+  const d = visual ?? f.asta?.draw;
   if (!d) return;
   if (!surface) {
     surface = document.createElement("canvas");
@@ -208,8 +209,8 @@ export function drawAstaGrimoire(c: CanvasRenderingContext2D, f: Fighter) {
   c.imageSmoothingEnabled = false;
   c.drawImage(
     surface,
-    Math.round(grimoireOrigin.x - 32),
-    Math.round(grimoireOrigin.y - 32),
+    Math.round((visual?.x ?? grimoireOrigin.x) - 32),
+    Math.round((visual?.y ?? grimoireOrigin.y) - 32),
   );
   c.restore();
 }
