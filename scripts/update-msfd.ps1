@@ -97,7 +97,7 @@ try {
     [IO.File]::WriteAllText($fingerprintFile, $fingerprint)
     Invoke-Checked node.exe @('scripts/net_version.mjs')
     Invoke-Checked node.exe @('node_modules/vitest/vitest.mjs', 'run', '--maxWorkers=1',
-        'tests/ben-omnitrix.test.ts', 'tests/ben-final.test.ts', 'tests/ben-stage6.test.ts', 'tests/ben-stage7.test.ts')
+        '--exclude', '**/.npm-cache/**', 'tests/ben-omnitrix.test.ts', 'tests/ben-final.test.ts', 'tests/ben-stage6.test.ts', 'tests/ben-stage7.test.ts', 'tests/asta.test.ts', 'tests/asta-specials.test.ts', 'tests/asta-relay.test.ts', 'tests/asta-causality.test.ts', 'tests/asta-super.test.ts', 'tests/asta-equinox-fx.test.ts', 'tests/entrances.test.ts', 'tests/entrances-lan.test.ts', 'tests/network.test.ts')
 
     try {
         $null = Invoke-WebRequest -Uri $Url -TimeoutSec 5 -UseBasicParsing

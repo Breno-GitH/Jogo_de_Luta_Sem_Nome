@@ -1,4 +1,5 @@
 import profiles from "../data/bot-profiles.json";
+import { astaTechniques, type AstaSpecialId } from "./asta-specials";
 import { neutral, type Button, type InputFrame, type State } from "./types";
 import { benAliens, omnitrixHoldTicks, omnitrixSwapTicks } from "./ben-omnitrix";
 import type { Fighter, Match } from "./combat";
@@ -159,6 +160,15 @@ export class Bot {
     }
     if (match.hitstop > 0) return neutral();
     if (self.state === "blockstun") return { ...this.plan, pressed: [] };
+    const relay=self.asta?.relay;
+    if(relay){
+      this.queue=[];this.plan=neutral();
+      if(relay.phase==="choice"&&self.stateFrame>=relay.windowFrom+2){
+        const pick=(this.controlled+(this.difficulty==="hard"?1:0))%3;
+        return this.choose({...neutral(),pressed:[(["light","medium","heavy"] as const)[pick]]},"escolher espada do Relay");
+      }
+      return neutral();
+    }
     const now = match.combatFrame;
     if (this.observedAt !== now) {
       const enemy = match.fighters[1 - this.controlled];
@@ -286,6 +296,8 @@ export class Bot {
           ) {
             if (self.data.id === "sasuke")
               return this.sasukeTechnique(self, ["chidori", "eiso", "gokakyu", "serpents"]) ?? neutral();
+            if(self.asta){const id:AstaSpecialId=self.asta.equipped==="slayer"?"astaIaiSlash":self.asta.equipped==="slasher"?"astaBlackRush":"astaDualBreak";
+              if(self.canStartSpecial(id)){const s=astaTechniques[id];this.lastDecision=s.name;return this.command(s.family===0?[2,6]:s.family===1?[2,4]:[2,5,2],s.button,self);}}
             this.lastDecision = "cancelar em especial";
             return this.command(
               self.moveId === "crouch_heavy" ? [6, 2, 3] : [2, 3, 6],
@@ -382,6 +394,13 @@ export class Bot {
         this.lastDecision = "punir com saque";
         return this.command([2, 3, 6], "light", self);
       }
+    }
+    if(self.asta && distance < 330 && !enemy.airborne && self.canStartSuper() &&
+      (enemy.phase === "recovery" || enemy.state === "hitstun") && this.chance(this.profile.ultimate))
+      return this.choose({ ...neutral(), pressed: ["ultimate"] }, "punir com Black Meteorite");
+    if(self.asta && this.chance(this.profile.special)){
+      const ids:AstaSpecialId[]=enemy.airborne?["astaRisingDemon"]:distance>220?["astaBlackSlash","astaSeveringLine"]:distance<115?["astaFlashSteps","astaDualBreak","astaIaiSlash"]:["astaBlackRush","astaBlackDivider"];
+      const id=ids[Math.floor(this.random()*ids.length)];if(self.canStartSpecial(id)){const s=astaTechniques[id];this.lastDecision=s.name;return this.command(s.family===0?[2,6]:s.family===1?[2,4]:[2,5,2],s.button,self);}
     }
     if (enemy.airborne && distance < 110 && this.chance(this.profile.special)) {
       if (sasuke)

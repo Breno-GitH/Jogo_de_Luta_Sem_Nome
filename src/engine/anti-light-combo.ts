@@ -4,12 +4,23 @@
  */
 export const antiLightCombo = {
   maxHits: 3,
-  push: 18,
-  launch: -8.5,
-  stun: 30,
+  push: 15,
+  stun: 16,
+  recoveryFrames: 8,
+  blockedPush: 10,
+  blockedStun: 7,
 } as const;
 
-export function isLimitedLightNormal(characterId: string, moveId: string): boolean {
-  return (characterId === "goku" || characterId === "samurai") &&
-    /^(stand|crouch|air)_light$/.test(moveId);
+export function isLimitedLightNormal(_characterId: string, moveId: string): boolean {
+  // All nine fighters, including sword stances and Omnitrix forms, use these
+  // shared logical IDs for their J normals. Command specials stay separate.
+  return /^(stand|crouch|air)_light$/.test(moveId);
 }
+
+export const launcherCombo = {
+  minimumLift: -8,
+  maxLaunches: 2,
+  finisherFall: 9,
+  finisherStun: 22,
+  finisherPush: 11,
+} as const;

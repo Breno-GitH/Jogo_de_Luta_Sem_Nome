@@ -1,0 +1,44 @@
+[
+  {
+    "key": "asta/special-slash.png/0",
+    "phase": "startup",
+    "sword": "slayer",
+    "stage": "slayer",
+    "count": "1"
+  },
+  {
+    "key": "asta/special-slash.png/1",
+    "phase": "startup",
+    "sword": "dweller",
+    "stage": "dweller",
+    "count": "1"
+  },
+  {
+    "key": "asta/special-slash.png/2",
+    "phase": "active",
+    "sword": "dweller",
+    "stage": "dweller",
+    "count": "1"
+  },
+  {
+    "key": "asta/special-slash.png/3",
+    "phase": "active",
+    "sword": "dweller",
+    "stage": "dweller",
+    "count": "1"
+  },
+  {
+    "key": "asta/special-slash.png/4",
+    "phase": "recovery",
+    "sword": "dweller",
+    "stage": "dweller",
+    "count": "1"
+  },
+  {
+    "key": "asta/special-slash.png/5",
+    "phase": "recovery",
+    "sword": "dweller",
+    "stage": "dweller",
+    "count": "1"
+  }
+]

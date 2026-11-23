@@ -1,3 +1,5 @@
+import {unionBeats as astaBeats,unionContacts} from "../engine/asta-super-acts";
+import { entranceStagger } from "../engine/entrances";
 import type { Match, HitEvent } from "../engine/combat";
 import type { CentipedeCue } from "../engine/kaneki-centipede";
 import { kingWill, xebecPressure } from "../engine/xebec-specials";
@@ -5,6 +7,7 @@ import { pandemoniumPrelude } from "../engine/xebec-pandemonium-acts";
 import { pandemoniumBeats } from "../engine/xebec-pandemonium";
 import { chainFinishes } from "../engine/kaneki-chain";
 export type Cue =
+  | "introSword" | "introWatch" | "introPresence" | "introCloth"
   | "swing"
   | "hit"
   | "heavy"
@@ -27,6 +30,7 @@ export type Cue =
   | "hakiPulse" | "hakiSovereign" | "hakiKing"
   | "rocksCut" | "rocksLift" | "solarIgnition" | "solarSurge"
   | "rocksGather" | "rocksSlash" | "rocksCrew" | "rocksNewgate" | "rocksKaido" | "rocksLinlin" | "rocksGate" | "rocksRupture"
+  | "astaMeteor" | "astaUnion" | "astaCut" | "astaEquinox"
   | "round"
   | "fight"
   | "ko"
@@ -56,7 +60,9 @@ export function effectCue(event: HitEvent): Cue {
 }
 /** Original short synthesized sounds. No downloaded samples or autoplay. */
 export class Sound {
+  private introClock = -1;
   private rocksTick = -1;
+  private astaTick = -1;
   private hakiClocks = [-1, -1];
   enabled = true;
   volume = 0.25;
@@ -361,6 +367,14 @@ export class Sound {
       tone(149, 24, 1.03, "triangle", .72);
       tone(73, 30, .74, "sawtooth", .17, .24);
       tone(310, 63, .38, "triangle", .22, .43);
+    } else if (cue === "introSword") {
+      tone(1200,370,.12,"sawtooth",.06);tone(1210,780,.16,"sine",.08);
+    } else if (cue === "introWatch") {
+      tone(680,920,.06,"square",.06);tone(1020,800,.07,"sine",.08,.07);
+    } else if (cue === "introPresence") {
+      tone(65,45,.22,"triangle",.14);tone(140,100,.18,"sine",.07,.04);
+    } else if (cue === "introCloth") {
+      tone(200,110,.08,"triangle",.04);
     } else if (cue === "round") {
       tone(440, 440, 0.11);
       tone(660, 660, 0.13, "triangle", 0.3, 0.14);
@@ -370,13 +384,37 @@ export class Sound {
     } else if (cue === "ko") {
       tone(220, 55, 0.45, "sawtooth", 0.16);
       tone(330, 110, 0.5, "triangle", 0.2, 0.07);
+    } else if (cue === "astaMeteor") {
+      tone(380,55,.24,"sawtooth",.21);tone(90,33,.32,"triangle",.28,.02);
+    } else if (cue === "astaUnion") {
+      tone(65,170,.38,"sawtooth",.16);tone(130,260,.32,"triangle",.14,.10);
+    } else if (cue === "astaCut") {
+      tone(920,110,.09,"sawtooth",.18);tone(150,60,.13,"triangle",.2,.02);
+    } else if (cue === "astaEquinox") {
+      tone(1200,65,.17,"sawtooth",.24);tone(70,28,.48,"triangle",.30,.025);
     } else if (cue === "menu") tone(660, 880, 0.06, "sine", 0.15);
   }
   tick(match: Match, onlineRound?: string) {
+    if(this.owner!==match || match.intro.tick<this.introClock) this.introClock=match.intro.tick-1;
+    if(match.phase==="intro" && match.intro.full && !match.intro.skipped) {
+      const cues:Record<string,[number,Cue][]>= {
+        samurai:[[44,"introSword"]],dio:[[64,"introPresence"]],goku:[[36,"introCloth"]],
+        luffy:[[26,"introCloth"]],sasuke:[[45,"introCloth"]],kaneki:[[52,"introCloth"],[84,"introPresence"]],
+        ben:[[45,"introWatch"]],xebec:[[36,"introPresence"],[66,"introSword"]],asta:[[28,"introPresence"],[48,"introSword"]],
+      };
+      match.fighters.forEach((f,seat)=>{
+        for(const [age,cue]of cues[f.data.id]??[]) {
+          const at=age+(seat?entranceStagger:0);
+          if(at>this.introClock && at<=match.intro.tick)this.play(cue);
+        }
+      });
+    }
+    this.introClock=match.intro.tick;
     const ticks = match.pandemonium?.tick ?? -1;
     const beats = pandemoniumBeats;
     const kingSilence = !match.cinematicActive && match.fighters.some(f => f.moveId === kingWill && f.state === "attack" && f.stateFrame < 56);
-    this.setMusicDucked(kingSilence || ticks >= 0 && (ticks >= beats.uppercut && ticks < beats.cut || ticks >= beats.flight && ticks < beats.quake || ticks >= beats.rush && ticks < beats.rupture));
+    const unionTick = match.astaUnion?.tick ?? -1;
+    this.setMusicDucked(unionTick >= astaBeats.liebe && unionTick < astaBeats.slayer || unionTick >= astaBeats.charge && unionTick < astaBeats.impact || kingSilence || ticks >= 0 && (ticks >= beats.uppercut && ticks < beats.cut || ticks >= beats.flight && ticks < beats.quake || ticks >= beats.rush && ticks < beats.rupture));
     if (ticks >= 0 && ticks > this.rocksTick) {
       const cues: [number, Cue][] = [...pandemoniumPrelude.map(({ tick, angle }): [number, Cue] =>
         [tick, angle === "rising" ? "rocksLift" : "rocksCut"]), [beats.lift, "rocksGather"], [beats.cut, "rocksSlash"],
@@ -387,6 +425,12 @@ export class Sound {
         if (at > this.rocksTick && at <= ticks) this.play(cue);
     }
     this.rocksTick = ticks;
+    if(this.owner !== match || unionTick < this.astaTick) this.astaTick=-1;
+    if(unionTick>=0 && unionTick>this.astaTick) {
+      const cues:[number,Cue][]=[...unionContacts.map(h=>[h.tick,h.kind==="explosion"?"astaEquinox":h.kind==="meteorite"?"astaMeteor":"astaCut"] as [number,Cue]),[astaBeats.union,"astaUnion"],[astaBeats.pact,"astaUnion"],[astaBeats.release,"astaCut"]];
+      for(const [at,cue]of cues)if(at>this.astaTick&&at<=unionTick)this.play(cue);
+    }
+    this.astaTick=unionTick;
     if (this.owner !== match) {
       this.owner = match;
       this.moves = ["", ""];

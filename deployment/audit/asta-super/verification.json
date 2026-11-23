@@ -1,0 +1,37 @@
+{
+  "base": "6576cc145f1061f0a959cad56a9d5c11ff853740",
+  "branch": "codex/asta-black-meteorite-union",
+  "engineVersion": "9f51d051e22088bfce598c6d",
+  "vitest": {
+    "files": 58,
+    "tests": 1460,
+    "passed": true
+  },
+  "browserCases": 3,
+  "lanRegressionCases": 9,
+  "finalSuperLanCases": 2,
+  "modes": [
+    "training",
+    "arcade",
+    "versus bot",
+    "two LAN clients"
+  ],
+  "artAtlases": 9,
+  "nativeBodies": {
+    "actionAtlases": 68,
+    "alpha": "binary",
+    "pendingSockets": 0
+  },
+  "artSha256": {
+    "public/sprites/asta/r-black-flight.png": "14216634861ee391d2c50be704aa9067bc8dee9b2b0b320014dc32a964bb5571",
+    "public/sprites/asta/r-black-start.png": "eb78b83cbcb365464485cf7ce983d08acef74a409fd881e16af510cbcfaf6645",
+    "public/sprites/asta/r-equinox.png": "39d49d372c42e0b1b8b64c5f2069c052e6293d32427c4fd1bcaa5f11e1c179ed",
+    "public/sprites/asta/r-liebe.png": "f4b67c61a9cc70f737f68c36245feeec659c25274463c320ecc7b0d249601398",
+    "public/sprites/asta/r-union-change.png": "8c0302c0635a2f8a53d2ee040e804219668ac58380859fb30f7bb058c4894e7c",
+    "public/sprites/asta/r-union-dive.png": "f2aca0b7239cad431c307de326207297ea58d67454601101969e534e4b09731e",
+    "public/sprites/asta/r-union-return.png": "4e707aeaf7cf303ac55bf1b2684e16fd3746939f9abc438b6d456b2c60d985c3",
+    "public/sprites/asta/r-union-rise.png": "625ed5b8ad7c0f3abdfb0e3efdc2bb025d3666454896f479fcbfb1d1652946c9",
+    "public/sprites/asta/r-union-rush.png": "79491efbd6461d23bc263d25ae7ccff42a4a59d0e6c06d1222a0c54f2112e39e"
+  },
+  "xamppPublication": "verified separately after commit using existing updater"
+}

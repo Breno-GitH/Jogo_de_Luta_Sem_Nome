@@ -12,6 +12,7 @@ import { OnlineClient } from "../net/client";
 import { onlineEntry, lobby, onlineResult, escapeText } from "../ui/online";
 import { neutral, type InputFrame } from "../engine/types";
 import type { DummyBehavior } from "./training";
+import { practiceSword, isAstaSword } from "../engine/asta-stances";
 import type { CharacterId } from "../engine/characters";
 import { ONLINE_CHARACTERS } from "../net/protocol";
 import {
@@ -65,6 +66,7 @@ export class GameApp {
   private keyboardOptions = {
     dashOnDirection: true,
     gamepad: true,
+    introduction: () => (this.online?.match ?? this.session?.match)?.phase === "intro",
     omnitrix: () => (this.online?.match?.fighters[this.online.seat]?.data.id ?? this.session?.characterId) === "ben",
     bindings: this.preferences.bindings,
     active: () =>
@@ -72,7 +74,7 @@ export class GameApp {
   };
   private keyboard = new KeyboardInput(this.keyboardOptions);
   private sound = new Sound();
-  private demo = new Match();
+  private demo: Match = Object.assign(new Match(),{phase:"fight" as const,message:""});
   private session?: GameSession;
   private online?: OnlineClient;
   private operation = 0;
@@ -223,11 +225,13 @@ export class GameApp {
     this.sound.setMusicDucked(false);
     this.remapping = undefined;
     this.demo = new Match();
+    this.demo.phase = "fight";
     this.demo.message = "";
     this.renderer.resetAnimations();
     this.renderer.localSeat = 0;
     this.renderer.online = false;
     this.renderer.xebecEffects = true;
+    this.renderer.astaEffects = true;
     this.renderer.opponentPalette = "cyan";
     this.renderer.opponentLabel = "02 / BOT";
     this.renderer.contextLabel = "MELHOR DE 3";
@@ -425,7 +429,7 @@ export class GameApp {
   }
   private restart() {
     if (!this.session) return;
-    this.session.restart();
+    this.session.restart(this.session.mode!=="training");
     void this.enter();
   }
   private resume() {
@@ -652,6 +656,7 @@ export class GameApp {
     const bindings = this.preferences.bindings;
     this.renderer.chainKeys = this.keyboard.activeChainKeys ?? [bindings.light, bindings.medium, bindings.heavy].map(keyLabel);
     this.renderer.draw(this.online?.match ?? this.session?.match ?? this.demo);
+    this.el("training-panel").inert=this.session?.match.phase==="intro";
     if (this.online) {
       const c = this.online;
       Object.assign(this.root.dataset, {
@@ -871,6 +876,16 @@ export class GameApp {
     }
   }
   private bindTraining() {
+    for (const i of [0,1]) this.el<HTMLSelectElement>("asta-sword-"+i).onchange = event => {
+      const s=this.session, field=event.target as HTMLSelectElement;
+      if (s?.mode==="training" && isAstaSword(field.value)) {
+        const fighter=s.match.fighters[i];
+        if(!practiceSword(fighter,field.value)) field.value=fighter.asta?.equipped ?? "slayer";
+        this.renderer.tick(s.match);
+      }
+      this.keyboard.clear(); this.canvas.focus({preventScroll:true});
+    };
+    this.el<HTMLInputElement>("asta-fx").onchange = e => {this.renderer.astaEffects=(e.target as HTMLInputElement).checked;this.canvas.focus({preventScroll:true});};
     this.el<HTMLInputElement>("xebec-fx").onchange = (e) => {
       this.renderer.xebecEffects = (e.target as HTMLInputElement).checked;
       this.canvas.focus({ preventScroll: true });
@@ -934,6 +949,10 @@ export class GameApp {
       this.info("moves", () => this.resume());
     });
     this.bind("reset-positions", () => this.restart());
+    this.bind("replay-entrances", () => {
+      if(!this.session || this.session.mode!=="training")return;
+      this.session.restart(true);this.keyboard.clear();void this.enter();
+    });
     this.bind("clear-damage", () => {
       const s = this.session;
       if (!s || s.mode !== "training") return;
@@ -942,7 +961,7 @@ export class GameApp {
         health: f.health,
         meter: f.meter,
       }));
-      s.restart();
+      s.restart(false);
       s.match.fighters.forEach((f, i) => Object.assign(f, values[i]));
       this.renderer.resetAnimations();
       this.renderer.tick(s.match);
@@ -973,7 +992,10 @@ export class GameApp {
   private syncTraining() {
     const s = this.session!;
     this.renderer.xebecEffects = true;
+    this.renderer.astaEffects = true;
     if (s.mode !== "training") return;
+    this.el("asta-fx-label").hidden = !s.match.fighters.some(f=>f.asta);
+    this.el<HTMLInputElement>("asta-fx").checked=true;
     this.el("xebec-fx-label").hidden = !s.match.fighters.some(fighter => fighter.domination);
     this.el<HTMLInputElement>("xebec-fx").checked = true;
     this.el<HTMLInputElement>("infinite-health").checked =
@@ -983,6 +1005,11 @@ export class GameApp {
     this.el<HTMLSelectElement>("dummy").value = s.training.dummy;
     this.el<HTMLSelectElement>("training-difficulty").value = s.difficulty;
     this.el("training-difficulty-label").hidden = s.training.dummy !== "bot";
+    for (const i of [0,1]) {
+      const f=s.match.fighters[i];
+      this.el("asta-sword-label-"+i).hidden=!f.asta;
+      this.el<HTMLSelectElement>("asta-sword-"+i).value=f.asta?.equipped ?? "slayer";
+    }
     this.trainingStatus(s);
     this.trainingValues();
     this.trainingReadout();

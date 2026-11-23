@@ -10,3 +10,9 @@ test-results/
 playwright-report/
 deployment/msfd-work/
 deployment/run/msfd-backend.json
+deployment/audit/entrances/*-idle.png
+deployment/audit/entrances/*-p1-*.png
+deployment/audit/entrances/*-p2-*.png
+deployment/audit/entrances/lan/*.png
+deployment/audit/entrances/result.json
+deployment/audit/entrances/lan/result.json

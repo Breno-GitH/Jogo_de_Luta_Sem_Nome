@@ -1,0 +1,86 @@
+[
+  {
+    "key": "asta/special-dual_a.png/0",
+    "phase": "startup",
+    "sword": "slayer",
+    "stage": "slayer",
+    "count": "1"
+  },
+  {
+    "key": "asta/special-dual_a.png/1",
+    "phase": "startup",
+    "sword": "dweller",
+    "stage": "dweller",
+    "count": "1"
+  },
+  {
+    "key": "asta/special-dual_a.png/2",
+    "phase": "active",
+    "sword": "dweller",
+    "stage": "dweller",
+    "count": "1"
+  },
+  {
+    "key": "asta/special-dual_a.png/3",
+    "phase": "active",
+    "sword": "dweller",
+    "stage": "dweller",
+    "count": "1"
+  },
+  {
+    "key": "asta/special-dual_a.png/4",
+    "phase": "recovery",
+    "sword": "dweller",
+    "stage": "dweller",
+    "count": "1"
+  },
+  {
+    "key": "asta/special-dual_a.png/5",
+    "phase": "recovery",
+    "sword": "dweller",
+    "stage": "dweller",
+    "count": "1"
+  },
+  {
+    "key": "asta/special-dual_b.png/0",
+    "phase": "recovery",
+    "sword": "dweller",
+    "stage": "dweller",
+    "count": "1"
+  },
+  {
+    "key": "asta/special-dual_b.png/1",
+    "phase": "recovery",
+    "sword": "destroyer",
+    "stage": "destroyer",
+    "count": "1"
+  },
+  {
+    "key": "asta/special-dual_b.png/2",
+    "phase": "active",
+    "sword": "destroyer",
+    "stage": "destroyer",
+    "count": "1"
+  },
+  {
+    "key": "asta/special-dual_b.png/3",
+    "phase": "active",
+    "sword": "destroyer",
+    "stage": "destroyer",
+    "count": "1"
+  },
+  {
+    "key": "asta/special-dual_b.png/4",
+    "phase": "recovery",
+    "sword": "destroyer",
+    "stage": "destroyer",
+    "count": "1"
+  },
+  {
+    "key": "asta/special-dual_b.png/5",
+    "phase": "recovery",
+    "sword": "destroyer",
+    "stage": "destroyer",
+    "count": "1"
+  }
+]

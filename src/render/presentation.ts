@@ -1,4 +1,5 @@
 import type { Fighter } from "../engine/combat";
+import { entranceAnimationSets, seekEntrance } from "./entrance-animations";
 import { reactionFor } from "../engine/lifecycle";
 import { Animator, metadata, type AnimationData } from "./animator";
 import { benAnimation, feedbackWalkOffset, tickBenAnimation } from "./ben-animations";
@@ -14,12 +15,16 @@ import fury from "../data/goku-fury-animations.json";
 import { GokuCombatPresentation } from "./goku-combat";
 import { animationTick } from "../engine/pace";
 import { xebecId } from "../engine/xebec";
+import { astaAnimation, tickAsta, astaVisualSword } from "./asta-animations";
 
 /** Selects visual phases without driving physics from animation frames. */
 export class FighterPresentation {
   animator: Animator;
+  private entranceAnimator?: Animator;
+  private gameplayAnimator?: Animator;
   private benVisual?: "human" | BenAlien | "nrgReleased" | "alienX";
   private benGrowth = 0;
+  private astaSword?: string;
   private kaneki?: KanekiPresentation;
   private sasukeMotion?: SasukePresentation;
   private luffyMotion?: LuffyMotionPresentation;
@@ -59,10 +64,12 @@ export class FighterPresentation {
     return this.gokuMotion?.plantedFoot;
   }
   renderRootX(fighter: Fighter) {
+    if(this.gameplayAnimator) return Math.round(fighter.x);
     return this.kaneki?.rootX(fighter) ?? this.gokuMotion?.renderRootX(fighter) ??
       Math.round(fighter.x + feedbackWalkOffset(fighter));
   }
   kagunes(fighter: Fighter) {
+    if(this.gameplayAnimator) return [];
     return this.kaneki?.worldKagunes(fighter) ?? [];
   }
 
@@ -70,6 +77,18 @@ export class FighterPresentation {
     if (preview) {
       this.animator = preview;
       return;
+    }
+    if(fighter.match?.phase==="intro" && fighter.match.intro.full &&
+        !fighter.match.intro.skipped && fighter.state==="entrance" && entranceAnimationSets[fighter.data.id]) {
+      this.entranceAnimator ??= new Animator(entranceAnimationSets[fighter.data.id]);
+      this.gameplayAnimator ??= this.animator;
+      this.animator=this.entranceAnimator;
+      seekEntrance(this.animator,fighter.data.id,fighter.stateFrame);
+      return;
+    }
+    if(this.gameplayAnimator) {
+      this.animator=this.gameplayAnimator;
+      this.gameplayAnimator=undefined;
     }
     if (fighter.state === "victory" && fighter.domination?.finishingPressure && fighter.stateFrame < 50) {
       this.animator.update("xebecKingWill");
@@ -92,13 +111,19 @@ export class FighterPresentation {
         return;
       }
     }
-    if (fighter.data.id !== "ben" && fighter.match?.pandemonium?.victim === fighter.id &&
+    if (fighter.data.id !== "ben" && (fighter.match?.pandemonium?.victim === fighter.id || fighter.match?.astaUnion?.victim === fighter.id) &&
         fighter.state === "grabbed" && fighter.actionClip) {
       const pose = reactionFor(fighter);
       const clip = pose && this.animator.hasClip(pose.clip) ? pose.clip :
         this.animator.hasClip("grabbed") ? "grabbed" : "idle";
       this.animator.update(clip);
       this.animator.seekTick(pose?.tick ?? fighter.stateFrame);
+      return;
+    }
+    if (fighter.asta) {
+      const sword=astaVisualSword(fighter);
+      if(this.astaSword!==sword){this.animator=new Animator(astaAnimation(sword));this.astaSword=sword;}
+      tickAsta(fighter,this.animator);
       return;
     }
     if (fighter.data.id === "ben") {

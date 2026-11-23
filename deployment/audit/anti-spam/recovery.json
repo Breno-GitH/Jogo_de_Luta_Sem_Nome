@@ -1,0 +1,65 @@
+[
+  {
+    "id": "samurai",
+    "firstHitTick": 4,
+    "firstFreedomTick": 80,
+    "ticksFromHitToFreedom": 76,
+    "hitsBeforeFreedom": 3
+  },
+  {
+    "id": "dio",
+    "firstHitTick": 5,
+    "firstFreedomTick": 103,
+    "ticksFromHitToFreedom": 98,
+    "hitsBeforeFreedom": 3
+  },
+  {
+    "id": "goku",
+    "firstHitTick": 4,
+    "firstFreedomTick": 80,
+    "ticksFromHitToFreedom": 76,
+    "hitsBeforeFreedom": 3
+  },
+  {
+    "id": "luffy",
+    "firstHitTick": 4,
+    "firstFreedomTick": 84,
+    "ticksFromHitToFreedom": 80,
+    "hitsBeforeFreedom": 3
+  },
+  {
+    "id": "sasuke",
+    "firstHitTick": 4,
+    "firstFreedomTick": 90,
+    "ticksFromHitToFreedom": 86,
+    "hitsBeforeFreedom": 3
+  },
+  {
+    "id": "kaneki",
+    "firstHitTick": 4,
+    "firstFreedomTick": 27,
+    "ticksFromHitToFreedom": 23,
+    "hitsBeforeFreedom": 1
+  },
+  {
+    "id": "ben",
+    "firstHitTick": 5,
+    "firstFreedomTick": 21,
+    "ticksFromHitToFreedom": 16,
+    "hitsBeforeFreedom": 1
+  },
+  {
+    "id": "xebec",
+    "firstHitTick": 5,
+    "firstFreedomTick": 87,
+    "ticksFromHitToFreedom": 82,
+    "hitsBeforeFreedom": 3
+  },
+  {
+    "id": "asta",
+    "firstHitTick": 6,
+    "firstFreedomTick": 89,
+    "ticksFromHitToFreedom": 83,
+    "hitsBeforeFreedom": 3
+  }
+]

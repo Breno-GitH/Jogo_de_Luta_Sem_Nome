@@ -1,4 +1,13 @@
+import { createIntro, advanceIntro, entranceAge, entranceProfile, entranceRoot, introStage, type IntroState } from "./entrances";
+import {unionSwordChanges, unionContacts} from "./asta-super-acts";
 import type { KaguneId } from "./kagune";
+import { astaMoves } from "./asta";
+import { astaSpecialCommand,isAstaSpecial,isAstaAction,astaRuntimeMove,canStartAstaSpecial,spawnAstaSpecial,astaWaveVolume,astaProjectileMove } from "./asta-specials";
+import { beginAstaRelay,stepAstaRelay,confirmAstaRelay } from "./asta-relay";
+import { stepAstaAntimagic } from "./asta-antimagic";
+import { recordAstaDamage } from "./asta-causality";
+import { tickCombatStatuses } from "./status-effects";
+import { newAsta, beginAstaAttack, commitAstaSword, finishAstaAttack, tickAstaState, type AstaState } from "./asta-stances";
 import samurai from "../data/samurai.json";
 import { CombatStand } from "./stand-combat";
 import { TemporalController, type DeferredReaction } from "./temporal";
@@ -25,7 +34,7 @@ import {
 import { CommandBuffer } from "./input";
 import { MOVEMENT_TIMING } from "./movement";
 import { combatPace, pacedCharacter } from "./pace";
-import { antiLightCombo, isLimitedLightNormal } from "./anti-light-combo";
+import { antiLightCombo, isLimitedLightNormal, launcherCombo } from "./anti-light-combo";
 import cinematics from "../data/cinematics.json";
 import { reactionBoxes, reactionFor } from "./lifecycle";
 import { isSuperMove, poseAt, phaseAt } from "./moves";
@@ -34,6 +43,7 @@ import { luffyAttackLimbs, luffySpecialCommand } from "./luffy-specials";
 import { xebecId } from "./xebec";
 import { isXebecSpecial, kingWill, xebecBladeAt, xebecPressure, xebecPressureVolumes,
   xebecProjectile, xebecProjectileMove, xebecReleases, xebecRisingSweep, xebecSpecialCommand, xebecWaveVolume } from "./xebec-specials";
+import { astaMeteoriteBlade, astaUnionId, astaUnionConfig, astaUnionScene, canStartAstaUnion, type AstaUnionState } from "./asta-super";
 import { pandemoniumPrelude } from "./xebec-pandemonium-acts";
 import { canStartPandemonium, pandemoniumConfig, pandemoniumId, pandemoniumScene, type PandemoniumState } from "./xebec-pandemonium";
 import {
@@ -121,6 +131,14 @@ export class Fighter {
   comboAirHits = 0;
   combo = 0;
   lightHitsInCombo = 0;
+  blockLightsInSequence = 0;
+  launchesInSequence = 0;
+  lastLauncher = "";
+  lastLauncherCast = "";
+  controlFrames: number = antiLightCombo.recoveryFrames;
+  chainHits = 0;
+  chainAirHits = 0;
+  chainAge = 0;
   knockedDown = false;
   dashDirection = 1;
   jumpDirection = 0;
@@ -132,6 +150,8 @@ export class Fighter {
   gokuCastSerial = 0;
   sasukeCurse?: SasukeCurseState;
   omnitrix?: OmnitrixState;
+  asta?: AstaState;
+  statusEffects?: import("./status-effects").CombatStatus[];
   domination?: { charge: number; powered: boolean; awarded: boolean; spentFrame?: number;
     cast: number; lastWaveCredit: number; finishingPressure?: { frame: number; tick: number } };
   kirinCursed?: boolean;
@@ -158,6 +178,7 @@ export class Fighter {
     this.homeX = x;
     this.health = data.health;
     if (data.id === benId) this.omnitrix = newOmnitrix();
+    if (data.id === "asta") this.asta = newAsta();
     if (data.id === xebecId) this.domination = { charge: 0, powered: false, awarded: false, cast: 0, lastWaveCredit: 0 };
     this.facing = id === 0 ? 1 : -1;
     // A runtime link, not serializable combat state. Keeping it non-enumerable
@@ -184,7 +205,7 @@ export class Fighter {
     return growth ? benFormBalance.growth[growth.rank].scale : 1;
   }
   get movementData() { return this.benForm?.movement ?? this.data; }
-  private get normalMoves() { return this.benForm?.moves ?? this.data.moves; }
+  private get normalMoves() { return this.asta ? astaMoves[this.asta.attackSword ?? this.asta.equipped] : this.benForm?.moves ?? this.data.moves; }
   get grabSequence() { return this.benForm?.grab ?? this.data.grabSequence; }
   get stageInset() { return Math.max(40, (this.benForm?.width ?? 52) * this.benScale / 2); }
   get airborne() {
@@ -196,7 +217,7 @@ export class Fighter {
   private lookupMove(id: string) {
     if (id === kirinId && (this.moveId === id ? this.kirinCursed : winged(this)))
       return kirinCurseOpener;
-    return curseMove(this, id) ?? this.normalMoves[id] ??
+    return (this.asta && isAstaAction(id) ? astaRuntimeMove(this,id) : undefined) ?? curseMove(this, id) ?? this.normalMoves[id] ??
       this.data.specialMoves?.[id] ?? this.data.superMoves?.[id];
   }
   get temporalActive() {
@@ -221,6 +242,7 @@ export class Fighter {
     );
   }
   canStartSpecial(id: string) {
+    if(this.asta)return isAstaAction(id)&&canStartAstaSpecial(this,id);
     if (this.data.id === "goku") return canStartGokuSpecial(this, id);
     const move = (winged(this) ? sasukeCurseMoves[id] : undefined) ?? this.data.specialMoves?.[id];
     if (
@@ -301,6 +323,7 @@ export class Fighter {
   }
   canStartSuper() {
     if (this.match?.cinematicActive) return false;
+    if (this.asta) return canStartAstaUnion(this);
     if (this.domination) return canStartPandemonium(this);
     if (this.omnitrix) return canStartAlienX(this);
     if (this.data.id === "kaneki") return canStartCentipede(this);
@@ -441,6 +464,7 @@ export class Fighter {
       : !this.connected;
   }
   canCancel(name: string) {
+    if (this.asta && (!this.hitConfirmed || name === "light")) return false;
     if (this.benForm && !this.hitConfirmed) return false;
     if (name === "jump" && this.moveId === "xebecDance" &&
         (!this.hitIds.includes(2) || !this.opponent?.hitLaunch || this.opponent.knockedDown)) return false;
@@ -498,6 +522,10 @@ export class Fighter {
       this.stateFrame >= m.startup + m.active
     )
       return [];
+    if (m.kind === astaUnionId) {
+      const blade=worldCapsule(astaMeteoriteBlade(this.stateFrame),this.x,this.y,this.facing);
+      return previousX===this.x ? [blade] : [blade,{a:{x:blade.b.x+previousX-this.x,y:blade.b.y},b:blade.b,r:blade.r}];
+    }
     if (m.ben?.leap && (this.airborne || !this.omnitrix?.landingStrike)) return [];
     const pose = poseAt(m, this.stateFrame);
     if (this.data.id === "kaneki") {
@@ -611,6 +639,10 @@ export class Fighter {
       if (s === "crouch") this.omnitrix.crouchExit = 0;
       else if (this.state === "crouch" && (s === "idle" || s === "walk")) this.omnitrix.crouchExit = 5;
     }
+    if (this.asta) {
+      if (s !== "attack") finishAstaAttack(this);
+      if (s !== "air") this.asta.airDashTicks = 0;
+    }
     this.state = s;
     this.hakiReaction = undefined;
     if (this.omnitrix && !omnitrixCanBrowse(s)) cancelOmnitrix(this.omnitrix);
@@ -682,6 +714,7 @@ export class Fighter {
     const technique = kaneki ? kanekiTechnique(id) : undefined;
     const captureLink = kaneki && (id === "throw" || !!technique) &&
       this.state === "attack" && this.hitConfirmed;
+    if(this.asta)commitAstaSword(this);
     this.setState("attack", chain);
     this.kanekiThrowLink = captureLink || undefined;
     this.kanekiLimb = technique?.family === "fourSwords" ? "lowerRear"
@@ -695,6 +728,8 @@ export class Fighter {
         Math.max(42, Math.min(technique.reach, gap - 7))));
     } else this.kanekiBurrowX = undefined;
     this.moveId = id;
+    beginAstaAttack(this, m.astaSword);
+    if(this.asta && id==="astaDualBreak")beginAstaRelay(this);
     if (this.domination) {
       const resource = this.domination;
       resource.powered = id === kingWill;
@@ -773,7 +808,22 @@ export class Fighter {
     if (!opponent.combo && this.state !== "attack")
       this.reverseBeatUsed = false;
     this.buffer.push(input, frame, this.facing);
+    const astaRelayOwned=!!this.asta?.relay;
     this.stateFrame++;
+    if (this.controlFrames < antiLightCombo.recoveryFrames)
+      this.chainAge++;
+    if (["idle", "walk", "crouch", "air"].includes(this.state) && !this.knockedDown) {
+      this.controlFrames = Math.min(antiLightCombo.recoveryFrames, this.controlFrames + 1);
+      if (this.controlFrames === antiLightCombo.recoveryFrames) {
+        this.lightHitsInCombo = this.blockLightsInSequence = this.launchesInSequence = 0;
+        this.chainHits = this.chainAirHits = this.chainAge = 0;
+        this.lastLauncher = this.lastLauncherCast = "";
+      }
+    } else this.controlFrames = 0;
+    tickAstaState(this);
+    tickCombatStatuses(this);
+    stepAstaRelay(this);
+    if (this.asta && !this.airborne) this.asta.airDashUsed = false;
     if (this.combo > 0) this.comboAge++;
     this.syncReactionClock(true);
     if (
@@ -827,7 +877,7 @@ export class Fighter {
                 : "idle",
           );
           this.combo = 0;
-          this.comboAge = this.comboAirHits = this.lightHitsInCombo = 0;
+          this.comboAge = this.comboAirHits = 0;
           this.knockedDown = false;
         }
       }
@@ -878,7 +928,7 @@ export class Fighter {
             ? "ssj1_fury"
             : this.data.id === "dio"
               ? "road_roller"
-              : this.omnitrix ? alienXId : this.data.id === "luffy" ? jetId : this.data.id === "sasuke" ? kirinId : this.data.id === "kaneki" ? centipedeId : this.domination ? pandemoniumId : "ultimate_start";
+              : this.asta ? astaUnionId : this.omnitrix ? alienXId : this.data.id === "luffy" ? jetId : this.data.id === "sasuke" ? kirinId : this.data.id === "kaneki" ? centipedeId : this.domination ? pandemoniumId : "ultimate_start";
         const move = this.data.moves[id] ?? this.data.superMoves?.[id];
         if (this.canStartSuper()) {
           this.attack(id);
@@ -898,6 +948,14 @@ export class Fighter {
             return;
           }
           if (free) this.buffer.consumeSpecial(button);
+        }
+      }
+      if (this.asta && !this.airborne && !astaRelayOwned) {
+        for(const button of ["heavy","medium","light"] as const){
+          const id=astaSpecialCommand(this.buffer,button);if(!id)continue;
+          if(this.attack(id)){this.buffer.consumeSpecial(button);return;}
+          if(free||this.move?.special)this.buffer.consumeSpecial(button);
+          break;
         }
       }
       if (this.data.id === "kaneki") {
@@ -1047,6 +1105,8 @@ export class Fighter {
       }
       if (free || this.state === "attack") {
         for (const b of ["throw", "light", "medium", "heavy"] as const) {
+          if(astaRelayOwned)break;
+          if (this.asta && !this.airborne && astaSpecialCommand(this.buffer,b)) continue;
           if (this.bufferedBenSpecial(b)) continue;
           if (this.data.id === "kaneki" && kanekiSpecialCommand(this.buffer, b)) continue;
           if (this.data.id === "sasuke" && sasukeSpecialCommand(this.buffer, b)) continue;
@@ -1207,6 +1267,18 @@ export class Fighter {
       } else this.airChaseTicks = 0;
     }
     tickGokuMove(this);
+    const swordDash = this.asta;
+    if (swordDash && this.airborne && this.state === "air") {
+      if (!swordDash.airDashUsed && input.direction && this.buffer.consume("dash")) {
+        swordDash.airDashUsed = true; swordDash.airDashTicks = 8;
+        swordDash.airDashDirection = input.direction; this.vy = -1;
+      }
+      if (swordDash.airDashTicks > 0) {
+        this.vx = swordDash.airDashDirection * (8 + swordDash.airDashTicks * .7);
+        this.vy = Math.min(this.vy, .2);
+        swordDash.airDashTicks--;
+      }
+    }
     flyNrg(this, input);
     if (this.benScale > 1 && this.state === "walk") this.vx *= 1 / Math.sqrt(this.benScale);
     const wasAirborne = this.airborne;
@@ -1301,6 +1373,7 @@ export interface HitEvent {
     | "centipede";
   total?: number;
   ben?: BenEffect;
+  asta?: {kind:"break"|"hit"|"restore";actor:number};
 }
 export interface CaptureSequence {
   kind: "ultimate" | "grab";
@@ -1324,6 +1397,7 @@ export interface CombatHit {
   combo: number;
 }
 export interface MatchRules {
+  introSkip?: "single" | "both";
   training?: boolean;
   infiniteHealth?: [boolean, boolean];
 }
@@ -1335,7 +1409,8 @@ export class Match {
   centipede?: CentipedeState;
   alienX?: AlienXState;
   pandemonium?: PandemoniumState;
-  get cinematicActive() { return !!(this.roadRoller || this.fury || this.jetGigant || this.kirin || this.centipede || this.alienX || this.pandemonium); }
+  astaUnion?: AstaUnionState;
+  get cinematicActive() { return !!(this.roadRoller || this.fury || this.jetGigant || this.kirin || this.centipede || this.alienX || this.pandemonium || this.astaUnion); }
   temporal = new TemporalController();
   projectiles: KnifeProjectile[] = [];
   kiProjectiles: KiProjectile[] = [];
@@ -1349,7 +1424,8 @@ export class Match {
   timer = 99 * 60;
   hitstop = 0;
   phase: "intro" | "fight" | "roundEnd" | "finished" = "intro";
-  phaseFrames = 100;
+  phaseFrames = 0;
+  intro!: IntroState;
   wins = [0, 0];
   round = 1;
   message = "ROUND 1";
@@ -1367,6 +1443,33 @@ export class Match {
       new Fighter(opponentData, 1, 880),
     ];
     this.linkOpponents();
+    this.beginIntro(true);
+  }
+  /** First-round performances share one clock; later rounds only announce. */
+  private beginIntro(full: boolean) {
+    this.intro = createIntro(this.fighters.map(f=>f.data.id), full);
+    this.phaseFrames = this.intro.fightAt;
+    this.message = full ? "" : `ROUND ${this.round}`;
+  }
+  private stepIntro(inputs: [InputFrame, InputFrame]) {
+    const intro=this.intro;
+    advanceIntro(intro,inputs,this.rules.introSkip==="both");
+    for(const f of this.fighters) {
+      const age=entranceAge(intro,f.id), profile=entranceProfile(f.data.id);
+      const performing=intro.full && !intro.skipped && age<profile.duration && intro.tick<intro.presentationEnd;
+      const state=performing?"entrance":"idle";
+      if(f.state!==state) f.setState(state);
+      f.stateFrame=Math.max(0,performing?age:age-profile.duration);
+      f.x=entranceRoot(f.homeX,f.facing,f.data.id,performing?age:profile.walkTicks);
+      f.y=FLOOR;f.vx=f.vy=0;f.input=neutral();f.buffer.clear();
+      f.stand?.tick(f);
+    }
+    this.phaseFrames=Math.max(0,intro.fightAt-intro.tick);
+    this.message=introStage(intro)==="presentations"?"":introStage(intro)==="round"?`ROUND ${this.round}`:"LUTEM!";
+    if(!this.phaseFrames) {
+      this.phase="fight";this.message="";
+      for(const f of this.fighters) {f.setState("idle");f.x=entranceRoot(f.homeX,f.facing,f.data.id,entranceProfile(f.data.id).walkTicks);f.input=neutral();f.buffer.clear();}
+    }
   }
   linkOpponents() {
     this.fighters[0].opponent = this.fighters[1];
@@ -1380,25 +1483,8 @@ export class Match {
     if (this.phase !== "fight") {
       if (this.phase === "finished") return;
       if (this.phase === "intro") {
-        if (this.phaseFrames === 26) this.message = "LUTEM!";
-        for (const f of this.fighters) {
-          if (this.phaseFrames === 100) {
-            f.setState("entrance");
-            f.x =
-              f.homeX - f.facing * (f.data.lifecycle?.entranceDistance ?? 48);
-            f.buffer.clear();
-          }
-          f.stateFrame++;
-          const entry = f.data.lifecycle;
-          f.x =
-            f.homeX -
-            f.facing *
-              Math.max(
-                0,
-                (entry?.entranceDistance ?? 48) -
-                  f.stateFrame * (entry?.entranceSpeed ?? 2),
-              );
-        }
+        this.stepIntro(inputs);
+        return;
       } else {
         for (const f of this.fighters) {
           f.stateFrame++;
@@ -1410,15 +1496,7 @@ export class Match {
         }
       }
       if (--this.phaseFrames <= 0) {
-        if (this.phase === "intro") {
-          this.phase = "fight";
-          this.message = "";
-          for (const f of this.fighters) {
-            f.setState("idle");
-            f.x = f.homeX;
-            f.buffer.clear();
-          }
-        } else if (!this.rules.training && this.wins.some((w) => w >= 2)) {
+        if (!this.rules.training && this.wins.some((w) => w >= 2)) {
           this.phase = "finished";
           this.message = this.wins[0] >= 2 ? "VOCÊ VENCEU" : "BOT VENCEU";
         } else {
@@ -1436,8 +1514,7 @@ export class Match {
           this.linkOpponents();
           this.timer = 99 * 60;
           this.phase = "intro";
-          this.phaseFrames = 100;
-          this.message = `ROUND ${this.round}`;
+          this.beginIntro(false);
           if (this.rules.training) {
             this.wins = [0, 0];
             this.phase = "fight";
@@ -1472,7 +1549,7 @@ export class Match {
         return true;
       });
     });
-    if (this.fury || this.jetGigant || this.kirin || this.centipede || this.alienX || this.pandemonium) {
+    if (this.fury || this.jetGigant || this.kirin || this.centipede || this.alienX || this.pandemonium || this.astaUnion) {
       this.stepStagedSuper();
       return;
     }
@@ -1633,7 +1710,7 @@ export class Match {
       if (!c) continue;
       const { f, target, move: m, moveId } = c;
       if (m.super && f.health <= 0) continue;
-      if ((m.kind === "jetGigant" || m.kind === "kirin" || m.kind === centipedeId || m.kind === alienXId || m.kind === pandemoniumId) && (f.state !== "attack" || f.moveId !== moveId)) continue;
+      if ((m.kind === "jetGigant" || m.kind === "kirin" || m.kind === centipedeId || m.kind === alienXId || m.kind === pandemoniumId || m.kind === astaUnionId) && (f.state !== "attack" || f.moveId !== moveId)) continue;
       if (this.capture || this.cinematicActive) continue;
       // A strike beats a simultaneous throw; do not capture an actor whose
       // already-sampled strike is about to resolve on this same simulation tick.
@@ -1698,6 +1775,7 @@ export class Match {
     }
     this.clashXebecWaves();
     this.stepProjectiles();
+    stepAstaAntimagic(this);
     this.stepEnergy();
     if (!this.capture) this.stepBenObjects();
     for (const f of this.fighters) f.syncReactionClock(false);
@@ -1728,7 +1806,7 @@ export class Match {
     const limitedLight = isLimitedLightNormal(f.data.id, moveId);
     // After the third normal-light hit, further J attacks cannot re-hit the
     // victim until they recover. This also protects cornered opponents.
-    if (limitedLight && target.combo > 0 && target.lightHitsInCombo >= antiLightCombo.maxHits) return;
+    if (limitedLight && target.lightHitsInCombo >= antiLightCombo.maxHits) return;
     const frozen = this.temporal.isFrozen(target.id);
     const guarding =
       target.input.direction === -target.facing &&
@@ -1736,19 +1814,23 @@ export class Match {
       ["idle", "walk", "crouch", "landing", "blockstun"].includes(
         target.state,
       ) &&
-      (!(wave || m.ben?.field || ["knives", "ki", "kamehameha"].includes(m.special ?? "") ||
+      (!(wave || m.kind === "astaWave" || m.ben?.field || ["knives", "ki", "kamehameha"].includes(m.special ?? "") ||
         (m.special && isSasukeSpecial(m.special) && sasukeTechniques[m.special].shots)) ||
         direction === -target.facing || m.ben?.field?.type === "sonicAssist");
     const blocked =
       guarding &&
       m.level !== "throw" &&
-      (!isSuperMove(m) || m.kind === pandemoniumId) &&
+      (!isSuperMove(m) || m.kind === pandemoniumId || m.kind === astaUnionId) &&
       (m.level !== "low" || target.input.down) &&
       (m.level !== "high" || !target.input.down);
-    if (m.kind === pandemoniumId && !blocked) {
+    if (blocked && limitedLight) {
+      target.blockLightsInSequence++;
+      target.controlFrames = 0;
+    }
+    if ((m.kind === pandemoniumId || m.kind === astaUnionId) && !blocked) {
       this.effect("power", impact ? impact.x + impact.w / 2 : target.x,
         impact ? impact.y + impact.h / 2 : target.y - 90, 12);
-      this.beginStagedSuper(f, target, pandemoniumId);
+      this.beginStagedSuper(f, target, m.kind);
       return;
     }
     let damage = blocked
@@ -1791,13 +1873,23 @@ export class Match {
         target.crouching ||
         (target.data.id === "luffy" && !target.airborne && !blocked && m.level === "low"),
     };
+    if (blocked && limitedLight && target.blockLightsInSequence >= antiLightCombo.maxHits) {
+      reaction.stun = Math.min(reaction.stun, antiLightCombo.blockedStun);
+      reaction.vx = direction * Math.max(antiLightCombo.blockedPush, Math.abs(reaction.vx));
+      // Corner pressure must also separate the attacker when the defender
+      // cannot travel farther toward the wall.
+      f.vx = -direction * antiLightCombo.blockedPush;
+    }
     if (!blocked) {
+      target.controlFrames = 0;
       if (f.state === "attack" && f.moveId === moveId) {
         if (!f.hitConfirmed && applied > 0 && m.ben?.chargeGain && f.omnitrix?.active === "feedback")
           this.gainFeedbackCharge(f.omnitrix, m.ben.chargeGain, "contact");
         f.hitConfirmed = true;
         if (m.ben?.field) f.connected = true;
       }
+      if(f.asta && moveId==="astaDualBreak" && applied>0)confirmAstaRelay(f,m.kind==="astaWave");
+      if(f.asta && isAstaSpecial(moveId) && !f.asta.usedSpecials.includes(moveId))f.asta.usedSpecials.push(moveId);
       if (m.ben?.technique && f.omnitrix && !f.omnitrix.usedSpecials.includes(m.ben.technique))
         f.omnitrix.usedSpecials.push(m.ben.technique);
       if (m.ben?.cold && applied > 0 && !frozen && target.health > 0) {
@@ -1818,21 +1910,38 @@ export class Match {
       }
       if (!target.combo) {
         target.comboAge = target.comboAirHits = 0;
-        target.lightHitsInCombo = 0;
       }
       target.combo++;
       if (target.airborne || m.launch < 0) target.comboAirHits++;
+      target.chainHits++;
+      if (target.airborne || m.launch < 0) target.chainAirHits++;
       if (limitedLight) {
         target.lightHitsInCombo++;
         if (target.lightHitsInCombo >= antiLightCombo.maxHits) {
           // Force a genuine knock-away rather than only damage scaling.
           // The knockdown and light-hit lockout together stop corner loops.
           reaction.vx = direction * antiLightCombo.push;
-          reaction.vy = antiLightCombo.launch;
-          reaction.stun = Math.max(reaction.stun, antiLightCombo.stun);
-          reaction.launch = true;
+          reaction.vy = 0;
+          reaction.stun = Math.min(reaction.stun, antiLightCombo.stun);
+          reaction.launch = false;
           reaction.knockdown = true;
           reaction.strength = 3;
+        }
+      }
+      if (!m.super && m.launch <= launcherCombo.minimumLift) {
+        const cast = `${f.id}:${moveId}:${wave?.cast ?? this.combatFrame - f.stateFrame}`;
+        if (cast !== target.lastLauncherCast) {
+          if (target.lastLauncher === moveId || target.launchesInSequence >= launcherCombo.maxLaunches) {
+            reaction.vy = target.airborne ? launcherCombo.finisherFall : 0;
+            reaction.vx = direction * Math.max(launcherCombo.finisherPush, Math.abs(reaction.vx));
+            reaction.stun = Math.min(reaction.stun, launcherCombo.finisherStun);
+            reaction.launch = false;
+            reaction.knockdown = true;
+          } else {
+            target.launchesInSequence++;
+            target.lastLauncher = moveId;
+          }
+          target.lastLauncherCast = cast;
         }
       }
       if (target.airborne && !m.knockdown && !m.super)
@@ -1841,9 +1950,9 @@ export class Match {
       const limit = f.data.combatLimits;
       if (
         limit &&
-        (target.combo >= (m.comboHitLimit ?? limit.maxHits) ||
-          target.comboAirHits >= limit.maxAirHits ||
-          target.comboAge >= limit.maxTicks)
+        (Math.max(target.combo, target.chainHits) >= (m.comboHitLimit ?? limit.maxHits) ||
+          Math.max(target.comboAirHits, target.chainAirHits) >= limit.maxAirHits ||
+          Math.max(target.comboAge, target.chainAge) >= limit.maxTicks)
       ) {
         reaction.knockdown = true;
         reaction.vy = 10;
@@ -1888,6 +1997,7 @@ export class Match {
     );
     const event = this.events[eventCount];
     if (event) {
+      if(f.asta)event.asta={kind:"hit",actor:f.id};
       if (f.domination) event.xebec = { rank: m.rank, facing: direction, move: moveId, powered: moveId === kingWill };
       if (m.ben && !blocked) event.ben = m.ben.effect;
       if (!blocked && (m.special === "chidori" || m.special === "goryuka"))
@@ -1942,6 +2052,7 @@ export class Match {
     for (const f of this.fighters) {
       if (this.temporal.isFrozen(f.id) || f.state !== "attack") continue;
       const m = f.move!;
+      if(f.asta){spawnAstaSpecial(f,this);continue;}
       if (f.data.id === "goku") {
         this.spawnGokuSpecial(f);
         continue;
@@ -2193,7 +2304,7 @@ export class Match {
     const shapes = fireDragonVolumes(w, { x: p.previousX, y: p.previousY }, p.radius);
     const target = this.fighters[1 - p.owner], owner = this.fighters[p.owner];
     const haki = xebecProjectileMove(p.move),
-        move = haki ?? (p.curse ? sasukeCurseMoves[p.move] : owner.data.specialMoves?.[p.move]);
+        move = haki ?? (owner.asta ? astaProjectileMove(p) : undefined) ?? (p.curse ? sasukeCurseMoves[p.move] : owner.data.specialMoves?.[p.move]);
     if (move && this.damageBenWalls(shapes, move.damage, this.benWalls(), `dragon:${p.id}`, p.owner)) return false;
     if (target.invulnerable || target.knockedDown) return true;
     const boxes = target.hurtboxes();
@@ -2233,8 +2344,8 @@ export class Match {
       const target = this.fighters[1 - p.owner],
         owner = this.fighters[p.owner],
         haki = xebecProjectileMove(p.move),
-        move = haki ?? (p.curse ? sasukeCurseMoves[p.move] : owner.data.specialMoves?.[p.move]);
-      const shape = wave ? xebecWaveVolume(wave, p.x, p.y, p.facing, p.radius) : {
+        move = haki ?? (owner.asta ? astaProjectileMove(p) : undefined) ?? (p.curse ? sasukeCurseMoves[p.move] : owner.data.specialMoves?.[p.move]);
+      const shape = wave ? xebecWaveVolume(wave, p.x, p.y, p.facing, p.radius) : owner.asta && (p.move==="astaBlackSlash"||p.move==="astaDualBreak") ? astaWaveVolume(p) : {
         a: { x: p.previousX, y: p.previousY },
         b: { x: p.x, y: p.y },
         r: p.radius,
@@ -2253,7 +2364,7 @@ export class Match {
           p.x = Math.max(hurt.x, Math.min(hurt.x + hurt.w, p.x));
           p.y = Math.max(hurt.y, Math.min(hurt.y + hurt.h, p.y));
           impact = { x: p.x, y: p.y, w: 0, h: 0 };
-        } else if (owner.gokuCastSerial === p.cast && owner.moveId === p.move) {
+        } else if ((owner.asta ? owner.asta.cast === p.cast : owner.gokuCastSerial === p.cast) && owner.moveId === p.move) {
           owner.connected = true;
         }
         this.resolveImpact(owner, target, move, p.move, impact, p.facing, winged(owner), false, haki ? p : undefined);
@@ -2765,6 +2876,7 @@ export class Match {
     const next = Math.max(minimum, target.health - damage),
       applied = target.health - next;
     target.health = next;
+    recordAstaDamage(target,Math.max(0,applied));
     return Math.max(0, applied);
   }
   private recordHit(
@@ -2878,9 +2990,9 @@ export class Match {
     this.events.push({ kind: "centipede", centipede: { cue, frame: this.frame }, x, y,
       life, total: life, strength, blocked: false });
   }
-  private beginStagedSuper(a: Fighter, b: Fighter, kind: "jetGigant" | "gokuFury" | "kirin" | "centipede" | "alienX" | typeof pandemoniumId,
+  private beginStagedSuper(a: Fighter, b: Fighter, kind: "jetGigant" | "gokuFury" | "kirin" | "centipede" | "alienX" | typeof pandemoniumId | typeof astaUnionId,
     source: CentipedeSource = "strike") {
-    const config = kind === pandemoniumId ? pandemoniumConfig : kind === alienXId ? alienXConfig : kind === centipedeId ? centipedeConfig : kind === "kirin" ? kirinConfig : kind === "jetGigant" ? jetConfig : furyConfig;
+    const config = kind === astaUnionId ? astaUnionConfig : kind === pandemoniumId ? pandemoniumConfig : kind === alienXId ? alienXConfig : kind === centipedeId ? centipedeConfig : kind === "kirin" ? kirinConfig : kind === "jetGigant" ? jetConfig : furyConfig;
     const state: FuryState = {
       attacker: a.id,
       victim: b.id,
@@ -2891,7 +3003,7 @@ export class Match {
       targetY: b.y,
       scale: Math.max(
         config.minimumComboScale,
-        1 - Math.max(0, b.combo - Number(kind !== pandemoniumId)) * 0.08,
+        1 - Math.max(0, b.combo - Number(kind !== pandemoniumId && kind !== astaUnionId)) * 0.08,
       ),
     };
     if (kind === "jetGigant") this.jetGigant = { ...state, hold: 8, openingTip: jetOpener(a)!.tip };
@@ -2919,7 +3031,8 @@ export class Match {
       delete watch.growth;
       delete watch.flightTicks;
       delete watch.landingStrike;
-    } else if (kind === pandemoniumId) this.pandemonium = { ...state, hold: 4 };
+    } else if (kind === astaUnionId) this.astaUnion = { ...state, hold: 0, openingTick:a.stateFrame };
+    else if (kind === pandemoniumId) this.pandemonium = { ...state, hold: 4 };
     else this.fury = state;
     a.setState("cinematic");
     b.setState("grabbed");
@@ -2934,8 +3047,8 @@ export class Match {
     this.stageSuper();
   }
   private stageSuper() {
-    const s = (this.pandemonium ?? this.alienX ?? this.centipede ?? this.kirin ?? this.jetGigant ?? this.fury)!,
-      scene = this.pandemonium ? pandemoniumScene(this.pandemonium) : this.alienX ? alienXScene(this.alienX) : this.centipede ? centipedeScene(this.centipede) : this.kirin ? kirinScene(this.kirin) :
+    const s = (this.astaUnion ?? this.pandemonium ?? this.alienX ?? this.centipede ?? this.kirin ?? this.jetGigant ?? this.fury)!,
+      scene = this.astaUnion ? astaUnionScene(this.astaUnion) : this.pandemonium ? pandemoniumScene(this.pandemonium) : this.alienX ? alienXScene(this.alienX) : this.centipede ? centipedeScene(this.centipede) : this.kirin ? kirinScene(this.kirin) :
         this.jetGigant ? jetScene(this.jetGigant) : furyScene(s),
       a = this.fighters[s.attacker],
       b = this.fighters[s.victim];
@@ -2949,20 +3062,31 @@ export class Match {
       f.actionClip = p.clip;
       f.stateFrame = p.tick;
     }
+    if (this.astaUnion && a.asta) {
+      const union = astaUnionScene(this.astaUnion);
+      const drawAt = unionSwordChanges.find(at => this.astaUnion!.tick >= at && this.astaUnion!.tick < at+10);
+      if (drawAt !== undefined) {
+        const age = this.astaUnion.tick-drawAt;
+        if (!age && a.asta.equipped !== union.sword)
+          a.asta.draw = { from:a.asta.equipped, to:union.sword, move:"astaUnion", tick:0, commitAt:3, handAt:6, total:10 };
+        if (a.asta.draw) a.asta.draw.tick = age;
+        if (age >= 3) a.asta.equipped = union.sword;
+      } else { a.asta.equipped = union.sword; delete a.asta.draw; }
+    }
     // A Stand still belongs to the damaged principal. Its independent reaction
     // finishes and returns/dissipates without contributing collision volumes.
     b.stand?.tick(b);
   }
   private stepStagedSuper() {
     const jet = this.jetGigant, kirin = this.kirin, centipede = this.centipede;
-    const { alienX, pandemonium } = this;
-    const held = pandemonium ?? alienX ?? centipede ?? kirin ?? jet;
+    const { alienX, pandemonium, astaUnion } = this;
+    const held = astaUnion ?? pandemonium ?? alienX ?? centipede ?? kirin ?? jet;
     if (held && held.hold > 0) {
       held.hold--;
       return;
     }
-    const config = pandemonium ? pandemoniumConfig : alienX ? alienXConfig : centipede ? centipedeConfig : kirin ? kirinConfig : jet ? jetConfig : furyConfig;
-    const s = (pandemonium ?? alienX ?? centipede ?? kirin ?? jet ?? this.fury)!,
+    const config = astaUnion ? astaUnionConfig : pandemonium ? pandemoniumConfig : alienX ? alienXConfig : centipede ? centipedeConfig : kirin ? kirinConfig : jet ? jetConfig : furyConfig;
+    const s = (astaUnion ?? pandemonium ?? alienX ?? centipede ?? kirin ?? jet ?? this.fury)!,
       t = ++s.tick,
       a = this.fighters[s.attacker],
       b = this.fighters[s.victim];
@@ -2970,6 +3094,10 @@ export class Match {
     if (pandemonium) {
       const beat = pandemoniumPrelude.find(contact => contact.tick === t);
       if (beat) pandemonium.hold = beat.hold;
+    }
+    if (astaUnion) {
+      const beat=unionContacts.find(contact=>contact.tick===t && !contact.damage);
+      if(beat) astaUnion.hold=beat.hold;
     }
     if (kirin && (t === kirinConfig.phases.storm || t === kirinConfig.phases.reveal || t === kirinConfig.phases.dive))
       this.effect("kirinCharge", a.x, a.y - 130, 9);
@@ -2983,13 +3111,13 @@ export class Match {
       if (held && "hold" in hit && typeof hit.hold === "number") held.hold = hit.hold;
       const applied = this.damage(b, Math.round(hit.damage * s.scale), finish ? 0 : 1);
       b.combo++;
-      this.recordHit(a, b, `${pandemonium ? pandemoniumId : alienX ? alienXId : centipede ? centipedeId : kirin ? "kirin" : jet ? "jet" : "fury"}_${hit.kind}`, applied);
+      this.recordHit(a, b, `${astaUnion ? astaUnionId : pandemonium ? pandemoniumId : alienX ? alienXId : centipede ? centipedeId : kirin ? "kirin" : jet ? "jet" : "fury"}_${hit.kind}`, applied);
       if (centipede) {
         this.centipedeEffect(hit.kind as CentipedeCue, b.x, finish ? FLOOR : b.y - 73, finish ? 37 : 13, finish ? 3 : 2);
       } else {
         b.gainMeter(2);
         this.effect(
-        pandemonium || alienX ? "ultimate" : kirin ? "kirinThunder" : !jet && finish ? "roadExplosion" : jet && (finish || hit.kind === "gigant") ? "ultimate" : "hit",
+        astaUnion ? "hit" : pandemonium || alienX ? "ultimate" : kirin ? "kirinThunder" : !jet && finish ? "roadExplosion" : jet && (finish || hit.kind === "gigant") ? "ultimate" : "hit",
         b.x,
         b.y - 78,
         finish ? 16 : 8,
@@ -3009,7 +3137,7 @@ export class Match {
       b.syncReactionClock(false);
       a.buffer.clear();
       b.buffer.clear();
-      this.fury = this.jetGigant = this.kirin = this.centipede = this.alienX = this.pandemonium = undefined;
+      this.fury = this.jetGigant = this.kirin = this.centipede = this.alienX = this.pandemonium = this.astaUnion = undefined;
       if (alienX || pandemonium) {
         b.vx = (pandemonium ? 11 : 14) * s.facing;
         b.vy = pandemonium ? -5 : -7;

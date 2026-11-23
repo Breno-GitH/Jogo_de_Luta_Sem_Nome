@@ -1,0 +1,44 @@
+[
+  {
+    "key": "asta/special-severing.png/0",
+    "phase": "startup",
+    "sword": "slayer",
+    "stage": "slayer",
+    "count": "1"
+  },
+  {
+    "key": "asta/special-severing.png/1",
+    "phase": "startup",
+    "sword": "slasher",
+    "stage": "slasher",
+    "count": "1"
+  },
+  {
+    "key": "asta/special-severing.png/2",
+    "phase": "active",
+    "sword": "slasher",
+    "stage": "slasher",
+    "count": "1"
+  },
+  {
+    "key": "asta/special-severing.png/3",
+    "phase": "active",
+    "sword": "slasher",
+    "stage": "slasher",
+    "count": "1"
+  },
+  {
+    "key": "asta/special-severing.png/4",
+    "phase": "recovery",
+    "sword": "slasher",
+    "stage": "slasher",
+    "count": "1"
+  },
+  {
+    "key": "asta/special-severing.png/5",
+    "phase": "recovery",
+    "sword": "slasher",
+    "stage": "slasher",
+    "count": "1"
+  }
+]

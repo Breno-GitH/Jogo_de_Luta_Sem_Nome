@@ -305,7 +305,7 @@ export class Rooms {
   private newMatch(room: Room) {
     return new Match(
       characterById(room.players[0]!.character!),
-      {},
+      { introSkip: "both" },
       characterById(room.players[1]!.character!),
     );
   }
@@ -410,6 +410,7 @@ export class Rooms {
       direction: payload.input.direction,
       down: payload.input.down,
       pressed: [...payload.input.pressed],
+      ...(payload.input.skipIntro === true ? { skipIntro: true } : {}),
       ...(room.match?.fighters[seat].omnitrix && payload.input.up ? { up: true } : {}),
       ...(room.match?.fighters[seat].omnitrix && payload.input.omnitrix
         ? { omnitrix: { ...payload.input.omnitrix } } : {}),

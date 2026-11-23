@@ -1,7 +1,7 @@
 import type { InputFrame } from "../engine/types";
 import type { MatchState } from "../engine/state";
 export const PROTOCOL = 3;
-export const ONLINE_CHARACTERS = ["samurai", "dio", "goku", "luffy", "sasuke", "kaneki", "ben", "xebec"] as const;
+export const ONLINE_CHARACTERS = ["samurai", "dio", "goku", "luffy", "sasuke", "kaneki", "ben", "xebec", "asta"] as const;
 export type OnlineCharacter = (typeof ONLINE_CHARACTERS)[number];
 export const INPUT_DELAY = 6;
 export const MAX_AHEAD = 90;
@@ -92,9 +92,11 @@ export function validInput(value: unknown): value is InputFrame {
   const keys = ["direction", "down", "pressed"];
   const extended = "omnitrix" in value;
   const flying = "up" in value;
+  const skipping = "skipIntro" in value;
+  if(skipping) keys.push("skipIntro");
   if (extended) keys.push("omnitrix");
   if (flying) keys.push("up");
-  if (!exactObject(value, keys) || (flying && typeof value.up !== "boolean")) return false;
+  if (!exactObject(value, keys) || (flying && typeof value.up !== "boolean") || (skipping && typeof value.skipIntro!=="boolean")) return false;
   if (extended) {
     const control = value.omnitrix;
     if (!exactObject(control, ["held"]) || typeof control.held !== "boolean")

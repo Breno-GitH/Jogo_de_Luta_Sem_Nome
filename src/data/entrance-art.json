@@ -1,0 +1,254 @@
+{
+  "frameWidth": 256,
+  "frameHeight": 256,
+  "columns": 4,
+  "pivot": {
+    "x": 128,
+    "y": 224
+  },
+  "scale": 1,
+  "characters": {
+    "samurai": {
+      "sheet": "samurai/intro.png",
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "durations": [
+        14,
+        14,
+        16,
+        14,
+        18,
+        14,
+        16,
+        20
+      ],
+      "ticks": 1,
+      "loop": false
+    },
+    "goku": {
+      "sheet": "goku/intro.png",
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "durations": [
+        12,
+        12,
+        16,
+        16,
+        14,
+        12,
+        14,
+        18
+      ],
+      "ticks": 1,
+      "loop": false
+    },
+    "luffy": {
+      "sheet": "luffy/intro.png",
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "durations": [
+        12,
+        12,
+        16,
+        16,
+        14,
+        12,
+        14,
+        18
+      ],
+      "ticks": 1,
+      "loop": false
+    },
+    "sasuke": {
+      "sheet": "sasuke/intro.png",
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "durations": [
+        14,
+        14,
+        16,
+        14,
+        14,
+        12,
+        14,
+        16
+      ],
+      "ticks": 1,
+      "loop": false
+    },
+    "kaneki": {
+      "sheet": "kaneki/intro.png",
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "durations": [
+        18,
+        16,
+        16,
+        18,
+        16,
+        12,
+        14,
+        16
+      ],
+      "ticks": 1,
+      "loop": false
+    },
+    "ben": {
+      "sheet": "ben/intro.png",
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "durations": [
+        12,
+        12,
+        16,
+        18,
+        16,
+        12,
+        14,
+        16
+      ],
+      "ticks": 1,
+      "loop": false
+    },
+    "xebec": {
+      "sheet": "xebec/intro.png",
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "durations": [
+        16,
+        16,
+        18,
+        16,
+        18,
+        16,
+        18,
+        20
+      ],
+      "ticks": 1,
+      "loop": false
+    },
+    "asta": {
+      "sheet": "asta/intro.png",
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "durations": [
+        12,
+        16,
+        18,
+        18,
+        18,
+        16,
+        16,
+        18
+      ],
+      "ticks": 1,
+      "loop": false
+    }
+  },
+  "astaGrips": [
+    {
+      "x": -19,
+      "y": -61,
+      "angle": -100
+    },
+    {
+      "x": 10,
+      "y": -97,
+      "angle": -75
+    },
+    {
+      "x": 25,
+      "y": -104,
+      "angle": -70
+    },
+    {
+      "x": 23,
+      "y": -104,
+      "angle": -70
+    },
+    {
+      "x": -15,
+      "y": -88,
+      "angle": -25
+    },
+    {
+      "x": -27,
+      "y": -133,
+      "angle": -140
+    },
+    {
+      "x": -6,
+      "y": -81,
+      "angle": -55
+    },
+    {
+      "x": -12,
+      "y": -71,
+      "angle": -55
+    }
+  ]
+}

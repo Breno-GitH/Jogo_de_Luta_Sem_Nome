@@ -421,7 +421,11 @@ describe("selective time freeze and match-persistent recharge", () => {
     m.fighters[0].health = 0;
     step(m);
     const cooldown = m.temporal.s.ledger[0].cooldown;
-    for (let i = 0; i < 250; i++) step(m);
+    const interval = m.phaseFrames;
+    for (let i = 0; i < interval; i++) step(m);
+    expect(m.phase).toBe("intro");
+    const announcement = m.phaseFrames;
+    for (let i = 0; i < announcement; i++) step(m);
     expect(m.round).toBe(2);
     expect(m.temporal.s.ledger[0]).toEqual({ uses: 1, cooldown });
     until(m, () => m.temporal.s.ledger[0].cooldown === 0, 1300);

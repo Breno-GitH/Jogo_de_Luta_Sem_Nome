@@ -1,0 +1,44 @@
+[
+  {
+    "key": "asta/special-rush.png/0",
+    "phase": "startup",
+    "sword": "destroyer",
+    "stage": "destroyer",
+    "count": "1"
+  },
+  {
+    "key": "asta/special-rush.png/1",
+    "phase": "startup",
+    "sword": "destroyer",
+    "stage": "destroyer",
+    "count": "1"
+  },
+  {
+    "key": "asta/special-rush.png/2",
+    "phase": "active",
+    "sword": "slayer",
+    "stage": "slayer",
+    "count": "1"
+  },
+  {
+    "key": "asta/special-rush.png/3",
+    "phase": "active",
+    "sword": "slayer",
+    "stage": "slayer",
+    "count": "1"
+  },
+  {
+    "key": "asta/special-rush.png/4",
+    "phase": "recovery",
+    "sword": "slayer",
+    "stage": "slayer",
+    "count": "1"
+  },
+  {
+    "key": "asta/special-rush.png/5",
+    "phase": "recovery",
+    "sword": "slayer",
+    "stage": "slayer",
+    "count": "1"
+  }
+]

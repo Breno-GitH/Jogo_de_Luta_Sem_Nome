@@ -1,0 +1,87 @@
+{
+  "url": "http://localhost/2025/M.S.F.D/",
+  "build": {
+    "version": "a204db1ca3461221044881c8",
+    "commit": "c5ba6f02ef69d2b67c20f2fef2de40f771bf2271",
+    "builtAt": "2026-11-20T22:57:12.394Z",
+    "base": "relative",
+    "aliases": [
+      "/2025/M.S.F.D/",
+      "/jogo-luta/",
+      "/2025/Jogo_de_Luta_Sem_Nome/"
+    ]
+  },
+  "sha256Resources": 103,
+  "backend": {
+    "port": 3001,
+    "pidAfter": 17700,
+    "mechanism": "Existing hidden startup VBS / lan-iniciar-oculto.cmd / scripts/start-lan.mjs"
+  },
+  "liveLAN": {
+    "casts": [
+      {
+        "id": "astaBlackRush",
+        "sword": "slayer",
+        "health": "938"
+      },
+      {
+        "id": "astaRisingDemon",
+        "sword": "slayer",
+        "health": "853"
+      },
+      {
+        "id": "astaBlackDivider",
+        "sword": "slayer",
+        "health": "723"
+      },
+      {
+        "id": "astaIaiSlash",
+        "sword": "slasher",
+        "health": "677"
+      },
+      {
+        "id": "astaFlashSteps",
+        "sword": "slasher",
+        "health": "609"
+      },
+      {
+        "id": "astaSeveringLine",
+        "sword": "slasher",
+        "health": "519"
+      },
+      {
+        "id": "astaBlackSlash",
+        "sword": "dweller",
+        "health": "467"
+      },
+      {
+        "id": "astaCausalityBreak",
+        "sword": "destroyer",
+        "health": "401"
+      },
+      {
+        "id": "astaDualBreak",
+        "sword": "dweller",
+        "health": "281"
+      }
+    ],
+    "commonTicks": 810,
+    "hashesEqual": true
+  },
+  "browserOnApache": {
+    "passed": 5,
+    "suites": [
+      "asta-specials",
+      "asta-relay"
+    ]
+  },
+  "fullVitest": {
+    "files": 56,
+    "passed": 1491
+  },
+  "additionalBotTest": {
+    "passed": 1,
+    "case": "Asta BOT chooses two legal sword continuations"
+  },
+  "notes": "Publication evidence captured from c5ba6f0 before committing this report; no runtime code changes in the report commit. Final HTTP verification is also linked in the PR."
+}

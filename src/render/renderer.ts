@@ -1,3 +1,9 @@
+import { entranceAnimationSets } from "./entrance-animations";
+import { entranceAge, introStage } from "../engine/entrances";
+import { entranceHidden, drawEntranceBehind, drawEntranceFront, drawAstaEntrance, drawEntranceTitles } from "./entrance-fx";
+import {equinoxCut} from "./asta-equinox-geometry";
+import { astaUnionConfig, astaUnionScene } from "../engine/asta-super";
+import { astaSuperSheets, drawAstaUnionBackdrop, drawLiebeManifestation, drawAstaUnionLocal, drawAstaUnionImpact, drawAstaUnionScreen } from "./asta-super-fx";
 import { assetBase } from "../asset-base";
 import { drawTestArena } from "./arena";
 import benArt from "../data/ben-art.json";
@@ -67,6 +73,10 @@ import type { Fighter } from "../engine/combat";
 import { combatPace } from "../engine/pace";
 import { xebecId } from "../engine/xebec";
 import { xebecAnimations } from "./xebec-animations";
+import { drawAstaAntimagic,drawAstaWaves,astaWeaponHidden } from "./asta-antimagic-fx";
+import { astaAnimations } from "./asta-animations";
+import { drawAstaWeapon,drawAstaSwordHud } from "./asta-weapon";
+import { astaDrawPhase } from "./asta-grimoire";
 import { kingWill } from "../engine/xebec-specials";
 import { drawKingWillArena, drawKingWillHaki, drawKingWillReaction, kingWillFronts } from "./xebec-king-will";
 import { drawDomination, drawPandemoniumSky, drawPandemoniumStrike, drawXebecCharge, drawXebecSpecials } from "./xebec-special-fx";
@@ -83,6 +93,7 @@ export class Renderer {
   debug = false;
   effects = true;
   xebecEffects = true;
+  astaEffects = true;
   private readonly prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   cameraShake = true;
   superKey = "R";
@@ -114,6 +125,8 @@ export class Renderer {
     this.fxImage.src = `${spriteBase}fx/samurai-fx.png`;
     const sheets = new Set<string>();
     sheets.add("fx/dio-specials.png");
+    sheets.add("asta/arsenal.png");
+    astaSuperSheets.forEach(sheet=>sheets.add(sheet));
     sheets.add(sasukeEffectsSheet);
     sheets.add(goryukaHeadSheet);
     for (const sheet of kirinEffectsSheets) sheets.add(sheet);
@@ -128,6 +141,8 @@ export class Renderer {
       sasukeAnimations,
       kanekiAnimations,
       xebecAnimations,
+      astaAnimations,
+      ...Object.values(entranceAnimationSets),
       ...benAnimationSets,
       ...previewAnimations,
       worldAnimations,
@@ -227,7 +242,7 @@ export class Renderer {
                 : f.data.id === "sasuke"
                   ? sasukeAnimations
                   : f.data.id === "kaneki" ? kanekiAnimations
-                    : f.data.id === benId ? benArt : f.data.id === xebecId ? xebecAnimations : metadata,
+                    : f.data.id === benId ? benArt : f.data.id === xebecId ? xebecAnimations : f.asta ? astaAnimations : metadata,
         );
         if (f.stand) this.standAnimations.set(f, new Animator(worldAnimations));
       }
@@ -259,6 +274,7 @@ export class Renderer {
       jetStage = jet ? jetScene(jet) : undefined;
     const kirin = match.kirin, kirinStage = kirin ? kirinScene(kirin) : undefined;
     const alienX = match.alienX, reality = alienX && alienXScene(alienX);
+    const union = match.astaUnion, unionStage = union && astaUnionScene(union);
     const pandemonium = match.pandemonium, abyss = pandemonium && pandemoniumScene(pandemonium);
     const centipede = match.centipede, kakuja = centipede ? centipedeScene(centipede) : undefined;
     const kanekiCapture = match.capture?.kaneki;
@@ -306,7 +322,7 @@ export class Renderer {
         f.state === "attack" && f.moveId === kingWill ? f.stateFrame : -1;
       return tick >= 0 && tick < 96 ? [{ x: f.x, y: f.y, facing: f.facing, tick }] : [];
     });
-    const stagedCamera = abyss?.camera ?? cosmicCamera ?? openingCamera ?? kakuja?.camera ?? kirinStage?.camera ?? (jet && jetStage ? jetCamera(jetStage, jet) : furyStage?.camera)
+    const stagedCamera = unionStage?.camera ?? abyss?.camera ?? cosmicCamera ?? openingCamera ?? kakuja?.camera ?? kirinStage?.camera ?? (jet && jetStage ? jetCamera(jetStage, jet) : furyStage?.camera)
       ?? chainCamera ?? (this.effects ? chidoriCamera(match) ?? benCamera : undefined);
     const self = match.fighters[this.localSeat],
       other = match.fighters[1 - this.localSeat];
@@ -318,8 +334,17 @@ export class Renderer {
     this.canvas.dataset.animationTick = String(
       this.presentations[this.localSeat].animator.elapsedTicks,
     );
+    this.canvas.dataset.sheet = this.presentations[this.localSeat].animator.sprite().sheet;
+    this.canvas.dataset.rivalSheet = this.presentations[1-this.localSeat].animator.sprite().sheet;
     this.canvas.dataset.physicsState = self.state;
     this.canvas.dataset.rootY = String(self.y);
+    Object.assign(this.canvas.dataset,{
+      introTick:String(match.intro.tick),introFull:String(match.intro.full),
+      introStage:match.phase==="intro"?introStage(match.intro):"none",
+      introVotes:match.intro.skipVotes.map(Number).join(","),introSkipped:String(match.intro.skipped),
+      introAge0:String(entranceAge(match.intro,0)),introAge1:String(entranceAge(match.intro,1)),
+      introSheet0:this.presentations[0].animator.sprite().sheet,introSheet1:this.presentations[1].animator.sprite().sheet,
+    });
     this.canvas.dataset.rootX = String(self.x);
     this.canvas.dataset.rivalX = String(other.x);
     this.canvas.dataset.move = self.moveId;
@@ -333,10 +358,42 @@ export class Renderer {
     this.canvas.dataset.centipedeTick = String(centipede?.tick ?? -1);
     this.canvas.dataset.alienXPhase = reality?.phase ?? "";
     this.canvas.dataset.alienXVisual = alienX && this.effects ? alienXVisualPhase(alienX.tick) : "";
+    this.canvas.dataset.astaUnionTick = String(union?.tick ?? -1);
+    this.canvas.dataset.astaUnionPhase = unionStage?.phase ?? "";
+    this.canvas.dataset.equinoxGap = String(unionStage ? Math.abs(unionStage.attacker.x-unionStage.plane.x) : 0);
+    this.canvas.dataset.equinoxReleased = String(unionStage?.plane.released ?? false);
+    const cut=union&&unionStage&&union.tick>=unionStage.plane.release?equinoxCut(union):undefined;
+    this.canvas.dataset.equinoxWaveX=String(cut?.noseX??-1);
+    this.canvas.dataset.equinoxOriginX=String(cut?.origin[0]??-1);
+    this.canvas.dataset.astaForm = unionStage?.form ?? (self.state === "attack" && self.moveId === "astaBlackMeteorite" && self.stateFrame < 36 ? "black" : "base");
     this.canvas.dataset.alienXTick = String(alienX?.tick ?? -1);
     this.canvas.dataset.pandemoniumTick = String(pandemonium?.tick ?? -1);
     this.canvas.dataset.pandemoniumPhase = abyss?.phase ?? "";
     this.canvas.dataset.prometheusCel = String(abyss?.prometheus?.cel ?? -1);
+    this.canvas.dataset.astaSword = self.asta?.equipped ?? "";
+    this.canvas.dataset.astaStage = self.asta?.attackSword ?? "";
+    this.canvas.dataset.astaPending = self.asta?.pending?.sword ?? "";
+    this.canvas.dataset.astaDrawnWeapons = String(self.asta ? astaWeaponHidden(self)?0:1 : 0);
+    const relay=self.asta?.relay;
+    this.canvas.dataset.astaRelayPhase=relay?.phase??"";
+    this.canvas.dataset.astaRelayButton=relay?.button??"";
+    this.canvas.dataset.astaRelayOptions=JSON.stringify(relay?.options??[]);
+    this.canvas.dataset.astaRelaySword=relay?.sword??"";
+    this.canvas.dataset.astaRelayAction=String(relay?.action??-1);
+    this.canvas.dataset.astaRelayWindow=String(!!relay&&relay.phase==="choice"&&self.stateFrame<=relay.windowTo);
+    this.canvas.dataset.astaRelayContacts=String(relay?.contacts.length??0);
+    this.canvas.dataset.astaGrimoire=astaDrawPhase(self);
+    this.canvas.dataset.astaDrawFrom=self.asta?.draw?.from??"";
+    this.canvas.dataset.astaDrawTo=self.asta?.draw?.to??"";
+    this.canvas.dataset.astaRestorationCooldown=String(Math.max(0,(self.asta?.restorationReadyAt??0)-match.combatFrame));
+    this.canvas.dataset.astaRestored=String(self.asta?.causalityResult?.hp??0);
+    this.canvas.dataset.astaVolleyShots=String(self.asta?.blackSlashShots??0);
+    this.canvas.dataset.astaWaves=JSON.stringify(match.kiProjectiles.filter(p=>p.owner===self.id&&p.move==="astaBlackSlash").map(p=>({id:p.id,cut:p.astaCut??0,x:p.x,y:p.y,state:p.state})));
+    this.canvas.dataset.astaCleansed=String(self.asta?.causalityResult?.cleansed.length??0);
+    this.canvas.dataset.astaStatuses=String(self.statusEffects?.length??0);
+    this.canvas.dataset.astaStates=JSON.stringify(match.fighters.map(f=>f.asta?{sword:f.asta.equipped,relay:f.asta.relay??null,draw:f.asta.draw??null,recentDamage:f.asta.recentDamage,restorationReadyAt:f.asta.restorationReadyAt,result:f.asta.causalityResult??null,statuses:f.statusEffects??[]}:null));
+    this.canvas.dataset.astaNeutralized = String(self.asta?.neutralized ?? 0);
+    this.canvas.dataset.astaAirDash = String(self.asta?.airDashTicks ?? 0);
     this.canvas.dataset.domination = String(self.domination?.charge ?? "");
     this.canvas.dataset.moveTick = String(self.stateFrame);
     this.canvas.dataset.hakiReaction = other.hakiReaction ?? "";
@@ -346,7 +403,7 @@ export class Renderer {
       ? "spending" : self.domination?.charge === 100 ? "full" : "";
     this.canvas.dataset.xebecWaves = match.kiProjectiles.filter(p => p.move.startsWith("xebec") && p.state === "flight")
       .map(p => p.move).join(",");
-    this.canvas.dataset.capture = abyss ? "pandemonium" : reality ? "alienX" : centipede ? "centipede" : kirin ? "kirin" : jet ? "jetGigant" : fury
+    this.canvas.dataset.capture = union ? "astaUnion" : abyss ? "pandemonium" : reality ? "alienX" : centipede ? "centipede" : kirin ? "kirin" : jet ? "jetGigant" : fury
       ? "gokuFury"
       : road
         ? "roadRoller"
@@ -516,6 +573,10 @@ export class Renderer {
     drawTestArena(c, benPadding);
     if (xebecEffects && conquerors.length)
       drawKingWillArena(c, conquerors, this.pressureStage, this.prefersReducedMotion.matches);
+    if (union) {
+      if(this.effects && this.astaEffects) drawAstaUnionBackdrop(c,union);
+      drawLiebeManifestation(c,union,this.sprites);
+    }
     if (pandemonium && abyss) {
       if (abyss.justiceTick === undefined) {
         if (xebecEffects) drawPandemoniumSky(c, pandemonium.tick, abyss);
@@ -556,7 +617,8 @@ export class Renderer {
     }
     const drawStand = (f: Fighter) => {
       if (!f.stand) return;
-      if (match.phase === "intro" && f.data.lifecycle && f.stateFrame < 64)
+      if (entranceHidden(match,f.id))return;
+      if (match.phase === "intro" && f.state==="entrance" && f.data.lifecycle && f.stateFrame < 64)
         return;
       const victimStand = road && f.id === road.victim;
       const opacity =
@@ -621,6 +683,7 @@ export class Renderer {
         : [0, 1];
     order.forEach((i) => {
       const f = match.fighters[i];
+      if(entranceHidden(match,i))return;
       if (gokuInvisible(f)) return;
       if (fury && i === fury.attacker && furyStage?.attacker.hidden) return;
       if (road && i === road.attacker)
@@ -632,6 +695,7 @@ export class Renderer {
         c.fill();
       }
       const kagunes = this.presentations[i].kagunes(f);
+      drawEntranceBehind(c,f,this.effects);
       const kakujaActor = centipede?.attacker === i;
       for (const pose of kagunes)
         if (pose.layer === "behind" || kakujaActor) drawKagune(c, pose, f.facing as 1 | -1);
@@ -641,13 +705,13 @@ export class Renderer {
       c.scale(f.facing * sprite.scale, sprite.scale);
       const ghostDepth = benGhostDepth(f);
       if (this.effects && ghostDepth) drawBenGhostGround(c, f, match.frame);
-      if (i === 1 && !kakujaActor && !sprite.player2Sheet && f.data.id !== benId && f.data.id !== "goku" && f.data.id !== xebecId && !sasukeWingedSheets.has(sprite.sheet))
+      if (i === 1 && !kakujaActor && !sprite.player2Sheet && f.data.id !== benId && f.data.id !== "goku" && f.data.id !== xebecId && !f.asta && !sasukeWingedSheets.has(sprite.sheet))
         c.filter = "hue-rotate(145deg)";
       const original = this.sprites.get(
         i === 1 ? (sprite.player2Sheet ?? sprite.sheet) : sprite.sheet,
       );
       const image =
-        i === 1 && !kakujaActor && f.data.id !== benId && !sasukeWingedSheets.has(sprite.sheet) && (this.opponentPalette !== "cyan" || f.data.id === "goku")
+        i === 1 && !kakujaActor && f.data.id !== benId && !f.asta && !sasukeWingedSheets.has(sprite.sheet) && (this.opponentPalette !== "cyan" || f.data.id === "goku")
           ? (this.variants.get(`${this.opponentPalette}:${sprite.sheet}`) ??
             original)
           : original;
@@ -657,6 +721,10 @@ export class Renderer {
       const limbs = luffyAttackLimbs(f);
       if (this.effects && limbs.length && f.move)
         paintLuffyTrails(c, limbs, f.stateFrame, f.move);
+      if(f.asta && this.effects && this.astaEffects) drawAstaUnionLocal(c,f,this.presentations[i].animator,"behind",image);
+      // Causality flows behind the body and weapon so its dark volume never hides Asta's face or hands.
+      if(f.asta && this.effects && this.astaEffects && f.moveId==="astaCausalityBreak")
+        drawAstaAntimagic(c,f,match.frame);
       const luffyImpact = limbs.length
         ? match.events.filter(e => e.luffy?.actor === i && e.luffy.move === f.moveId).at(-1)
         : undefined;
@@ -673,7 +741,7 @@ export class Renderer {
           this.effects &&
           !match.cinematicActive &&
           combatPace.feedback.dashTrails &&
-          (f.state === "dash" || f.airChaseTicks > 0 || f.move?.special === "rinkakuRush") &&
+          (f.state === "dash" || f.airChaseTicks > 0 || f.move?.special === "rinkakuRush" || f.asta && f.state==="attack" && !!f.move?.drive) &&
           Math.abs(f.vx) > 5
         ) {
           for (const back of [2, 1]) {
@@ -719,6 +787,11 @@ export class Renderer {
         c.restore();
       }
       c.globalAlpha = 1;
+      if(f.asta && this.effects && this.astaEffects) drawAstaUnionLocal(c,f,this.presentations[i].animator);
+      if(f.asta && image && !drawAstaEntrance(c,f,this.presentations[i].animator,this.sprites.get("asta/arsenal.png"),image))
+        drawAstaWeapon(c,f,this.presentations[i].animator,this.sprites.get("asta/arsenal.png")!,image);
+      drawEntranceFront(c,f,this.effects);
+      if(f.asta && this.effects && this.astaEffects && f.moveId!=="astaCausalityBreak") drawAstaAntimagic(c,f,match.frame);
       drawSpectralArms(c, f, match);
       if (f.omnitrix?.active === "feedback") {
         const animator = this.presentations[i].animator;
@@ -783,6 +856,7 @@ export class Renderer {
       for (const fighter of match.fighters) if (fighter.hakiReaction) drawKingWillReaction(c, fighter);
     }
     if (!match.cinematicActive) {
+      drawAstaWaves(c,match,this.effects && this.astaEffects);
       drawGokuSpecials(c, match, this.sprites, this.debug);
       if (this.effects) for (const f of match.fighters) drawAlienXOpener(c, f);
       drawSasukeProjectiles(c, match, this.sprites, this.debug);
@@ -804,6 +878,7 @@ export class Renderer {
     if (this.effects && jet && jetStage) drawJetImpact(c, this.sprites, jetStage, jet.tick, jet.hold);
     if (this.effects && road) drawRoadEffects(c, this.sprites, road);
     if (this.effects) drawFury(c, match, this.sprites, "front");
+    if (union && this.effects && this.astaEffects) drawAstaUnionImpact(c,union);
     if (reality && alienX && this.effects) drawAlienXForces(c, reality, alienX.tick);
     if (pandemonium && abyss && this.effects) {
       if (abyss.justiceTick === undefined) {
@@ -838,7 +913,13 @@ export class Renderer {
       }
     }
 
+    if(union && this.effects && this.astaEffects) drawAstaUnionScreen(c,union);
+    c.save();
+    if(match.phase==="intro" && match.intro.full)
+      c.globalAlpha=Math.max(0,Math.min(1,(match.intro.tick-match.intro.presentationEnd+18)/18));
     this.hud(match);
+    c.restore();
+    drawEntranceTitles(c,match,this.localSeat);
     if (pandemonium && xebecEffects && pandemonium.tick >= pandemoniumBeats.cut &&
         pandemonium.tick < pandemoniumBeats.cut + 24) {
       c.save(); c.font = "bold 23px monospace"; c.textAlign = "center"; c.fillStyle = "#ffb6b0";
@@ -904,7 +985,7 @@ export class Renderer {
       c.fillStyle = i === 0 ? "#ffce8c" : "#9be5ef";
       c.font = "italic bold 30px monospace";
       const x = i === 0 ? 55 : 1000;
-      const y = match.fighters[i].omnitrix ? 251 : 225;
+      const y = match.fighters[i].asta ? 267 : match.fighters[i].omnitrix ? 251 : 225;
       c.fillText(`${stats.comboHits} HITS`, x, y);
       c.font = "14px monospace";
       c.fillText(`${stats.comboDamage} DANO`, x, y + 24);
@@ -1023,7 +1104,7 @@ export class Renderer {
         c.font = "11px monospace";
         c.fillStyle = i === 0 ? "#e5b16b" : "#73cbd5";
         c.fillText(
-          f.domination ? `PANDEMONIUM · ${f.meter >= pandemoniumConfig.cost ? `PRONTA · ${this.superKey}` : Math.floor(f.meter) + "%"}` :
+          f.asta ? `DEVIL UNION · ${f.meter >= astaUnionConfig.cost ? `PRONTA · ${this.superKey}` : Math.floor(f.meter)+"%"}` : f.domination ? `PANDEMONIUM · ${f.meter >= pandemoniumConfig.cost ? `PRONTA · ${this.superKey}` : Math.floor(f.meter) + "%"}` :
           f.data.id === benId ? `ALIEN X · ${f.meter >= f.meterMaximum ? `PRONTA · ${this.superKey}` : Math.floor(100 * f.meter / f.meterMaximum) + "%"}` : f.data.id === "kaneki"
             ? `CENTIPEDE · ${f.meter >= centipedeConfig.cost ? `PRONTA · ${this.superKey}` : Math.floor(100 * f.meter / centipedeConfig.cost) + "%"}`
             : f.data.id === "luffy"
@@ -1040,6 +1121,7 @@ export class Renderer {
         );
       }
       if (f.domination) drawDomination(c, f.domination, x, m.frame);
+      if (f.asta) drawAstaSwordHud(c,f,x);
       if (f.omnitrix)
         drawOmnitrixHud(c, f.omnitrix, i, this.chainKeys[2],
           !omnitrixCanBrowse(f.state) || f.knockedDown || Boolean(m.capture) || m.cinematicActive || m.temporal.isFrozen(i),

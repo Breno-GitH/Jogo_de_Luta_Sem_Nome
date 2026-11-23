@@ -1,0 +1,345 @@
+{
+  "sheet": "asta/idle.png",
+  "frameWidth": 256,
+  "frameHeight": 256,
+  "columns": 3,
+  "pivot": {
+    "x": 128,
+    "y": 224
+  },
+  "scale": 1,
+  "clips": {
+    "idle": {
+      "sheet": "asta/idle.png",
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "ticks": 7,
+      "loop": true
+    },
+    "walkForward": {
+      "sheet": "asta/walk.png",
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "ticks": 4,
+      "loop": true
+    },
+    "walkBack": {
+      "sheet": "asta/back.png",
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "ticks": 5,
+      "loop": true
+    },
+    "dashForward": {
+      "sheet": "asta/dash.png",
+      "frames": [
+        0,
+        1,
+        2
+      ],
+      "ticks": 1,
+      "loop": false,
+      "durations": [
+        2,
+        6,
+        3
+      ]
+    },
+    "backdash": {
+      "sheet": "asta/dash.png",
+      "frames": [
+        3,
+        4,
+        5
+      ],
+      "ticks": 1,
+      "loop": false,
+      "durations": [
+        2,
+        5,
+        4
+      ]
+    },
+    "airDash": {
+      "sheet": "asta/dash.png",
+      "frames": [
+        0,
+        1,
+        2
+      ],
+      "ticks": 1,
+      "loop": false,
+      "durations": [
+        2,
+        4,
+        2
+      ]
+    },
+    "crouchStart": {
+      "sheet": "asta/crouch.png",
+      "frames": [
+        0,
+        1
+      ],
+      "ticks": 2,
+      "loop": false
+    },
+    "crouchIdle": {
+      "sheet": "asta/crouch.png",
+      "frames": [
+        1,
+        2
+      ],
+      "ticks": 9,
+      "loop": true
+    },
+    "crouchEnd": {
+      "sheet": "asta/crouch.png",
+      "frames": [
+        3,
+        0
+      ],
+      "ticks": 2,
+      "loop": false
+    },
+    "jumpStart": {
+      "sheet": "asta/jump.png",
+      "frames": [
+        0,
+        1
+      ],
+      "ticks": 2,
+      "loop": false
+    },
+    "jumpRise": {
+      "sheet": "asta/jump.png",
+      "frames": [
+        1,
+        2
+      ],
+      "ticks": 3,
+      "loop": false
+    },
+    "jumpApex": {
+      "sheet": "asta/jump.png",
+      "frames": [
+        3
+      ],
+      "ticks": 5,
+      "loop": true
+    },
+    "jumpFall": {
+      "sheet": "asta/jump.png",
+      "frames": [
+        4,
+        5
+      ],
+      "ticks": 5,
+      "loop": false
+    },
+    "landing": {
+      "sheet": "asta/jump.png",
+      "frames": [
+        5,
+        0,
+        1
+      ],
+      "ticks": 1,
+      "loop": false,
+      "durations": [
+        3,
+        2,
+        2
+      ]
+    },
+    "guard": {
+      "sheet": "asta/crouch.png",
+      "frames": [
+        4
+      ],
+      "ticks": 6,
+      "loop": true
+    },
+    "guardLow": {
+      "sheet": "asta/crouch.png",
+      "frames": [
+        5
+      ],
+      "ticks": 6,
+      "loop": true
+    },
+    "hitHigh": {
+      "sheet": "asta/reaction.png",
+      "frames": [
+        0
+      ],
+      "ticks": 6,
+      "loop": false
+    },
+    "hitLow": {
+      "sheet": "asta/reaction.png",
+      "frames": [
+        1
+      ],
+      "ticks": 6,
+      "loop": false
+    },
+    "hitAir": {
+      "sheet": "asta/reaction.png",
+      "frames": [
+        2
+      ],
+      "ticks": 6,
+      "loop": false
+    },
+    "grabbed": {
+      "sheet": "asta/reaction.png",
+      "frames": [
+        0,
+        1
+      ],
+      "ticks": 6,
+      "loop": false
+    },
+    "launched": {
+      "sheet": "asta/reaction.png",
+      "frames": [
+        2
+      ],
+      "ticks": 6,
+      "loop": false
+    },
+    "falling": {
+      "sheet": "asta/reaction.png",
+      "frames": [
+        2
+      ],
+      "ticks": 6,
+      "loop": false
+    },
+    "downed": {
+      "sheet": "asta/reaction.png",
+      "frames": [
+        3
+      ],
+      "ticks": 6,
+      "loop": false
+    },
+    "getup": {
+      "sheet": "asta/reaction.png",
+      "frames": [
+        3,
+        4,
+        5
+      ],
+      "ticks": 6,
+      "loop": false
+    },
+    "ko": {
+      "sheet": "asta/reaction.png",
+      "frames": [
+        2,
+        3
+      ],
+      "ticks": 6,
+      "loop": false
+    },
+    "defeat": {
+      "sheet": "asta/reaction.png",
+      "frames": [
+        4,
+        3
+      ],
+      "ticks": 6,
+      "loop": false
+    },
+    "throwRecover": {
+      "sheet": "asta/reaction.png",
+      "frames": [
+        5
+      ],
+      "ticks": 6,
+      "loop": false
+    },
+    "entrance": {
+      "sheet": "asta/life.png",
+      "frames": [
+        0,
+        1
+      ],
+      "ticks": 8,
+      "loop": false
+    },
+    "victory": {
+      "sheet": "asta/life.png",
+      "frames": [
+        1,
+        2
+      ],
+      "ticks": 10,
+      "loop": false
+    },
+    "taunt": {
+      "sheet": "asta/life.png",
+      "frames": [
+        0,
+        2,
+        1
+      ],
+      "ticks": 10,
+      "loop": false
+    },
+    "throw": {
+      "sheet": "asta/life.png",
+      "frames": [
+        3,
+        4
+      ],
+      "ticks": 5,
+      "loop": false
+    },
+    "grabHold": {
+      "sheet": "asta/life.png",
+      "frames": [
+        3,
+        4,
+        5
+      ],
+      "ticks": 1,
+      "loop": false,
+      "durations": [
+        8,
+        11,
+        9
+      ]
+    },
+    "grabbing": {
+      "sheet": "asta/life.png",
+      "frames": [
+        3,
+        4,
+        5
+      ],
+      "ticks": 8,
+      "loop": false
+    }
+  }
+}
