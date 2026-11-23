@@ -1,2 +1,2 @@
 // Generated from the shared simulation sources and data.
-export const ENGINE_VERSION = "c13a2f24cd8c2dda46ff0f04";
+export const ENGINE_VERSION = "b4b6cd516c8ef8afc3fcd766";

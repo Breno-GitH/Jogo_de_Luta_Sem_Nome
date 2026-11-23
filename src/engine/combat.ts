@@ -34,7 +34,7 @@ import {
 import { CommandBuffer } from "./input";
 import { MOVEMENT_TIMING } from "./movement";
 import { combatPace, pacedCharacter } from "./pace";
-import { antiLightCombo, isLimitedLightNormal } from "./anti-light-combo";
+import { antiLightCombo, isLimitedLightNormal, launcherCombo } from "./anti-light-combo";
 import cinematics from "../data/cinematics.json";
 import { reactionBoxes, reactionFor } from "./lifecycle";
 import { isSuperMove, poseAt, phaseAt } from "./moves";
@@ -131,6 +131,14 @@ export class Fighter {
   comboAirHits = 0;
   combo = 0;
   lightHitsInCombo = 0;
+  blockLightsInSequence = 0;
+  launchesInSequence = 0;
+  lastLauncher = "";
+  lastLauncherCast = "";
+  controlFrames: number = antiLightCombo.recoveryFrames;
+  chainHits = 0;
+  chainAirHits = 0;
+  chainAge = 0;
   knockedDown = false;
   dashDirection = 1;
   jumpDirection = 0;
@@ -802,6 +810,16 @@ export class Fighter {
     this.buffer.push(input, frame, this.facing);
     const astaRelayOwned=!!this.asta?.relay;
     this.stateFrame++;
+    if (this.controlFrames < antiLightCombo.recoveryFrames)
+      this.chainAge++;
+    if (["idle", "walk", "crouch", "air"].includes(this.state) && !this.knockedDown) {
+      this.controlFrames = Math.min(antiLightCombo.recoveryFrames, this.controlFrames + 1);
+      if (this.controlFrames === antiLightCombo.recoveryFrames) {
+        this.lightHitsInCombo = this.blockLightsInSequence = this.launchesInSequence = 0;
+        this.chainHits = this.chainAirHits = this.chainAge = 0;
+        this.lastLauncher = this.lastLauncherCast = "";
+      }
+    } else this.controlFrames = 0;
     tickAstaState(this);
     tickCombatStatuses(this);
     stepAstaRelay(this);
@@ -859,7 +877,7 @@ export class Fighter {
                 : "idle",
           );
           this.combo = 0;
-          this.comboAge = this.comboAirHits = this.lightHitsInCombo = 0;
+          this.comboAge = this.comboAirHits = 0;
           this.knockedDown = false;
         }
       }
@@ -1788,7 +1806,7 @@ export class Match {
     const limitedLight = isLimitedLightNormal(f.data.id, moveId);
     // After the third normal-light hit, further J attacks cannot re-hit the
     // victim until they recover. This also protects cornered opponents.
-    if (limitedLight && target.combo > 0 && target.lightHitsInCombo >= antiLightCombo.maxHits) return;
+    if (limitedLight && target.lightHitsInCombo >= antiLightCombo.maxHits) return;
     const frozen = this.temporal.isFrozen(target.id);
     const guarding =
       target.input.direction === -target.facing &&
@@ -1805,6 +1823,10 @@ export class Match {
       (!isSuperMove(m) || m.kind === pandemoniumId || m.kind === astaUnionId) &&
       (m.level !== "low" || target.input.down) &&
       (m.level !== "high" || !target.input.down);
+    if (blocked && limitedLight) {
+      target.blockLightsInSequence++;
+      target.controlFrames = 0;
+    }
     if ((m.kind === pandemoniumId || m.kind === astaUnionId) && !blocked) {
       this.effect("power", impact ? impact.x + impact.w / 2 : target.x,
         impact ? impact.y + impact.h / 2 : target.y - 90, 12);
@@ -1851,7 +1873,15 @@ export class Match {
         target.crouching ||
         (target.data.id === "luffy" && !target.airborne && !blocked && m.level === "low"),
     };
+    if (blocked && limitedLight && target.blockLightsInSequence >= antiLightCombo.maxHits) {
+      reaction.stun = Math.min(reaction.stun, antiLightCombo.blockedStun);
+      reaction.vx = direction * Math.max(antiLightCombo.blockedPush, Math.abs(reaction.vx));
+      // Corner pressure must also separate the attacker when the defender
+      // cannot travel farther toward the wall.
+      f.vx = -direction * antiLightCombo.blockedPush;
+    }
     if (!blocked) {
+      target.controlFrames = 0;
       if (f.state === "attack" && f.moveId === moveId) {
         if (!f.hitConfirmed && applied > 0 && m.ben?.chargeGain && f.omnitrix?.active === "feedback")
           this.gainFeedbackCharge(f.omnitrix, m.ben.chargeGain, "contact");
@@ -1880,21 +1910,38 @@ export class Match {
       }
       if (!target.combo) {
         target.comboAge = target.comboAirHits = 0;
-        target.lightHitsInCombo = 0;
       }
       target.combo++;
       if (target.airborne || m.launch < 0) target.comboAirHits++;
+      target.chainHits++;
+      if (target.airborne || m.launch < 0) target.chainAirHits++;
       if (limitedLight) {
         target.lightHitsInCombo++;
         if (target.lightHitsInCombo >= antiLightCombo.maxHits) {
           // Force a genuine knock-away rather than only damage scaling.
           // The knockdown and light-hit lockout together stop corner loops.
           reaction.vx = direction * antiLightCombo.push;
-          reaction.vy = antiLightCombo.launch;
-          reaction.stun = Math.max(reaction.stun, antiLightCombo.stun);
-          reaction.launch = true;
+          reaction.vy = 0;
+          reaction.stun = Math.min(reaction.stun, antiLightCombo.stun);
+          reaction.launch = false;
           reaction.knockdown = true;
           reaction.strength = 3;
+        }
+      }
+      if (!m.super && m.launch <= launcherCombo.minimumLift) {
+        const cast = `${f.id}:${moveId}:${wave?.cast ?? this.combatFrame - f.stateFrame}`;
+        if (cast !== target.lastLauncherCast) {
+          if (target.lastLauncher === moveId || target.launchesInSequence >= launcherCombo.maxLaunches) {
+            reaction.vy = target.airborne ? launcherCombo.finisherFall : 0;
+            reaction.vx = direction * Math.max(launcherCombo.finisherPush, Math.abs(reaction.vx));
+            reaction.stun = Math.min(reaction.stun, launcherCombo.finisherStun);
+            reaction.launch = false;
+            reaction.knockdown = true;
+          } else {
+            target.launchesInSequence++;
+            target.lastLauncher = moveId;
+          }
+          target.lastLauncherCast = cast;
         }
       }
       if (target.airborne && !m.knockdown && !m.super)
@@ -1903,9 +1950,9 @@ export class Match {
       const limit = f.data.combatLimits;
       if (
         limit &&
-        (target.combo >= (m.comboHitLimit ?? limit.maxHits) ||
-          target.comboAirHits >= limit.maxAirHits ||
-          target.comboAge >= limit.maxTicks)
+        (Math.max(target.combo, target.chainHits) >= (m.comboHitLimit ?? limit.maxHits) ||
+          Math.max(target.comboAirHits, target.chainAirHits) >= limit.maxAirHits ||
+          Math.max(target.comboAge, target.chainAge) >= limit.maxTicks)
       ) {
         reaction.knockdown = true;
         reaction.vy = 10;
