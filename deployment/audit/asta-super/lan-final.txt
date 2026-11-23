@@ -1,0 +1,11 @@
+
+Running 2 tests using 1 worker
+
+(node:18792) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:18792) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 e2e\lan\game.pw.ts:1730:1 › Asta Super R synchronizes Black Meteorite, Liebe, Union swords, Equinox and release (25.7s)
+  ok 2 e2e\lan\game.pw.ts:1747:1 › Asta Super R guard and whiff never capture either LAN client (21.3s)
+
+  2 passed (1.0m)

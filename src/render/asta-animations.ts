@@ -1,3 +1,4 @@
+import { astaSuperClips, astaSuperOpeningPose } from "./asta-super-animations";
 import {
   astaArtKey,
   astaSpecialSegment,
@@ -15,7 +16,7 @@ import { Animator } from "./animator";
 export function astaAnimation(
   sword: import("../engine/asta-stances").AstaSword = "slayer",
 ): AnimationData {
-  const clips: Record<string, AnimationClip> = { ...movement.clips };
+  const clips: Record<string, AnimationClip> = { ...movement.clips, ...astaSuperClips };
   for (const id of astaNormalIds)
     clips[id] = {
       sheet: "asta/" + id + ".png",
@@ -38,6 +39,8 @@ export function astaAnimation(
 }
 export const astaAnimations = astaAnimation();
 export function tickAsta(f: Fighter, animator: Animator) {
+  const opening = astaSuperOpeningPose(f);
+  if (opening) { animator.update(opening.clip); animator.seekTick(opening.tick); return; }
   const reaction = reactionFor(f);
   let name =
     reaction?.clip ??

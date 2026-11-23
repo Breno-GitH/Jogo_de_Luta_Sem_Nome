@@ -66,6 +66,7 @@ export class GameApp {
   private keyboardOptions = {
     dashOnDirection: true,
     gamepad: true,
+    introduction: () => (this.online?.match ?? this.session?.match)?.phase === "intro",
     omnitrix: () => (this.online?.match?.fighters[this.online.seat]?.data.id ?? this.session?.characterId) === "ben",
     bindings: this.preferences.bindings,
     active: () =>
@@ -73,7 +74,7 @@ export class GameApp {
   };
   private keyboard = new KeyboardInput(this.keyboardOptions);
   private sound = new Sound();
-  private demo = new Match();
+  private demo: Match = Object.assign(new Match(),{phase:"fight" as const,message:""});
   private session?: GameSession;
   private online?: OnlineClient;
   private operation = 0;
@@ -224,6 +225,7 @@ export class GameApp {
     this.sound.setMusicDucked(false);
     this.remapping = undefined;
     this.demo = new Match();
+    this.demo.phase = "fight";
     this.demo.message = "";
     this.renderer.resetAnimations();
     this.renderer.localSeat = 0;
@@ -427,7 +429,7 @@ export class GameApp {
   }
   private restart() {
     if (!this.session) return;
-    this.session.restart();
+    this.session.restart(this.session.mode!=="training");
     void this.enter();
   }
   private resume() {
@@ -654,6 +656,7 @@ export class GameApp {
     const bindings = this.preferences.bindings;
     this.renderer.chainKeys = this.keyboard.activeChainKeys ?? [bindings.light, bindings.medium, bindings.heavy].map(keyLabel);
     this.renderer.draw(this.online?.match ?? this.session?.match ?? this.demo);
+    this.el("training-panel").inert=this.session?.match.phase==="intro";
     if (this.online) {
       const c = this.online;
       Object.assign(this.root.dataset, {
@@ -946,6 +949,10 @@ export class GameApp {
       this.info("moves", () => this.resume());
     });
     this.bind("reset-positions", () => this.restart());
+    this.bind("replay-entrances", () => {
+      if(!this.session || this.session.mode!=="training")return;
+      this.session.restart(true);this.keyboard.clear();void this.enter();
+    });
     this.bind("clear-damage", () => {
       const s = this.session;
       if (!s || s.mode !== "training") return;
@@ -954,7 +961,7 @@ export class GameApp {
         health: f.health,
         meter: f.meter,
       }));
-      s.restart();
+      s.restart(false);
       s.match.fighters.forEach((f, i) => Object.assign(f, values[i]));
       this.renderer.resetAnimations();
       this.renderer.tick(s.match);

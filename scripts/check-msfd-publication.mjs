@@ -53,10 +53,14 @@ try {
   ).filter((name) => name.endsWith(".png"));
   if (portraits.length !== 12)
     throw new Error("Inventario de retratos do Omnitrix incompleto.");
+  const entrances = JSON.parse(await readFile(new URL("../src/data/entrance-art.json", import.meta.url), "utf8"));
   await Promise.all(
     [
       ...new Set([
         ...bundles,
+        ...Object.values(entrances.characters).map(clip => `sprites/${clip.sheet}`),
+        "sprites/dio/secondaryEntrance.png",
+        "sprites/the-world/secondaryAppear.png",
         ...portraits.map((name) => `sprites/ben/omnitrix/${name}`),
         "sprites/ben/alien-x.png",
         "sprites/fx/alien-x-dimension.png",

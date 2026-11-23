@@ -13,6 +13,11 @@ SCALE=.30
 PIVOT=(128,224)
 sources=json.loads((SRC/"sources.json").read_text(encoding="utf-8-sig"))
 sockets=json.loads((SRC/"sockets-source.json").read_text(encoding="utf-8-sig"))
+# Super bodies remain short authored atlases. No changes to the approved base sources.
+if (SRC/"super-sources.json").exists(): sources.update(json.loads((SRC/"super-sources.json").read_text(encoding="utf8")))
+if (SRC/"super-sockets.json").exists(): sockets.update(json.loads((SRC/"super-sockets.json").read_text(encoding="utf8")))
+if (SRC/"super41-sources.json").exists(): sources.update(json.loads((SRC/"super41-sources.json").read_text(encoding="utf8")))
+if (SRC/"super41-sockets.json").exists(): sockets.update(json.loads((SRC/"super41-sockets.json").read_text(encoding="utf8")))
 bounds={}
 packed={}
 for name,info in sources.items():
@@ -35,11 +40,12 @@ for name,info in sources.items():
         x=PIVOT[0]-round(rootx*SCALE)
         y=PIVOT[1]-round(floor*SCALE)
         atlas.alpha_composite(cel,(i%3*256+x,i//3*256+y))
-        sx,sy,angle=sockets[name][i]
-        grips.append({"x":round((sx-rootx)*SCALE),"y":round((sy-floor)*SCALE),"angle":angle})
+        if info.get("weapon",True):
+            sx,sy,angle=sockets[name][i]
+            grips.append({"x":round((sx-rootx)*SCALE),"y":round((sy-floor)*SCALE),"angle":angle})
         bounds.setdefault(name,[]).append({"sourceBounds":box,"floor":floor,"rootX":rootx})
     atlas.save(OUT/(name+".png"))
-    packed[name]=grips
+    if grips: packed[name]=grips
 # Weapon props: top-left Slayer, top-right Slasher, bottom-left Dweller, bottom-right Destroyer.
 im=Image.open(SRC/sources["arsenal"]["file"]).convert("RGBA")
 arsenal=Image.new("RGBA",(512,192))

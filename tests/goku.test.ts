@@ -395,6 +395,7 @@ describe("Goku movement in the existing engine", () => {
   );
   it("training exposes the current Super through universal R", () => {
     const s = new GameSession("training", "easy", "goku");
+    s.restart(false);
     expect(s.match.fighters[0].data.id).toBe("goku");
     for (let n = 0; n < 20; n++)
       s.step({

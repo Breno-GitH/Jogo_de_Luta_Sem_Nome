@@ -395,6 +395,9 @@ export class Bot {
         return this.command([2, 3, 6], "light", self);
       }
     }
+    if(self.asta && distance < 330 && !enemy.airborne && self.canStartSuper() &&
+      (enemy.phase === "recovery" || enemy.state === "hitstun") && this.chance(this.profile.ultimate))
+      return this.choose({ ...neutral(), pressed: ["ultimate"] }, "punir com Black Meteorite");
     if(self.asta && this.chance(this.profile.special)){
       const ids:AstaSpecialId[]=enemy.airborne?["astaRisingDemon"]:distance>220?["astaBlackSlash","astaSeveringLine"]:distance<115?["astaFlashSteps","astaDualBreak","astaIaiSlash"]:["astaBlackRush","astaBlackDivider"];
       const id=ids[Math.floor(this.random()*ids.length)];if(self.canStartSpecial(id)){const s=astaTechniques[id];this.lastDecision=s.name;return this.command(s.family===0?[2,6]:s.family===1?[2,4]:[2,5,2],s.button,self);}

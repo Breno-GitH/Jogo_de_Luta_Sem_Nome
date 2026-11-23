@@ -92,9 +92,11 @@ export function validInput(value: unknown): value is InputFrame {
   const keys = ["direction", "down", "pressed"];
   const extended = "omnitrix" in value;
   const flying = "up" in value;
+  const skipping = "skipIntro" in value;
+  if(skipping) keys.push("skipIntro");
   if (extended) keys.push("omnitrix");
   if (flying) keys.push("up");
-  if (!exactObject(value, keys) || (flying && typeof value.up !== "boolean")) return false;
+  if (!exactObject(value, keys) || (flying && typeof value.up !== "boolean") || (skipping && typeof value.skipIntro!=="boolean")) return false;
   if (extended) {
     const control = value.omnitrix;
     if (!exactObject(control, ["held"]) || typeof control.held !== "boolean")

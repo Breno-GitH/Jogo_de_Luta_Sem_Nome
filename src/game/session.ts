@@ -58,7 +58,7 @@ export class GameSession {
   get currentDifficulty(): Difficulty {
     return this.tower ? towerFloors[this.stage].tier : this.difficulty;
   }
-  restart() {
+  restart(playIntro = true) {
     this.match = new Match(
       characterById(this.characterId),
       this.mode === "training" ? { training: true } : {},
@@ -76,8 +76,10 @@ export class GameSession {
       this.tower && towerComplete(this.tower) ? "victory" : "playing";
     this.training.damage.reset();
     if (this.mode === "training") {
-      this.match.phase = "fight";
-      this.match.message = "";
+      if(!playIntro) {
+        this.match.phase = "fight";
+        this.match.message = "";
+      }
       this.training.configure(this.match);
     }
   }

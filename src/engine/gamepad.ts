@@ -17,7 +17,7 @@ export class GamepadInput {
   private up = false;
   keys: readonly string[] = standardChainKeys;
 
-  sample(baseline = false, omnitrix = false): InputFrame {
+  sample(baseline = false, omnitrix = false, introduction = false): InputFrame {
     let pad: Gamepad | null | undefined;
     try {
       pad = Array.from(navigator.getGamepads?.() ?? []).find(
@@ -39,13 +39,14 @@ export class GamepadInput {
       Number(down(14) || horizontal < -0.48)) as -1 | 0 | 1;
     const up = down(12) || vertical < -0.55;
     const pressed: Button[] = [];
+    const skip=introduction && !baseline && this.index===pad.index && down(9) && !this.previous.has(9);
     if (!baseline && this.index === pad.index) {
       for (const [index, button] of actions)
         if (down(index) && !this.previous.has(index)) pressed.push(button);
       if (up && !this.up) pressed.push("jump");
     }
     this.index = pad.index;
-    this.previous = new Set(actions.map(([index]) => index).filter(down));
+    this.previous = new Set([...actions.map(([index]) => index),9].filter(down));
     this.up = up;
     this.keys = /playstation|dualsense|dualshock|054c/i.test(pad.id)
       ? ["✕", "□", "△"]
@@ -53,6 +54,7 @@ export class GamepadInput {
         ? ["B", "Y", "X"]
         : standardChainKeys;
     const frame: InputFrame = { direction, down: down(13) || vertical > 0.55, pressed };
+    if(skip)frame.skipIntro=true;
     if (omnitrix) {
       frame.omnitrix = { held: down(3) };
       if (up) frame.up = true;

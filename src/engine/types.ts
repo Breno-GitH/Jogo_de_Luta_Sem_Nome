@@ -12,6 +12,8 @@ export type Button =
   | "ultimate"
   | "taunt";
 export interface InputFrame {
+  /** Intro-only edge; LAN records a vote rather than releasing either client. */
+  skipIntro?: boolean;
   direction: -1 | 0 | 1;
   down: boolean;
   up?: boolean;
