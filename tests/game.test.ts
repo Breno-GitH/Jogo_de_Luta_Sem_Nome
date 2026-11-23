@@ -21,11 +21,13 @@ function win(session: GameSession, side: 0 | 1) {
     session.match.fighters[1 - side].health = 0;
     session.step(neutral());
     expect(session.match.phase).toBe("roundEnd");
-    advance(session, round === 0 ? 250 : 150);
+    advance(session, session.match.phaseFrames);
+    if(round===0) advance(session, session.match.phaseFrames);
   }
 }
 function training() {
   const session = new GameSession("training");
+  session.restart(false);
   session.match.fighters[0].x = 500;
   session.match.fighters[1].x = 600;
   return session;

@@ -1,4 +1,5 @@
 import {unionBeats as astaBeats,unionContacts} from "../engine/asta-super-acts";
+import { entranceStagger } from "../engine/entrances";
 import type { Match, HitEvent } from "../engine/combat";
 import type { CentipedeCue } from "../engine/kaneki-centipede";
 import { kingWill, xebecPressure } from "../engine/xebec-specials";
@@ -6,6 +7,7 @@ import { pandemoniumPrelude } from "../engine/xebec-pandemonium-acts";
 import { pandemoniumBeats } from "../engine/xebec-pandemonium";
 import { chainFinishes } from "../engine/kaneki-chain";
 export type Cue =
+  | "introSword" | "introWatch" | "introPresence" | "introCloth"
   | "swing"
   | "hit"
   | "heavy"
@@ -58,6 +60,7 @@ export function effectCue(event: HitEvent): Cue {
 }
 /** Original short synthesized sounds. No downloaded samples or autoplay. */
 export class Sound {
+  private introClock = -1;
   private rocksTick = -1;
   private astaTick = -1;
   private hakiClocks = [-1, -1];
@@ -364,6 +367,14 @@ export class Sound {
       tone(149, 24, 1.03, "triangle", .72);
       tone(73, 30, .74, "sawtooth", .17, .24);
       tone(310, 63, .38, "triangle", .22, .43);
+    } else if (cue === "introSword") {
+      tone(1200,370,.12,"sawtooth",.06);tone(1210,780,.16,"sine",.08);
+    } else if (cue === "introWatch") {
+      tone(680,920,.06,"square",.06);tone(1020,800,.07,"sine",.08,.07);
+    } else if (cue === "introPresence") {
+      tone(65,45,.22,"triangle",.14);tone(140,100,.18,"sine",.07,.04);
+    } else if (cue === "introCloth") {
+      tone(200,110,.08,"triangle",.04);
     } else if (cue === "round") {
       tone(440, 440, 0.11);
       tone(660, 660, 0.13, "triangle", 0.3, 0.14);
@@ -384,6 +395,21 @@ export class Sound {
     } else if (cue === "menu") tone(660, 880, 0.06, "sine", 0.15);
   }
   tick(match: Match, onlineRound?: string) {
+    if(this.owner!==match || match.intro.tick<this.introClock) this.introClock=match.intro.tick-1;
+    if(match.phase==="intro" && match.intro.full && !match.intro.skipped) {
+      const cues:Record<string,[number,Cue][]>= {
+        samurai:[[44,"introSword"]],dio:[[64,"introPresence"]],goku:[[36,"introCloth"]],
+        luffy:[[26,"introCloth"]],sasuke:[[45,"introCloth"]],kaneki:[[52,"introCloth"],[84,"introPresence"]],
+        ben:[[45,"introWatch"]],xebec:[[36,"introPresence"],[66,"introSword"]],asta:[[28,"introPresence"],[48,"introSword"]],
+      };
+      match.fighters.forEach((f,seat)=>{
+        for(const [age,cue]of cues[f.data.id]??[]) {
+          const at=age+(seat?entranceStagger:0);
+          if(at>this.introClock && at<=match.intro.tick)this.play(cue);
+        }
+      });
+    }
+    this.introClock=match.intro.tick;
     const ticks = match.pandemonium?.tick ?? -1;
     const beats = pandemoniumBeats;
     const kingSilence = !match.cinematicActive && match.fighters.some(f => f.moveId === kingWill && f.state === "attack" && f.stateFrame < 56);

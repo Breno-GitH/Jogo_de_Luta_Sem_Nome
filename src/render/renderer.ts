@@ -1,3 +1,6 @@
+import { entranceAnimationSets } from "./entrance-animations";
+import { entranceAge, introStage } from "../engine/entrances";
+import { entranceHidden, drawEntranceBehind, drawEntranceFront, drawAstaEntrance, drawEntranceTitles } from "./entrance-fx";
 import {equinoxCut} from "./asta-equinox-geometry";
 import { astaUnionConfig, astaUnionScene } from "../engine/asta-super";
 import { astaSuperSheets, drawAstaUnionBackdrop, drawLiebeManifestation, drawAstaUnionLocal, drawAstaUnionImpact, drawAstaUnionScreen } from "./asta-super-fx";
@@ -139,6 +142,7 @@ export class Renderer {
       kanekiAnimations,
       xebecAnimations,
       astaAnimations,
+      ...Object.values(entranceAnimationSets),
       ...benAnimationSets,
       ...previewAnimations,
       worldAnimations,
@@ -334,6 +338,13 @@ export class Renderer {
     this.canvas.dataset.rivalSheet = this.presentations[1-this.localSeat].animator.sprite().sheet;
     this.canvas.dataset.physicsState = self.state;
     this.canvas.dataset.rootY = String(self.y);
+    Object.assign(this.canvas.dataset,{
+      introTick:String(match.intro.tick),introFull:String(match.intro.full),
+      introStage:match.phase==="intro"?introStage(match.intro):"none",
+      introVotes:match.intro.skipVotes.map(Number).join(","),introSkipped:String(match.intro.skipped),
+      introAge0:String(entranceAge(match.intro,0)),introAge1:String(entranceAge(match.intro,1)),
+      introSheet0:this.presentations[0].animator.sprite().sheet,introSheet1:this.presentations[1].animator.sprite().sheet,
+    });
     this.canvas.dataset.rootX = String(self.x);
     this.canvas.dataset.rivalX = String(other.x);
     this.canvas.dataset.move = self.moveId;
@@ -606,7 +617,8 @@ export class Renderer {
     }
     const drawStand = (f: Fighter) => {
       if (!f.stand) return;
-      if (match.phase === "intro" && f.data.lifecycle && f.stateFrame < 64)
+      if (entranceHidden(match,f.id))return;
+      if (match.phase === "intro" && f.state==="entrance" && f.data.lifecycle && f.stateFrame < 64)
         return;
       const victimStand = road && f.id === road.victim;
       const opacity =
@@ -671,6 +683,7 @@ export class Renderer {
         : [0, 1];
     order.forEach((i) => {
       const f = match.fighters[i];
+      if(entranceHidden(match,i))return;
       if (gokuInvisible(f)) return;
       if (fury && i === fury.attacker && furyStage?.attacker.hidden) return;
       if (road && i === road.attacker)
@@ -682,6 +695,7 @@ export class Renderer {
         c.fill();
       }
       const kagunes = this.presentations[i].kagunes(f);
+      drawEntranceBehind(c,f,this.effects);
       const kakujaActor = centipede?.attacker === i;
       for (const pose of kagunes)
         if (pose.layer === "behind" || kakujaActor) drawKagune(c, pose, f.facing as 1 | -1);
@@ -774,7 +788,9 @@ export class Renderer {
       }
       c.globalAlpha = 1;
       if(f.asta && this.effects && this.astaEffects) drawAstaUnionLocal(c,f,this.presentations[i].animator);
-      if(f.asta && image) drawAstaWeapon(c,f,this.presentations[i].animator,this.sprites.get("asta/arsenal.png")!,image);
+      if(f.asta && image && !drawAstaEntrance(c,f,this.presentations[i].animator,this.sprites.get("asta/arsenal.png"),image))
+        drawAstaWeapon(c,f,this.presentations[i].animator,this.sprites.get("asta/arsenal.png")!,image);
+      drawEntranceFront(c,f,this.effects);
       if(f.asta && this.effects && this.astaEffects && f.moveId!=="astaCausalityBreak") drawAstaAntimagic(c,f,match.frame);
       drawSpectralArms(c, f, match);
       if (f.omnitrix?.active === "feedback") {
@@ -898,7 +914,12 @@ export class Renderer {
     }
 
     if(union && this.effects && this.astaEffects) drawAstaUnionScreen(c,union);
+    c.save();
+    if(match.phase==="intro" && match.intro.full)
+      c.globalAlpha=Math.max(0,Math.min(1,(match.intro.tick-match.intro.presentationEnd+18)/18));
     this.hud(match);
+    c.restore();
+    drawEntranceTitles(c,match,this.localSeat);
     if (pandemonium && xebecEffects && pandemonium.tick >= pandemoniumBeats.cut &&
         pandemonium.tick < pandemoniumBeats.cut + 24) {
       c.save(); c.font = "bold 23px monospace"; c.textAlign = "center"; c.fillStyle = "#ffb6b0";

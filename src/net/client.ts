@@ -1,7 +1,7 @@
 import { io, type Socket } from "socket.io-client";
 import { Match } from "../engine/combat";
 import { snapshot, restore, hashState } from "../engine/state";
-import type { InputFrame } from "../engine/types";
+import { neutral, type InputFrame } from "../engine/types";
 import { ENGINE_VERSION } from "./version";
 import { socketPath } from "../asset-base";
 import {
@@ -380,6 +380,9 @@ export class OnlineClient {
     }
   }
   advance(input: InputFrame, controls = true) {
+    // Inputs sampled while a client still sees the intro cannot leak through
+    // the send backlog into the first active combat tick.
+    if(this.match?.phase==="intro") input={...neutral(),...(input.skipIntro?{skipIntro:true}:{})};
     if (controls && this.canControl) {
       this.localInputs.push(input);
       // Preserve the directional sequence and its button edge during brief

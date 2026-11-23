@@ -6,6 +6,7 @@ import { FighterPresentation } from "../src/render/presentation";
 import { reactionFor } from "../src/engine/lifecycle";
 import metadata from "../src/data/animations.json";
 import complete from "../public/sprites/samurai/complete.json";
+import { entranceRoot } from "../src/engine/entrances";
 
 const input = (
   direction: -1 | 0 | 1 = 0,
@@ -347,8 +348,8 @@ describe("grabs and lifecycle", () => {
     const m = new Match();
     advance(m, 1, input(1, false, ["heavy"]));
     expect(m.fighters[0].state).toBe("entrance");
-    expect(m.fighters[0].x).toBe(354);
-    advance(m, 99, input(1, false, ["heavy"]));
+    expect(m.fighters[0].x).toBe(entranceRoot(400,1,"samurai",1));
+    advance(m, m.phaseFrames, input(1, false, ["heavy"]));
     expect(m.phase).toBe("fight");
     expect(m.fighters[0].x).toBe(400);
     advance(m, 1);

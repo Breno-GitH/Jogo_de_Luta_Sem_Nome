@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
 const files = [
+  "src/engine/entrances.ts",
   "src/engine/asta.ts",
   "src/engine/asta-super.ts",
   "src/engine/asta-super-acts.ts",

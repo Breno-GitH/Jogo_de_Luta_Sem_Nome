@@ -94,12 +94,12 @@ describe("Dio secondary states and independent Stand reactions", () => {
       const first = a.x;
       expect(a.stand!.s.clip).toBe("secondaryHidden");
       tick(m, 19);
-      expect(Math.abs(a.x - first)).toBeCloseTo(19 * 1.6);
+      expect(Math.abs(a.x - first)).toBeCloseTo(19 * 64 / 36, 1);
       tick(m, 20);
       expect(a.x).toBe(a.homeX);
       tick(m, 24);
       expect(a.stand!.s.clip).toBe("secondaryAppear");
-      tick(m, 36);
+      tick(m, m.phaseFrames);
       expect(m.phase).toBe("fight");
       expect(a.state).toBe("idle");
       expect(a.stand!.ready).toBe(true);
@@ -196,8 +196,10 @@ describe("Dio secondary states and independent Stand reactions", () => {
     tick(m, 55);
     expect(m.phase).toBe("intro");
     expect(m.fighters[0]).not.toBe(a);
-    tick(m, 70);
-    expect(m.fighters[0].stand!.s.clip).toBe("secondaryAppear");
+    expect(m.intro.full).toBe(false);
+    tick(m, m.phaseFrames);
+    expect(m.phase).toBe("fight");
+    expect(m.fighters[0].stand!.s.clip).toBe("standIdle");
   });
   it("victory poses run on both entities without an independent health bar", () => {
     const m = fixture(),
