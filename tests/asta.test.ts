@@ -51,7 +51,7 @@ describe("Asta four-sword base", () => {
       "slayer",
     ]);
     expect(Object.keys(characters.asta.specialMoves!)).toHaveLength(9);
-    expect(characters.asta.superMoves).toBeUndefined();
+    expect(Object.keys(characters.asta.superMoves!)).toEqual(["astaBlackMeteorite"]);
   });
   it.each(astaSwords)(
     "%s has nine finite, articulated and mirrored normals",

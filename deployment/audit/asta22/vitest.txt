@@ -1,0 +1,11 @@
+
+ RUN  v5.0.5 C:/xampp/htdocs/2025/Jogo_de_Luta_Sem_Nome
+
+
+ Test Files  57 passed (57)
+      Tests  1447 passed (1447)
+   Start at  00:24:11
+   Duration  137.33s (tests 77%, import 21%, transform 1%, worker 1%)
+
+    Isolate  57 workers spawned · ~301ms startup each (spawn + environment, per file)
+             at least ~16.87s faster with isolate: false — reuses workers across files instead of one per file

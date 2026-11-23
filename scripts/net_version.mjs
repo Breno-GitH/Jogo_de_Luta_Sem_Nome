@@ -1,14 +1,20 @@
 import { createHash } from "node:crypto";
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
 const files = [
+  "src/engine/entrances.ts",
   "src/engine/asta.ts",
+  "src/engine/asta-super.ts",
+  "src/engine/asta-super-acts.ts",
   "src/engine/asta-specials.ts",
   "src/engine/asta-relay.ts",
+  "src/engine/asta-causality.ts",
+  "src/engine/status-effects.ts",
   "src/engine/asta-antimagic.ts",
   "src/data/asta-special-art.json",
   "src/engine/asta-normals.ts",
   "src/engine/asta-stances.ts",
   "src/data/asta-sockets.json",
+  "src/data/asta-weapons.json",
   "src/engine/ben-data.ts",
   "src/engine/ben-alien-x.ts",
   "src/engine/ben-stage7.ts",

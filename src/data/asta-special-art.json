@@ -145,27 +145,71 @@
   ],
   "astaBlackSlash": [
     {
-      "sheet": "special-slash",
+      "sheet": "v22-black_charge",
       "durations": [
         3,
-        4,
-        2,
         3,
-        5,
-        13
+        4,
+        4,
+        6,
+        6
+      ]
+    },
+    {
+      "sheet": "v22-black_cast",
+      "durations": [
+        3,
+        2,
+        2,
+        2,
+        2,
+        1
+      ]
+    },
+    {
+      "sheet": "v22-black_chain_up",
+      "durations": [
+        3,
+        2,
+        2,
+        2,
+        2,
+        1
+      ]
+    },
+    {
+      "sheet": "v22-black_chain_down",
+      "durations": [
+        3,
+        2,
+        2,
+        2,
+        6,
+        9
       ]
     }
   ],
   "astaCausalityBreak": [
     {
-      "sheet": "v21-destroyer_rush",
+      "sheet": "v22-causality_open",
       "durations": [
-        2,
         3,
-        2,
         3,
+        4,
+        4,
+        4,
+        4
+      ]
+    },
+    {
+      "sheet": "v22-causality_close",
+      "durations": [
+        3,
+        3,
+        4,
+        4,
         5,
-        15
+        7
       ]
     }
   ],
@@ -178,20 +222,7 @@
         2,
         2,
         4,
-        12
-      ]
-    }
-  ],
-  "astaBlackSlashPursuit": [
-    {
-      "sheet": "v21-dweller_chase",
-      "durations": [
-        1,
-        2,
-        2,
-        3,
-        5,
-        15
+        20
       ]
     }
   ],
@@ -204,7 +235,7 @@
         2,
         2,
         4,
-        12
+        20
       ]
     }
   ],
@@ -217,7 +248,7 @@
         2,
         2,
         2,
-        12
+        23
       ]
     }
   ],
@@ -230,7 +261,7 @@
         2,
         3,
         3,
-        12
+        20
       ]
     }
   ],
@@ -243,59 +274,103 @@
         2,
         2,
         4,
+        20
+      ]
+    }
+  ],
+  "astaRelaySlayerBranch": [
+    {
+      "sheet": "v22-relay_slayer_a",
+      "durations": [
+        2,
+        2,
+        2,
+        3,
+        3,
+        2
+      ]
+    },
+    {
+      "sheet": "v22-relay_slayer_b",
+      "durations": [
+        3,
+        3,
+        3,
+        4,
+        6,
+        15
+      ]
+    }
+  ],
+  "astaRelaySlasherBranch": [
+    {
+      "sheet": "v22-relay_slasher_a",
+      "durations": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ]
+    },
+    {
+      "sheet": "v22-relay_slasher_b",
+      "durations": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        14
+      ]
+    }
+  ],
+  "astaRelayDwellerBranch": [
+    {
+      "sheet": "v22-relay_dweller_a",
+      "durations": [
+        2,
+        2,
+        2,
+        3,
+        3,
+        2
+      ]
+    },
+    {
+      "sheet": "v22-relay_dweller_b",
+      "durations": [
+        2,
+        3,
+        3,
+        4,
+        6,
         12
       ]
     }
   ],
-  "astaRelaySlayerFinish": [
+  "astaRelayDestroyerBranch": [
     {
-      "sheet": "v21-relay_slayer",
+      "sheet": "v22-relay_destroyer_a",
       "durations": [
-        1,
-        2,
         2,
         2,
         3,
-        14
+        3,
+        3,
+        1
       ]
-    }
-  ],
-  "astaRelaySlasherFinish": [
+    },
     {
-      "sheet": "v21-relay_slasher",
+      "sheet": "v22-relay_destroyer_b",
       "durations": [
-        1,
-        2,
-        2,
-        2,
         3,
-        14
-      ]
-    }
-  ],
-  "astaRelayDwellerFinish": [
-    {
-      "sheet": "v21-relay_dweller",
-      "durations": [
-        1,
-        2,
-        2,
-        2,
         3,
-        14
-      ]
-    }
-  ],
-  "astaRelayDestroyerFinish": [
-    {
-      "sheet": "v21-relay_destroyer",
-      "durations": [
-        1,
-        2,
-        2,
-        2,
-        3,
-        14
+        4,
+        4,
+        6,
+        12
       ]
     }
   ]

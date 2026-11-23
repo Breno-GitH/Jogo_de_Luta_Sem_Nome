@@ -1,3 +1,4 @@
+import { astaUnionId, astaUnionMove } from "./asta-super";
 import { astaSpecialMoves } from "./asta-specials";
 import type { CharacterData } from "./types";
 import { astaSwords, type AstaSword } from "./asta-stances";
@@ -21,6 +22,7 @@ export const asta: CharacterData = {
   },
   hurtboxes: astaBody,
   specialMoves: astaSpecialMoves,
+  superMoves: { [astaUnionId]: astaUnionMove },
   combatLimits: { maxHits: 14, maxAirHits: 6, maxTicks: 245 },
   lifecycle: {
     entranceDistance: 36,

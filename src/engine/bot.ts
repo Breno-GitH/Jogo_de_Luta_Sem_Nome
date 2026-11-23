@@ -163,9 +163,9 @@ export class Bot {
     const relay=self.asta?.relay;
     if(relay){
       this.queue=[];this.plan=neutral();
-      if(relay.confirmed&&relay.phase!=="finish"&&relay.extensions<2&&self.stateFrame>=relay.windowFrom+2){
-        const pick=(relay.action+this.controlled+(this.difficulty==="hard"?1:0))%4;
-        return this.choose({direction:(pick===0?self.facing:pick===1?-self.facing:0) as -1|0|1,down:pick>=2,pressed:[pick===3?"medium":"light"]},"escolher espada do Relay");
+      if(relay.phase==="choice"&&self.stateFrame>=relay.windowFrom+2){
+        const pick=(this.controlled+(this.difficulty==="hard"?1:0))%3;
+        return this.choose({...neutral(),pressed:[(["light","medium","heavy"] as const)[pick]]},"escolher espada do Relay");
       }
       return neutral();
     }
@@ -395,6 +395,9 @@ export class Bot {
         return this.command([2, 3, 6], "light", self);
       }
     }
+    if(self.asta && distance < 330 && !enemy.airborne && self.canStartSuper() &&
+      (enemy.phase === "recovery" || enemy.state === "hitstun") && this.chance(this.profile.ultimate))
+      return this.choose({ ...neutral(), pressed: ["ultimate"] }, "punir com Black Meteorite");
     if(self.asta && this.chance(this.profile.special)){
       const ids:AstaSpecialId[]=enemy.airborne?["astaRisingDemon"]:distance>220?["astaBlackSlash","astaSeveringLine"]:distance<115?["astaFlashSteps","astaDualBreak","astaIaiSlash"]:["astaBlackRush","astaBlackDivider"];
       const id=ids[Math.floor(this.random()*ids.length)];if(self.canStartSpecial(id)){const s=astaTechniques[id];this.lastDecision=s.name;return this.command(s.family===0?[2,6]:s.family===1?[2,4]:[2,5,2],s.button,self);}

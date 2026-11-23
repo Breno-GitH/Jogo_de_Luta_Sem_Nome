@@ -1,0 +1,407 @@
+[
+  {
+    "file": "black-slash-preparation.png",
+    "source": "deployment/msfd-work/asta22-volley-dd-final/black-slash-preparation.png",
+    "sha256": "519d6a9e8557d6b6329fa79e175b8e138d4c6d410acf8c519fcf6e4a9c7a1e88"
+  },
+  {
+    "file": "black-slash-flight.png",
+    "source": "deployment/msfd-work/asta22-volley-dd-final/black-slash-flight.png",
+    "sha256": "e2a4988b2fcc0cacbd2d5277f4dccc0bf7a2a39a54a5c78d9c382113ff507881"
+  },
+  {
+    "file": "black-slash-long-range.webm",
+    "source": "deployment/msfd-work/asta22-volley-dd-final/black-slash-long-range.webm",
+    "sha256": "cc5dcabc9f6234c93f6c6ae2f93a682a1b0cba1c4aaf4dd70b8aba6591d047a3"
+  },
+  {
+    "file": "causality-tendrils.png",
+    "source": "deployment/msfd-work/asta22-volley-dd-final/causality-tendrils.png",
+    "sha256": "e784427e59ad5de49134bd94af04cf81ac65d2ea3460e925cd121b6daa9d8320"
+  },
+  {
+    "file": "causality-real-hp-restored.png",
+    "source": "deployment/msfd-work/asta22-volley-dd-final/causality-real-hp-restored.png",
+    "sha256": "30cfdf269e1d59ce17d914da05f5bc4a11e02ba126ea38819a30dff42125cf02"
+  },
+  {
+    "file": "causality-real-hp.json",
+    "source": "deployment/msfd-work/asta22-volley-dd-final/causality-real-hp.json",
+    "sha256": "0deadbda6003e086e88885a7e9f6ffc49890759019c0daaa867bb38187e1c975"
+  },
+  {
+    "file": "causality-real-recent-damage.webm",
+    "source": "deployment/msfd-work/asta22-volley-dd-final/causality-real-recent-damage.webm",
+    "sha256": "d9c16b4c357fb80a115fc920e9cbffbee85e33bf4af9ff60a70cc769db8d732f"
+  },
+  {
+    "file": "nove-especiais.webm",
+    "source": "deployment/msfd-work/asta22-volley-specials-final/nove-especiais.webm",
+    "sha256": "24f3f6a6861e1a77e210efd3fcf086c54a280a8449ed2504652f316c9187cc8b"
+  },
+  {
+    "file": "astaBlackSlash-fx.json",
+    "source": "deployment/msfd-work/asta22-volley-specials-final/astaBlackSlash-fx.json",
+    "sha256": "6a3665ee004935649b87efbc8a5c8b64277e686848b61ace173e17bcfafad2b1"
+  },
+  {
+    "file": "astaBlackSlash-fx-preparation.png",
+    "source": "deployment/msfd-work/asta22-volley-specials-final/astaBlackSlash-fx-3.png",
+    "sha256": "ac9ce361bca18870626ac1980c037fe246a9639a98018f905645e941be1225c2"
+  },
+  {
+    "file": "astaBlackSlash-fx-windup.png",
+    "source": "deployment/msfd-work/asta22-volley-specials-final/astaBlackSlash-fx-6.png",
+    "sha256": "8eb438b904ecca02ca6a52113cd942354414ed1a8e280fc7dbed0f39b6484742"
+  },
+  {
+    "file": "astaBlackSlash-fx-recovery.png",
+    "source": "deployment/msfd-work/asta22-volley-specials-final/astaBlackSlash-fx-22.png",
+    "sha256": "3ad0cbb1b722020ef07024e3abcc06281ab0aede1ff6e773a4542018ed57dd75"
+  },
+  {
+    "file": "astaBlackSlash-body.json",
+    "source": "deployment/msfd-work/asta22-volley-specials-final/astaBlackSlash-body.json",
+    "sha256": "6a3665ee004935649b87efbc8a5c8b64277e686848b61ace173e17bcfafad2b1"
+  },
+  {
+    "file": "astaBlackSlash-body-preparation.png",
+    "source": "deployment/msfd-work/asta22-volley-specials-final/astaBlackSlash-body-3.png",
+    "sha256": "449b1f241f1f99565a67963228ef46d7d70908439880df30c4a82c4706eada3b"
+  },
+  {
+    "file": "astaBlackSlash-body-windup.png",
+    "source": "deployment/msfd-work/asta22-volley-specials-final/astaBlackSlash-body-6.png",
+    "sha256": "73314560a68b388c59bd5a8270c0bd0d27954f2bf1d2965b867ee3d10e7ec3c6"
+  },
+  {
+    "file": "astaBlackSlash-body-recovery.png",
+    "source": "deployment/msfd-work/asta22-volley-specials-final/astaBlackSlash-body-22.png",
+    "sha256": "3ad0cbb1b722020ef07024e3abcc06281ab0aede1ff6e773a4542018ed57dd75"
+  },
+  {
+    "file": "astaCausalityBreak-fx.json",
+    "source": "deployment/msfd-work/asta22-specials-final/astaCausalityBreak-fx.json",
+    "sha256": "28b5d933e8f8cd807b4a01857f06f7079ba42fbcca47a7bf3d309722de6717b5"
+  },
+  {
+    "file": "astaCausalityBreak-fx-preparation.png",
+    "source": "deployment/msfd-work/asta22-specials-final/astaCausalityBreak-fx-3.png",
+    "sha256": "bf4e5f32dffc6a96145651adc30e43e6b777ad986fed1179d2ae89a34645723a"
+  },
+  {
+    "file": "astaCausalityBreak-fx-channel.png",
+    "source": "deployment/msfd-work/asta22-specials-final/astaCausalityBreak-fx-6.png",
+    "sha256": "9ab0e6600d7e4425d0f7a9307f5bc496829d2069a41485734f23e7794cc48159"
+  },
+  {
+    "file": "astaCausalityBreak-fx-retraction.png",
+    "source": "deployment/msfd-work/asta22-specials-final/astaCausalityBreak-fx-8.png",
+    "sha256": "99650c0c4aeae8c515f310dcae414f2bf2a3c8d3c04908745256076d67ffb2d8"
+  },
+  {
+    "file": "astaCausalityBreak-body.json",
+    "source": "deployment/msfd-work/asta22-specials-final/astaCausalityBreak-body.json",
+    "sha256": "28b5d933e8f8cd807b4a01857f06f7079ba42fbcca47a7bf3d309722de6717b5"
+  },
+  {
+    "file": "astaCausalityBreak-body-preparation.png",
+    "source": "deployment/msfd-work/asta22-specials-final/astaCausalityBreak-body-3.png",
+    "sha256": "bf4e5f32dffc6a96145651adc30e43e6b777ad986fed1179d2ae89a34645723a"
+  },
+  {
+    "file": "astaCausalityBreak-body-channel.png",
+    "source": "deployment/msfd-work/asta22-specials-final/astaCausalityBreak-body-6.png",
+    "sha256": "9ab0e6600d7e4425d0f7a9307f5bc496829d2069a41485734f23e7794cc48159"
+  },
+  {
+    "file": "astaCausalityBreak-body-retraction.png",
+    "source": "deployment/msfd-work/asta22-specials-final/astaCausalityBreak-body-8.png",
+    "sha256": "99650c0c4aeae8c515f310dcae414f2bf2a3c8d3c04908745256076d67ffb2d8"
+  },
+  {
+    "file": "destroyer-j-slayer.json",
+    "source": "deployment/msfd-work/asta22-relay-final/destroyer-j-slayer.json",
+    "sha256": "d8e3f5075d0b156c7fb176c665959e08abfe9336ecfde5a091789aa1bee5c859"
+  },
+  {
+    "file": "destroyer-k-slasher.json",
+    "source": "deployment/msfd-work/asta22-relay-final/destroyer-k-slasher.json",
+    "sha256": "5e6776e909849205fd60fe28efbd73521eeae4bb9b1312493ca3ed5b5c80992b"
+  },
+  {
+    "file": "destroyer-l-dweller.json",
+    "source": "deployment/msfd-work/asta22-relay-final/destroyer-l-dweller.json",
+    "sha256": "977a513310bb864e53e205799707d1cb8727e48115b1d650fff1997dead33355"
+  },
+  {
+    "file": "dweller-j-slayer.json",
+    "source": "deployment/msfd-work/asta22-relay-final/dweller-j-slayer.json",
+    "sha256": "055ecd2098bdce3bdc40f45aeace56b2e50bfe44e4a5a675173a3fa7d454fba9"
+  },
+  {
+    "file": "dweller-k-slasher.json",
+    "source": "deployment/msfd-work/asta22-relay-final/dweller-k-slasher.json",
+    "sha256": "a9467204e39f38623489a85002822960ab24858302b3e3ba9e52fc4263446a16"
+  },
+  {
+    "file": "dweller-l-destroyer.json",
+    "source": "deployment/msfd-work/asta22-relay-final/dweller-l-destroyer.json",
+    "sha256": "92be5440d445140a64fb62d2e47c8a76f35420636e58f3ac72b5561d939753c8"
+  },
+  {
+    "file": "slasher-j-slayer.json",
+    "source": "deployment/msfd-work/asta22-relay-final/slasher-j-slayer.json",
+    "sha256": "445edaa3108ae21ee2523d823cdf19cbe36f8e9c3b1f9d0e7b79a4bd031e7af2"
+  },
+  {
+    "file": "slasher-k-dweller.json",
+    "source": "deployment/msfd-work/asta22-relay-final/slasher-k-dweller.json",
+    "sha256": "4149ff189b2de507a4f49f144a6969f4d556973eb547bade5aa1493aa3f65bb0"
+  },
+  {
+    "file": "slasher-l-destroyer.json",
+    "source": "deployment/msfd-work/asta22-relay-final/slasher-l-destroyer.json",
+    "sha256": "f94b655ecdc42a3bf56203f39dd0fd2907f0fc1f4683a265b48d698b0c2262c2"
+  },
+  {
+    "file": "slayer-j-slasher.json",
+    "source": "deployment/msfd-work/asta22-relay-final/slayer-j-slasher.json",
+    "sha256": "ca4c178dc7e239f536c5bd72b0f568d8d29ccb24aaa7154d9b2dc4afefa45327"
+  },
+  {
+    "file": "slayer-k-dweller.json",
+    "source": "deployment/msfd-work/asta22-relay-final/slayer-k-dweller.json",
+    "sha256": "21302a9f412e2ba301ccb39912fe646fd6c2b8540ad3e42cd0e75a87a6bf3807"
+  },
+  {
+    "file": "slayer-l-destroyer.json",
+    "source": "deployment/msfd-work/asta22-relay-final/slayer-l-destroyer.json",
+    "sha256": "5b3de68b45400070bb97e06a095a9634615cd6a5e3f65072dfa3c290ef8fca89"
+  },
+  {
+    "file": "slayer-k-dweller.webm",
+    "source": "deployment/msfd-work/asta22-relay-final/slayer-k-dweller.webm",
+    "sha256": "d017e44bf944977aed09f2d15eadf1874d8a85c1bba9584bf2bc560ed7ede5cb"
+  },
+  {
+    "file": "slayer-k-dweller-opening.png",
+    "source": "deployment/msfd-work/asta22-relay-final/slayer-k-dweller-0.png",
+    "sha256": "09d93b62481acbe8e1d3eed4128b5236733ecf8b43b079e83b58256115270e51"
+  },
+  {
+    "file": "slayer-k-dweller-exchange.png",
+    "source": "deployment/msfd-work/asta22-relay-final/slayer-k-dweller-8.png",
+    "sha256": "26d243d3708505aa39e4f2ae9f766df4db820f517159af5d4bb5657a987099f2"
+  },
+  {
+    "file": "slayer-k-dweller-finisher.png",
+    "source": "deployment/msfd-work/asta22-relay-final/slayer-k-dweller-18.png",
+    "sha256": "b3f7d5ce4bda56cb8ca08121d657545fe0365913550dc8837365a325084b39f4"
+  },
+  {
+    "file": "slasher-l-destroyer.webm",
+    "source": "deployment/msfd-work/asta22-relay-final/slasher-l-destroyer.webm",
+    "sha256": "5fb50a553d52c0038c60c88a281432558bf728f10c726a8ebede2c0868f80ed7"
+  },
+  {
+    "file": "slasher-l-destroyer-opening.png",
+    "source": "deployment/msfd-work/asta22-relay-final/slasher-l-destroyer-0.png",
+    "sha256": "cba18a06dcf2608f55f15adf5f7b03c41129e894fb270d3f63f60d18fe2cdb78"
+  },
+  {
+    "file": "slasher-l-destroyer-exchange.png",
+    "source": "deployment/msfd-work/asta22-relay-final/slasher-l-destroyer-8.png",
+    "sha256": "b21dcec1f59e7b018225df2d837f9f6ff5071c076d3405c6eff5f1a5c694e437"
+  },
+  {
+    "file": "slasher-l-destroyer-finisher.png",
+    "source": "deployment/msfd-work/asta22-relay-final/slasher-l-destroyer-19.png",
+    "sha256": "dc98c0161af627fed51c2fbc47559fd191ab2439b09ec998779f0f3541d49ee9"
+  },
+  {
+    "file": "dweller-k-slasher.webm",
+    "source": "deployment/msfd-work/asta22-relay-final/dweller-k-slasher.webm",
+    "sha256": "67831e6bed1e1dcf355eaaf0ee81e1e5f11b7a8809ccbb274b095be733221fc5"
+  },
+  {
+    "file": "dweller-k-slasher-opening.png",
+    "source": "deployment/msfd-work/asta22-relay-final/dweller-k-slasher-0.png",
+    "sha256": "885fb62827e77551358f7e8c6c13a05315dc1e28423b2ad9e9aeb44eac7e1b7e"
+  },
+  {
+    "file": "dweller-k-slasher-exchange.png",
+    "source": "deployment/msfd-work/asta22-relay-final/dweller-k-slasher-8.png",
+    "sha256": "f4ef349612b7f6dd4aaf2d58326d48ce65daed2ba46b92054692dfd36507b3e8"
+  },
+  {
+    "file": "dweller-k-slasher-finisher.png",
+    "source": "deployment/msfd-work/asta22-relay-final/dweller-k-slasher-18.png",
+    "sha256": "db43edc370a9632f218f854185bf15c06974bae0b902ca42dcd23b9386d017c1"
+  },
+  {
+    "file": "destroyer-j-slayer.webm",
+    "source": "deployment/msfd-work/asta22-relay-final/destroyer-j-slayer.webm",
+    "sha256": "e6dee243c6174a7429dfa47223e95b55789b15ae0f7aad7171538c3133ddfa78"
+  },
+  {
+    "file": "destroyer-j-slayer-opening.png",
+    "source": "deployment/msfd-work/asta22-relay-final/destroyer-j-slayer-0.png",
+    "sha256": "6271356bf137940e36e22b3edd57b4f4725e7d76fe9c9e47a148859d04ef0b1b"
+  },
+  {
+    "file": "destroyer-j-slayer-exchange.png",
+    "source": "deployment/msfd-work/asta22-relay-final/destroyer-j-slayer-7.png",
+    "sha256": "ebf7c9f348afabfa3d7b7a88442e5ed4c5102fa0666fafbd0fb2e6fec6587742"
+  },
+  {
+    "file": "destroyer-j-slayer-finisher.png",
+    "source": "deployment/msfd-work/asta22-relay-final/destroyer-j-slayer-17.png",
+    "sha256": "4986deb568d80d03ebfd4a3e2ddbc155387fc01ccc2eed33f9c200ffb14b64ca"
+  },
+  {
+    "file": "grimoire-cover-return.png",
+    "source": "deployment/msfd-work/asta22-relay-final/slayer-k-dweller-6.png",
+    "sha256": "6fa6171a86ce346b2f8baed06abdfd1f2418f08682b4780c1b502e4949f32bb6"
+  },
+  {
+    "file": "grimoire-pages-emerge.png",
+    "source": "deployment/msfd-work/asta22-relay-final/slayer-k-dweller-8.png",
+    "sha256": "26d243d3708505aa39e4f2ae9f766df4db820f517159af5d4bb5657a987099f2"
+  },
+  {
+    "file": "grimoire-sword-contact.png",
+    "source": "deployment/msfd-work/asta22-relay-final/slayer-k-dweller-10.png",
+    "sha256": "f72f6b1aa9405e4d9fc866b0e9cdfb30bbca792faa6d44dc42f83e142810058b"
+  },
+  {
+    "file": "body-slayer-slasher.webm",
+    "source": "deployment/msfd-work/asta22-relay-final/body-slayer-slasher.webm",
+    "sha256": "7c2e7cf22b1ca8b666781c65307cf17e52a1825a24104e5014ba8ce69e7e21e1"
+  },
+  {
+    "file": "body-slasher-slayer.webm",
+    "source": "deployment/msfd-work/asta22-relay-final/body-slasher-slayer.webm",
+    "sha256": "a0bb623e32307f547df90f751fd17950d67db0411a419c0c7fa09a0c0d2774e3"
+  },
+  {
+    "file": "body-dweller-destroyer.webm",
+    "source": "deployment/msfd-work/asta22-relay-final/body-dweller-destroyer.webm",
+    "sha256": "12e8a113283aed45f68a66a273b6a17bbf7a1f71c5fe1d13d8cdac5e1e13f008"
+  },
+  {
+    "file": "body-destroyer-dweller.webm",
+    "source": "deployment/msfd-work/asta22-relay-final/body-destroyer-dweller.webm",
+    "sha256": "294cb6a43e4540f9380fd4feda2a0c479f2d313f99b3fa2f67ff04cc23889fb4"
+  },
+  {
+    "file": "guard.json",
+    "source": "deployment/msfd-work/asta22-relay-final/guard.json",
+    "sha256": "37b646c3073eb40add6b14e97700baf3b3c243b92963eed2fe24a226520052a4"
+  },
+  {
+    "file": "timeout.json",
+    "source": "deployment/msfd-work/asta22-relay-final/timeout.json",
+    "sha256": "0b92e1575ea4dbcf4e841b0e87f0c23a92f95d36485cdd6ea79736aff1218b0d"
+  },
+  {
+    "file": "comparison-Dio.png",
+    "source": "deployment/msfd-work/asta22-base-final/comparison-Dio.png",
+    "sha256": "a7251e492e2ac97ccde46e706a1800971577d46b48f217f2f640eb58d3f638dd"
+  },
+  {
+    "file": "comparison-Goku.png",
+    "source": "deployment/msfd-work/asta22-base-final/comparison-Goku.png",
+    "sha256": "cc9976915e0fcbde21cc14ffd380fc6226c1ae4eef86af4b89be55b98b399c92"
+  },
+  {
+    "file": "ground-combo.png",
+    "source": "deployment/msfd-work/asta22-base-final/ground-combo.png",
+    "sha256": "f563ae726fe27655ef3c5f9a0959e210f1ff56db9f1f2411c5de681bdd0cb753"
+  },
+  {
+    "file": "air-combo.png",
+    "source": "deployment/msfd-work/asta22-base-final/air-combo.png",
+    "sha256": "6037db80528693507de74c9a80f1c6cedead8c4ade59991b0845f957e35a4857"
+  },
+  {
+    "file": "arcade.png",
+    "source": "deployment/msfd-work/asta22-base-final/arcade.png",
+    "sha256": "e00101ef6f9bf0213e8b8f2d73056de7bbd50c5476d5d4034d5b4574693bbe14"
+  },
+  {
+    "file": "versus.png",
+    "source": "deployment/msfd-work/asta22-base-final/versus.png",
+    "sha256": "6ff84afc51cb8c006222c2051c593f938e26e1c049945529eb7fe932415a7c83"
+  },
+  {
+    "file": "black-slash-volley.png",
+    "source": "deployment/msfd-work/asta22-volley-dd-final/black-slash-volley.png",
+    "sha256": "fe5ee9bdafdefd97d80c1f9260cb62c57b037cc5661ce57007abbb145a29adf6"
+  },
+  {
+    "file": "black-slash-three-guarded.png",
+    "source": "deployment/msfd-work/asta22-volley-dd-final/black-slash-three-guarded.png",
+    "sha256": "606315328b6216aa7645f53f3bb9502bc077184f0eee814e5f9fb5fd845464a1"
+  },
+  {
+    "file": "black-slash-three-guarded.webm",
+    "source": "deployment/msfd-work/asta22-volley-dd-final/black-slash-three-guarded.webm",
+    "sha256": "c4d7907f330a99421c14890efd4c0fe057e3a711bc43b5a96f223f22fbcfc6e9"
+  },
+  {
+    "file": "astaBlackSlash-fx-first-cut.png",
+    "source": "deployment/msfd-work/asta22-volley-specials-final/astaBlackSlash-fx-7.png",
+    "sha256": "9121cd84091608e9f4f2cb1179acc666d5ffda0263a26781e0786e3eb70b6fb9"
+  },
+  {
+    "file": "astaBlackSlash-fx-second-cut.png",
+    "source": "deployment/msfd-work/asta22-volley-specials-final/astaBlackSlash-fx-13.png",
+    "sha256": "c294c7a65678c75775ea60cd927249c097941203933b9c91b1a1b3a61d0f2092"
+  },
+  {
+    "file": "astaBlackSlash-fx-third-cut.png",
+    "source": "deployment/msfd-work/asta22-volley-specials-final/astaBlackSlash-fx-19.png",
+    "sha256": "fdd70b32127178463fe454b5e63fceec73fa488fdd7b1def074887d1dd3fed1f"
+  },
+  {
+    "file": "astaBlackSlash-body-first-cut.png",
+    "source": "deployment/msfd-work/asta22-volley-specials-final/astaBlackSlash-body-7.png",
+    "sha256": "4004afdb78e203402039e7561c58a3936f11bb1f15ad8dbde9160ad2583758df"
+  },
+  {
+    "file": "astaBlackSlash-body-second-cut.png",
+    "source": "deployment/msfd-work/asta22-volley-specials-final/astaBlackSlash-body-13.png",
+    "sha256": "603a646f4e366540bf99385f7e25c0dab3ff27f8a5e07e04c4922cc4a39be458"
+  },
+  {
+    "file": "astaBlackSlash-body-third-cut.png",
+    "source": "deployment/msfd-work/asta22-volley-specials-final/astaBlackSlash-body-19.png",
+    "sha256": "448c2cb3e822986fb8afa7a9c2b92530244d9f996ff5ac8d2d0992b9d8b3313b"
+  },
+  {
+    "file": "black-divider-contact.png",
+    "source": "deployment/msfd-work/asta22-volley-specials-final/astaBlackDivider-fx-8.png",
+    "sha256": "0045ef00360b72463f9a239e3e65c29cf0ad3b280a253166442beea46034c684"
+  },
+  {
+    "file": "black-divider-follow-through.png",
+    "source": "deployment/msfd-work/asta22-volley-specials-final/astaBlackDivider-fx-9.png",
+    "sha256": "b4d68fc7ea326520068a5b8bd33104f017c7fbdf483b3e6bb28e2013e3e56708"
+  },
+  {
+    "file": "black-divider-no-fx.png",
+    "source": "deployment/msfd-work/asta22-volley-specials-final/astaBlackDivider-body-8.png",
+    "sha256": "b99010b9a1342026c6f5e10380872f310327857d8d07b5a9c687a7cef29b3228"
+  },
+  {
+    "file": "astaBlackDivider-fx.json",
+    "source": "deployment/msfd-work/asta22-volley-specials-final/astaBlackDivider-fx.json",
+    "sha256": "fccdbfdc6b05793c46096170e52d91fd1db45ab085c8dd63e0c536c304f1eff8"
+  },
+  {
+    "file": "astaBlackDivider-body.json",
+    "source": "deployment/msfd-work/asta22-volley-specials-final/astaBlackDivider-body.json",
+    "sha256": "fccdbfdc6b05793c46096170e52d91fd1db45ab085c8dd63e0c536c304f1eff8"
+  }
+]

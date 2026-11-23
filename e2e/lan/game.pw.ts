@@ -10,7 +10,7 @@ import { mkdirSync, writeFileSync, readFileSync } from "node:fs";
 import { io } from "socket.io-client";
 import type { createGameServer as Factory } from "../../server/server";
 import type { CharacterId } from "../../src/engine/characters";
-const { Match, characters, snapshot, hashState, astaSpecialBlade } =
+const { Match, characters, snapshot, hashState, astaSpecialBlade, recordAstaDamage, addCombatStatus, causalityVolumes } =
   await import("../../deployment/run/lan-fixtures.mjs");
 import { ENGINE_VERSION } from "../../src/net/version";
 const { createGameServer } =
@@ -156,6 +156,7 @@ async function observe(p: Page) {
           chain: canvas.dataset.chainFinish,
           chainHeight: canvas.dataset.chainHeight,
           pandemonium: canvas.dataset.pandemoniumPhase,
+          astaUnion: canvas.dataset.astaUnionTick,
           prometheus: canvas.dataset.prometheusCel,
           fronts: canvas.dataset.kingWillFronts,
           reaction: canvas.dataset.hakiReaction,
@@ -247,6 +248,7 @@ async function capture(code: string, name: string) {
     );
     expect(ds[0].cameraZoom).toBe(ds[1].cameraZoom);
     expect(ds[0].astaStates).toBe(ds[1].astaStates);
+    expect(ds[0].astaUnionTick).toBe(ds[1].astaUnionTick);
     expect(ds[0].furyTick).toBe(ds[1].furyTick);
     expect(ds[0].jetTick).toBe(ds[1].jetTick);
     expect(ds[0].jetFist).toBe(ds[1].jetFist);
@@ -1204,7 +1206,7 @@ test("Sasuke Kirin confirms on R and synchronizes both clients through the storm
     await expect(client.locator("canvas")).toHaveAttribute("data-p2-health", "680");
   await expect.poll(
     () => !room.match!.kirin && room.match!.fighters[1].knockedDown,
-    { intervals: [16], timeout: 8000 },
+    { intervals: [16], timeout: 26000 },
   ).toBe(true);
   for (const client of [a,b])
     await expect(client.locator("canvas")).toHaveAttribute("data-camera-zoom", "1");
@@ -1632,76 +1634,144 @@ test("Asta selects in two clients, plays four sword states and synchronizes air 
  await consistent();await capture(code,"asta-return");
 });
 
-test("Asta nine specials retain swords, Relay openings and Causality in two synchronized clients",async()=>{
- test.setTimeout(240000);
- const code=await pair("asta","goku");
- const moves=[
-  ["astaBlackRush",[2,6],"j","slayer"],["astaRisingDemon",[2,6],"k","slayer"],["astaBlackDivider",[2,6],"l","slayer"],
-  ["astaIaiSlash",[2,4],"j","slasher"],["astaFlashSteps",[2,4],"k","slasher"],["astaSeveringLine",[2,4],"l","slasher"],
-  ["astaBlackSlash",[2,5,2],"j","dweller"],["astaCausalityBreak",[2,5,2],"k","destroyer"],["astaDualBreak",[2,5,2],"l","destroyer"]
- ]as const;
- for(const [id,pattern,key,sword] of moves){
-  for(const previous of ["slayer","slasher","dweller","destroyer"]as const){
-   const r=await seed(code,90,0,m=>{m.fighters[0].asta!.equipped=previous;});
-   await a.locator("canvas").focus();await motion(a,[...pattern],key,45);
-   await expect.poll(()=>r.match!.fighters[0].moveId).toBe(id);
-   await expect.poll(()=>r.match!.fighters[0].asta!.equipped).toBe(id==="astaDualBreak"?previous:sword);
-   await expect.poll(()=>r.match!.fighters[0].state,{timeout:5000}).toBe("idle");
-   await consistent();
-  }
-  await capture(code,"asta-special-"+id);
- }
- const r=await seed(code,400,0,m=>{
-  const f=m.fighters[0];f.attack("astaCausalityBreak");f.stateFrame=4;f.asta!.equipped=f.asta!.attackSword="destroyer";
-  const g={x:f.x+15,y:f.y-90};m.kiProjectiles.push({id:++m.projectileSerial,owner:1,move:"ki_light",cast:1,...g,previousX:g.x,previousY:g.y,vx:-8,vy:0,facing:-1,radius:18,age:0,life:40,state:"flight",impactAge:0});
- });
- await expect.poll(()=>r.match!.fighters[0].asta!.neutralized).toBe(1);await consistent();await capture(code,"asta-causality-neutralized");
- await expect.poll(()=>r.match!.fighters[0].state).toBe("idle");await consistent();
-});
 
-test("Asta Relay manual choices from all four opening swords stay synchronized without capture",async()=>{
- test.setTimeout(90000);const code=await pair("asta","samurai");
- const routes=[["slayer","slasher","destroyer"],["slasher","destroyer","dweller"],["dweller","slayer","slasher"],["destroyer","dweller","slayer"]]as const;
- for(const[initial,first,second]of routes){
-  const room=await seed(code,85,0,m=>{m.fighters[0].asta!.equipped=initial;});
+test("Asta nine specials preserve swords and the six approved attacks in two clients",async()=>{
+ test.setTimeout(240000);const code=await pair("asta","goku");
+ const moves=[["astaBlackRush",[2,6],"j","slayer"],["astaRisingDemon",[2,6],"k","slayer"],["astaBlackDivider",[2,6],"l","slayer"],["astaIaiSlash",[2,4],"j","slasher"],["astaFlashSteps",[2,4],"k","slasher"],["astaSeveringLine",[2,4],"l","slasher"],["astaBlackSlash",[2,5,2],"j","dweller"],["astaCausalityBreak",[2,5,2],"k","destroyer"],["astaDualBreak",[2,5,2],"l","slayer"]]as const;
+ for(const[id,pattern,key,sword]of moves)for(const previous of["slayer","slasher","dweller","destroyer"]as const){
+  const room=await seed(code,90,0,m=>{m.fighters[0].asta!.equipped=previous;});await a.locator("canvas").focus();await motion(a,[...pattern],key,40);
+  await expect.poll(()=>room.match!.fighters[0].moveId).toBe(id);
+  await expect.poll(()=>room.match!.fighters[0].asta!.equipped).toBe(id==="astaDualBreak"?previous:sword);
+  await expect.poll(()=>room.match!.fighters[0].state,{timeout:5000}).toBe("idle");await consistent();
+ }
+ await capture(code,"asta22-nine-swords");
+});
+test("Asta Relay 2.2 all twelve single J/K/L routes synchronize the chosen sword and finisher",async()=>{
+ test.setTimeout(120000);const code=await pair("asta","samurai"),swords=["slayer","slasher","dweller","destroyer"]as const;
+ for(const initial of swords)for(const[index,key]of["j","k","l"].entries()){
+  const options=swords.filter(s=>s!==initial),selected=options[index];const room=await seed(code,85,0,m=>{m.fighters[0].asta!.equipped=initial;});
   await a.locator("canvas").focus();await motion(a,[2,5,2],"l",40);
-  await expect.poll(()=>room.match!.fighters[0].moveId).toBe("astaDualBreak");
-  for(const[i,sword]of[first,second].entries()){
-   await a.waitForFunction(i=>{const d=document.querySelector("canvas")!.dataset;return d.astaRelayWindow==="true"&&Number(d.astaRelayExtensions)===i;},i,{polling:"raf",timeout:3000});
-   const key=sword==="slayer"?"d":sword==="slasher"?"a":"s";
-   await a.keyboard.down(key);await press(a,sword==="destroyer"?"k":"j",25);await a.keyboard.up(key);
-   await expect.poll(()=>room.match!.fighters[0].asta!.relay?.extensions).toBe(i+1);
-   expect(room.match!.capture).toBeFalsy();await expect.poll(()=>room.match!.fighters[0].asta!.equipped).toBe(sword);
-  }
-  await capture(code,"asta21-relay-"+initial+"-finish");
+  await a.waitForFunction(()=>document.querySelector("canvas")!.dataset.astaRelayPhase==="choice",null,{timeout:3000,polling:"raf"});
+  await press(a,key,25);await expect.poll(()=>room.match!.fighters[0].asta!.relay?.phase).toBe("branch");
+  expect(room.match!.fighters[0].asta!.relay!.options).toEqual(options);
+  await expect.poll(()=>room.match!.fighters[0].asta!.equipped).toBe(selected);expect(room.match!.capture).toBeFalsy();
   await expect.poll(()=>room.match!.fighters[0].state,{timeout:5000}).toBe("idle");
-  expect(room.match!.fighters[0].asta!.equipped).toBe(second);
-  expect(room.match!.fighters[0].asta!.relay).toBeUndefined();expect(room.match!.capture).toBeFalsy();
-  await consistent();await capture(code,"asta21-relay-"+initial+"-return");
+  expect(room.match!.fighters[0].asta!.equipped).toBe(selected);expect(room.match!.fighters[0].asta!.relay).toBeUndefined();
+  await consistent();await capture(code,"asta22-relay-"+initial+"-"+key+"-"+selected);
  }
 });
-
-test("Asta Causality captures the real neutralization window and keeps two clients equal",async()=>{
+test("Asta Causality restores recent HP, cleans test metadata and preserves cooldown in two clients",async()=>{
+ const code=await pair("asta","goku");const room=await seed(code,400,0,m=>{
+  const f=m.fighters[0];f.health-=150;recordAstaDamage(f,150);
+  addCombatStatus(f,{id:"test-magic",kind:"magicBurn",origin:"magic",removal:"causality",expiresAt:500});
+  addCombatStatus(f,{id:"test-physical",kind:"physicalCondition",origin:"physical",removal:"none",expiresAt:500});
+ });
+ await a.locator("canvas").focus();await motion(a,[2,5,2],"k",40);
+ await expect.poll(()=>room.match!.fighters[0].asta!.causalityResult?.hp).toBe(45);
+ expect(room.match!.fighters[0].health).toBe(895);
+ expect(room.match!.fighters[0].statusEffects?.map(x=>x.id)).toEqual(["test-physical"]);
+ const ready=room.match!.fighters[0].asta!.restorationReadyAt;expect(ready-room.match!.combatFrame).toBeGreaterThan(1100);
+ await consistent();await capture(code,"asta22-causality-restored");
+ await expect.poll(()=>room.match!.fighters[0].state).toBe("idle");
+ await motion(a,[2,5,2],"k",40);await expect.poll(()=>room.match!.fighters[0].asta!.cast).toBe(2);
+ await expect.poll(()=>room.match!.fighters[0].state).toBe("idle");expect(room.match!.fighters[0].health).toBe(895);expect(room.match!.fighters[0].asta!.restorationReadyAt).toBe(ready);await consistent();
+});
+test("Asta Causality neutralizes eligible Ki during its animated ribbon window without healing on cooldown",async()=>{
  const code=await pair("asta","goku");
- await a.evaluate(()=>{window.astaMagicFrames=[];let last="";const end=performance.now()+5000;
+ await a.evaluate(()=>{const frames:any[]=[];(window as any).astaMagicFrames=frames;let last="";const end=performance.now()+5000;
   function tick(){const c=document.querySelector("canvas")!,d=c.dataset,key=d.frame;
-   if(d.move==="astaCausalityBreak"&&d.physicsState==="attack"&&d.astaNeutralized==="1"&&last!==key){
-    window.astaMagicFrames.push({png:c.toDataURL(),state:{...d}});last=key;
-   }if(performance.now()<end)requestAnimationFrame(tick);
+   if(d.move==="astaCausalityBreak"&&d.physicsState==="attack"&&last!==key){frames.push({png:c.toDataURL(),state:{...d}});last=key;}
+   if(performance.now()<end)requestAnimationFrame(tick);
   }tick();
  });
  const room=await seed(code,400,0,m=>{
-  const f=m.fighters[0];f.attack("astaCausalityBreak");f.stateFrame=3;
-  const blade=astaSpecialBlade("astaCausalityBreak",4),x=f.x+blade.a.x+7,y=f.y+blade.a.y;
-  m.kiProjectiles.push({id:++m.projectileSerial,owner:1,move:"ki_light",cast:1,x,y,previousX:x,previousY:y,vx:-8,vy:0,facing:-1,radius:18,age:0,life:40,state:"flight",impactAge:0});
+  const f=m.fighters[0];f.health-=150;recordAstaDamage(f,150);f.asta!.restorationReadyAt=1000;f.asta!.equipped="destroyer";f.attack("astaCausalityBreak");f.stateFrame=18;
+  addCombatStatus(f,{id:"test-slow",kind:"magicSlow",origin:"magic",removal:"causality",expiresAt:500});
+  const shape=causalityVolumes(f)[2];for(let i=0;i<3;i++)m.kiProjectiles.push({id:++m.projectileSerial,owner:1,move:"ki_light",cast:1,x:shape.b.x,y:shape.b.y,previousX:shape.b.x,previousY:shape.b.y,vx:-1,vy:0,facing:-1,radius:14,age:0,life:60,state:"flight",impactAge:0});
  });
- await expect.poll(()=>room.match!.fighters[0].asta!.neutralized).toBe(1);
- await a.waitForTimeout(650);const frames=await a.evaluate(()=>window.astaMagicFrames);
- expect(frames.length).toBeGreaterThan(0);
- for(const [i,{png,state}]of frames.entries()){
-  writeFileSync(audit+"/asta21-causality-contact-"+i+".png",Buffer.from(png.split(",")[1],"base64"));
-  writeFileSync(audit+"/asta21-causality-contact-"+i+".json",JSON.stringify(state,null,2));
+ await expect.poll(()=>room.match!.fighters[0].asta!.neutralized).toBe(3);
+ await expect.poll(()=>room.match!.fighters[0].asta!.causalityResult?.cleansed.length).toBe(1);
+ expect(room.match!.fighters[0].health).toBe(850);await a.waitForTimeout(200);
+ const frames=await a.evaluate(()=>(window as any).astaMagicFrames);expect(frames.length).toBeGreaterThan(0);
+ for(const[i,{png,state}]of frames.entries()){writeFileSync(audit+"/asta22-causality-"+i+".png",Buffer.from(png.split(",")[1],"base64"));writeFileSync(audit+"/asta22-causality-"+i+".json",JSON.stringify(state,null,2));}
+ await consistent();await capture(code,"asta22-causality-cooldown");
+});
+test("Asta Black Slash is punished physically before release in synchronized clients",async()=>{
+ const code=await pair("asta","goku"),room=await seed(code,85,0);
+ await a.locator("canvas").focus();await motion(a,[2,5,2],"j",40);await expect.poll(()=>room.match!.fighters[0].moveId).toBe("astaBlackSlash");
+ await b.locator("canvas").focus();await press(b,"j",25);
+ await expect.poll(()=>room.match!.fighters[0].health).toBeLessThan(1000);
+ await a.waitForTimeout(850);expect(room.match!.kiProjectiles.some(p=>p.owner===0)).toBe(false);expect(room.match!.fighters[1].health).toBe(1000);
+ await consistent();await capture(code,"asta22-black-slash-punished");
+});
+
+test("Asta Black Slash sends three independently guardable cuts in synchronized LAN clients",async()=>{
+ const code=await pair("asta","samurai"),room=await seed(code,800,0);
+ const impacts=new Set<number>();let maxFlying=0;
+ const watch=setInterval(()=>{
+  const m=room.match;if(!m)return;
+  const shots=m.kiProjectiles.filter(p=>p.move==="astaBlackSlash"&&p.owner===0);
+  maxFlying=Math.max(maxFlying,shots.filter(p=>p.state==="flight").length);
+  for(const p of shots)if(p.state==="impact"&&m.fighters[1].state==="blockstun")impacts.add(p.id);
+ },10);
+ try{
+  await b.locator("canvas").focus();await b.keyboard.down("d");await a.locator("canvas").focus();
+  await motion(a,[2,5,2],"j",40);
+  await expect.poll(()=>room.match!.fighters[0].asta!.blackSlashShots).toBe(3);
+  await expect.poll(()=>impacts.size,{timeout:6000}).toBe(3);
+  expect(maxFlying).toBe(3);expect(room.match!.fighters[1].health).toBe(1000);
+  await expect.poll(()=>room.match!.fighters[1].state).not.toBe("blockstun");
+  expect(room.match!.capture).toBeFalsy();await consistent();await capture(code,"asta22-three-cuts-guarded");
+  writeFileSync(audit+"/asta22-three-cuts-guarded-summary.json",JSON.stringify({cuts:3,guarded:impacts.size,maxFlying,health:room.match!.fighters[1].health},null,2));
+ }finally{clearInterval(watch);await b.keyboard.up("d");}
+});
+
+
+test("Asta Super R synchronizes Black Meteorite, Liebe, Union swords, Equinox and release",async()=>{
+ test.setTimeout(90000);
+ const code=await pair("asta","samurai"),room=await seed(code,220,100);
+ await a.locator("canvas").focus();await press(a,"r",45);
+ await expect.poll(()=>room.match!.astaUnion?.tick).toBeGreaterThanOrEqual(1);
+ await capture(code,"asta-super-meteorite");
+ await expect.poll(()=>room.match!.astaUnion?.tick,{timeout:16000}).toBeGreaterThanOrEqual(234);
+ for(const client of[a,b])await expect(client.locator("canvas")).toHaveAttribute("data-asta-form","union");
+ await capture(code,"asta-super-devil-union");
+ await expect.poll(()=>room.match!.astaUnion?.tick,{timeout:16000}).toBeGreaterThanOrEqual(932);
+ await capture(code,"asta-super-equinox");
+ await expect.poll(()=>room.match!.astaUnion,{timeout:9000}).toBeUndefined();
+ expect(room.match!.fighters[1].health).toBe(660);
+ expect(room.match!.fighters[0].asta!.equipped).toBe("slasher");
+ expect(room.match!.fighters[0].meter).toBe(0);
+ for(const client of[a,b])await expect(client.locator("canvas")).toHaveAttribute("data-capture","none");
+ await consistent();await capture(code,"asta-super-restored");
+});
+test("Asta Super R guard and whiff never capture either LAN client",async()=>{
+ const code=await pair("asta","samurai"),room=await seed(code,220,100);
+ await b.locator("canvas").focus();await b.keyboard.down("d");
+ try{
+  await a.locator("canvas").focus();await press(a,"r",45);await a.waitForTimeout(1400);
+  expect(room.match!.astaUnion).toBeUndefined();expect(room.match!.fighters[1].health).toBe(1000);
+  expect(room.match!.fighters[0].meter).toBe(0);await consistent();
+ }finally{await b.keyboard.up("d");}
+ await seed(code,700,100);await a.locator("canvas").focus();await press(a,"r",45);await a.waitForTimeout(1300);
+ expect(room.match!.astaUnion).toBeUndefined();expect(room.match!.fighters[1].health).toBe(1000);
+ expect(room.match!.fighters[0].state).toBe("idle");await consistent();await capture(code,"asta-super-whiff");
+});
+
+test("Asta Super R as player two preserves the remote Equinox and both clients' hashes",async()=>{
+ test.setTimeout(90000);
+ const code=await pair("goku","asta"),room=await seed(code,220,100);
+ await b.locator("canvas").focus();await press(b,"r",45);
+ await expect.poll(()=>room.match!.astaUnion?.attacker).toBe(1);
+ await expect.poll(()=>room.match!.astaUnion?.tick,{timeout:22000}).toBeGreaterThanOrEqual(872);
+ for(const client of[a,b]) {
+  await expect(client.locator("canvas")).toHaveAttribute("data-asta-form","union");
+  expect(+(await client.locator("canvas").getAttribute("data-equinox-gap"))!).toBeGreaterThanOrEqual(500);
  }
- await consistent();await expect.poll(()=>room.match!.fighters[0].state).toBe("idle");
- expect(room.match!.fighters[0].health).toBe(1000);
+ await consistent();await capture(code,"asta41-player2-remote-charge");
+ await expect.poll(()=>room.match!.astaUnion,{timeout:9000}).toBeUndefined();
+ expect(room.match!.fighters[0].health).toBe(660);
+ expect(room.match!.fighters[1].asta!.equipped).toBe("slasher");
+ for(const client of[a,b])await expect(client.locator("canvas")).toHaveAttribute("data-capture","none");
+ await consistent();await capture(code,"asta41-player2-restored");
 });

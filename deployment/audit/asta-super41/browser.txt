@@ -1,0 +1,24 @@
+
+Running 3 tests using 1 worker
+
+(node:6456) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:6456) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 e2e\asta-super.pw.mjs:154:1 › Black Meteorite confirms into Liebe, four-sword Devil Union and Equinox, then restores combat (31.4s)
+  ok 2 e2e\asta-super.pw.mjs:216:1 › Standing guard and long whiff refuse the cinematic and spend one Super (12.2s)
+  ok 3 e2e\asta-super.pw.mjs:245:1 › Body choreography, Liebe and distinct forms remain readable with anti-magic FX off (29.3s)
+
+  3 passed (1.3m)
+
+Final MUGEN trailing-shape review:
+
+Running 1 test using 1 worker
+
+(node:21232) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:21232) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 e2e\asta-super.pw.mjs:154:1 › Black Meteorite confirms into Liebe, four-sword Devil Union and Equinox, then restores combat (31.3s)
+
+  1 passed (33.6s)

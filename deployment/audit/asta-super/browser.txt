@@ -1,0 +1,12 @@
+
+Running 3 tests using 1 worker
+
+(node:22212) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:22212) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 e2e\asta-super.pw.mjs:112:1 › Black Meteorite confirms into Liebe, four-sword Devil Union and Equinox, then restores combat (15.0s)
+  ok 2 e2e\asta-super.pw.mjs:157:1 › Standing guard and long whiff refuse the cinematic and spend one Super (11.9s)
+  ok 3 e2e\asta-super.pw.mjs:186:1 › Body choreography, Liebe and distinct forms remain readable with anti-magic FX off (13.9s)
+
+  3 passed (43.8s)

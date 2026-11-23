@@ -10,6 +10,7 @@ import { xebecNormals } from "../src/engine/xebec";
 
 function setup() {
   const session = new GameSession("training", "normal", "xebec", "samurai");
+  session.restart(false); // This fixture exercises combat after the presentation.
   const fighter = session.match.fighters[0];
   const view = new FighterPresentation(animations);
   function advance(count: number, input: Partial<InputFrame> = {}) {

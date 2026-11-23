@@ -7,13 +7,17 @@ export class KeyboardInput {
   private omnitrixOwner?: "keyboard" | "pad";
   private omnitrixInterrupted = false;
   private queued: Button[] = [];
+  private skipQueued = false;
   private actionContext?: { direction: -1 | 0 | 1; down: boolean };
   private pad = new GamepadInput();
   activeChainKeys?: readonly string[];
-  constructor(private options: { dashOnDirection?: boolean; bindings?: Bindings; active?: () => boolean; gamepad?: boolean; omnitrix?: () => boolean } = {}) {
+  constructor(private options: { dashOnDirection?: boolean; bindings?: Bindings; active?: () => boolean; gamepad?: boolean; omnitrix?: () => boolean; introduction?:()=>boolean } = {}) {
     window.addEventListener("keydown", e => {
       if (this.options.active && !this.options.active()) return;
       if (e.target instanceof HTMLElement && e.target.closest('input,select,textarea,[contenteditable="true"]')) return;
+      if(e.code==="Enter" && this.options.introduction?.()) {
+        e.preventDefault();if(!e.repeat)this.skipQueued=true;return;
+      }
       const b = this.bindings;
       const code = e.code === "ShiftRight" && b.dash === "ShiftLeft" ? "ShiftLeft" : e.code;
       if (!Object.values(b).includes(code)) return;
@@ -35,22 +39,23 @@ export class KeyboardInput {
   private get bindings() { return this.options.bindings ?? defaultBindings; }
   private direction() { return (Number(this.held.has(this.bindings.right)) - Number(this.held.has(this.bindings.left))) as -1 | 0 | 1; }
   clear() {
-    this.held.clear(); this.queued = []; this.actionContext = undefined;
+    this.held.clear(); this.queued = []; this.actionContext = undefined;this.skipQueued=false;
     this.omnitrixOwner = undefined;
     this.omnitrixInterrupted = true;
     if (this.options.gamepad) this.pad.sample(true);
   }
   sample(): InputFrame {
     const i = neutral();
+    if(this.skipQueued)i.skipIntro=true;this.skipQueued=false;
     i.direction = this.direction(); i.down = this.held.has(this.bindings.down);
     i.pressed = this.queued.splice(0);
     if (i.pressed.length && this.actionContext) { i.direction = this.actionContext.direction; i.down = this.actionContext.down; }
     this.actionContext = undefined;
     const omnitrix = Boolean(this.options.omnitrix?.());
-    const pad = this.options.gamepad ? this.pad.sample(false, omnitrix) : undefined;
-    const keyboardActive = Boolean(i.direction || i.down || i.pressed.length ||
+    const pad = this.options.gamepad ? this.pad.sample(false, omnitrix,!!this.options.introduction?.()) : undefined;
+    const keyboardActive = Boolean(i.skipIntro || i.direction || i.down || i.pressed.length ||
       (omnitrix && (this.held.has(this.bindings.heavy) || this.held.has(this.bindings.jump))));
-    const padActive = Boolean(pad && (pad.direction || pad.down || pad.up || pad.pressed.length || pad.omnitrix?.held));
+    const padActive = Boolean(pad && (pad.skipIntro || pad.direction || pad.down || pad.up || pad.pressed.length || pad.omnitrix?.held));
     if (keyboardActive) this.activeChainKeys = undefined;
     else if (padActive) this.activeChainKeys = this.pad.keys;
     const frame = !keyboardActive && padActive ? pad! : i;

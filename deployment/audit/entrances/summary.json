@@ -1,0 +1,82 @@
+{
+  "characters": [
+    {
+      "id": "samurai",
+      "errorCount": 0,
+      "capturedFrames": 18,
+      "sampledTicks": 258
+    },
+    {
+      "id": "dio",
+      "errorCount": 0,
+      "capturedFrames": 18,
+      "sampledTicks": 231
+    },
+    {
+      "id": "goku",
+      "errorCount": 0,
+      "capturedFrames": 18,
+      "sampledTicks": 245
+    },
+    {
+      "id": "luffy",
+      "errorCount": 0,
+      "capturedFrames": 18,
+      "sampledTicks": 233
+    },
+    {
+      "id": "sasuke",
+      "errorCount": 0,
+      "capturedFrames": 18,
+      "sampledTicks": 254
+    },
+    {
+      "id": "kaneki",
+      "errorCount": 0,
+      "capturedFrames": 18,
+      "sampledTicks": 208
+    },
+    {
+      "id": "ben",
+      "errorCount": 0,
+      "capturedFrames": 18,
+      "sampledTicks": 264
+    },
+    {
+      "id": "xebec",
+      "errorCount": 0,
+      "capturedFrames": 18,
+      "sampledTicks": 271
+    },
+    {
+      "id": "asta",
+      "errorCount": 0,
+      "capturedFrames": 18,
+      "sampledTicks": 252
+    }
+  ],
+  "lan": [
+    {
+      "skip": false,
+      "commonTicks": 225,
+      "introTicks": 205,
+      "hashesEqual": true,
+      "resyncs": [
+        "0",
+        "0"
+      ],
+      "errorCount": 0
+    },
+    {
+      "skip": true,
+      "commonTicks": 128,
+      "introTicks": 103,
+      "hashesEqual": true,
+      "resyncs": [
+        "0",
+        "0"
+      ],
+      "errorCount": 0
+    }
+  ]
+}

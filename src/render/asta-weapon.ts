@@ -1,4 +1,6 @@
 import { astaWeaponHidden, drawAstaBladeExtension } from "./asta-antimagic-fx";
+import { drawAstaGrimoire, grimoireWeaponPose } from "./asta-grimoire";
+import { recoverableAstaHealth } from "../engine/asta-causality";
 import type { Fighter } from "../engine/combat";
 import {
   visibleAstaSword,
@@ -22,12 +24,15 @@ export function drawAstaWeapon(
     sockets as Record<string, { x: number; y: number; angle: number }[]>
   )[id]?.[a.frame()];
   if (!grip) return;
+  drawAstaGrimoire(c, f);
+  const pose = grimoireWeaponPose(f, grip);
   const sword = visibleAstaSword(f),
     weapon = weapons[sword];
   c.save();
   c.imageSmoothingEnabled = false;
-  c.translate(grip.x, grip.y);
-  c.rotate(((grip.angle + 90) * Math.PI) / 180);
+  c.translate(pose.x, pose.y);
+  c.rotate(((pose.angle + 90) * Math.PI) / 180);
+  c.scale(pose.scale, pose.scale);
   c.drawImage(
     atlas,
     weapon.index * 128,
@@ -41,27 +46,29 @@ export function drawAstaWeapon(
   );
   c.restore();
   drawAstaBladeExtension(c, f);
-  // The closed fist occludes the hilt. This is the authored cel, never a posed/warped body.
   const x = Math.round(grip.x + s.pivot.x),
     y = Math.round(grip.y + s.pivot.y);
-  c.drawImage(
-    body,
-    s.x + x - 5,
-    s.y + y - 5,
-    10,
-    10,
-    grip.x - 5,
-    grip.y - 5,
-    10,
-    10,
-  );
+  if (pose.scale >= 0.99)
+    c.drawImage(
+      body,
+      s.x + x - 5,
+      s.y + y - 5,
+      10,
+      10,
+      grip.x - 5,
+      grip.y - 5,
+      10,
+      10,
+    );
 }
 export function drawAstaSwordHud(
   c: CanvasRenderingContext2D,
   f: Fighter,
   x: number,
 ) {
-  const sword = f.asta!.equipped;
+  const s = f.asta!,
+    sword = s.equipped,
+    now = f.match?.combatFrame ?? 0;
   c.save();
   c.font = "12px monospace";
   c.fillStyle = "#e5c677";
@@ -70,37 +77,62 @@ export function drawAstaSwordHud(
     c.fillStyle = id === sword ? "#e5c677" : "#39414b";
     c.fillRect(x + i * 44, 158, 38, 4);
   });
-  const relay = f.asta?.relay,
-    pursuit = f.asta?.pursuit;
+  const relay = s.relay,
+    cooldown = Math.max(0, s.restorationReadyAt - now);
+  c.font = "10px monospace";
+  c.fillStyle = cooldown ? "#8b8792" : "#c9baa3";
+  c.fillText(
+    cooldown
+      ? "CAUSALITY · REVERSÃO " + (cooldown / 60).toFixed(1) + "s"
+      : "CAUSALITY · REVERSÃO PRONTA (" + recoverableAstaHealth(f) + " HP)",
+    x,
+    177,
+  );
+  if (
+    s.causalityResult &&
+    now - s.causalityResult.at < 45 &&
+    (s.causalityResult.hp || s.causalityResult.cleansed.length)
+  ) {
+    c.fillStyle = "#ded4b6";
+    c.fillText(
+      "REVERSÃO +" +
+        s.causalityResult.hp +
+        " HP · " +
+        s.causalityResult.cleansed.length +
+        " EFEITOS",
+      x,
+      192,
+    );
+  }
   if (relay) {
     c.fillStyle = "#d3a5ad";
     c.fillText(
       "RELAY · " +
-        relay.extensions +
-        "/2 · " +
-        (relay.phase === "finish"
-          ? "FINALIZAÇÃO"
-          : relay.confirmed
-            ? "CONFIRMADO"
+        (relay.phase === "branch"
+          ? "FINALIZAÇÃO " + swordNames[relay.sword]
+          : relay.phase === "choice"
+            ? "ESCOLHA UMA ESPADA"
             : "ABERTURA"),
       x,
-      182,
+      207,
     );
-    c.font = "10px monospace";
-    c.fillStyle = "#c3c8d0";
-    c.fillText("Frente+J Slayer · Trás+J Slasher", x, 199);
-    c.fillText("Baixo+J Dweller · Baixo+K Destroyer", x, 212);
-    if (relay.confirmed && relay.phase !== "finish" && relay.extensions < 2) {
-      const remaining = Math.max(
-        0,
-        Math.min(1, (relay.windowTo - f.stateFrame) / 12),
-      );
+    c.fillStyle = relay.phase === "choice" ? "#e8d8b8" : "#88909c";
+    relay.options.forEach((sword, i) =>
+      c.fillText(
+        ["J", "K", "L"][i] + " · " + swordNames[sword],
+        x + i * 125,
+        221,
+      ),
+    );
+    if (relay.phase === "choice") {
       c.fillStyle = "#8b3c52";
-      c.fillRect(x, 219, 170 * remaining, 3);
+      c.fillRect(
+        x,
+        227,
+        240 * Math.max(0, Math.min(1, (relay.windowTo - f.stateFrame) / 16)),
+        3,
+      );
     }
-  } else if (pursuit && !pursuit.used && f.match!.frame <= pursuit.until) {
-    c.fillStyle = "#c8b0ce";
-    c.fillText("BLACK SLASH · J PARA PERSEGUIR", x, 182);
   }
   c.restore();
 }

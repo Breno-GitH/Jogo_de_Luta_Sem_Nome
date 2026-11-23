@@ -1,5 +1,7 @@
 # Evidências de Asta — Prompt 2.1
 
+> Registro histórico. As regras atuais de ↓↓J/K/L e o grimório estão documentados no Prompt 2.2, em `../../../docs/asta-22.md` e `../asta22/`.
+
 Capturas reais do Canvas da arena em Chrome, por comandos de teclado. Não são páginas de laboratório.
 
 - `nove-especiais.webm`: nove comandos, com efeitos ligados e depois desligados.
