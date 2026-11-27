@@ -1,0 +1,551 @@
+[
+  {
+    "id": "dojo",
+    "camera": {
+      "x": 640,
+      "y": 360,
+      "scale": 0.5
+    },
+    "transparent": 0,
+    "bounds": {
+      "left": -676,
+      "top": -336,
+      "right": 1888,
+      "bottom": 1108
+    }
+  },
+  {
+    "id": "dojo",
+    "camera": {
+      "x": 40,
+      "y": 50,
+      "scale": 0.65
+    },
+    "transparent": 0,
+    "bounds": {
+      "left": -973,
+      "top": -486,
+      "right": 1001,
+      "bottom": 626
+    }
+  },
+  {
+    "id": "dojo",
+    "camera": {
+      "x": 1240,
+      "y": 120,
+      "scale": 0.72,
+      "angle": 0.16
+    },
+    "transparent": 0,
+    "bounds": {
+      "left": 260,
+      "top": -496,
+      "right": 2179,
+      "bottom": 779
+    }
+  },
+  {
+    "id": "dojo",
+    "camera": {
+      "x": 640,
+      "y": -180,
+      "scale": 0.6
+    },
+    "transparent": 0,
+    "bounds": {
+      "left": -457,
+      "top": -761,
+      "right": 1681,
+      "bottom": 444
+    }
+  },
+  {
+    "id": "budokai",
+    "camera": {
+      "x": 640,
+      "y": 360,
+      "scale": 0.5
+    },
+    "transparent": 0,
+    "bounds": {
+      "left": -676,
+      "top": -336,
+      "right": 1888,
+      "bottom": 1108
+    }
+  },
+  {
+    "id": "budokai",
+    "camera": {
+      "x": 40,
+      "y": 50,
+      "scale": 0.65
+    },
+    "transparent": 0,
+    "bounds": {
+      "left": -973,
+      "top": -486,
+      "right": 1001,
+      "bottom": 626
+    }
+  },
+  {
+    "id": "budokai",
+    "camera": {
+      "x": 1240,
+      "y": 120,
+      "scale": 0.72,
+      "angle": 0.16
+    },
+    "transparent": 0,
+    "bounds": {
+      "left": 260,
+      "top": -496,
+      "right": 2179,
+      "bottom": 779
+    }
+  },
+  {
+    "id": "budokai",
+    "camera": {
+      "x": 640,
+      "y": -180,
+      "scale": 0.6
+    },
+    "transparent": 0,
+    "bounds": {
+      "left": -457,
+      "top": -761,
+      "right": 1681,
+      "bottom": 444
+    }
+  },
+  {
+    "id": "cairo",
+    "camera": {
+      "x": 640,
+      "y": 360,
+      "scale": 0.5
+    },
+    "transparent": 0,
+    "bounds": {
+      "left": -676,
+      "top": -336,
+      "right": 1888,
+      "bottom": 1108
+    }
+  },
+  {
+    "id": "cairo",
+    "camera": {
+      "x": 40,
+      "y": 50,
+      "scale": 0.65
+    },
+    "transparent": 0,
+    "bounds": {
+      "left": -973,
+      "top": -486,
+      "right": 1001,
+      "bottom": 626
+    }
+  },
+  {
+    "id": "cairo",
+    "camera": {
+      "x": 1240,
+      "y": 120,
+      "scale": 0.72,
+      "angle": 0.16
+    },
+    "transparent": 0,
+    "bounds": {
+      "left": 260,
+      "top": -496,
+      "right": 2179,
+      "bottom": 779
+    }
+  },
+  {
+    "id": "cairo",
+    "camera": {
+      "x": 640,
+      "y": -180,
+      "scale": 0.6
+    },
+    "transparent": 0,
+    "bounds": {
+      "left": -457,
+      "top": -761,
+      "right": 1681,
+      "bottom": 444
+    }
+  },
+  {
+    "id": "enies",
+    "camera": {
+      "x": 640,
+      "y": 360,
+      "scale": 0.5
+    },
+    "transparent": 0,
+    "bounds": {
+      "left": -676,
+      "top": -336,
+      "right": 1888,
+      "bottom": 1108
+    }
+  },
+  {
+    "id": "enies",
+    "camera": {
+      "x": 40,
+      "y": 50,
+      "scale": 0.65
+    },
+    "transparent": 0,
+    "bounds": {
+      "left": -973,
+      "top": -486,
+      "right": 1001,
+      "bottom": 626
+    }
+  },
+  {
+    "id": "enies",
+    "camera": {
+      "x": 1240,
+      "y": 120,
+      "scale": 0.72,
+      "angle": 0.16
+    },
+    "transparent": 0,
+    "bounds": {
+      "left": 260,
+      "top": -496,
+      "right": 2179,
+      "bottom": 779
+    }
+  },
+  {
+    "id": "enies",
+    "camera": {
+      "x": 640,
+      "y": -180,
+      "scale": 0.6
+    },
+    "transparent": 0,
+    "bounds": {
+      "left": -457,
+      "top": -761,
+      "right": 1681,
+      "bottom": 444
+    }
+  },
+  {
+    "id": "uchiha",
+    "camera": {
+      "x": 640,
+      "y": 360,
+      "scale": 0.5
+    },
+    "transparent": 0,
+    "bounds": {
+      "left": -676,
+      "top": -336,
+      "right": 1888,
+      "bottom": 1108
+    }
+  },
+  {
+    "id": "uchiha",
+    "camera": {
+      "x": 40,
+      "y": 50,
+      "scale": 0.65
+    },
+    "transparent": 0,
+    "bounds": {
+      "left": -973,
+      "top": -486,
+      "right": 1001,
+      "bottom": 626
+    }
+  },
+  {
+    "id": "uchiha",
+    "camera": {
+      "x": 1240,
+      "y": 120,
+      "scale": 0.72,
+      "angle": 0.16
+    },
+    "transparent": 0,
+    "bounds": {
+      "left": 260,
+      "top": -496,
+      "right": 2179,
+      "bottom": 779
+    }
+  },
+  {
+    "id": "uchiha",
+    "camera": {
+      "x": 640,
+      "y": -180,
+      "scale": 0.6
+    },
+    "transparent": 0,
+    "bounds": {
+      "left": -457,
+      "top": -761,
+      "right": 1681,
+      "bottom": 444
+    }
+  },
+  {
+    "id": "anteiku",
+    "camera": {
+      "x": 640,
+      "y": 360,
+      "scale": 0.5
+    },
+    "transparent": 0,
+    "bounds": {
+      "left": -676,
+      "top": -336,
+      "right": 1888,
+      "bottom": 1108
+    }
+  },
+  {
+    "id": "anteiku",
+    "camera": {
+      "x": 40,
+      "y": 50,
+      "scale": 0.65
+    },
+    "transparent": 0,
+    "bounds": {
+      "left": -973,
+      "top": -486,
+      "right": 1001,
+      "bottom": 626
+    }
+  },
+  {
+    "id": "anteiku",
+    "camera": {
+      "x": 1240,
+      "y": 120,
+      "scale": 0.72,
+      "angle": 0.16
+    },
+    "transparent": 0,
+    "bounds": {
+      "left": 260,
+      "top": -496,
+      "right": 2179,
+      "bottom": 779
+    }
+  },
+  {
+    "id": "anteiku",
+    "camera": {
+      "x": 640,
+      "y": -180,
+      "scale": 0.6
+    },
+    "transparent": 0,
+    "bounds": {
+      "left": -457,
+      "top": -761,
+      "right": 1681,
+      "bottom": 444
+    }
+  },
+  {
+    "id": "undertown",
+    "camera": {
+      "x": 640,
+      "y": 360,
+      "scale": 0.5
+    },
+    "transparent": 0,
+    "bounds": {
+      "left": -676,
+      "top": -336,
+      "right": 1888,
+      "bottom": 1108
+    }
+  },
+  {
+    "id": "undertown",
+    "camera": {
+      "x": 40,
+      "y": 50,
+      "scale": 0.65
+    },
+    "transparent": 0,
+    "bounds": {
+      "left": -973,
+      "top": -486,
+      "right": 1001,
+      "bottom": 626
+    }
+  },
+  {
+    "id": "undertown",
+    "camera": {
+      "x": 1240,
+      "y": 120,
+      "scale": 0.72,
+      "angle": 0.16
+    },
+    "transparent": 0,
+    "bounds": {
+      "left": 260,
+      "top": -496,
+      "right": 2179,
+      "bottom": 779
+    }
+  },
+  {
+    "id": "undertown",
+    "camera": {
+      "x": 640,
+      "y": -180,
+      "scale": 0.6
+    },
+    "transparent": 0,
+    "bounds": {
+      "left": -457,
+      "top": -761,
+      "right": 1681,
+      "bottom": 444
+    }
+  },
+  {
+    "id": "godvalley",
+    "camera": {
+      "x": 640,
+      "y": 360,
+      "scale": 0.5
+    },
+    "transparent": 0,
+    "bounds": {
+      "left": -676,
+      "top": -336,
+      "right": 1888,
+      "bottom": 1108
+    }
+  },
+  {
+    "id": "godvalley",
+    "camera": {
+      "x": 40,
+      "y": 50,
+      "scale": 0.65
+    },
+    "transparent": 0,
+    "bounds": {
+      "left": -973,
+      "top": -486,
+      "right": 1001,
+      "bottom": 626
+    }
+  },
+  {
+    "id": "godvalley",
+    "camera": {
+      "x": 1240,
+      "y": 120,
+      "scale": 0.72,
+      "angle": 0.16
+    },
+    "transparent": 0,
+    "bounds": {
+      "left": 260,
+      "top": -496,
+      "right": 2179,
+      "bottom": 779
+    }
+  },
+  {
+    "id": "godvalley",
+    "camera": {
+      "x": 640,
+      "y": -180,
+      "scale": 0.6
+    },
+    "transparent": 0,
+    "bounds": {
+      "left": -457,
+      "top": -761,
+      "right": 1681,
+      "bottom": 444
+    }
+  },
+  {
+    "id": "clover",
+    "camera": {
+      "x": 640,
+      "y": 360,
+      "scale": 0.5
+    },
+    "transparent": 0,
+    "bounds": {
+      "left": -676,
+      "top": -336,
+      "right": 1888,
+      "bottom": 1108
+    }
+  },
+  {
+    "id": "clover",
+    "camera": {
+      "x": 40,
+      "y": 50,
+      "scale": 0.65
+    },
+    "transparent": 0,
+    "bounds": {
+      "left": -973,
+      "top": -486,
+      "right": 1001,
+      "bottom": 626
+    }
+  },
+  {
+    "id": "clover",
+    "camera": {
+      "x": 1240,
+      "y": 120,
+      "scale": 0.72,
+      "angle": 0.16
+    },
+    "transparent": 0,
+    "bounds": {
+      "left": 260,
+      "top": -496,
+      "right": 2179,
+      "bottom": 779
+    }
+  },
+  {
+    "id": "clover",
+    "camera": {
+      "x": 640,
+      "y": -180,
+      "scale": 0.6
+    },
+    "transparent": 0,
+    "bounds": {
+      "left": -457,
+      "top": -761,
+      "right": 1681,
+      "bottom": 444
+    }
+  }
+]

@@ -58,6 +58,7 @@ try {
     [
       ...new Set([
         ...bundles,
+        ...["enies-lower", "godvalley-lower", "clover-open", "undertown-open", "clover-world", "undertown-world"].map(name => `arenas/${name}.png`),
         ...Object.values(entrances.characters).map(clip => `sprites/${clip.sheet}`),
         "sprites/dio/secondaryEntrance.png",
         "sprites/the-world/secondaryAppear.png",

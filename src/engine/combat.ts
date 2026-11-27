@@ -36,6 +36,7 @@ import { MOVEMENT_TIMING } from "./movement";
 import { combatPace, pacedCharacter } from "./pace";
 import { antiLightCombo, isLimitedLightNormal, launcherCombo } from "./anti-light-combo";
 import { arenaForCharacter, createArena, stepArena, type ArenaId, type ArenaMode, type ArenaState } from "./arenas";
+import { arenaLanding, openStage, prepareArenaMovement, supportHeight } from "./arena-layouts";
 import cinematics from "../data/cinematics.json";
 import { reactionBoxes, reactionFor } from "./lifecycle";
 import { isSuperMove, poseAt, phaseAt } from "./moves";
@@ -209,8 +210,10 @@ export class Fighter {
   private get normalMoves() { return this.asta ? astaMoves[this.asta.attackSword ?? this.asta.equipped] : this.benForm?.moves ?? this.data.moves; }
   get grabSequence() { return this.benForm?.grab ?? this.data.grabSequence; }
   get stageInset() { return Math.max(40, (this.benForm?.width ?? 52) * this.benScale / 2); }
+  get groundY() { return this.match ? supportHeight(this.match.arena, this) : FLOOR; }
   get airborne() {
-    return this.y < FLOOR || this.vy < 0;
+    if (this.match?.arena.transition || this.match?.arena.falling[this.id]) return true;
+    return this.y !== this.groundY || this.vy < 0;
   }
   get move(): Move | undefined {
     return this.lookupMove(this.moveId);
@@ -371,6 +374,7 @@ export class Fighter {
       : { x: this.x, y: this.y, w: 0, h: 0 };
   }
   hurtboxes(): Rect[] {
+    if (this.match?.arena.falling[this.id]) return [];
     if (gokuInvisible(this)) return [];
     if (planetoid(this)) return [worldRect({ x: -50, y: -118, w: 105, h: 116 }, this.x, this.y, this.facing)];
     const lift = this.stand?.s.ownerLiftFrame ?? -1;
@@ -436,6 +440,7 @@ export class Fighter {
   }
   get invulnerable() {
     return (
+      Boolean(this.match?.arena.falling[this.id]) ||
       gokuInvisible(this) ||
       this.state === "getup" ||
       Boolean(this.benPhase && !this.benPhase.physicalOnly) ||
@@ -1283,6 +1288,7 @@ export class Fighter {
     flyNrg(this, input);
     if (this.benScale > 1 && this.state === "walk") this.vx *= 1 / Math.sqrt(this.benScale);
     const wasAirborne = this.airborne;
+    const previousY = this.y;
     if (
       wasAirborne &&
       !(
@@ -1296,8 +1302,9 @@ export class Fighter {
     if (this.chill?.freeze) this.vx = 0;
     this.x = Math.max(this.stageInset, Math.min(1280 - this.stageInset, this.x + this.vx));
     this.y += this.vy;
-    if (this.y >= FLOOR) {
-      this.y = FLOOR;
+    const landingY = this.match ? arenaLanding(this.match.arena, this, previousY) : this.y >= FLOOR ? FLOOR : undefined;
+    if (landingY !== undefined) {
+      this.y = landingY;
       this.vy = 0;
       if (wasAirborne && this.state === "attack" && this.move?.ben?.leap) {
         this.stateFrame = this.move.startup;
@@ -1431,6 +1438,7 @@ export class Match {
   phaseFrames = 0;
   intro!: IntroState;
   wins = [0, 0];
+  get roundsToWin() { return openStage(this.arena) ? 3 : 2; }
   round = 1;
   message = "ROUND 1";
   events: HitEvent[] = [];
@@ -1485,6 +1493,8 @@ export class Match {
     this.frame++;
     stepArena(this, this.hits);
     this.hits = [];
+    // A stage descent owns both actors and the timer until landing; no queued inputs leak out.
+    if (this.arena.transition) return;
     if (this.phase === "fight" && this.arena.ringOutSeat !== undefined) {
       this.checkRoundEnd();
       return;
@@ -1506,9 +1516,9 @@ export class Match {
         }
       }
       if (--this.phaseFrames <= 0) {
-        if (!this.rules.training && this.wins.some((w) => w >= 2)) {
+        if (!this.rules.training && this.wins.some((w) => w >= this.roundsToWin)) {
           this.phase = "finished";
-          this.message = this.wins[0] >= 2 ? "VOCÊ VENCEU" : "BOT VENCEU";
+          this.message = this.wins[0] >= this.roundsToWin ? "VOCÊ VENCEU" : "BOT VENCEU";
         } else {
           this.round++;
           this.projectiles = [];
@@ -1614,7 +1624,7 @@ export class Match {
     this.combatFrame++;
     const beforeMovement = this.fighters.map(f => f.x);
     this.fighters.forEach((f, i) => {
-      if (this.temporal.isFrozen(i)) return;
+      if (this.temporal.isFrozen(i) || this.arena.falling[i]) return;
       const other = this.fighters[1 - i];
       const well = f.airborne && !["hitstun", "blockstun", "ko", "getup"].includes(f.state) && !this.temporal.isFrozen(other.id)
         ? gravityAt(other, f.x, f.y, FLOOR) : undefined;
@@ -1627,7 +1637,8 @@ export class Match {
         Math.abs(f.x - other.x) < 200;
       tickSasukeCurse(f);
       const fallingDrop = f.y < FLOOR && f.state === "attack" && !!(f.move?.ben?.landingImpact || f.move?.ben?.leap);
-      f.tick(inputs[i], this.combatFrame, other);
+      const arenaInput = prepareArenaMovement(this.arena, f, inputs[i]);
+      f.tick(arenaInput, this.combatFrame, other);
       this.tickBenAbilities(f, other, fallingDrop);
       if (!f.combo) f.kanekiCaptured = undefined;
     });
@@ -1646,7 +1657,7 @@ export class Match {
     const [a, b] = this.fighters;
     const crystalWalls = this.benWalls();
     for (const f of this.fighters) {
-      if (this.temporal.isFrozen(f.id)) continue;
+      if (this.temporal.isFrozen(f.id) || this.arena.falling[f.id]) continue;
       this.stopAtBenWalls(f, beforeMovement[f.id], crystalWalls);
       if (f.move?.kind !== "grab") {
         const shapes = f.attackShapes(beforeMovement[f.id]);
@@ -1654,14 +1665,14 @@ export class Match {
           `${f.id}:${this.combatFrame - f.stateFrame}:${f.hitWindow?.id ?? 0}`, f.id);
       }
     }
-    if (overlaps(a.pushbox(), b.pushbox()) && this.temporal.active) {
+    if (!this.arena.falling.some(Boolean) && overlaps(a.pushbox(), b.pushbox()) && this.temporal.active) {
       // The frozen actor cannot be pushed. Clamp only the moving actor.
       const mover = this.fighters[this.temporal.s.owner],
         frozen = this.fighters[1 - this.temporal.s.owner];
       const gap = (mover.pushbox().w + frozen.pushbox().w) / 2;
       mover.x = frozen.x + (mover.x <= frozen.x ? -gap : gap);
       mover.x = Math.max(mover.stageInset, Math.min(1280 - mover.stageInset, mover.x));
-    } else if (overlaps(a.pushbox(), b.pushbox()) && !this.benCrossing(a, b) && !this.benCrossing(b, a)) {
+    } else if (!this.arena.falling.some(Boolean) && overlaps(a.pushbox(), b.pushbox()) && !this.benCrossing(a, b) && !this.benCrossing(b, a)) {
       const [left, right] = a.x <= b.x ? [a, b] : [b, a];
       // Transfer the full separation to the free side at a wall; clamping
       // each actor independently leaves overlapping pushboxes in the corner.
@@ -1671,7 +1682,7 @@ export class Match {
       right.x = center + rightHalf;
     }
     for (const f of this.fighters)
-      if (!this.temporal.isFrozen(f.id)) this.stopAtBenWalls(f, beforeMovement[f.id], crystalWalls);
+      if (!this.temporal.isFrozen(f.id) && !this.arena.falling[f.id]) this.stopAtBenWalls(f, beforeMovement[f.id], crystalWalls);
     this.stepXebecWaves();
     // Capture contacts before resolving so simultaneous attacks can trade.
     const contacts = this.fighters.map((f, i) => {
@@ -3753,7 +3764,7 @@ export class Match {
         this.message = "EMPATE";
       } else {
         this.wins[winner]++;
-        this.message = this.arena.ringOutSeat !== undefined ? "FORA DO RINGUE" : this.timer <= 0 ? "TEMPO ESGOTADO" : "K.O.";
+        this.message = this.arena.ringOutSeat !== undefined ? openStage(this.arena) ? "QUEDA · K.O." : "FORA DO RINGUE" : this.timer <= 0 ? "TEMPO ESGOTADO" : "K.O.";
       }
       if (winner === 0 || winner === 1) {
         const source = this.fighters[winner], target = this.fighters[1 - winner];
@@ -3762,7 +3773,8 @@ export class Match {
       }
       this.fighters.forEach((f, i) => {
         f.vx = f.vy = 0;
-        f.y = FLOOR;
+        // An eliminated actor stays below the stage; never snap them back onto the ledge.
+        if (!(openStage(this.arena) && this.arena.ringOutSeat !== undefined)) f.y = FLOOR;
         f.buffer.clear();
         f.sasukeCurse = undefined;
         f.chill = undefined;

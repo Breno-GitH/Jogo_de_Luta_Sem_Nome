@@ -7,6 +7,7 @@ import { chainFinisher, type ChainButton } from "./kaneki-chain";
 import { isSuperMove } from "./moves";
 import { canAwaken } from "./sasuke-curse";
 import type { SasukeSpecialId } from "./sasuke-specials";
+import { openStage } from "./arena-layouts";
 
 const sasukeCommands: Record<SasukeSpecialId, [number[], Button]> = {
   senbon: [[2, 6], "light"],
@@ -213,6 +214,13 @@ export class Bot {
       this.plan = neutral();
       this.airRoute = false;
       return neutral();
+    }
+    if (openStage(match.arena) && self.state !== "attack" && (self.x < 285 || self.x > 995)) {
+      this.queue = [];
+      return this.choose({ direction: self.x < 640 ? 1 : -1, down: false, pressed: [] }, "recuperar a borda");
+    }
+    if (openStage(match.arena) && this.perceived && this.perceived.y < self.y - 80 && !self.airborne && self.state !== "attack") {
+      return this.choose({ direction: this.perceived.x < self.x ? -1 : 1, down: false, pressed: ["jump"] }, "alcançar plataforma");
     }
     if (this.queue.length) return this.queue.shift()!;
     // Hit confirms concern our own already-resolved move. Their delay starts

@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
 const files = [
   "src/engine/arenas.ts",
+  "src/engine/arena-layouts.ts",
   "src/engine/entrances.ts",
   "src/engine/asta.ts",
   "src/engine/asta-super.ts",

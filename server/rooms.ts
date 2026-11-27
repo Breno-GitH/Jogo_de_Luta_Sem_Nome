@@ -170,7 +170,7 @@ export class Rooms {
     const room: Room = {
       code,
       arenaId: "dojo",
-      arenaMode: "classico",
+      arenaMode: "interativo",
       host: 0,
       status: "lobby",
       players: [null, null],
@@ -272,7 +272,7 @@ export class Rooms {
     if (room.status !== "lobby") fail("notLobby", "A arena só pode mudar no lobby.");
     if (!validArena(id) || !validArenaMode(mode)) fail("invalidArena", "Arena ou modo inválido.");
     room.arenaId = id;
-    room.arenaMode = mode;
+    room.arenaMode = mode === "caotico" ? "interativo" : mode;
     for (const player of room.players) if (player) player.ready = false;
     room.updated = this.now();
     this.broadcast(room);
@@ -567,7 +567,7 @@ export class Rooms {
           room.result = {
             matchId: room.matchId,
             tick,
-            winner: room.match!.wins[0] >= 2 ? 0 : 1,
+            winner: room.match!.wins[0] >= room.match!.roundsToWin ? 0 : 1,
             score: [room.match!.wins[0], room.match!.wins[1]],
             reason: room.match!.timer <= 0 ? "time" : "ko",
           };

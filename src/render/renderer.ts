@@ -7,6 +7,7 @@ import { astaSuperSheets, drawAstaUnionBackdrop, drawLiebeManifestation, drawAst
 import { assetBase } from "../asset-base";
 import { drawArena } from "./arena";
 import { drawArenaLife } from "./arena-life";
+import { arenaLayouts, descentProgress, lowerLevelOffset, openStage } from "../engine/arena-layouts";
 import { arenaIds } from "../engine/arenas";
 import benArt from "../data/ben-art.json";
 import { alienXScene } from "../engine/ben-alien-x";
@@ -158,7 +159,7 @@ export class Renderer {
           if (sheet) sheets.add(sheet);
     }
     const loads: Promise<void>[] = [];
-    for (const id of [...arenaIds, "dojo-damaged", "uchiha-ruin"]) {
+    for (const id of [...arenaIds, "dojo-damaged", "uchiha-ruin", "enies-lower", "godvalley-lower", "undertown-open", "clover-open", "clover-world", "undertown-world"]) {
       const image = new Image();
       loads.push(new Promise<void>((resolve, reject) => {
         image.onload = () => resolve();
@@ -366,6 +367,9 @@ export class Renderer {
     this.canvas.dataset.hitstop = String(match.hitstop);
     this.canvas.dataset.arena = match.arena.id;
     this.canvas.dataset.arenaMode = match.arena.mode;
+    this.canvas.dataset.arenaLevel = String(match.arena.level);
+    this.canvas.dataset.arenaTransition = String(match.arena.transition?.tick ?? "none");
+    this.canvas.dataset.arenaStructure = arenaLayouts[match.arena.id].structure;
     this.canvas.dataset.arenaPhase = String(match.arena.phase);
     this.canvas.dataset.arenaHazard = match.arena.hazard?.phase ?? "none";
     this.canvas.dataset.centipedePhase = kakuja?.phase ?? "";
@@ -553,7 +557,11 @@ export class Renderer {
     }
     c.save();
     if (this.effects && ordinaryShake) c.translate(ordinaryShake, 0);
-    if (stagedCamera) {
+    if (match.arena.transition) {
+      const progress = descentProgress(match.arena);
+      const shake = this.cameraShake && match.arena.transition.tick > 65 ? (match.frame % 2 ? 3 : -3) : 0;
+      c.translate(shake, -Math.round(progress * lowerLevelOffset));
+    } else if (stagedCamera) {
       const cam = stagedCamera;
       c.translate(640 + (this.cameraShake ? cam.shakeX : 0), 360 + (this.cameraShake ? cam.shakeY : 0));
       c.scale(cam.scale, cam.scale);
@@ -585,10 +593,20 @@ export class Renderer {
       c.translate(640, FLOOR);
       c.scale(z, z);
       c.translate(-cx, -cy);
+    } else if (!match.cinematicActive && !match.capture) {
+      // Fit both feet and heads during high launches/platform play, without changing simulation.
+      const top = Math.min(self.y, other.y) - 170, bottom = Math.max(FLOOR, self.y, other.y);
+      if (top < 145 || bottom > FLOOR + 20 || openStage(match.arena)) {
+        const scale = Math.max(.38, Math.min(openStage(match.arena) ? .82 : 1, 440 / (bottom - top)));
+        c.translate(640, 580); c.scale(scale, scale); c.translate(-640, -bottom);
+      }
     }
     const arenaVariant = match.arena.id === "dojo" ? "dojo-damaged" : match.arena.id === "uchiha" ? "uchiha-ruin" : "";
-    drawArena(c, match.arena, this.arenaImages.get(match.arena.id), benPadding, this.arenaImages.get(arenaVariant));
-    drawArenaLife(c, match.arena);
+    const lowerArena = this.arenaImages.get(`${match.arena.id}-lower`);
+    const worldArena = this.arenaImages.get(`${match.arena.id}-world`);
+    const arenaImage = this.arenaImages.get(openStage(match.arena) ? `${match.arena.id}-open` : match.arena.id);
+    drawArena(c, match.arena, arenaImage, benPadding, this.arenaImages.get(arenaVariant), lowerArena, worldArena);
+    drawArenaLife(c, match.arena, match, arenaImage);
     if (xebecEffects && conquerors.length)
       drawKingWillArena(c, conquerors, this.pressureStage, this.prefersReducedMotion.matches);
     if (union) {
@@ -606,7 +624,7 @@ export class Renderer {
     }
     if (reality && alienX && this.effects) {
       drawAlienXSpace(c, reality, alienX.tick, this.sprites.get(alienXBackdrop));
-      drawAlienXRebuild(c, reality, alienX.tick, () => drawArena(c, match.arena, this.arenaImages.get(match.arena.id), 0, this.arenaImages.get(arenaVariant)));
+      drawAlienXRebuild(c, reality, alienX.tick, () => drawArena(c, match.arena, arenaImage, 0, this.arenaImages.get(arenaVariant), lowerArena, worldArena));
     }
     const nightmare = spectral || match.fighters.some(f => f.state === "attack" && f.move?.ben?.nightmare && benGhostDepth(f) > 30);
     if (this.effects && nightmare) {
@@ -706,10 +724,10 @@ export class Renderer {
       if (fury && i === fury.attacker && furyStage?.attacker.hidden) return;
       if (road && i === road.attacker)
         drawRoadObject(c, this.sprites, road, this.debug);
-      if (!reality || reality.showSpace < .6) {
+      if ((!reality || reality.showSpace < .6) && Number.isFinite(f.groundY)) {
         c.fillStyle = "#0005";
         c.beginPath();
-        c.ellipse(f.x, FLOOR + 5, 55, 12, 0, 0, 7);
+        c.ellipse(f.x, (match.arena.transition ? f.y : f.groundY) + 5, 55, 12, 0, 0, 7);
         c.fill();
       }
       const kagunes = this.presentations[i].kagunes(f);
@@ -1024,7 +1042,7 @@ export class Renderer {
       c.fillStyle = "#f7e4bf";
       c.fillText(
         this.online && match.phase === "finished"
-          ? `JOGADOR ${match.wins[0] >= 2 ? 1 : 2} VENCEU`
+          ? `JOGADOR ${match.wins[0] >= match.roundsToWin ? 1 : 2} VENCEU`
           : match.message,
         640,
         345,
@@ -1110,7 +1128,7 @@ export class Renderer {
       c.fillStyle = "#d8dfdf";
       c.font = "12px monospace";
       c.fillText(`${f.health} / ${f.data.health}`, x, 124);
-      for (let r = 0; r < 2; r++) {
+      for (let r = 0; r < m.roundsToWin; r++) {
         c.fillStyle = m.wins[i] > r ? "#ffe1a5" : "#41515b";
         c.beginPath();
         c.arc(x + 460 - r * 21, 120, 6, 0, 7);
@@ -1192,7 +1210,7 @@ export class Renderer {
     );
     c.font = "11px monospace";
     c.fillStyle = "#8d9ca5";
-    c.fillText(m.rules.training ? "TREINAMENTO" : this.contextLabel, 640, 124);
+    c.fillText(m.rules.training ? "TREINAMENTO" : this.contextLabel.replace("MELHOR DE 3", `MELHOR DE ${m.roundsToWin * 2 - 1}`), 640, 124);
     const capture = m.capture;
     const tech = kanekiTechnique(capture?.kaneki?.specialId);
     const chain = capture?.kaneki?.chain;

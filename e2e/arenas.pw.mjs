@@ -18,7 +18,7 @@ test("nine arenas render in the real training match and keep animating", async (
     await page.click("#confirm-character");
     await page.selectOption("#arena-select", id);
     await page.selectOption("#arena-mode", "interativo");
-    await expect(page.locator("#arena-preview")).toHaveAttribute("src", new RegExp(`/arenas/${id}\\.png$`));
+    await expect(page.locator("#arena-preview")).toHaveAttribute("src", new RegExp(`/arenas/${id}${["undertown", "clover"].includes(id) ? "-open" : ""}\\.png$`));
     await page.click("#fight");
     const canvas = page.locator("canvas");
     await expect(canvas).toHaveAttribute("data-arena", id, { timeout: 60000 });
