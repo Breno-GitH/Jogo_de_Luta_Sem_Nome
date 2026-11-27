@@ -51,3 +51,41 @@ test("every arena covers extreme camera views without transparent pixels", async
     }
   }
 });
+
+test("all nine arena interactions paint their damaged or active state", async ({ page }) => {
+  test.setTimeout(120000);
+  await mkdir("docs/arenas/evidencias/interacoes", { recursive: true });
+  await page.goto("./", { waitUntil: "domcontentloaded" });
+  const kinds = { dojo: "floor", cairo: "debris", enies: "fall", uchiha: "debris",
+    anteiku: "debris", undertown: "surge", godvalley: "fall", clover: "surge" };
+  for (const id of ids) {
+    const pixels = await page.evaluate(async ({ id, kind }) => {
+      const [{ drawArena }, { drawArenaLife }, { createArena }] = await Promise.all([
+        import("/src/render/arena.ts"), import("/src/render/arena-life.ts"), import("/src/engine/arenas.ts"),
+      ]);
+      const image = new Image(); image.src = `/arenas/${id}.png`; await image.decode();
+      const variantId = id === "dojo" ? "dojo-damaged" : id === "uchiha" ? "uchiha-ruin" : "";
+      const variant = variantId ? new Image() : undefined;
+      if (variant) { variant.src = `/arenas/${variantId}.png`; await variant.decode(); }
+      const canvas = document.querySelector("#interaction-proof") ?? document.createElement("canvas");
+      canvas.id = "interaction-proof"; canvas.width = 1280; canvas.height = 720;
+      if (!canvas.isConnected) document.body.append(canvas);
+      const c = canvas.getContext("2d", { willReadFrequently: true });
+      c.clearRect(0, 0, 1280, 720);
+      const arena = createArena(id, "caotico");
+      arena.tick = 120; arena.phase = 4; arena.phaseStart = 1;
+      arena.integrity = 9; arena.reactionX = 640; arena.reactionUntil = 150;
+      if (kind) arena.hazard = { kind, x: 640, phase: "active", ticks: 20, affected: [false, false] };
+      if (kind === "fall") arena.collapsed = [640];
+      if (id === "budokai") arena.falling[1] = { kind: "ringout", tick: 15, x: 65 };
+      drawArena(c, arena, image, 0, variant);
+      drawArenaLife(c, arena, undefined, image);
+      const rgba = c.getImageData(0, 0, 1280, 720).data;
+      let transparent = 0;
+      for (let i = 3; i < rgba.length; i += 4) if (rgba[i] !== 255) transparent++;
+      return transparent;
+    }, { id, kind: kinds[id] });
+    expect(pixels, id).toBe(0);
+    await page.locator("#interaction-proof").screenshot({ path: `docs/arenas/evidencias/interacoes/${id}-caotico.png` });
+  }
+});

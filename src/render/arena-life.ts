@@ -159,36 +159,100 @@ function warning(c: CanvasRenderingContext2D, a: ArenaState) {
   c.fillStyle = color;
   c.fillText(h.kind === "fall" ? "CHÃO CEDENDO" : h.kind === "bombardment" ? "BUSTER CALL" :
     h.kind === "surge" ? "DESCARGA" : h.kind === "floor" ? "PISO INSTÁVEL" : "CUIDADO", h.x, FLOOR - 27);
-  if (isFloor) {
+  if (isFloor && (h.kind === "floor" || h.phase === "warning")) {
     const broken = h.phase === "active";
     px(c, broken ? "#141a25" : "#4b3b39", h.x - radius + 5, FLOOR + 7, radius * 2 - 10, broken ? 24 : 7);
     for (let i = 0; i < 8; i++) {
       const x = h.x - radius + 7 + i * (radius * 2 - 14) / 8;
       px(c, i % 2 ? "#8b7867" : "#bba389", x, FLOOR + (broken ? 16 + i % 3 * 7 : 9), 10, 3);
     }
-  } else if (h.kind === "debris" || h.kind === "bombardment") {
-    const elapsed = (h.kind === "bombardment" ? 100 : 78) - h.ticks;
-    const y = h.phase === "active" ? FLOOR - 34 : Math.min(FLOOR - 50, 90 + elapsed * 5);
-    if (h.kind === "bombardment") {
-      px(c, "#5b6471", h.x - 28, y - 8, 56, 18);
-      px(c, "#f09b69", h.x - 8, y + 9, 17, 20);
+  } else if (h.kind === "bombardment") {
+    const progress = h.phase === "active" ? 1 : 1 - h.ticks / 100;
+    const shellX = 1280 - (1280 - h.x) * progress;
+    const shellY = 300 + (FLOOR - 300) * progress * progress;
+    if (h.phase === "warning") {
+      c.strokeStyle = "#ffad74"; c.lineWidth = 2; c.setLineDash([7, 9]);
+      c.beginPath(); c.moveTo(1278, 300); c.quadraticCurveTo(h.x + 90, 260, h.x, FLOOR); c.stroke(); c.setLineDash([]);
+      px(c, "#353a43", shellX - 8, shellY - 4, 17, 9);
     } else {
-      px(c, a.id === "cairo" ? "#5a514a" : a.id === "anteiku" ? "#a9c8cc" : "#77736e", h.x - 15, y, 31, 11);
-      px(c, "#c4b69b", h.x - 11, y - 7, 23, 9);
+      c.fillStyle = "#ff9b5688"; c.beginPath(); c.arc(h.x, FLOOR - 16, 66, 0, Math.PI * 2); c.fill();
+      px(c, "#ffdd91", h.x - 16, FLOOR - 59, 32, 53);
+      for (let i = 0; i < 12; i++) px(c, i % 2 ? "#fbad61" : "#757c84", h.x + (i - 6) * 12, FLOOR - 8 - i % 4 * 11, 6, 5);
     }
-    if (h.phase === "active") for (let i = 0; i < 12; i++)
-      px(c, i % 2 ? "#b59b7e" : "#78838b", h.x + (i - 6) * 12, FLOOR - 6 - i % 4 * 9, 5, 4);
-  } else if (h.phase === "active") {
-    for (let i = -2; i <= 2; i++) {
-      const x = h.x + i * 24;
-      px(c, "#273340", x, FLOOR - 43 - i % 2 * 8, 5, 28);
-      px(c, color, x + 1, FLOOR - 47 - i % 2 * 8, 3, 10);
+  } else if (a.id === "cairo") {
+    const tilt = h.phase === "active" ? 1.28 : Math.max(0, (70 - h.ticks) / 70) * .8;
+    c.save(); c.translate(h.x - 38, FLOOR - 3); c.rotate(tilt);
+    px(c, "#4c4b52", -4, -150, 8, 150); px(c, "#8d8172", -2, -148, 3, 145);
+    px(c, "#d9af6b", -13, -151, 26, 8); px(c, "#fff1a4", -9, -146, 18, 6);
+    c.restore();
+    if (h.phase === "active") for (let i = 0; i < 7; i++) px(c, "#a3a4a8", h.x - 43 + i * 14, FLOOR + 8 + i % 3 * 4, 5, 3);
+  } else if (a.id === "uchiha") {
+    const progress = h.phase === "active" ? 1 : Math.max(0, (78 - h.ticks) / 78);
+    px(c, "#514f4e", h.x - 60, 165, 120, 6);
+    for (let i = 0; i < 3; i++) {
+      const y = h.phase === "active" ? FLOOR - 13 : 178 + progress * progress * (330 + i * 22);
+      px(c, i % 2 ? "#8e897b" : "#66635c", h.x - 38 + i * 28, y, 22, 13);
+      px(c, "#b7ae98", h.x - 34 + i * 28, y - 3, 13, 4);
     }
+  } else if (a.id === "anteiku") {
+    const progress = h.phase === "active" ? 1 : Math.max(0, (70 - h.ticks) / 70);
+    c.strokeStyle = "#cce2e8"; c.lineWidth = 2;
+    c.beginPath(); c.moveTo(h.x - 31, 330); c.lineTo(h.x, 390); c.lineTo(h.x + 29, 337); c.stroke();
+    for (let i = 0; i < 11; i++) {
+      const y = h.phase === "active" ? FLOOR + i % 3 * 4 : 387 + progress * progress * (150 + i % 3 * 13);
+      px(c, i % 2 ? "#c8e6ed" : "#8fb5c4", h.x - 42 + i * 8, y, 4, 5);
+    }
+  } else if (a.id === "undertown") {
+    const source = h.x < 640 ? 240 : 1010;
+    c.strokeStyle = color; c.lineWidth = h.phase === "active" ? 5 : 2;
+    c.beginPath(); c.moveTo(source, 317);
+    c.lineTo((source + h.x) / 2 - 18, 380); c.lineTo((source + h.x) / 2 + 15, 440);
+    c.lineTo(h.x, FLOOR - 15); c.stroke();
+    if (h.phase === "active") for (let i = -3; i <= 3; i++) px(c, "#abfff0", h.x + i * 18, FLOOR - 12 - Math.abs(i) * 6, 5, 20);
+  } else if (a.id === "clover") {
+    const height = h.phase === "active" ? 73 : 25 + Math.round((70 - h.ticks) / 3);
+    c.fillStyle = "#8251ae";
+    c.beginPath(); c.moveTo(h.x - 24, FLOOR); c.lineTo(h.x, FLOOR - height); c.lineTo(h.x + 24, FLOOR); c.closePath(); c.fill();
+    c.strokeStyle = color; c.lineWidth = 3; c.stroke();
+    if (h.phase === "active") for (let i = -3; i <= 3; i++) px(c, "#e4c6ff", h.x + i * 18, FLOOR - height - 12 - i % 2 * 8, 5, 13);
   }
   c.restore();
 }
 
-export function drawArenaLife(c: CanvasRenderingContext2D, a: ArenaState, match?: Match) {
+function collapsedGround(c: CanvasRenderingContext2D, a: ArenaState, image?: HTMLImageElement) {
+  if (!a.collapsed.length) return;
+  const bridge = a.id === "enies";
+  for (const x of a.collapsed) {
+    const radius = hazardRadius(a);
+    const left = Math.round(x - radius), width = radius * 2;
+    const fill = c.createLinearGradient(0, FLOOR, 0, 800);
+    fill.addColorStop(0, bridge ? "#145884" : "#242532");
+    fill.addColorStop(1, bridge ? "#092b54" : "#101b26");
+    c.fillStyle = fill; c.fillRect(left, FLOOR + 4, width, 300);
+    for (let i = 0; i < 13; i++) {
+      const xx = left + (i * 47 % width);
+      const yy = FLOOR + 16 + (i * 31 % 120);
+      px(c, bridge ? i % 2 ? "#91c8d3" : "#4488aa" : i % 2 ? "#756559" : "#4c5360", xx, yy, bridge ? 18 : 11, bridge ? 2 : 5);
+    }
+    px(c, bridge ? "#b4bec5" : "#8c7663", left - 8, FLOOR + 1, 13, 13);
+    px(c, bridge ? "#b4bec5" : "#8c7663", left + width - 5, FLOOR + 1, 13, 13);
+    const h = a.hazard;
+    if (h?.kind === "fall" && h.phase === "active" && Math.abs(h.x - x) < 5) {
+      const age = 28 - h.ticks;
+      const drop = Math.min(270, Math.round(age * age * .72));
+      if (image?.complete && image.naturalWidth) {
+        c.save(); c.beginPath(); c.rect(left, FLOOR + 4 + drop, width, 145); c.clip();
+        c.drawImage(image, left * image.naturalWidth / 1280, FLOOR * image.naturalHeight / 720,
+          width * image.naturalWidth / 1280, 140 * image.naturalHeight / 720,
+          left, FLOOR + drop, width, 140);
+        c.restore();
+      } else px(c, bridge ? "#a8b4bc" : "#88715e", left + 8, FLOOR + drop, width - 16, 24);
+      for (let i = 0; i < 8; i++) px(c, bridge ? "#d1d0c3" : "#a79478", left + i * width / 8, FLOOR + drop + 15 + i % 3 * 11, 10, 5);
+    }
+  }
+}
+
+export function drawArenaLife(c: CanvasRenderingContext2D, a: ArenaState, match?: Match, image?: HTMLImageElement) {
   const t = a.tick, recent = t < a.reactionUntil;
   c.save(); c.imageSmoothingEnabled = false;
   switch (a.id) {
@@ -228,7 +292,6 @@ export function drawArenaLife(c: CanvasRenderingContext2D, a: ArenaState, match?
       motes(c, a, "#d6dce2", 9, 220, 0.5);
       if (a.phase) for (let i = 0; i < 8; i++) px(c, "#4c5964", 580 + i * 16, FLOOR + 10 + i % 3 * 3, 10, 3);
       if (a.phase >= 2) for (let i = 0; i < a.phase * 2; i++) px(c, "#687783", 470 + i * 38, FLOOR + 17 + i % 3 * 5, 25, 4);
-      if (a.phase >= 4) px(c, "#172632", 508, FLOOR + 8, 103, 15);
       break;
     case "uchiha":
       motes(c, a, "#8d8c80", 16, 210, 0.08);
@@ -266,7 +329,6 @@ export function drawArenaLife(c: CanvasRenderingContext2D, a: ArenaState, match?
       for (let i = 0; i < 4; i++) px(c, "#6b7480", 92 + i * 318 + wave(t + i * 26, 31, 7), 185 + i % 2 * 17, 9, 5);
       if (a.phase) motes(c, a, "#7f6962", 11, 345, 1.2);
       if (a.phase >= 2) for (let i = 0; i < a.phase * 4; i++) px(c, "#5b5551", 265 + i * 37, FLOOR + 9 + i % 4 * 5, 15, 5);
-      if (a.phase >= 4) px(c, "#1e2529", 820, FLOOR + 3, 115, 27);
       if (match?.pandemonium) { c.fillStyle = "#6a2a3440"; c.fillRect(0, 0, 1280, 580); }
       break;
     case "clover":
@@ -289,12 +351,7 @@ export function drawArenaLife(c: CanvasRenderingContext2D, a: ArenaState, match?
     }
   }
   stageCracks(c, a, a.id === "enies" ? "#4c5964" : "#302c31");
-  for (const x of a.collapsed) {
-    px(c, "#121923", x - 51, FLOOR + 4, 102, 34);
-    px(c, a.id === "enies" ? "#9ca9b5" : "#78665a", x - 58, FLOOR + 3, 12, 8);
-    px(c, a.id === "enies" ? "#9ca9b5" : "#78665a", x + 46, FLOOR + 3, 12, 8);
-    for (let i = 0; i < 6; i++) px(c, "#77716d", x - 45 + i * 17, FLOOR + 33 + i % 3 * 6, 8, 4);
-  }
+  collapsedGround(c, a, image);
   warning(c, a);
   for (const fall of a.falling) if (fall) {
     const radius = fall.kind === "ringout" ? 28 : hazardRadius(a);

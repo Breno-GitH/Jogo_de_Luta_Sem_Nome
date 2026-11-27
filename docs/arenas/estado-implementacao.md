@@ -20,12 +20,14 @@ As nove artes originais continuam em `public/arenas/`, inclusive as versões esc
 - **Interativo:** dano visual progressivo, sem perigos de gameplay.
 - **Caótico:** eventos dependentes de impactos, aviso no chão, área delimitada, contato único por evento, recarga de 420 ticks e dano não letal. Ring-out é exclusivo do Budokai. Buracos de Enies Lobby e God Valley persistem no round; a queda reposiciona o lutador e concede 150 ticks antes de uma nova queda.
 - Cinemáticas e capturas pausam os temporizadores dos perigos. A parada de tempo de Dio congela todo o relógio da arena. O próximo round cria um estado novo.
-- O fundo usa a inversa da transformação completa do canvas para determinar a região visível. Faixas curtas de arquitetura, céu próprio nas arenas externas e piso contínuo cobrem zoom, deslocamento, tremor e rotação sem transparência. O centro das artes não foi modificado.
+- O fundo usa a inversa da transformação completa do canvas para determinar a região visível. Faixas curtas de arquitetura, céu próprio nas arenas externas e piso contínuo cobrem zoom, deslocamento, tremor e rotação sem transparência. O centro das artes não foi modificado. Nas arenas de colapso, uma seção da própria arte do piso se desprende antes de deixar o vão permanente.
 
 ## Evidências e limites da validação
 
 - `e2e/arenas-camera.pw.mjs` cobre nove arenas em sete câmeras, incluindo zoom de 0,58, bordas, salto, rotação e tela mais alta; exige alfa 255 em cada pixel. Capturas: `evidencias/camera/`.
 - `e2e/arenas.pw.mjs` inicia uma partida real de treino em cada arena e registra imagem e vídeo: `evidencias/renderizado/`.
+- O segundo teste de `e2e/arenas-camera.pw.mjs` compõe os estados de destruição e perigo com os módulos reais de renderização; capturas em `evidencias/interacoes/`.
+- Dez testes Playwright de Supers e cinematográficas passaram em partidas reais: Samurai, Goku, Dio, Sasuke, Luffy, Kaneki, Ben 10, Xebec e Asta (Pandemonium tem duas variantes de prova).
 - `tests/arenas.test.ts` verifica modos, eventos, quedas, ring-out, snapshots, parada de tempo e replay LAN. Build de produção e 1.533 testes Vitest passaram nesta revisão. Os cinco testes online com dois navegadores passaram, incluindo o cliente servido pelo Node de produção.
 - O conjunto completo `npm test` ainda falha em `tests/test_attack_art.py`: o hash aprovado de `public/sprites/samurai/movement.json` não corresponde ao arquivo já presente na `main`. Esse arquivo não foi alterado aqui.
 - A suíte LAN específica do XAMPP não executa neste PC: o alias Apache `/jogo-luta/` responde 404. A suíte online via Vite e Node de produção cobre a sincronização funcional neste ambiente.
