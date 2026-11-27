@@ -1,6 +1,6 @@
-# Auditoria de cenários — 26/11/2026
+# Auditoria inicial de cenários — 26/11/2026 (histórico)
 
-Estes dossiês distinguem fatos das obras, inferências visuais e adaptações do M.S.F.D. As imagens em `public/arenas/` são **rascunhos originais ainda não integrados**; nenhuma delas comprova fidelidade por si só. Não usar capturas ou fundos de terceiros como arte final.
+Esta tabela registra os problemas dos primeiros rascunhos, antes da reintegração. As nove arenas já estão integradas; o estado atual está em [estado-implementacao.md](../estado-implementacao.md). Os dossiês distinguem fatos das obras, inferências e adaptações do M.S.F.D. As novas áreas inferiores são adaptações de gameplay, sem alegação de arquitetura canônica. Capturas de terceiros servem apenas de referência, nunca de textura final.
 
 | Arena | Estado do rascunho | Bloqueio principal |
 | --- | --- | --- |

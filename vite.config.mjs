@@ -15,6 +15,7 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
+        arenas: fileURLToPath(new URL("./art/arenas.html", import.meta.url)),
         ben: fileURLToPath(new URL("./art/ben.html", import.meta.url)),
         kaneki: fileURLToPath(new URL("./art/kaneki.html", import.meta.url)),
         kanekiCombat: fileURLToPath(new URL("./art/kaneki-combat.html", import.meta.url)),

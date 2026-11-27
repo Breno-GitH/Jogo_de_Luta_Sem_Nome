@@ -12,7 +12,7 @@ export class Training {
   configure(match: Match) {
     match.rules.training = true;
     match.rules.infiniteHealth = [this.infiniteHealth, this.infiniteHealth];
-    if (this.infiniteHealth)
+    if (this.infiniteHealth && match.arena.ringOutSeat === undefined)
       for (const f of match.fighters) f.health = f.data.health;
     if (this.unlimitedMeter)
       for (const f of match.fighters) f.meter = f.meterMaximum;

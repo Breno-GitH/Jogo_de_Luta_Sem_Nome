@@ -15,14 +15,14 @@ function advance(session: GameSession, n: number) {
   for (let i = 0; i < n; i++) session.step(neutral());
 }
 function win(session: GameSession, side: 0 | 1) {
-  for (let round = 0; round < 2; round++) {
+  for (let round = 0; round < session.match.roundsToWin; round++) {
     session.match.phase = "fight";
     session.match.message = "";
     session.match.fighters[1 - side].health = 0;
     session.step(neutral());
     expect(session.match.phase).toBe("roundEnd");
     advance(session, session.match.phaseFrames);
-    if(round===0) advance(session, session.match.phaseFrames);
+    if(round + 1 < session.match.roundsToWin) advance(session, session.match.phaseFrames);
   }
 }
 function training() {
@@ -34,7 +34,17 @@ function training() {
 }
 
 describe("Arcade and match flow", () => {
-  it("plays all ten best-of-three floors with progressively stronger real BOT parameters", () => {
+  it("training infinite health does not undo an open-stage fall KO", () => {
+    const session = new GameSession("training", "normal", "asta", "goku", undefined, "clover", "interativo");
+    session.restart(false);
+    const f = session.match.fighters[0]; f.x = 90; f.y = 940; f.setState("air");
+    advance(session, 25);
+    expect(session.match.phase).toBe("roundEnd"); expect(f.health).toBe(0);
+    advance(session, 30); expect(f.health).toBe(0);
+    advance(session, 150);
+    expect(session.match.phase).toBe("fight"); expect(session.match.fighters[0].health).toBe(1000);
+  });
+  it("plays all ten floors with the arena's round target and progressively stronger real BOT parameters", () => {
     const session = new GameSession("arcade");
     expect(session.next()).toBe(false);
     const route = [...session.route];
@@ -50,8 +60,9 @@ describe("Arcade and match flow", () => {
       reaction = session.bot.profile.reaction;
       punish = session.bot.profile.punish;
       if ("boss" in floor) expect(towerScreen(session, index)).toContain(`data-tower-boss="${floor.boss}"`);
+      const required = session.match.roundsToWin;
       win(session, 0);
-      expect(session.results[index]).toEqual([2, 0]);
+      expect(session.results[index]).toEqual([required, 0]);
       expect(session.status).toBe(index === 9 ? "victory" : "stageClear");
       expect(towerResult(session, index + 1)).toContain(index === 9 ? "Torre concluída" : "next-opponent");
       expect(session.next()).toBe(index < 9);
@@ -67,6 +78,7 @@ describe("Arcade and match flow", () => {
     });
     try {
       const session = new GameSession("arcade", "normal", "sasuke");
+      const firstScore = session.match.roundsToWin;
       win(session, 0);
       session.next();
       win(session, 1);
@@ -83,7 +95,7 @@ describe("Arcade and match flow", () => {
       expect(resumed.tower?.losses).toBe(1);
       expect(resumed.tower?.ticks).toBeGreaterThan(0);
       expect(resumed.match.wins).toEqual([0, 0]);
-      expect(resumed.results).toEqual([[2, 0]]);
+      expect(resumed.results).toEqual([[firstScore, 0]]);
       saveTower(new GameSession("arcade").tower!);
       expect(readTower().best).toBe(1);
       for (const key of values.keys()) values.set(key, JSON.stringify({ attempt: { ...attempt, schema: 2 }, best: 1 }));

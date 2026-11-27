@@ -84,7 +84,7 @@ export class GameApp {
   private selected: CharacterId = "samurai";
   private enemy: CharacterId = "dio";
   private selectedArena: ArenaId = "cairo";
-  private selectedArenaMode: ArenaMode = "classico";
+  private selectedArenaMode: ArenaMode = "interativo";
   private selectStep: SelectStep = "player";
   private canvas: HTMLCanvasElement;
   private overlay: HTMLElement;
@@ -314,10 +314,11 @@ export class GameApp {
       this.el("fight").insertAdjacentHTML("beforebegin", arenaPicker(this.selectedArena, this.selectedArenaMode, true));
       this.el<HTMLSelectElement>("arena-select").onchange = e => {
         this.selectedArena = (e.target as HTMLSelectElement).value as ArenaId;
-        updateArenaPreview(this.root, this.selectedArena);
+        updateArenaPreview(this.root, this.selectedArena, this.selectedArenaMode);
       };
       this.el<HTMLSelectElement>("arena-mode").onchange = e => {
         this.selectedArenaMode = (e.target as HTMLSelectElement).value as ArenaMode;
+        updateArenaPreview(this.root, this.selectedArena, this.selectedArenaMode);
       };
     }
     this.root.dataset.mode = mode;

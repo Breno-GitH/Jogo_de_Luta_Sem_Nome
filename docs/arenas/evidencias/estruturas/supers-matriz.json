@@ -1,0 +1,731 @@
+[
+  {
+    "id": "dojo",
+    "fighter": "samurai",
+    "started": true,
+    "cinematic": false,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "dojo",
+    "fighter": "dio",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "dojo",
+    "fighter": "goku",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "dojo",
+    "fighter": "luffy",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "dojo",
+    "fighter": "sasuke",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "dojo",
+    "fighter": "kaneki",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "dojo",
+    "fighter": "ben",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "dojo",
+    "fighter": "xebec",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "dojo",
+    "fighter": "asta",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "budokai",
+    "fighter": "samurai",
+    "started": true,
+    "cinematic": false,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "budokai",
+    "fighter": "dio",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "budokai",
+    "fighter": "goku",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "budokai",
+    "fighter": "luffy",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "budokai",
+    "fighter": "sasuke",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "budokai",
+    "fighter": "kaneki",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "budokai",
+    "fighter": "ben",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "budokai",
+    "fighter": "xebec",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "budokai",
+    "fighter": "asta",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "cairo",
+    "fighter": "samurai",
+    "started": true,
+    "cinematic": false,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "cairo",
+    "fighter": "dio",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "cairo",
+    "fighter": "goku",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "cairo",
+    "fighter": "luffy",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "cairo",
+    "fighter": "sasuke",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "cairo",
+    "fighter": "kaneki",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "cairo",
+    "fighter": "ben",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "cairo",
+    "fighter": "xebec",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "cairo",
+    "fighter": "asta",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "enies",
+    "fighter": "samurai",
+    "started": true,
+    "cinematic": false,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "enies",
+    "fighter": "dio",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "enies",
+    "fighter": "goku",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "enies",
+    "fighter": "luffy",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "enies",
+    "fighter": "sasuke",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "enies",
+    "fighter": "kaneki",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "enies",
+    "fighter": "ben",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "enies",
+    "fighter": "xebec",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "enies",
+    "fighter": "asta",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "uchiha",
+    "fighter": "samurai",
+    "started": true,
+    "cinematic": false,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "uchiha",
+    "fighter": "dio",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "uchiha",
+    "fighter": "goku",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "uchiha",
+    "fighter": "luffy",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "uchiha",
+    "fighter": "sasuke",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "uchiha",
+    "fighter": "kaneki",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "uchiha",
+    "fighter": "ben",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "uchiha",
+    "fighter": "xebec",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "uchiha",
+    "fighter": "asta",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "anteiku",
+    "fighter": "samurai",
+    "started": true,
+    "cinematic": false,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "anteiku",
+    "fighter": "dio",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "anteiku",
+    "fighter": "goku",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "anteiku",
+    "fighter": "luffy",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "anteiku",
+    "fighter": "sasuke",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "anteiku",
+    "fighter": "kaneki",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "anteiku",
+    "fighter": "ben",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "anteiku",
+    "fighter": "xebec",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "anteiku",
+    "fighter": "asta",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "undertown",
+    "fighter": "samurai",
+    "started": true,
+    "cinematic": false,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "undertown",
+    "fighter": "dio",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "undertown",
+    "fighter": "goku",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "undertown",
+    "fighter": "luffy",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "undertown",
+    "fighter": "sasuke",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "undertown",
+    "fighter": "kaneki",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "undertown",
+    "fighter": "ben",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "undertown",
+    "fighter": "xebec",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "undertown",
+    "fighter": "asta",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "godvalley",
+    "fighter": "samurai",
+    "started": true,
+    "cinematic": false,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "godvalley",
+    "fighter": "dio",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "godvalley",
+    "fighter": "goku",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "godvalley",
+    "fighter": "luffy",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "godvalley",
+    "fighter": "sasuke",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "godvalley",
+    "fighter": "kaneki",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "godvalley",
+    "fighter": "ben",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "godvalley",
+    "fighter": "xebec",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "godvalley",
+    "fighter": "asta",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "clover",
+    "fighter": "samurai",
+    "started": true,
+    "cinematic": false,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "clover",
+    "fighter": "dio",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "clover",
+    "fighter": "goku",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "clover",
+    "fighter": "luffy",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "clover",
+    "fighter": "sasuke",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "clover",
+    "fighter": "kaneki",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "clover",
+    "fighter": "ben",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "clover",
+    "fighter": "xebec",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  },
+  {
+    "id": "clover",
+    "fighter": "asta",
+    "started": true,
+    "cinematic": true,
+    "restored": true,
+    "finite": true,
+    "level": 0
+  }
+]

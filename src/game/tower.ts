@@ -129,10 +129,10 @@ function validAttempt(value?: TowerAttempt): value is TowerAttempt {
       (result) =>
         Array.isArray(result) &&
         result.length === 2 &&
-        result[0] === 2 &&
+        [2, 3].includes(result[0]) &&
         Number.isInteger(result[1]) &&
         result[1] >= 0 &&
-        result[1] < 2,
+        result[1] < result[0],
     ) &&
     Number.isSafeInteger(value.losses) &&
     value.losses >= 0 &&

@@ -30,7 +30,7 @@ export class GameSession {
     public opponentCharacterId: CharacterId = "samurai",
     attempt?: TowerAttempt,
     public arenaId?: ArenaId,
-    public arenaMode: ArenaMode = "classico",
+    public arenaMode: ArenaMode = "interativo",
   ) {
     if (mode === "arcade") {
       this.tower = attempt ?? newTower(characterId);
@@ -104,7 +104,7 @@ export class GameSession {
       return;
     }
     if (this.match.phase !== "finished") return;
-    const won = this.match.wins[0] >= 2;
+    const won = this.match.wins[0] >= this.match.roundsToWin;
     if (this.tower) {
       this.tower.ticks += this.match.frame;
       if (won)

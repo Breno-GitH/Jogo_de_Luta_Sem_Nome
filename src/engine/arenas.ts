@@ -1,10 +1,12 @@
 import type { CombatHit, Match } from "./combat";
+import { arenaLayouts, descentProgress, descentTicks, lowerLevelOffset, openStage } from "./arena-layouts";
 
 /** Arena state is part of the deterministic match snapshot. Decoration is not. */
 export const arenaIds = ["dojo", "budokai", "cairo", "enies", "uchiha", "anteiku", "undertown", "godvalley", "clover"] as const;
 export type ArenaId = typeof arenaIds[number];
-export const arenaModes = ["classico", "interativo", "caotico"] as const;
-export type ArenaMode = typeof arenaModes[number];
+export const arenaModes = ["classico", "interativo"] as const;
+/** caotico remains a wire/load alias for older room presets, never a separate ruleset. */
+export type ArenaMode = typeof arenaModes[number] | "caotico";
 export interface ArenaInfo { id: ArenaId; name: string; origin: string; description: string; hazard: string; }
 export const arenas: ArenaInfo[] = [
   { id: "dojo", name: "Dojo do Samurai", origin: "M.S.F.D", description: "Madeira, jardim e alunos em treino", hazard: "Painéis quebráveis" },
@@ -15,14 +17,14 @@ export const arenas: ArenaInfo[] = [
   { id: "anteiku", name: "Exterior do Anteiku", origin: "Tokyo Ghoul", description: "Café da 20ª Ala", hazard: "Vitrine quebrável" },
   { id: "undertown", name: "Undertown", origin: "Ben 10", description: "Mercado alienígena sob Bellwood", hazard: "Pane tecnológica" },
   { id: "godvalley", name: "God Valley", origin: "One Piece", description: "Ravina do incidente lendário", hazard: "Colapso rochoso" },
-  { id: "clover", name: "Exame dos Cavaleiros Reais", origin: "Black Clover", description: "Campo de cristais", hazard: "Cristais reativos" },
+  { id: "clover", name: "Exame dos Cavaleiros Reais", origin: "Black Clover", description: "Campo de cristais · ravina e patamares de pedra", hazard: "Cristais reativos" },
 ];
 export const arenaForCharacter: Record<string, ArenaId> = {
   samurai: "dojo", dio: "cairo", goku: "budokai", luffy: "enies",
   sasuke: "uchiha", kaneki: "anteiku", ben: "undertown", xebec: "godvalley", asta: "clover",
 };
 export function validArena(id: unknown): id is ArenaId { return typeof id === "string" && arenaIds.includes(id as ArenaId); }
-export function validArenaMode(mode: unknown): mode is ArenaMode { return typeof mode === "string" && arenaModes.includes(mode as ArenaMode); }
+export function validArenaMode(mode: unknown): mode is ArenaMode { return mode === "caotico" || mode === "classico" || mode === "interativo"; }
 
 export interface ArenaHazard {
   kind: "surge" | "fall" | "debris" | "bombardment" | "floor";
@@ -31,7 +33,8 @@ export interface ArenaHazard {
   ticks: number;
   affected: [boolean, boolean];
 }
-export interface ArenaFall { kind: "collapse" | "ringout"; tick: number; x: number }
+export interface ArenaFall { kind: "collapse" | "ringout" | "void"; tick: number; x: number }
+export interface ArenaTransition { tick: number; x: number; origins: [number, number]; targets: [number, number]; }
 export interface ArenaState {
   id: ArenaId;
   mode: ArenaMode;
@@ -47,9 +50,14 @@ export interface ArenaState {
   falling: [ArenaFall | null, ArenaFall | null];
   collapsed: number[];
   fallSafeUntil: [number, number];
+  level: 0 | 1;
+  transition?: ArenaTransition;
+  supports: [string | null, string | null];
+  dropUntil: [number, number];
+  eventSerial: number;
 }
 export function createArena(id: ArenaId = "dojo", mode: ArenaMode = "classico"): ArenaState {
-  return { id, mode, tick: 0, integrity: 0, phase: 0, phaseStart: 0, reactionUntil: 0, reactionX: 640, reactionKind: "hit", falling: [null, null], collapsed: [], fallSafeUntil: [0, 0] };
+  return { id, mode: mode === "caotico" ? "interativo" : mode, tick: 0, integrity: 0, phase: 0, phaseStart: 0, reactionUntil: 0, reactionX: 640, reactionKind: "hit", falling: [null, null], collapsed: [], fallSafeUntil: [0, 0], level: 0, supports: [null, null], dropUntil: [0, 0], eventSerial: 0 };
 }
 const clamp = (n: number, a: number, b: number) => Math.max(a, Math.min(b, n));
 
@@ -67,6 +75,49 @@ export function hazardRadius(a: ArenaState): number {
   return a.hazard?.kind === "bombardment" ? 90 : hazardFor[a.id]?.radius ?? 65;
 }
 
+function beginDescent(match: Match, x: number) {
+  const a = match.arena;
+  if (a.level || a.transition || !arenaLayouts[a.id].lowerName || match.fighters.some(f => f.health <= 0)) return;
+  const [left, right] = [...match.fighters].sort((f, g) => f.x - g.x);
+  const targets: [number, number] = [0, 0];
+  targets[left.id] = clamp(left.x, 210, 600);
+  targets[right.id] = clamp(right.x, 760, 1070);
+  a.transition = { tick: 0, x, origins: [match.fighters[0].x, match.fighters[1].x], targets };
+  a.supports = [null, null]; a.falling = [null, null];
+  match.hitstop = 0;
+  match.projectiles = []; match.kiProjectiles = []; match.beams = [];
+  for (const f of match.fighters) {
+    f.setState("hitstun"); f.stun = descentTicks; f.vx = f.vy = 0;
+    f.hitLaunch = true; f.knockedDown = false; f.buffer.clear();
+  }
+}
+
+function advanceDescent(match: Match): boolean {
+  const a = match.arena, transition = a.transition;
+  if (!transition) return false;
+  transition.tick++;
+  const progress = descentProgress(a);
+  for (const f of match.fighters) {
+    f.x = transition.origins[f.id] + (transition.targets[f.id] - transition.origins[f.id]) * progress;
+    f.y = 580 + Math.round(progress * lowerLevelOffset);
+    f.vx = 0; f.vy = transition.tick < 66 ? 8 : 0; f.stateFrame++; f.stun = descentTicks;
+    f.syncReactionClock(true);
+  }
+  if (transition.tick >= descentTicks) {
+    a.level = 1; a.transition = undefined; a.falling = [null, null];
+    a.hazard = undefined; a.collapsed = []; a.phase = Math.max(a.phase, 3);
+    a.reactionUntil = a.tick + 30;
+    for (const f of match.fighters) {
+      f.y = 580; f.combo = f.comboAge = f.comboAirHits = f.airChaseTicks = 0;
+      f.hitLaunch = false; f.knockedDown = false; f.stun = 0;
+      f.health = Math.max(1, f.health - 8);
+      f.setState("landing"); f.buffer.clear();
+      a.fallSafeUntil[f.id] = a.tick + 180;
+    }
+  }
+  return true;
+}
+
 function advanceFalls(match: Match) {
   const a = match.arena;
   for (const seat of [0, 1] as const) {
@@ -74,18 +125,24 @@ function advanceFalls(match: Match) {
     if (!fall) continue;
     const fighter = match.fighters[seat];
     fall.tick++;
+    if (fall.kind === "void") {
+      fighter.y = 920 + Math.round(fall.tick * fall.tick * .35);
+      fighter.vx = 0; fighter.vy = 8;
+      fighter.stateFrame++; fighter.syncReactionClock(true);
+      if (fall.tick >= 22) {
+        // Crossing the lower blast boundary is a round loss, independent of remaining HP.
+        fighter.health = 0;
+        a.ringOutSeat = seat;
+        a.falling[seat] = null;
+      }
+      continue;
+    }
     fighter.y = 580 + Math.min(230, Math.max(2, Math.round(fall.tick * fall.tick * .42)));
     fighter.vx = fighter.vy = 0;
     if (fall.tick < 27) continue;
     if (fall.kind === "ringout") {
       a.ringOutSeat = seat;
       fighter.health = 0;
-    } else {
-      const radius = hazardRadius(a);
-      fighter.x = clamp(fall.x + (fall.x < 640 ? -1 : 1) * (radius + 44), fighter.stageInset, 1280 - fighter.stageInset);
-      fighter.y = 580;
-      fighter.stun = Math.max(fighter.stun, 22);
-      a.fallSafeUntil[seat] = a.tick + 150;
     }
     a.falling[seat] = null;
   }
@@ -105,14 +162,23 @@ export function stepArena(match: Match, previousHits: readonly CombatHit[]) {
   }
   // Cinematic and capture clocks own all arena timers. The previous hit may still change the scenery.
   const paused = match.cinematicActive || !!match.capture;
+  if (!paused && advanceDescent(match)) return;
+  if (paused) a.supports = [null, null];
   if (!paused) advanceFalls(match);
+  if (!paused && openStage(a)) for (const f of match.fighters) {
+    if (f.y < 920 || a.falling[f.id] || f.health <= 0) continue;
+    a.falling[f.id] = { kind: "void", tick: 0, x: f.x };
+    a.supports[f.id] = null;
+    f.setState("hitstun"); f.stun = 30; f.hitLaunch = true; f.knockedDown = false;
+    f.buffer.clear();
+  }
   for (const hit of previousHits) {
     if (hit.blocked || hit.damage < 28) continue;
     const victim = match.fighters[hit.victim];
     a.reactionX = Math.round(victim.x);
     a.reactionKind = hit.damage >= 90 ? "super" : "hit";
     a.reactionUntil = a.tick + (hit.damage >= 90 ? 42 : 24);
-    if (!paused && a.id === "budokai" && a.mode === "caotico" && !a.falling[victim.id] &&
+    if (!paused && a.id === "budokai" && a.mode !== "classico" && !a.falling[victim.id] &&
         victim.stun > 0 && victim.y >= 535 && (victim.x <= 68 || victim.x >= 1212)) {
       a.falling[victim.id] = { kind: "ringout", tick: 0, x: victim.x };
       a.reactionKind = "ko";
@@ -128,11 +194,12 @@ export function stepArena(match: Match, previousHits: readonly CombatHit[]) {
         a.phaseStart = a.tick;
       }
     }
-    if (a.mode !== "caotico" || a.hazard || a.integrity < 2 || paused) continue;
+    if (a.mode === "classico" || a.hazard || a.integrity < 2 || paused) continue;
     const config = hazardFor[a.id];
     if (config) {
-      const kind = a.id === "enies" && a.phase >= 3 && a.tick % 2 === 0 ? "bombardment" : config.kind;
+      const kind = a.level && config.kind === "fall" ? a.id === "enies" ? "bombardment" : "debris" : config.kind;
       a.hazard = { kind, x: clamp(a.reactionX, 180, 1100), phase: "warning", ticks: kind === "bombardment" ? 100 : config.warning, affected: [false, false] };
+      a.eventSerial++;
     }
   }
   if (paused) return;
@@ -140,14 +207,11 @@ export function stepArena(match: Match, previousHits: readonly CombatHit[]) {
     if (a.falling[f.id] || a.fallSafeUntil[f.id] > a.tick || f.y < 535 || f.health <= 0) continue;
     const hole = a.collapsed.find(x => Math.abs(f.x - x) <= 44);
     if (hole === undefined) continue;
-    a.falling[f.id] = { kind: "collapse", tick: 0, x: hole };
-    f.health = Math.max(1, f.health - 12);
-    f.setState("hitstun");
-    f.stun = Math.max(f.stun, 36);
-    f.vx = f.vy = 0;
+    beginDescent(match, hole);
+    break;
   }
   const h = a.hazard;
-  if (!h) return;
+  if (!h || a.transition || match.hitstop > 0) return;
   if (--h.ticks > 0) {
     if (h.phase === "active") applyArenaHazard(match, h);
     return;
@@ -166,15 +230,14 @@ function applyArenaHazard(match: Match, h: ArenaHazard) {
   const a = match.arena;
   const config = hazardFor[a.id];
   for (const f of match.fighters) {
-    if (h.affected[f.id] || a.falling[f.id] || Math.abs(f.x - h.x) > hazardRadius(a) || f.y < 535) continue;
+    if (h.affected[f.id] || a.falling[f.id] || f.health <= 0 || Math.abs(f.x - h.x) > hazardRadius(a) || f.y < 535) continue;
     h.affected[f.id] = true;
     // Environmental hits are nonlethal and recorded once per event in the match snapshot.
     f.health = Math.max(1, f.health - (h.kind === "bombardment" ? 14 : config?.damage ?? 10));
     f.setState("hitstun");
     if (h.kind === "fall") {
-      a.falling[f.id] = { kind: "collapse", tick: 0, x: f.x };
-      f.stun = Math.max(f.stun, 36);
-      f.vx = f.vy = 0;
+      beginDescent(match, h.x);
+      return;
     } else {
       f.stun = Math.max(f.stun, 12);
       f.vx = (f.x < h.x ? -1 : 1) * (h.kind === "floor" ? 2 : 5);

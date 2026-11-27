@@ -8,6 +8,7 @@ import { pandemoniumBeats } from "../engine/xebec-pandemonium";
 import { chainFinishes } from "../engine/kaneki-chain";
 export type Cue =
   | "introSword" | "introWatch" | "introPresence" | "introCloth"
+  | "arenaWarning" | "arenaImpact" | "arenaDescent"
   | "swing"
   | "hit"
   | "heavy"
@@ -60,6 +61,7 @@ export function effectCue(event: HitEvent): Cue {
 }
 /** Original short synthesized sounds. No downloaded samples or autoplay. */
 export class Sound {
+  private arenaCue = "";
   private introClock = -1;
   private rocksTick = -1;
   private astaTick = -1;
@@ -229,6 +231,15 @@ export class Sound {
         envelope.disconnect();
       };
     };
+    if (cue === "arenaWarning") {
+      tone(360, 420, .1, "triangle", .16);
+      tone(420, 360, .12, "triangle", .13, .18);
+    } else if (cue === "arenaImpact") {
+      tone(105, 32, .26, "sawtooth", .22);
+      tone(210, 54, .15, "triangle", .18);
+    } else if (cue === "arenaDescent") {
+      tone(185, 24, .7, "sawtooth", .15);
+    }
     if (
       ["swing", "hit", "heavy", "guard", "counter", "power", "kirinThunder", "knuckleSnap", "chainWhoosh", "chainImpact", "centipede"].includes(cue) &&
       this.noise
@@ -395,6 +406,14 @@ export class Sound {
     } else if (cue === "menu") tone(660, 880, 0.06, "sine", 0.15);
   }
   tick(match: Match, onlineRound?: string) {
+    const arenaCue = match.arena.transition ? `descent:${match.arena.level}` :
+      `${match.arena.eventSerial}:${match.arena.hazard?.phase ?? "none"}:${match.arena.level}`;
+    if (arenaCue !== this.arenaCue) {
+      if (match.arena.transition) this.play("arenaDescent");
+      else if (match.arena.hazard?.phase === "warning") this.play("arenaWarning");
+      else if (match.arena.hazard?.phase === "active" || match.arena.level && this.arenaCue.startsWith("descent")) this.play("arenaImpact");
+      this.arenaCue = arenaCue;
+    }
     if(this.owner!==match || match.intro.tick<this.introClock) this.introClock=match.intro.tick-1;
     if(match.phase==="intro" && match.intro.full && !match.intro.skipped) {
       const cues:Record<string,[number,Cue][]>= {

@@ -36,6 +36,7 @@ import { MOVEMENT_TIMING } from "./movement";
 import { combatPace, pacedCharacter } from "./pace";
 import { antiLightCombo, isLimitedLightNormal, launcherCombo } from "./anti-light-combo";
 import { arenaForCharacter, createArena, stepArena, type ArenaId, type ArenaMode, type ArenaState } from "./arenas";
+import { arenaLanding, openStage, prepareArenaMovement, supportHeight } from "./arena-layouts";
 import cinematics from "../data/cinematics.json";
 import { reactionBoxes, reactionFor } from "./lifecycle";
 import { isSuperMove, poseAt, phaseAt } from "./moves";
@@ -209,8 +210,10 @@ export class Fighter {
   private get normalMoves() { return this.asta ? astaMoves[this.asta.attackSword ?? this.asta.equipped] : this.benForm?.moves ?? this.data.moves; }
   get grabSequence() { return this.benForm?.grab ?? this.data.grabSequence; }
   get stageInset() { return Math.max(40, (this.benForm?.width ?? 52) * this.benScale / 2); }
+  get groundY() { return this.match ? supportHeight(this.match.arena, this) : FLOOR; }
   get airborne() {
-    return this.y < FLOOR || this.vy < 0;
+    if (this.match?.arena.transition || this.match?.arena.falling[this.id]) return true;
+    return this.y !== this.groundY || this.vy < 0;
   }
   get move(): Move | undefined {
     return this.lookupMove(this.moveId);
@@ -437,6 +440,7 @@ export class Fighter {
   }
   get invulnerable() {
     return (
+      Boolean(this.match?.arena.falling[this.id]) ||
       gokuInvisible(this) ||
       this.state === "getup" ||
       Boolean(this.benPhase && !this.benPhase.physicalOnly) ||
@@ -1284,6 +1288,7 @@ export class Fighter {
     flyNrg(this, input);
     if (this.benScale > 1 && this.state === "walk") this.vx *= 1 / Math.sqrt(this.benScale);
     const wasAirborne = this.airborne;
+    const previousY = this.y;
     if (
       wasAirborne &&
       !(
@@ -1297,8 +1302,9 @@ export class Fighter {
     if (this.chill?.freeze) this.vx = 0;
     this.x = Math.max(this.stageInset, Math.min(1280 - this.stageInset, this.x + this.vx));
     this.y += this.vy;
-    if (this.y >= FLOOR) {
-      this.y = FLOOR;
+    const landingY = this.match ? arenaLanding(this.match.arena, this, previousY) : this.y >= FLOOR ? FLOOR : undefined;
+    if (landingY !== undefined) {
+      this.y = landingY;
       this.vy = 0;
       if (wasAirborne && this.state === "attack" && this.move?.ben?.leap) {
         this.stateFrame = this.move.startup;
@@ -1432,6 +1438,7 @@ export class Match {
   phaseFrames = 0;
   intro!: IntroState;
   wins = [0, 0];
+  get roundsToWin() { return openStage(this.arena) ? 3 : 2; }
   round = 1;
   message = "ROUND 1";
   events: HitEvent[] = [];
@@ -1486,6 +1493,8 @@ export class Match {
     this.frame++;
     stepArena(this, this.hits);
     this.hits = [];
+    // A stage descent owns both actors and the timer until landing; no queued inputs leak out.
+    if (this.arena.transition) return;
     if (this.phase === "fight" && this.arena.ringOutSeat !== undefined) {
       this.checkRoundEnd();
       return;
@@ -1507,9 +1516,9 @@ export class Match {
         }
       }
       if (--this.phaseFrames <= 0) {
-        if (!this.rules.training && this.wins.some((w) => w >= 2)) {
+        if (!this.rules.training && this.wins.some((w) => w >= this.roundsToWin)) {
           this.phase = "finished";
-          this.message = this.wins[0] >= 2 ? "VOCÊ VENCEU" : "BOT VENCEU";
+          this.message = this.wins[0] >= this.roundsToWin ? "VOCÊ VENCEU" : "BOT VENCEU";
         } else {
           this.round++;
           this.projectiles = [];
@@ -1628,7 +1637,8 @@ export class Match {
         Math.abs(f.x - other.x) < 200;
       tickSasukeCurse(f);
       const fallingDrop = f.y < FLOOR && f.state === "attack" && !!(f.move?.ben?.landingImpact || f.move?.ben?.leap);
-      f.tick(inputs[i], this.combatFrame, other);
+      const arenaInput = prepareArenaMovement(this.arena, f, inputs[i]);
+      f.tick(arenaInput, this.combatFrame, other);
       this.tickBenAbilities(f, other, fallingDrop);
       if (!f.combo) f.kanekiCaptured = undefined;
     });
@@ -3754,7 +3764,7 @@ export class Match {
         this.message = "EMPATE";
       } else {
         this.wins[winner]++;
-        this.message = this.arena.ringOutSeat !== undefined ? "FORA DO RINGUE" : this.timer <= 0 ? "TEMPO ESGOTADO" : "K.O.";
+        this.message = this.arena.ringOutSeat !== undefined ? openStage(this.arena) ? "QUEDA · K.O." : "FORA DO RINGUE" : this.timer <= 0 ? "TEMPO ESGOTADO" : "K.O.";
       }
       if (winner === 0 || winner === 1) {
         const source = this.fighters[winner], target = this.fighters[1 - winner];
@@ -3763,7 +3773,8 @@ export class Match {
       }
       this.fighters.forEach((f, i) => {
         f.vx = f.vy = 0;
-        f.y = FLOOR;
+        // An eliminated actor stays below the stage; never snap them back onto the ledge.
+        if (!(openStage(this.arena) && this.arena.ringOutSeat !== undefined)) f.y = FLOOR;
         f.buffer.clear();
         f.sasukeCurse = undefined;
         f.chill = undefined;

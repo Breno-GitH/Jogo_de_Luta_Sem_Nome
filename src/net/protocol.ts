@@ -1,7 +1,7 @@
 import type { InputFrame } from "../engine/types";
 import type { MatchState } from "../engine/state";
 import type { ArenaId, ArenaMode } from "../engine/arenas";
-export const PROTOCOL = 4;
+export const PROTOCOL = 5;
 export const ONLINE_CHARACTERS = ["samurai", "dio", "goku", "luffy", "sasuke", "kaneki", "ben", "xebec", "asta"] as const;
 export type OnlineCharacter = (typeof ONLINE_CHARACTERS)[number];
 export const INPUT_DELAY = 6;

@@ -1,5 +1,7 @@
 import { hazardRadius, type ArenaState } from "../engine/arenas";
 import { FLOOR, type Match } from "../engine/combat";
+import { lowerLevelOffset, openStage } from "../engine/arena-layouts";
+import { drawArenaPlatforms, drawDescentDebris, drawLowerArenaLife } from "./arena-structure";
 
 const px = (c: CanvasRenderingContext2D, color: string, x: number, y: number, w: number, h: number) => {
   c.fillStyle = color; c.fillRect(Math.round(x), Math.round(y), Math.round(w), Math.round(h));
@@ -186,7 +188,7 @@ function warning(c: CanvasRenderingContext2D, a: ArenaState) {
     px(c, "#d9af6b", -13, -151, 26, 8); px(c, "#fff1a4", -9, -146, 18, 6);
     c.restore();
     if (h.phase === "active") for (let i = 0; i < 7; i++) px(c, "#a3a4a8", h.x - 43 + i * 14, FLOOR + 8 + i % 3 * 4, 5, 3);
-  } else if (a.id === "uchiha") {
+  } else if (a.id === "uchiha" || a.id === "godvalley") {
     const progress = h.phase === "active" ? 1 : Math.max(0, (78 - h.ticks) / 78);
     px(c, "#514f4e", h.x - 60, 165, 120, 6);
     for (let i = 0; i < 3; i++) {
@@ -255,6 +257,16 @@ function collapsedGround(c: CanvasRenderingContext2D, a: ArenaState, image?: HTM
 export function drawArenaLife(c: CanvasRenderingContext2D, a: ArenaState, match?: Match, image?: HTMLImageElement) {
   const t = a.tick, recent = t < a.reactionUntil;
   c.save(); c.imageSmoothingEnabled = false;
+  if (a.level) {
+    drawLowerArenaLife(c, a); warning(c, a);
+    c.restore(); return;
+  }
+  if (a.transition) {
+    c.save(); c.translate(0, lowerLevelOffset); drawLowerArenaLife(c, a); c.restore();
+    c.save(); c.beginPath(); c.rect(-2000, -1000, 6000, 1710); c.clip(); collapsedGround(c, a, image); c.restore();
+    drawDescentDebris(c, a);
+    c.restore(); return;
+  }
   switch (a.id) {
     case "dojo":
       spectators(c, a, [111, 145, 1145], "#e7e0c1", "kendo");
@@ -268,7 +280,7 @@ export function drawArenaLife(c: CanvasRenderingContext2D, a: ArenaState, match?
       spectators(c, a, [92, 129, 166, 1110, 1144, 1178], "#e6a742", "spectator");
       for (const x of [64, 1213]) px(c, "#d75843", x + wave(t, 12, 4), 132, 14, 7);
       if (recent) motes(c, a, "#d9c6a8", 8, 501, 0.9);
-      if (a.mode === "caotico") for (const x of [68, 1212]) {
+      if (a.mode !== "classico") for (const x of [68, 1212]) {
         px(c, "#422b23", x - 6, FLOOR - 15, 12, 31);
         px(c, "#fff1b3", x - 3, FLOOR - 13, 6, 27);
         px(c, "#c24631", x - 2, FLOOR - 1, 4, 8);
@@ -332,7 +344,11 @@ export function drawArenaLife(c: CanvasRenderingContext2D, a: ArenaState, match?
       if (match?.pandemonium) { c.fillStyle = "#6a2a3440"; c.fillRect(0, 0, 1280, 580); }
       break;
     case "clover":
-      spectators(c, a, [273, 329, 960, 1011], "#595e8d", "mage");
+      if (openStage(a)) {
+        c.save(); c.translate(0, 38); c.scale(.5, .5);
+        spectators(c, a, [1100, 1220, 1340, 1460], "#595e8d", "mage");
+        c.restore();
+      } else spectators(c, a, [273, 329, 960, 1011], "#595e8d", "mage");
       for (const x of [185, 1097]) {
         c.globalAlpha = 0.3 + (Math.floor(t / 8) % 3) * 0.08;
         px(c, a.phase ? "#85858e" : x < 640 ? "#58d6fc" : "#d782ed", x, 110, 10, 22);
@@ -351,9 +367,10 @@ export function drawArenaLife(c: CanvasRenderingContext2D, a: ArenaState, match?
     }
   }
   stageCracks(c, a, a.id === "enies" ? "#4c5964" : "#302c31");
+  drawArenaPlatforms(c, a, image);
   collapsedGround(c, a, image);
   warning(c, a);
-  for (const fall of a.falling) if (fall) {
+  for (const fall of a.falling) if (fall && fall.kind !== "void") {
     const radius = fall.kind === "ringout" ? 28 : hazardRadius(a);
     px(c, "#151b25", fall.x - radius, FLOOR + 4, radius * 2, 18);
     for (let i = 0; i < 7; i++) px(c, "#8d8070", fall.x - radius + i * radius / 3, FLOOR + 17 + Math.min(60, fall.tick * 3) + i % 3 * 5, 9, 4);
