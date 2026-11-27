@@ -371,6 +371,7 @@ export class Fighter {
       : { x: this.x, y: this.y, w: 0, h: 0 };
   }
   hurtboxes(): Rect[] {
+    if (this.match?.arena.falling[this.id]) return [];
     if (gokuInvisible(this)) return [];
     if (planetoid(this)) return [worldRect({ x: -50, y: -118, w: 105, h: 116 }, this.x, this.y, this.facing)];
     const lift = this.stand?.s.ownerLiftFrame ?? -1;
@@ -1614,7 +1615,7 @@ export class Match {
     this.combatFrame++;
     const beforeMovement = this.fighters.map(f => f.x);
     this.fighters.forEach((f, i) => {
-      if (this.temporal.isFrozen(i)) return;
+      if (this.temporal.isFrozen(i) || this.arena.falling[i]) return;
       const other = this.fighters[1 - i];
       const well = f.airborne && !["hitstun", "blockstun", "ko", "getup"].includes(f.state) && !this.temporal.isFrozen(other.id)
         ? gravityAt(other, f.x, f.y, FLOOR) : undefined;
@@ -1646,7 +1647,7 @@ export class Match {
     const [a, b] = this.fighters;
     const crystalWalls = this.benWalls();
     for (const f of this.fighters) {
-      if (this.temporal.isFrozen(f.id)) continue;
+      if (this.temporal.isFrozen(f.id) || this.arena.falling[f.id]) continue;
       this.stopAtBenWalls(f, beforeMovement[f.id], crystalWalls);
       if (f.move?.kind !== "grab") {
         const shapes = f.attackShapes(beforeMovement[f.id]);
@@ -1654,14 +1655,14 @@ export class Match {
           `${f.id}:${this.combatFrame - f.stateFrame}:${f.hitWindow?.id ?? 0}`, f.id);
       }
     }
-    if (overlaps(a.pushbox(), b.pushbox()) && this.temporal.active) {
+    if (!this.arena.falling.some(Boolean) && overlaps(a.pushbox(), b.pushbox()) && this.temporal.active) {
       // The frozen actor cannot be pushed. Clamp only the moving actor.
       const mover = this.fighters[this.temporal.s.owner],
         frozen = this.fighters[1 - this.temporal.s.owner];
       const gap = (mover.pushbox().w + frozen.pushbox().w) / 2;
       mover.x = frozen.x + (mover.x <= frozen.x ? -gap : gap);
       mover.x = Math.max(mover.stageInset, Math.min(1280 - mover.stageInset, mover.x));
-    } else if (overlaps(a.pushbox(), b.pushbox()) && !this.benCrossing(a, b) && !this.benCrossing(b, a)) {
+    } else if (!this.arena.falling.some(Boolean) && overlaps(a.pushbox(), b.pushbox()) && !this.benCrossing(a, b) && !this.benCrossing(b, a)) {
       const [left, right] = a.x <= b.x ? [a, b] : [b, a];
       // Transfer the full separation to the free side at a wall; clamping
       // each actor independently leaves overlapping pushboxes in the corner.
@@ -1671,7 +1672,7 @@ export class Match {
       right.x = center + rightHalf;
     }
     for (const f of this.fighters)
-      if (!this.temporal.isFrozen(f.id)) this.stopAtBenWalls(f, beforeMovement[f.id], crystalWalls);
+      if (!this.temporal.isFrozen(f.id) && !this.arena.falling[f.id]) this.stopAtBenWalls(f, beforeMovement[f.id], crystalWalls);
     this.stepXebecWaves();
     // Capture contacts before resolving so simultaneous attacks can trade.
     const contacts = this.fighters.map((f, i) => {

@@ -588,7 +588,7 @@ export class Renderer {
     }
     const arenaVariant = match.arena.id === "dojo" ? "dojo-damaged" : match.arena.id === "uchiha" ? "uchiha-ruin" : "";
     drawArena(c, match.arena, this.arenaImages.get(match.arena.id), benPadding, this.arenaImages.get(arenaVariant));
-    drawArenaLife(c, match.arena);
+    drawArenaLife(c, match.arena, match);
     if (xebecEffects && conquerors.length)
       drawKingWillArena(c, conquerors, this.pressureStage, this.prefersReducedMotion.matches);
     if (union) {

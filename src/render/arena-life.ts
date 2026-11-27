@@ -1,5 +1,5 @@
-import type { ArenaState } from "../engine/arenas";
-import { FLOOR } from "../engine/combat";
+import { hazardRadius, type ArenaState } from "../engine/arenas";
+import { FLOOR, type Match } from "../engine/combat";
 
 const px = (c: CanvasRenderingContext2D, color: string, x: number, y: number, w: number, h: number) => {
   c.fillStyle = color; c.fillRect(Math.round(x), Math.round(y), Math.round(w), Math.round(h));
@@ -8,10 +8,21 @@ const wave = (t: number, period: number, size: number) => Math.round(Math.sin(t 
 
 /** Tiny hand-coded pixel actors: alternate limbs, look, recoil, flee and celebrate. */
 type CrowdRole = "kendo" | "spectator" | "civilian" | "marine" | "passerby" | "alien" | "pirate" | "mage";
-function person(c: CanvasRenderingContext2D, x: number, y: number, t: number, mood: number, coat: string, skin: string, role: CrowdRole) {
+type NpcState = "idle" | "walking" | "watching" | "cheering" | "surprised" | "afraid" | "fleeing" | "returning" | "victory" | "defeat";
+function npcState(a: ArenaState, index: number, role: CrowdRole): NpcState {
+  const age = a.reactionUntil - a.tick;
+  if (a.reactionKind === "ko" && age > 0) return index % 3 ? "victory" : "defeat";
+  if (age > 35) return a.reactionKind === "super" ? "afraid" : "surprised";
+  if (age > 15) return role === "civilian" || role === "passerby" || role === "marine" ? "fleeing" : "cheering";
+  if (age > 0) return "returning";
+  return Math.floor((a.tick + index * 53) / 130) % 4 === 0 ? "walking" : index % 3 ? "watching" : "idle";
+}
+function person(c: CanvasRenderingContext2D, x: number, y: number, t: number, mood: NpcState, coat: string, skin: string, role: CrowdRole) {
   const step = Math.floor(t / 12) % 4;
-  const recoil = mood > 0 ? (mood % 2 ? -3 : 3) : 0;
-  const flee = mood > 0 && mood < 35 ? (35 - mood) * (x < 640 ? -0.22 : 0.22) : 0;
+  const startled = mood === "surprised" || mood === "afraid";
+  const recoil = startled ? (step % 2 ? -3 : 3) : mood === "cheering" || mood === "victory" ? -step % 2 * 2 : 0;
+  const flee = mood === "fleeing" ? (x < 640 ? -13 : 13) : mood === "returning" ? (x < 640 ? -5 : 5) :
+    mood === "walking" ? wave(t + x, 35, 4) : 0;
   x = Math.round(x + flee); y += recoil;
   px(c, "#151721", x - 5, y + 19, 11, 2);
   px(c, coat, x - 3, y + 7, 7, role === "mage" ? 12 : 9);
@@ -23,16 +34,15 @@ function person(c: CanvasRenderingContext2D, x: number, y: number, t: number, mo
   if (role === "pirate") px(c, "#a93d39", x - 4, y + 7, 9, 2);
   if (role === "kendo") { px(c, "#f1e9d0", x - 4, y + 7, 9, 6); px(c, "#293c60", x - 5, y + 13, 11, 5); }
   if (role === "passerby") { px(c, "#51415f", x - 10, y - 5, 21, 2); px(c, "#51415f", x - 1, y - 4, 2, 20); }
-  px(c, "#11121a", x + (mood > 0 ? -2 : 1), y + 4, 1, 1);
-  const arm = mood > 0 ? -3 : step % 2 ? 1 : 0;
+  px(c, "#11121a", x + (startled ? -2 : 1), y + 4, 1, 1);
+  const arm = startled || mood === "cheering" || mood === "victory" ? -3 : step % 2 ? 1 : 0;
   px(c, skin, x - 5, y + 9 + arm, 2, 6);
   px(c, skin, x + 5, y + 9 - arm, 2, 6);
   px(c, role === "kendo" ? "#293c60" : "#24232a", x - 3 + (step === 1 ? -1 : 0), y + 16, 2, 4);
   px(c, role === "kendo" ? "#293c60" : "#24232a", x + 2 + (step === 3 ? 1 : 0), y + 16, 2, 4);
 }
 function spectators(c: CanvasRenderingContext2D, a: ArenaState, spots: number[], color: string, role: CrowdRole) {
-  const mood = a.tick < a.reactionUntil ? a.reactionUntil - a.tick : 0;
-  spots.forEach((x, i) => person(c, x, 447 + (i % 3) * 4, a.tick + i * 17, mood, i % 2 ? color : "#52616a", role === "alien" ? ["#9bc75e", "#c9a3eb", "#9ca8dc"][i % 3] : "#c99d79", role));
+  spots.forEach((x, i) => person(c, x, 447 + (i % 3) * 4, a.tick + i * 17, npcState(a, i, role), i % 2 ? color : "#52616a", role === "alien" ? ["#9bc75e", "#c9a3eb", "#9ca8dc"][i % 3] : "#c99d79", role));
 }
 
 /** Undertown residents are drawn from distinct Omniverse silhouettes, not the shared crowd actor. */
@@ -129,39 +139,56 @@ function stageCracks(c: CanvasRenderingContext2D, a: ArenaState, color: string) 
 function warning(c: CanvasRenderingContext2D, a: ArenaState) {
   const h = a.hazard;
   if (!h || h.phase === "cooldown") return;
-  const radius = h.kind === "fall" ? 65 : 78;
+  const radius = hazardRadius(a);
   const flash = h.phase === "active" || Math.floor(a.tick / 8) % 2 === 0;
   c.save();
   c.globalAlpha = flash ? 0.75 : 0.35;
-  px(c, h.kind === "fall" ? "#f0bd59" : "#65f9ee", h.x - radius, FLOOR + 3, radius * 2, 5);
+  const isFloor = h.kind === "fall" || h.kind === "floor";
+  const color = h.kind === "surge" ? a.id === "clover" ? "#d5a5ff" : "#65f9ee" :
+    h.kind === "bombardment" ? "#ff8065" : "#f0bd59";
+  px(c, color, h.x - radius, FLOOR + 3, radius * 2, 5);
   px(c, "#181822", h.x - radius + 5, FLOOR + 3, radius * 2 - 10, 2);
   for (const side of [-1, 1]) {
     const x = h.x + side * radius;
     px(c, "#fff2ba", x - 3, FLOOR - 17, 6, 15);
     px(c, "#201619", x - 1, FLOOR - 14, 2, 7);
   }
-  if (h.phase === "active") for (let i = 0; i < 9; i++) {
-    const x = h.x - radius + i * radius / 4;
-    px(c, h.kind === "fall" ? "#20181c" : "#abffeb", x, FLOOR - (i % 3) * 8 - 5, 4, 15 + (i % 3) * 8);
-  }
-  if (h.kind === "fall") {
-    const drop = h.phase === "warning" ? Math.round((90 - h.ticks) * 2.8) : 265;
-    const y = 160 + drop;
-    px(c, "#302e35", h.x - 15, y, 31, 11);
-    px(c, "#827b72", h.x - 11, y - 7, 23, 9);
-    px(c, "#b5a99a", h.x - 7, y - 11, 13, 5);
-    if (h.phase === "active") px(c, "#18212c", h.x - radius + 4, FLOOR + 4, radius * 2 - 8, 18);
+  c.globalAlpha = 1;
+  c.font = "bold 12px monospace";
+  c.textAlign = "center";
+  c.fillStyle = color;
+  c.fillText(h.kind === "fall" ? "CHÃO CEDENDO" : h.kind === "bombardment" ? "BUSTER CALL" :
+    h.kind === "surge" ? "DESCARGA" : h.kind === "floor" ? "PISO INSTÁVEL" : "CUIDADO", h.x, FLOOR - 27);
+  if (isFloor) {
+    const broken = h.phase === "active";
+    px(c, broken ? "#141a25" : "#4b3b39", h.x - radius + 5, FLOOR + 7, radius * 2 - 10, broken ? 24 : 7);
+    for (let i = 0; i < 8; i++) {
+      const x = h.x - radius + 7 + i * (radius * 2 - 14) / 8;
+      px(c, i % 2 ? "#8b7867" : "#bba389", x, FLOOR + (broken ? 16 + i % 3 * 7 : 9), 10, 3);
+    }
+  } else if (h.kind === "debris" || h.kind === "bombardment") {
+    const elapsed = (h.kind === "bombardment" ? 100 : 78) - h.ticks;
+    const y = h.phase === "active" ? FLOOR - 34 : Math.min(FLOOR - 50, 90 + elapsed * 5);
+    if (h.kind === "bombardment") {
+      px(c, "#5b6471", h.x - 28, y - 8, 56, 18);
+      px(c, "#f09b69", h.x - 8, y + 9, 17, 20);
+    } else {
+      px(c, a.id === "cairo" ? "#5a514a" : a.id === "anteiku" ? "#a9c8cc" : "#77736e", h.x - 15, y, 31, 11);
+      px(c, "#c4b69b", h.x - 11, y - 7, 23, 9);
+    }
+    if (h.phase === "active") for (let i = 0; i < 12; i++)
+      px(c, i % 2 ? "#b59b7e" : "#78838b", h.x + (i - 6) * 12, FLOOR - 6 - i % 4 * 9, 5, 4);
   } else if (h.phase === "active") {
     for (let i = -2; i <= 2; i++) {
       const x = h.x + i * 24;
       px(c, "#273340", x, FLOOR - 43 - i % 2 * 8, 5, 28);
-      px(c, "#87fff0", x + 1, FLOOR - 47 - i % 2 * 8, 3, 10);
+      px(c, color, x + 1, FLOOR - 47 - i % 2 * 8, 3, 10);
     }
   }
   c.restore();
 }
 
-export function drawArenaLife(c: CanvasRenderingContext2D, a: ArenaState) {
+export function drawArenaLife(c: CanvasRenderingContext2D, a: ArenaState, match?: Match) {
   const t = a.tick, recent = t < a.reactionUntil;
   c.save(); c.imageSmoothingEnabled = false;
   switch (a.id) {
@@ -170,6 +197,8 @@ export function drawArenaLife(c: CanvasRenderingContext2D, a: ArenaState) {
       motes(c, a, "#b96837", 12, 312, 0.6);
       if (recent) px(c, "#b08b5f", 150 + wave(t, 2, 2), 280, 4, 100);
       if (a.phase) px(c, "#171113", 199, 300, 5, 80);
+      if (a.phase >= 2) for (let i = 0; i < 4; i++) px(c, "#9c7651", 205 + i * 11, 390 + i % 2 * 6, 9, 4);
+      if (a.phase >= 4) { px(c, "#253b34", 205, 305, 61, 70); px(c, "#64482f", 205, 375, 61, 6); }
       break;
     case "budokai":
       spectators(c, a, [92, 129, 166, 1110, 1144, 1178], "#e6a742", "spectator");
@@ -191,17 +220,22 @@ export function drawArenaLife(c: CanvasRenderingContext2D, a: ArenaState) {
         px(c, "#e7c27b", 1074 + wave(t, 5, 2), 383, 6, 5);
         for (let i = 0; i < 9; i++) px(c, "#9ca6bd", 1018 + i * 7 + wave(t + i, 9, 2), 393 + i % 3 * 5, 3, 2);
       }
+      if (a.phase >= 3) { px(c, "#514944", 983, 395, 86, 7); px(c, "#e4a368", 981, 389, 7, 5); }
       break;
     case "enies":
       spectators(c, a, [154, 1129], "#f3f3f3", "marine");
       for (let i = 0; i < 8; i++) px(c, "#ecf8fa", 120 + i * 149 + wave(t + i * 17, 17, 8), 318 + i % 2 * 8, 23, 2);
       motes(c, a, "#d6dce2", 9, 220, 0.5);
       if (a.phase) for (let i = 0; i < 8; i++) px(c, "#4c5964", 580 + i * 16, FLOOR + 10 + i % 3 * 3, 10, 3);
+      if (a.phase >= 2) for (let i = 0; i < a.phase * 2; i++) px(c, "#687783", 470 + i * 38, FLOOR + 17 + i % 3 * 5, 25, 4);
+      if (a.phase >= 4) px(c, "#172632", 508, FLOOR + 8, 103, 15);
       break;
     case "uchiha":
       motes(c, a, "#8d8c80", 16, 210, 0.08);
       if (recent) motes(c, a, "#aaa596", 11, 370, 0.5);
       if (a.phase) motes(c, a, "#b8b3a3", 8, 440, 0.3);
+      if (a.phase >= 2) for (let i = 0; i < a.phase * 3; i++) px(c, "#777068", 172 + i * 57, 441 + i % 3 * 12, 13, 5);
+      if (match?.kirin) { c.fillStyle = "#a6bdff44"; c.fillRect(0, 0, 1280, 580); }
       break;
     case "anteiku":
       spectators(c, a, [91, 1172], "#6b6c7c", "passerby");
@@ -217,11 +251,13 @@ export function drawArenaLife(c: CanvasRenderingContext2D, a: ArenaState) {
           px(c, "#acc5d0", 535 + i * 32 + wave(t + i, 11, 3), 386 + i % 2 * 6, 4, 3);
         }
       }
+      if (a.phase >= 3) for (let i = 0; i < 9; i++) px(c, "#b9c6c6", 482 + i * 24, FLOOR + 8 + i % 4 * 3, 8, 4);
       break;
     case "undertown":
       undertownResidents(c, a);
       for (const x of [240, 1010]) px(c, a.hazard?.phase === "warning" && Math.floor(t / 6) % 2 ? "#ffcc61" : "#69c982", x, 310, 6, 7);
       if (a.phase && Math.floor(t / 9) % 3 === 0) for (const x of [240, 1010]) px(c, "#1e1b31", x - 3, 307, 12, 13);
+      if (a.phase >= 3) for (const x of [230, 997]) { px(c, "#332b43", x, 298, 27, 20); px(c, "#73eee0", x + 4, 309, 18, 3); }
       motes(c, a, "#b9c997", 8, 260, 0.35);
       break;
     case "godvalley":
@@ -229,6 +265,9 @@ export function drawArenaLife(c: CanvasRenderingContext2D, a: ArenaState) {
       motes(c, a, "#c7b99a", 17, 256, 0.8);
       for (let i = 0; i < 4; i++) px(c, "#6b7480", 92 + i * 318 + wave(t + i * 26, 31, 7), 185 + i % 2 * 17, 9, 5);
       if (a.phase) motes(c, a, "#7f6962", 11, 345, 1.2);
+      if (a.phase >= 2) for (let i = 0; i < a.phase * 4; i++) px(c, "#5b5551", 265 + i * 37, FLOOR + 9 + i % 4 * 5, 15, 5);
+      if (a.phase >= 4) px(c, "#1e2529", 820, FLOOR + 3, 115, 27);
+      if (match?.pandemonium) { c.fillStyle = "#6a2a3440"; c.fillRect(0, 0, 1280, 580); }
       break;
     case "clover":
       spectators(c, a, [273, 329, 960, 1011], "#595e8d", "mage");
@@ -239,6 +278,7 @@ export function drawArenaLife(c: CanvasRenderingContext2D, a: ArenaState) {
         if (a.phase) for (let i = 0; i < 5; i++) px(c, "#c4d8e5", x - 15 + i * 7, 137 + i % 2 * 8, 4, 3);
       }
       motes(c, a, "#c6d7e9", 7, 198, 0.15);
+      if (match?.astaUnion) { c.fillStyle = "#22273366"; c.fillRect(0, 0, 1280, 580); }
       break;
   }
   if (recent) {
@@ -249,6 +289,17 @@ export function drawArenaLife(c: CanvasRenderingContext2D, a: ArenaState) {
     }
   }
   stageCracks(c, a, a.id === "enies" ? "#4c5964" : "#302c31");
+  for (const x of a.collapsed) {
+    px(c, "#121923", x - 51, FLOOR + 4, 102, 34);
+    px(c, a.id === "enies" ? "#9ca9b5" : "#78665a", x - 58, FLOOR + 3, 12, 8);
+    px(c, a.id === "enies" ? "#9ca9b5" : "#78665a", x + 46, FLOOR + 3, 12, 8);
+    for (let i = 0; i < 6; i++) px(c, "#77716d", x - 45 + i * 17, FLOOR + 33 + i % 3 * 6, 8, 4);
+  }
   warning(c, a);
+  for (const fall of a.falling) if (fall) {
+    const radius = fall.kind === "ringout" ? 28 : hazardRadius(a);
+    px(c, "#151b25", fall.x - radius, FLOOR + 4, radius * 2, 18);
+    for (let i = 0; i < 7; i++) px(c, "#8d8070", fall.x - radius + i * radius / 3, FLOOR + 17 + Math.min(60, fall.tick * 3) + i % 3 * 5, 9, 4);
+  }
   c.restore();
 }
