@@ -5,7 +5,9 @@ import {equinoxCut} from "./asta-equinox-geometry";
 import { astaUnionConfig, astaUnionScene } from "../engine/asta-super";
 import { astaSuperSheets, drawAstaUnionBackdrop, drawLiebeManifestation, drawAstaUnionLocal, drawAstaUnionImpact, drawAstaUnionScreen } from "./asta-super-fx";
 import { assetBase } from "../asset-base";
-import { drawTestArena } from "./arena";
+import { drawArena } from "./arena";
+import { drawArenaLife } from "./arena-life";
+import { arenaIds } from "../engine/arenas";
 import benArt from "../data/ben-art.json";
 import { alienXScene } from "../engine/ben-alien-x";
 import { alienXSuper } from "../engine/ben-omnitrix";
@@ -86,6 +88,7 @@ import { pandemoniumBeats, pandemoniumConfig, pandemoniumName, pandemoniumScene 
 export class Renderer {
   private ctx: CanvasRenderingContext2D;
   private sprites = new Map<string, HTMLImageElement>();
+  private arenaImages = new Map<string, HTMLImageElement>();
   private presentations = [
     new FighterPresentation(),
     new FighterPresentation(),
@@ -155,6 +158,15 @@ export class Renderer {
           if (sheet) sheets.add(sheet);
     }
     const loads: Promise<void>[] = [];
+    for (const id of [...arenaIds, "dojo-damaged", "uchiha-ruin"]) {
+      const image = new Image();
+      loads.push(new Promise<void>((resolve, reject) => {
+        image.onload = () => resolve();
+        image.onerror = () => reject(new Error(`Não foi possível carregar a arena ${id}`));
+      }));
+      image.src = `${assetBase}arenas/${id}.png`;
+      this.arenaImages.set(id, image);
+    }
     for (const sheet of sheets) {
       const image = new Image();
       loads.push(
@@ -352,6 +364,10 @@ export class Renderer {
     this.canvas.dataset.combo = String(other.combo);
     this.canvas.dataset.targetHealth = String(other.health);
     this.canvas.dataset.hitstop = String(match.hitstop);
+    this.canvas.dataset.arena = match.arena.id;
+    this.canvas.dataset.arenaMode = match.arena.mode;
+    this.canvas.dataset.arenaPhase = String(match.arena.phase);
+    this.canvas.dataset.arenaHazard = match.arena.hazard?.phase ?? "none";
     this.canvas.dataset.centipedePhase = kakuja?.phase ?? "";
     this.canvas.dataset.centipedeArmor = String(kakuja?.armor ?? 0);
     this.canvas.dataset.centipedeSource = centipede?.source ?? "";
@@ -570,7 +586,9 @@ export class Renderer {
       c.scale(z, z);
       c.translate(-cx, -cy);
     }
-    drawTestArena(c, benPadding);
+    const arenaVariant = match.arena.id === "dojo" ? "dojo-damaged" : match.arena.id === "uchiha" ? "uchiha-ruin" : "";
+    drawArena(c, match.arena, this.arenaImages.get(match.arena.id), benPadding, this.arenaImages.get(arenaVariant));
+    drawArenaLife(c, match.arena);
     if (xebecEffects && conquerors.length)
       drawKingWillArena(c, conquerors, this.pressureStage, this.prefersReducedMotion.matches);
     if (union) {
@@ -588,7 +606,7 @@ export class Renderer {
     }
     if (reality && alienX && this.effects) {
       drawAlienXSpace(c, reality, alienX.tick, this.sprites.get(alienXBackdrop));
-      drawAlienXRebuild(c, reality, alienX.tick, () => drawTestArena(c));
+      drawAlienXRebuild(c, reality, alienX.tick, () => drawArena(c, match.arena, this.arenaImages.get(match.arena.id), 0, this.arenaImages.get(arenaVariant)));
     }
     const nightmare = spectral || match.fighters.some(f => f.state === "attack" && f.move?.ben?.nightmare && benGhostDepth(f) > 30);
     if (this.effects && nightmare) {
@@ -1057,6 +1075,12 @@ export class Renderer {
       omnitrixFacing: ben?.facing ?? "",
       omnitrixName: benAliens.find(form => form.id === omnitrix?.selected)?.name ?? "",
     });
+    if (!m.cinematicActive) {
+      // Bright stages need the same HUD contrast as the original dark test arena.
+      c.fillStyle = "#07121b80";
+      c.fillRect(0, 0, 1280, 138);
+      c.fillRect(0, 601, 1280, 72);
+    }
     for (let i = 0; i < 2; i++) {
       const f = m.fighters[i],
         x = i === 0 ? 50 : 750;

@@ -289,6 +289,9 @@ export class OnlineClient {
   async select(character: OnlineCharacter = "samurai") {
     await this.request("room:select", { character });
   }
+  async selectArena(id: import("../engine/arenas").ArenaId, mode: import("../engine/arenas").ArenaMode) {
+    await this.request("room:arena", { id, mode });
+  }
   async confirm() {
     await this.request("room:confirm", {});
   }

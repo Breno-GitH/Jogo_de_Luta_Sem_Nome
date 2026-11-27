@@ -1597,3 +1597,11 @@ select {
 }
 
 .tower-panel .button-row .text, .tower-resume .button-row .text { width: auto; margin-top: 0; }
+.arena-picker{display:grid;grid-template-columns:minmax(160px,34%) 1fr;gap:14px;align-items:start;margin:14px 0;padding:12px;border:1px solid #637588;background:#101b2bcc;color:#f3e9d2}
+.arena-picker img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;image-rendering:pixelated;border:2px solid #8993a4}
+.arena-picker>div{display:grid;gap:6px;min-width:0}
+.arena-picker strong{font-size:1.05rem}
+.arena-picker small,.arena-picker span{color:#c7d4dd}
+.arena-picker label{display:grid;gap:3px;font-size:.8rem;color:#c7d4dd}
+.arena-picker select{width:100%;padding:6px;background:#1e3041;color:#fff;border:1px solid #768da1}
+@media(max-width:650px){.arena-picker{grid-template-columns:1fr}.arena-picker img{max-height:150px}}

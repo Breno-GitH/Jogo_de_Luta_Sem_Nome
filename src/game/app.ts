@@ -15,6 +15,8 @@ import type { DummyBehavior } from "./training";
 import { practiceSword, isAstaSword } from "../engine/asta-stances";
 import type { CharacterId } from "../engine/characters";
 import { ONLINE_CHARACTERS } from "../net/protocol";
+import { arenaForCharacter, type ArenaId, type ArenaMode } from "../engine/arenas";
+import { arenaPicker, updateArenaPreview } from "../ui/arena-picker";
 import {
   menuScreen,
   selectionScreen,
@@ -81,6 +83,8 @@ export class GameApp {
   private selectedMode: Mode = "versus";
   private selected: CharacterId = "samurai";
   private enemy: CharacterId = "dio";
+  private selectedArena: ArenaId = "cairo";
+  private selectedArenaMode: ArenaMode = "classico";
   private selectStep: SelectStep = "player";
   private canvas: HTMLCanvasElement;
   private overlay: HTMLElement;
@@ -305,6 +309,17 @@ export class GameApp {
       selectionScreen(mode, this.selected, this.enemy, step),
       "selection",
     );
+    if (step === "ready") {
+      this.selectedArena = arenaForCharacter[this.enemy];
+      this.el("fight").insertAdjacentHTML("beforebegin", arenaPicker(this.selectedArena, this.selectedArenaMode, true));
+      this.el<HTMLSelectElement>("arena-select").onchange = e => {
+        this.selectedArena = (e.target as HTMLSelectElement).value as ArenaId;
+        updateArenaPreview(this.root, this.selectedArena);
+      };
+      this.el<HTMLSelectElement>("arena-mode").onchange = e => {
+        this.selectedArenaMode = (e.target as HTMLSelectElement).value as ArenaMode;
+      };
+    }
     this.root.dataset.mode = mode;
     this.root.dataset.selectStep = step;
     this.el("mode-label").textContent =
@@ -350,6 +365,9 @@ export class GameApp {
         difficulty,
         this.selected,
         this.enemy,
+        undefined,
+        this.selectedArena,
+        this.selectedArenaMode,
       );
       void this.enter();
     });
@@ -785,6 +803,12 @@ export class GameApp {
     if (c.room && !c.fatal) {
       if (this.screen === "leaveConfirm") return;
       this.show(lobby(c), "onlineLobby");
+      this.el("online-ready").parentElement!.insertAdjacentHTML("beforebegin", arenaPicker(c.room.arenaId, c.room.arenaMode, c.room.host === c.seat));
+      if (c.room.host === c.seat) {
+        const choose = () => void this.onlineAction(() => c.selectArena(this.el<HTMLSelectElement>("arena-select").value as ArenaId, this.el<HTMLSelectElement>("arena-mode").value as ArenaMode));
+        this.el<HTMLSelectElement>("arena-select").onchange = choose;
+        this.el<HTMLSelectElement>("arena-mode").onchange = choose;
+      }
       this.footer(c.room.players[c.seat]?.character ?? this.selected);
       this.el("status").textContent =
         `SALA ${c.room.code} / JOGADOR ${c.seat + 1}`;

@@ -1,6 +1,7 @@
 import type { InputFrame } from "../engine/types";
 import type { MatchState } from "../engine/state";
-export const PROTOCOL = 3;
+import type { ArenaId, ArenaMode } from "../engine/arenas";
+export const PROTOCOL = 4;
 export const ONLINE_CHARACTERS = ["samurai", "dio", "goku", "luffy", "sasuke", "kaneki", "ben", "xebec", "asta"] as const;
 export type OnlineCharacter = (typeof ONLINE_CHARACTERS)[number];
 export const INPUT_DELAY = 6;
@@ -22,6 +23,8 @@ export interface RoomView {
   code: string;
   host: Seat;
   status: RoomStatus;
+  arenaId: ArenaId;
+  arenaMode: ArenaMode;
   players: (RoomPlayer | null)[];
   graceMs: number;
 }

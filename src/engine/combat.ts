@@ -35,6 +35,7 @@ import { CommandBuffer } from "./input";
 import { MOVEMENT_TIMING } from "./movement";
 import { combatPace, pacedCharacter } from "./pace";
 import { antiLightCombo, isLimitedLightNormal, launcherCombo } from "./anti-light-combo";
+import { arenaForCharacter, createArena, stepArena, type ArenaId, type ArenaMode, type ArenaState } from "./arenas";
 import cinematics from "../data/cinematics.json";
 import { reactionBoxes, reactionFor } from "./lifecycle";
 import { isSuperMove, poseAt, phaseAt } from "./moves";
@@ -1400,8 +1401,11 @@ export interface MatchRules {
   introSkip?: "single" | "both";
   training?: boolean;
   infiniteHealth?: [boolean, boolean];
+  arenaId?: ArenaId;
+  arenaMode?: ArenaMode;
 }
 export class Match {
+  arena: ArenaState;
   roadRoller?: RoadRollerState;
   fury?: FuryState;
   jetGigant?: JetState;
@@ -1438,6 +1442,7 @@ export class Match {
     public rules: MatchRules = {},
     public opponentData: CharacterData = data,
   ) {
+    this.arena = createArena(rules.arenaId ?? arenaForCharacter[opponentData.id] ?? "dojo", rules.arenaMode ?? "classico");
     this.fighters = [
       new Fighter(data, 0, 400),
       new Fighter(opponentData, 1, 880),
@@ -1478,7 +1483,12 @@ export class Match {
   }
   step(inputs: [InputFrame, InputFrame]) {
     this.frame++;
+    stepArena(this, this.hits);
     this.hits = [];
+    if (this.phase === "fight" && this.arena.ringOutSeat !== undefined) {
+      this.checkRoundEnd();
+      return;
+    }
     this.events = this.events.filter((e) => --e.life > 0);
     if (this.phase !== "fight") {
       if (this.phase === "finished") return;
@@ -1513,6 +1523,7 @@ export class Match {
           this.fighters.forEach((f, i) => (f.meter = meter[i]));
           this.linkOpponents();
           this.timer = 99 * 60;
+          this.arena = createArena(this.arena.id, this.arena.mode);
           this.phase = "intro";
           this.beginIntro(false);
           if (this.rules.training) {
@@ -3742,7 +3753,7 @@ export class Match {
         this.message = "EMPATE";
       } else {
         this.wins[winner]++;
-        this.message = this.timer <= 0 ? "TEMPO ESGOTADO" : "K.O.";
+        this.message = this.arena.ringOutSeat !== undefined ? "FORA DO RINGUE" : this.timer <= 0 ? "TEMPO ESGOTADO" : "K.O.";
       }
       if (winner === 0 || winner === 1) {
         const source = this.fighters[winner], target = this.fighters[1 - winner];

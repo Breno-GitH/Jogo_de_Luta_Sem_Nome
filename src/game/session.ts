@@ -3,6 +3,7 @@ import { Bot, type Difficulty } from "../engine/bot";
 import type { InputFrame } from "../engine/types";
 import { Training } from "./training";
 import { characterById, type CharacterId } from "../engine/characters";
+import { arenaForCharacter, type ArenaId, type ArenaMode } from "../engine/arenas";
 import {
   currentFloor,
   newTower,
@@ -28,6 +29,8 @@ export class GameSession {
     public characterId: CharacterId = "samurai",
     public opponentCharacterId: CharacterId = "samurai",
     attempt?: TowerAttempt,
+    public arenaId?: ArenaId,
+    public arenaMode: ArenaMode = "classico",
   ) {
     if (mode === "arcade") {
       this.tower = attempt ?? newTower(characterId);
@@ -59,12 +62,11 @@ export class GameSession {
     return this.tower ? towerFloors[this.stage].tier : this.difficulty;
   }
   restart(playIntro = true) {
+    const opponentId = this.tower ? this.route[this.stage] : this.opponentCharacterId;
     this.match = new Match(
       characterById(this.characterId),
-      this.mode === "training" ? { training: true } : {},
-      characterById(
-        this.tower ? this.route[this.stage] : this.opponentCharacterId,
-      ),
+      { ...(this.mode === "training" ? { training: true } : {}), arenaId: this.tower ? arenaForCharacter[opponentId] : this.arenaId ?? arenaForCharacter[opponentId], arenaMode: this.arenaMode },
+      characterById(opponentId),
     );
     this.bot = new Bot(
       this.currentDifficulty,

@@ -171,6 +171,9 @@ export function createGameServer(options: Options = {}) {
     route("room:select", ["character"], (payload) =>
       rooms.select(socket.id, payload.character),
     );
+    route("room:arena", ["id", "mode"], (payload) =>
+      rooms.selectArena(socket.id, payload.id, payload.mode),
+    );
     route("room:ready", ["ready"], (payload) =>
       rooms.ready(socket.id, payload.ready),
     );
