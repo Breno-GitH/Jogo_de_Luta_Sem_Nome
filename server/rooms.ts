@@ -6,6 +6,7 @@ import {
 } from "node:crypto";
 import { Match } from "../src/engine/combat";
 import { characterById } from "../src/engine/characters";
+import { validArena, validArenaMode, type ArenaId, type ArenaMode } from "../src/engine/arenas";
 import { neutral, type InputFrame } from "../src/engine/types";
 import { snapshot, hashState } from "../src/engine/state";
 import { ENGINE_VERSION } from "../src/net/version";
@@ -47,6 +48,8 @@ interface Player extends RoomPlayer {
 }
 export interface Room {
   code: string;
+  arenaId: ArenaId;
+  arenaMode: ArenaMode;
   host: Seat;
   status: RoomStatus;
   players: [Player | null, Player | null];
@@ -104,6 +107,8 @@ export class Rooms {
   view(room: Room): RoomView {
     return {
       code: room.code,
+      arenaId: room.arenaId,
+      arenaMode: room.arenaMode,
       host: room.host,
       status: room.status,
       graceMs: this.graceMs,
@@ -164,6 +169,8 @@ export class Rooms {
     } while (this.rooms.has(code) || this.retired.has(code));
     const room: Room = {
       code,
+      arenaId: "dojo",
+      arenaMode: "classico",
       host: 0,
       status: "lobby",
       players: [null, null],
@@ -259,6 +266,17 @@ export class Rooms {
     room.updated = this.now();
     this.broadcast(room);
   }
+  selectArena(socketId: string, id: unknown, mode: unknown) {
+    const { room, seat } = this.player(socketId);
+    if (seat !== room.host) fail("hostOnly", "Apenas o anfitrião escolhe a arena.");
+    if (room.status !== "lobby") fail("notLobby", "A arena só pode mudar no lobby.");
+    if (!validArena(id) || !validArenaMode(mode)) fail("invalidArena", "Arena ou modo inválido.");
+    room.arenaId = id;
+    room.arenaMode = mode;
+    for (const player of room.players) if (player) player.ready = false;
+    room.updated = this.now();
+    this.broadcast(room);
+  }
   ready(socketId: string, ready: unknown) {
     const { room, seat } = this.player(socketId);
     if (room.status !== "lobby") fail("notLobby", "A sala já saiu do lobby.");
@@ -305,7 +323,7 @@ export class Rooms {
   private newMatch(room: Room) {
     return new Match(
       characterById(room.players[0]!.character!),
-      { introSkip: "both" },
+      { introSkip: "both", arenaId: room.arenaId, arenaMode: room.arenaMode },
       characterById(room.players[1]!.character!),
     );
   }

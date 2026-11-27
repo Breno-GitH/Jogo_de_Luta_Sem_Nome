@@ -1,4 +1,5 @@
 import { FLOOR } from "../engine/combat";
+import type { ArenaState } from "../engine/arenas";
 
 /** Shared original test stage; no fighter sprites or game-state side effects. */
 export function drawTestArena(c: CanvasRenderingContext2D, padding = 0) {
@@ -41,4 +42,22 @@ export function drawTestArena(c: CanvasRenderingContext2D, padding = 0) {
   c.fillStyle = "#6d858c";
   c.fillText("ARENA 01 / PÁTIO DE TESTES", 42, 676);
   c.fillText("PROTÓTIPO • 60 Hz", 1060, 676);
+}
+
+/** Image is only the architecture layer; ambient and reactive layers are drawn separately. */
+export function drawArena(c: CanvasRenderingContext2D, arena: ArenaState, image?: HTMLImageElement, padding = 0, damaged?: HTMLImageElement) {
+  if (!image?.complete || !image.naturalWidth) { drawTestArena(c, padding); return; }
+  c.save();
+  c.imageSmoothingEnabled = false;
+  c.drawImage(image, 0, 0, 1280, 720);
+  if (arena.phase && damaged?.complete && damaged.naturalWidth) {
+    c.globalAlpha = Math.min(1, Math.max(0, (arena.tick - arena.phaseStart) / 24));
+    c.drawImage(damaged, 0, 0, 1280, 720);
+    c.globalAlpha = 1;
+  }
+  if (padding) {
+    c.drawImage(image, 0, 0, 2, image.naturalHeight, -padding, 0, padding, 720);
+    c.drawImage(image, image.naturalWidth - 2, 0, 2, image.naturalHeight, 1280, 0, padding, 720);
+  }
+  c.restore();
 }

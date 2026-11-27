@@ -85,6 +85,7 @@ const matchKeys = [
   "astaUnion",
   "hits",
   "hitSerial",
+  "arena",
   "rules",
   "projectiles",
   "projectileSerial",
