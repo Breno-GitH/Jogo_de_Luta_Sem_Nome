@@ -1,0 +1,430 @@
+[
+  {
+    "kind": "alien-sign",
+    "hp": [
+      1000,
+      990
+    ],
+    "terrain": [
+      "market-wreck"
+    ],
+    "readOnly": true,
+    "p95": 2,
+    "matte": [
+      {
+        "id": "arenas/events/undertown.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-market-sign.png",
+        "alpha": 1
+      },
+      {
+        "id": "arenas/events/ben-market-cart.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-market-generator.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-smoothie.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-smoothy-sign.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-patio.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-delivery.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-lift.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-residents.png",
+        "alpha": 0
+      }
+    ]
+  },
+  {
+    "kind": "pressure-pipe",
+    "hp": [
+      1000,
+      992
+    ],
+    "terrain": [],
+    "readOnly": true,
+    "p95": 1.5,
+    "matte": [
+      {
+        "id": "arenas/events/undertown.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-market-sign.png",
+        "alpha": 1
+      },
+      {
+        "id": "arenas/events/ben-market-cart.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-market-generator.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-smoothie.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-smoothy-sign.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-patio.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-delivery.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-lift.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-residents.png",
+        "alpha": 0
+      }
+    ]
+  },
+  {
+    "kind": "cargo-cart",
+    "hp": [
+      1000,
+      991
+    ],
+    "terrain": [
+      "market-wreck"
+    ],
+    "readOnly": true,
+    "p95": 1.0999999940395355,
+    "matte": [
+      {
+        "id": "arenas/events/undertown.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-market-sign.png",
+        "alpha": 1
+      },
+      {
+        "id": "arenas/events/ben-market-cart.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-market-generator.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-smoothie.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-smoothy-sign.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-patio.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-delivery.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-lift.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-residents.png",
+        "alpha": 0
+      }
+    ]
+  },
+  {
+    "kind": "alien-overload",
+    "hp": [
+      1000,
+      989
+    ],
+    "terrain": [],
+    "readOnly": true,
+    "p95": 1.7999999821186066,
+    "matte": [
+      {
+        "id": "arenas/events/undertown.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-market-sign.png",
+        "alpha": 1
+      },
+      {
+        "id": "arenas/events/ben-market-cart.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-market-generator.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-smoothie.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-smoothy-sign.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-patio.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-delivery.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-lift.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-residents.png",
+        "alpha": 0
+      }
+    ]
+  },
+  {
+    "kind": "smoothie-spill",
+    "hp": [
+      1000,
+      1000
+    ],
+    "terrain": [
+      "slick"
+    ],
+    "readOnly": true,
+    "p95": 1.600000023841858,
+    "matte": [
+      {
+        "id": "arenas/events/undertown.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-market-sign.png",
+        "alpha": 1
+      },
+      {
+        "id": "arenas/events/ben-market-cart.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-market-generator.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-smoothie.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-smoothy-sign.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-patio.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-delivery.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-lift.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-residents.png",
+        "alpha": 0
+      }
+    ]
+  },
+  {
+    "kind": "smoothy-sign",
+    "hp": [
+      1000,
+      990
+    ],
+    "terrain": [
+      "market-wreck"
+    ],
+    "readOnly": true,
+    "p95": 1.5999999940395355,
+    "matte": [
+      {
+        "id": "arenas/events/undertown.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-market-sign.png",
+        "alpha": 1
+      },
+      {
+        "id": "arenas/events/ben-market-cart.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-market-generator.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-smoothie.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-smoothy-sign.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-patio.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-delivery.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-lift.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-residents.png",
+        "alpha": 0
+      }
+    ]
+  },
+  {
+    "kind": "patio-collapse",
+    "hp": [
+      1000,
+      1000
+    ],
+    "terrain": [
+      "patio-wreck"
+    ],
+    "readOnly": true,
+    "p95": 1.9000000059604645,
+    "matte": [
+      {
+        "id": "arenas/events/undertown.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-market-sign.png",
+        "alpha": 1
+      },
+      {
+        "id": "arenas/events/ben-market-cart.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-market-generator.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-smoothie.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-smoothy-sign.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-patio.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-delivery.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-lift.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-residents.png",
+        "alpha": 0
+      }
+    ]
+  },
+  {
+    "kind": "delivery-cart",
+    "hp": [
+      1000,
+      992
+    ],
+    "terrain": [
+      "market-wreck"
+    ],
+    "readOnly": true,
+    "p95": 1.199999988079071,
+    "matte": [
+      {
+        "id": "arenas/events/undertown.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-market-sign.png",
+        "alpha": 1
+      },
+      {
+        "id": "arenas/events/ben-market-cart.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-market-generator.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-smoothie.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-smoothy-sign.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-patio.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-delivery.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-lift.png",
+        "alpha": 0
+      },
+      {
+        "id": "arenas/events/ben-residents.png",
+        "alpha": 0
+      }
+    ]
+  }
+]

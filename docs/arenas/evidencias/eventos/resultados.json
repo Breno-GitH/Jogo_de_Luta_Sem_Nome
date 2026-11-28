@@ -1,0 +1,378 @@
+{
+  "results": [
+    {
+      "id": "enies",
+      "kind": "buster-call",
+      "source": {
+        "x": 105,
+        "y": 350
+      },
+      "target": 370,
+      "timing": {
+        "preparation": 30,
+        "warning": 66,
+        "action": 48,
+        "impact": 42,
+        "aftermath": 90,
+        "cooldown": 660
+      },
+      "asset": {
+        "width": 1774,
+        "height": 887,
+        "corners": [
+          0,
+          0,
+          0
+        ]
+      },
+      "hp": [
+        1000,
+        988
+      ],
+      "terrain": [],
+      "renderMs": 1.2999999821186066,
+      "readOnly": true,
+      "stages": [
+        "preparation",
+        "warning",
+        "action",
+        "impact",
+        "aftermath",
+        "cooldown"
+      ]
+    },
+    {
+      "id": "anteiku",
+      "kind": "storm",
+      "source": {
+        "x": 252,
+        "y": 355
+      },
+      "target": 320,
+      "timing": {
+        "preparation": 36,
+        "warning": 78,
+        "action": 10,
+        "impact": 8,
+        "aftermath": 240,
+        "cooldown": 780
+      },
+      "asset": {
+        "width": 1774,
+        "height": 887,
+        "corners": [
+          0,
+          0,
+          0
+        ]
+      },
+      "hp": [
+        1000,
+        989
+      ],
+      "terrain": [],
+      "renderMs": 1.600000023841858,
+      "readOnly": true,
+      "stages": [
+        "preparation",
+        "warning",
+        "action",
+        "aftermath"
+      ]
+    },
+    {
+      "id": "godvalley",
+      "kind": "canyon-shock",
+      "source": {
+        "x": 155,
+        "y": 390
+      },
+      "target": 355,
+      "timing": {
+        "preparation": 36,
+        "warning": 84,
+        "action": 48,
+        "impact": 14,
+        "aftermath": 180,
+        "cooldown": 780
+      },
+      "asset": {
+        "width": 1774,
+        "height": 887,
+        "corners": [
+          0,
+          0,
+          0
+        ]
+      },
+      "hp": [
+        1000,
+        986
+      ],
+      "terrain": [
+        "rubble"
+      ],
+      "renderMs": 1.600000023841858,
+      "readOnly": true,
+      "stages": [
+        "preparation",
+        "warning",
+        "action",
+        "impact",
+        "aftermath"
+      ]
+    },
+    {
+      "id": "cairo",
+      "kind": "car-crash",
+      "source": {
+        "x": 285,
+        "y": 580
+      },
+      "target": 395,
+      "timing": {
+        "preparation": 24,
+        "warning": 72,
+        "action": 54,
+        "impact": 12,
+        "aftermath": 240,
+        "cooldown": 660
+      },
+      "asset": {
+        "width": 1774,
+        "height": 887,
+        "corners": [
+          0,
+          0,
+          0
+        ]
+      },
+      "hp": [
+        1000,
+        987
+      ],
+      "terrain": [
+        "lamp"
+      ],
+      "renderMs": 1.4000000059604645,
+      "readOnly": true,
+      "stages": [
+        "preparation",
+        "warning",
+        "action",
+        "aftermath"
+      ]
+    },
+    {
+      "id": "uchiha",
+      "kind": "column-collapse",
+      "source": {
+        "x": 245,
+        "y": 255
+      },
+      "target": 375,
+      "timing": {
+        "preparation": 32,
+        "warning": 84,
+        "action": 46,
+        "impact": 14,
+        "aftermath": 200,
+        "cooldown": 780
+      },
+      "asset": {
+        "width": 1774,
+        "height": 887,
+        "corners": [
+          1,
+          0,
+          1
+        ]
+      },
+      "hp": [
+        1000,
+        988
+      ],
+      "terrain": [
+        "rubble"
+      ],
+      "renderMs": 1.2000000178813934,
+      "readOnly": true,
+      "stages": [
+        "preparation",
+        "warning",
+        "action",
+        "impact",
+        "aftermath"
+      ]
+    },
+    {
+      "id": "dojo",
+      "kind": "timber-break",
+      "source": {
+        "x": 220,
+        "y": 110
+      },
+      "target": 350,
+      "timing": {
+        "preparation": 32,
+        "warning": 78,
+        "action": 44,
+        "impact": 12,
+        "aftermath": 190,
+        "cooldown": 660
+      },
+      "asset": {
+        "width": 1774,
+        "height": 887,
+        "corners": [
+          0,
+          0,
+          0
+        ]
+      },
+      "hp": [
+        1000,
+        992
+      ],
+      "terrain": [
+        "beam"
+      ],
+      "renderMs": 0.7000000178813934,
+      "readOnly": true,
+      "stages": [
+        "preparation",
+        "warning",
+        "action",
+        "aftermath"
+      ]
+    },
+    {
+      "id": "budokai",
+      "kind": "ring-fracture",
+      "source": {
+        "x": 87,
+        "y": 580
+      },
+      "target": 96,
+      "timing": {
+        "preparation": 24,
+        "warning": 84,
+        "action": 34,
+        "impact": 12,
+        "aftermath": 180,
+        "cooldown": 900
+      },
+      "asset": {
+        "width": 1774,
+        "height": 887,
+        "corners": [
+          0,
+          0,
+          0
+        ]
+      },
+      "hp": [
+        1000,
+        1000
+      ],
+      "terrain": [
+        "ring-edge"
+      ],
+      "renderMs": 2.100000023841858,
+      "readOnly": true,
+      "stages": [
+        "preparation",
+        "warning",
+        "action",
+        "impact",
+        "aftermath"
+      ]
+    },
+    {
+      "id": "undertown",
+      "kind": "alien-sign",
+      "source": {
+        "x": 345,
+        "y": 210
+      },
+      "target": 360,
+      "timing": {
+        "preparation": 30,
+        "warning": 84,
+        "action": 44,
+        "impact": 14,
+        "aftermath": 160,
+        "cooldown": 840
+      },
+      "asset": {
+        "width": 1774,
+        "height": 887,
+        "corners": [
+          0,
+          0,
+          0
+        ]
+      },
+      "hp": [
+        1000,
+        990
+      ],
+      "terrain": [
+        "market-wreck"
+      ],
+      "renderMs": 1.7999999821186066,
+      "readOnly": true,
+      "stages": [
+        "preparation",
+        "warning",
+        "action",
+        "impact",
+        "aftermath"
+      ]
+    },
+    {
+      "id": "clover",
+      "kind": "mana-fracture",
+      "source": {
+        "x": 260,
+        "y": 185
+      },
+      "target": 410,
+      "timing": {
+        "preparation": 30,
+        "warning": 84,
+        "action": 32,
+        "impact": 14,
+        "aftermath": 250,
+        "cooldown": 780
+      },
+      "asset": {
+        "width": 1774,
+        "height": 887,
+        "corners": [
+          0,
+          0,
+          0
+        ]
+      },
+      "hp": [
+        1000,
+        990
+      ],
+      "terrain": [
+        "crystal"
+      ],
+      "renderMs": 6.699999988079071,
+      "readOnly": true,
+      "stages": [
+        "preparation",
+        "warning",
+        "action",
+        "impact",
+        "aftermath"
+      ]
+    }
+  ],
+  "frozen": true,
+  "errors": []
+}

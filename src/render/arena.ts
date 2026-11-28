@@ -124,7 +124,7 @@ function drawExtended(c: CanvasRenderingContext2D, image: HTMLImageElement, boun
     c.drawImage(image, x.source * sx, y.source * sy, x.size * sx, y.size * sy, -1, -1, x.size + 2, y.size + 2);
     c.restore();
   }
-  const sky = enclosed ? undefined : skyColors[arena.id];
+  const sky = enclosed ? undefined : arena.id === "undertown" && arena.ben?.area === "smoothy" ? ["#2686c5", "#75c6de", "#f0f9f5"] as [string, string, string] : skyColors[arena.id];
   if (bounds.top >= 0) return;
   if (sky === undefined) {
     for (const y of above.filter(band => band.at < 0)) for (const x of horizontal) {

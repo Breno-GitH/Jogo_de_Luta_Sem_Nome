@@ -7,6 +7,7 @@ import { hashState, restore, snapshot } from "../src/engine/state";
 import { Rooms } from "../server/rooms";
 import { neutral } from "../src/engine/types";
 import { Bot } from "../src/engine/bot";
+import { forceArenaEvent, impactAt, isArenaEvent, eventTiming } from "../src/engine/arena-events";
 
 const hit = (serial: number): CombatHit => ({ serial, frame: serial, attacker: 0, victim: 1, move: "test", damage: 60, blocked: false, combo: 1 });
 const fight = (arenaId: typeof arenaIds[number], arenaMode: "classico" | "interativo" | "caotico" = "interativo", character = characters.samurai) => {
@@ -38,13 +39,15 @@ describe("unified living arenas", () => {
       const m = fight(id); m.fighters[1].health = 5;
       stepArena(m, [hit(1), hit(2)]);
       const h = m.arena.hazard!;
+      m.fighters[1].x = h.x;
       expect(h?.phase, id).toBe("warning");
       expect(h.ticks, id).toBeGreaterThanOrEqual(60);
       for (let n = h.ticks; n > 1; n--) stepArena(m, []);
       expect(m.fighters[1].health, id).toBe(5);
       stepArena(m, []); stepArena(m, []);
       expect(m.fighters[1].health, id).toBe(1);
-      for (let n = 0; n < 30; n++) stepArena(m, []);
+      if (!isArenaEvent(h)) throw new Error("Expected arena-specific event");
+      for (let n = 0; n < eventTiming(m.arena, h).impact + eventTiming(m.arena, h).aftermath; n++) stepArena(m, []);
       expect(m.fighters[1].health, id).toBe(1);
       expect(h.phase, id).toBe("cooldown");
       expect(h.ticks, id).toBeGreaterThan(390);
@@ -64,8 +67,11 @@ describe("unified living arenas", () => {
     m.hitstop = 0; stepArena(m, []); expect(m.arena.hazard!.ticks).toBe(ticks - 1);
   });
   for (const id of ["enies", "godvalley"] as const) it(`${id} descends and resumes in a persistent lower area with identical two-client hashes`, () => {
-    const m = fight(id); stepArena(m, [hit(1), hit(2)]);
-    step(m, m.arena.hazard!.ticks + 1);
+    const m = fight(id); forceArenaEvent(m.arena, "transformation");
+    const event = m.arena.hazard;
+    if (!isArenaEvent(event)) throw new Error("Expected transformation");
+    m.fighters[0].x = event.x;
+    step(m, impactAt(m.arena, event));
     expect(m.arena.transition).toBeDefined();
     const timer = m.timer, health = m.fighters.map(f => f.health);
     const mirrors = [restore(snapshot(m)), restore(snapshot(m))];
@@ -122,13 +128,13 @@ describe("unified living arenas", () => {
 });
 
 describe("one-way platforms in existing fighter physics", () => {
-  it("requires three round wins on the two open maps, while classic and other arenas retain two", () => {
+  it("requires three wins in Undertown and Clover, while Classic and other arenas retain two", () => {
     for (const id of ["clover", "undertown"] as const) {
       const m = fight(id); m.rules.training = false;
       expect(m.roundsToWin).toBe(3); expect(fight(id, "classico").roundsToWin).toBe(2);
       for (let won = 1; won <= 3; won++) {
         m.phase = "fight";
-        const loser = m.fighters[1]; loser.x = 1190; loser.y = 940; loser.setState("air");
+        const loser = m.fighters[1]; loser.x = 1190; loser.y = id === "clover" ? 940 : 580; loser.setState("air"); if (id === "undertown") loser.health = 0;
         step(m, 25); expect(m.wins).toEqual([won, 0]);
         step(m, 150);
         expect(m.phase).toBe(won < 3 ? "intro" : "finished");
@@ -136,9 +142,9 @@ describe("one-way platforms in existing fighter physics", () => {
     }
     for (const id of arenaIds.filter(id => !["clover", "undertown"].includes(id))) expect(fight(id).roundsToWin).toBe(2);
   });
-  it("limits open-sided layouts to two arenas and awards a round for a fall regardless of HP", () => {
-    expect(Object.values(arenaLayouts).filter(a => a.structure === "platform")).toHaveLength(2);
-    for (const id of ["clover", "undertown"] as const) {
+  it("keeps only Clover open-sided and awards a round for a fall regardless of HP", () => {
+    expect(Object.values(arenaLayouts).filter(a => a.structure === "platform")).toHaveLength(1);
+    for (const id of ["clover"] as const) {
       const m = fight(id), f = m.fighters[0];
       f.x = 90; f.y = FLOOR; f.setState("air");
       step(m, 30); expect(f.y).toBeGreaterThan(FLOOR + 100);
@@ -151,12 +157,12 @@ describe("one-way platforms in existing fighter physics", () => {
     }
   });
   it("keeps BOT movement aimed toward the island instead of chasing into the void", () => {
-    const m = fight("undertown"), bot = new Bot("normal");
+    const m = fight("clover"), bot = new Bot("normal");
     m.fighters[1].x = 1060; m.fighters[1].setState("idle");
     expect(bot.sample(m).direction).toBe(-1);
   });
   it("eliminates either seat at either ledge once, then restores both fighters next round", () => {
-    for (const id of ["clover", "undertown"] as const) for (const seat of [0, 1] as const) for (const x of [90, 1190]) {
+    for (const id of ["clover"] as const) for (const seat of [0, 1] as const) for (const x of [90, 1190]) {
       const m = fight(id), f = m.fighters[seat];
       m.rules.training = false;
       f.x = x; f.y = 940; f.health = seat ? 7 : 1000; f.setState("air");
@@ -176,7 +182,7 @@ describe("one-way platforms in existing fighter physics", () => {
     expect(m.fighters.map(f => f.health)).toEqual([0, 0]);
     expect(m.message).toBe("EMPATE"); expect(m.wins).toEqual([0, 0]);
   });
-  for (const id of ["undertown", "clover"] as const) for (const character of Object.values(characters))
+  for (const id of ["clover"] as const) for (const character of Object.values(characters))
     it(`${character.id} lands, attacks, drops through and walks off ${id}`, () => {
       const m = fight(id, "interativo", character), f = m.fighters[0], p = arenaPlatforms(m.arena)[0];
       f.x = p.x + p.width / 2; f.y = p.y - 8; f.vy = 8; f.setState("air"); step(m, 1);
@@ -189,12 +195,12 @@ describe("one-way platforms in existing fighter physics", () => {
       expect(f.y).toBeGreaterThan(p.y); expect(f.airborne || f.y === FLOOR).toBe(true);
     });
   it("does not catch a rising actor and replays platform motion identically", () => {
-    const m = fight("undertown"), f = m.fighters[0]; f.x = 290; f.y = 465; f.vy = -8; f.setState("air");
+    const m = fight("clover"), f = m.fighters[0]; f.x = 290; f.y = 465; f.vy = -8; f.setState("air");
     const mirror = restore(snapshot(m));
     for (let n = 0; n < 90; n++) {
       step(m, 1); step(mirror, 1); expect(hashState(snapshot(mirror))).toBe(hashState(snapshot(m)));
       if (n === 0) expect(f.y).toBeLessThan(460);
     }
-    expect(f.groundY).toBe(460);
+    expect(f.groundY).toBe(468);
   });
 });

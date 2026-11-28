@@ -8,6 +8,9 @@ import { Sound } from "./audio/sound";
 import { drawArena, visibleWorldBounds } from "./render/arena";
 import { createArena } from "./engine/arenas";
 import { assetBase } from "./asset-base";
+import { forceArenaEvent, eventTiming, impactAt, isArenaEvent } from "./engine/arena-events";
+import { beginDojoTravel, type DojoRoom } from "./engine/arena-rooms";
+import { beginBenLift, benEventOrder, benEventSpecs, type BenArea, type BenArenaEventKind } from "./engine/ben-arena";
 
 const canvas = document.querySelector("canvas")!;
 const renderer = new Renderer(canvas), sound = new Sound();
@@ -23,11 +26,14 @@ function reset(id: ArenaId = arenaSelect.value as ArenaId, fighter: CharacterId 
   match.phase = "fight"; match.message = "";
   match.fighters[0].meter = match.fighters[0].meterMaximum;
   arenaSelect.value = id; fighterSelect.value = fighter;
+  document.querySelector<HTMLElement>("#ben-tools")!.hidden = id !== "undertown";
+  document.querySelector<HTMLElement>("#dojo-tools")!.hidden = id !== "dojo";
   renderer.resetAnimations(); render();
 }
 function render() {
   renderer.tick(match); renderer.draw(match);
-  status.textContent = `${arenas.find(a => a.id === match.arena.id)!.name} · nível ${match.arena.level + 1} · ${match.arena.transition ? "descida" : match.arena.hazard?.phase ?? "ambiente"} · ${match.arena.tick} ticks`;
+  const area = match.arena.ben ? match.arena.ben.lift ? "elevador" : match.arena.ben.area === "market" ? "Cidade de Baixo" : "Mr. Smoothy" : match.arena.dojo?.room ?? `nível ${match.arena.level + 1}`;
+  status.textContent = `${arenas.find(a => a.id === match.arena.id)!.name} · ${area} · ${match.arena.transition ? "descida" : match.arena.hazard?.phase ?? "ambiente"} · ${match.arena.tick} ticks`;
 }
 function advance(ticks = 1, input?: InputFrame, drawEvery = 1) {
   for (let n = 0; n < ticks; n++) {
@@ -36,12 +42,8 @@ function advance(ticks = 1, input?: InputFrame, drawEvery = 1) {
   }
 }
 function event(collapse = false) {
-  if (collapse && ["enies", "godvalley"].includes(match.arena.id) && !match.arena.level) {
-    match.arena.hazard = { kind: "fall", x: match.fighters[0].x, phase: "warning", ticks: 90, affected: [false, false] };
-    match.arena.eventSerial++;
-  } else {
-    match.hits = [1, 2, 3].map(serial => ({ serial, frame: match.frame, attacker: 1, victim: 0, move: "arena-preview", damage: 60, blocked: false, combo: 1 }));
-  }
+  forceArenaEvent(match.arena, collapse ? "transformation" : "primary");
+  if (collapse) match.fighters[0].x = match.arena.hazard!.x;
   advance();
 }
 arenaSelect.onchange = fighterSelect.onchange = () => reset();
@@ -49,6 +51,14 @@ document.querySelector<HTMLButtonElement>("#event")!.onclick = () => { void soun
 document.querySelector<HTMLButtonElement>("#collapse")!.onclick = () => { void sound.unlock(); event(true); };
 document.querySelector<HTMLButtonElement>("#pause")!.onclick = () => { running = !running; };
 document.querySelector<HTMLButtonElement>("#step")!.onclick = () => { running = false; advance(); };
+const benEventSelect = document.querySelector<HTMLSelectElement>("#ben-event")!;
+benEventSelect.innerHTML = Object.values(benEventSpecs).map(s => `<option value="${s.kind}">${s.label}</option>`).join("");
+document.querySelector<HTMLButtonElement>("#ben-force")!.onclick = () => { void sound.unlock(); lab.benEvent(benEventSelect.value as BenArenaEventKind); running = true; };
+document.querySelector<HTMLButtonElement>("#ben-lift")!.onclick = () => { void sound.unlock(); lab.lift(); running = true; };
+document.querySelector<HTMLButtonElement>("#dojo-travel")!.onclick = () => {
+  const room = document.querySelector<HTMLSelectElement>("#dojo-room")!.value as DojoRoom;
+  lab.launchRoom(room, room === "west" ? -1 : 1); running = true;
+};
 window.addEventListener("keydown", e => {
   const key = e.key.toLowerCase(); if (!(key in buttons) && !["a", "s", "d"].includes(key)) return;
   if (e.target instanceof HTMLSelectElement) return;
@@ -60,6 +70,26 @@ const lab = {
   reset, advance, event, renderer,
   get match() { return match; },
   pause() { running = false; },
+  travel(room: DojoRoom, direction: -1 | 1 = 1, depth = false) { return beginDojoTravel(match, room, direction, depth); },
+  launchRoom(room: DojoRoom, direction: -1 | 1 = 1) {
+    match.fighters[0].x = direction > 0 ? 1050 : 230; match.fighters[1].x = direction > 0 ? 1160 : 120;
+    return beginDojoTravel(match, room, direction, false, { attacker: 0, victim: 1 });
+  },
+  benArea(area: BenArea) { if (!match.arena.ben) return; match.arena.ben.area = area; match.arena.hazard = undefined; match.arena.terrain = []; render(); },
+  benEvent(kind: BenArenaEventKind) { if (!match.arena.ben) return; match.arena.ben.area = benEventOrder.smoothy.includes(kind) ? "smoothy" : "market"; forceArenaEvent(match.arena, "primary", kind); render(); },
+  lift() { return beginBenLift(match); },
+  coverageScene(camera: { x: number; y: number; scale: number; angle?: number }) {
+    const proof = document.createElement("canvas"); proof.width = 1280; proof.height = 720;
+    const c = proof.getContext("2d", { willReadFrequently: true })!;
+    c.translate(657, 347); c.rotate(camera.angle ?? 0); c.scale(camera.scale, camera.scale); c.translate(-camera.x, -camera.y);
+    renderer.paintArena(c, match.arena); const data = c.getImageData(0, 0, 1280, 720).data;
+    let transparent = 0; for (let n = 3; n < data.length; n += 4) if (data[n] < 255) transparent++;
+    return { transparent };
+  },
+  eventInfo() {
+    const a = match.arena, h = a.hazard;
+    return isArenaEvent(h) ? { ...h, timing: eventTiming(a, h), impactAt: impactAt(a, h) } : undefined;
+  },
   async upperPreservation(id: ArenaId) {
     const upper = new Image(), lower = new Image();
     upper.src = `${assetBase}arenas/${id}-open.png`; lower.src = `${assetBase}arenas/${id}-world.png`;

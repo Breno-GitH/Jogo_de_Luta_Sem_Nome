@@ -58,6 +58,8 @@ try {
     [
       ...new Set([
         ...bundles,
+        ...(await readdir(new URL("arenas/", dist))).filter(name => name.endsWith(".png")).map(name => `arenas/${name}`),
+        ...(await readdir(new URL("sprites/arenas/events/", dist))).filter(name => name.endsWith(".png")).map(name => `sprites/arenas/events/${name}`),
         ...["enies-lower", "godvalley-lower", "clover-open", "undertown-open", "clover-world", "undertown-world"].map(name => `arenas/${name}.png`),
         ...Object.values(entrances.characters).map(clip => `sprites/${clip.sheet}`),
         "sprites/dio/secondaryEntrance.png",

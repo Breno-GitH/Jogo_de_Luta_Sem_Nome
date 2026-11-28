@@ -1,0 +1,108 @@
+[
+  {
+    "id": "dojo-west",
+    "path": "public/arenas/dojo-west.png",
+    "source": "C:\\Users\\Usuario\\.codex\\generated_images\\01a18870-eeb2-76a0-abaf-18ed7a9ded04\\exec-f79d2c20-b1fc-4984-867a-ead64a24982b.png",
+    "tool": "image_gen.imagegen"
+  },
+  {
+    "id": "dojo-veranda",
+    "path": "public/arenas/dojo-veranda.png",
+    "source": "C:\\Users\\Usuario\\.codex\\generated_images\\01a18870-eeb2-76a0-abaf-18ed7a9ded04\\exec-9c2b2060-06fa-4202-abf0-7fceb806ca7b.png",
+    "tool": "image_gen.imagegen"
+  },
+  {
+    "id": "dojo-garden",
+    "path": "public/arenas/dojo-garden.png",
+    "source": "C:\\Users\\Usuario\\.codex\\generated_images\\01a18870-eeb2-76a0-abaf-18ed7a9ded04\\exec-8c8e6395-fca1-46be-92c9-7dd33936d9ce.png",
+    "tool": "image_gen.imagegen"
+  },
+  {
+    "id": "undertown-traditional",
+    "path": "public/arenas/undertown.png",
+    "source": "C:\\Users\\Usuario\\.codex\\generated_images\\01a18870-eeb2-76a0-abaf-18ed7a9ded04\\exec-19a11b5c-2550-4e9a-a3b5-f45b0c62d0d1.png",
+    "tool": "image_gen.imagegen",
+    "prompt": "Edit this Undertown MUGEN pixel background into a TRADITIONAL side-view fighting arena. Preserve the upper original dense Omniverse bazaar, black industrial ceiling pipes, olive angular compact shops, alien-script hanging colorful signs, depth walkways and market goods. REPLACE the entire foreground open shaft, bridge edge and lower utility void with a BROAD CONTINUOUS PAVED MARKET STREET spanning full width to every bottom/side edge. No holes, dropoffs, floating platforms or exposed chasm. The foreground road is charcoal slate slabs with subtle perspective seams, horizontal playable foot plane around y580/720, open and readable bottom30%. Buildings remain background. At far RIGHT place a full-scale closed recessed maintenance elevator gate integrated into the market architecture, olive steel frame, vertical cables running into ceiling, small amber status light; no portal. No fighters/HUD. Preserve crisp MUGEN pixel art and Omniverse architecture,1664x936."
+  },
+  {
+    "id": "smoothy-v2",
+    "path": "public/arenas/ben-smoothy.png",
+    "source": "C:\\Users\\Usuario\\.codex\\generated_images\\01a18870-eeb2-76a0-abaf-18ed7a9ded04\\exec-6917b795-e041-45d3-a495-ac625cb376fc.png",
+    "tool": "image_gen.imagegen",
+    "prompt": "Edit ONLY the left mascot sculpture and its pole out of the reference background. Remove the large white cup mascot, smaller cup in its hand and its entire tall pole at left. Reconstruct sky, side building, shrubs and paving behind that removed statue naturally. Keep the CENTRAL giant cup MR.SMOOTHY building and all its text, colors, fruit art, straw, umbrellas, tables, chairs, floor, hatch, architecture, pixel art and composition EXACTLY unchanged. Game will draw an animated original mascot separately in that same region. No other changes.",
+    "previousPrompt": "Create ORIGINAL daylit 2D MUGEN PIXEL ART fighting arena directly OUTSIDE MR.SMOOTHY in BEN10 OMNIVERSE. References1and2 define CANONICAL ARCHITECTURE, not final sprites. Central very recognizable giant WHITE SMOOTHIE CUP building with GREEN LID, bent GREEN/PINK striped straw, colorful fruit illustrations (pineapple/apple/strawberry/orange/banana), exact legible sign 'MR. SMOOTHY' in pink/green letters, broad pink/green decorative bands, front red shutter/entrance with green lower door, small blue-gray windows. Around: round pink/green umbrellas with fruit toppers, colorful chairs and café tables at BACK of fighting lane; trees, shrubs, Bellwood low-rise buildings and sidewalk, blue sky/clouds, friendly cup mascot on signpost toward LEFT. Main clear continuous horizontal paved plaza/road fills bottom30%, fighting foot plane y580of720. Sideview perspective with depth, no obstacles in foreground fighting path, no pits/platforms. At far RIGHT subtle street maintenance hatch matching elevator arrival. Wide1664x936. True crisp MUGEN pixel clusters/block shading consistent with game, not HD anime screenshot/filter/photo. No characters or HUD. Smoothie shop, NOT icecream parlor. No other words."
+  },
+  {
+    "id": "ben-lift-v2",
+    "path": "public/sprites/arenas/events/ben-lift.png",
+    "source": "C:\\Users\\Usuario\\.codex\\generated_images\\01a18870-eeb2-76a0-abaf-18ed7a9ded04\\exec-689cb1e7-c7ac-4184-8823-f829705b57f8.png",
+    "tool": "image_gen.imagegen",
+    "prompt": "Remove ALL gray/white background matte and semitransparent haze from empty space in this4columns2rows eight-cell sprite atlas. Preserve all8industrial elevator objects and exact grid/appearance. All CORNERS and GUTTERS and every empty area outside objects MUST be exact ALPHA ZERO. No white/gray/checkerboard background pixels, no outer shadows or halo. Steam shape alone may have translucent pixels; its surrounding empty cell area must be alpha0. Preserve crisp original pixel art and frame identity. Do not add/delete any elevator component.",
+    "previousPrompt": "Original transparent MUGEN pixel-art sprite atlas,2048x1024, STRICT4columns2rows/eight equal square cells. Match reference palette,pixel clusters,perspective,contour weight and material lighting exactly. Isolated objects centered with generous empty gutters; all empty space/corners must be exact alpha0, no white or gray matte, no outside glow, no labels/grid/HUD. Same object proportions across animation states. Undertown dark olive/charcoal industrial ACCESS ELEVATOR. TOP:0closed full-scale recessed steel gate with thick vertical rails and pipes;1same gate damaged braces/amber warning;2same gate exposed open with warm shaft interior;3open gate with boarding ramp. BOTTOM:4wide flat industrial elevator floor platform isolated,5vertical shaft wall/pipe/ladder section that can tile vertically,6open surface maintenance hatch with daylight-green pavement rim,7arrival gray dust/steam small puff. Mechanical infrastructure only, no sci-fi portal or neon sphere."
+  },
+  {
+    "id": "ben-market-sign",
+    "path": "public/sprites/arenas/events/ben-market-sign.png",
+    "source": "C:\\Users\\Usuario\\.codex\\generated_images\\01a18870-eeb2-76a0-abaf-18ed7a9ded04\\exec-8bd1518a-683c-42ad-8309-55555cdca4ae.png",
+    "tool": "image_gen.imagegen",
+    "prompt": "Original transparent MUGEN pixel-art sprite atlas,2048x1024, STRICT4columns2rows/eight equal square cells. Match reference palette,pixel clusters,perspective,contour weight and material lighting exactly. Isolated objects centered with generous empty gutters; all empty space/corners must be exact alpha0, no white or gray matte, no outside glow, no labels/grid/HUD. Same object proportions across animation states. Undertown hanging ALIEN MARKET SIGN, dark metal with teal/lime/coral geometric fictional alien glyphs, heavy chain supports. TOP0intact hanging horizontal sign,1flickering panel with chain mount cracking,2same sign tilted and cable loosening,3broken hanging cable stub. BOTTOM4detached WHOLE same sign,5broken glass/circuit fragments,6small electronic impact flash and smoke,7settled broken sign wreck. Same charcoal/olive industrial material palette as reference; no pink dome, no English words."
+  },
+  {
+    "id": "ben-market-cart",
+    "path": "public/sprites/arenas/events/ben-market-cart.png",
+    "source": "C:\\Users\\Usuario\\.codex\\generated_images\\01a18870-eeb2-76a0-abaf-18ed7a9ded04\\exec-a00da8b1-3d89-4d10-b9a7-833383e99cd4.png",
+    "tool": "image_gen.imagegen",
+    "prompt": "Original transparent MUGEN pixel-art sprite atlas,2048x1024, STRICT4columns2rows/eight equal square cells. Match reference palette,pixel clusters,perspective,contour weight and material lighting exactly. Isolated objects centered with generous empty gutters; all empty space/corners must be exact alpha0, no white or gray matte, no outside glow, no labels/grid/HUD. Same object proportions across animation states. Undertown ALIEN COMMERCIAL CARGO CART: small battered olive/dark steel three-wheeled electric market vehicle carrying crates of purple alien fruit and orange produce. TOP0parked loaded cart,1accelerating same cart wheels moving,2braking/skidding with loose crate,3crashed/stopped cart goods fallen. BOTTOM4single falling produce crate,5scattered alien fruit and packages,6small charcoal street dust,7settled cart debris and crates. Side-view facing right, proper wheel scale, no gun/missile or futuristic racing car. Match reference market."
+  },
+  {
+    "id": "ben-market-generator-v2",
+    "path": "public/sprites/arenas/events/ben-market-generator.png",
+    "source": "C:\\Users\\Usuario\\.codex\\generated_images\\01a18870-eeb2-76a0-abaf-18ed7a9ded04\\exec-2ebbd8df-75d8-4d7f-81e2-85e538993ea9.png",
+    "tool": "image_gen.imagegen",
+    "prompt": "Remove ALL white/gray matte and haze from this transparent eight-cell sprite atlas. Keep generator/cable objects and all eight animation frames EXACTLY. Every EMPTY SPACE pixel, all CORNERS, all GUTTERS and the entire area OUTSIDE the isolated sprites must have EXACT ALPHA ZERO. No semitransparent white background, no checkerboard drawn, no background shadows, no outside glow or frame. Preserve restrained pixel-art electricity only within each cable sprite, crisp pixel colors and existing4columns2rows arrangement.",
+    "previousPrompt": "Original MUGEN PIXEL ART transparent atlas,2048x1024,STRICT4columns2rows,8 equal square cells. Match reference's outlines,pixel clusters,material colors,perspective and lighting. Each cell contains one isolated centered sprite/state with generous transparent gutters. Exact alpha0 outside objects including corners; no matte, labels, grids or outer glow. Preserve proportions/frame identity. Undertown industrial GENERATOR/CABLE CABINET. Dark olive bolted casing, charcoal motor housing, small lime/amber status strips, thick insulated hanging cables, no houses or giant gears. TOP0normal powered cabinet,1flickering warning and loose cable,2sparks along exposed existing cable,3dim cooling cabinet. BOTTOM4coiled thick fallen cable,5jagged restrained yellow-white electrical discharge on a small cable segment,6sparking cable on a shallow wet gray ground patch,7small broken circuit panel and metal fragments. Match underground architecture."
+  },
+  {
+    "id": "ben-smoothie-v2",
+    "path": "public/sprites/arenas/events/ben-smoothie.png",
+    "source": "C:\\Users\\Usuario\\.codex\\generated_images\\01a18870-eeb2-76a0-abaf-18ed7a9ded04\\exec-335a8271-2a8b-4e64-87cb-5caf72288f3b.png",
+    "tool": "image_gen.imagegen",
+    "prompt": "Change ONLY the TOP FOUR cells of this4columns2rows atlas into four states of an actual commercial SMOOTHIE DISPENSER MACHINE. It must NOT resemble the café building, a house, a cup-shaped house or miniature architecture. Draw a waist-high countertop industrial white/green cabinet on four short feet, TWO CLEAR GLASS CYLINDRICAL LIQUID TANKS, visible dispensing spigots, small pressure gauge, a pink flexible hose, control switches and fruit decals. No straw, no roof, no door, no MRSMOOTHY building facade. Cell0 normal tanks full,1 gauge red and vibrating hose,2 hose bursts ejecting small pink/lime spray,3 off/dripping. Same body silhouette and scale across frames. Keep all bottom4liquid/splash/puddle cells UNCHANGED. Match existing crisp MUGEN pixel clusters/palette. True alpha0 everywhere outside sprites,no gray/white matte or halo.",
+    "previousPrompt": "Original MUGEN PIXEL ART transparent atlas,2048x1024,STRICT4columns2rows,8 equal square cells. Match reference's outlines,pixel clusters,material colors,perspective and lighting. Each cell contains one isolated centered sprite/state with generous transparent gutters. Exact alpha0 outside objects including corners; no matte, labels, grids or outer glow. Preserve proportions/frame identity. Mr.Smoothy DAYLIT commercial SMOOTHIE DISPENSER, white/green with pink hose and fruit icons, glass tanks holding pastel pink strawberry and lime smoothie, no icecream cones. TOP0normal machine,1shaking warning/gauge pressure,2ruptured hose ejecting liquid,3powered-off dripping machine. BOTTOM4pink/lime smoothie JET cone with sharp pixel droplets,5spreading liquid splat,6large splash with droplet arcs,7wide low irregular pink/lime PUDDLE with pixel highlights and uneven edge. No rectangular liquid, no neon/plasma. Same palette and shading as café reference."
+  },
+  {
+    "id": "ben-smoothy-sign",
+    "path": "public/sprites/arenas/events/ben-smoothy-sign.png",
+    "source": "C:\\Users\\Usuario\\.codex\\generated_images\\01a18870-eeb2-76a0-abaf-18ed7a9ded04\\exec-edd07ca4-04d0-4cc8-abd3-9dc42d57696f.png",
+    "tool": "image_gen.imagegen",
+    "prompt": "Original MUGEN PIXEL ART transparent atlas,2048x1024,STRICT4columns2rows,8 equal square cells. Match reference's outlines,pixel clusters,material colors,perspective and lighting. Each cell contains one isolated centered sprite/state with generous transparent gutters. Exact alpha0 outside objects including corners; no matte, labels, grids or outer glow. Preserve proportions/frame identity. MR.SMOOTHY canonical friendly cup MASCOT: white cup body, green lid, green/pink striped straw, friendly blue eyes, large nose, wide smile, pink bowtie, white gloves, green/pink shoes, holding smaller cup. NO long pole: game draws support separately. TOP0upright mounted mascot on small metal bracket,1same mascot leaning slightly bracket cracked,2same mascot tilted strongly with loose bracket,3broken empty bracket ONLY. BOTTOM4same detached whole mascot falling rotated45degrees,5broken cup-mascot pieces,6pale paving dust and small pink/green chips,7settled mascot/decor debris recognizable cup and lid. It is a sign sculpture, not a living combatant. No extra characters."
+  },
+  {
+    "id": "ben-patio",
+    "path": "public/sprites/arenas/events/ben-patio.png",
+    "source": "C:\\Users\\Usuario\\.codex\\generated_images\\01a18870-eeb2-76a0-abaf-18ed7a9ded04\\exec-5e1cb92f-1e41-4e1c-8d24-fda190f0e634.png",
+    "tool": "image_gen.imagegen",
+    "prompt": "Original MUGEN PIXEL ART transparent atlas,2048x1024,STRICT4columns2rows,8 equal square cells. Match reference's outlines,pixel clusters,material colors,perspective and lighting. Each cell contains one isolated centered sprite/state with generous transparent gutters. Exact alpha0 outside objects including corners; no matte, labels, grids or outer glow. Preserve proportions/frame identity. Mr.Smoothy exterior PATIO furniture, small café table with pastel green/pink umbrella, fruit topper, colorful chairs and smoothie cups. TOP0upright matching furniture set,1umbrella tilts after support damage,2pole bends/table tipping,3collapsed umbrella and table. BOTTOM4tipping same table with cup,5sideways colored chair,6small smoothie spill and cup fragments,7settled folded umbrella/table low obstacle. Actual furniture construction and rigid hinges, daylight pixel palette, not magical effects."
+  },
+  {
+    "id": "ben-delivery",
+    "path": "public/sprites/arenas/events/ben-delivery.png",
+    "source": "C:\\Users\\Usuario\\.codex\\generated_images\\01a18870-eeb2-76a0-abaf-18ed7a9ded04\\exec-2a867aaf-005f-4165-8890-d3865d2fd183.png",
+    "tool": "image_gen.imagegen",
+    "prompt": "Original MUGEN PIXEL ART transparent atlas,2048x1024,STRICT4columns2rows,8 equal square cells. Match reference's outlines,pixel clusters,material colors,perspective and lighting. Each cell contains one isolated centered sprite/state with generous transparent gutters. Exact alpha0 outside objects including corners; no matte, labels, grids or outer glow. Preserve proportions/frame identity. Bellwood Mr.Smoothy DELIVERY VAN, small white and pale-green compact van with pink strip/fruit logo, visible wheels, loaded with packages of smoothie cups and fruit. TOP0normal loaded van facingright,1hard braking wheels angled,2crate slipping off rear,3stopped van with empty load shelf. BOTTOM4single falling delivery crate full of cups/fruit,5scattered packages/cups,6small pale street dust impact,7low settled broken crate and cartons. No weapons, no driver fighter. Daylit Omniverse style, distinct from dark alien cargo cart."
+  },
+  {
+    "id": "undertown-utilities-v2",
+    "path": "public/sprites/arenas/events/undertown.png",
+    "source": "C:\\Users\\Usuario\\.codex\\generated_images\\01a18870-eeb2-76a0-abaf-18ed7a9ded04\\exec-21891d56-bae5-45f8-b7f8-0b898dda0fa3.png",
+    "tool": "image_gen.imagegen"
+  },
+  {
+    "id": "ben-residents",
+    "path": "public/sprites/arenas/events/ben-residents.png",
+    "source": "C:\\Users\\Usuario\\.codex\\generated_images\\01a18870-eeb2-76a0-abaf-18ed7a9ded04\\exec-bc7b12c3-ec19-4fbd-9aa8-e337464fba50.png",
+    "tool": "image_gen.imagegen",
+    "prompt": "Edit ONLY columns 3 and 4 in image1 (the transparent pixel sprite atlas). Image2 is the OFFICIAL EPISODE VISUAL REFERENCE for their anatomy and costumes: Driba is the stockier character on LEFT in image2; Blukic is the tall thin one on RIGHT. Preserve columns1 Pakmar and2 Argit exactly unchanged. Redraw BOTH rows of column3 as BLUKIC matching image2: gray elongated downturned face, exceptionally LONG THIN NECK, chin with two small beard tendrils, huge lime eyes with tiny RECTANGULAR BLACK PUPILS looking slightly different directions, lanky body, long narrow arms, BLUE OVERALLS over black undershirt, belt, BLUE AND WHITE CAP with small sci-fi antenna. No brown cap, no olive uniform, no generic round frog face. Redraw BOTH rows of column4 as DRIBA matching image2: flat-topped very wide gray head, eye sockets angular rather than round balls, strong protruding SQUARE CHIN beneath mouth, slightly stocky torso, WHITE AND BLACK PLUMBER SUIT WITH TWO CIRCULAR RED BUTTONS front of chest and abdomen, bare gray fingers/toes/ankles. No red necktie. Give Blukic taller narrower silhouette than Driba. Calm full-body standing row1, same designs startled stepping back and gesturing row2. Keep dark crisp stair-step PIXEL ART contours and 3-tone block shading, limited palette, no antialiased HD cartoon. Exactly same 4x2 grid, true alpha0 background/gutters, full bodies safely centered within their original cells. Reference image2 supplies design only; do not copy its screenshot background. No text.",
+    "transparencyPrompt": "Technical transparency cleanup ONLY. Keep all eight pixel sprites, facial designs, blue overalls, red uniform buttons, silhouettes, colors, size, 4x2 arrangement and sprite pixels exactly as they are. Remove the stray noisy semi-transparent gray/white/black checker-like matte in every empty area and gutter. Make the background genuinely completely transparent alpha=0, including all corners and edges. No cast shadows or outer halos. Do NOT redraw or modify the characters or their outlines. Preserve every character and its two poses."
+  }
+]

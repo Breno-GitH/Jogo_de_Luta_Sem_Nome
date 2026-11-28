@@ -8,6 +8,7 @@ const rect = (c: CanvasRenderingContext2D, color: string, x: number, y: number, 
 /** Solid tops are exactly the collision surfaces; uprights remain in the background plane. */
 export function drawArenaPlatforms(c: CanvasRenderingContext2D, a: ArenaState, image?: HTMLImageElement) {
   for (const p of arenaPlatforms(a)) {
+    if (p.id.startsWith("crystal:") || p.id.startsWith("rubble:")) continue;
     const metal = p.material === "metal", y = p.y;
     if (!metal) {
       // Rooted outcrops: their stone continues into the main mesa instead of hovering.

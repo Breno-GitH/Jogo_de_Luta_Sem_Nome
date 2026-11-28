@@ -14,26 +14,27 @@ async function capture(page, path) {
     }
   }
 }
-test("open stages use a continuous chasm and first to three round wins", async ({ page }) => {
+test("traditional Undertown and open Clover require three round wins, with fall KO only in Clover", async ({ page }) => {
   test.setTimeout(120000); await mkdir(out, { recursive: true });
   const errors = []; page.on("pageerror", error => errors.push(error.message));
   await page.goto("./art/arenas.html");
   await expect(page.locator("canvas").first()).toHaveAttribute("data-ready", "true", { timeout: 90000 });
   await page.evaluate(() => window.arenaLab.pause());
   for (const id of ["undertown", "clover"]) {
-    expect((await page.evaluate(id => window.arenaLab.upperPreservation(id), id)).changed).toBe(0);
+    if (id === "clover") expect((await page.evaluate(id => window.arenaLab.upperPreservation(id), id)).changed).toBe(0);
     await page.evaluate(id => { const lab = window.arenaLab; lab.reset(id); lab.match.rules.training = false; lab.advance(20); }, id);
     expect(await page.evaluate(() => window.arenaLab.match.roundsToWin)).toBe(3);
     await capture(page, `${out}/${id}-continuidade-depois.png`);
     for (let won = 1; won <= 3; won++) {
-      await page.evaluate(() => {
+      await page.evaluate(id => {
         const lab = window.arenaLab, m = lab.match, target = m.fighters[1];
-        m.phase = "fight"; target.x = 1190; target.y = 580; target.setState("air"); lab.advance(100);
-      });
+        m.phase = "fight"; target.x = 1190; target.y = 580; target.setState("air"); if (id === "undertown") target.health = 0;
+        for (let n = 0; n < 120 && m.phase === "fight"; n++) lab.advance();
+      }, id);
       expect(await page.evaluate(() => window.arenaLab.match.wins[0])).toBe(won);
-      if (won === 1) await capture(page, `${out}/${id}-queda-ko.png`);
+      if (won === 1) await capture(page, `${out}/${id}-${id === "undertown" ? "ko-normal" : "queda-ko"}.png`);
       if (won === 2) await capture(page, `${out}/${id}-dois-rounds.png`);
-      await page.evaluate(() => window.arenaLab.advance(150));
+      await page.evaluate(() => { const lab = window.arenaLab; lab.advance(lab.match.phaseFrames); });
       expect(await page.evaluate(() => window.arenaLab.match.phase)).toBe(won < 3 ? "intro" : "finished");
     }
   }
@@ -60,7 +61,7 @@ test("real arena engine: collision, descent, lower combat and opaque camera matr
     }
   }
   for (const id of ["enies", "godvalley"]) {
-    await page.evaluate(id => { const lab = window.arenaLab; lab.reset(id); lab.event(true); lab.advance(92); }, id);
+    await page.evaluate(id => { const lab = window.arenaLab; lab.reset(id); lab.event(true); lab.advance(lab.eventInfo().impactAt); }, id);
     expect(await page.evaluate(() => !!window.arenaLab.match.arena.transition)).toBe(true);
     await capture(page, `${out}/${id}-queda-inicio.png`);
     await page.evaluate(() => window.arenaLab.advance(36));
@@ -85,12 +86,12 @@ test("real arena engine: collision, descent, lower combat and opaque camera matr
         reader.readAsDataURL(new Blob(chunks, { type: "video/webm" })); stream.getTracks().forEach(track => track.stop());
       });
       recorder.start();
-      for (let n = 0; n < 194; n++) { lab.advance(); await new Promise(resolve => setTimeout(resolve, 17)); }
+      for (let n = 0, duration = lab.eventInfo().impactAt + 100; n < duration; n++) { lab.advance(); await new Promise(resolve => setTimeout(resolve, 17)); }
       recorder.stop(); return finished;
     }, id);
     await writeFile(`${out}/${id}-descida.webm`, Buffer.from(video, "base64"));
   }
-  for (const id of ["undertown", "clover"]) {
+  for (const id of ["clover"]) {
     await page.evaluate(id => { window.arenaLab.reset(id); window.arenaLab.platform(); }, id);
     await capture(page, `${out}/${id}-plataforma.png`);
     expect(await page.evaluate(() => window.arenaLab.match.fighters[0].airborne)).toBe(false);

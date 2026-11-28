@@ -1,0 +1,380 @@
+[
+  {
+    "area": "market",
+    "fighter": "samurai",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "market",
+    "fighter": "dio",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "market",
+    "fighter": "goku",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "market",
+    "fighter": "luffy",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "market",
+    "fighter": "sasuke",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "market",
+    "fighter": "kaneki",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "market",
+    "fighter": "ben",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "market",
+    "fighter": "xebec",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "market",
+    "fighter": "asta",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "smoothy",
+    "fighter": "samurai",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "smoothy",
+    "fighter": "dio",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "smoothy",
+    "fighter": "goku",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "smoothy",
+    "fighter": "luffy",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "smoothy",
+    "fighter": "sasuke",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "smoothy",
+    "fighter": "kaneki",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "smoothy",
+    "fighter": "ben",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "smoothy",
+    "fighter": "xebec",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "smoothy",
+    "fighter": "asta",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "hall",
+    "fighter": "samurai",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "hall",
+    "fighter": "dio",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "hall",
+    "fighter": "goku",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "hall",
+    "fighter": "luffy",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "hall",
+    "fighter": "sasuke",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "hall",
+    "fighter": "kaneki",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "hall",
+    "fighter": "ben",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "hall",
+    "fighter": "xebec",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "hall",
+    "fighter": "asta",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "west",
+    "fighter": "samurai",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "west",
+    "fighter": "dio",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "west",
+    "fighter": "goku",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "west",
+    "fighter": "luffy",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "west",
+    "fighter": "sasuke",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "west",
+    "fighter": "kaneki",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "west",
+    "fighter": "ben",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "west",
+    "fighter": "xebec",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "west",
+    "fighter": "asta",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "veranda",
+    "fighter": "samurai",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "veranda",
+    "fighter": "dio",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "veranda",
+    "fighter": "goku",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "veranda",
+    "fighter": "luffy",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "veranda",
+    "fighter": "sasuke",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "veranda",
+    "fighter": "kaneki",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "veranda",
+    "fighter": "ben",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "veranda",
+    "fighter": "xebec",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "veranda",
+    "fighter": "asta",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "garden",
+    "fighter": "samurai",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "garden",
+    "fighter": "dio",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "garden",
+    "fighter": "goku",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "garden",
+    "fighter": "luffy",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "garden",
+    "fighter": "sasuke",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "garden",
+    "fighter": "kaneki",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "garden",
+    "fighter": "ben",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "garden",
+    "fighter": "xebec",
+    "started": true,
+    "restored": true,
+    "finite": true
+  },
+  {
+    "area": "garden",
+    "fighter": "asta",
+    "started": true,
+    "restored": true,
+    "finite": true
+  }
+]

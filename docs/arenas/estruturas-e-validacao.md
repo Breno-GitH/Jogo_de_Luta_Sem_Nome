@@ -1,5 +1,7 @@
 # Arenas vivas com continuação e plataformas — 27/11/2026
 
+**Histórico anterior à mudança de Undertown:** [eventos-ambientais.md](eventos-ambientais.md) substitui os perigos, tempos e consequências abaixo. Undertown agora possui chão contínuo e acesso ao Mr. Smoothy; apenas Clover continua com plataformas e queda fatal. As capturas antigas `undertown-plataforma`, `undertown-borda-aberta` e `undertown-queda-ko` documentam a versão anterior e não são provas da versão atual. Câmera e áreas inferiores de Enies/God Valley permanecem.
+
 Base: `arenas-pr19`, commit `b1131eb`. A pasta local `public/arenas/replacements/` foi preservada e não faz parte desta alteração.
 
 ## Regras disponíveis

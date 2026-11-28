@@ -37,6 +37,7 @@ import { combatPace, pacedCharacter } from "./pace";
 import { antiLightCombo, isLimitedLightNormal, launcherCombo } from "./anti-light-combo";
 import { arenaForCharacter, createArena, stepArena, type ArenaId, type ArenaMode, type ArenaState } from "./arenas";
 import { arenaLanding, openStage, prepareArenaMovement, supportHeight } from "./arena-layouts";
+import { resolveArenaObstacles, applyArenaTraction } from "./arena-terrain";
 import cinematics from "../data/cinematics.json";
 import { reactionBoxes, reactionFor } from "./lifecycle";
 import { isSuperMove, poseAt, phaseAt } from "./moves";
@@ -784,6 +785,7 @@ export class Fighter {
   }
 
   tick(input: InputFrame, frame: number, opponent: Fighter) {
+    const previousArenaVx = this.vx;
     const chill = this.chill;
     if (chill) {
       if (chill.immune > 0) chill.immune--;
@@ -1300,8 +1302,11 @@ export class Fighter {
       this.vy += this.movementData.gravity;
     }
     if (this.chill?.freeze) this.vx = 0;
+    const arenaPreviousX = this.x;
+    if (this.match) applyArenaTraction(this.match.arena, this, previousArenaVx);
     this.x = Math.max(this.stageInset, Math.min(1280 - this.stageInset, this.x + this.vx));
     this.y += this.vy;
+    if (this.match) resolveArenaObstacles(this.match.arena, this, arenaPreviousX);
     const landingY = this.match ? arenaLanding(this.match.arena, this, previousY) : this.y >= FLOOR ? FLOOR : undefined;
     if (landingY !== undefined) {
       this.y = landingY;
@@ -1438,7 +1443,7 @@ export class Match {
   phaseFrames = 0;
   intro!: IntroState;
   wins = [0, 0];
-  get roundsToWin() { return openStage(this.arena) ? 3 : 2; }
+  get roundsToWin() { return openStage(this.arena) || this.arena.id === "undertown" && this.arena.mode !== "classico" ? 3 : 2; }
   round = 1;
   message = "ROUND 1";
   events: HitEvent[] = [];
@@ -1491,10 +1496,12 @@ export class Match {
   }
   step(inputs: [InputFrame, InputFrame]) {
     this.frame++;
+    const dojoWasTravelling = !!this.arena.dojo?.transition;
+    const benWasTravelling = !!this.arena.ben?.lift;
     stepArena(this, this.hits);
     this.hits = [];
     // A stage descent owns both actors and the timer until landing; no queued inputs leak out.
-    if (this.arena.transition) return;
+    if (this.arena.transition || this.arena.dojo?.transition || dojoWasTravelling || this.arena.ben?.lift || benWasTravelling) return;
     if (this.phase === "fight" && this.arena.ringOutSeat !== undefined) {
       this.checkRoundEnd();
       return;

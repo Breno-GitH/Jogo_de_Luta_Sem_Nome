@@ -1,5 +1,7 @@
 # Arenas vivas — estado da implementação (27/11/2026)
 
+> **Histórico.** O estado atual está em [eventos-ambientais.md](eventos-ambientais.md): Undertown tradicional com acesso ao Mr. Smoothy, quatro ambientes conectados do dojo, eventos por cenário e Clover preservado como arena de plataformas.
+
 > A revisão estrutural posterior está documentada em [estruturas-e-validacao.md](estruturas-e-validacao.md): interativo/caótico unificados, duas áreas inferiores persistentes, plataformas utilizáveis e sons ambientais. As regras de modos e reposicionamento abaixo descrevem a revisão anterior.
 
 As nove artes originais continuam em `public/arenas/`, inclusive as versões escolhidas de Anteiku, Cairo e Undertown. O estado que afeta a partida fica em `Match.arena` e entra no snapshot e no hash da simulação LAN. NPCs, poeira e céu são apenas visuais.

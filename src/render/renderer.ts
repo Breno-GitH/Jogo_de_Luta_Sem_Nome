@@ -8,7 +8,12 @@ import { assetBase } from "../asset-base";
 import { drawArena } from "./arena";
 import { drawArenaLife } from "./arena-life";
 import { arenaLayouts, descentProgress, lowerLevelOffset, openStage } from "../engine/arena-layouts";
-import { arenaIds } from "../engine/arenas";
+import { arenaIds, type ArenaState } from "../engine/arenas";
+import { arenaEventSheets } from "./arena-event-fx";
+import { isArenaEvent } from "../engine/arena-events";
+import { drawDojoRooms, drawDojoExits } from "./arena-room-fx";
+import { dojoRoom, dojoRoomProfiles } from "../engine/arena-rooms";
+import { drawBenArenaBackground } from "./ben-arena-fx";
 import benArt from "../data/ben-art.json";
 import { alienXScene } from "../engine/ben-alien-x";
 import { alienXSuper } from "../engine/ben-omnitrix";
@@ -95,6 +100,12 @@ export class Renderer {
     new FighterPresentation(),
   ];
   debug = false;
+  paintArena(c: CanvasRenderingContext2D, arena: ArenaState, padding = 0) {
+    if (drawDojoRooms(c, arena, this.arenaImages) || drawBenArenaBackground(c, arena, this.arenaImages, this.sprites)) return;
+    const variant = arena.id === "uchiha" && arena.terrain.some(t => t.kind === "roof") ? "uchiha-ruin" : "";
+    drawArena(c, arena, this.arenaImages.get(openStage(arena) ? `${arena.id}-open` : arena.id), padding,
+      this.arenaImages.get(variant), this.arenaImages.get(`${arena.id}-lower`), this.arenaImages.get(`${arena.id}-world`));
+  }
   effects = true;
   xebecEffects = true;
   astaEffects = true;
@@ -159,7 +170,8 @@ export class Renderer {
           if (sheet) sheets.add(sheet);
     }
     const loads: Promise<void>[] = [];
-    for (const id of [...arenaIds, "dojo-damaged", "uchiha-ruin", "enies-lower", "godvalley-lower", "undertown-open", "clover-open", "clover-world", "undertown-world"]) {
+    for (const sheet of arenaEventSheets) sheets.add(sheet);
+    for (const id of [...arenaIds, "ben-smoothy", "dojo-damaged", "dojo-west", "dojo-veranda", "dojo-garden", "uchiha-ruin", "enies-lower", "godvalley-lower", "undertown-open", "clover-open", "clover-world", "undertown-world"]) {
       const image = new Image();
       loads.push(new Promise<void>((resolve, reject) => {
         image.onload = () => resolve();
@@ -372,6 +384,11 @@ export class Renderer {
     this.canvas.dataset.arenaStructure = arenaLayouts[match.arena.id].structure;
     this.canvas.dataset.arenaPhase = String(match.arena.phase);
     this.canvas.dataset.arenaHazard = match.arena.hazard?.phase ?? "none";
+    this.canvas.dataset.arenaEvent = match.arena.hazard?.kind ?? "none";
+    this.canvas.dataset.arenaRoom = match.arena.dojo ? dojoRoom(match.arena) : "";
+    this.canvas.dataset.benArea = match.arena.ben?.area ?? "";
+    this.canvas.dataset.benLift = String(match.arena.ben?.lift?.tick ?? -1);
+    this.canvas.dataset.arenaEventStage = isArenaEvent(match.arena.hazard) ? match.arena.hazard.stage : "none";
     this.canvas.dataset.centipedePhase = kakuja?.phase ?? "";
     this.canvas.dataset.centipedeArmor = String(kakuja?.armor ?? 0);
     this.canvas.dataset.centipedeSource = centipede?.source ?? "";
@@ -549,6 +566,8 @@ export class Renderer {
       this.cameraShake && !match.cinematicActive && heavy
         ? (match.frame % 2 ? 1 : -1) * combatPace.feedback.heavyShakePixels
         : 0;
+    const arenaImpact = isArenaEvent(match.arena.hazard) && match.arena.hazard.stage === "impact";
+    const environmentalShake = this.cameraShake && arenaImpact && !match.cinematicActive && !match.temporal.active ? Math.sin(match.arena.hazard!.ticks * 1.9) * 2 : 0;
     this.canvas.dataset.impactShake = String(this.effects ? ordinaryShake : 0);
     c.imageSmoothingEnabled = false;
     if (this.inspectionZoom > 1 || match.cinematicActive || stagedCamera) {
@@ -556,7 +575,7 @@ export class Renderer {
       c.fillRect(0, 0, 1280, 720);
     }
     c.save();
-    if (this.effects && ordinaryShake) c.translate(ordinaryShake, 0);
+    if (this.effects && (ordinaryShake || environmentalShake)) c.translate(ordinaryShake + environmentalShake, 0);
     if (match.arena.transition) {
       const progress = descentProgress(match.arena);
       const shake = this.cameraShake && match.arena.transition.tick > 65 ? (match.frame % 2 ? 3 : -3) : 0;
@@ -601,12 +620,10 @@ export class Renderer {
         c.translate(640, 580); c.scale(scale, scale); c.translate(-640, -bottom);
       }
     }
-    const arenaVariant = match.arena.id === "dojo" ? "dojo-damaged" : match.arena.id === "uchiha" ? "uchiha-ruin" : "";
-    const lowerArena = this.arenaImages.get(`${match.arena.id}-lower`);
-    const worldArena = this.arenaImages.get(`${match.arena.id}-world`);
-    const arenaImage = this.arenaImages.get(openStage(match.arena) ? `${match.arena.id}-open` : match.arena.id);
-    drawArena(c, match.arena, arenaImage, benPadding, this.arenaImages.get(arenaVariant), lowerArena, worldArena);
-    drawArenaLife(c, match.arena, match, arenaImage);
+    const arenaImage = this.arenaImages.get(match.arena.dojo ? dojoRoomProfiles[dojoRoom(match.arena)].image : openStage(match.arena) ? `${match.arena.id}-open` : match.arena.id);
+    this.paintArena(c, match.arena, benPadding);
+    drawArenaLife(c, match.arena, match, arenaImage, this.sprites);
+    drawDojoExits(c, match.arena, match, this.sprites);
     if (xebecEffects && conquerors.length)
       drawKingWillArena(c, conquerors, this.pressureStage, this.prefersReducedMotion.matches);
     if (union) {
@@ -624,7 +641,7 @@ export class Renderer {
     }
     if (reality && alienX && this.effects) {
       drawAlienXSpace(c, reality, alienX.tick, this.sprites.get(alienXBackdrop));
-      drawAlienXRebuild(c, reality, alienX.tick, () => drawArena(c, match.arena, arenaImage, 0, this.arenaImages.get(arenaVariant), lowerArena, worldArena));
+      drawAlienXRebuild(c, reality, alienX.tick, () => this.paintArena(c, match.arena));
     }
     const nightmare = spectral || match.fighters.some(f => f.state === "attack" && f.move?.ben?.nightmare && benGhostDepth(f) > 30);
     if (this.effects && nightmare) {

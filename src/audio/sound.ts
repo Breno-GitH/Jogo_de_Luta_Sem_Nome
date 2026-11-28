@@ -6,9 +6,11 @@ import { kingWill, xebecPressure } from "../engine/xebec-specials";
 import { pandemoniumPrelude } from "../engine/xebec-pandemonium-acts";
 import { pandemoniumBeats } from "../engine/xebec-pandemonium";
 import { chainFinishes } from "../engine/kaneki-chain";
+import { eventStage, isArenaEvent } from "../engine/arena-events";
 export type Cue =
   | "introSword" | "introWatch" | "introPresence" | "introCloth"
   | "arenaWarning" | "arenaImpact" | "arenaDescent"
+  | "arenaHorn" | "arenaCannon" | "arenaThunder" | "arenaCliff" | "arenaTraffic" | "arenaColumn" | "arenaWood" | "arenaRing" | "arenaMachine" | "arenaMana"
   | "swing"
   | "hit"
   | "heavy"
@@ -62,6 +64,7 @@ export function effectCue(event: HitEvent): Cue {
 /** Original short synthesized sounds. No downloaded samples or autoplay. */
 export class Sound {
   private arenaCue = "";
+  private arenaShot = "";
   private introClock = -1;
   private rocksTick = -1;
   private astaTick = -1;
@@ -231,7 +234,27 @@ export class Sound {
         envelope.disconnect();
       };
     };
-    if (cue === "arenaWarning") {
+    if (cue === "arenaHorn") {
+      tone(147, 164, .32, "triangle", .12); tone(220, 196, .35, "sine", .07, .08);
+    } else if (cue === "arenaCannon") {
+      tone(137, 28, .32, "sawtooth", .25); tone(382, 94, .09, "square", .09);
+    } else if (cue === "arenaThunder") {
+      tone(71, 24, .8, "sawtooth", .14); tone(990, 210, .08, "square", .08);
+    } else if (cue === "arenaCliff") {
+      tone(81, 23, .65, "sawtooth", .18); tone(153, 42, .3, "triangle", .13);
+    } else if (cue === "arenaTraffic") {
+      tone(210, 490, .24, "sawtooth", .12); tone(760, 220, .11, "square", .13, .12);
+    } else if (cue === "arenaColumn") {
+      tone(231, 48, .3, "triangle", .2); tone(395, 98, .1, "square", .07);
+    } else if (cue === "arenaWood") {
+      tone(317, 113, .19, "sawtooth", .12); tone(670, 261, .04, "square", .07, .08);
+    } else if (cue === "arenaRing") {
+      tone(840, 760, .18, "sine", .09); tone(187, 62, .15, "triangle", .13);
+    } else if (cue === "arenaMachine") {
+      tone(240, 680, .2, "square", .1); tone(510, 122, .15, "triangle", .14, .1);
+    } else if (cue === "arenaMana") {
+      tone(842, 1260, .16, "sine", .12); tone(1190, 470, .24, "triangle", .1, .07);
+    } else if (cue === "arenaWarning") {
       tone(360, 420, .1, "triangle", .16);
       tone(420, 360, .12, "triangle", .13, .18);
     } else if (cue === "arenaImpact") {
@@ -406,13 +429,26 @@ export class Sound {
     } else if (cue === "menu") tone(660, 880, 0.06, "sine", 0.15);
   }
   tick(match: Match, onlineRound?: string) {
-    const arenaCue = match.arena.transition ? `descent:${match.arena.level}` :
+    const environmental = isArenaEvent(match.arena.hazard) ? match.arena.hazard : undefined;
+    const arenaCue = match.arena.ben?.lift ? `ben-lift:${match.arena.ben.liftSerial}` : match.arena.dojo?.transition ? `dojo:${match.arena.dojo.serial}` : match.arena.transition ? `descent:${match.arena.level}` : environmental ? `${environmental.serial}:${environmental.stage}:${match.arena.level}` :
       `${match.arena.eventSerial}:${match.arena.hazard?.phase ?? "none"}:${match.arena.level}`;
     if (arenaCue !== this.arenaCue) {
-      if (match.arena.transition) this.play("arenaDescent");
+      if (match.arena.ben?.lift) this.play("arenaMachine");
+      else if (this.arenaCue.startsWith("ben-lift") && match.arena.ben) this.play("introPresence");
+      else if (match.arena.dojo?.transition) this.play(match.arena.dojo.transition.impact ? "arenaWood" : "introCloth");
+      else if (this.arenaCue.startsWith("dojo:")) this.play("arenaImpact");
+      else if (match.arena.transition) this.play("arenaDescent");
+      else if (environmental && ["preparation", "action", "impact"].includes(environmental.stage)) {
+        const cues: Record<string, Cue> = { "buster-call": "arenaCannon", storm: "arenaThunder", "canyon-shock": "arenaCliff", "car-crash": "arenaTraffic", "column-collapse": "arenaColumn", "timber-break": "arenaWood", "ring-fracture": "arenaRing", "alien-overload": "arenaMachine", "mana-fracture": "arenaMana", "alien-sign": "arenaMachine", "pressure-pipe": "arenaMachine", "cargo-cart": "arenaTraffic", "smoothie-spill": "arenaMana", "smoothy-sign": "arenaWood", "patio-collapse": "arenaWood", "delivery-cart": "arenaTraffic" };
+        this.play(environmental.stage === "preparation" && environmental.kind === "buster-call" ? "arenaHorn" : cues[environmental.kind]);
+      }
       else if (match.arena.hazard?.phase === "warning") this.play("arenaWarning");
       else if (match.arena.hazard?.phase === "active" || match.arena.level && this.arenaCue.startsWith("descent")) this.play("arenaImpact");
       this.arenaCue = arenaCue;
+    }
+    if (environmental?.kind === "buster-call" && environmental.stage === "action") {
+      const shotTick = eventStage(match.arena, environmental).tick, key = `${environmental.serial}:${environmental.age}`;
+      if ([13, 26].includes(shotTick) && this.arenaShot !== key) { this.play("arenaCannon"); this.arenaShot = key; }
     }
     if(this.owner!==match || match.intro.tick<this.introClock) this.introClock=match.intro.tick-1;
     if(match.phase==="intro" && match.intro.full && !match.intro.skipped) {

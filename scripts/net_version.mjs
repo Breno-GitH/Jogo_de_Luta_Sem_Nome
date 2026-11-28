@@ -3,6 +3,10 @@ import { readFileSync, writeFileSync, existsSync } from "node:fs";
 const files = [
   "src/engine/arenas.ts",
   "src/engine/arena-layouts.ts",
+  "src/engine/arena-events.ts",
+  "src/engine/arena-terrain.ts",
+  "src/engine/arena-rooms.ts",
+  "src/engine/ben-arena.ts",
   "src/engine/entrances.ts",
   "src/engine/asta.ts",
   "src/engine/asta-super.ts",
